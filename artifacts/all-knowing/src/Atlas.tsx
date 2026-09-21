@@ -12,6 +12,7 @@ import { Thread } from './Thread'
 import { factState, useWorkspace, type FactState } from './state'
 import { useCoords } from './lib/coords'
 import { layerOrder } from './lib/nav'
+import { leftoverPins } from './lib/leftoverPins'
 import type { MapMarker } from './types'
 
 function pinColor(kind: MapMarker['kind']) {
@@ -59,7 +60,7 @@ export function AtlasWorkspace() {
     [world],
   )
 
-  const seedPins = useMemo(() => {
+  const seedPins = useMemo<MapMarker[]>(() => {
     const extra = markers.filter((m) => !gracePins.some((g) => g.id === m.id))
     const mapped = extra.filter((m) => {
       if (world === 'shadow') return m.campaign === 'sote'
@@ -84,9 +85,20 @@ export function AtlasWorkspace() {
     return [...gracePins, ...mapped, ...extraWeb]
   }, [gracePins, world, coords, w.layers])
 
+  const leftoverList = useMemo(
+    () => leftoverPins(w.character, coords, { world }),
+    [w.character, coords, world],
+  )
+
+  const allPins = useMemo(() => [...seedPins, ...leftoverList], [seedPins, leftoverList])
+
   const q = w.query.trim().toLowerCase()
-  const shown = seedPins.filter((m) => {
-    if (m.kind !== 'grace' && !w.layers[m.kind]) return false
+  const shown = allPins.filter((m) => {
+    if (m.leftover) {
+      if (!w.showLeftovers) return false
+    } else if (m.kind !== 'grace' && !w.layers[m.kind]) {
+      return false
+    }
     if (q && !`${m.name} ${m.region}`.toLowerCase().includes(q)) return false
     if (w.missingOnly && factState(w.character, m.id) === 'true') return false
     return true
@@ -101,7 +113,7 @@ export function AtlasWorkspace() {
     return true
   })
 
-  const selected = seedPins.find((m) => m.id === w.selectedMarkerId) ?? shown[0]
+  const selected = allPins.find((m) => m.id === w.selectedMarkerId) ?? shown[0]
   const selectedEngine = w.engineMarkers.find((m) => m.id === w.selectedMarkerId) || engineList[0]
   const selectedId = w.selectedMarkerId || selected?.id
   const selectedState = selectedId ? factState(w.character, selectedId) : 'unknown'
@@ -156,7 +168,18 @@ export function AtlasWorkspace() {
               const st = factState(w.character, m.id)
               const p = at(m)
               return (
-                <g key={m.id} className="pin" onClick={() => w.setSelectedMarkerId(m.id)}>
+                <g key={m.id} className={m.leftover ? 'pin leftover' : 'pin'} onClick={() => w.setSelectedMarkerId(m.id)}>
+                  {m.leftover && (
+                    <circle
+                      cx={p.x}
+                      cy={p.y}
+                      r={2.4 * k}
+                      fill="none"
+                      stroke="#e4c36a"
+                      strokeWidth={0.28 * k}
+                      strokeDasharray={`${0.8 * k} ${0.55 * k}`}
+                    />
+                  )}
                   {mapIcons[m.kind] ? (
                     <image
                       href={mapIcons[m.kind]}
@@ -229,6 +252,20 @@ export function AtlasWorkspace() {
           <span className="note" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <img src="/art/pin-denied.jpg" alt="" /> not there
           </span>
+          {w.showLeftovers && (
+            <span className="note" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span
+                style={{
+                  width: 12,
+                  height: 12,
+                  borderRadius: '50%',
+                  border: '2px dashed #e4c36a',
+                  display: 'inline-block',
+                }}
+              />
+              leftovers
+            </span>
+          )}
         </div>
         <div className="opts" style={{ margin: '10px 0' }}>
           {worlds.map((wr) => (
@@ -264,9 +301,10 @@ export function AtlasWorkspace() {
         <h3>{engineLive ? markerName(selectedEngine || { id: '—' }) : (selected?.name ?? 'Select a pin')}</h3>
         {selected && (
           <p className="note">
-            {selected.kind} · {selected.region} · {selectedState}
+            {selected.leftover ? 'leftover · ' : ''}{selected.kind} · {selected.region} · {selectedState}
           </p>
         )}
+        {selected?.note && <p className="note">{selected.note}</p>}
 
         <div className="opts">
           <button type="button" className={selectedState === 'true' ? 'chip on' : 'chip'} onClick={() => mark('true')}>Found</button>
