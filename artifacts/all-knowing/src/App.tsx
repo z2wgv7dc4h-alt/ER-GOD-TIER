@@ -104,6 +104,9 @@ function AppShell() {
               <button className={w.missingOnly ? 'chip on' : 'chip'} onClick={() => w.setMissingOnly(!w.missingOnly)}>
                 Missing only
               </button>
+              <button className={w.showLeftovers ? 'chip on' : 'chip'} onClick={() => w.toggleLeftovers()}>
+                leftovers
+              </button>
               {layerOrder.map((id) => (
                 <button key={id} className={w.layers[id] ? 'chip on' : 'chip'} onClick={() => w.toggleLayer(id)}>
                   {id}

@@ -50,6 +50,8 @@ export type MapMarker = {
   y: number
   missable?: boolean
   note?: string
+  /** Part of the leftover/watchlist layer, not a seed/coords pin. */
+  leftover?: boolean
 }
 
 export type QuestStep = {
