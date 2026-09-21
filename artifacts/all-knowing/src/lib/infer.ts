@@ -125,6 +125,7 @@ export function summarize(character: Character) {
     ...character.collectedItems,
     ...character.completedQuestSteps,
   ])
+  const catalogOf = (kind: string) => facts.filter((f) => f.kind === kind).length
   return {
     bosses: character.defeatedBosses.length,
     graces: character.discoveredGraces.length,
@@ -133,5 +134,10 @@ export function summarize(character: Character) {
     evidence: character.evidence.length,
     known: known.size,
     catalog: facts.length,
+    /** Catalog totals per tracked kind, so callers can show done/remaining. */
+    totalBosses: catalogOf('boss'),
+    totalGraces: catalogOf('grace'),
+    totalItems: catalogOf('item'),
+    totalQuests: catalogOf('quest'),
   }
 }

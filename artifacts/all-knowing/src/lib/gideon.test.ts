@@ -1,8 +1,15 @@
+import { readFileSync } from 'node:fs'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Character } from '../types'
 import { callDeepSeekJson, hasDeepSeekKey } from './deepseek'
+import type { BossCombat } from './enemy'
 import { askGideon, askGideonRouter, isFastLookup } from './gideon'
 import { buildGrounding, validateGideonAct } from './gideonLlm'
+
+/** The real Task 17 extract, read straight off disk — not a hand-rolled fixture. */
+const combat = JSON.parse(
+  readFileSync(new URL('../../public/sourced/npc-combat.json', import.meta.url), 'utf8'),
+) as BossCombat[]
 
 vi.mock('./deepseek', () => ({
   hasDeepSeekKey: vi.fn(),
@@ -66,6 +73,50 @@ describe('validateGideonAct', () => {
     expect(rejected).toEqual([])
     expect(act?.module).toBeUndefined()
     expect(act?.factId).toBe('boss:godrick')
+  })
+})
+
+describe('stuck handler uses real boss resists', () => {
+  it('advises from the actual NpcParam row for a named boss', () => {
+    const act = askGideonRouter('help with malenia', character, {}, combat)
+    expect(act.say).toContain('Real NpcParam absorb')
+    expect(act.say).toContain('bleed soft')
+    expect(act.offer?.label).toBe('Bleed sheet')
+  })
+
+  it('gives different advice for a bleed-resistant boss', () => {
+    const malenia = askGideonRouter('help with malenia', character, {}, combat)
+    const agheel = askGideonRouter('help with agheel', character, {}, combat)
+    expect(agheel.say).toContain('bleed hard')
+    expect(agheel.say).not.toBe(malenia.say)
+    expect(agheel.offer?.label).not.toBe('Bleed sheet')
+  })
+
+  it('falls back to generic advice when combat data is not loaded', () => {
+    const act = askGideonRouter('help with malenia', character, {}, [])
+    expect(act.say).toContain('If this is a wall')
+  })
+})
+
+describe('100% handler reflects tracked completion', () => {
+  it('counts actual facts and surfaces a next actionable', () => {
+    const progressed: Character = {
+      ...character,
+      defeatedBosses: ['boss:margit'],
+      discoveredGraces: ['grace:first-step'],
+    }
+    const act = askGideonRouter('100%', progressed)
+    expect(act.say).toContain('Bosses 1/')
+    expect(act.say).toContain('Next actionable')
+    expect(act.say).toContain('Spine chapter')
+    expect(act.factId).toBeTruthy()
+  })
+
+  it('changes the response as facts are toggled', () => {
+    const empty = askGideonRouter('100%', character)
+    const progressed = askGideonRouter('100%', { ...character, defeatedBosses: ['boss:margit'] })
+    expect(progressed.say).not.toBe(empty.say)
+    expect(empty.say).toContain('Start with')
   })
 })
 

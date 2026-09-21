@@ -2,7 +2,7 @@ import { opBuilds } from '../knowledge/builds'
 import { planRoute, type EndingRoute } from '../knowledge/endings'
 import { medusaChapters } from '../knowledge/medusa'
 import { allLines, findLine, stillAvailable } from '../knowledge/storylines'
-import { matchMany } from '../knowledge/catalog'
+import { facts, matchMany } from '../knowledge/catalog'
 import { matchLoot } from '../knowledge/loot'
 import { fieldHunts } from '../knowledge/completion'
 import { findBossPin } from '../knowledge/bossPins'
@@ -11,7 +11,16 @@ import { findSellers } from '../knowledge/merchants'
 import { missables } from '../knowledge/missables'
 import { matchAllWarps } from './aliases'
 import { searchSync } from './search'
-import { nextMoves } from './links'
+import { labelOf, nextMoves } from './links'
+import { summarize } from './infer'
+import {
+  bossCombatFor,
+  cachedBossCombat,
+  damageTypeLabels,
+  damageTypes,
+  loadBossCombat,
+  type BossCombat,
+} from './enemy'
 import { factState } from '../state'
 import { callDeepSeekJson, hasDeepSeekKey } from './deepseek'
 import { buildGrounding, gideonMessages, validateGideonAct } from './gideonLlm'
@@ -76,12 +85,75 @@ function speakPlan(character: Character, route: EndingRoute): GideonAct {
   }
 }
 
+/** Qualitative read of a NpcParam status resistance: lower means easier to inflict. */
+function resistTag(value: number): string {
+  if (value >= 500) return 'immune'
+  if (value <= 154) return 'soft'
+  return 'hard'
+}
+
+/**
+ * Turn real NpcParam negation/resist values into one short line of advice plus a
+ * build-sheet action. Deliberately terse — Gideon offers a sheet, not a stat dump.
+ */
+function bossResistAdvice(boss: BossCombat): { line: string; sheet: string; offer: { label: string; prompt: string } } {
+  const weak = damageTypes
+    .filter((t) => boss.negation[t] < 0)
+    .sort((a, b) => boss.negation[a] - boss.negation[b])
+  const resist = damageTypes
+    .filter((t) => boss.negation[t] > 0)
+    .sort((a, b) => boss.negation[b] - boss.negation[a])
+
+  const bits: string[] = []
+  if (weak.length) bits.push(`weak to ${weak.map((t) => damageTypeLabels[t]).join('/')}`)
+  if (resist.length) {
+    bits.push(`resists ${resist.slice(0, 3).map((t) => `${damageTypeLabels[t]} ${boss.negation[t]}%`).join(', ')}`)
+  }
+  if (!bits.length) bits.push('even across damage types')
+  const bleed = boss.resist.bleed
+  bits.push(`bleed ${resistTag(bleed)} (${bleed})`)
+  if (boss.resist.scarletRot <= 154) bits.push('rots')
+
+  const weakest = damageTypes.reduce((a, t) => (boss.negation[t] < boss.negation[a] ? t : a), damageTypes[0])
+  const sheet = bleed <= 154
+    ? 'bleed'
+    : weakest === 'magic'
+      ? 'comet'
+      : weakest === 'holy' || weakest === 'fire'
+        ? 'faith'
+        : 'bonk'
+  const labels: Record<string, { label: string; prompt: string }> = {
+    bleed: { label: 'Bleed sheet', prompt: 'use the Rivers of Blood build' },
+    comet: { label: 'Comet sheet', prompt: 'use the Comet Azur glass build' },
+    faith: { label: 'Faith sheet', prompt: 'use the Blasphemous Blade build' },
+    bonk: { label: 'Bonk sheet', prompt: 'use the Heavy Knight bonk build' },
+  }
+  return { line: `${bits.join('; ')}.`, sheet, offer: labels[sheet] }
+}
+
+/** First catalog fact whose prerequisites are already met — the honest empty-run start. */
+function firstOpenFact(character: Character): string | undefined {
+  const have = new Set([
+    ...character.defeatedBosses,
+    ...character.discoveredGraces,
+    ...character.collectedItems,
+    ...character.completedQuestSteps,
+  ])
+  const f = facts.find((x) => x.kind !== 'region' && !have.has(x.id) && x.implies.every((i) => have.has(i)))
+  return f?.name
+}
+
 /**
  * Deterministic keyword router. This is the fallback and the fast path: it
  * answers lookups (a named ending, a warp, a build, still-available, "I'm
  * stuck") without a network round-trip.
  */
-export function askGideonRouter(question: string, character: Character, memory: GideonMemory = {}): GideonAct {
+export function askGideonRouter(
+  question: string,
+  character: Character,
+  memory: GideonMemory = {},
+  combat: BossCombat[] = cachedBossCombat(),
+): GideonAct {
   const q = question.toLowerCase().trim()
   if (!q) return { say: 'Name an ending, or ask what to do next.' }
 
@@ -192,6 +264,17 @@ export function askGideonRouter(question: string, character: Character, memory: 
     const hunt = fieldHunts.find((h) => q.includes(h.name.toLowerCase()) || h.aliases.some((a) => q.includes(a)))
     const named = matchMany(q)[0]
     const who = hunt?.name || named?.name || 'that foe'
+    const huntBossId = hunt ? `boss:${hunt.id.slice(hunt.id.indexOf(':') + 1)}` : undefined
+    const boss = bossCombatFor(combat, named?.id) || bossCombatFor(combat, huntBossId)
+    if (boss) {
+      const advice = bossResistAdvice(boss)
+      return {
+        say: `${who}. Level ${character.level}. Real NpcParam absorb: ${advice.line} Want a ${advice.sheet} sheet instead?`,
+        module: 'build',
+        factId: named?.id || hunt?.id,
+        offer: advice.offer,
+      }
+    }
     return {
       say: `${who}. Level ${character.level}. If this is a wall: summon, swap to strike/slash/pierce you have not tried, or leave and come back two shardbearers later. Want a bleed or comet sheet instead?`,
       module: 'build',
@@ -200,13 +283,29 @@ export function askGideonRouter(question: string, character: Character, memory: 
     }
   }
 
-  if (/\b(100%|completionist|everything in|full clear|medusa)\b/.test(q)) {
-    const next = medusaChapters.find(() => !q.includes('skip')) || medusaChapters[0]
+  if (/\b100\s*%|\b(completionist|everything in|full clear|medusa)\b/.test(q)) {
+    const done = summarize(character)
+    const pct = done.catalog ? Math.round((done.known / done.catalog) * 100) : 0
+    // medusaChapters stays the structural backbone; its ordering maps the run's
+    // completion fraction onto a playthrough chapter rather than narrating chapter one.
+    const chapterIndex = Math.min(
+      medusaChapters.length - 1,
+      Math.floor((pct / 100) * medusaChapters.length),
+    )
+    const chapter = medusaChapters[chapterIndex]
+    const moves = nextMoves(character, 3)
+    const top = moves[0]
+    const nextLine = top
+      ? `Next actionable: ${moves.map((m) => labelOf(m.id)).join(', ')}.`
+      : `Nothing seeded is one step away. Start with ${firstOpenFact(character) || chapter.goal}.`
     return {
-      say: `100% spine is Medusa’s chapters, goals only. Now: ${next.act} — ${next.name}. ${next.goal} Say the chapter name when that slice is done.`,
+      say: `100% — ${done.known}/${done.catalog} catalog facts (${pct}%). Bosses ${done.bosses}/${done.totalBosses} · graces ${done.graces}/${done.totalGraces} · items ${done.items}/${done.totalItems} · quests ${done.quests}/${done.totalQuests}. ${nextLine} Spine chapter ${chapterIndex + 1}/${medusaChapters.length}: ${chapter.name}.`,
       module: 'quests',
       goal: 'line:blitz-lord',
-      offer: { label: next.name, prompt: `what next after ${next.name}` },
+      factId: top?.id,
+      offer: top
+        ? { label: labelOf(top.id), prompt: `where is ${labelOf(top.id)}` }
+        : { label: chapter.name, prompt: `what next after ${chapter.name}` },
     }
   }
 
@@ -315,7 +414,7 @@ export function isFastLookup(question: string, memory: GideonMemory = {}): boole
   if (affirm && memory.goalId) return true
 
   if (/^(what is still available|what'?s still available|still available|what next|what now|what do i do|where to|continue|i am stuck|i'?m stuck|stuck|help with this wall)\b/.test(q)) return true
-  if (/\b(100%|completionist|everything in|full clear|medusa)\b/.test(q)) return true
+  if (/\b100\s*%|\b(completionist|everything in|full clear|medusa)\b/.test(q)) return true
   if (/\b(blitz|speedrun|rush the game|fast ending)\b/.test(q)) return true
 
   // A conjunction or conditional means the question crosses concepts: reason.
@@ -347,7 +446,12 @@ export async function askGideon(
   character: Character,
   memory: GideonMemory = {},
 ): Promise<GideonAct> {
-  const router = askGideonRouter(question, character, memory)
+  // The "stuck" handler needs the real NpcParam table, which is loaded async by
+  // the UI. Warm it here so a first-ask still gets specific resists, and let the
+  // router fall back to generic advice if the fetch fails.
+  const wantsCombat = /\b(stuck|wipe|cannot|can't beat|help with)\b/.test(question.toLowerCase())
+  const combat = wantsCombat ? await loadBossCombat().catch(() => []) : undefined
+  const router = askGideonRouter(question, character, memory, combat)
   if (isFastLookup(question, memory)) return router
 
   if (!hasDeepSeekKey()) {

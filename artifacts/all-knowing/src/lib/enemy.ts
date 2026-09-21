@@ -90,6 +90,15 @@ export function bossCombatFor(bosses: BossCombat[], factId: string | undefined):
   return bosses.find((b) => b.factId === factId)
 }
 
+/**
+ * Synchronous view of the loaded combat table. The router is deterministic and
+ * synchronous, so it reads the cache the UI's `useBossCombat` (or `askGideon`)
+ * already warmed; an empty array means "not loaded yet", never "no data".
+ */
+export function cachedBossCombat(): BossCombat[] {
+  return cache ?? []
+}
+
 /** The damage type the boss is weakest to (highest negation). */
 export function bestDamageType(boss: BossCombat): DamageType {
   return damageTypes.reduce((best, type) => (boss.negation[type] > boss.negation[best] ? type : best), damageTypes[0])
