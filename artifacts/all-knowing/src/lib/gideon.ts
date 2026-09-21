@@ -45,6 +45,15 @@ function speakPlan(character: Character, route: EndingRoute): GideonAct {
     }
   }
   if (!plan.current) {
+    if (plan.foreclosed.length || plan.blocked.length) {
+      const fore = plan.foreclosed.map((s) => s.do).join('; ')
+      const gate = plan.blocked.map((s) => s.do).join('; ')
+      return {
+        say: `${route.name} has no reachable beat left on this character.${fore ? ` Foreclosed: ${fore}.` : ''}${gate ? ` Blocked until earlier beats are done: ${gate}.` : ''}`,
+        module: 'quests',
+        goal: route.id,
+      }
+    }
     return {
       say: `${route.name} — every seeded beat is ticked. Go to the Elden Beast and pick the matching sign or rune.`,
       module: 'map',
@@ -78,6 +87,9 @@ export function askGideon(question: string, character: Character, memory: Gideon
       const plan = planRoute(character, route)
       if (plan.locked) return { say: plan.locked, goal: route.id }
       if (!plan.current) {
+        if (plan.foreclosed.length || plan.blocked.length) {
+          return { say: `${route.name} has no reachable beat left on this character.`, module: 'quests', goal: route.id }
+        }
         return { say: 'Nothing left on the seeded path.', module: 'map', factId: 'boss:radagon', goal: route.id, navigateNow: true }
       }
       const list = plan.todo.slice(0, 4).map((s, i) => `${i + 1}. ${s.do} — ${s.detail}`).join('\n')
