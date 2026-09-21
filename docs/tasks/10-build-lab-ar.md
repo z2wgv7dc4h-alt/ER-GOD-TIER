@@ -9,6 +9,14 @@ top priority after the alias table (Task 06): *"AR is a sketch. Build lab number
 already ships vanilla 1.17 regulation JS. That is the Tarnished Pack patch line. Highest-leverage
 Build lab drop-in."*
 
+**Clone into `./.scratch/` inside this repo (already gitignored), never `%TEMP%` or any path
+outside the project.** A prior run of this task failed trying to clone into
+`%TEMP%\opencode\...` — the permission system's external-directory allowlist only matches
+Windows-style backslash paths, and a Unix-style (forward-slash, git-bash) path to that same real
+location doesn't match, so the request silently auto-rejects in a non-interactive run. Staying
+inside the repo avoids that permission check entirely: e.g.
+`git clone --depth 1 https://github.com/ThomasJClark/elden-ring-weapon-calculator.git .scratch/clark-calc`.
+
 `ThomasJClark/elden-ring-weapon-calculator` (MIT license, confirmed by earlier research at
 `docs/../../PROJECT_BRIEF.md` if you want the full citation) is a React+TS+Vite app — same stack
 family as this project — with its own attack-rating calculation logic and versioned regulation

@@ -12,6 +12,11 @@ Repo root is `artifacts/all-knowing/`. Read `HANDOFF-CLAUDE.md`, `ARCHITECTURE.m
 
 That's the spec. This task is filling in `ingestSave()` for real.
 
+**Clone into `./.scratch/` inside this repo first (gitignored), never `%TEMP%` or any path
+outside the project** — a headless run cloning into system temp will silently auto-reject (the
+permission allowlist only matches Windows-style backslash paths, not the forward-slash paths a
+git-bash shell produces for the same location).
+
 ## Objective
 
 Replace the stub in `src/lib/save.ts` with a real, local, read-only `.sl2` parser adapted from

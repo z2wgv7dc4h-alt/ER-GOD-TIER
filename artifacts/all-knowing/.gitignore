@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Scratch space for cloning/extracting external sources during task work.
+# Keep this INSIDE the repo, not system temp - see docs/tasks/*.md for why.
+.scratch/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -11,6 +11,14 @@ and JSON structure samples for everything below. This task only covers the repor
 "quick win" items; **do not attempt the map-tiling work** (separate task, `09-map-tiling.md`, a
 bigger architectural lift) or touch Pack 9974 (binary mod, correctly rejected — no action).
 
+**Extraction/scratch space: use `./.scratch/` inside this repo (already gitignored), never
+`%TEMP%` or any path outside the project.** A prior run of this task failed because it tried to
+`mkdir`/extract into `%TEMP%\opencode\...` and got auto-rejected — the permission system's
+external-directory allowlist is pattern-matched against Windows-style backslash paths, and a
+Unix-style (forward-slash, git-bash) path to the same real location doesn't match it, so the
+request silently auto-rejects in a non-interactive run. Staying inside the repo avoids the
+external-directory permission check entirely.
+
 Source zips (re-extract from these, don't rely on any temp extraction from the research pass —
 that may not still exist):
 - `C:\Users\RIGGUSPIG\Downloads\Elden Medusa(En) 10286 1.1 2026-07-06T16-53Z UAfVnovwk.zip`

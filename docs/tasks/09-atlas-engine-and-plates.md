@@ -27,6 +27,12 @@ git clone https://github.com/egormagurin/EldenRingMap.git /tmp/ERMap
 # re-apply: CORS + OPTIONS + ?embed=1  (search for "All-Knowing")
 ```
 
+**Clone into `./.scratch/` inside this repo first (gitignored), never `%TEMP%` or any path
+outside the project** — a headless run cloning into system temp will silently auto-reject (the
+permission allowlist only matches Windows-style backslash paths, not the forward-slash paths a
+git-bash shell produces for the same location). Clone to `.scratch/ERMap` and copy from there
+into `vendor/elden-ring-map/` once you're ready.
+
 Clone it in, and **search the upstream repo's server code for existing "All-Knowing" markers/
 comments** — the doc implies a previous pass already made specific patches (CORS headers, OPTIONS
 handling, the `?embed=1` embed mode) to *this* upstream repo, not a generic one, meaning either
