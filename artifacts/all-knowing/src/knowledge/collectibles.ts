@@ -5,6 +5,12 @@ export type Collectible = {
   region: string
   note: string
   campaign: 'base' | 'sote'
+  /**
+   * Second reference frame: raw EldenRingMap V1.2 map-space pixel coords (MIT, CreateDDy 2026).
+   * Do not mix with the seed-atlas percent frame used by `graces.ts`.
+   */
+  x?: number
+  y?: number
 }
 
 export const scadutreeFragments: Collectible[] = [
@@ -39,6 +45,20 @@ export const scadutreeFragments: Collectible[] = [
   { id: 'frag:belurat-statue', name: 'Scadutree Fragment', region: 'Enir-Ilim', note: 'Belurat statue base', campaign: 'sote' },
   { id: 'frag:altar', name: 'Scadutree Fragment', region: 'Enir-Ilim', note: 'Altar room', campaign: 'sote' },
   { id: 'frag:cleansing', name: 'Scadutree Fragment', region: 'Enir-Ilim', note: 'Cleansing Chamber Anteroom', campaign: 'sote' },
+  // EldenRingMap V1.2 (MIT, CreateDDy 2026) — additional map pins not covered by the authored set above.
+  { id: 'frag:map-scadutree_05', name: 'Scadutree Fragment', region: 'Gravesite Plain', note: 'EldenRingMap V1.2 map pin', campaign: 'sote', x: 2252, y: 3723 },
+  { id: 'frag:map-seed_29', name: 'Scadutree Fragment', region: 'Gravesite Plain', note: 'EldenRingMap V1.2 map pin', campaign: 'sote', x: 1835, y: 4498 },
+  { id: 'frag:map-seed_23', name: 'Scadutree Fragment', region: 'Scadu Altus', note: 'EldenRingMap V1.2 map pin', campaign: 'sote', x: 2633, y: 3026 },
+  { id: 'frag:map-seed_27', name: 'Scadutree Fragment', region: 'Scadu Altus', note: 'EldenRingMap V1.2 map pin', campaign: 'sote', x: 2766, y: 3717 },
+  { id: 'frag:map-seed_11', name: 'Scadutree Fragment', region: 'Rauh Base', note: 'EldenRingMap V1.2 map pin', campaign: 'sote', x: 2211, y: 2960 },
+  { id: 'frag:map-seed_33', name: 'Scadutree Fragment', region: 'Rauh Base', note: 'EldenRingMap V1.2 map pin', campaign: 'sote', x: 1576, y: 3100 },
+  { id: 'frag:map-seed_19', name: 'Scadutree Fragment', region: 'Shadow Keep', note: 'EldenRingMap V1.2 map pin', campaign: 'sote', x: 2434, y: 2502 },
+  { id: 'frag:map-seed_20', name: 'Scadutree Fragment', region: 'Shadow Keep', note: 'EldenRingMap V1.2 map pin', campaign: 'sote', x: 2391, y: 2437 },
+  { id: 'frag:map-seed_21', name: 'Scadutree Fragment', region: 'Shadow Keep', note: 'EldenRingMap V1.2 map pin', campaign: 'sote', x: 2560, y: 2440 },
+  { id: 'frag:map-seed_40', name: 'Scadutree Fragment', region: 'Ancient Ruins of Rauh', note: 'Reward for defeating the Golden Hippopotamus', campaign: 'sote', x: 1632, y: 2623 },
+  { id: 'frag:map-seed_41', name: 'Scadutree Fragment', region: 'Ancient Ruins of Rauh', note: 'Reward for slaying the pot-headed undead', campaign: 'sote', x: 1797, y: 2770 },
+  { id: 'frag:map-seed_34', name: 'Scadutree Fragment', region: 'Ancient Ruins of Rauh', note: 'EldenRingMap V1.2 map pin', campaign: 'sote', x: 1619, y: 2707 },
+  { id: 'frag:map-seed_35', name: 'Scadutree Fragment', region: 'Ancient Ruins of Rauh', note: 'EldenRingMap V1.2 map pin', campaign: 'sote', x: 1287, y: 3056 },
 ]
 
 export const mapFragments: Collectible[] = [
@@ -78,4 +98,40 @@ export const flaskUpgrades: Collectible[] = [
   { id: 'seed:redmane', name: 'Golden Seed', region: 'Caelid', note: 'Before Redmane plaza', campaign: 'base' },
   { id: 'seed:altus', name: 'Golden Seed', region: 'Altus', note: 'Windmill Village approach', campaign: 'base' },
   { id: 'seed:leyndell', name: 'Golden Seed', region: 'Leyndell', note: 'Avenue saplings (several)', campaign: 'base' },
+  // EldenRingMap V1.2 (MIT, CreateDDy 2026) — additional map pins not covered by the authored set above.
+  { id: 'seed:map-seed_05', name: 'Golden Seed', region: 'Stormhill', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 3501, y: 6852 },
+  { id: 'seed:map-seed_04', name: 'Golden Seed', region: 'Limgrave', note: 'Obtained by defeating Kenneth Haight.', campaign: 'base', x: 4392, y: 6813 },
+  { id: 'seed:map-seed_03', name: 'Golden Seed', region: 'Limgrave', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 4656, y: 7326 },
+  { id: 'seed:map-seed_06', name: 'Golden Seed', region: 'Stormveil', note: 'Dropped by the Ulcerated Tree Spirit in the depths of the castle.', campaign: 'base', x: 3076, y: 6661 },
+  { id: 'seed:map-seed_07', name: 'Golden Seed', region: 'Stormveil', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 3182, y: 6584 },
+  { id: 'seed:map-seed_08', name: 'Golden Seed', region: 'Weeping Peninsula', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 4163, y: 8344 },
+  { id: 'seed:map-seed_11', name: 'Golden Seed', region: 'Liurnia', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 1972, y: 3719 },
+  { id: 'seed:map-seed_12', name: 'Golden Seed', region: 'Liurnia', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 1923, y: 4617 },
+  { id: 'seed:map-seed_10', name: 'Golden Seed', region: 'Ruin-Strewn Precipice', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 2509, y: 3651 },
+  { id: 'seed:map-seed_15', name: 'Golden Seed', region: 'Caelid', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 5634, y: 6523 },
+  { id: 'seed:map-seed_17', name: 'Golden Seed', region: 'Dragonbarrow', note: 'War-Dead Catacombs. Reward for defeating the Putrid Tree Spirit.', campaign: 'base', x: 6336, y: 6102 },
+  { id: 'seed:map-seed_16', name: 'Golden Seed', region: 'Dragonbarrow', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 6082, y: 5586 },
+  { id: 'seed:map-seed_19', name: 'Golden Seed', region: 'Altus', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 2705, y: 3367 },
+  { id: 'seed:map-seed_20', name: 'Golden Seed', region: 'Altus', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 3328, y: 2784 },
+  { id: 'seed:map-seed_21', name: 'Golden Seed', region: 'Altus', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 3675, y: 2800 },
+  { id: 'seed:map-seed_22', name: 'Golden Seed', region: 'Mt. Gelmir', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 2463, y: 2951 },
+  { id: 'seed:map-seed_23', name: 'Golden Seed', region: 'Mt. Gelmir', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 2049, y: 2641 },
+  { id: 'seed:map-seed_26', name: 'Golden Seed', region: 'Capital Outskirts', note: 'Dropped by the Ulcerated Tree Spirit', campaign: 'base', x: 3648, y: 3625 },
+  { id: 'seed:map-seed_24', name: 'Golden Seed', region: 'Capital Outskirts', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 3838, y: 3232 },
+  { id: 'seed:map-seed_25', name: 'Golden Seed', region: 'Capital Outskirts', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 3669, y: 3488 },
+  { id: 'seed:map-seed_28', name: 'Golden Seed', region: 'Leyndell', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 4278, y: 3436 },
+  { id: 'seed:map-seed_29', name: 'Golden Seed', region: 'Forbidden Lands', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 5414, y: 3299 },
+  { id: 'seed:map-seed_30', name: 'Golden Seed', region: 'Mountaintops', note: 'Mountaintops Catacombs. Reward for defeating the Ulcerated Tree Spirit.', campaign: 'base', x: 5789, y: 2814 },
+  { id: 'seed:map-seed_31', name: 'Golden Seed', region: 'Mountaintops', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 6310, y: 2058 },
+  { id: 'seed:map-seed_32', name: 'Golden Seed', region: 'Mountaintops', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 6329, y: 2822 },
+  { id: 'seed:map-seed_33', name: 'Golden Seed', region: 'Consecrated Snowfield', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 5501, y: 2512 },
+  { id: 'seed:map-seed_34', name: 'Golden Seed', region: 'Consecrated Snowfield', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 5154, y: 1969 },
+  { id: 'seed:map-seed_35', name: 'Golden Seed', region: 'Elphael', note: 'Reward for defeating the Putrid Tree Spirit in the Scarlet Rot swamp.', campaign: 'base', x: 5641, y: 894 },
+  { id: 'seed:map-seed_36', name: 'Golden Seed', region: 'Farum Azula', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 8467, y: 4416 },
+  { id: 'seed:map-seed_37', name: 'Golden Seed', region: 'Farum Azula', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 8644, y: 4323 },
+  { id: 'seed:map-seed_38', name: 'Golden Seed', region: 'Siofra River', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 4965, y: 6418 },
+  { id: 'seed:map-seed_39', name: 'Golden Seed', region: 'Mohgwyn Palace', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 5579, y: 6852 },
+  { id: 'seed:map-seed_40', name: 'Golden Seed', region: 'Mohgwyn Palace', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 5457, y: 6862 },
+  { id: 'seed:map-seed_41', name: 'Golden Seed', region: 'Ainsel River', note: 'EldenRingMap V1.2 map pin', campaign: 'base', x: 1888, y: 4292 },
+  { id: 'seed:map-seed_42', name: 'Golden Seed', region: 'Lake of Rot', note: 'Reward for defeating the Putrid Tree Spirit.', campaign: 'base', x: 1700, y: 5005 },
 ]

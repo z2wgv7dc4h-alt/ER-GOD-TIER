@@ -180,5 +180,47 @@ export const medusaChapters = [
     "actId": "act9",
     "name": "Belurat, Tower Settlement",
     "goal": "Clear Belurat Tower Settlement: clear all floors and rooftops, collect key items (Fragments, Ashes, keys), survive Quelign's invasion, defeat the Ulcerated Tree Spirit and the final boss — the Divine Beast Dancing Lion. Complete NPC quests."
+  },
+  {
+    "id": "act9_chapter3",
+    "act": "Realm of Shadow (Shadow of the Erdtree)",
+    "actId": "act9",
+    "name": "Castle Ensis",
+    "goal": "Fight through Castle Ensis, sweep it for its notable gear, and topple Rellana to open the road into Scadu Altus."
+  },
+  {
+    "id": "act9_chapter4",
+    "act": "Realm of Shadow (Shadow of the Erdtree)",
+    "actId": "act9",
+    "name": "Scadu Altus",
+    "goal": "Work across the Scadu Altus plateau: claim the region map, meet the DLC's central cast, clear its forts and side dungeons, and stock up on Scadutree Fragments before the Shadow Keep."
+  },
+  {
+    "id": "act9_chapter5",
+    "act": "Realm of Shadow (Shadow of the Erdtree)",
+    "actId": "act9",
+    "name": "Shadow Keep",
+    "goal": "Clear the Shadow Keep wing by wing, gather fragments and advance the NPCs stationed there, then defeat Messmer the Impaler and the keep's optional bosses."
+  },
+  {
+    "id": "act9_chapter6",
+    "act": "Realm of Shadow (Shadow of the Erdtree)",
+    "actId": "act9",
+    "name": "Ancient Ruins of Rauh",
+    "goal": "Map and loot the Ancient Ruins of Rauh, clear its catacombs and forge, and beat Romina, Saint of the Bud to unlock the way to Enir-Ilim."
+  },
+  {
+    "id": "act9_chapter7",
+    "act": "Realm of Shadow (Shadow of the Erdtree)",
+    "actId": "act9",
+    "name": "Optional Zones",
+    "goal": "Sweep the DLC's optional corners — Cerulean Coast, Abyssal Woods, Jagged Peak, Scaduview, Charo's Hidden Grave and the rest — for unique loot, fragments, questlines and optional bosses."
+  },
+  {
+    "id": "act9_chapter8",
+    "act": "Realm of Shadow (Shadow of the Erdtree)",
+    "actId": "act9",
+    "name": "Enir-Ilim",
+    "goal": "Ascend Enir-Ilim, gather the last fragments and ashes, claim its legendary rewards, and cut down Leda's allies and the Promised Consort Radahn to close out the DLC."
   }
 ] as const
