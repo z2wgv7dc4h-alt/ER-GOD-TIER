@@ -6,6 +6,7 @@ import { isCollected, useWorkspace } from './state'
 import { attackRatingForSlot, loadWeapons } from './lib/ar'
 import type { AttackRating, Weapon } from './lib/ar'
 import { REGULATION_STAMP } from './lib/regulation'
+import { Related } from './Related'
 import {
   bestDamageType,
   combatTargetFor,
@@ -279,6 +280,7 @@ export function BuildWorkspace() {
               </ul>
             )}
             <p className="note" style={{ marginTop: 8 }}>Resistances: {resistSummary(target)}</p>
+            <Related id={target.factId} />
           </>
         )}
         <div className="meters" style={{ marginTop: 18 }}>

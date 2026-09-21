@@ -1,18 +1,9 @@
 import { labelOf, moduleFor, nextMoves, statusOf, thread, whyKnown } from './lib/links'
 import { searchSync } from './lib/search'
+import { Related } from './Related'
 import { useWorkspace } from './state'
 
-function Chip({ id, onOpen }: { id: string; onOpen: (id: string) => void }) {
-  const { character } = useWorkspace()
-  const known = statusOf(character, id) === 'known'
-  return (
-    <button type="button" className={known ? 'chip on' : 'chip'} onClick={() => onOpen(id)}>
-      {labelOf(id)}
-    </button>
-  )
-}
-
-export function Thread({ id, onOpen }: { id: string; onOpen: (id: string) => void }) {
+export function Thread({ id }: { id: string }) {
   const { character, setSelectedMarkerId, setModule } = useWorkspace()
   const t = thread(id)
   if (!t.node) {
@@ -27,6 +18,7 @@ export function Thread({ id, onOpen }: { id: string; onOpen: (id: string) => voi
             Open {hit.source}
           </button>
         )}
+        <Related id={id} />
       </div>
     )
   }
@@ -40,30 +32,8 @@ export function Thread({ id, onOpen }: { id: string; onOpen: (id: string) => voi
       <p className="note">{known ? 'On this character.' : 'Not evidenced on this character yet.'}</p>
       {t.node.note && <p className="note">{t.node.note}</p>}
 
-      {t.requires.length > 0 && (
-        <div className="thread-block">
-          <div className="kicker">Requires</div>
-          <div className="opts">{t.requires.map((f) => <Chip key={f.id} id={f.id} onOpen={onOpen} />)}</div>
-        </div>
-      )}
-      {t.drops.length > 0 && (
-        <div className="thread-block">
-          <div className="kicker">Usually grants</div>
-          <div className="opts">{t.drops.map((f) => <Chip key={f.id} id={f.id} onOpen={onOpen} />)}</div>
-        </div>
-      )}
-      {t.usedIn.length > 0 && (
-        <div className="thread-block">
-          <div className="kicker">Used in</div>
-          <div className="opts">{t.usedIn.map((f) => <Chip key={f.id} id={f.id} onOpen={onOpen} />)}</div>
-        </div>
-      )}
-      {t.grantedBy.length > 0 && (
-        <div className="thread-block">
-          <div className="kicker">Proven by</div>
-          <div className="opts">{t.grantedBy.map((f) => <Chip key={f.id} id={f.id} onOpen={onOpen} />)}</div>
-        </div>
-      )}
+      <Related id={id} />
+
       <div className="opts" style={{ marginTop: 10 }}>
         <button type="button" className="ghost gold" onClick={() => {
           setSelectedMarkerId(id)

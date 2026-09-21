@@ -291,7 +291,7 @@ export function ReckonWorkspace() {
 
         {selectedMarkerId && (
           <div style={{ marginTop: 18 }}>
-            <Thread id={selectedMarkerId} onOpen={setSelectedMarkerId} />
+            <Thread id={selectedMarkerId} />
           </div>
         )}
 

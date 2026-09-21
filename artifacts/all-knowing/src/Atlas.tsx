@@ -312,7 +312,7 @@ export function AtlasWorkspace() {
           <button type="button" className={selectedState === 'false' ? 'chip on' : 'chip'} onClick={() => mark('false')}>Not there</button>
         </div>
 
-        {selectedId && <Thread id={selectedId} onOpen={w.setSelectedMarkerId} />}
+        {selectedId && <Thread id={selectedId} />}
 
         <ul className="list">
           {(engineLive ? engineList.slice(0, 80) : shown).map((m) => {
