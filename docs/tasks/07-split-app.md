@@ -2,17 +2,25 @@
 
 ## Context
 
-Repo root is `artifacts/all-knowing/`. Read `HANDOFF-CLAUDE.md` and `ARCHITECTURE.md` first.
-Run this task **after** Task 06 (alias table / tests / CI / honest empty states) has been run
-and reviewed — both tasks touch shared code paths and running them out of order risks conflicts.
+**Updated 2026-09-22**: this task was queued right after Task 06 but never actually run — tasks
+08 through 20 all landed in the meantime, several of them (10, 17, 19) piling more into
+`BuildWorkspace` specifically. Run now, based on current `master`, not the original Task 06-era
+state. If you need to write any scratch file, save it to `./.scratch/` inside this repo (already
+gitignored), never `/tmp`/`%TEMP%` — see the standing rule in `docs/tasks/00-README.md`.
 
-`src/App.tsx` (771 lines) is called out in `HANDOFF-CLAUDE.md` as "a god file — split rooms when
-you touch UI." It currently contains the shell (rail/stage/guide layout, `WorldRibbon`,
-`CharacterCard`, and more) plus inline definitions for at least `MapWorkspace`, `BuildWorkspace`,
-`QuestWorkspace`, `CodexWorkspace` (referenced from a room switch — confirm the full list by
-reading the file). Separate top-level room components already exist as their own files
-(`Atlas.tsx`, `Reckon.tsx`, `Gideon.tsx`, `FirstSit.tsx`, `Thread.tsx`, `QoL.tsx`) — follow that
-existing convention, don't invent a new file-organization scheme.
+Repo root is `artifacts/all-knowing/`. Read `HANDOFF-CLAUDE.md` and `ARCHITECTURE.md` first.
+
+`src/App.tsx` is now 776 lines. `MapWorkspace` (the dead-code duplicate this brief originally
+also targeted) is already gone — Task 06 removed it, superseded by `Atlas.tsx`. What's left to
+extract, confirmed by reading the file's current top-level functions: `BuildWorkspace` (lines
+~296–510, the largest — Task 10's AR calculator + Task 17's boss-matchup panel + Task 19's
+detour wiring all live here), `QuestWorkspace` (~510–577), `CodexWorkspace` (~577–end, includes
+Task 08/16's Scadutree/hunts sections and Task 15's cosmetic NPC display cards). Shell-level
+pieces that should probably stay in `App.tsx` (or a small shared shell file, your call):
+`EngineBridge`, `AppShell`, `WorldRibbon`, `CharacterCard`, `SaveDrop`, and the `estimateDefense`
+helper. Separate top-level room components already exist as their own files (`Atlas.tsx`,
+`Reckon.tsx`, `Gideon.tsx`, `FirstSit.tsx`, `Thread.tsx`, `QoL.tsx`) — follow that existing
+convention, don't invent a new file-organization scheme.
 
 ## Objective
 
