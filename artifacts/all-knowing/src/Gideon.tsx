@@ -29,8 +29,8 @@ export function Gideon() {
     w.setCharacter({ ...w.character, answers: { ...w.character.answers, gideonGoal: id } })
   }
 
-  function run(text: string) {
-    const act = askGideon(text, w.character, memory)
+  async function run(text: string) {
+    const act = await askGideon(text, w.character, memory)
     const nextMem: GideonMemory = {
       goalId: act.goal ?? memory.goalId,
       lastFact: act.factId ?? memory.lastFact,
@@ -63,7 +63,7 @@ export function Gideon() {
       setQ('')
       return
     }
-    run(text)
+    void run(text)
     setQ('')
   }
 
@@ -77,7 +77,7 @@ export function Gideon() {
   function doneNow() {
     if (!plan?.current?.factId) return
     w.setCharacter(applyFacts(w.character, [plan.current.factId], 'answer', 'I’m done'))
-    run('what next')
+    void run('what next')
   }
 
   return (
