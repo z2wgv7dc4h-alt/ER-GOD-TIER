@@ -1,9 +1,11 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
+import { VitePWA } from 'vite-plugin-pwa'
+import { pwaOptions } from './src/lib/pwa.ts'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), VitePWA(pwaOptions)],
   server: {
     host: true,
     // `.scratch/` is gitignored task scratch (clones, dumps, headless-browser profiles).

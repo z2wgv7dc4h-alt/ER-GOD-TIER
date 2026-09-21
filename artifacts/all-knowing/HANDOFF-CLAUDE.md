@@ -268,7 +268,12 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 30. ⬜ Multi-profile UX in the rail — backend (`vault.ts`) already had full profile support before
     any of this task work started; still not surfaced in the rail UI.
 31. ⬜ Packet diff surfacing — not addressed.
-32. ⬜ PWA service worker / offline cache of `sourced/` — not done.
+32. ✅ **PWA service worker / offline cache of `sourced/`** — Task 28: `vite-plugin-pwa`
+   (`generateSW`) emits `sw.js` + a real manifest. App shell + art + a small critical
+   `sourced/` JSON set are precached; the rest of `sourced/` is runtime-cached lazily
+   (JSON stale-while-revalidate, media cache-first). The live map engine is `NetworkOnly`
+   so Task 06's offline detection still sees real failures. Verified offline in headless
+   Edge against `vite preview` (12/12 checks). See `src/lib/pwa.ts` + `src/lib/pwa.test.ts`.
 33. ⬜ Command palette grouping by source — not addressed.
 34. ⬜ Watchlist / leftovers → coords layer binding — not addressed.
 35. ✅ Build lab AR: real numbers, not guessed. (Task 10 — ported `ThomasJClark/elden-ring-
