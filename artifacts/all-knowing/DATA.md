@@ -4,8 +4,14 @@ All under `public/sourced/` unless noted.
 
 ## Maps
 
-- `maps/m0-overworld.jpg` — Armory plate (not the 176 MB official mosaic)
-- `maps/m1-underground.jpg` — user / pack underground
+- `maps/m0-overworld.jpg` — Pack 960 full official mosaic, 4096x3880 (~4.4 MB)
+- `maps/m1-underground.jpg` — Pack 960 underground, 4096x3880 (~0.7 MB)
+- `maps/m-ashen.jpg`, `maps/m-shadow.jpg` — AI-generated stand-in art (no real
+  assembled source found); pins there stay on the stand-in's own frame
+- Static-plate pins (`open/coords.json`, `open/boss-pins.json`) use the engine
+  mosaic frame (`percent = px / 10496`). `open/world-lots.json` is **not**
+  plotted on the static plate — XYZ only, 10k rows, would clutter and add a
+  third projection. See `src/lib/coords.ts`.
 
 ## Attack rating (Build lab)
 

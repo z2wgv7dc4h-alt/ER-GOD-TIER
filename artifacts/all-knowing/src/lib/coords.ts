@@ -1,6 +1,20 @@
 import { useEffect, useState } from 'react'
 import type { MapMarker } from '../types'
 
+/**
+ * Static-plate pins.
+ *
+ * Two sources, both already projected into the plate's own frame:
+ *   - coords.json    — er-guide lat/lng pins (graces/items), on the Pack 960
+ *                      mosaic frame (percent = px / 10496).
+ *   - boss-pins.json — bosses, projected with the engine's world->pixel maths.
+ *
+ * `public/sourced/open/world-lots.json` (10k pickup XYZ rows) is deliberately
+ * NOT plotted on the static plate. It carries world XYZ only, not percent
+ * coords, so drawing it would need a third projection beside the two above —
+ * and 10k dots would bury the map. Lot-level detail is the live engine
+ * iframe's job. See ARCHITECTURE.md "Two map frames (do not mix)".
+ */
 export type CoordPin = {
   id: string
   name: string

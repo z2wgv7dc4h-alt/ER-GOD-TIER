@@ -130,6 +130,9 @@ export function AtlasWorkspace() {
   return (
     <div className="map-stage">
       <div className="atlas">
+        {/* Exactly one of these renders: the live engine canvas, or the static
+            plate. The engine's pins are drawn inside its own iframe, so the
+            two pin sets never share a view. */}
         {engineLive ? (
           <iframe title="Elden Ring live map" className="engine-frame" src={`${MAP_ENGINE_BASE}/?embed=1`} />
         ) : (
