@@ -51,6 +51,6 @@ export function packStatus() {
     ready: icons > 0,
     hint: icons
       ? `${icons} pack thumbs`
-      : 'Copy RubyRed into public/sourced/icons — until then chrome seals stand in.',
+      : 'Using built-in icons (no custom icon pack installed)',
   }
 }
