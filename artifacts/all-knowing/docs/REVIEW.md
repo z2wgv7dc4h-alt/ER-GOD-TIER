@@ -41,6 +41,9 @@ everything below; this table is kept as a quick summary.
 
 - Clark calculator already ships **vanilla 1.17** regulation JS. That is the Tarnished Pack patch line. Highest-leverage Build lab drop-in.
 - Fan API (`deliton/eldenring-api`) is convenient MIT JSON (weapons, bosses, items, images) but pre-SotE-complete and not param-accurate. Bootstrap Codex only.
+  - **Task 36 update:** the images half is now wired — 2,244 base-game thumbnails cached under
+    `public/sourced/images/` and rendered in the Codex via `fanImage()` (`src/lib/fanImage.ts`).
+    The pre-SotE caveat held exactly as predicted: base-game guide items resolve ~60%, DLC ~1.5%.
 - Compass `save-parser-ts` is the portable PC path when someone will not run the Python extract. EldenRingMap remains the map + flag authority on a gaming PC.
 - RubyRed icon Drive cannot be a runtime dependency (size, ToS, availability). Extract first.
 - Zullie NPC stats sheet is player-model NPCs, not `NpcParam` absorb. Label it that way in the lab or it will lie about Malenia.

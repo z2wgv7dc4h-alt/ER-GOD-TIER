@@ -446,6 +446,15 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   background: var(--bg-raised);
 }
 .card h3 { font-family: var(--font-display); margin: 6px 0; font-size: 16px; }
+.codex-thumb {
+  display: block;
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  margin: 0 0 8px;
+  border: 1px solid var(--line-soft);
+  background: #0d0b07;
+}
 
 .tally {
   display: flex;

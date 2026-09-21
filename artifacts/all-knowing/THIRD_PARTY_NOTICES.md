@@ -6,6 +6,27 @@ lists the source, license, what was taken, and what was changed, per the project
 
 ---
 
+## FanAPI / deliton/eldenring-api — item, weapon, boss and location images
+
+- **Source:** https://eldenring.fanapis.com — the hosted API and image CDN for
+  https://github.com/deliton/eldenring-api
+- **License:** the API's code and JSON are MIT. The image files are FromSoftware game art
+  rehosted by the FanAPI; they are cached here for a personal, offline, non-commercial project.
+- **Used by:** `public/sourced/images/`, `src/data/image-index.json`, `src/lib/fanImage.ts`, the
+  Codex room.
+- **What was taken:** 2,244 images (weapons, armors, talismans, sorceries, incantations, items,
+  ashes, spirits, ammos, shields, classes, creatures, npcs, bosses, locations). The checklist
+  dumps already in-repo carried the FanAPI `image` URL per row; the boss and location routes were
+  fetched live. Every image was downscaled to a 160 px WebP thumbnail (~15 MB total) by
+  `scripts/ingest-images.py`.
+- **What was changed:** downscaled to 160 px and re-encoded as WebP; filenames normalised to the
+  row id. No image content was otherwise altered.
+- **Coverage:** base game only. The FanAPI predates Shadow of the Erdtree, so SotE / Tarnished
+  Pack entries have no picture. A handful of base-game rows the FanAPI lacks are reported as
+  misses rather than substituted.
+
+---
+
 ## ThomasJClark/elden-ring-weapon-calculator
 
 - **Source:** https://github.com/ThomasJClark/elden-ring-weapon-calculator
