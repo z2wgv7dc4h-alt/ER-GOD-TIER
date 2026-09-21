@@ -1,4 +1,5 @@
 import { opBuilds } from '../knowledge/builds'
+import { pvpBuilds } from '../knowledge/pvp'
 import { byId, matchMany, type Fact } from '../knowledge/catalog'
 import { planRoute } from '../knowledge/endings'
 import { allLines, findLine, stillAvailable } from '../knowledge/storylines'
@@ -29,7 +30,8 @@ export type Grounding = {
  */
 export function buildGrounding(question: string, character: Character, memory: GideonMemory = {}): Grounding {
   const factIds = new Set<string>()
-  const buildIds = new Set(opBuilds.map((b) => b.id))
+  const allBuilds = [...opBuilds, ...pvpBuilds]
+  const buildIds = new Set(allBuilds.map((b) => b.id))
   const goalIds = new Set(allLines.map((l) => l.id))
 
   const survey = stillAvailable(character)
@@ -89,7 +91,7 @@ export function buildGrounding(question: string, character: Character, memory: G
     goalPlan,
     search: hits.map((h) => ({ id: h.id, name: h.name, detail: h.detail, module: h.module })),
     catalog: slice.map((f) => ({ id: f.id, name: f.name, kind: f.kind, region: f.region, note: f.note })),
-    builds: opBuilds.map((b) => ({ id: b.id, name: b.name, tag: b.tag })),
+    builds: allBuilds.map((b) => ({ id: b.id, name: b.name, tag: b.tag })),
     allowedModules: GIDEON_MODULES,
   }
 

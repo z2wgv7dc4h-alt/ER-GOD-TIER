@@ -12,6 +12,7 @@ import { matchGuide, useGuide } from './lib/guide'
 import { achievementProgress } from './lib/achievements'
 import { conditionalUnlocks, stockForVendor } from './knowledge/merchantConditions'
 import { flaskUpgrades, mapFragments, scadutreeFragments } from './knowledge/collectibles'
+import { techTips } from './knowledge/tech'
 import { npcDisplayCards } from './knowledge/npc-display'
 import { iconFor } from './lib/sourcePack'
 import { useWorkspace } from './state'
@@ -137,6 +138,26 @@ export function CodexWorkspace() {
           </div>
         </>
       )}
+      <h3 className="codex-head">Tips &amp; tech · {techTips.length}</h3>
+      <p className="note" style={{ padding: '0 20px' }}>
+        Real, structured tech — jump attacks, stance breaks, buff stacking, spirit ashes, items and
+        PvP counters. Numeric values are quoted only where a source states them. Sources per card
+        (Fextralife, patch 1.17). See docs/research/op-builds-pvp-tricks-sources.md.
+      </p>
+      <div className="codex-grid">
+        {techTips
+          .filter((e) => !q || `${e.name} ${e.category} ${e.what} ${e.tags.join(' ')}`.toLowerCase().includes(q))
+          .map((e) => (
+            <article className="card" key={e.id}>
+              <div className="kicker">{e.category}{e.patch ? ' · patch-sensitive' : ''}</div>
+              <h3>{e.name}</h3>
+              <p className="note">{e.what} {e.why}</p>
+              <p className="note">How: {e.how}</p>
+              {e.patch && <p className="note">{e.patch}</p>}
+              <p><a className="ext" href={e.source} target="_blank" rel="noreferrer">Source</a></p>
+            </article>
+          ))}
+      </div>
       <h3 className="codex-head">Scadutree / map fragments</h3>
       <div className="codex-grid">
         {[...scadutreeFragments, ...mapFragments, ...flaskUpgrades].filter((e) => !q || `${e.name} ${e.region} ${e.note}`.toLowerCase().includes(q)).slice(0, 10).map((e) => (

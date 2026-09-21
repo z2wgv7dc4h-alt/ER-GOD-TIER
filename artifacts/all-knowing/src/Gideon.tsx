@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { opBuilds } from './knowledge/builds'
 import { endings, nextCompletionId, planRoute } from './knowledge/endings'
+import { pvpBuilds } from './knowledge/pvp'
 import { allLines, blitz, storylines } from './knowledge/storylines'
 import { applyFacts } from './lib/infer'
 import { askGideon, type GideonMemory } from './lib/gideon'
@@ -43,7 +44,7 @@ export function Gideon() {
       w.setSelectedMarkerId(act.factId)
     }
     if (act.buildId) {
-      const b = opBuilds.find((x) => x.id === act.buildId)
+      const b = [...opBuilds, ...pvpBuilds].find((x) => x.id === act.buildId)
       if (b) w.setCharacter({ ...w.character, stats: b.stats, level: b.level, loadout: b.kit })
     }
     setOffer(act.offer ?? null)

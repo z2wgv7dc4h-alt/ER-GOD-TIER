@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { markers } from './data/seed'
 import { opBuilds } from './knowledge/builds'
+import { pvpBuilds, pvpMatchups } from './knowledge/pvp'
 import { isCollected, useWorkspace } from './state'
 import { attackRatingForSlot, loadWeapons } from './lib/ar'
 import type { AttackRating, Weapon } from './lib/ar'
@@ -36,6 +37,7 @@ export function BuildWorkspace() {
   const { targets: combatTargets, error: combatError } = useCombatTargets()
   const [targetId, setTargetId] = useState('')
   const [enemyQuery, setEnemyQuery] = useState('')
+  const [pvpId, setPvpId] = useState('')
 
   useEffect(() => {
     let cancelled = false
@@ -113,6 +115,44 @@ export function BuildWorkspace() {
         <p className="note" style={{ marginTop: 8 }}>
           Kits set stats and a shopping list. They do not invent AR. Locations are in the Codex and Gideon.
         </p>
+        <div className="kicker" style={{ marginTop: 18 }}>PvP kits · patch 1.17</div>
+        <p className="note">
+          PvP is its own game: poise, stance and invade-vs-host asymmetry matter more than raw damage,
+          and skills/status are scaled separately against players. Kits below are target spreads, not
+          extracted numbers — see docs/research/op-builds-pvp-tricks-sources.md.
+        </p>
+        <div className="opts">
+          {pvpBuilds.map((b) => (
+            <button
+              key={b.id}
+              type="button"
+              className="chip"
+              onClick={() => {
+                setCharacter({ ...character, stats: b.stats, level: b.level, loadout: b.kit })
+                setPvpId(b.id)
+              }}
+            >
+              {b.name}
+            </button>
+          ))}
+        </div>
+        {(() => {
+          const b = pvpBuilds.find((x) => x.id === pvpId)
+          return b ? (
+            <p className="note" style={{ marginTop: 8 }}>
+              <strong>{b.mode}</strong> · {b.bracket} — {b.why} Beats: {b.beats} Watch out for: {b.losesTo}
+            </p>
+          ) : null
+        })()}
+        <div className="kicker" style={{ marginTop: 18 }}>PvP matchups</div>
+        <ul className="list" style={{ marginTop: 8 }}>
+          {pvpMatchups.map((m) => (
+            <li key={m.id} style={{ cursor: 'default', display: 'block' }}>
+              <span>{m.threat}</span>
+              <p className="note" style={{ margin: '4px 0 0' }}>{m.tell} {m.counters[0]}</p>
+            </li>
+          ))}
+        </ul>
         <div className="gear">
           {character.loadout.length === 0 && <p className="note">Load a save, an OP kit, or the demo character.</p>}
           {character.loadout.map((slot) => (

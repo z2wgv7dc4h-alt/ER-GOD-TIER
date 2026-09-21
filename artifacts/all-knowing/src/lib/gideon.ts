@@ -1,4 +1,6 @@
 import { opBuilds, type OpBuild } from '../knowledge/builds'
+import { pvpBuilds, pvpMatchups } from '../knowledge/pvp'
+import { techTips } from '../knowledge/tech'
 import { planRoute, type EndingRoute } from '../knowledge/endings'
 import { medusaChapters } from '../knowledge/medusa'
 import { allLines, findLine, findNpcLine, stillAvailable } from '../knowledge/storylines'
@@ -47,6 +49,30 @@ export type GideonMemory = {
 function routeById(id: string) {
   return allLines.find((e) => e.id === id)
 }
+
+/**
+ * Keyword → build id for the deterministic build branch. First match wins, so
+ * more specific patterns come first. Covers the original six plus the Task 40
+ * additions; an unmatched build question falls back to `opBuilds[0]`.
+ */
+const BUILD_ROUTES: { re: RegExp; id: string }[] = [
+  { re: /\b(bleed|river|rob)\b/, id: 'build:rivers' },
+  { re: /\b(azur|comet)\b/, id: 'build:azur' },
+  { re: /\b(blasphem)/, id: 'build:blasphemous' },
+  { re: /\b(night comet)\b/, id: 'build:night-comet' },
+  { re: /\b(leont|matador)\b/, id: 'build:leontiel' },
+  { re: /\b(heavy|bonk)\b/, id: 'build:heavy-bonk' },
+  { re: /\b(strength|colossal|lion)/, id: 'build:greatsword-lions-claw' },
+  { re: /\b(dark moon|moonlight)\b/, id: 'build:dark-moon' },
+  { re: /\bmoonveil\b/, id: 'build:moonveil' },
+  { re: /\b(black ?flame|godslayer|incant)\b/, id: 'build:blackflame' },
+  { re: /\bfaith\b/, id: 'build:blackflame' },
+  { re: /\b(dragon|communion)\b/, id: 'build:dragon-communion' },
+  { re: /\b(gransax|lightning|sniper)\b/, id: 'build:bolt-gransax' },
+  { re: /\b(twinblade|status|frost)\b/, id: 'build:frost-bleed' },
+  { re: /\b(shield|poke|tank|greatshield)\b/, id: 'build:greatshield-poke' },
+  { re: /\b(int|intelligence|sorcer|mage)\b/, id: 'build:dark-moon' },
+]
 
 function speakPlan(character: Character, route: EndingRoute): GideonAct {
   const plan = planRoute(character, route)
@@ -328,6 +354,8 @@ export function askGideonRouter(
   const affirm = /^(y|yes|yeah|ok|okay|sure|do it|show( me)?|give (me )?(the )?(steps|instructions)|navigate|take me)\b/.test(q)
     || /\b(show (it|me) on the map|give instructions|take me there)\b/.test(q)
 
+  const allBuilds = [...opBuilds, ...pvpBuilds]
+
   if (affirm && memory.goalId) {
     const route = routeById(memory.goalId)
     if (route) {
@@ -442,15 +470,63 @@ export function askGideonRouter(
     }
   }
 
-  if (/\b(build|op|meta|bleed|sorcer|bonk|faith|arcane)\b/.test(q) || opBuilds.some((b) => q.includes(b.name.toLowerCase()))) {
+  // PvP is its own concern: poise, stance, invade-vs-host asymmetry. It must be
+  // tested before the generic build branch, or "how do I beat a bleed build in
+  // PvP" would just re-recommend Rivers of Blood.
+  if (/\b(pvp|invasion|invade|invader|duel|colosseum|badredman|gank|host of fingers)\b/.test(q)) {
+    const wantsMatchup = /\b(beat|counter|how do i|how to|against|vs|versus|deal with|stop|shut down|fight|turtle)\b/.test(q)
+    const matchup = pvpMatchups.find(
+      (m) => m.aliases.some((a) => q.includes(a)) || q.includes(m.threat.toLowerCase()),
+    )
+    if (matchup && wantsMatchup) {
+      const counters = matchup.counters.slice(0, 3).join(' ')
+      return {
+        say: `${matchup.threat}. ${matchup.tell} ${counters} ${matchup.note}`,
+        module: 'build',
+        offer: { label: 'PvP kits', prompt: 'what are good pvp builds' },
+      }
+    }
     const pick =
-      /\b(bleed|river|rob)\b/.test(q) ? opBuilds.find((b) => b.id === 'build:rivers')
-        : /\b(azur|comet)\b/.test(q) ? opBuilds.find((b) => b.id === 'build:azur')
-          : /\b(blasphem)\b/.test(q) ? opBuilds.find((b) => b.id === 'build:blasphemous')
-            : /\b(night comet)\b/.test(q) ? opBuilds.find((b) => b.id === 'build:night-comet')
-              : /\b(leont|matador|pack)\b/.test(q) ? opBuilds.find((b) => b.id === 'build:leontiel')
-                : /\b(bonk|strength|heavy)\b/.test(q) ? opBuilds.find((b) => b.id === 'build:heavy-bonk')
-                  : opBuilds[0]
+      (/\b(duel|colosseum)\b/.test(q) ? pvpBuilds.find((b) => b.mode === 'duel') : undefined)
+      || (/\binva/.test(q) ? pvpBuilds.find((b) => b.mode === 'invade') : undefined)
+      || pvpBuilds.find((b) => q.includes(b.name.toLowerCase()))
+      || pvpBuilds.find((b) => b.keywords.some((k) => q.includes(k)))
+      || pvpBuilds.find((b) => b.mode === 'both')
+      || pvpBuilds[0]
+    return {
+      say: `${pick.name} (${pick.mode}, ${pick.bracket}) — ${pick.why} Beats: ${pick.beats} Watch out for: ${pick.losesTo}`,
+      module: 'build',
+      buildId: pick.id,
+      offer: { label: 'Wear it', prompt: `use the ${pick.name} build` },
+    }
+  }
+
+  // Real tips / tech, kept distinct from builds. Specific keyword first, then a
+  // short list so "show me tips and tricks" is still a real, non-generic answer.
+  if (/\b(tips?|tricks?|tech|broken|jump attack|jumping attack|stance break|buff stack|spirit ash|combo|cheese)\b/.test(q)) {
+    // Prefer a named entry over a shared tag, or "is mimic tear a good spirit ash"
+    // would match the earlier Tiche row on its `spirit ash` tag.
+    const hit = techTips.find((t) => q.includes(t.name.toLowerCase()))
+      || techTips.find((t) => t.tags.some((tag) => q.includes(tag)))
+    if (hit) {
+      const patch = hit.patch ? ` (${hit.patch})` : ''
+      return {
+        say: `${hit.name} — ${hit.what} ${hit.why} How: ${hit.how}${patch}`,
+        module: 'codex',
+        offer: { label: 'More tech', prompt: 'show me tips and tricks' },
+      }
+    }
+    const top = techTips.slice(0, 4)
+    return {
+      say: `Strong tech worth knowing:\n${top.map((t) => `${t.name} — ${t.what}`).join('\n')} Ask about any one for the how.`,
+      module: 'codex',
+    }
+  }
+
+  if (/\b(build|op|meta|bleed|sorcer|bonk|faith|arcane)\b/.test(q) || allBuilds.some((b) => q.includes(b.name.toLowerCase()))) {
+    const byName = allBuilds.find((b) => q.includes(b.name.toLowerCase()))
+    const route = BUILD_ROUTES.find((r) => r.re.test(q))
+    const pick = byName || (route ? allBuilds.find((b) => b.id === route.id) : undefined) || opBuilds[0]
     if (pick) {
       return {
         say: `${pick.name} — ${pick.why} I can put those stats on this sheet.`,
@@ -462,7 +538,7 @@ export function askGideonRouter(
   }
 
   if (/\buse the .+ build\b/.test(q) || /\bwear it\b/.test(q)) {
-    const pick = opBuilds.find((b) => q.includes(b.name.toLowerCase())) || opBuilds[0]
+    const pick = allBuilds.find((b) => q.includes(b.name.toLowerCase())) || allBuilds[0]
     return { say: `Sheet set to ${pick.name}.`, module: 'build', buildId: pick.id, navigateNow: true }
   }
 
@@ -663,6 +739,11 @@ export function isFastLookup(
   // grounded and exact. Same for the remembrance table and companion questlines.
   if (/\b(enia|finger reader|remembrance|rememberance)\b/.test(q)) return true
   if (isComparable(question, combat)) return true
+
+  // PvP and tips/tech are answered deterministically from authored knowledge, so
+  // they stay on the fast path even when phrased as a multi-word question.
+  if (/\b(pvp|invasion|invade|invader|duel|colosseum|badredman|gank)\b/.test(q)) return true
+  if (/\b(tips?|tricks?|tech|jump attack|jumping attack|stance break|buff stack|spirit ash|cheese)\b/.test(q)) return true
 
   // A conjunction or conditional means the question crosses concepts: reason.
   if (REASONING_MARKER.test(q)) return false
