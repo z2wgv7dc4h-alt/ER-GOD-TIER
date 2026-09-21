@@ -13,6 +13,7 @@ import { BuildWorkspace } from './Build'
 import { CodexWorkspace } from './Codex'
 import { FirstSit } from './FirstSit'
 import { Gideon } from './Gideon'
+import { Help } from './Help'
 import { leftovers } from './lib/leftovers'
 import { summarize } from './lib/infer'
 import { worldBanners } from './lib/worldState'
@@ -122,7 +123,7 @@ function AppShell() {
           </button>
           <input
             className="search"
-            placeholder="Search · / Ctrl+K · paste shot"
+            placeholder="Search · / Ctrl+K · 1–5 rooms · S sit · paste shot · ? help"
             value={w.query}
             onChange={(e) => w.setQuery(e.target.value)}
           />
@@ -144,6 +145,7 @@ function AppShell() {
           <div className="topbar-sit">
             <SitToggle />
           </div>
+          <Help />
         </header>
         <WorldRibbon open={ribbonOpen} onToggle={() => setRibbonOpen((v) => !v)} />
         <CommandHits />

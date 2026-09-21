@@ -41,6 +41,8 @@ type Workspace = {
   canUndo: boolean
   sitMode: boolean
   setSitMode: (v: boolean) => void
+  helpOpen: boolean
+  setHelpOpen: (v: boolean) => void
   recentFacts: string[]
   vault: Vault
   profile: Profile
@@ -78,6 +80,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [engineMarkers, setEngineMarkers] = useState<EngineMarker[]>([])
   const [history, setHistory] = useState<Character[]>([])
   const [sitMode, setSitMode] = useState(bootProfile.ui.sitMode)
+  const [helpOpen, setHelpOpen] = useState(false)
   const [recentFacts, setRecentFacts] = useState<string[]>([])
 
   function commitCharacter(next: Character) {
@@ -151,6 +154,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       canUndo: history.length > 0,
       sitMode,
       setSitMode,
+      helpOpen,
+      setHelpOpen,
       recentFacts,
       vault,
       profile: activeProfile(vault),
@@ -164,7 +169,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         setCharacter({ ...character, name: label })
       },
     }),
-    [module, character, selectedMarkerId, layers, showLeftovers, missingOnly, query, engineStatus, engineState, engineMarkers, history, sitMode, recentFacts, vault],
+    [module, character, selectedMarkerId, layers, showLeftovers, missingOnly, query, engineStatus, engineState, engineMarkers, history, sitMode, helpOpen, recentFacts, vault],
   )
 
   return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>

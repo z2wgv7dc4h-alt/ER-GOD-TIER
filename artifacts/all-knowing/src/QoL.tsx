@@ -5,6 +5,7 @@ import { matchWarp, nextGraces, warpGraces } from './knowledge/graces'
 import { applyFacts, denyFacts } from './lib/infer'
 import { labelOf, moduleFor } from './lib/links'
 import { diffPackets, downloadPacket, fromPacket } from './lib/packet'
+import { markHelpSeen, resolveHotkey } from './lib/shortcuts'
 import type { Stats } from './types'
 import { useWorkspace } from './state'
 
@@ -14,32 +15,32 @@ export function useHotkeys() {
     function onKey(e: KeyboardEvent) {
       const tag = (e.target as HTMLElement)?.tagName
       const typing = tag === 'INPUT' || tag === 'TEXTAREA'
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault()
-        document.querySelector<HTMLInputElement>('.search')?.focus()
-        return
-      }
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
-        e.preventDefault()
-        downloadPacket(w.character)
-        return
-      }
-      if (e.key === 'z' && (e.metaKey || e.ctrlKey) && !e.shiftKey) {
-        e.preventDefault()
-        w.undo()
-        return
-      }
-      if (typing) return
-      const map: Record<string, typeof w.module> = {
-        '1': 'reckon', '2': 'map', '3': 'build', '4': 'quests', '5': 'codex',
-      }
-      if (map[e.key]) w.setModule(map[e.key])
-      if (e.key === '/') {
-        e.preventDefault()
-        document.querySelector<HTMLInputElement>('.search')?.focus()
-      }
-      if (e.key.toLowerCase() === 's' && !e.metaKey && !e.ctrlKey) {
-        w.setSitMode(!w.sitMode)
+      const hit = resolveHotkey(e, { typing, helpOpen: w.helpOpen })
+      if (!hit) return
+      switch (hit.type) {
+        case 'search':
+          e.preventDefault()
+          document.querySelector<HTMLInputElement>('.search')?.focus()
+          break
+        case 'packet':
+          e.preventDefault()
+          downloadPacket(w.character)
+          break
+        case 'undo':
+          e.preventDefault()
+          w.undo()
+          break
+        case 'module':
+          w.setModule(hit.id)
+          break
+        case 'sit':
+          w.setSitMode(!w.sitMode)
+          break
+        case 'help':
+          e.preventDefault()
+          markHelpSeen()
+          w.setHelpOpen(!w.helpOpen)
+          break
       }
     }
     window.addEventListener('keydown', onKey)
