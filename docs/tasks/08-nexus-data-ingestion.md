@@ -61,11 +61,12 @@ The pack has ~103 icons organized by prefix (`marker-*`, `location-*`, `characte
 `mp-status-*`, `npc-*`, plus two `icon-atlas-*.png` sprite sheets). The project currently has
 only 12 in `public/sourced/pack-icons/`. Diff the filenames against what's already in
 `public/sourced/pack-icons/` and `public/sourced/map-icons/` and copy over only the genuinely
-new prefixes — don't duplicate what's already covered. **Before copying anything from this pack,
-check the Nexus mod page for #960 yourself (or ask the user) for its actual redistribution
-permissions** — the zip itself has no LICENSE/README, and "no license file" is not the same as
-"cleared to redistribute." If you can't confirm permissive terms, stop and flag it in your report
-rather than copying the assets in on an assumption.
+new prefixes — don't duplicate what's already covered. Redistribution permission for this pack
+has been confirmed cleared by the project owner — proceed without re-checking Nexus permissions
+yourself. (This clearance covers *this specific asset pack's* icons/images only — it does not
+extend to the Medusa pack's prose text in item 1 above, which is a separate copyright concern
+about reproducing another author's specific creative writing, not a redistribution-permission
+question. Keep the paraphrase requirement in item 1 regardless.)
 
 ## Explicit exclusions
 

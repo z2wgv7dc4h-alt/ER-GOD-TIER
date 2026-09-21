@@ -34,3 +34,13 @@ repo root), not the outer `ER MASTER TOOL` folder.
   table, tests, CI typecheck, honest empty states). P0 item 2 (split `App.tsx`) is pulled into
   its own task (`07-split-app.md`) since it touches nearly every room and is easy to conflict
   with item 1 if run in the same pass — run 06 first, review, then 07.
+- `08-nexus-data-ingestion.md` — ready to run, independent of 06/07 (touches `src/knowledge/`
+  data files and `public/sourced/pack-icons/`, not the room UI or kernel) — can run in parallel
+  with 06/07 if you want, or sequentially, your call.
+- `09-atlas-engine-and-plates.md` — ready to run, independent of the others. Two unrelated
+  halves in one file (clone in the vendor map engine; upgrade the static fallback plate images
+  from the Nexus 960 pack) — **corrects an earlier framing mistake**: this is not "build a
+  tiling pipeline," the real tile/zoom map is already a feature of the vendored engine per
+  `artifacts/all-knowing/docs/MAP-ENGINE.md` ("All-Knowing does not grow a second map"). Part A
+  (vendor engine) can't be fully verified without a local Elden Ring PC install — DeepSeek should
+  get as far as possible and report what's left for the user to finish by hand.
