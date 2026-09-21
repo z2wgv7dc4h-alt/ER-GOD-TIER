@@ -103,6 +103,33 @@ SOFTWARE.
   rates converted to integer negation percentages. `baseHp` is the raw param value before the
   game's area/NG scaling, not the HP bar.
 
+## Paramdex paramdefs + EldenRingMap erlib — regular enemy combat data (Task 22)
+
+- **Sources:**
+  - Paramdex — https://github.com/soulsmods/Paramdex (`ER/Defs/NpcParam.xml`)
+  - EldenRingMap — https://github.com/egormagurin/EldenRingMap (vendored `tools/erlib`: regulation
+    AES/DCX/BND4 reader, generic PARAM reader, MSB reader)
+- **Licenses:** Paramdex is distributed as community param documentation (names/defs). EldenRingMap
+  is MIT (see its own notice above / the vendored tree).
+- **Used by:** `public/sourced/enemy-combat.json`, `src/lib/enemy.ts`, and the Build lab's
+  "Matchup · NpcParam absorb" panel.
+- **What was taken:** the numeric `NpcParam` combat fields only (base HP, `superArmorDurability`
+  poise, per-damage-type `*DamageCutRate` negation, `resist_*` status), plus the MSB
+  `PARTS_PARAM_ST` enemy `NPCParamID` per placement.
+- **Extraction method (one-time, local, read-only against the game install):**
+  1. `regulation.bin` decoded with the vendored `erlib` (public regulation AES key → DCX/ZSTD →
+     BND4), then `NpcParam` rows read with Paramdex's maintained `NpcParam.xml` paramdef. The field
+     mapping reproduces Task 17's `npc-combat.json` values for Malenia exactly.
+  2. MSB files read from the game archives via `erlib.dvdbnd`; the enemy part's `NPCParamID` field
+     was located by matching ints against the real NpcParam id set (entry +0x2ac, fallback +0x2a8),
+     not guessed.
+  3. Placements joined to the existing `public/sourced/open/msb-enemies.json` by `(map, name)`.
+  4. Catalog bosses in `npc-combat.json` excluded, so the two tables partition the roster.
+- **What was changed:** reduced to placed, non-boss enemies keyed `enemy:<npcRow>`; cut rates
+  converted to integer negation percentages; placement counts/maps kept as provenance.
+- **Build-time only:** no game files, paramdefs or erlib code are copied into the shipped app
+  beyond the already-vendored EldenRingMap tree; only the derived JSON is committed.
+
 ## EldenRingMap V1.2 (Nexus Mods #10354)
 
 - **Source:** Nexus Mods pack "EldenRingMap V1.2", by **CreateDDy**

@@ -6,6 +6,7 @@ import { applyFacts } from './lib/infer'
 import { loot } from './knowledge/loot'
 import { useArmory, useHunts } from './lib/armory'
 import { matchOpen, useOpenData } from './lib/openData'
+import { buildChestFacts, matchChests, useGraceRegions } from './lib/chestFacts'
 import { matchCoords, useCoords } from './lib/coords'
 import { matchGuide, useGuide } from './lib/guide'
 import { flaskUpgrades, mapFragments, scadutreeFragments } from './knowledge/collectibles'
@@ -20,10 +21,13 @@ export function CodexWorkspace() {
   const open = useOpenData()
   const coordRows = useCoords()
   const guide = useGuide()
+  const regions = useGraceRegions()
   const q = query.trim().toLowerCase()
   const guideHits = q.length >= 3 ? matchGuide(q, guide.items, guide.legs) : { items: [], legs: [] }
   const openHits = q.length >= 3 ? matchOpen(q, open.names, open.areas, open.shops, open.ashes, open.spells, open.lots, open.extra) : []
   const coordHits = q.length >= 3 ? matchCoords(q, coordRows) : []
+  const chests = useMemo(() => buildChestFacts(open.lots, regions), [open.lots, regions])
+  const chestHits = q.length >= 3 ? matchChests(q, chests) : []
   const rows = useMemo(
     () => codex.filter((e) => `${e.name} ${e.category} ${e.snippet}`.toLowerCase().includes(q)),
     [q],
@@ -91,6 +95,29 @@ export function CodexWorkspace() {
                 <div className="kicker">{e.detail}</div>
                 <h3>{e.name}</h3>
                 <button type="button" className="chip" onClick={() => setCharacter(applyFacts(character, [e.id], 'answer', 'open dump'))}>Log</button>
+              </article>
+            ))}
+          </div>
+        </>
+      )}
+      {chestHits.length > 0 && (
+        <>
+          <h3 className="codex-head">Chests &amp; pickups · {chests.length} real facts from world-lots</h3>
+          <div className="codex-grid">
+            {chestHits.map((c) => (
+              <article className="card" key={c.id}>
+                <div className="kicker">{c.region || c.map} · {c.map} · {c.x.toFixed(1)}, {c.y.toFixed(1)}, {c.z.toFixed(1)}</div>
+                <h3>{c.items.join(' · ')}</h3>
+                <p className="note">
+                  {c.category}{c.catalogIds.length ? ` · catalog ${c.catalogIds.join(', ')}` : ' · no catalog match'} · flag {c.flag}
+                </p>
+                <button
+                  type="button"
+                  className="chip"
+                  onClick={() => setCharacter(applyFacts(character, c.catalogIds.length ? c.catalogIds : [c.id], 'answer', `chest ${c.region || c.map}`))}
+                >
+                  Log items
+                </button>
               </article>
             ))}
           </div>

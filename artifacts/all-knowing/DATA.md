@@ -33,6 +33,27 @@ All under `public/sourced/` unless noted.
 - `*GuardCutRate` is deliberately **not** used: the paramdef describes it as guard-only ("if it is
   not a guard attack, enter 0"), so the general `*DamageCutRate` fields are the negation source.
 
+## Regular enemy combat (Build lab) — real NpcParam + MSB
+
+- `enemy-combat.json` — 2271 regular (non-boss) enemies keyed `enemy:<npcRow>`, with the same
+  fields as `npc-combat.json` (base HP, poise, per-damage-type negation, status resistances) plus
+  `model`, `placements` and `maps`. Generated with the same regulation extraction as the boss
+  table, then restricted to enemies actually placed in the world:
+  1. `NpcParam` read from the local install's `regulation.bin` via the vendored EldenRingMap
+     `erlib` reader (`vendor/elden-ring-map/tools/erlib`), using Paramdex's maintained
+     `ER/Defs/NpcParam.xml` paramdef. The field mapping was validated by reproducing Task 17's
+     `npc-combat.json` values for Malenia exactly (physical 10 / magic 20 / fire 0 / lightning 20 /
+     holy 40; hp 2489; resist 542/542/154/252/999/999).
+  2. MSB `PARTS_PARAM_ST` enemy parts give the authoritative `NPCParamID` per placement (located
+     by matching ints against the real NpcParam id set — the field sits at entry +0x2ac, falling
+     back to +0x2a8). Placements are joined to the existing `open/msb-enemies.json` by
+     `(map, name)`; 7642 of 8827 placements resolve.
+  3. Catalog bosses in `npc-combat.json` are excluded, so the two tables partition the roster.
+  4. `poise` is NpcParam `superArmorDurability` (Task 17's boss `poise` source); negation is
+     `round((1 - *DamageCutRate) * 100)`; status resistances map to `resist_*` fields.
+- `src/lib/enemy.ts` loads both tables through one `CombatStats`/`CombatTarget` interface; the
+  Build lab's target picker covers bosses and field enemies in one panel.
+
 ## Guide (aether-auto/er-guide)
 
 - `guide/items.json` 2.4k items with acquisition
@@ -57,10 +78,11 @@ See `docs/REVIEW.md`.
 |---|---|
 | `open/names.json` | 6.8k EN FMG names |
 | `open/shops.json` | 1261 shop rows |
-| `open/world-lots.json` | 10k unique lots + XYZ + flags |
+| `open/world-lots.json` | 10k lots + XYZ; `src/lib/chestFacts.ts` groups the 4018 treasure rows into 3401 chest/pickup facts |
 | `open/boss-xyz.json` / `boss-pins.json` | 215 named bosses; 109 projected |
 | `open/enemies.json` | 520 EN names |
-| `open/msb-enemies.json` | 8.8k placed enemies — **not loaded at runtime** |
+| `open/msb-enemies.json` | 8.8k placed enemies — joined to `enemy-combat.json` for placement counts/maps |
+| `open/grace-xyz.json` | grace world positions + region names; nearest-region label for chest facts |
 | `open/graces` via checklists/graces.json | 418 warps |
 | `open/paramdex/` | Names txt dump |
 | `src/knowledge/merchants.ts` | 106 vendors full stock |

@@ -230,9 +230,15 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 17. 🔄 100% spine real checklist — Task 19, same queue position as #16.
 
 ### P2 — data
-18. ⬜ `ItemLotParam_*` chest facts from `world-lots.json` — not addressed.
-19. ⬜ Query-load `msb-enemies.json` — not addressed.
-20. ⬜ Gathering nodes (21k, nameless AEG) — not addressed.
+18. ✅ `ItemLotParam_*` chest facts from `world-lots.json` — Task 22: `src/lib/chestFacts.ts`
+    groups the 4018 treasure rows into 3401 chest/pickup facts (one per event flag, items unioned,
+    nearest-region label from `grace-xyz.json`, catalog-id dedupe), surfaced in the Codex.
+19. ✅ Query-load `msb-enemies.json` — Task 22: placements joined to real `NpcParam` via the MSB
+    enemy `NPCParamID`, producing `public/sourced/enemy-combat.json` (2271 non-boss enemies with
+    absorb/poise/resistances), consumed by the Build lab through the same interface as the boss
+    table.
+20. ⬜ Gathering nodes (21k, nameless AEG) — not addressed (the source `all_gathering_nodes_final.json`
+    exists in the Goblins dump but is still un-ingested).
 21. ⬜ FanAPI images via `fanImage()` — not addressed.
 22. ✅ Sacred tear / golden seed starter → more complete. (Task 16: golden seeds 7→42, sacred
     tears confirmed matching the authoritative pack at 12/12, plus a new `gesture` category and

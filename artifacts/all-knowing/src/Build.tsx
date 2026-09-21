@@ -6,13 +6,14 @@ import { attackRatingForSlot, loadWeapons } from './lib/ar'
 import type { AttackRating, Weapon } from './lib/ar'
 import {
   bestDamageType,
-  bossCombatFor,
+  combatTargetFor,
   damageTypeLabels,
   damageTypes,
   effectiveDamage,
+  enemyTargetNames,
   negationText,
   resistSummary,
-  useBossCombat,
+  useCombatTargets,
 } from './lib/enemy'
 import type { Character, Stats } from './types'
 
@@ -31,8 +32,9 @@ export function BuildWorkspace() {
   const [weapons, setWeapons] = useState<Weapon[] | null>(null)
   const [arError, setArError] = useState<string | null>(null)
   const [twoHanding, setTwoHanding] = useState(false)
-  const { bosses: bossCombat, error: bossError } = useBossCombat()
-  const [bossId, setBossId] = useState('')
+  const { targets: combatTargets, error: combatError } = useCombatTargets()
+  const [targetId, setTargetId] = useState('')
+  const [enemyQuery, setEnemyQuery] = useState('')
 
   useEffect(() => {
     let cancelled = false
@@ -51,11 +53,20 @@ export function BuildWorkspace() {
       .map((slot) => attackRatingForSlot(weapons, slot, character.stats, twoHanding))
   }, [weapons, character.loadout, character.stats, twoHanding])
 
+  const bossTargets = combatTargets.filter((t) => t.kind === 'boss')
+  const enemyTargets = combatTargets.filter((t) => t.kind === 'enemy')
+  const enemyNames = enemyTargetNames(enemyTargets)
   const nextUndefeatedBoss = markers.find(
-    (m) => m.kind === 'boss' && !isCollected(character, m) && bossCombat.some((b) => b.factId === m.id),
+    (m) => m.kind === 'boss' && !isCollected(character, m) && combatTargets.some((b) => b.factId === m.id),
   )
-  const activeBossId = bossId || nextUndefeatedBoss?.id || bossCombat[0]?.factId || ''
-  const boss = bossCombatFor(bossCombat, activeBossId)
+  const activeTargetId = targetId || nextUndefeatedBoss?.id || combatTargets[0]?.factId || ''
+  const target = combatTargetFor(combatTargets, activeTargetId)
+
+  function pickEnemyByName(name: string) {
+    setEnemyQuery(name)
+    const match = enemyTargets.find((t) => t.name === name) || enemyTargets.find((t) => t.name.toLowerCase() === name.toLowerCase())
+    if (match) setTargetId(match.factId)
+  }
 
   function patchStat(key: keyof Stats, value: number) {
     setCharacter({
@@ -153,44 +164,66 @@ export function BuildWorkspace() {
             </p>
           ) : null,
         )}
-        <div className="kicker" style={{ marginTop: 20 }}>Boss matchup · NpcParam absorb</div>
-        {bossError && (
+        <div className="kicker" style={{ marginTop: 20 }}>Matchup · NpcParam absorb</div>
+        {combatError && (
           <p className="note" style={{ marginTop: 10 }}>
-            Boss combat data unavailable ({bossError}). Nothing shown rather than guessed.
+            Combat data unavailable ({combatError}). Nothing shown rather than guessed.
           </p>
         )}
-        {!bossError && bossCombat.length === 0 && (
-          <p className="note" style={{ marginTop: 10 }}>Loading boss combat data…</p>
+        {!combatError && combatTargets.length === 0 && (
+          <p className="note" style={{ marginTop: 10 }}>Loading combat data…</p>
         )}
-        {bossCombat.length > 0 && (
+        {combatTargets.length > 0 && (
           <>
-            <label className="note" htmlFor="boss-matchup" style={{ display: 'block', marginTop: 10 }}>Target</label>
+            <label className="note" htmlFor="boss-matchup" style={{ display: 'block', marginTop: 10 }}>Boss target</label>
             <select
               id="boss-matchup"
-              value={activeBossId}
-              onChange={(e) => setBossId(e.target.value)}
+              value={activeTargetId}
+              onChange={(e) => { setTargetId(e.target.value); setEnemyQuery('') }}
               style={{ marginTop: 6, width: '100%' }}
             >
-              {bossCombat.map((b) => (
+              {bossTargets.map((b) => (
                 <option key={b.factId} value={b.factId}>{b.name}</option>
               ))}
             </select>
+            {enemyTargets.length > 0 && (
+              <>
+                <label className="note" htmlFor="enemy-matchup" style={{ display: 'block', marginTop: 10 }}>
+                  Field enemy ({enemyTargets.length} placed, non-boss)
+                </label>
+                <input
+                  id="enemy-matchup"
+                  list="enemy-matchup-list"
+                  placeholder="e.g. Giant Crab"
+                  value={enemyQuery}
+                  onChange={(e) => pickEnemyByName(e.target.value)}
+                  style={{ marginTop: 6, width: '100%' }}
+                />
+                <datalist id="enemy-matchup-list">
+                  {enemyNames.map((n) => (
+                    <option key={n} value={n} />
+                  ))}
+                </datalist>
+              </>
+            )}
           </>
         )}
-        {boss && (
+        {target && (
           <>
             <ul className="list" style={{ marginTop: 10 }}>
               {damageTypes.map((t) => (
                 <li key={t} style={{ cursor: 'default' }}>
                   <span>{damageTypeLabels[t]}</span>
-                  <span>{negationText(boss.negation[t])}</span>
+                  <span>{negationText(target.negation[t])}</span>
                 </li>
               ))}
             </ul>
             <p className="note" style={{ marginTop: 8 }}>
-              Weakest to <strong>{damageTypeLabels[bestDamageType(boss)]}</strong>
-              {boss.poise != null ? ` · poise ${boss.poise}` : ''}. Negation is read straight from the
-              game's NpcParam; a negative value means the boss takes extra damage.
+              {target.kind === 'enemy' ? 'Field enemy' : 'Boss'} · weakest to <strong>{damageTypeLabels[bestDamageType(target)]}</strong>
+              {target.poise != null ? ` · poise ${target.poise}` : ''}
+              {target.model ? ` · model ${target.model}` : ''}
+              {target.placements ? ` · ${target.placements} placements in ${target.maps?.length ?? 0} maps` : ''}. Negation is read
+              straight from the game's NpcParam; a negative value means it takes extra damage.
             </p>
             {ratings.some((r) => r.status === 'ok') && (
               <ul className="list" style={{ marginTop: 8 }}>
@@ -198,13 +231,13 @@ export function BuildWorkspace() {
                   r.status === 'ok' ? (
                     <li key={`eff-${i}`} style={{ cursor: 'default' }}>
                       <span>{r.weaponName} after negation</span>
-                      <span>{Math.floor(effectiveDamage(r.breakdown, boss).total)}</span>
+                      <span>{Math.floor(effectiveDamage(r.breakdown, target).total)}</span>
                     </li>
                   ) : null,
                 )}
               </ul>
             )}
-            <p className="note" style={{ marginTop: 8 }}>Resistances: {resistSummary(boss)}</p>
+            <p className="note" style={{ marginTop: 8 }}>Resistances: {resistSummary(target)}</p>
           </>
         )}
         <div className="meters" style={{ marginTop: 18 }}>
