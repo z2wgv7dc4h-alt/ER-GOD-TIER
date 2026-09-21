@@ -69,7 +69,7 @@ export const facts: Fact[] = [
   { id: 'boss:godskin-duo', kind: 'boss', name: 'Godskin Duo', aliases: [], region: 'Farum Azula', campaign: 'base', implies: ['region:farum'] },
   { id: 'boss:maliketh', kind: 'boss', name: 'Maliketh, the Black Blade', aliases: ['maliketh', 'gurranq'], region: 'Farum Azula', campaign: 'base', implies: ['boss:godskin-duo'] },
   { id: 'boss:gideon', kind: 'boss', name: 'Sir Gideon Ofnir, the All-Knowing', aliases: ['gideon', 'ofnir'], region: 'Ashen Capital', campaign: 'base', implies: ['boss:maliketh'] },
-  { id: 'boss:godfrey', kind: 'boss', name: 'Godfrey, First Elden Lord / Hoarah Loux', aliases: ['hoarah loux', 'godfrey'], region: 'Ashen Capital', campaign: 'base', implies: ['boss:gideon'] },
+  { id: 'boss:godfrey', kind: 'boss', name: 'Godfrey, First Elden Lord / Hoarah Loux', aliases: ['hoarah loux', 'godfrey', 'godfrey first elden lord'], region: 'Ashen Capital', campaign: 'base', implies: ['boss:gideon'] },
   { id: 'boss:radagon', kind: 'boss', name: 'Radagon of the Golden Order / Elden Beast', aliases: ['radagon', 'elden beast', 'elden lord'], region: 'Ashen Capital', campaign: 'base', implies: ['boss:godfrey'] },
   { id: 'boss:mohg', kind: 'boss', name: 'Mohg, Lord of Blood', aliases: ['mohg', 'lord of blood'], region: 'Mohgwyn', campaign: 'base', implies: [], drops: ['item:mohg-great-rune'] },
   { id: 'boss:malenia', kind: 'boss', name: 'Malenia, Blade of Miquella', aliases: ['malenia'], region: 'Elphael', campaign: 'base', implies: ['grace:drainage'], drops: ['item:malenia-great-rune'] },
@@ -78,7 +78,7 @@ export const facts: Fact[] = [
   { id: 'boss:messmer', kind: 'boss', name: 'Messmer the Impaler', aliases: ['messmer'], region: 'Shadow Keep', campaign: 'sote', implies: ['grace:shadow-keep'] },
   { id: 'boss:midra', kind: 'boss', name: 'Midra, Lord of Frenzied Flame', aliases: ['midra'], region: 'Abyssal Woods', campaign: 'sote', implies: ['region:shadow'] },
   { id: 'boss:bayle', kind: 'boss', name: 'Bayle the Dread', aliases: ['bayle'], region: 'Jagged Peak', campaign: 'sote', implies: ['region:shadow'] },
-  { id: 'boss:consort', kind: 'boss', name: 'Promised Consort Radahn / Radahn, Consort of Miquella', aliases: ['consort radahn', 'promised consort'], region: 'Enir-Ilim', campaign: 'sote', implies: ['boss:messmer'] },
+  { id: 'boss:consort', kind: 'boss', name: 'Promised Consort Radahn / Radahn, Consort of Miquella', aliases: ['consort radahn', 'promised consort', 'radahn consort of miquella'], region: 'Enir-Ilim', campaign: 'sote', implies: ['boss:messmer'] },
   { id: 'boss:leontiel', kind: 'boss', name: 'Knight Leontiel', aliases: ['leontiel', 'matador'], region: 'Wailing Dunes', campaign: 'tarnished-pack', implies: ['boss:radahn'], drops: ['item:leontiel-greatsword'] },
 
   // Items that reconstruct the run

@@ -182,7 +182,7 @@ export function askGideon(question: string, character: Character, memory: Gideon
   }
 
   if (/\b(100%|completionist|everything in|full clear|medusa)\b/.test(q)) {
-    const next = medusaChapters.find((c) => !q.includes('skip')) || medusaChapters[0]
+    const next = medusaChapters.find(() => !q.includes('skip')) || medusaChapters[0]
     return {
       say: `100% spine is Medusa’s chapters, goals only. Now: ${next.act} — ${next.name}. ${next.goal} Say the chapter name when that slice is done.`,
       module: 'quests',
