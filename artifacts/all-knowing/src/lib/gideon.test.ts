@@ -122,6 +122,30 @@ describe('100% handler reflects tracked completion', () => {
   })
 })
 
+describe('conditional merchant router', () => {
+  it('answers "what does X sell after I give Y" for a bell bearing', () => {
+    const act = askGideonRouter(
+      "what does twin maiden husks sell after i give sellen's bell bearing",
+      character,
+    )
+    expect(act.module).toBe('codex')
+    expect(act.say).toContain('Twin Maiden Husks')
+    expect(act.say.toLowerCase()).toContain('sellen')
+    expect(act.factId).toBe('item:sellen-s-bell-bearing')
+  })
+
+  it('names the prayerbook buyer and the unlocked spells', () => {
+    const act = askGideonRouter(
+      'what does corhyn sell after i give the golden order principia',
+      character,
+    )
+    expect(act.module).toBe('codex')
+    expect(act.say).toContain('Brother Corhyn')
+    expect(act.say).toContain('Radagon')
+    expect(act.factId).toBe('item:golden-order-principia')
+  })
+})
+
 describe('isFastLookup', () => {
   it('routes exact single-entity lookups and fixed commands without the LLM', () => {
     expect(isFastLookup('godrick')).toBe(true)

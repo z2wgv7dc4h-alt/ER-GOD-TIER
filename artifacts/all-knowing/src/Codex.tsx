@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { codex } from './data/seed'
 import { awesomeResources } from './knowledge/awesome'
 import { fieldHunts } from './knowledge/completion'
@@ -8,6 +8,8 @@ import { useArmory, useHunts } from './lib/armory'
 import { matchOpen, useOpenData } from './lib/openData'
 import { matchCoords, useCoords } from './lib/coords'
 import { matchGuide, useGuide } from './lib/guide'
+import { achievementProgress } from './lib/achievements'
+import { conditionalUnlocks, stockForVendor } from './knowledge/merchantConditions'
 import { flaskUpgrades, mapFragments, scadutreeFragments } from './knowledge/collectibles'
 import { npcDisplayCards } from './knowledge/npc-display'
 import { iconFor } from './lib/sourcePack'
@@ -20,10 +22,22 @@ export function CodexWorkspace() {
   const open = useOpenData()
   const coordRows = useCoords()
   const guide = useGuide()
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({})
   const q = query.trim().toLowerCase()
   const guideHits = q.length >= 3 ? matchGuide(q, guide.items, guide.legs) : { items: [], legs: [] }
   const openHits = q.length >= 3 ? matchOpen(q, open.names, open.areas, open.shops, open.ashes, open.spells, open.lots, open.extra) : []
   const coordHits = q.length >= 3 ? matchCoords(q, coordRows) : []
+  const achievements = useMemo(
+    () => achievementProgress(guide.items, character.collectedItems),
+    [guide.items, character.collectedItems],
+  )
+  const conditionalHits = useMemo(() => {
+    const rows = conditionalUnlocks.map((u) => ({ ...u, items: stockForVendor(u.vendor) }))
+    if (!q) return rows
+    return rows.filter((u) =>
+      `${u.soldBy} ${u.vendor} ${u.trigger} ${u.note} ${u.items.join(' ')}`.toLowerCase().includes(q),
+    )
+  }, [q])
   const rows = useMemo(
     () => codex.filter((e) => `${e.name} ${e.category} ${e.snippet}`.toLowerCase().includes(q)),
     [q],
@@ -107,6 +121,87 @@ export function CodexWorkspace() {
           </article>
         ))}
       </div>
+      <h3 className="codex-head">
+        Achievement sets ·{' '}
+        {achievements.map((p) => `${p.name} ${p.done}/${p.total}`).join(' · ')}
+      </h3>
+      {guide.items.length === 0 && <p className="note" style={{ padding: '0 20px' }}>Loading guide catalog…</p>}
+      {achievements.map((set) => {
+        const left = set.remaining.filter((r) => !q || `${r.name} ${r.how}`.toLowerCase().includes(q))
+        if (q && left.length === 0) return null
+        const open = expanded[set.id]
+        const shown = open ? left : left.slice(0, 12)
+        return (
+          <div key={set.id}>
+            <div className="kicker" style={{ padding: '0 20px' }}>
+              {set.name} · {set.done}/{set.total} · {set.remaining.length} left — {set.note}
+            </div>
+            <div className="codex-grid">
+              {shown.map((r) => (
+                <article className="card" key={r.id}>
+                  <div className="kicker">
+                    {set.name}{r.dlc ? ' · DLC' : ''}{r.missable ? ` · missable: ${r.missable}` : ''}
+                  </div>
+                  <h3>{r.name}</h3>
+                  <p className="note">{r.how}</p>
+                  <button
+                    type="button"
+                    className="chip"
+                    onClick={() => setCharacter(applyFacts(character, [r.id], 'answer', `${set.name} set`))}
+                  >
+                    Mark
+                  </button>
+                </article>
+              ))}
+            </div>
+            {left.length > 12 && (
+              <button
+                type="button"
+                className="chip"
+                style={{ margin: '0 20px' }}
+                onClick={() => setExpanded((cur) => ({ ...cur, [set.id]: !open }))}
+              >
+                {open ? 'Show fewer' : `Show all ${left.length} left`}
+              </button>
+            )}
+          </div>
+        )
+      })}
+      <h3 className="codex-head">
+        Merchant conditionals · {conditionalHits.length} of {conditionalUnlocks.length}
+      </h3>
+      <p className="note" style={{ padding: '0 20px' }}>
+        “What does X sell after I give Y.” Stock stays in the merchant table; this is the unlock condition.
+      </p>
+      <div className="codex-grid">
+        {(expanded['merchant-conditional'] ? conditionalHits : conditionalHits.slice(0, 12)).map((u) => (
+          <article className="card" key={u.vendor}>
+            <div className="kicker">{u.soldBy} · conditional</div>
+            <h3>{u.trigger}</h3>
+            <p className="note">{u.items.join(', ') || 'Stock row missing.'}</p>
+            <p className="note">{u.note}</p>
+            {u.triggerId && (
+              <button
+                type="button"
+                className="chip"
+                onClick={() => setCharacter(applyFacts(character, [u.triggerId as string], 'answer', 'merchant condition'))}
+              >
+                Log trigger
+              </button>
+            )}
+          </article>
+        ))}
+      </div>
+      {conditionalHits.length > 12 && (
+        <button
+          type="button"
+          className="chip"
+          style={{ margin: '0 20px' }}
+          onClick={() => setExpanded((cur) => ({ ...cur, 'merchant-conditional': !cur['merchant-conditional'] }))}
+        >
+          {expanded['merchant-conditional'] ? 'Show fewer' : `Show all ${conditionalHits.length}`}
+        </button>
+      )}
       {q.length >= 2 && (
         <>
           <h3 className="codex-head">Armory</h3>

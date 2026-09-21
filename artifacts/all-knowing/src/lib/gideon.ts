@@ -8,6 +8,7 @@ import { fieldHunts } from '../knowledge/completion'
 import { findBossPin } from '../knowledge/bossPins'
 import { mapFragments, scadutreeFragments } from '../knowledge/collectibles'
 import { findSellers } from '../knowledge/merchants'
+import { matchConditionalStock } from '../knowledge/merchantConditions'
 import { missables } from '../knowledge/missables'
 import { matchAllWarps } from './aliases'
 import { searchSync } from './search'
@@ -191,6 +192,25 @@ export function askGideonRouter(
     }
   }
 
+  // Merchant stock questions ("who sells X", "what does X sell after I give Y")
+  // outrank the questline matcher: "sellen" names both a questline and a vendor.
+  if (/\b(buy|buys|shop|shops|sells?|sold|merchant|merchants|stock|give|gave|unlock)\b/.test(q)) {
+    const conditional = matchConditionalStock(q)
+    if (conditional.length) {
+      const top = conditional[0]
+      const items = top.items.slice(0, 6).join(', ')
+      const more = top.items.length > 6 ? ` (+${top.items.length - 6} more)` : ''
+      const others = conditional.slice(1, 3).map((c) => c.soldBy)
+      const also = others.length ? ` Also: ${[...new Set(others)].join(', ')}.` : ''
+      return {
+        say: `${top.soldBy} — ${top.trigger}. Stock: ${items}${more}. ${top.note}${also}`,
+        module: 'codex',
+        factId: top.triggerId,
+        offer: top.triggerId ? { label: 'Log it', prompt: top.trigger } : undefined,
+      }
+    }
+  }
+
   const line = findLine(q) || (memory.goalId && /\b(what next|what now|continue|plan|blitz)\b/.test(q) ? routeById(memory.goalId) : undefined)
   if (line && (/\b(ending|want|get|do|how|path|route|finish|plan|next|blitz|story|quest|line)\b/.test(q) || findLine(q))) {
     return speakPlan(character, line)
@@ -326,7 +346,7 @@ export function askGideonRouter(
 
   const sellers = findSellers(q)
   if (sellers.length && (/\b(buy|shop|sells|merchant|stock|who sells)\b/.test(q) || sellers.some((s) => s.item.toLowerCase() === q))) {
-    const lines = sellers.slice(0, 5).map((s) => `${s.item} — ${s.vendor}`).join('\n')
+    const lines = sellers.slice(0, 5).map((s) => (s.condition ? `${s.item} — ${s.vendor} (after: ${s.condition})` : `${s.item} — ${s.vendor}`)).join('\n')
     return { say: `Shop dump:\n${lines}`, module: 'codex' }
   }
 
