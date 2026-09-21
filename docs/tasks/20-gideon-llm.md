@@ -72,6 +72,13 @@ field or fall back to the deterministic router for that turn. This is the concre
 - Consider a reasonable timeout (a few seconds) so a slow/hung API call doesn't leave Gideon
   looking unresponsive — fall back to the router if the call takes too long.
 
+### Live testing
+
+A `.env.local` with `VITE_DEEPSEEK_API_KEY` already set has been placed in your working
+directory (gitignored, matches the existing `*.local` pattern) — use it to actually test the live
+integration end-to-end via `npm run dev`, not just verify the code compiles. Don't remove or
+commit this file.
+
 ### Cost/latency sanity
 
 - Don't call the LLM for every single interaction if a fast, confident deterministic match
