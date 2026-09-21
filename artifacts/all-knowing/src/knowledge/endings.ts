@@ -8,7 +8,19 @@ export type PlanStep = {
   module?: ModuleId
   minLevel?: number
   obtain?: string
+  /** Human-readable warning. Kept for display; the machine edge is `lockouts`. */
   lockout?: string
+  /** Fact ids that must already be true before this beat is reachable. */
+  requires: string[]
+  /** Fact ids this beat produces when it is ticked. */
+  grants: string[]
+  /**
+   * Mutually-exclusive fact/step ids. If any becomes known, this beat is
+   * foreclosed. Authored as incoming guards so `planRoute` can answer
+   * "what is still available" from the character's facts, and a completed
+   * step also forecloses any step id/fact id it lists here.
+   */
+  lockouts: string[]
 }
 
 export type EndingRoute = {
@@ -39,12 +51,12 @@ export const endings: EndingRoute[] = [
       return null
     },
     steps: [
-      { id: 's1', do: 'Enter Ranni’s service at Ranni’s Rise', detail: 'Three Sisters, after Caria Manor. Speak to Blaidd, Iji, and Seluvis in the towers.', factId: 'quest:ranni:service', module: 'quests', minLevel: 40 },
-      { id: 's2', do: 'Open Nokron — defeat Starscourge Radahn', detail: 'Redmane festival. Talk to Jerren or progress Ranni far enough that the festival is live.', factId: 'boss:radahn', module: 'map', minLevel: 70, obtain: 'Radahn’s Great Rune' },
-      { id: 's3', do: 'Retrieve the Fingerslayer Blade', detail: 'Night’s Sacred Ground in Nokron. Give it to Ranni, never to Seluvis.', factId: 'item:fingerslayer', module: 'map', lockout: 'Seluvis + this blade ends her line.' },
-      { id: 's4', do: 'Invert the Carian Study Hall', detail: 'Use the Carian Inverted Statue. Divine Tower of Liurnia for the cursemark.', factId: 'quest:ranni:statue', module: 'quests' },
-      { id: 's5', do: 'Kill Astel and place the Dark Moon Ring', detail: 'Lake of Rot → Grand Cloister coffin → Moonlight Altar → Cathedral of Manus Celes.', factId: 'quest:ranni:ring', module: 'map', minLevel: 90, obtain: 'Dark Moon Greatsword' },
-      { id: 's6', do: 'Finish the Elden Lord path, then summon Ranni', detail: 'Forge → Farum → Ashen Capital → Elden Beast. Use Ranni’s summon sign after the fight.', factId: 'boss:radagon', module: 'map', minLevel: 110 },
+      { id: 's1', do: 'Enter Ranni’s service at Ranni’s Rise', detail: 'Three Sisters, after Caria Manor. Speak to Blaidd, Iji, and Seluvis in the towers.', factId: 'quest:ranni:service', module: 'quests', minLevel: 40, requires: [], grants: ['quest:ranni:service'], lockouts: [] },
+      { id: 's2', do: 'Open Nokron — defeat Starscourge Radahn', detail: 'Redmane festival. Talk to Jerren or progress Ranni far enough that the festival is live.', factId: 'boss:radahn', module: 'map', minLevel: 70, obtain: 'Radahn’s Great Rune', requires: ['quest:ranni:service'], grants: ['quest:ranni:festival', 'boss:radahn'], lockouts: [] },
+      { id: 's3', do: 'Retrieve the Fingerslayer Blade', detail: 'Night’s Sacred Ground in Nokron. Give it to Ranni, never to Seluvis.', factId: 'item:fingerslayer', module: 'map', requires: ['quest:ranni:festival'], grants: ['item:fingerslayer'], lockouts: ['quest:seluvis-blade'], lockout: 'Seluvis + this blade ends her line.' },
+      { id: 's4', do: 'Invert the Carian Study Hall', detail: 'Use the Carian Inverted Statue. Divine Tower of Liurnia for the cursemark.', factId: 'quest:ranni:statue', module: 'quests', requires: ['item:fingerslayer'], grants: ['quest:ranni:statue'], lockouts: ['quest:seluvis-blade'] },
+      { id: 's5', do: 'Kill Astel and place the Dark Moon Ring', detail: 'Lake of Rot → Grand Cloister coffin → Moonlight Altar → Cathedral of Manus Celes.', factId: 'quest:ranni:ring', module: 'map', minLevel: 90, obtain: 'Dark Moon Greatsword', requires: ['quest:ranni:statue'], grants: ['quest:ranni:ring', 'item:dark-moon-ring'], lockouts: ['quest:seluvis-blade'] },
+      { id: 's6', do: 'Finish the Elden Lord path, then summon Ranni', detail: 'Forge → Farum → Ashen Capital → Elden Beast. Use Ranni’s summon sign after the fight.', factId: 'boss:radagon', module: 'map', minLevel: 110, requires: ['quest:ranni:ring'], grants: ['boss:radagon'], lockouts: ['quest:seluvis-blade'] },
     ],
   },
   {
@@ -56,10 +68,10 @@ export const endings: EndingRoute[] = [
       return null
     },
     steps: [
-      { id: 'f1', do: 'Meet Hyetta or Shabriri', detail: 'Hyetta starts at the Lake-Facing Cliffs grape line. Shabriri appears later on the mountain.', factId: 'grace:lake-shore', module: 'map', minLevel: 30 },
-      { id: 'f2', do: 'Reach the Forsaken Depths under Leyndell', detail: 'Subterranean Shunning-Grounds, Mohg the Omen, then the floor drop to the Three Fingers.', factId: 'grace:east-capital', module: 'map', minLevel: 80 },
-      { id: 'f3', do: 'Take the Frenzied Flame', detail: 'Strip armour, open the door. This locks every other ending unless you complete Millicent + needle at Farum.', factId: 'boss:morgott', module: 'quests', lockout: 'Other endings require the Unalloyed Gold Needle in Malenia’s bloom, then Farum.' },
-      { id: 'f4', do: 'Beat the Elden Beast and do not use a Mending Rune', detail: 'The cutscene changes if the flame is still in you.', factId: 'boss:radagon', module: 'map', minLevel: 110 },
+      { id: 'f1', do: 'Meet Hyetta or Shabriri', detail: 'Hyetta starts at the Lake-Facing Cliffs grape line. Shabriri appears later on the mountain.', factId: 'grace:lake-shore', module: 'map', minLevel: 30, requires: [], grants: ['grace:lake-shore', 'quest:hyetta:met'], lockouts: [] },
+      { id: 'f2', do: 'Reach the Forsaken Depths under Leyndell', detail: 'Subterranean Shunning-Grounds, Mohg the Omen, then the floor drop to the Three Fingers.', factId: 'grace:east-capital', module: 'map', minLevel: 80, requires: ['grace:lake-shore'], grants: ['grace:east-capital'], lockouts: [] },
+      { id: 'f3', do: 'Take the Frenzied Flame', detail: 'Strip armour, open the door. This locks every other ending unless you complete Millicent + needle at Farum.', factId: 'boss:morgott', module: 'quests', requires: ['grace:east-capital'], grants: ['boss:morgott', 'quest:frenzy:taken'], lockouts: [], lockout: 'Other endings require the Unalloyed Gold Needle in Malenia’s bloom, then Farum.' },
+      { id: 'f4', do: 'Beat the Elden Beast and do not use a Mending Rune', detail: 'The cutscene changes if the flame is still in you.', factId: 'boss:radagon', module: 'map', minLevel: 110, requires: ['quest:frenzy:taken'], grants: ['boss:radagon'], lockouts: [] },
     ],
   },
   {
@@ -68,10 +80,10 @@ export const endings: EndingRoute[] = [
     aliases: ['fia ending', 'duskborn', 'godwyn ending', 'deathbed'],
     lockedIf: () => null,
     steps: [
-      { id: 'd1', do: 'Talk to Fia at the Roundtable until she asks for a champion', detail: 'Hold her, then follow D’s brother and the Cursemark path.', module: 'quests', minLevel: 40 },
-      { id: 'd2', do: 'Get the Cursemark of Death', detail: 'Same inverted Study Hall as Ranni. These lines share that tower.', factId: 'quest:ranni:statue', module: 'quests', minLevel: 70 },
-      { id: 'd3', do: 'Give Fia the cursemark in Deeproot Depths', detail: 'Across the coffin after Godwyn’s prince. Defend her from Lionel, pick the Mending Rune of the Death-Prince.', factId: 'grace:deeproot', module: 'map', minLevel: 90 },
-      { id: 'd4', do: 'Use that rune after the Elden Beast', detail: 'Do not take the Frenzied Flame without a way to purge it.', factId: 'boss:radagon', module: 'map', minLevel: 110 },
+      { id: 'd1', do: 'Talk to Fia at the Roundtable until she asks for a champion', detail: 'Hold her, then follow D’s brother and the Cursemark path.', factId: 'quest:fia:met', module: 'quests', minLevel: 40, requires: [], grants: ['quest:fia:met'], lockouts: [] },
+      { id: 'd2', do: 'Get the Cursemark of Death', detail: 'Same inverted Study Hall as Ranni. These lines share that tower.', factId: 'quest:ranni:statue', module: 'quests', minLevel: 70, requires: ['quest:fia:met'], grants: ['quest:ranni:statue'], lockouts: ['quest:fia:killed'] },
+      { id: 'd3', do: 'Give Fia the cursemark in Deeproot Depths', detail: 'Across the coffin after Godwyn’s prince. Defend her from Lionel, pick the Mending Rune of the Death-Prince.', factId: 'grace:deeproot', module: 'map', minLevel: 90, requires: ['quest:ranni:statue'], grants: ['grace:deeproot', 'quest:fia:cursemark', 'item:mending-rune-death-prince'], lockouts: ['quest:fia:killed'] },
+      { id: 'd4', do: 'Use that rune after the Elden Beast', detail: 'Do not take the Frenzied Flame without a way to purge it.', factId: 'boss:radagon', module: 'map', minLevel: 110, requires: ['quest:fia:cursemark'], grants: ['boss:radagon'], lockouts: [] },
     ],
   },
   {
@@ -80,10 +92,10 @@ export const endings: EndingRoute[] = [
     aliases: ['goldmask', 'perfect order', 'order ending', 'corhyn'],
     lockedIf: () => null,
     steps: [
-      { id: 'o1', do: 'Find Goldmask on the Altus road', detail: 'Bring Corhyn from the Roundtable. Forest-Spanning Greatbridge area.', factId: 'grace:ergtree-grazing', module: 'map', minLevel: 60 },
-      { id: 'o2', do: 'Learn the law of regression', detail: 'Goldmask in Leyndell. Spell from the coliseum debate floor. See Radagon in the statue.', factId: 'grace:east-capital', module: 'map', minLevel: 80 },
-      { id: 'o3', do: 'Take the Mending Rune of Perfect Order', detail: 'Goldmask’s corpse on the snowfield bridge after the Forge.', factId: 'grace:forge-giants', module: 'map', minLevel: 100 },
-      { id: 'o4', do: 'Use it after the Elden Beast', detail: 'Frenzied Flame still overrides this.', factId: 'boss:radagon', module: 'map', minLevel: 110 },
+      { id: 'o1', do: 'Find Goldmask on the Altus road', detail: 'Bring Corhyn from the Roundtable. Forest-Spanning Greatbridge area.', factId: 'grace:ergtree-grazing', module: 'map', minLevel: 60, requires: [], grants: ['grace:ergtree-grazing', 'quest:corhyn:goldmask'], lockouts: [] },
+      { id: 'o2', do: 'Learn the law of regression', detail: 'Goldmask in Leyndell. Spell from the coliseum debate floor. See Radagon in the statue.', factId: 'grace:east-capital', module: 'map', minLevel: 80, requires: ['quest:corhyn:goldmask'], grants: ['grace:east-capital', 'quest:goldmask:regression'], lockouts: [] },
+      { id: 'o3', do: 'Take the Mending Rune of Perfect Order', detail: 'Goldmask’s corpse on the snowfield bridge after the Forge.', factId: 'grace:forge-giants', module: 'map', minLevel: 100, requires: ['quest:goldmask:regression', 'boss:fire-giant'], grants: ['grace:forge-giants', 'item:mending-rune-order'], lockouts: [] },
+      { id: 'o4', do: 'Use it after the Elden Beast', detail: 'Frenzied Flame still overrides this.', factId: 'boss:radagon', module: 'map', minLevel: 110, requires: ['item:mending-rune-order'], grants: ['boss:radagon'], lockouts: [] },
     ],
   },
   {
@@ -92,10 +104,10 @@ export const endings: EndingRoute[] = [
     aliases: ['elden lord', 'default ending', 'marika ending', 'normal ending'],
     lockedIf: () => null,
     steps: [
-      { id: 'l1', do: 'Two Great Runes and the capital', detail: 'Godrick plus one other is enough to open Leyndell.', factId: 'boss:godrick', module: 'map', minLevel: 50 },
-      { id: 'l2', do: 'Morgott, then the Forge of the Giants', detail: 'Melina must still be with you.', factId: 'boss:morgott', module: 'map', minLevel: 90 },
-      { id: 'l3', do: 'Farum Azula and the Ashen Capital', detail: 'Maliketh unbinds destine death.', factId: 'boss:maliketh', module: 'map', minLevel: 110 },
-      { id: 'l4', do: 'Godfrey, then Radagon / Elden Beast', detail: 'Choose a Mending Rune only if you want a variant.', factId: 'boss:radagon', module: 'map', minLevel: 120 },
+      { id: 'l1', do: 'Two Great Runes and the capital', detail: 'Godrick plus one other is enough to open Leyndell.', factId: 'boss:godrick', module: 'map', minLevel: 50, requires: [], grants: ['boss:godrick'], lockouts: [] },
+      { id: 'l2', do: 'Morgott, then the Forge of the Giants', detail: 'Melina must still be with you.', factId: 'boss:morgott', module: 'map', minLevel: 90, requires: ['boss:godrick'], grants: ['boss:morgott'], lockouts: [] },
+      { id: 'l3', do: 'Farum Azula and the Ashen Capital', detail: 'Maliketh unbinds destine death.', factId: 'boss:maliketh', module: 'map', minLevel: 110, requires: ['boss:morgott'], grants: ['boss:maliketh'], lockouts: [] },
+      { id: 'l4', do: 'Godfrey, then Radagon / Elden Beast', detail: 'Choose a Mending Rune only if you want a variant.', factId: 'boss:radagon', module: 'map', minLevel: 120, requires: ['boss:maliketh'], grants: ['boss:radagon'], lockouts: [] },
     ],
   },
 ]
@@ -124,7 +136,36 @@ export function planRoute(character: Character, route: EndingRoute) {
     if (finished) done.push(step)
     else todo.push(step)
   }
-  const current = todo[0]
+
+  // A completed beat produces its grants and forecloses anything it lists.
+  const known = new Set(have)
+  const foreclosedByDone = new Set<string>()
+  for (const step of done) {
+    for (const g of step.grants) known.add(g)
+    for (const l of step.lockouts) foreclosedByDone.add(l)
+  }
+
+  const foreclosed: PlanStep[] = []
+  const blocked: PlanStep[] = []
+  const available: PlanStep[] = []
+  for (const step of todo) {
+    const isForeclosed =
+      step.lockouts.some((l) => known.has(l)) ||
+      foreclosedByDone.has(step.id) ||
+      (step.factId ? foreclosedByDone.has(step.factId) : false)
+    if (isForeclosed) {
+      foreclosed.push(step)
+      continue
+    }
+    const gated = step.requires.some((r) => !known.has(r))
+    if (gated) {
+      blocked.push(step)
+      continue
+    }
+    available.push(step)
+  }
+
+  const current = available[0]
   const detours: string[] = []
   if (current?.minLevel && character.level > 1 && character.level < current.minLevel) {
     detours.push(
@@ -133,5 +174,5 @@ export function planRoute(character: Character, route: EndingRoute) {
   }
   if (current?.obtain) detours.push(`While you are there, take ${current.obtain}.`)
   if (current?.lockout) detours.push(`Lockout: ${current.lockout}`)
-  return { locked, done, todo, current, detours, remain: todo.length, total: route.steps.length }
+  return { locked, done, todo, current, detours, remain: todo.length, total: route.steps.length, foreclosed, blocked, available }
 }
