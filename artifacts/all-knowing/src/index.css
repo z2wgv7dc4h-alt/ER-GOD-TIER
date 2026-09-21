@@ -526,3 +526,280 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   .map-stage, .split { grid-template-columns: 1fr; }
   .side, .panel + .panel { border-left: 0; border-top: 1px solid var(--line); }
 }
+
+/* ── Mobile shell pieces ───────────────────────────────────────────────
+   Hidden by default so desktop renders exactly as before; the
+   max-width:700px block below reveals and lays them out. */
+.tabbar { display: none; }
+.tarnished-toggle { display: none; }
+.sheet-head { display: none; }
+.sheet-backdrop { display: none; }
+.ribbon-toggle { display: none; }
+.atlas-toggle { display: none; }
+.side-controls { display: none; }
+.sheet-sit { display: none; }
+/* `contents` keeps the wrapper invisible on desktop: the children stay
+   direct flex items of their parent, so desktop spacing is untouched. */
+.ribbon-items { display: contents; }
+.topbar-sit { display: contents; }
+
+@media (max-width: 700px) {
+  /* ── Phone base: arm's-length type scale ─────────────────────────── */
+  body { font-size: 16px; }
+  .note { font-size: 14px; }
+  .kicker,
+  .char-card .label,
+  .stat label,
+  .gear-row em { font-size: 11px; letter-spacing: 0.1em; }
+  .list li { font-size: 14px; }
+  .codex-head { font-size: 14px; }
+  .steps li { font-size: 15px; }
+  .card h3 { font-size: 17px; }
+  .search { min-height: 44px; font-size: 15px; }
+
+  /* ── Touch targets ───────────────────────────────────────────────── */
+  .chip,
+  .ghost {
+    min-height: 38px;
+    padding: 8px 12px;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+  }
+  .quest { padding: 14px; }
+  .pickup-row .chip,
+  .gideon .chip { min-height: 42px; }
+
+  /* ── App frame: one row for the room, one for the tab bar ────────── */
+  .app,
+  .app.sit {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  /* ── Bottom tab bar ──────────────────────────────────────────────── */
+  .tabbar {
+    grid-row: 2;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    border-top: 1px solid var(--line);
+    background: linear-gradient(180deg, #120f0a 0%, #0b0906 100%);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    z-index: 30;
+  }
+  .tabbar button {
+    min-height: 58px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background: transparent;
+    border: 0;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 6px 2px;
+  }
+  .tabbar button img {
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+    border-radius: 3px;
+    border: 1px solid var(--line-soft);
+  }
+  .tabbar button.active { color: var(--gold); }
+  .tabbar button.active img { border-color: var(--gold-dim); }
+
+  /* ── Workspace / top bar ─────────────────────────────────────────── */
+  .workspace { display: flex; flex-direction: column; min-height: 0; }
+  .stage { flex: 1 1 auto; min-height: 0; }
+
+  .topbar {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar h2 { font-size: 13px; }
+  .topbar .search { order: 10; flex: 1 1 100%; }
+  .topbar .toggles { display: none; }
+  .topbar-sit { display: none; }
+
+  .tarnished-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+    min-height: 38px;
+    padding: 6px 12px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    color: var(--gold);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    max-width: 52vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ── Tarnished sheet (the old rail) ──────────────────────────────── */
+  .rail {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 84vh;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px 16px calc(20px + env(safe-area-inset-bottom, 0px));
+    border: 0;
+    border-top: 1px solid var(--line);
+    border-radius: 16px 16px 0 0;
+    background: linear-gradient(180deg, #14110c 0%, #0b0906 100%);
+    overflow: auto;
+    transform: translateY(105%);
+    transition: transform 0.25s ease;
+  }
+  .app.sheet-open .rail { transform: translateY(0); }
+  .rail .brand,
+  .rail .nav { display: none; }
+  .char-card { margin-top: 0; flex-shrink: 1; }
+  .rail .char-card .stats { display: grid; }
+  .rail .drop { display: block; }
+
+  .sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .sheet-close {
+    min-height: 40px;
+    padding: 6px 16px;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .sheet-sit { display: block; }
+  .sheet-sit .chip { margin-right: 8px; margin-top: 4px; }
+
+  .sheet-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 39;
+    border: 0;
+    padding: 0;
+    background: rgba(11, 9, 6, 0.62);
+  }
+  .app.sheet-open .sheet-backdrop { display: block; }
+
+  /* ── World ribbon: one line, tap to expand ───────────────────────── */
+  .world-ribbon {
+    max-height: none;
+    overflow: visible;
+    padding: 6px 12px;
+  }
+  .ribbon-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 38px;
+    padding: 6px 12px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .ribbon-items {
+    display: none;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+    max-height: 30vh;
+    overflow: auto;
+  }
+  .world-ribbon.open .ribbon-items { display: flex; }
+
+  /* ── Rooms: one scrolling column ─────────────────────────────────── */
+  .split { display: block; height: 100%; overflow: auto; -webkit-overflow-scrolling: touch; }
+  .split .panel { overflow: visible; padding: 16px 14px 28px; }
+  .codex-wrap { padding-bottom: 12px; }
+  .codex-grid { grid-template-columns: 1fr; padding: 14px; gap: 10px; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .stat { min-width: 0; }
+  .stat input { font-size: 22px; }
+  .gear-row { grid-template-columns: 76px 1fr auto; gap: 8px; font-size: 14px; }
+  .shots li { grid-template-columns: 96px 1fr; }
+  .shots img { width: 96px; height: 64px; }
+
+  /* ── Atlas: map owns the screen, details slide up ────────────────── */
+  .map-stage {
+    display: block;
+    position: relative;
+    height: 100%;
+  }
+  .map-stage .atlas { height: 100%; }
+  .atlas-toggle {
+    display: inline-flex;
+    align-items: center;
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    z-index: 6;
+    min-height: 44px;
+    padding: 0 16px;
+    background: rgba(20, 17, 12, 0.94);
+    border: 1px solid var(--gold-dim);
+    color: var(--gold);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .map-stage .side {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 64%;
+    z-index: 5;
+    padding: 14px;
+    border: 0;
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -10px 28px rgba(0, 0, 0, 0.55);
+    transform: translateY(100%);
+    transition: transform 0.22s ease;
+    overflow: auto;
+  }
+  .map-stage.side-open .side { transform: translateY(0); }
+  .side-controls { display: block; margin-bottom: 10px; }
+
+  /* ── Gideon as a full-height overlay tab ─────────────────────────── */
+  .guide { display: none; }
+  .app.guide-open .guide {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+    max-height: none;
+    z-index: 25;
+    overflow: auto;
+    padding: 16px 14px 28px;
+    border: 0;
+    background: linear-gradient(180deg, #120f0a 0%, #0b0906 100%);
+  }
+
+  /* ── First-run overlay fits a phone ──────────────────────────────── */
+  .first-sit { padding: 24px 16px; overflow: auto; }
+}
