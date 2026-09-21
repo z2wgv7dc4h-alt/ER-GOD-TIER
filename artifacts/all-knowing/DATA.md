@@ -24,6 +24,14 @@ All under `public/sourced/` unless noted.
 
 Coords from the same project: `open/coords.json` (~2k pins).
 
+ER Checklist (Nexus 9953, `sote-1.16`) — the pack's `mods/ercl/items.json` is a plain
+nine-category completion list (hex ids + names). Its spell/talisman/ash/cookbook/whetblade
+rows are already covered by the guide catalog; the gap-fill merge added the missing
+`gesture` category (50) and the three duplicate base-game crystal tears ERCL tracks
+separately, and aligned the catalog's `dlc` flag on 19 rows. Only that JSON file was read;
+none of the pack's overlay binaries are used or referenced anywhere in this repo.
+See `docs/REVIEW.md`.
+
 ## Open / Goblins / Paramdex
 
 | File | What |
