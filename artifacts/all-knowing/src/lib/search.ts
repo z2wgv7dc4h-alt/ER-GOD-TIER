@@ -38,7 +38,13 @@ export function searchSync(query: string): SearchHit[] {
     add({ id: l.id, name: l.name, detail: l.how, source: 'loot', module: 'map' })
   }
   for (const s of findSellers(q).slice(0, 4)) {
-    add({ id: `shop:${s.vendor}`, name: s.item, detail: `buy · ${s.vendor}`, source: 'shop', module: 'codex' })
+    add({
+      id: `shop:${s.vendor}`,
+      name: s.item,
+      detail: s.condition ? `buy · ${s.vendor} · after: ${s.condition}` : `buy · ${s.vendor}`,
+      source: 'shop',
+      module: 'codex',
+    })
   }
   const boss = findBossPin(q)
   if (boss) add({ id: boss.id, name: boss.name, detail: `${boss.world} · ${boss.x},${boss.y}`, source: 'boss', module: 'map' })
