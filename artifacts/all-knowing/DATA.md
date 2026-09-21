@@ -84,6 +84,24 @@ See `docs/REVIEW.md`.
 
 FanAPI JSON (weapons, armors, spells, …) + `hunts.json` (207 flags) + `graces.json`.
 
+## Item / boss images (generated)
+
+- `public/sourced/images/<category>/<id>.webp` — 2,244 FanAPI thumbnails (160 px WebP,
+  ~15 MB) for weapons, armors, talismans, sorceries, incantations, items, ashes, spirits,
+  ammos, shields, classes, creatures, npcs, bosses and locations. The checklist rows already
+  carried a FanAPI `image` URL; bosses/locations are fetched from the API. Produced by
+  `python3 scripts/ingest-images.py`.
+- `src/data/image-index.json` — normalised name → local thumbnail path (~2.1k names). Imported
+  synchronously by `src/lib/fanImage.ts`; the Codex renders these pictures on guide, loot,
+  collectible, armory and hunt cards. No Codex render hits the network.
+- **Coverage is base-game only.** The FanAPI predates Shadow of the Erdtree: base-game guide
+  items resolve 1,480/2,009 (74%), overall 1,487/2,490 (60%), DLC 7/481 (1.5%); armory weapons
+  300/307 base (DLC weapons are the misses); catalog item/boss facts 119/170 base, 0/14 SotE.
+  A handful of base-game rows the FanAPI lacks (Margit, Rennala, Morgott, most Great Runes, most
+  invaders) fall back to the category glyph. Reported honestly, not guessed. See
+  `THIRD_PARTY_NOTICES.md` for source and licence.
+
+
 ## Authored (small, keep)
 
 `src/knowledge/{catalog,endings,storylines,loot,builds,collectibles,completion,missables}.ts`

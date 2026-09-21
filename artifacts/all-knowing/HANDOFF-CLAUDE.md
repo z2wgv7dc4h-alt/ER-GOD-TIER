@@ -235,7 +235,11 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 18. ⬜ `ItemLotParam_*` chest facts from `world-lots.json` — not addressed.
 19. ⬜ Query-load `msb-enemies.json` — not addressed.
 20. ⬜ Gathering nodes (21k, nameless AEG) — not addressed.
-21. ⬜ FanAPI images via `fanImage()` — not addressed.
+21. ✅ FanAPI images via `fanImage()` — Task 36. No stub existed; built `src/lib/fanImage.ts`
+    over a generated `src/data/image-index.json` and 2,244 cached 160 px WebP thumbnails under
+    `public/sourced/images/` (`scripts/ingest-images.py`). Wired into the Codex (guide, loot,
+    collectible, armory, hunt and catalog cards). Base-game only: FanAPI predates SotE, so DLC
+    entries fall back to the category glyph. Coverage reported in `DATA.md`.
 22. ✅ Sacred tear / golden seed starter → more complete. (Task 16: golden seeds 7→42, sacred
     tears confirmed matching the authoritative pack at 12/12, plus a new `gesture` category and
     3 crystal-tear entries filled in from the same pass.)

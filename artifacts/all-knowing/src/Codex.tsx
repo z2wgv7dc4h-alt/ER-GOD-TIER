@@ -11,7 +11,14 @@ import { matchGuide, useGuide } from './lib/guide'
 import { flaskUpgrades, mapFragments, scadutreeFragments } from './knowledge/collectibles'
 import { npcDisplayCards } from './knowledge/npc-display'
 import { iconFor } from './lib/sourcePack'
+import { fanImage } from './lib/fanImage'
 import { useWorkspace } from './state'
+
+function CodexThumb({ name, aliases }: { name: string; aliases?: string[] }) {
+  const src = fanImage(name, aliases)
+  if (!src) return null
+  return <img className="codex-thumb" src={src} alt="" loading="lazy" decoding="async" />
+}
 
 export function CodexWorkspace() {
   const { query, setSelectedMarkerId, setModule, character, setCharacter } = useWorkspace()
@@ -51,6 +58,7 @@ export function CodexWorkspace() {
           <div className="codex-grid">
             {guideHits.items.map((e) => (
               <article className="card" key={e.id}>
+                <CodexThumb name={e.name} />
                 <div className="kicker">{e.category}{e.missable ? ' · missable' : ''}{e.quest ? ` · ${e.quest}` : ''}</div>
                 <h3>{e.name}</h3>
                 <p className="note">{e.how}</p>
@@ -88,6 +96,7 @@ export function CodexWorkspace() {
           <div className="codex-grid">
             {openHits.map((e) => (
               <article className="card" key={e.id}>
+                <CodexThumb name={e.name} />
                 <div className="kicker">{e.detail}</div>
                 <h3>{e.name}</h3>
                 <button type="button" className="chip" onClick={() => setCharacter(applyFacts(character, [e.id], 'answer', 'open dump'))}>Log</button>
@@ -100,6 +109,7 @@ export function CodexWorkspace() {
       <div className="codex-grid">
         {[...scadutreeFragments, ...mapFragments, ...flaskUpgrades].filter((e) => !q || `${e.name} ${e.region} ${e.note}`.toLowerCase().includes(q)).slice(0, 10).map((e) => (
           <article className="card" key={e.id}>
+            <CodexThumb name={e.name} />
             <div className="kicker">{e.campaign} · {e.region}</div>
             <h3>{e.name}</h3>
             <p className="note">{e.note}</p>
@@ -113,6 +123,7 @@ export function CodexWorkspace() {
           <div className="codex-grid">
             {weapons.filter((e) => `${e.name} ${e.type} ${e.where} ${e.skill}`.toLowerCase().includes(q)).slice(0, 8).map((e) => (
               <article className="card" key={e.name}>
+                <CodexThumb name={e.name} />
                 <div className="kicker">{e.type}{e.dlc ? ' · DLC' : ''} · {e.skill}</div>
                 <h3>{e.name}</h3>
                 <p className="note">{e.where || 'Location in extract / wiki.'}</p>
@@ -120,6 +131,7 @@ export function CodexWorkspace() {
             ))}
             {bosses.filter((e) => `${e.name} ${e.region} ${e.notes}`.toLowerCase().includes(q)).slice(0, 4).map((e) => (
               <article className="card" key={e.name + String(e.phase)}>
+                <CodexThumb name={e.name} />
                 <div className="kicker">{e.type} · {e.region}{e.parryable ? ' · parryable' : ''}</div>
                 <h3>{e.name}</h3>
                 <p className="note">{e.notes || 'Remembrance / field boss.'}</p>
@@ -132,6 +144,7 @@ export function CodexWorkspace() {
       <div className="codex-grid">
         {(hunts.length ? hunts : fieldHunts.map((e) => ({ ...e, place: '', flag: 0 }))).filter((e) => !q || `${e.name} ${e.region} ${(e as {place?: string}).place || ''}`.toLowerCase().includes(q)).slice(0, 16).map((e) => (
           <article className="card" key={e.id}>
+            <CodexThumb name={e.name} />
             <div className="kicker">{e.campaign} · {e.region}{(e as {place?: string}).place ? ` · ${(e as {place: string}).place}` : ''}{(e as {flag?: number}).flag ? ` · flag ${(e as {flag: number}).flag}` : ''}</div>
             <h3>{e.name}</h3>
             <button
@@ -164,6 +177,7 @@ export function CodexWorkspace() {
       <div className="codex-grid">
         {drops.map((e) => (
           <article className="card" key={e.id}>
+            <CodexThumb name={e.name} aliases={e.aliases} />
             <div className="kicker">
               <img src={iconFor(e.name, 'item').url} alt="" style={{ width: 18, height: 18, verticalAlign: 'middle', marginRight: 6 }} />
               {e.kind} · {e.region} · {e.campaign}{e.missable ? ' · missable' : ''}
@@ -181,6 +195,7 @@ export function CodexWorkspace() {
       <div className="codex-grid">
         {rows.map((e) => (
           <article className="card" key={e.id}>
+            <CodexThumb name={e.name} />
             <div className="kicker">{e.category} · {e.campaign}</div>
             <h3>{e.name}</h3>
             <p className="note">{e.snippet}</p>
