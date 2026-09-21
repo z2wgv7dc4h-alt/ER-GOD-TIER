@@ -16,6 +16,43 @@ dist-ssr
 # Keep this INSIDE the repo, not system temp - see docs/tasks/*.md for why.
 .scratch/
 
+# Vendored map engine (vendor/elden-ring-map) is committed source, but its
+# generated output comes from the user's own game install and must never be
+# committed: map tile pyramids, extracted icon sprites, and marker/param dumps.
+# (The nested vendor/elden-ring-map/.gitignore already covers these; repeated
+# here so the rule survives an upstream refresh that drops its .gitignore.)
+vendor/elden-ring-map/web/tiles/
+vendor/elden-ring-map/web/icons/*
+!vendor/elden-ring-map/web/icons/categories/
+vendor/elden-ring-map/cache/
+vendor/elden-ring-map/data/markers.json
+vendor/elden-ring-map/data/legacy-conv.json
+vendor/elden-ring-map/data/items.json
+vendor/elden-ring-map/data/pieces.json
+vendor/elden-ring-map/data/tips.json
+vendor/elden-ring-map/data/user-state.json
+vendor/elden-ring-map/data/timeline.jsonl
+
+
+# Vendored map engine (egormagurin/EldenRingMap) generated output.
+# The engine source is committed; tiles/markers/icons are extracted from the
+# user's own game install and must never be committed. vendor/elden-ring-map
+# has its own .gitignore for these; mirrored here so the root repo is safe even
+# if that file is ever lost.
+vendor/elden-ring-map/web/tiles/
+vendor/elden-ring-map/web/icons/*
+!vendor/elden-ring-map/web/icons/categories/
+vendor/elden-ring-map/cache/
+vendor/elden-ring-map/data/markers.json
+vendor/elden-ring-map/data/legacy-conv.json
+vendor/elden-ring-map/data/items.json
+vendor/elden-ring-map/data/pieces.json
+vendor/elden-ring-map/data/user-state.json
+vendor/elden-ring-map/data/timeline.jsonl
+vendor/elden-ring-map/data/tips.json
+vendor/elden-ring-map/__pycache__/
+vendor/elden-ring-map/**/__pycache__/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
