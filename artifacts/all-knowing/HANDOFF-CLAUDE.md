@@ -239,10 +239,16 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 22. ✅ Sacred tear / golden seed starter → more complete. (Task 16: golden seeds 7→42, sacred
     tears confirmed matching the authoritative pack at 12/12, plus a new `gesture` category and
     3 crystal-tear entries filled in from the same pass.)
-23. ⬜ Merge `fieldHunts` and `hunts.json` — not addressed.
+23. ✅ Merge `fieldHunts` and `hunts.json` — resolved (Task 37): `hunts.json` is the single
+    canonical source; `fieldHunts` is now a 22-entry curated alias layer derived from it, the
+    redundant `src/data/hunt-flags.json` copy is deleted, and one id dialect is shared by
+    Gideon, Codex and the save parser. See `docs/research/hunt-data-cleanup.md`.
 24. ⬜ `items.json` vs `catalog.json` size note — informational, not actioned.
-25. ⬜ vawser event-flag dump — not ingested (Task 11 generated its *own* smaller event-flag
-    table from an original save-format implementation, a different source, for a narrower need).
+25. ✅ vawser event-flag dump — audited (Task 37) and closed as "new family, nothing to add for
+    the current need": 0 of its 480 named flags overlap Task 11's 642, but its payload is
+    item-acquisition/great-rune flags with no consumer, its 25 boss flags duplicate bosses
+    already tracked (24/25), and 132/480 aren't even addressable in the save bitfield. See
+    `docs/research/vawser-event-flags-audit.md`.
 26. ✅ Carian JP / dialog — investigated (Task 14): both Elden Refs and Carian Archive turned out
     to be a strict subset of `names.json` already in-repo (same corpus, EN names identical, 0
     diff across 34 FMG sections); the only non-redundant payload was JP text with no consumer

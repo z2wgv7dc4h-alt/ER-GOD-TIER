@@ -173,6 +173,7 @@ SOFTWARE.
 - **Derived game-fact tables (original joins against our own data):**
   - `src/data/grace-flags.json` — grace discovery flag ids, derived by matching our
     `public/sourced/checklists/graces.json` names to the reference grace table (412 of 418).
-  - `src/data/hunt-flags.json` — field-boss kill flags, generated from our own
-    `public/sourced/checklists/hunts.json` (BuLEEto checklist).
+  - field-boss kill flags are read directly from our own
+    `public/sourced/checklists/hunts.json` (BuLEEto checklist); the former
+    `src/data/hunt-flags.json` projection was removed in Task 37 so it cannot drift.
 

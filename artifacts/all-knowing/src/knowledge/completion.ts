@@ -1,6 +1,8 @@
 /** Rules taken from XArckX “Location And Field's Boss Completion Check” (Nexus 9974).
  *  The zip is a game patch (regulation.bin + map gfx). We keep the meaning, not the binaries.
  */
+import huntsJson from '../../public/sourced/checklists/hunts.json'
+
 export type CompleteHow = 'chest' | 'final-boss' | 'named-boss' | 'skip'
 
 export const completionRules: { kind: string; how: CompleteHow; note: string }[] = [
@@ -19,33 +21,65 @@ export type FieldHunt = {
   id: string
   name: string
   aliases: string[]
+  /** Canonical spawn the curated entry points at (a shared id can have several). */
+  place: string
   region: string
   campaign: 'base' | 'sote'
 }
 
-export const fieldHunts: FieldHunt[] = [
-  { id: 'hunt:agheel', name: 'Flying Dragon Agheel', aliases: ['agheel'], region: 'Limgrave', campaign: 'base' },
-  { id: 'hunt:smarag', name: 'Glintstone Dragon Smarag', aliases: ['smarag'], region: 'Liurnia', campaign: 'base' },
-  { id: 'hunt:adula', name: 'Glintstone Dragon Adula', aliases: ['adula'], region: 'Moonlight Altar', campaign: 'base' },
-  { id: 'hunt:lansseax', name: 'Ancient Dragon Lansseax', aliases: ['lansseax'], region: 'Altus', campaign: 'base' },
-  { id: 'hunt:greyll', name: 'Flying Dragon Greyll', aliases: ['greyll'], region: 'Caelid', campaign: 'base' },
-  { id: 'hunt:ekzykes', name: 'Decaying Ekzykes', aliases: ['ekzykes'], region: 'Caelid', campaign: 'base' },
-  { id: 'hunt:borealis', name: 'Borealis the Freezing Fog', aliases: ['borealis'], region: 'Mountaintops', campaign: 'base' },
-  { id: 'hunt:theodorix', name: 'Great Wyrm Theodorix', aliases: ['theodorix'], region: 'Consecrated Snowfield', campaign: 'base' },
-  { id: 'hunt:oneil', name: "Commander O'Neil", aliases: ['oneil', "o'neil"], region: 'Swamp of Aeonia', campaign: 'base' },
-  { id: 'hunt:fallingstar-limgrave', name: 'Fallingstar Beast', aliases: ['fallingstar'], region: 'Limgrave / Sellia Crystal', campaign: 'base' },
-  { id: 'hunt:godskin-windmill', name: 'Godskin Apostle (Windmill)', aliases: ['windmill apostle'], region: 'Dominula', campaign: 'base' },
-  { id: 'hunt:tibia', name: 'Tibia Mariner', aliases: ['tibia'], region: 'Several', campaign: 'base' },
-  { id: 'hunt:tree-sentinel-limgrave', name: 'Tree Sentinel (Limgrave)', aliases: ['tree sentinel'], region: 'Limgrave', campaign: 'base' },
-  { id: 'hunt:bell-hunter', name: 'Bell Bearing Hunter', aliases: ['bell bearing'], region: 'Several', campaign: 'base' },
-  { id: 'hunt:kindred', name: 'Black Blade Kindred', aliases: ['kindred'], region: 'Bestial Sanctum / Forbidden Lands', campaign: 'base' },
-  { id: 'hunt:draconic-capital', name: 'Draconic Tree Sentinel', aliases: ['draconic'], region: 'Capital Outskirts', campaign: 'base' },
-  { id: 'hunt:dragonkin', name: 'Dragonkin Soldier', aliases: ['dragonkin'], region: 'Siofra / Lake of Rot', campaign: 'base' },
-  { id: 'hunt:ralva', name: 'Ralva the Great Red Bear', aliases: ['ralva'], region: 'Scadu Altus', campaign: 'sote' },
-  { id: 'hunt:rugalea', name: 'Rugalea the Great Red Bear', aliases: ['rugalea'], region: 'Rauh', campaign: 'sote' },
-  { id: 'hunt:ghostflame', name: 'Ghostflame Dragon', aliases: ['ghostflame dragon'], region: 'Gravesite / Scadu', campaign: 'sote' },
-  { id: 'hunt:jagged-drake', name: 'Jagged Peak Drake', aliases: ['jagged peak drake'], region: 'Jagged Peak', campaign: 'sote' },
-  { id: 'hunt:marigga', name: 'Demi-Human Queen Marigga', aliases: ['marigga'], region: 'Cerulean Coast', campaign: 'sote' },
-  { id: 'hunt:fingerstone-beast', name: 'Fallingstar Beast (Fingerstone Hill)', aliases: ['fingerstone'], region: 'Fingerstone Hill', campaign: 'sote' },
-  { id: 'hunt:shaman-sentinels', name: 'Tree Sentinel duo (Shaman Village)', aliases: ['shaman sentinels'], region: 'Hinterland', campaign: 'sote' },
+/** One row of the canonical BuLEEto field-hunt dump. A boss with several spawns
+ *  shares one `id` across several rows (one per `place`/`flag`). */
+type CanonicalHunt = {
+  id: string
+  name: string
+  place: string
+  region: string
+  flag: number
+  campaign: 'base' | 'sote'
+}
+
+/**
+ * The canonical field-hunt dataset is `public/sourced/checklists/hunts.json` — the
+ * same file Codex fetches at runtime and the save parser reads flags from. There is
+ * no second, independently-authored hunt table: `fieldHunts` below is only the
+ * curated alias layer Gideon matches on, and every id/name/region/campaign on it is
+ * derived from this dump (see `docs/research/hunt-data-cleanup.md`).
+ */
+export const canonicalHunts = huntsJson as CanonicalHunt[]
+
+/** Curated hunts Gideon knows by short alias, keyed to the canonical `hunt:` id.
+ *  `place` disambiguates an id shared by several spawns (first row wins otherwise). */
+const HUNT_CURATION: { id: string; aliases: string[]; place?: string }[] = [
+  { id: 'hunt:flying-dragon-agheel', aliases: ['agheel'] },
+  { id: 'hunt:glintstone-dragon-smarag', aliases: ['smarag'] },
+  { id: 'hunt:glintstone-dragon-adula', aliases: ['adula'] },
+  { id: 'hunt:ancient-dragon-lansseax', aliases: ['lansseax'] },
+  { id: 'hunt:flying-dragon-greyll', aliases: ['greyll'] },
+  { id: 'hunt:decaying-ekzykes', aliases: ['ekzykes'] },
+  { id: 'hunt:borealis-the-freezing-fog', aliases: ['borealis'] },
+  { id: 'hunt:great-wyrm-theodorix', aliases: ['theodorix'] },
+  { id: 'hunt:commander-o-neil', aliases: ['oneil', "o'neil"] },
+  { id: 'hunt:fallingstar-beast', place: 'Sellia Crystal Tunnel', aliases: ['fallingstar', 'fingerstone'] },
+  { id: 'hunt:godskin-apostle', place: 'Dominula, Windmill Village', aliases: ['windmill apostle'] },
+  { id: 'hunt:tibia-mariner', aliases: ['tibia'] },
+  { id: 'hunt:tree-sentinel', place: 'Church of Elleh', aliases: ['tree sentinel', 'shaman sentinels'] },
+  { id: 'hunt:bell-bearing-hunter', aliases: ['bell bearing'] },
+  { id: 'hunt:black-blade-kindred', aliases: ['kindred'] },
+  { id: 'hunt:draconic-tree-sentinel', aliases: ['draconic'] },
+  { id: 'hunt:dragonkin-soldier', aliases: ['dragonkin'] },
+  { id: 'hunt:ralva-the-great-red-bear', aliases: ['ralva'] },
+  { id: 'hunt:rugalea-the-great-red-bear', aliases: ['rugalea'] },
+  { id: 'hunt:ghostflame-dragon', aliases: ['ghostflame dragon'] },
+  { id: 'hunt:jagged-peak-drake', aliases: ['jagged peak drake'] },
+  { id: 'hunt:demi-human-queen-marigga', aliases: ['marigga'] },
 ]
+
+function canonicalRow(id: string, place?: string): CanonicalHunt | undefined {
+  return canonicalHunts.find((row) => row.id === id && (!place || row.place === place))
+}
+
+export const fieldHunts: FieldHunt[] = HUNT_CURATION.map(({ id, aliases, place }) => {
+  const row = canonicalRow(id, place)
+  if (!row) throw new Error(`fieldHunts: ${id} is not in hunts.json — the canonical dump changed`)
+  return { id: row.id, name: row.name, aliases, place: row.place, region: row.region, campaign: row.campaign }
+})

@@ -84,6 +84,11 @@ See `docs/REVIEW.md`.
 
 FanAPI JSON (weapons, armors, spells, …) + `hunts.json` (207 flags) + `graces.json`.
 
+`public/sourced/checklists/hunts.json` is the single canonical field-hunt dataset (BuLEEto):
+Codex fetches it, `src/knowledge/completion.ts` derives `fieldHunts` from it, and
+`src/lib/sl2/facts.ts` reads its flags directly. There is no separate `hunt-flags.json` copy
+(deleted in Task 37 — it could drift). See `docs/research/hunt-data-cleanup.md`.
+
 ## Authored (small, keep)
 
 `src/knowledge/{catalog,endings,storylines,loot,builds,collectibles,completion,missables}.ts`
