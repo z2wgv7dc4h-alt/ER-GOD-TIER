@@ -14,6 +14,10 @@ act") — **this task does not add an LLM**, it improves two specific response h
 existing deterministic router. A separate, larger task covers the eventual LLM upgrade; don't
 attempt that here.
 
+**Sequencing note**: Task 20 (real LLM behind Gideon) also touches `gideon.ts` substantially. Run
+this task (19) and Task 20 sequentially, not in parallel, to avoid a large merge conflict in the
+same file — whichever lands first, merge and re-verify before starting the other.
+
 ## Part A — real boss-resist detours (the "stuck" handler, gideon.ts ~line 184)
 
 Today, asking Gideon for help against a boss/hunt returns generic advice regardless of the
