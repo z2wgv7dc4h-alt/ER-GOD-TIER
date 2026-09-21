@@ -63,3 +63,4 @@ vendor/elden-ring-map/**/__pycache__/
 *.njsproj
 *.sln
 *.sw?
+.env.local

@@ -15,7 +15,13 @@ Do not add a module that cannot read or write `Character`.
 
 ## Architecture that is still missing (add these, in this order)
 
-### 1. Three-state facts
+**Status pass 2026-09-22**: items 1, 3, 4 turned out to already be implemented when this batch of
+task work started (verified, not built fresh). Item 7 is now done. Item 2 partially done. Item 8
+is in progress. See each item below for specifics.
+
+### 1. Three-state facts — ✅ already implemented (verified 2026-09-22, not built fresh:
+`factState()` / `FactState` (`true | false | unknown`) already existed before this batch of task
+work started)
 
 Today a grace is either on a list or not. That collapses “never been there” and “we have not asked.”
 
@@ -30,7 +36,14 @@ FactState = true | false | unknown
 
 Without this, a PS5 player who has not photographed Caelid looks the same as someone who skipped it.
 
-### 2. Alias plane
+### 2. Alias plane — 🔄 partially done
+
+Done for graces and bosses (`src/lib/aliases.ts`, Task 06's boss extension). Task 14 investigated
+the FMG-name half of this (Elden Refs / Carian Archive) and found both redundant with
+`names.json` already in-repo — closed as no deliverable, not because the alias plane is finished,
+but because those two specific sources had nothing left to add. The generated-after-extract
+`aliases.json` this section describes (param row → slug, FMG name → slug, fed by a real game
+extract) is Task 09/17's territory, in progress.
 
 ```
 engineId   grace:10000800
@@ -41,7 +54,9 @@ aliases    elleh, church of elleh
 
 One generated `aliases.json` after extract. Every other plane keys off the slug. This is the last real blocker between Reckoning and the live map.
 
-### 3. Profiles
+### 3. Profiles — ✅ already implemented (verified 2026-09-22: `src/lib/vault.ts` already had a
+full `Profile` type, `addProfile`/`switchProfile`/`deleteProfile`/`activeProfile`, before this
+batch of task work started. Not yet surfaced in the rail UI — see `HANDOFF-CLAUDE.md` P3 item 30)
 
 A household is more than one Tarnished.
 
@@ -54,7 +69,9 @@ PC: profiles are save-slot index + character name from the header.
 
 localStorage today is one blob. That will collide the moment someone tests a second run.
 
-### 4. Export packet
+### 4. Export packet — ✅ already implemented (verified 2026-09-22: `src/lib/packet.ts` /
+`vault.ts` already handled this — Task 06's tests confirmed a packet never contains screenshot
+blobs — before this batch of task work started)
 
 PS5 play is on a TV. Reckoning is on a phone. PC extract is on another box.
 
@@ -65,7 +82,11 @@ all-knowing.packet.json
 
 QR or file share, local only. This is how a living-room player gets state onto the PC that ran Setup.bat. Not an account.
 
-### 5. Conflict rules
+### 5. Conflict rules — ⬜ not audited
+
+`src/lib/infer.ts`'s `Evidence` shape already carries a confidence score (0.94 direct / 0.72
+inferred, per Task 06) which is adjacent to this, but the specific winner-table below has not
+been verified against the actual code path for two sources conflicting on the same fact.
 
 Same fact, two sources.
 
@@ -78,14 +99,20 @@ Same fact, two sources.
 
 Record the loser on `evidence[]`. Do not silently drop it.
 
-### 6. Regulation stamp
+### 6. Regulation stamp — ⬜ not done
+
+Task 10 documented which regulation line the Build lab's AR data comes from
+(`regulation-vanilla-v1.17.json`, confirmed upstream as the "Tarnished edition" commit) but did
+not add a `regulation` field to `Character`/catalog as this section describes. Still open.
 
 Character and catalog both carry `regulation: '1.17-tarnished-pack'`.  
 Clark AR, marker extract, and FMG dump must be the same stamp or the lab lies.
 
 Tarnished Pack is not a campaign tag on three weapons. It is a regulation overlay.
 
-### 7. Quest edges, not quest prose
+### 7. Quest edges, not quest prose — ✅ done (Task 12: `PlanStep` now carries real `requires`/
+`grants`/`lockouts` arrays, `planRoute` traverses them, both named test cases below are covered
+by real tests)
 
 ```
 Step { id, requires[], grants[], lockouts[], flag? }
@@ -94,7 +121,8 @@ Step { id, requires[], grants[], lockouts[], flag? }
 Lockout is an edge to a forbidden later step, not a warning paragraph.  
 Alexander in the Limgrave hole and Leda’s Enir-Ilim invitations are the test cases.
 
-### 8. Enemy absorb table
+### 8. Enemy absorb table — 🔄 in progress (Task 17, real `NpcParam` extraction via erdb against
+the local game install now available on this machine)
 
 Build lab question 2 (“what should I hit this with?”) needs a boss row: absorb, stance, resistances, status.  
 Source: ERDB `NpcParam` + a hand table for legendary fights.  
