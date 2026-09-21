@@ -7,6 +7,13 @@ All under `public/sourced/` unless noted.
 - `maps/m0-overworld.jpg` — Armory plate (not the 176 MB official mosaic)
 - `maps/m1-underground.jpg` — user / pack underground
 
+## Attack rating (Build lab)
+
+- `regulation-vanilla-v1.17.json` — ThomasJClark/elden-ring-weapon-calculator's vanilla 1.17 /
+  Tarnished Pack regulation data (MIT). CalcCorrectGraphs, AttackElementCorrect, reinforce rates,
+  weapon base damage/scaling/requirements, and Tarnished Pack weapon rows. Loaded on demand by
+  `src/lib/ar.ts`. See `THIRD_PARTY_NOTICES.md`.
+
 ## Guide (aether-auto/er-guide)
 
 - `guide/items.json` 2.4k items with acquisition

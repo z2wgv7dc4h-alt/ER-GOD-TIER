@@ -79,14 +79,24 @@ Found but **not yet license/activity-verified** — DeepSeek should re-check bef
 - `jtross6/EldenRingBuildRandomizer` — build randomizer, Phase 2 feature candidate
 - `EldenForge/EldenForge_API` — broad REST API covering nearly every data category, redundant with erdb but worth a coverage diff if erdb is missing something
 
-## Licensing policy (non-negotiable)
+## Licensing policy (relaxed 2026-09-22 — personal, educational project)
 
-- Only integrate MIT/Apache-2.0/BSD-licensed code or data. No GPL (copyleft) unless the user
-  explicitly signs off on it, since it would force this project's license.
-- Every vendored dataset, ported algorithm, or adapted component gets an entry in
-  `THIRD_PARTY_NOTICES.md`: source repo, license, what was taken, what was changed.
-- Never copy wiki flavor text/prose verbatim. Numeric stats (damage, scaling, requirements,
-  locations) are facts and fine to use; descriptions/lore text must be paraphrased or omitted.
+The user has confirmed this is a **personal, educational, non-commercial, non-distributed**
+project and is fine with using data available on the internet generally — don't gate ingestion on
+finding an explicit permissive license first, and don't treat "no LICENSE file found" as a reason
+to stop and ask. This replaces the earlier stricter policy that blocked/flagged sources like the
+Nexus 960 resource pack over unstated licenses.
+
+Baseline sense still applies, independent of licensing formality:
+- Don't reproduce another author's specific creative prose (wiki descriptions, a fan walkthrough's
+  narrative text) verbatim as if original — paraphrase or omit it. This is about not passing off
+  someone else's writing as the project's own, not a license-compliance exercise.
+- Respect this project's own stated non-goals regardless of source licensing: don't bulk-ship
+  FromSoftware's actual map/tile archives, don't invent attack-rating numbers, etc. — see
+  `HANDOFF-CLAUDE.md`'s "Refuse" list in the All-Knowing repo.
+- Still worth a brief note in `THIRD_PARTY_NOTICES.md` for anything substantial that was ported
+  or vendored, as a simple provenance record — not a compliance gate, just good practice.
+- If this project's scope ever changes toward public release or commercial use, revisit this.
 
 ## MVP feature scope (Tasks 01–07)
 
