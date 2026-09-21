@@ -1,0 +1,2928 @@
+[
+ {
+  "id": "grace:100000",
+  "warpId": 100000,
+  "name": "Godrick the Grafted",
+  "region": "Stormveil Castle",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:100001",
+  "warpId": 100001,
+  "name": "Margit, the Fell Omen",
+  "region": "Stormhill",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:100002",
+  "warpId": 100002,
+  "name": "Castleward Tunnel",
+  "region": "Stormhill",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:100003",
+  "warpId": 100003,
+  "name": "Gateside Chamber",
+  "region": "Stormveil Castle",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:100004",
+  "warpId": 100004,
+  "name": "Stormveil Cliffside",
+  "region": "Stormveil Castle",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:100005",
+  "warpId": 100005,
+  "name": "Rampart Tower",
+  "region": "Stormveil Castle",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:100006",
+  "warpId": 100006,
+  "name": "Liftside Chamber",
+  "region": "Stormveil Castle",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:100007",
+  "warpId": 100007,
+  "name": "Secluded Cell",
+  "region": "Stormveil Castle",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:100008",
+  "warpId": 100008,
+  "name": "Stormveil Main Gate",
+  "region": "Stormveil Castle",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:110000",
+  "warpId": 110000,
+  "name": "Elden Throne",
+  "region": "Leyndell, Royal Capital",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:110001",
+  "warpId": 110001,
+  "name": "Erdtree Sanctuary",
+  "region": "Leyndell, Royal Capital",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:110002",
+  "warpId": 110002,
+  "name": "East Capital Rampart",
+  "region": "Leyndell, Royal Capital",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:110003",
+  "warpId": 110003,
+  "name": "Lower Capital Church",
+  "region": "Leyndell, Royal Capital",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:110004",
+  "warpId": 110004,
+  "name": "Avenue Balcony",
+  "region": "Leyndell, Royal Capital",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:110005",
+  "warpId": 110005,
+  "name": "West Capital Rampart",
+  "region": "Leyndell, Royal Capital",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:110007",
+  "warpId": 110007,
+  "name": "Queen's Bedchamber",
+  "region": "Leyndell, Royal Capital",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:110008",
+  "warpId": 110008,
+  "name": "Fortified Manor, First Floor",
+  "region": "Leyndell, Royal Capital",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:110009",
+  "warpId": 110009,
+  "name": "Divine Bridge",
+  "region": "Leyndell, Royal Capital",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:110500",
+  "warpId": 110500,
+  "name": "Elden Throne",
+  "region": "Leyndell, Ashen Capital",
+  "world": "ashen"
+ },
+ {
+  "id": "grace:110501",
+  "warpId": 110501,
+  "name": "Erdtree Sanctuary",
+  "region": "Leyndell, Ashen Capital",
+  "world": "ashen"
+ },
+ {
+  "id": "grace:110502",
+  "warpId": 110502,
+  "name": "East Capital Rampart",
+  "region": "Leyndell, Ashen Capital",
+  "world": "ashen"
+ },
+ {
+  "id": "grace:110503",
+  "warpId": 110503,
+  "name": "Leyndell, Capital of Ash",
+  "region": "Leyndell, Ashen Capital",
+  "world": "ashen"
+ },
+ {
+  "id": "grace:110504",
+  "warpId": 110504,
+  "name": "Queen's Bedchamber",
+  "region": "Leyndell, Ashen Capital",
+  "world": "ashen"
+ },
+ {
+  "id": "grace:110505",
+  "warpId": 110505,
+  "name": "Divine Bridge",
+  "region": "Leyndell, Ashen Capital",
+  "world": "ashen"
+ },
+ {
+  "id": "grace:111000",
+  "warpId": 111000,
+  "name": "Table of Lost Grace",
+  "region": "Roundtable Hold",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:120100",
+  "warpId": 120100,
+  "name": "Dragonkin Soldier of Nokstella",
+  "region": "Ainsel River",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120101",
+  "warpId": 120101,
+  "name": "Ainsel River Well Depths",
+  "region": "Ainsel River",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120102",
+  "warpId": 120102,
+  "name": "Ainsel River Sluice Gate",
+  "region": "Ainsel River",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120103",
+  "warpId": 120103,
+  "name": "Ainsel River Downstream",
+  "region": "Ainsel River",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120104",
+  "warpId": 120104,
+  "name": "Ainsel River Main",
+  "region": "Ainsel River Main",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120105",
+  "warpId": 120105,
+  "name": "Nokstella, Eternal City",
+  "region": "Ainsel River Main",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120106",
+  "warpId": 120106,
+  "name": "Lake of Rot Shoreside",
+  "region": "Lake of Rot",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120108",
+  "warpId": 120108,
+  "name": "Grand Cloister",
+  "region": "Lake of Rot",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120109",
+  "warpId": 120109,
+  "name": "Nokstella Waterfall Basin",
+  "region": "Ainsel River Main",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120200",
+  "warpId": 120200,
+  "name": "Great Waterfall Basin",
+  "region": "Nokron, Eternal City",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120201",
+  "warpId": 120201,
+  "name": "Mimic Tear",
+  "region": "Nokron, Eternal City",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120203",
+  "warpId": 120203,
+  "name": "Siofra River Bank",
+  "region": "Siofra River",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120204",
+  "warpId": 120204,
+  "name": "Worshippers' Woods",
+  "region": "Siofra River",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120206",
+  "warpId": 120206,
+  "name": "Ancestral Woods",
+  "region": "Nokron, Eternal City",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120207",
+  "warpId": 120207,
+  "name": "Aqueduct,Facing Cliffs",
+  "region": "Nokron, Eternal City",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120208",
+  "warpId": 120208,
+  "name": "Night's Sacred Ground",
+  "region": "Nokron, Eternal City",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120209",
+  "warpId": 120209,
+  "name": "Below the Well",
+  "region": "Siofra River",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120300",
+  "warpId": 120300,
+  "name": "Prince of Death's Throne",
+  "region": "Deeproot Depths",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120301",
+  "warpId": 120301,
+  "name": "Root,Facing Cliffs",
+  "region": "Deeproot Depths",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120302",
+  "warpId": 120302,
+  "name": "Great Waterfall Crest",
+  "region": "Deeproot Depths",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120303",
+  "warpId": 120303,
+  "name": "Deeproot Depths",
+  "region": "Deeproot Depths",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120304",
+  "warpId": 120304,
+  "name": "The Nameless Eternal City",
+  "region": "Deeproot Depths",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120305",
+  "warpId": 120305,
+  "name": "Across the Roots",
+  "region": "Deeproot Depths",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120400",
+  "warpId": 120400,
+  "name": "Astel, Naturalborn of the Void",
+  "region": "Ainsel River",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120500",
+  "warpId": 120500,
+  "name": "Cocoon of the Empyrean",
+  "region": "Mohgwyn Palace",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120501",
+  "warpId": 120501,
+  "name": "Palace Approach Ledge,Road",
+  "region": "Mohgwyn Palace",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120502",
+  "warpId": 120502,
+  "name": "Dynasty Mausoleum Entrance",
+  "region": "Mohgwyn Palace",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120503",
+  "warpId": 120503,
+  "name": "Dynasty Mausoleum Midpoint",
+  "region": "Mohgwyn Palace",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120700",
+  "warpId": 120700,
+  "name": "Siofra River Well Depths",
+  "region": "Siofra River",
+  "world": "underground"
+ },
+ {
+  "id": "grace:120701",
+  "warpId": 120701,
+  "name": "Nokron, Eternal City",
+  "region": "Nokron, Eternal City",
+  "world": "underground"
+ },
+ {
+  "id": "grace:130000",
+  "warpId": 130000,
+  "name": "Maliketh, the Black Blade",
+  "region": "Crumbling Farum Azula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:130001",
+  "warpId": 130001,
+  "name": "Dragonlord Placidusax",
+  "region": "Crumbling Farum Azula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:130002",
+  "warpId": 130002,
+  "name": "Dragon Temple Altar",
+  "region": "Crumbling Farum Azula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:130003",
+  "warpId": 130003,
+  "name": "Crumbling Beast Grave",
+  "region": "Crumbling Farum Azula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:130004",
+  "warpId": 130004,
+  "name": "Crumbling Beast Grave Depths",
+  "region": "Crumbling Farum Azula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:130005",
+  "warpId": 130005,
+  "name": "Tempest,Facing Balcony",
+  "region": "Crumbling Farum Azula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:130006",
+  "warpId": 130006,
+  "name": "Dragon Temple",
+  "region": "Crumbling Farum Azula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:130007",
+  "warpId": 130007,
+  "name": "Dragon Temple Transept",
+  "region": "Crumbling Farum Azula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:130008",
+  "warpId": 130008,
+  "name": "Dragon Temple Lift",
+  "region": "Crumbling Farum Azula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:130009",
+  "warpId": 130009,
+  "name": "Dragon Temple Rooftop",
+  "region": "Crumbling Farum Azula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:130010",
+  "warpId": 130010,
+  "name": "Beside the Great Bridge",
+  "region": "Crumbling Farum Azula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:140000",
+  "warpId": 140000,
+  "name": "Raya Lucaria Grand Library",
+  "region": "Academy of Raya Lucaria",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:140001",
+  "warpId": 140001,
+  "name": "Debate Parlor",
+  "region": "Academy of Raya Lucaria",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:140002",
+  "warpId": 140002,
+  "name": "Church of the Cuckoo",
+  "region": "Academy of Raya Lucaria",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:140003",
+  "warpId": 140003,
+  "name": "Schoolhouse Classroom",
+  "region": "Academy of Raya Lucaria",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:150000",
+  "warpId": 150000,
+  "name": "Malenia, Goddess of Rot",
+  "region": "Elphael, Brace of the Haligtree",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:150001",
+  "warpId": 150001,
+  "name": "Prayer Room",
+  "region": "Elphael, Brace of the Haligtree",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:150002",
+  "warpId": 150002,
+  "name": "Elphael Inner Wall",
+  "region": "Elphael, Brace of the Haligtree",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:150003",
+  "warpId": 150003,
+  "name": "Drainage Channel",
+  "region": "Elphael, Brace of the Haligtree",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:150004",
+  "warpId": 150004,
+  "name": "Haligtree Roots",
+  "region": "Elphael, Brace of the Haligtree",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:150005",
+  "warpId": 150005,
+  "name": "Haligtree Promenade",
+  "region": "Miquella's Haligtree",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:150006",
+  "warpId": 150006,
+  "name": "Haligtree Canopy",
+  "region": "Miquella's Haligtree",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:150007",
+  "warpId": 150007,
+  "name": "Haligtree Town",
+  "region": "Miquella's Haligtree",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:150008",
+  "warpId": 150008,
+  "name": "Haligtree Town Plaza",
+  "region": "Miquella's Haligtree",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:160000",
+  "warpId": 160000,
+  "name": "Rykard, Lord of Blasphemy",
+  "region": "Volcano Manor",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:160001",
+  "warpId": 160001,
+  "name": "Temple of Eiglay",
+  "region": "Volcano Manor",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:160002",
+  "warpId": 160002,
+  "name": "Volcano Manor",
+  "region": "Volcano Manor",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:160003",
+  "warpId": 160003,
+  "name": "Prison Town Church",
+  "region": "Volcano Manor",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:160004",
+  "warpId": 160004,
+  "name": "Guest Hall",
+  "region": "Volcano Manor",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:160005",
+  "warpId": 160005,
+  "name": "Audience Pathway",
+  "region": "Volcano Manor",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:160006",
+  "warpId": 160006,
+  "name": "Abductor Virgin",
+  "region": "Volcano Manor",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:160007",
+  "warpId": 160007,
+  "name": "Subterranean Inquisition Chamber",
+  "region": "Volcano Manor",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:180000",
+  "warpId": 180000,
+  "name": "Cave of Knowledge",
+  "region": "Stranded Graveyard",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:180001",
+  "warpId": 180001,
+  "name": "Stranded Graveyard",
+  "region": "Stranded Graveyard",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:190000",
+  "warpId": 190000,
+  "name": "Fractured Marika",
+  "region": "Stone Platform",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:200000",
+  "warpId": 200000,
+  "name": "Theatre of the Divine Beast",
+  "region": "Belurat, Tower Settlement",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:200001",
+  "warpId": 200001,
+  "name": "Belurat, Tower Settlement",
+  "region": "Belurat, Tower Settlement",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:200002",
+  "warpId": 200002,
+  "name": "Small Private Altar",
+  "region": "Belurat, Tower Settlement",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:200003",
+  "warpId": 200003,
+  "name": "Stagefront",
+  "region": "Belurat, Tower Settlement",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:200100",
+  "warpId": 200100,
+  "name": "Gate of Divinity",
+  "region": "Enir-Ilim",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:200102",
+  "warpId": 200102,
+  "name": "Enir-Ilim: Outer Wall",
+  "region": "Enir-Ilim",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:200103",
+  "warpId": 200103,
+  "name": "First Rise",
+  "region": "Enir-Ilim",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:200104",
+  "warpId": 200104,
+  "name": "Spiral Rise",
+  "region": "Enir-Ilim",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:200105",
+  "warpId": 200105,
+  "name": "Cleansing Chamber Anteroom",
+  "region": "Enir-Ilim",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:200106",
+  "warpId": 200106,
+  "name": "Divine Gate Front Staircase",
+  "region": "Enir-Ilim",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:210001",
+  "warpId": 210001,
+  "name": "Main Gate Plaza",
+  "region": "Shadow Keep",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:210002",
+  "warpId": 210002,
+  "name": "Shadow Keep Main Gate",
+  "region": "Shadow Keep",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:210006",
+  "warpId": 210006,
+  "name": "Church District Entrance",
+  "region": "Shadow Keep, Church District",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:210007",
+  "warpId": 210007,
+  "name": "Sunken Chapel",
+  "region": "Shadow Keep, Church District",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:210008",
+  "warpId": 210008,
+  "name": "Tree,Worship Passage",
+  "region": "Shadow Keep, Church District",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:210009",
+  "warpId": 210009,
+  "name": "Tree,Worship Sanctum",
+  "region": "Shadow Keep, Church District",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:210100",
+  "warpId": 210100,
+  "name": "Messmer's Dark Chamber",
+  "region": "Specimen Storehouse",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:210101",
+  "warpId": 210101,
+  "name": "Storehouse, First Floor",
+  "region": "Specimen Storehouse",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:210102",
+  "warpId": 210102,
+  "name": "Storehouse, Fourth Floor",
+  "region": "Specimen Storehouse",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:210103",
+  "warpId": 210103,
+  "name": "Storehouse, Seventh Floor",
+  "region": "Specimen Storehouse",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:210104",
+  "warpId": 210104,
+  "name": "Dark Chamber Entrance",
+  "region": "Specimen Storehouse",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:210105",
+  "warpId": 210105,
+  "name": "Storehouse, Back Section",
+  "region": "Specimen Storehouse",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:210106",
+  "warpId": 210106,
+  "name": "Storehouse, Loft",
+  "region": "Specimen Storehouse",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:210201",
+  "warpId": 210201,
+  "name": "West Rampart",
+  "region": "Specimen Storehouse",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:220000",
+  "warpId": 220000,
+  "name": "Garden of Deep Purple",
+  "region": "Stone Coffin Fissure",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:220001",
+  "warpId": 220001,
+  "name": "Stone Coffin Fissure",
+  "region": "Stone Coffin Fissure",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:220002",
+  "warpId": 220002,
+  "name": "Fissure Cross",
+  "region": "Stone Coffin Fissure",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:220003",
+  "warpId": 220003,
+  "name": "Fissure Waypoint",
+  "region": "Stone Coffin Fissure",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:220004",
+  "warpId": 220004,
+  "name": "Fissure Depths",
+  "region": "Stone Coffin Fissure",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:250000",
+  "warpId": 250000,
+  "name": "Finger Birthing Grounds",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:280000",
+  "warpId": 280000,
+  "name": "Discussion Chamber",
+  "region": "Midra's Manse",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:280001",
+  "warpId": 280001,
+  "name": "Manse Hall",
+  "region": "Midra's Manse",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:280002",
+  "warpId": 280002,
+  "name": "Midra's Library",
+  "region": "Midra's Manse",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:280003",
+  "warpId": 280003,
+  "name": "Second Floor Chamber",
+  "region": "Midra's Manse",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:300000",
+  "warpId": 300000,
+  "name": "Tombsward Catacombs",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:300100",
+  "warpId": 300100,
+  "name": "Impaler's Catacombs",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:300200",
+  "warpId": 300200,
+  "name": "Stormfoot Catacombs",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:300400",
+  "warpId": 300400,
+  "name": "Murkwater Catacombs",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:300500",
+  "warpId": 300500,
+  "name": "Black Knife Catacombs",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:300600",
+  "warpId": 300600,
+  "name": "Cliffbottom Catacombs",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:300700",
+  "warpId": 300700,
+  "name": "Wyndham Catacombs",
+  "region": "Mt. Gelmir",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:300800",
+  "warpId": 300800,
+  "name": "Sainted Hero's Grave",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:300900",
+  "warpId": 300900,
+  "name": "Gelmir Hero's Grave",
+  "region": "Mt. Gelmir",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:301000",
+  "warpId": 301000,
+  "name": "Auriza Hero's Grave",
+  "region": "Capital Outskirts",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:301100",
+  "warpId": 301100,
+  "name": "Deathtouched Catacombs",
+  "region": "Stormhill",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:301200",
+  "warpId": 301200,
+  "name": "Unsightly Catacombs",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:301300",
+  "warpId": 301300,
+  "name": "Auriza Side Tomb",
+  "region": "Capital Outskirts",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:301400",
+  "warpId": 301400,
+  "name": "Minor Erdtree Catacombs",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:301500",
+  "warpId": 301500,
+  "name": "Caelid Catacombs",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:301600",
+  "warpId": 301600,
+  "name": "War,Dead Catacombs",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:301700",
+  "warpId": 301700,
+  "name": "Giant,Conquering Hero's Grave",
+  "region": "Flame Peak",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:301800",
+  "warpId": 301800,
+  "name": "Giants' Mountaintop Catacombs",
+  "region": "Flame Peak",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:301900",
+  "warpId": 301900,
+  "name": "Consecrated Snowfield Catacombs",
+  "region": "Consecrated Snowfield",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:302000",
+  "warpId": 302000,
+  "name": "Hidden Path to the Haligtree",
+  "region": "Forbidden Lands",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:310000",
+  "warpId": 310000,
+  "name": "Murkwater Cave",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:310100",
+  "warpId": 310100,
+  "name": "Earthbore Cave",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:310200",
+  "warpId": 310200,
+  "name": "Tombsward Cave",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:310300",
+  "warpId": 310300,
+  "name": "Groveside Cave",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:310400",
+  "warpId": 310400,
+  "name": "Stillwater Cave",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:310500",
+  "warpId": 310500,
+  "name": "Lakeside Crystal Cave",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:310600",
+  "warpId": 310600,
+  "name": "Academy Crystal Cave",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:310700",
+  "warpId": 310700,
+  "name": "Seethewater Cave",
+  "region": "Mt. Gelmir",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:310900",
+  "warpId": 310900,
+  "name": "Volcano Cave",
+  "region": "Mt. Gelmir",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:311000",
+  "warpId": 311000,
+  "name": "Dragonbarrow Cave",
+  "region": "Greyoll's Dragonbarrow",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:311100",
+  "warpId": 311100,
+  "name": "Sellia Hideaway",
+  "region": "Greyoll's Dragonbarrow",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:311200",
+  "warpId": 311200,
+  "name": "Cave of the Forlorn",
+  "region": "Consecrated Snowfield",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:311500",
+  "warpId": 311500,
+  "name": "Coastal Cave",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:311700",
+  "warpId": 311700,
+  "name": "Highroad Cave",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:311800",
+  "warpId": 311800,
+  "name": "Perfumer's Grotto",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:311900",
+  "warpId": 311900,
+  "name": "Sage's Cave",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:312000",
+  "warpId": 312000,
+  "name": "Abandoned Cave",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:312100",
+  "warpId": 312100,
+  "name": "Gaol Cave",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:312200",
+  "warpId": 312200,
+  "name": "Spiritcaller's Cave",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:320000",
+  "warpId": 320000,
+  "name": "Morne Tunnel",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:320100",
+  "warpId": 320100,
+  "name": "Limgrave Tunnels",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:320200",
+  "warpId": 320200,
+  "name": "Raya Lucaria Crystal Tunnel",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:320400",
+  "warpId": 320400,
+  "name": "Old Altus Tunnel",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:320500",
+  "warpId": 320500,
+  "name": "Altus Tunnel",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:320700",
+  "warpId": 320700,
+  "name": "Gael Tunnel",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:320701",
+  "warpId": 320701,
+  "name": "Rear Gael Tunnel Entrance",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:320800",
+  "warpId": 320800,
+  "name": "Sellia Crystal Tunnel",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:321100",
+  "warpId": 321100,
+  "name": "Yelough Anix Tunnel",
+  "region": "Consecrated Snowfield",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:341000",
+  "warpId": 341000,
+  "name": "Limgrave Tower Bridge",
+  "region": "Stormhill",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:341002",
+  "warpId": 341002,
+  "name": "Divine Tower of Limgrave",
+  "region": "Stormhill",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:341100",
+  "warpId": 341100,
+  "name": "Study Hall Entrance",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:341101",
+  "warpId": 341101,
+  "name": "Liurnia Tower Bridge",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:341102",
+  "warpId": 341102,
+  "name": "Divine Tower of Liurnia",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:341200",
+  "warpId": 341200,
+  "name": "Divine Tower of West Altus",
+  "region": "Capital Outskirts",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:341201",
+  "warpId": 341201,
+  "name": "Sealed Tunnel",
+  "region": "Capital Outskirts",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:341202",
+  "warpId": 341202,
+  "name": "Divine Tower of West Altus: Gate",
+  "region": "Capital Outskirts",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:341301",
+  "warpId": 341301,
+  "name": "Divine Tower of Caelid: Basement",
+  "region": "Greyoll's Dragonbarrow",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:341302",
+  "warpId": 341302,
+  "name": "Divine Tower of Caelid: Center",
+  "region": "Greyoll's Dragonbarrow",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:341400",
+  "warpId": 341400,
+  "name": "Divine Tower of East Altus: Gate",
+  "region": "Forbidden Lands",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:341401",
+  "warpId": 341401,
+  "name": "Divine Tower of East Altus",
+  "region": "Forbidden Lands",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:341500",
+  "warpId": 341500,
+  "name": "Isolated Divine Tower",
+  "region": "Greyoll's Dragonbarrow",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:350000",
+  "warpId": 350000,
+  "name": "Cathedral of the Forsaken",
+  "region": "Subterranean Shunning,Grounds",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:350001",
+  "warpId": 350001,
+  "name": "Underground Roadside",
+  "region": "Subterranean Shunning,Grounds",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:350002",
+  "warpId": 350002,
+  "name": "Forsaken Depths",
+  "region": "Subterranean Shunning,Grounds",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:350003",
+  "warpId": 350003,
+  "name": "Leyndell Catacombs",
+  "region": "Subterranean Shunning,Grounds",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:350004",
+  "warpId": 350004,
+  "name": "Frenzied Flame Proscription",
+  "region": "Subterranean Shunning,Grounds",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:390000",
+  "warpId": 390000,
+  "name": "Magma Wyrm Makar",
+  "region": "Ruin,Strewn Precipice",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:390001",
+  "warpId": 390001,
+  "name": "Ruin,Strewn Precipice",
+  "region": "Ruin,Strewn Precipice",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:390002",
+  "warpId": 390002,
+  "name": "Ruin,Strewn Precipice Overlook",
+  "region": "Ruin,Strewn Precipice",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:400000",
+  "warpId": 400000,
+  "name": "Fog Rift Catacombs",
+  "region": "Gravesite Plain",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:400100",
+  "warpId": 400100,
+  "name": "Scorpion River Catacombs",
+  "region": "Rauh Base",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:400200",
+  "warpId": 400200,
+  "name": "Darklight Catacombs",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:410000",
+  "warpId": 410000,
+  "name": "Belurat Gaol",
+  "region": "Gravesite Plain",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:410100",
+  "warpId": 410100,
+  "name": "Bonny Gaol",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:410200",
+  "warpId": 410200,
+  "name": "Lamenter's Gaol",
+  "region": "Charo's Hidden Grave",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:420000",
+  "warpId": 420000,
+  "name": "Ruined Forge Lava Intake",
+  "region": "Gravesite Plain",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:420200",
+  "warpId": 420200,
+  "name": "Ruined Forge of Starfall Past",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:420300",
+  "warpId": 420300,
+  "name": "Taylew's Ruined Forge",
+  "region": "Rauh Base",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:430000",
+  "warpId": 430000,
+  "name": "Rivermouth Cave",
+  "region": "Gravesite Plain",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:430100",
+  "warpId": 430100,
+  "name": "Dragon's Pit",
+  "region": "Gravesite Plain",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:430101",
+  "warpId": 430101,
+  "name": "Dragon's Pit Terminus",
+  "region": "Gravesite Plain",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:61413200",
+  "warpId": 61413200,
+  "name": "Isolated Merchant's Shack",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61413300",
+  "warpId": 61413300,
+  "name": "Fourth Church of Marika",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61413500",
+  "warpId": 61413500,
+  "name": "Church of Dragon Communion",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61413800",
+  "warpId": 61413800,
+  "name": "Stormhill Shack",
+  "region": "Stormhill",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61423300",
+  "warpId": 61423300,
+  "name": "Weeping Evergaol",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61423600",
+  "warpId": 61423600,
+  "name": "Church of Elleh",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61423601",
+  "warpId": 61423601,
+  "name": "The First Step",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61423700",
+  "warpId": 61423700,
+  "name": "Gatefront Ruins",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61423800",
+  "warpId": 61423800,
+  "name": "Warmaster's Shack",
+  "region": "Stormhill",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61433000",
+  "warpId": 61433000,
+  "name": "Morne Moangrave",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61433100",
+  "warpId": 61433100,
+  "name": "Castle Morne Lift",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61433101",
+  "warpId": 61433101,
+  "name": "Behind the Castle",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61433102",
+  "warpId": 61433102,
+  "name": "Beside the Rampart Gaol",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61433400",
+  "warpId": 61433400,
+  "name": "Church of Pilgrimage",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61433500",
+  "warpId": 61433500,
+  "name": "Seaside Ruins",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61433700",
+  "warpId": 61433700,
+  "name": "Agheel Lake North",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61433800",
+  "warpId": 61433800,
+  "name": "Murkwater Coast",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61433900",
+  "warpId": 61433900,
+  "name": "Saintsbridge",
+  "region": "Stormhill",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61443300",
+  "warpId": 61443300,
+  "name": "Castle Morne Rampart",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61443301",
+  "warpId": 61443301,
+  "name": "South of the Lookout Tower",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61443302",
+  "warpId": 61443302,
+  "name": "Ailing Village Outskirts",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61443400",
+  "warpId": 61443400,
+  "name": "Bridge of Sacrifice",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61443500",
+  "warpId": 61443500,
+  "name": "Agheel Lake South",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61443600",
+  "warpId": 61443600,
+  "name": "Waypoint Ruins Cellar",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61443700",
+  "warpId": 61443700,
+  "name": "Mistwood Outskirts",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61443800",
+  "warpId": 61443800,
+  "name": "Artist's Shack",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61443900",
+  "warpId": 61443900,
+  "name": "Summonwater Village Outskirts",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61453300",
+  "warpId": 61453300,
+  "name": "Beside the Crater,Pocked Glade",
+  "region": "Weeping Peninsula",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61453600",
+  "warpId": 61453600,
+  "name": "Fort Haight West",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61454100",
+  "warpId": 61454100,
+  "name": "Cliffroad Terminus",
+  "region": "Gravesite Plain",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:61454200",
+  "warpId": 61454200,
+  "name": "Main Gate Cross",
+  "region": "Gravesite Plain",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:61463800",
+  "warpId": 61463800,
+  "name": "Third Church of Marika",
+  "region": "Limgrave",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61464000",
+  "warpId": 61464000,
+  "name": "Gravesite Plain",
+  "region": "Gravesite Plain",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:61464200",
+  "warpId": 61464200,
+  "name": "Three,Path Cross",
+  "region": "Gravesite Plain",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:61464400",
+  "warpId": 61464400,
+  "name": "Greatbridge, North",
+  "region": "Gravesite Plain",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:61474100",
+  "warpId": 61474100,
+  "name": "Scorched Ruins",
+  "region": "Gravesite Plain",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:61474300",
+  "warpId": 61474300,
+  "name": "Ellac River Cave",
+  "region": "Gravesite Plain",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:61474400",
+  "warpId": 61474400,
+  "name": "Castle Front",
+  "region": "Gravesite Plain",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:61474401",
+  "warpId": 61474401,
+  "name": "Castle Ensis Checkpoint",
+  "region": "Castle Ensis",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61484200",
+  "warpId": 61484200,
+  "name": "Pillar Path Waypoint",
+  "region": "Gravesite Plain",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:61484300",
+  "warpId": 61484300,
+  "name": "Pillar Path Cross",
+  "region": "Gravesite Plain",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:61484400",
+  "warpId": 61484400,
+  "name": "Ensis Moongazing Grounds",
+  "region": "Castle Ensis",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:61484401",
+  "warpId": 61484401,
+  "name": "Castle,Lord's Chamber",
+  "region": "Castle Ensis",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62334000",
+  "warpId": 62334000,
+  "name": "Altar South",
+  "region": "Moonlight Altar",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62334400",
+  "warpId": 62334400,
+  "name": "Revenger's Shack",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62334600",
+  "warpId": 62334600,
+  "name": "Foot of the Four Belfries",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62334700",
+  "warpId": 62334700,
+  "name": "The Four Belfries",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62344100",
+  "warpId": 62344100,
+  "name": "Moonlight Altar",
+  "region": "Moonlight Altar",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62344200",
+  "warpId": 62344200,
+  "name": "Village of the Albinaurics",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62344300",
+  "warpId": 62344300,
+  "name": "Converted Tower",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62344400",
+  "warpId": 62344400,
+  "name": "Temple Quarter",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62344600",
+  "warpId": 62344600,
+  "name": "Crystalline Woods",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62344701",
+  "warpId": 62344701,
+  "name": "Sorcerer's Isle",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62344800",
+  "warpId": 62344800,
+  "name": "Kingsrealm Ruins",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62344900",
+  "warpId": 62344900,
+  "name": "Road to the Manor",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62345000",
+  "warpId": 62345000,
+  "name": "Ranni's Rise",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62345001",
+  "warpId": 62345001,
+  "name": "Ranni's Chamber",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62354200",
+  "warpId": 62354200,
+  "name": "Cathedral of Manus Celes",
+  "region": "Moonlight Altar",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62354300",
+  "warpId": 62354300,
+  "name": "Folly on the Lake",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62354500",
+  "warpId": 62354500,
+  "name": "South Raya Lucaria Gate",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62354600",
+  "warpId": 62354600,
+  "name": "Main Academy Gate",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62354700",
+  "warpId": 62354700,
+  "name": "East Gate Bridge Trestle",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62355000",
+  "warpId": 62355000,
+  "name": "Manor Upper Level",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62355001",
+  "warpId": 62355001,
+  "name": "Manor Lower Level",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62355002",
+  "warpId": 62355002,
+  "name": "Royal Moongazing Grounds",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62355003",
+  "warpId": 62355003,
+  "name": "Main Caria Manor Gate",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62364100",
+  "warpId": 62364100,
+  "name": "Slumbering Wolf's Shack",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62364300",
+  "warpId": 62364300,
+  "name": "Boilprawn Shack",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62364301",
+  "warpId": 62364301,
+  "name": "Fallen Ruins of the Lake",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62364500",
+  "warpId": 62364500,
+  "name": "Gate Town North",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62364800",
+  "warpId": 62364800,
+  "name": "East Raya Lucaria Gate",
+  "region": "Bellum Highway",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62364900",
+  "warpId": 62364900,
+  "name": "Bellum Church",
+  "region": "Bellum Highway",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62364901",
+  "warpId": 62364901,
+  "name": "The Ravine",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62365000",
+  "warpId": 62365000,
+  "name": "Behind Caria Manor",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62374200",
+  "warpId": 62374200,
+  "name": "Scenic Isle",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62374400",
+  "warpId": 62374400,
+  "name": "Academy Gate Town",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62374600",
+  "warpId": 62374600,
+  "name": "Church of Vows",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62374800",
+  "warpId": 62374800,
+  "name": "Mausoleum Compound",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62374900",
+  "warpId": 62374900,
+  "name": "Church of Inhibition",
+  "region": "Bellum Highway",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62384000",
+  "warpId": 62384000,
+  "name": "Liurnia Lake Shore",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62384100",
+  "warpId": 62384100,
+  "name": "Laskyar Ruins",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62384300",
+  "warpId": 62384300,
+  "name": "Gate Town Bridge",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62384500",
+  "warpId": 62384500,
+  "name": "Artist's Shack",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62384501",
+  "warpId": 62384501,
+  "name": "Eastern Liurnia Lake Shore",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62384600",
+  "warpId": 62384600,
+  "name": "Eastern Tableland",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62384700",
+  "warpId": 62384700,
+  "name": "Ruined Labyrinth",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62384800",
+  "warpId": 62384800,
+  "name": "Frenzied Flame Village Outskirts",
+  "region": "Bellum Highway",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62385000",
+  "warpId": 62385000,
+  "name": "Grand Lift of Dectus",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62385001",
+  "warpId": 62385001,
+  "name": "Ravine,Veiled Village",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62394000",
+  "warpId": 62394000,
+  "name": "Lake,Facing Cliffs",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62394100",
+  "warpId": 62394100,
+  "name": "Liurnia Highway South",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62394200",
+  "warpId": 62394200,
+  "name": "Liurnia Highway North",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:62394400",
+  "warpId": 62394400,
+  "name": "Jarburg",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63355300",
+  "warpId": 63355300,
+  "name": "Seethewater Terminus",
+  "region": "Mt. Gelmir",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63365200",
+  "warpId": 63365200,
+  "name": "Craftman's Shack",
+  "region": "Mt. Gelmir",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63365401",
+  "warpId": 63365401,
+  "name": "Ninth Mt. Gelmir Campsite",
+  "region": "Mt. Gelmir",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63365402",
+  "warpId": 63365402,
+  "name": "Road of Iniquity",
+  "region": "Mt. Gelmir",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63375100",
+  "warpId": 63375100,
+  "name": "Abandoned Coffin",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63375200",
+  "warpId": 63375200,
+  "name": "Seethewater River",
+  "region": "Mt. Gelmir",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63375300",
+  "warpId": 63375300,
+  "name": "Primeval Sorcerer Azur",
+  "region": "Mt. Gelmir",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63385002",
+  "warpId": 63385002,
+  "name": "Altus Plateau",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63385100",
+  "warpId": 63385100,
+  "name": "Erdtree,Gazing Hill",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63385400",
+  "warpId": 63385400,
+  "name": "First Mt. Gelmir Campsite",
+  "region": "Mt. Gelmir",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63395100",
+  "warpId": 63395100,
+  "name": "Altus Highway Junction",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63395300",
+  "warpId": 63395300,
+  "name": "Bridge of Iniquity",
+  "region": "Mt. Gelmir",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63395400",
+  "warpId": 63395400,
+  "name": "Shaded Castle Ramparts",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63395401",
+  "warpId": 63395401,
+  "name": "Shaded castle Inner Gate",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63395402",
+  "warpId": 63395402,
+  "name": "Castellan's Hall",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63405200",
+  "warpId": 63405200,
+  "name": "Forest,Spanning Greatbridge",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63405300",
+  "warpId": 63405300,
+  "name": "Bower of Bounty",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63405400",
+  "warpId": 63405400,
+  "name": "Road of Iniquity Side Path",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63415201",
+  "warpId": 63415201,
+  "name": "Rampartside Path",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63415400",
+  "warpId": 63415400,
+  "name": "Windmill Village",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63425100",
+  "warpId": 63425100,
+  "name": "Outer Wall Phantom Tree",
+  "region": "Capital Outskirts",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63425500",
+  "warpId": 63425500,
+  "name": "Windmill Heights",
+  "region": "Altus Plateau",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63435000",
+  "warpId": 63435000,
+  "name": "Minor Erdtree Church",
+  "region": "Capital Outskirts",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63435300",
+  "warpId": 63435300,
+  "name": "Hermit Merchant's Shack",
+  "region": "Capital Outskirts",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63435301",
+  "warpId": 63435301,
+  "name": "Outer Wall Battleground",
+  "region": "Capital Outskirts",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:63455200",
+  "warpId": 63455200,
+  "name": "Capital Rampart",
+  "region": "Capital Outskirts",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64464000",
+  "warpId": 64464000,
+  "name": "Smoldering Church",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64464001",
+  "warpId": 64464001,
+  "name": "Rotview Balcony",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64473900",
+  "warpId": 64473900,
+  "name": "Fort Gael North",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64474000",
+  "warpId": 64474000,
+  "name": "Caelem Ruins",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64483600",
+  "warpId": 64483600,
+  "name": "Cathedral of Dragon Communion",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64483700",
+  "warpId": 64483700,
+  "name": "Caelid Highway South",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64483800",
+  "warpId": 64483800,
+  "name": "Aeonia Swamp Shore",
+  "region": "Swamp of Aeonia",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64483801",
+  "warpId": 64483801,
+  "name": "Astray from Caelid Highway North",
+  "region": "Swamp of Aeonia",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64483900",
+  "warpId": 64483900,
+  "name": "Smoldering Wall",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64484000",
+  "warpId": 64484000,
+  "name": "Deep Siofra Well",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64484001",
+  "warpId": 64484001,
+  "name": "Dragonbarrow West",
+  "region": "Greyoll's Dragonbarrow",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64484100",
+  "warpId": 64484100,
+  "name": "Isolated Merchant's Shack",
+  "region": "Greyoll's Dragonbarrow",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64493700",
+  "warpId": 64493700,
+  "name": "Southern Aeonia Swamp Bank",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64493800",
+  "warpId": 64493800,
+  "name": "Heart of Aeonia",
+  "region": "Swamp of Aeonia",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64493801",
+  "warpId": 64493801,
+  "name": "Inner Aeonia",
+  "region": "Swamp of Aeonia",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64493900",
+  "warpId": 64493900,
+  "name": "Sellia Backstreets",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64493901",
+  "warpId": 64493901,
+  "name": "Chair,Crypt of Sellia",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64493902",
+  "warpId": 64493902,
+  "name": "Sellia Under,Stair",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64503600",
+  "warpId": 64503600,
+  "name": "Impassable Greatbridge",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64503800",
+  "warpId": 64503800,
+  "name": "Church of the Plague",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64504000",
+  "warpId": 64504000,
+  "name": "Dragonbarrow Fork",
+  "region": "Greyoll's Dragonbarrow",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64513600",
+  "warpId": 64513600,
+  "name": "Redmane Castle Plaza",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64513601",
+  "warpId": 64513601,
+  "name": "Chamber Outside the Plaza",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64513900",
+  "warpId": 64513900,
+  "name": "Fort Faroth",
+  "region": "Greyoll's Dragonbarrow",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64514300",
+  "warpId": 64514300,
+  "name": "Bestial Sanctum",
+  "region": "Greyoll's Dragonbarrow",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64523800",
+  "warpId": 64523800,
+  "name": "Starscourge Radahn",
+  "region": "Caelid",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64524100",
+  "warpId": 64524100,
+  "name": "Lenne's Rise",
+  "region": "Greyoll's Dragonbarrow",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:64524200",
+  "warpId": 64524200,
+  "name": "Farum Greatbridge",
+  "region": "Greyoll's Dragonbarrow",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65475100",
+  "warpId": 65475100,
+  "name": "Forbidden Lands",
+  "region": "Forbidden Lands",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65475800",
+  "warpId": 65475800,
+  "name": "Apostate Derelict",
+  "region": "Consecrated Snowfield",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65485700",
+  "warpId": 65485700,
+  "name": "Ordina, Liturgical Town",
+  "region": "Consecrated Snowfield",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65495300",
+  "warpId": 65495300,
+  "name": "Zamor Ruins",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65495301",
+  "warpId": 65495301,
+  "name": "Grand Lift of Rold",
+  "region": "Forbidden Lands",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65495400",
+  "warpId": 65495400,
+  "name": "Consecrated Snowfield",
+  "region": "Consecrated Snowfield",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65495500",
+  "warpId": 65495500,
+  "name": "Inner Consecrated Snowfield",
+  "region": "Consecrated Snowfield",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65515300",
+  "warpId": 65515300,
+  "name": "Church of Repose",
+  "region": "Flame Peak",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65515600",
+  "warpId": 65515600,
+  "name": "Ancient Snow Valley Ruins",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65515700",
+  "warpId": 65515700,
+  "name": "Snow Valley Ruins Overlook",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65515701",
+  "warpId": 65515701,
+  "name": "Castle Sol Main Gate",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65515702",
+  "warpId": 65515702,
+  "name": "Church of the Eclipse",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65515703",
+  "warpId": 65515703,
+  "name": "Castle Sol Rooftop",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65525300",
+  "warpId": 65525300,
+  "name": "Foot of the Forge",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65525400",
+  "warpId": 65525400,
+  "name": "Giant's Gravepost",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65525600",
+  "warpId": 65525600,
+  "name": "Whiteridge Road",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65525700",
+  "warpId": 65525700,
+  "name": "Freezing Lake",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65535200",
+  "warpId": 65535200,
+  "name": "Fire Giant",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65545300",
+  "warpId": 65545300,
+  "name": "Forge of the Giants",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:65545500",
+  "warpId": 65545500,
+  "name": "First Church of Marika",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld"
+ },
+ {
+  "id": "grace:68463900",
+  "warpId": 68463900,
+  "name": "Cerulean Coast West",
+  "region": "Cerulean Coast",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:68473600",
+  "warpId": 68473600,
+  "name": "The Fissure",
+  "region": "Cerulean Coast",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:68474101",
+  "warpId": 68474101,
+  "name": "Ellac River Downstream",
+  "region": "Gravesite Plain",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:68483700",
+  "warpId": 68483700,
+  "name": "Cerulean Coast Cross",
+  "region": "Cerulean Coast",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:68483900",
+  "warpId": 68483900,
+  "name": "Cerulean Coast",
+  "region": "Cerulean Coast",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:68483901",
+  "warpId": 68483901,
+  "name": "Charo's Hidden Grave",
+  "region": "Charo's Hidden Grave",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:68484300",
+  "warpId": 68484300,
+  "name": "Divided Falls",
+  "region": "Abyssal Woods",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:68493900",
+  "warpId": 68493900,
+  "name": "Grand Altar of Dragon Communion",
+  "region": "Foot of the Jagged Peak",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:68503800",
+  "warpId": 68503800,
+  "name": "Finger Ruins of Rhia",
+  "region": "Cerulean Coast",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:68504200",
+  "warpId": 68504200,
+  "name": "Abyssal Woods",
+  "region": "Abyssal Woods",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:68514200",
+  "warpId": 68514200,
+  "name": "Woodland Trail",
+  "region": "Abyssal Woods",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:68524000",
+  "warpId": 68524000,
+  "name": "Foot of the Jagged Peak",
+  "region": "Foot of the Jagged Peak",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:68524300",
+  "warpId": 68524300,
+  "name": "Forsaken Graveyard",
+  "region": "Abyssal Woods",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:68533900",
+  "warpId": 68533900,
+  "name": "Jagged Peak Mountainside",
+  "region": "Jagged Peak",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:68534100",
+  "warpId": 68534100,
+  "name": "Church Ruins",
+  "region": "Abyssal Woods",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:68543900",
+  "warpId": 68543900,
+  "name": "Jagged Peak Summit",
+  "region": "Jagged Peak",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:68553900",
+  "warpId": 68553900,
+  "name": "Rest of the Dread Dragon",
+  "region": "Jagged Peak",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69444500",
+  "warpId": 69444500,
+  "name": "Ancient Ruins, Grand Stairway",
+  "region": "Ancient Ruins of Rauh",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69444501",
+  "warpId": 69444501,
+  "name": "Church of the Bud",
+  "region": "Ancient Ruins of Rauh",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69444600",
+  "warpId": 69444600,
+  "name": "Church of the Bud, Main Entrance",
+  "region": "Ancient Ruins of Rauh",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69454501",
+  "warpId": 69454501,
+  "name": "Rauh Ancient Ruins, West",
+  "region": "Ancient Ruins of Rauh",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69454600",
+  "warpId": 69454600,
+  "name": "Temple Town Ruins",
+  "region": "Rauh Base",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69454700",
+  "warpId": 69454700,
+  "name": "Ravine North",
+  "region": "Rauh Base",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69464700",
+  "warpId": 69464700,
+  "name": "Rauh Ancient Ruins, East",
+  "region": "Ancient Ruins of Rauh",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69474500",
+  "warpId": 69474500,
+  "name": "Scadu Altus, West",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69474700",
+  "warpId": 69474700,
+  "name": "Viaduct Minor Tower",
+  "region": "Ancient Ruins of Rauh",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69484500",
+  "warpId": 69484500,
+  "name": "Highroad Cross",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69484700",
+  "warpId": 69484700,
+  "name": "Ancient Ruins Base",
+  "region": "Rauh Base",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69494300",
+  "warpId": 69494300,
+  "name": "Moorth Highway, South",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69494301",
+  "warpId": 69494301,
+  "name": "Fort of Reprimand",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69494302",
+  "warpId": 69494302,
+  "name": "Behind the Fort of Reprimand",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69494400",
+  "warpId": 69494400,
+  "name": "Moorth Ruins",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69494401",
+  "warpId": 69494401,
+  "name": "Bonny Village",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69494700",
+  "warpId": 69494700,
+  "name": "Castle Watering Hole",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69494800",
+  "warpId": 69494800,
+  "name": "Scaduview",
+  "region": "Scaduview",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69494801",
+  "warpId": 69494801,
+  "name": "Shadow Keep, Back Gate",
+  "region": "Scaduview",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69504300",
+  "warpId": 69504300,
+  "name": "Scaduview Cross",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69504400",
+  "warpId": 69504400,
+  "name": "Recluses' River Downstream",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69504500",
+  "warpId": 69504500,
+  "name": "Recluses' River Upstream",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69504800",
+  "warpId": 69504800,
+  "name": "Hinterland",
+  "region": "Scaduview",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69504801",
+  "warpId": 69504801,
+  "name": "Scadutree Base",
+  "region": "Scaduview",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69514400",
+  "warpId": 69514400,
+  "name": "Bridge Leading to the Village",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69514500",
+  "warpId": 69514500,
+  "name": "Cathedral of Manus Metyr",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69514700",
+  "warpId": 69514700,
+  "name": "Church District Highroad",
+  "region": "Scadu Altus",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69514800",
+  "warpId": 69514800,
+  "name": "Fingerstone Hill",
+  "region": "Scaduview",
+  "world": "shadow"
+ },
+ {
+  "id": "grace:69514801",
+  "warpId": 69514801,
+  "name": "Hinterland Bridge",
+  "region": "Scaduview",
+  "world": "shadow"
+ }
+]

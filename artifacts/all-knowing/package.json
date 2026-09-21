@@ -1,0 +1,28 @@
+{
+  "name": "all-knowing",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "map": "node vendor/elden-ring-map/server/index.js",
+    "map:live": "node vendor/elden-ring-map/server/index.js --live-memory",
+    "map:setup": "python vendor/elden-ring-map/tools/extract_tiles.py && python vendor/elden-ring-map/tools/build_markers.py"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "oxlint": "^1.81.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0"
+  }
+}

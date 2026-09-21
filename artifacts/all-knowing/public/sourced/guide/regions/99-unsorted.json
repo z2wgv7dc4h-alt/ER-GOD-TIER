@@ -1,0 +1,7 @@
+{
+  "id": "unsorted",
+  "name": "Unsorted (data triage)",
+  "order": 99,
+  "legs": [],
+  "cleanup": []
+}

@@ -1,0 +1,20 @@
+# Dependencies / build output (per-package .gitignore also applies, this is belt-and-suspenders)
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+Thumbs.db
+
+# Downloaded source zips referenced by docs/tasks (large, not project source)
+*.zip

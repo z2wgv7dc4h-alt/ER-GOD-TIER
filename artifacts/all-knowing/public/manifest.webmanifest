@@ -1,0 +1,13 @@
+{
+  "name": "All-Knowing",
+  "short_name": "All-Knowing",
+  "description": "Local-first Elden Ring workspace: map, build lab, and quest graph from your save.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0906",
+  "theme_color": "#0b0906",
+  "icons": [
+    { "src": "/art/app-icon.jpg", "sizes": "512x512", "type": "image/jpeg", "purpose": "any" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

@@ -1,0 +1,1086 @@
+[
+ {
+  "name": "Abductor Virgins",
+  "region": "Mount Gelmir",
+  "location": "Volcano Manor",
+  "drops": [
+   "10.000 Runes",
+   "Inquisitor's Girandole"
+  ]
+ },
+ {
+  "name": "Alecto, Black Knife Ringleader",
+  "region": "Liurnia of the Lakes",
+  "location": "Ringleader's Evergoal, Liurnia of the Lakes",
+  "drops": [
+   "8.000 Runes",
+   "Black Knife Tiche"
+  ]
+ },
+ {
+  "name": "Alecto Black Knife Ringleader",
+  "region": "Liurnia of the Lakes",
+  "location": "Limgrave",
+  "drops": [
+   "80.000 Runes",
+   "Other Drops"
+  ]
+ },
+ {
+  "name": "Alabaster Lord",
+  "region": "Liurnia of the Lakes",
+  "location": "Royal Grave Evergaol, Liurnia of the Lakes",
+  "drops": [
+   "3.600 Runes",
+   "Meteorite"
+  ]
+ },
+ {
+  "name": "Adan, Thief Of Fire",
+  "region": "Liurnia of the Lakes",
+  "location": "Malefactor's Evergaol",
+  "drops": [
+   "3.800 Runes",
+   "Flame of the Fell God"
+  ]
+ },
+ {
+  "name": "Ancient Dragon Lansseax",
+  "region": "Altus Plateau",
+  "location": "Altus Plateau",
+  "drops": [
+   "60.000 Runes",
+   "Lansseax's Glaive"
+  ]
+ },
+ {
+  "name": "Ancestor Spirit",
+  "region": "Limgrave",
+  "location": "Siofra River",
+  "drops": [
+   "13.000 Runes",
+   "Ancestral Follower Ashes"
+  ]
+ },
+ {
+  "name": "Ancient Hero Of Zamor",
+  "region": "Weeping Peninsula",
+  "location": "Weeping Evergaol, Giant-Conquering Hero's Grave",
+  "drops": [
+   "5,400 Runes",
+   "Radagon's Scarseal",
+   "83,000 Runes",
+   "Zamor Curved Sword",
+   "Zamor Mask",
+   "Zamor Armor",
+   "Zamor Bracelets",
+   "Zamor Legwraps"
+  ]
+ },
+ {
+  "name": "Beast Clergyman",
+  "region": "Caelid",
+  "location": "Crumbling Farum Azula",
+  "drops": [
+   "N/A"
+  ]
+ },
+ {
+  "name": "Astel, Stars Of Darkness",
+  "region": "Consecrated Snowfield",
+  "location": "Yelough Anix Tunnel in Consecrated Snowfield",
+  "drops": [
+   "120000 Runes",
+   "Meteorite of Astel"
+  ]
+ },
+ {
+  "name": "Beast Of Farum Azula",
+  "region": "Limgrave",
+  "location": "Groveside Cave",
+  "drops": [
+   "1000 Runes",
+   "Flamedrake Talisman"
+  ]
+ },
+ {
+  "name": "Beastman Of Farum Azula",
+  "region": "Dragonbarrow",
+  "location": "Groveside Cave, Dragonbarrow Cave",
+  "drops": [
+   "1000 Runes",
+   "Flamedrake Talisman",
+   "65,000 Runes",
+   "Flamedrake Talisman +2"
+  ]
+ },
+ {
+  "name": "Bell Bearing Hunter",
+  "region": "Dragonbarrow",
+  "location": "Warmaster's Shack, Northern Stormhill, Church of Vows, East Liurnia, Hermit Merchant's Shack, Leyndell Royal Captial, Dragonbarrow, North Caelid",
+  "drops": [
+   "2700 Runes",
+   "Bone Peddler's Bell Bearing"
+  ]
+ },
+ {
+  "name": "Black Blade Kindred",
+  "region": "Dragonbarrow",
+  "location": "Caelid, Forbidden Lands",
+  "drops": [
+   "88,000 Runes",
+   "Gargoyle's Blackblade",
+   "Gargoyle's Black Halberd",
+   "60,000 Runes",
+   "Gargoyle's Black Axe",
+   "Gargoyle's Black Blades"
+  ]
+ },
+ {
+  "name": "Black Knife Assassin",
+  "region": "Limgrave",
+  "location": "Deathtouched Catacombs, Black Knife CatacombsSage's Cave",
+  "drops": [
+   "1,600 Runes",
+   "Assassin's Crimson Dagger",
+   "1, 600 Runes",
+   "Assassin's Cerulean Dagger",
+   "Sage's Cave",
+   "?? Runes",
+   "Concealing Veil",
+   "11,339 Runes",
+   "Black Knife"
+  ]
+ },
+ {
+  "name": "Bloodhound Knight Darriwil",
+  "region": "Limgrave",
+  "location": "Limgrave, Forlon Hound Evergaol",
+  "drops": [
+   "1900 Runes",
+   "Bloodhound's Fang"
+  ]
+ },
+ {
+  "name": "Burial Tree Watchdog",
+  "region": "Limgrave",
+  "location": "Limgrave, Stormfoot Catacombs",
+  "drops": [
+   "800 Runes",
+   "Ash of War: Glintsword Arch"
+  ]
+ },
+ {
+  "name": "Cleanrot Knight",
+  "region": "Liurnia of the Lakes",
+  "location": "Stillwater Cave, Liurnia of the Lakes",
+  "drops": [
+   "3,300 Runes",
+   "Winged Sword Insignia",
+   "Cleanrot Knight's Sword"
+  ]
+ },
+ {
+  "name": "Borealis The Freezing Fog",
+  "region": "Mountaintops of the Giants",
+  "location": "Mountaintops of the Giants",
+  "drops": [
+   "100,000 Runes",
+   "Dragon Heart"
+  ]
+ },
+ {
+  "name": "Commander Niall",
+  "region": "Mountaintop of the Giants",
+  "location": "Mountaintops of the Giants",
+  "drops": [
+   "90000 Runes",
+   "Veteran's Prosthesis"
+  ]
+ },
+ {
+  "name": "Commander O'neil",
+  "region": "Caelid",
+  "location": "Caelid",
+  "drops": [
+   "12,000 Runes",
+   "Commander's Standard",
+   "Unalloyed Gold Needle"
+  ]
+ },
+ {
+  "name": "Crucible Knight Ordovis",
+  "region": "Altus Plateau",
+  "location": "Auriza Hero's Grave",
+  "drops": [
+   "28000 Runes",
+   "Ordovis's Greatsword",
+   "Crucible Axe Helm",
+   "Crucible Axe Armor",
+   "Crucible Gauntlets",
+   "Crucible Greaves"
+  ]
+ },
+ {
+  "name": "Crystalians",
+  "region": "Altus Plateau",
+  "location": "Academy Crystal Cave, Altus Tunnel",
+  "drops": [
+   "3300 Runes",
+   "Crystal Release",
+   "1800 Runes",
+   "Somberstone Miner's Bell Bearing (2)",
+   "3000 Runes",
+   "Smithing-Stone Miner's Bell Bearing (1)",
+   "7000 Runes",
+   "Crystal Torrent"
+  ]
+ },
+ {
+  "name": "Deathbird",
+  "region": "Limgrave",
+  "location": "Limgrave, Weeping Peninsula, Liurnia of the Lakes",
+  "drops": [
+   "3,900 Runes",
+   "Blue-Feathered Branchsword",
+   "Sacrifical Axe",
+   "Red-Feathered Branchsword"
+  ]
+ },
+ {
+  "name": "Decaying Ekzykes",
+  "region": "Caelid",
+  "location": "Caelid",
+  "drops": [
+   "38,000 Runes",
+   "Dragon Heart"
+  ]
+ },
+ {
+  "name": "Demi-human Chief",
+  "region": "Limgrave",
+  "location": "Coastal Cave",
+  "drops": [
+   "900 Runes",
+   "Tailoring Tools",
+   "Sewing Needle"
+  ]
+ },
+ {
+  "name": "Demi-human Queen Maggie",
+  "region": "Mount Gelmir",
+  "location": "Mt. Gelmir",
+  "drops": [
+   "13000 Runes",
+   "Memory Stone",
+   "Golden Rune [1]"
+  ]
+ },
+ {
+  "name": "Divine Bridge Golem",
+  "region": "Altus Plateau",
+  "location": "Lyendell, Royal Capital",
+  "drops": [
+   "2992 Runes"
+  ]
+ },
+ {
+  "name": "Demi-human Queen Margot",
+  "region": "Mount Gelmir",
+  "location": "Mt. Gelmir",
+  "drops": [
+   "11,000 Runes",
+   "Jar Cannon"
+  ]
+ },
+ {
+  "name": "Draconic Tree Sentinel",
+  "region": "Altus Plateau",
+  "location": "Capital Outskirts Crumbling Farum Azula",
+  "drops": [
+   "50,000 Runes",
+   "Dragon Greatclaw",
+   "Dragonclaw Shield"
+  ]
+ },
+ {
+  "name": "Dragonkin Soldier",
+  "region": "Limgrave",
+  "location": "Siofra River, Lake of Rot",
+  "drops": [
+   "16000 Runes",
+   "Dragon Halberd"
+  ]
+ },
+ {
+  "name": "Cemetery Shade",
+  "region": "Caelid",
+  "location": "Tombsward Catacombs, Black Knife Catacombs,Caelid Catacombs, ",
+  "drops": [
+   "2200 Runes",
+   "Lhutel the Headless",
+   "xx Runes",
+   "Twinsage Sorcerer Ashes",
+   "Kindred of Rot Ashes"
+  ]
+ },
+ {
+  "name": "Crucible Knight",
+  "region": "Altus Plateau",
+  "location": "Stormhill Evergaol,, Stormveil Castle,, Auriza Hero's Grave",
+  "drops": [
+   "2100 Runes",
+   "Aspects of the Crucible: Tail",
+   "1500 Runes",
+   "Aspects of the Crucible: Horns"
+  ]
+ },
+ {
+  "name": "Dragonkin Soldier Of Nokstella",
+  "region": "Limgrave",
+  "location": "Ainsel River",
+  "drops": [
+   "12000 Runes",
+   "Frozen Lightning Spear"
+  ]
+ },
+ {
+  "name": "Dragonlord Placidusax",
+  "region": "Mountaintops of the Giants",
+  "location": "Crumbling Farum Azula",
+  "drops": [
+   "280000 Runes",
+   "Remembrance of the Dragonlord"
+  ]
+ },
+ {
+  "name": "Elden Beast",
+  "region": "Altus Plateau",
+  "location": "Elden Throne",
+  "drops": [
+   "500000 Runes",
+   "Elden Remembrance"
+  ]
+ },
+ {
+  "name": "Elemer Of The Briar",
+  "region": "Altus Plateau",
+  "location": "The Shaded Castle",
+  "drops": [
+   "24,000 Runes",
+   "Marais Executioner's Sword",
+   "Briar Greatshield"
+  ]
+ },
+ {
+  "name": "Esgar, Priest Of Blood",
+  "region": "Altus Plateau",
+  "location": "Leyndell, Royal Capital",
+  "drops": [
+   "30000 Runes",
+   "Lord of Blood's Exultation"
+  ]
+ },
+ {
+  "name": "Erdtree Avatar",
+  "region": "Liunia of the Lakes",
+  "location": "Minor Erdtree (Weeping Peninsula), Minor Erdtree (Liurnia Southwest), Minor Erdtree (Liurnia Northeast), Minor Erdtree (Caelid), Minor Erdtree (Mountaintops East)",
+  "drops": [
+   "3,600 Runes",
+   "Opaline Bubbletear",
+   "Crimsonburst Crystal Tear",
+   "5,800 Runes",
+   "Cerulean Crystal Tear",
+   "Ruptured Crystal Tear",
+   "5,800 Runes",
+   "Holy-Shrouding Cracked Tear",
+   "Lightning-Shrouding Cracked Tear",
+   "Magic-Shrouding Cracked Tear",
+   "9,600 Runes",
+   "Greenburst Crystal Tear",
+   "Flame-Shrouding Cracked Tear",
+   "70,000 Runes",
+   "Cerulean Crystal Tear",
+   "Crimson Bubbletear"
+  ]
+ },
+ {
+  "name": "Fallingstar Beast",
+  "region": "Caelid",
+  "location": "Sellia Crystal Tunnel, Caelid, Altus Plateau",
+  "drops": [
+   "7,600 Runes",
+   "Somberstone Miner's Bell Bearing (1)",
+   "Smithing Stone (7) x 5",
+   "Somber Smithing Stone (6)",
+   "Gravity Stone Chunk x 4"
+  ]
+ },
+ {
+  "name": "Fell Twins",
+  "region": "Altus Plateau",
+  "location": "Capital Outskirts",
+  "drops": [
+   "29,000 Runes",
+   "Omenkiller Rollo"
+  ]
+ },
+ {
+  "name": "Fia's Champions",
+  "region": "Limgrave",
+  "location": "Deeproot Depths",
+  "drops": [
+   "40000 Runes",
+   "Fia's Mist"
+  ]
+ },
+ {
+  "name": "Flying Dragon Agheel",
+  "region": "Limgrave",
+  "location": "Limgrave, Dragon-Burnt Ruins",
+  "drops": [
+   "5000 Runes",
+   "Dragon Heart"
+  ]
+ },
+ {
+  "name": "Fire Giant",
+  "region": "Mountaintops of the Giants",
+  "location": "Mountaintops of the Giants",
+  "drops": [
+   "180,000 Runes",
+   "Remembrance of the Fire Giant"
+  ]
+ },
+ {
+  "name": "Flying Dragon Greyll",
+  "region": "Caelid",
+  "location": "Caelid",
+  "drops": [
+   "80,000 Runes",
+   "Dragon Heart"
+  ]
+ },
+ {
+  "name": "Frenzied Duelist",
+  "region": "Caelid",
+  "location": "Gaol Cave",
+  "drops": [
+   "6700 Runes",
+   "Putrid Corpse Ashes"
+  ]
+ },
+ {
+  "name": "God-devouring Serpent",
+  "region": "Mount Gelmir",
+  "location": "Mt. Gelmir",
+  "drops": [
+   "See Rykard, Lord of Blasphemy"
+  ]
+ },
+ {
+  "name": "Glintstone Dragon Smarag",
+  "region": "Liurnia of the Lakes",
+  "location": "Liurnia of the Lakes",
+  "drops": [
+   "14,699 Runes",
+   "Dragon Heart"
+  ]
+ },
+ {
+  "name": "Glintstone Dragon Adula",
+  "region": "Liurnia of the Lakes",
+  "location": "Liurnia of The Lakes",
+  "drops": [
+   "120,000 Runes",
+   "Adula's Moonblade",
+   "3x Dragon Heart",
+   "No Runes"
+  ]
+ },
+ {
+  "name": "Godefroy The Grafted",
+  "region": "Altus Plateau",
+  "location": "Golden Lineage Evergaol",
+  "drops": [
+   "26,000 Runes (NG)",
+   "Godfrey Icon"
+  ]
+ },
+ {
+  "name": "Godfrey The Grafted",
+  "region": "Altus Plateau",
+  "location": "Golden Lineage Evergaol",
+  "drops": [
+   "26,000 Runes",
+   "Other Drops",
+   "Godfrey Icon"
+  ]
+ },
+ {
+  "name": "Godfrey, First Elden Lord (hoarah Loux)",
+  "region": "Altus Plateau",
+  "location": "Leyndell, Capital of Ash",
+  "drops": [
+   "300,000  Runes",
+   "Remembrance of Hoarah Loux"
+  ]
+ },
+ {
+  "name": "Godfrey, First Elden Lord (golden Shade)",
+  "region": "Altus Plateau",
+  "location": "Leyndell, Royal Capital",
+  "drops": [
+   "80,000 Runes",
+   "Talisman Pouch"
+  ]
+ },
+ {
+  "name": "Godrick The Grafted",
+  "region": "Limgrave",
+  "location": "Stormveil Castle",
+  "drops": [
+   "Godrick's Great Rune, Remembrance of the Grafted"
+  ]
+ },
+ {
+  "name": "Godskin Apostle",
+  "region": "Caelid",
+  "location": "Spiritcaller's Cave",
+  "drops": [
+   "70k Runes",
+   "Godskin Swaddling Cloth",
+   "Black Flame Ritual"
+  ]
+ },
+ {
+  "name": "Godskin Apostle And Godskin Noble",
+  "region": "Mountaintops of the Giants",
+  "location": "Spiritcaller Cave, Mountaintops of the Giants",
+  "drops": [
+   "70,000 Runes",
+   "Godskin Swaddling Cloth x1",
+   "Black Flame Ritual x1"
+  ]
+ },
+ {
+  "name": "Death Rite Bird",
+  "region": "Mountaintops of the Giants",
+  "location": "Mountaintops of the Giants",
+  "drops": [
+   "77,000 Runes",
+   "Death Ritual Spear",
+   "18,000 Runes",
+   "Death' Poker"
+  ]
+ },
+ {
+  "name": "Godskin Apostle",
+  "region": "Altus Plateau",
+  "location": "Altus Plateau, Caelid",
+  "drops": [
+   "14,000 Runes",
+   "Godskin Peeler",
+   "Scouring Black Flame",
+   "94,000 Runes",
+   "Godskin Apostle Hood",
+   "Godskin Apostle Robe",
+   "Godskin Apostle Bracers",
+   "Godskin Apostle Trousers",
+   "70,000 Runes",
+   "Godskin Swaddling Cloth",
+   "Black Flame Ritual"
+  ]
+ },
+ {
+  "name": "Godskin Noble",
+  "region": "Mount Gelmir",
+  "location": "Spiritcaller's Cave,Volcano Manor, ",
+  "drops": [
+   "70,000 Runes",
+   "Godskin Swaddling Cloth",
+   "Black Flame Ritual",
+   "50,000 Runes",
+   "Godskin Stitcher",
+   "Noble Presence"
+  ]
+ },
+ {
+  "name": "Grafted Scion",
+  "region": "Liurnia of the Lakes",
+  "location": "Tutorial Area",
+  "drops": [
+   "1176 Runes",
+   "583 runes-currency-elden-ring-wiki-guide-18 Runes",
+   "3200 Runes",
+   "1283 Runes",
+   "Larval Tear",
+   "2313 runes-currency-elden-ring-wiki-guide-18 Runes",
+   "12800 Runes (NG+1)",
+   "Ornamental Straight Sword",
+   "Golden Beast Crest Shield"
+  ]
+ },
+ {
+  "name": "Great Wyrm Theodorix",
+  "region": "Mountaintops of the Giants",
+  "location": "North of Albinauric Rise in Mountaintops of the Giants",
+  "drops": [
+   "180,000 Runes",
+   "Dragon Heart x3"
+  ]
+ },
+ {
+  "name": "Hoarah Loux, Warrior",
+  "region": "Altus Plateau",
+  "location": "Leyndell, Ashen Capital.",
+  "drops": [
+   "300000 Runes",
+   "Remembrance of Hoarah Loux"
+  ]
+ },
+ {
+  "name": "Kindred Of Rot",
+  "region": "Mount Gelmir",
+  "location": "Mt. Gelmir",
+  "drops": [
+   "10000 Runes",
+   "Kindred of Rot's Exultation"
+  ]
+ },
+ {
+  "name": "Guardian Golem",
+  "region": "Limgrave",
+  "location": "Highroad Cave",
+  "drops": [
+   "1700 Runes",
+   "Blue Dancer Charm"
+  ]
+ },
+ {
+  "name": "Godskin Duo",
+  "region": "Altus Plateau",
+  "location": "Crumbling Farum Azula",
+  "drops": [
+   "170000 Runes",
+   "Smithing-Stone Miner's Bell Bearing [4]",
+   "Ash of War: Black Flame Tornado"
+  ]
+ },
+ {
+  "name": "Kindred Of Rot",
+  "region": "Mount Gelmir",
+  "location": "Seethewater Cave",
+  "drops": [
+   "10000 Runes",
+   "Kindred of Rot's Exultation"
+  ]
+ },
+ {
+  "name": "Leonine Misbegotten",
+  "region": "Weeping Peninsula",
+  "location": "Castle Morne, Weeping Peninsula",
+  "drops": [
+   "3800 Runes",
+   "Grafted Blade Greatsword"
+  ]
+ },
+ {
+  "name": "Lichdragon Fortissax",
+  "region": "Limgrave",
+  "location": "Deeproot Depths",
+  "drops": [
+   "90000 Runes",
+   "Remembrance of the Lichdragon"
+  ]
+ },
+ {
+  "name": "Mad Pumpkin Head",
+  "region": "Limgrave",
+  "location": "Waypoint Ruins, Limgrave, Caelem Ruins, Caelid",
+  "drops": [
+   "6300 Runes"
+  ]
+ },
+ {
+  "name": "Magma Wyrm",
+  "region": "Caelid",
+  "location": "Gael Tunnel",
+  "drops": [
+   "7500 Runes",
+   "Dragon Heart",
+   "Moonveil"
+  ]
+ },
+ {
+  "name": "Lion Guardian",
+  "region": "Limgrave",
+  "location": "Stormveil Castle",
+  "drops": [
+   "2350"
+  ]
+ },
+ {
+  "name": "Malenia, Blade Of Miquella",
+  "region": "Consecrated Snowfield",
+  "location": "Elphael, Brace of the Haligtree",
+  "drops": [
+   "Malenia's Great Rune",
+   "Remembrance of the Rot Goddess",
+   "480,000 Runes"
+  ]
+ },
+ {
+  "name": "Maliketh, The Black Blade",
+  "region": "Altus Plateau",
+  "location": "Crumbling Farum Azula",
+  "drops": [
+   "220,000 Runes",
+   "Other Drops",
+   "Remembrance of the Black Blade"
+  ]
+ },
+ {
+  "name": "Miranda The Blighted Bloom",
+  "region": "Weeping Peninsula",
+  "location": "Weeping Peninsula: Tombsward Cave, Altus Plains: Perfumer's Grotto",
+  "drops": [
+   "2100 Runes",
+   "Viridian Amber Medallion",
+   "8500 Runes",
+   "Great Omenkiller Cleaver"
+  ]
+ },
+ {
+  "name": "Mimic Tear",
+  "region": "Limgrave",
+  "location": "Nokron, Eternal City",
+  "drops": [
+   "10000 Runes",
+   "Larval Tear x2",
+   "Silver Tear Mask"
+  ]
+ },
+ {
+  "name": "Misbegotten Crusader",
+  "region": "Mountaintops of the Giants",
+  "location": "Cave of the Forlorn in Mountaintops of the Giants",
+  "drops": [
+   "93000 Runes",
+   "Golden Order Greatsword"
+  ]
+ },
+ {
+  "name": "Mohg, Lord Of Blood",
+  "region": "Limgrave",
+  "location": "Mohgwyn Palace",
+  "drops": [
+   "420,000 Runes",
+   "Mohg's Great Rune",
+   "Remembrance of the Blood Lord"
+  ]
+ },
+ {
+  "name": "Mohg, The Omen",
+  "region": "Altus Plateau",
+  "location": "Subterranean Shunning-Grounds",
+  "drops": [
+   "100,000 Runes",
+   "Bloodflame Talons"
+  ]
+ },
+ {
+  "name": "Magma Wyrm Makar",
+  "region": "Altus Plateau",
+  "location": "Ruin-Strewn Precipice",
+  "drops": [
+   "24000 Runes",
+   "Magma Wyrm's Scalesword",
+   "72000 Runes",
+   "Dragon Heart"
+  ]
+ },
+ {
+  "name": "Necromancer Garris",
+  "region": "Altus Plateau",
+  "location": "Sage's Cave, Altus Plateau",
+  "drops": [
+   "0 Runes",
+   "Family Heads"
+  ]
+ },
+ {
+  "name": "Nox Swordstress & Nox Priest",
+  "region": "Caelid",
+  "location": "Sellia, Town of Sorcery, Caelid",
+  "drops": [
+   "6,400 Runes",
+   "Nox Flowing Sword"
+  ]
+ },
+ {
+  "name": "Night's Cavalry",
+  "region": "Limgrave",
+  "location": "Many",
+  "drops": [
+   "2400 Runes",
+   "Ash of War: Repeating Thrust",
+   "3400 Runes",
+   "Ash of War: Barricade Shield",
+   "5600 Runes",
+   "Ash of War: Ice Spear",
+   "8500 Runes",
+   "Ash of War: Poison Moth Flight",
+   "10000 Runes",
+   "Ash of War: Phantom Slash",
+   "36000 Runes",
+   "Ash of War: Phantom Slash",
+   "42000 Runes",
+   "Ash of War:Bloodhound's Step",
+   "84000 Runes",
+   "Night's Calvary Set"
+  ]
+ },
+ {
+  "name": "Omenkiller",
+  "region": "Liurnia of the Lakes",
+  "location": "Village of the Albinaurics, Volcano Manor, Perfumer's Grotto",
+  "drops": [
+   "4900 Runes",
+   "Crucible Knot Talisman",
+   "8400 Runes",
+   "Great Omenkiller Cleaver",
+   "Great Omenkiller Cleaver"
+  ]
+ },
+ {
+  "name": "Onyx Lord",
+  "region": "Liurnia of the Lakes",
+  "location": "Sealed Tunnel, Royal Grave Evergaol",
+  "drops": [
+   "16000 Runes",
+   "Onyx Lord's Greatsword"
+  ]
+ },
+ {
+  "name": "Perfumer Tricia",
+  "region": "Mount Gelmir",
+  "location": "Unsightly Catacombs, Mt. Gelmir",
+  "drops": [
+   "9400 Runes",
+   "Other Drops"
+  ]
+ },
+ {
+  "name": "Putrid Grave Warden Duelist",
+  "region": "Consecrated Snowfield",
+  "location": "Consecrated Snowfield Catacombs, Consecrated Snowfield.",
+  "drops": [
+   "78,000 Runes",
+   "Great Grave Glovewort",
+   "Rotten Gravekeeper Cloak"
+  ]
+ },
+ {
+  "name": "Pumpkin Head",
+  "region": "Weeping Peninsula",
+  "location": "Castle Morne, Weeping Peninsula",
+  "drops": [
+   "291 Runes",
+   "Pumpkin Helm",
+   "Sanctuary Stone"
+  ]
+ },
+ {
+  "name": "Putrid Tree Spirit",
+  "region": "Caelid",
+  "location": "War-Dead Catacombs",
+  "drops": [
+   "67,200 Runes ",
+   "Redmane Knight Ogha Spirit Ashes",
+   "Golden Seed"
+  ]
+ },
+ {
+  "name": "Radagon Of The Golden Order",
+  "region": "Altus Plateau",
+  "location": "Elden Throne",
+  "drops": [
+   "N/A"
+  ]
+ },
+ {
+  "name": "Red Wolf Of Radagon",
+  "region": "Liurnia of the Lakes",
+  "location": "Raya Lucaria Academy, Liurnia of the Lakes",
+  "drops": [
+   "14000 Runes",
+   "Memory Stone"
+  ]
+ },
+ {
+  "name": "Red Wolf Of The Champion",
+  "region": "Mount Gelmir",
+  "location": "Gelmir Hero's Grave",
+  "drops": [
+   "21000 Runes",
+   "Bloodhound Knight Floh"
+  ]
+ },
+ {
+  "name": "Regal Ancestor Spirit",
+  "region": "Limgrave",
+  "location": "Nokron, Eternal City",
+  "drops": [
+   "24000 Runes",
+   "Remembrance of the Regal Ancestor"
+  ]
+ },
+ {
+  "name": "Royal Knight Loretta",
+  "region": "Liurnia of the Lakes",
+  "location": "Caria Manor",
+  "drops": [
+   "10,000 Runes",
+   "Loretta's Greatbow",
+   "Ash of War: Loretta's Slash"
+  ]
+ },
+ {
+  "name": "Royal Revenant",
+  "region": "Liurnia of the Lakes",
+  "location": "Kingsrealm Ruins, Liurnia of the Lakes",
+  "drops": [
+   "3,100 Runes"
+  ]
+ },
+ {
+  "name": "Runebear",
+  "region": "Weeping Peninsula",
+  "location": "Earthbore Cave, Weeping Peninsula",
+  "drops": [
+   "2600 Runes",
+   "Spelldrake Talisman"
+  ]
+ },
+ {
+  "name": "Rykard, Lord Of Blasphemy",
+  "region": "Mount Gelmir",
+  "location": "Mt. Gelmir",
+  "drops": [
+   "130,000 Runes",
+   "Rykard's Great Rune",
+   "Remembrance of the Blasphemous"
+  ]
+ },
+ {
+  "name": "Scaly Misbegotten",
+  "region": "Weeping Peninsula",
+  "location": "Morne Tunnel",
+  "drops": [
+   "2000 Runes",
+   "Rusted Anchor"
+  ]
+ },
+ {
+  "name": "Sir Gideon Ofnir, The All-knowing",
+  "region": "Altus Plateau",
+  "location": "Leyndell, Capital of Ash",
+  "drops": [
+   "180,000 Runes",
+   "All-Knowing Helm",
+   "All-Knowing Armor",
+   "All-Knowing Gauntlets",
+   "All-Knowing Greaves",
+   "Scepter of the All-Knowing"
+  ]
+ },
+ {
+  "name": "Soldier Of Godrick",
+  "region": "Limgrave",
+  "location": "Stranded Graveyard",
+  "drops": [
+   "400 Runes",
+   "2000 Runes (NG+1)"
+  ]
+ },
+ {
+  "name": "Spirit-caller Snail",
+  "region": "Liurnia of the Lakes",
+  "location": "Road's End CatacombsSpiritcaller's Cave",
+  "drops": [
+   "3000 Runes",
+   "Glintstone Sorcerer Ashes ",
+   "170000 Runes",
+   "Smithing-Stone Miner's Bell Bearing [4]",
+   "Ash of War: Black Flame Tornado"
+  ]
+ },
+ {
+  "name": "Starscourge Radahn",
+  "region": "Caelid",
+  "location": "Caelid",
+  "drops": [
+   "70,000 Runes",
+   "Remembrance of the Starscourge, Radahn's Great Rune"
+  ]
+ },
+ {
+  "name": "Tibia Mariner",
+  "region": "Liurnia of the Lakes",
+  "location": "Summonwater Village, Liurnia of The Lakes, Wyndham Ruins",
+  "drops": [
+   "2400 Runes",
+   "Deathroot",
+   "Skeletal Militiaman Ashes",
+   "4700 Runes",
+   "Deathroot",
+   "Skeletal Bandit Ashes",
+   "Deathroot",
+   "Tibia's Summons"
+  ]
+ },
+ {
+  "name": "Ulcerated Tree Spirit",
+  "region": "Mount Gelmir",
+  "location": "Mt. Gelmir",
+  "drops": [
+   "18,000 Runes",
+   "Leaden Hardtear",
+   "Cerulean Hidden Tear"
+  ]
+ },
+ {
+  "name": "Valiant Gargoyle",
+  "region": "Limgrave",
+  "location": "Siofra Aqueduct",
+  "drops": [
+   "30000 Runes",
+   "32000 Runes",
+   "Gargoyle's Greatsword",
+   "Gargoyle's Twinblade"
+  ]
+ },
+ {
+  "name": "Wormface",
+  "region": "Altus Plateau",
+  "location": "Minor Erdtree (Altus Plateau)",
+  "drops": [
+   "10000 Runes",
+   "Crimsonspill Crystal Tear",
+   "Speckled Hardtear"
+  ]
+ },
+ {
+  "name": "Tree Sentinel",
+  "region": "Limgrave",
+  "location": "Limgrave road",
+  "drops": [
+   "3200 Runes",
+   "16000 Runes (NG+1)",
+   "Golden Halberd",
+   "Erdtree Greatshield",
+   "Hero's Rune [1]"
+  ]
+ }
+]
