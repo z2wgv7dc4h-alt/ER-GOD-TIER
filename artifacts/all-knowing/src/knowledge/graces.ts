@@ -87,6 +87,6 @@ export function matchWarp(text: string) {
 export const worlds: { id: AtlasWorld; label: string; hint: string; plate?: string }[] = [
   { id: 'overworld', label: 'Lands Between', hint: 'Drop m0-overworld.jpg into public/sourced/maps when you have the 176 MB plate compressed.', plate: '/sourced/maps/m0-overworld.jpg' },
   { id: 'underground', label: 'Underground', hint: 'Siofra, Ainsel, Nokron, Deeproot. Separate map screen on PS5 — screenshot that tab, not the overworld.', plate: '/sourced/maps/m1-underground.jpg' },
-  { id: 'ashen', label: 'Ashen Capital', hint: 'After the Forge. Leyndell is a different map. Do not mix pins with the living capital.' },
-  { id: 'shadow', label: 'Realm of Shadow', hint: 'SotE map. Unlocks after touching the withered arm in Mohgwyn / Cocoon.' },
+  { id: 'ashen', label: 'Ashen Capital', hint: 'After the Forge. Leyndell is a different map. Do not mix pins with the living capital.', plate: '/sourced/maps/m-ashen.jpg' },
+  { id: 'shadow', label: 'Realm of Shadow', hint: 'SotE map. Unlocks after touching the withered arm in Mohgwyn / Cocoon.', plate: '/sourced/maps/m-shadow.jpg' },
 ]

@@ -27,8 +27,8 @@ export const art = {
     frenzy: '/art/seal-frenzy.jpg',
     duskborn: '/art/seal-dusk.jpg',
     order: '/art/seal-order.jpg',
-    lord: '/art/icon-helm.jpg',
-    'blitz-lord': '/art/icon-helm.jpg',
+    lord: '/art/seal-lord.jpg',
+    'blitz-lord': '/art/seal-lord.jpg',
     'blitz-stars': '/art/seal-stars.jpg',
   } as Record<string, string>,
 }
