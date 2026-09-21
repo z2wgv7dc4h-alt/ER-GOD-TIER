@@ -52,53 +52,10 @@ export function PacketBar() {
   const fileRef = useRef<HTMLInputElement>(null)
   const diffRef = useRef<HTMLInputElement>(null)
   const [diff, setDiff] = useState('')
-  const saved = new Date(w.profile.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   return (
     <div style={{ padding: '0 4px 10px' }}>
-      <label className="kicker" htmlFor="profile-select">Tarnished · saved {saved}</label>
-      <select
-        id="profile-select"
-        className="search"
-        style={{ margin: '6px 0 8px' }}
-        value={w.profile.id}
-        onChange={(e) => w.loadProfile(e.target.value)}
-      >
-        {w.vault.profiles.map((p) => (
-          <option key={p.id} value={p.id}>{p.label}</option>
-        ))}
-      </select>
       <div className="opts">
         <button type="button" className="chip" disabled={!w.canUndo} onClick={() => w.undo()}>Undo</button>
-        <button
-          type="button"
-          className="chip"
-          onClick={() => {
-            const label = window.prompt('Name this Tarnished', w.character.name || 'Tarnished')
-            if (label) w.newProfile(label)
-          }}
-        >
-          New
-        </button>
-        <button
-          type="button"
-          className="chip"
-          onClick={() => {
-            const label = window.prompt('Rename', w.profile.label)
-            if (label) w.renameProfile(label)
-          }}
-        >
-          Rename
-        </button>
-        <button
-          type="button"
-          className="chip"
-          disabled={w.vault.profiles.length < 2}
-          onClick={() => {
-            if (window.confirm(`Forget ${w.profile.label}? This device only.`)) w.removeProfile(w.profile.id)
-          }}
-        >
-          Forget
-        </button>
         <button type="button" className="chip on" onClick={() => downloadPacket(w.character)}>Save file</button>
         <button type="button" className="chip" onClick={() => fileRef.current?.click()}>Load file</button>
         <button type="button" className="chip" onClick={() => diffRef.current?.click()}>Diff</button>
