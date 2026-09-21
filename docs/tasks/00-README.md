@@ -42,5 +42,26 @@ repo root), not the outer `ER MASTER TOOL` folder.
   from the Nexus 960 pack) — **corrects an earlier framing mistake**: this is not "build a
   tiling pipeline," the real tile/zoom map is already a feature of the vendored engine per
   `artifacts/all-knowing/docs/MAP-ENGINE.md` ("All-Knowing does not grow a second map"). Part A
-  (vendor engine) can't be fully verified without a local Elden Ring PC install — DeepSeek should
-  get as far as possible and report what's left for the user to finish by hand.
+  (vendor engine) **cannot be locally verified at all** — confirmed via
+  `artifacts/all-knowing/docs/SOURCE-PACK.md`: there is no Elden Ring install on this dev
+  machine, full stop, not just "maybe." Get as far as cloning/wiring, then stop and report.
+- `10-build-lab-ar.md` — ready to run, independent of the others. Ports real attack-rating math
+  from `ThomasJClark/elden-ring-weapon-calculator`, per `artifacts/all-knowing/docs/REVIEW.md`'s
+  own explicit priority order (this is its #2 item, right after the alias table). Doesn't need a
+  local game install — the source repo ships its own regulation data.
+- `11-save-parser.md` — ready to run, independent of the others. Real `.sl2` parsing adapted
+  from `EthanShoeDev/elden-ring-compass`'s `save-parser-ts`, per `REVIEW.md`'s #5 product-order
+  item. `src/lib/save.ts` already names this exact target in a code comment. License on the
+  source repo wasn't confirmed by an initial check — DeepSeek must verify before vendoring
+  anything. Needs a real `.sl2` sample to fully test; may need to ask the user for one.
+
+## Also read before briefing more tasks
+
+`artifacts/all-knowing/docs/REVIEW.md` has a dated, prioritized "Product order from here" list —
+treat it as more current than `SCOPE.md`'s longer architecture wishlist (some of `SCOPE.md`'s
+items, like three-state facts, already look implemented in the code — cross-check before
+task-briefing anything from it, don't assume it's all still open).
+`artifacts/all-knowing/docs/PS5-ATLAS.md` names **four** worlds (Lands Between, Underground,
+Ashen Capital, Realm of Shadow) — Task 09's plate work only accounted for three; Ashen Capital
+may need its own `AtlasWorld` entry too, not just Shadow. Flag this to whoever picks up 09 if it
+wasn't already caught.
