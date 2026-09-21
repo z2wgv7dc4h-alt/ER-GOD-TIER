@@ -454,11 +454,36 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
 .thread-block { margin-top: 12px; }
 .thread-block .quest { margin-top: 6px; }
 .command-hits {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px 16px;
   padding: 8px 16px 0;
 }
+.command-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 220px;
+  min-width: 200px;
+  max-width: 340px;
+}
+.command-group .kicker { margin-bottom: 2px; }
+.packet-diff {
+  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  padding: 10px;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.packet-diff-section { border-left: 2px solid var(--line); padding-left: 8px; }
+.packet-diff-section.on { border-left-color: var(--ok); }
+.packet-diff-section.warn { border-left-color: var(--danger); }
+.packet-diff-section.muted { border-left-color: var(--gold-dim); }
+.packet-diff-row { display: flex; flex-direction: column; padding: 3px 0; }
+.packet-diff-name { font-size: 14px; }
 .pickup { padding: 0 4px 12px; }
 .pickup-row { display: flex; gap: 6px; margin-top: 6px; }
 .pickup-row .search { flex: 1; min-width: 0; }
