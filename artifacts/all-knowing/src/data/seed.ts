@@ -1,4 +1,5 @@
 import type { Character, CodexEntry, MapMarker, Questline } from '../types'
+import { REGULATION_STAMP } from '../lib/regulation'
 
 export const emptyStats = {
   vigor: 10,
@@ -14,6 +15,7 @@ export const emptyStats = {
 export const emptyCharacter: Character = {
   source: 'empty',
   platform: 'ps5',
+  regulation: REGULATION_STAMP,
   name: 'Tarnished',
   level: 1,
   startingClass: 'unknown',
@@ -33,6 +35,7 @@ export const emptyCharacter: Character = {
 export const demoCharacter: Character = {
   source: 'demo',
   platform: 'pc',
+  regulation: REGULATION_STAMP,
   fileName: 'ER0000.sl2 (demo)',
   name: 'Gideon’s Apprentice',
   level: 86,

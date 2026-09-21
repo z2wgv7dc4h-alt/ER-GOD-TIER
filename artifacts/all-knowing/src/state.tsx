@@ -12,7 +12,7 @@ import {
   type Profile,
   type Vault,
 } from './lib/vault'
-import type { Character, MapMarker, ModuleId } from './types'
+import type { Character, FactState, MapMarker, ModuleId } from './types'
 
 type LayerId = MapMarker['kind']
 
@@ -168,7 +168,7 @@ export function useWorkspace() {
   return ctx
 }
 
-export type FactState = 'true' | 'false' | 'unknown'
+export type { FactState }
 
 export function factState(character: Character, id: string): FactState {
   const known = new Set([

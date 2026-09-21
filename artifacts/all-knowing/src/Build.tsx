@@ -4,6 +4,7 @@ import { opBuilds } from './knowledge/builds'
 import { isCollected, useWorkspace } from './state'
 import { attackRatingForSlot, loadWeapons } from './lib/ar'
 import type { AttackRating, Weapon } from './lib/ar'
+import { REGULATION_STAMP } from './lib/regulation'
 import {
   bestDamageType,
   bossCombatFor,
@@ -113,7 +114,7 @@ export function BuildWorkspace() {
         </div>
       </section>
       <section className="panel">
-        <div className="kicker">Attack rating · vanilla 1.17 / Tarnished Pack line</div>
+        <div className="kicker">Attack rating · regulation {REGULATION_STAMP}</div>
         <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>{preview.label}</h3>
         <label className="chip" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 10 }}>
           <input

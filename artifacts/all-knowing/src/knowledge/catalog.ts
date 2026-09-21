@@ -1,4 +1,11 @@
 import type { Campaign } from '../types'
+import { REGULATION_STAMP } from '../lib/regulation'
+
+/**
+ * The regulation line every catalog fact is keyed to. Kept in sync with
+ * `Character.regulation` and the Build lab AR data — see `src/lib/regulation.ts`.
+ */
+export const regulation = REGULATION_STAMP
 
 export type FactKind = 'grace' | 'boss' | 'item' | 'quest' | 'region'
 

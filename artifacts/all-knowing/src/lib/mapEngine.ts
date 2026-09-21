@@ -1,6 +1,7 @@
 import type { Character, Stats } from '../types'
 import { emptyStats } from '../data/seed'
 import { canonicalFactId } from './aliases'
+import { REGULATION_STAMP } from './regulation'
 
 /** Dev: Vite proxies /er-map → :8099. Prod: talk to the map server directly. */
 export const MAP_ENGINE_BASE =
@@ -76,6 +77,7 @@ export function characterFromEngine(c: EngineCharacter, savePath: string): Chara
   return {
     source: 'save',
     platform: 'pc',
+    regulation: REGULATION_STAMP,
     fileName: savePath.split(/[/\\]/).pop(),
     name: s.name || c.name,
     level: s.level || c.level,

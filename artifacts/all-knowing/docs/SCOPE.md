@@ -82,7 +82,9 @@ all-knowing.packet.json
 
 QR or file share, local only. This is how a living-room player gets state onto the PC that ran Setup.bat. Not an account.
 
-### 5. Conflict rules — ⬜ not audited
+### 5. Conflict rules — ✅ done (Task 24: `src/lib/conflict.ts`, `applyFacts`/`denyFacts` now
+reconcile from the full evidence list; all four winner-table rows have real tests. The loser is
+kept on `evidence[]` — `Evidence` gained an explicit `claim: 'true' | 'false'`.)
 
 `src/lib/infer.ts`'s `Evidence` shape already carries a confidence score (0.94 direct / 0.72
 inferred, per Task 06) which is adjacent to this, but the specific winner-table below has not
@@ -99,11 +101,14 @@ Same fact, two sources.
 
 Record the loser on `evidence[]`. Do not silently drop it.
 
-### 6. Regulation stamp — ⬜ not done
+### 6. Regulation stamp — ✅ done (Task 24: `src/lib/regulation.ts`, `Character.regulation`,
+`catalog.regulation`; packet now reads the shared constant.)
 
-Task 10 documented which regulation line the Build lab's AR data comes from
-(`regulation-vanilla-v1.17.json`, confirmed upstream as the "Tarnished edition" commit) but did
-not add a `regulation` field to `Character`/catalog as this section describes. Still open.
+**Audit result: the sources do not all agree.** Clark AR is `1.17-tarnished-pack` (upstream commit
+`75a0e97`, "Tarnished edition"). The atlas marker extract (from the local install's own
+`regulation.bin`) and the FMG/Paramdex name dumps are vanilla/base-game extracts — they contain no
+Tarnished Pack rows (`boss:leontiel` absent; `names.json` is base-game-only). `regulationAudit()`
+records and flags this; it is not papered over.
 
 Character and catalog both carry `regulation: '1.17-tarnished-pack'`.  
 Clark AR, marker extract, and FMG dump must be the same stamp or the lab lies.

@@ -80,14 +80,26 @@ export type CodexEntry = {
 
 export type EvidenceSource = 'save' | 'answer' | 'screenshot' | 'inference'
 
+/**
+ * What an evidence entry asserts about its fact. `true` (the default when
+ * absent, for backwards compatibility) means the fact happened/was collected;
+ * `false` means a photographed absence or an explicit “no”.
+ */
+export type EvidenceClaim = 'true' | 'false'
+
 export type Evidence = {
   id: string
   fact: string
   source: EvidenceSource
   confidence: number
+  /** Defaults to `true` when omitted (pre-Task-24 evidence had no polarity). */
+  claim?: EvidenceClaim
   detail?: string
   at: number
 }
+
+/** Three-state fact, matching `factState()` in `state.tsx` / SCOPE item #1. */
+export type FactState = 'true' | 'false' | 'unknown'
 
 export type ShotKind = 'map' | 'warp-list' | 'inventory' | 'equipment' | 'pickup' | 'boss' | 'unknown'
 
@@ -103,6 +115,8 @@ export type Shot = {
 export type Character = {
   source: 'empty' | 'demo' | 'save' | 'reckon'
   platform: Platform
+  /** Regulation line every fact in this character is keyed to. See `src/lib/regulation.ts`. */
+  regulation: string
   fileName?: string
   name: string
   level: number
