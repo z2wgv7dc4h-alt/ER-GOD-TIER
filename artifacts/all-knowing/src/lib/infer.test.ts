@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { emptyCharacter } from '../data/seed'
-import { applyFacts, closeWorld, prefixKind } from './infer'
+import { applyAnswers, applyFacts, closeWorld, prefixKind } from './infer'
 
 describe('prefixKind', () => {
   it('maps grace dialects to grace', () => {
@@ -63,5 +63,54 @@ describe('applyFacts', () => {
     expect(next.defeatedBosses).toContain('boss:malenia')
     expect(next.discoveredGraces).toContain('grace:drainage')
     expect(next.collectedItems).toContain('item:haligtree-secret-medallion')
+  })
+})
+
+describe('applyAnswers — DLC / Tarnished Pack starts', () => {
+  it('seeds the Shadow region and its access bosses when the run is in the DLC', () => {
+    const c = applyAnswers({ ...emptyCharacter, answers: { dlc: 'sote' } })
+    // region facts live on collectedItems (region is not a first-class Character list).
+    expect(c.collectedItems).toContain('region:shadow')
+    expect(c.defeatedBosses).toContain('boss:radahn')
+    expect(c.defeatedBosses).toContain('boss:mohg')
+  })
+
+  it('honours the explicit “began with the DLC open” start', () => {
+    const c = applyAnswers({ ...emptyCharacter, answers: { soteStart: 'yes' } })
+    expect(c.collectedItems).toContain('region:shadow')
+    expect(c.defeatedBosses).toContain('boss:radahn')
+    expect(c.defeatedBosses).toContain('boss:mohg')
+  })
+
+  it('does not seed DLC access for a base-game start', () => {
+    const c = applyAnswers({ ...emptyCharacter, answers: { dlc: 'limgrave', soteStart: 'no' } })
+    expect(c.collectedItems).toContain('region:limgrave')
+    expect(c.collectedItems).not.toContain('region:shadow')
+    expect(c.defeatedBosses).not.toContain('boss:radahn')
+    expect(c.defeatedBosses).not.toContain('boss:mohg')
+  })
+
+  it('seeds the Tarnished Pack origin weapon from the pack-start question', () => {
+    const heavy = applyAnswers({ ...emptyCharacter, answers: { tarnished: 'heavy-knight' } })
+    expect(heavy.collectedItems).toContain('item:hefty-scimitar')
+    const idus = applyAnswers({ ...emptyCharacter, answers: { tarnished: 'idus-knight' } })
+    expect(idus.collectedItems).toContain('item:idus-sword')
+  })
+
+  it('seeds the origin weapon from the class answer as well', () => {
+    const heavy = applyAnswers({ ...emptyCharacter, answers: { class: 'heavy-knight' } })
+    expect(heavy.startingClass).toBe('heavy-knight')
+    expect(heavy.collectedItems).toContain('item:hefty-scimitar')
+    const idus = applyAnswers({ ...emptyCharacter, answers: { class: 'idus-knight' } })
+    expect(idus.startingClass).toBe('idus-knight')
+    expect(idus.collectedItems).toContain('item:idus-sword')
+  })
+
+  it('records interview evidence for seeded DLC facts', () => {
+    const c = applyAnswers({ ...emptyCharacter, answers: { dlc: 'sote' } })
+    const direct = c.evidence.find((e) => e.fact === 'region:shadow')
+    expect(direct?.source).toBe('answer')
+    expect(direct?.detail).toBe('interview')
+    expect(c.evidence.some((e) => e.fact === 'boss:radahn' && e.source === 'answer')).toBe(true)
   })
 })

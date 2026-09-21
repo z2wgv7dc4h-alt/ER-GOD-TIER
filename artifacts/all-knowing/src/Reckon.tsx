@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { interview } from './knowledge/catalog'
 import { aliasStatus } from './lib/aliases'
-import { applyOcrRead, hintForShot, readImage, type OcrOutcome } from './lib/ocr'
+import { applyOcrRead, hintForShot, matchBulkLines, readImage, type OcrLineResult, type OcrOutcome } from './lib/ocr'
 import { applyAnswers, summarize } from './lib/infer'
 import { labelOf } from './lib/links'
 import { NextMoves, Thread } from './Thread'
@@ -16,6 +16,29 @@ const shotKinds: { id: ShotKind; label: string; ask: string }[] = [
   { id: 'pickup', label: 'Item pickup banner', ask: 'The name plate after you pick something up.' },
   { id: 'boss', label: 'Boss remembrance / arena', ask: 'A remembrance or the “legend felled” banner.' },
 ]
+
+/** Per-line verdicts for a pasted/recognized list: every line gets a match or a miss. */
+function LineResults({ lines }: { lines: OcrLineResult[] }) {
+  if (!lines.length) return null
+  const hit = lines.filter((l) => l.matches.length).length
+  return (
+    <div style={{ marginTop: 8 }}>
+      <p className="note" style={{ margin: 0 }}>
+        {hit}/{lines.length} lines matched
+      </p>
+      <ul className="warp-lines">
+        {lines.map((l, i) => (
+          <li key={`${i}:${l.line}`} className={l.matches.length ? 'ok' : 'miss'}>
+            <span className="line-text">{l.line}</span>
+            <span className="line-hit">
+              {l.matches.length ? l.matches.map((m) => m.name).join(' · ') : 'no match'}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
 
 export function ReckonWorkspace() {
   const { character, setCharacter, selectedMarkerId, setSelectedMarkerId } = useWorkspace()
@@ -91,6 +114,9 @@ export function ReckonWorkspace() {
       return false
     })
   }, [character.answers])
+
+  /** Live per-line verdicts while a list is typed/pasted, before anything is committed. */
+  const preview = useMemo(() => (blob.trim() ? matchBulkLines(blob) : []), [blob])
 
   return (
     <div className="split reckon">
@@ -226,6 +252,7 @@ export function ReckonWorkspace() {
                 </pre>
               </details>
             )}
+            <LineResults lines={outcome.lines} />
           </div>
         )}
 
@@ -239,10 +266,12 @@ export function ReckonWorkspace() {
           value={blob}
           onChange={(e) => setBlob(e.target.value)}
         />
+        <LineResults lines={preview} />
         <button
           className="ghost gold"
           type="button"
           style={{ marginTop: 8 }}
+          disabled={!blob.trim()}
           onClick={() => scanText(blob, kind === 'warp-list' ? 'screenshot:warp-list' : `screenshot:${kind}`)}
         >
           Read these names

@@ -4,6 +4,7 @@ import {
   OCR_CONFIDENCE_FLOOR,
   applyOcrRead,
   factsFromText,
+  matchBulkLines,
   readImageText,
 } from './ocr'
 
@@ -28,6 +29,54 @@ describe('factsFromText', () => {
 
   it('returns nothing for text that matches no catalog entry', () => {
     expect(factsFromText('qzxw vbnm plok')).toHaveLength(0)
+  })
+})
+
+describe('matchBulkLines', () => {
+  const list = [
+    'The First Step',
+    'Church of Elleh',
+    'Gatefront',
+    'Liurnia Lake Shore',
+    'East Capital Rampart',
+    'Foot of the Forge',
+    'Gravesite Plain',
+    'Main Gate Plaza',
+    'Erdtree-Gazing Hill',
+    'Capital Rampart',
+    'Totally Made Up Place',
+    'qzxw vbnm',
+  ].join('\n')
+
+  it('returns one verdict per non-blank line, in menu order', () => {
+    const lines = matchBulkLines(list)
+    expect(lines).toHaveLength(12)
+    expect(lines[0].line).toBe('The First Step')
+    expect(lines[11].line).toBe('qzxw vbnm')
+  })
+
+  it('matches each line independently and flags misses instead of guessing', () => {
+    const lines = matchBulkLines(list)
+    expect(lines.filter((l) => l.matches.length).length).toBe(10)
+    expect(lines.find((l) => l.line === 'Church of Elleh')?.matches.some((m) => m.id === 'grace:elleh')).toBe(true)
+    expect(lines.find((l) => l.line === 'Main Gate Plaza')?.matches.some((m) => m.id === 'grace:shadow-keep')).toBe(true)
+    expect(lines.find((l) => l.line === 'Totally Made Up Place')?.matches).toHaveLength(0)
+  })
+
+  it('ignores blank lines', () => {
+    expect(matchBulkLines('Church of Elleh\n\n   \nGatefront')).toHaveLength(2)
+  })
+
+  it('applies a 10+ line paste as one bulk read with per-line results', () => {
+    const outcome = applyOcrRead(emptyCharacter, { text: list, confidence: 0.92 }, 'screenshot:warp-list')
+    expect(outcome.status).toBe('applied')
+    expect(outcome.lines).toHaveLength(12)
+    expect(outcome.lines.filter((l) => l.matches.length === 0)).toHaveLength(2)
+    expect(outcome.character.discoveredGraces).toContain('grace:first-step')
+    expect(outcome.character.discoveredGraces).toContain('grace:elleh')
+    expect(outcome.character.discoveredGraces).toContain('grace:shadow-keep')
+    expect(outcome.character.discoveredGraces).toContain('grace:gravesite')
+    expect(outcome.character.evidence.every((e) => e.source === 'screenshot' || e.source === 'inference')).toBe(true)
   })
 })
 
