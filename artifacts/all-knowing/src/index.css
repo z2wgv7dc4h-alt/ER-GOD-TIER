@@ -190,7 +190,7 @@ button { cursor: pointer; }
 }
 .ghost.gold { border-color: var(--gold-dim); color: var(--gold); }
 
-.workspace { display: grid; grid-template-rows: 56px 1fr; min-width: 0; min-height: 0; }
+.workspace { display: grid; grid-template-rows: 56px auto minmax(0, 1fr); min-width: 0; min-height: 0; }
 
 .topbar {
   display: flex;
@@ -504,20 +504,25 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
 }
 
 @media (max-width: 1100px) {
-  .app { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; }
+  .app { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr) auto; }
   .rail {
     flex-direction: row;
+    flex-wrap: nowrap;
     align-items: center;
     gap: 12px;
     padding: 10px 12px;
     overflow-x: auto;
+    overflow-y: hidden;
+    max-height: 25vh;
     border-right: 0;
     border-bottom: 1px solid var(--line);
   }
-  .brand { margin: 0; }
+  .brand { margin: 0; flex-shrink: 0; }
+  .char-card { flex-shrink: 0; }
   .char-card .stats, .drop { display: none; }
-  .nav { flex-direction: row; }
-  .guide { border-left: 0; border-top: 1px solid var(--line); max-height: 40vh; }
+  .nav { flex-direction: row; flex-shrink: 0; }
+  .guide { border-left: 0; border-top: 1px solid var(--line); max-height: 30vh; }
+  .world-ribbon { max-height: 15vh; overflow-y: auto; }
   .map-stage, .split { grid-template-columns: 1fr; }
   .side, .panel + .panel { border-left: 0; border-top: 1px solid var(--line); }
 }
