@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { demoCharacter } from './data/seed'
 import {
   characterFromEngine,
@@ -8,11 +8,7 @@ import {
 } from './lib/mapEngine'
 import { mergeCharacter } from './lib/merge'
 import { ingestSave } from './lib/save'
-import { AtlasWorkspace } from './Atlas'
-import { BuildWorkspace } from './Build'
-import { CodexWorkspace } from './Codex'
 import { FirstSit } from './FirstSit'
-import { Gideon } from './Gideon'
 import { Help } from './Help'
 import { leftovers } from './lib/leftovers'
 import { summarize } from './lib/infer'
@@ -20,9 +16,17 @@ import { worldBanners } from './lib/worldState'
 import { CommandHits, PacketBar, SitToggle, softCapMark, useClipboardShots, useHotkeys } from './QoL'
 import { ProfileSwitcher } from './ProfileSwitcher'
 import { allLines } from './knowledge/storylines'
-import { QuestWorkspace } from './Quests'
-import { ReckonWorkspace } from './Reckon'
 import { WorkspaceProvider, useWorkspace } from './state'
+
+// Each room is a separate chunk, loaded only when its tab is opened. Atlas in
+// particular carries the map/engine plumbing, so this keeps the initial
+// mobile bundle to the shell + whichever room the user actually lands on.
+const ReckonWorkspace = lazy(() => import('./Reckon').then((m) => ({ default: m.ReckonWorkspace })))
+const AtlasWorkspace = lazy(() => import('./Atlas').then((m) => ({ default: m.AtlasWorkspace })))
+const BuildWorkspace = lazy(() => import('./Build').then((m) => ({ default: m.BuildWorkspace })))
+const QuestWorkspace = lazy(() => import('./Quests').then((m) => ({ default: m.QuestWorkspace })))
+const CodexWorkspace = lazy(() => import('./Codex').then((m) => ({ default: m.CodexWorkspace })))
+const Gideon = lazy(() => import('./Gideon').then((m) => ({ default: m.Gideon })))
 import { art } from './art'
 import { layerOrder, modules } from './lib/nav'
 import type { ModuleId } from './types'
@@ -151,16 +155,20 @@ function AppShell() {
         <CommandHits />
         <div className="stage">
           <FirstSit />
-          {w.module === 'reckon' && <ReckonWorkspace />}
-          {w.module === 'map' && <AtlasWorkspace />}
-          {w.module === 'build' && <BuildWorkspace />}
-          {w.module === 'quests' && <QuestWorkspace />}
-          {w.module === 'codex' && <CodexWorkspace />}
+          <Suspense fallback={null}>
+            {w.module === 'reckon' && <ReckonWorkspace />}
+            {w.module === 'map' && <AtlasWorkspace />}
+            {w.module === 'build' && <BuildWorkspace />}
+            {w.module === 'quests' && <QuestWorkspace />}
+            {w.module === 'codex' && <CodexWorkspace />}
+          </Suspense>
         </div>
       </main>
 
       <aside className="guide">
-        <Gideon />
+        <Suspense fallback={null}>
+          <Gideon />
+        </Suspense>
       </aside>
 
       <nav className="tabbar" aria-label="Rooms">
