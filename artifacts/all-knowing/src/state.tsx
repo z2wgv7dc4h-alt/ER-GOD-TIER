@@ -114,6 +114,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setSitMode(p.ui.sitMode)
     setSelectedMarkerId(p.ui.selectedMarkerId)
     setHistory([])
+    // Recents are derived from the previous Tarnished's pins; don't let one
+    // profile's fact history leak into another's rail.
+    setRecentFacts([])
   }
 
   const value = useMemo<Workspace>(

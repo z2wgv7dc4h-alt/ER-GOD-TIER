@@ -104,6 +104,20 @@ button { cursor: pointer; }
   text-transform: uppercase;
 }
 
+.profile-switcher {
+  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  padding: 10px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.profile-switcher .profile-row { display: flex; gap: 6px; }
+.profile-switcher .profile-row .search { flex: 1; min-width: 0; }
+.profile-switcher .profile-hint { font-size: 11px; margin: 0; }
+.profile-switcher .opts { margin-top: 0; }
+
 .nav { display: flex; flex-direction: column; gap: 4px; }
 .nav button {
   background: transparent;
@@ -518,6 +532,7 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
     border-bottom: 1px solid var(--line);
   }
   .brand { margin: 0; flex-shrink: 0; }
+  .profile-switcher { flex-shrink: 0; margin-bottom: 0; }
   .char-card { flex-shrink: 0; }
   .char-card .stats, .drop { display: none; }
   .nav { flex-direction: row; flex-shrink: 0; }

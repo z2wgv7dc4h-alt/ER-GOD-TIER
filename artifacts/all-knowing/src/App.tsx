@@ -17,6 +17,7 @@ import { leftovers } from './lib/leftovers'
 import { summarize } from './lib/infer'
 import { worldBanners } from './lib/worldState'
 import { CommandHits, PacketBar, SitToggle, softCapMark, useClipboardShots, useHotkeys } from './QoL'
+import { ProfileSwitcher } from './ProfileSwitcher'
 import { allLines } from './knowledge/storylines'
 import { QuestWorkspace } from './Quests'
 import { ReckonWorkspace } from './Reckon'
@@ -78,6 +79,7 @@ function AppShell() {
             <p>All things conjoined</p>
           </div>
         </div>
+        <ProfileSwitcher />
         <nav className="nav">
           {modules.map((m) => (
             <button key={m.id} className={w.module === m.id ? 'active' : ''} onClick={() => w.setModule(m.id)}>
