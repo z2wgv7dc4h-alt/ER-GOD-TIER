@@ -5,6 +5,9 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [react()],
   server: {
+    // `.scratch/` is gitignored task scratch (clones, dumps, headless-browser profiles).
+    // Watching it can crash Vite on locked files (EBUSY) and should never trigger HMR.
+    watch: { ignored: ['**/.scratch/**'] },
     proxy: {
       '/er-map': {
         target: 'http://127.0.0.1:8099',

@@ -38,17 +38,30 @@ export function closeWorld(ids: string[]) {
   return [...out]
 }
 
-export function applyFacts(character: Character, incoming: string[], source: EvidenceSource, detail: string): Character {
+export function applyFacts(
+  character: Character,
+  incoming: string[],
+  source: EvidenceSource,
+  detail: string,
+  /**
+   * Optional strength (0..1) of the originating read — e.g. an OCR confidence.
+   * Defaults to the historical 0.94 direct / 0.72 inferred pair so existing
+   * callers (save, interview) are unchanged. Implied facts scale at ~0.77×.
+   */
+  confidence?: number,
+): Character {
   const canonical = incoming.map((id) => canonicalFactId(id))
   const closed = closeWorld(canonical)
   let next = { ...character, source: character.source === 'save' ? character.source : 'reckon' as const }
   const evidence = [...character.evidence]
+  const directConf = confidence ?? 0.94
+  const inferredConf = confidence == null ? 0.72 : Math.round(confidence * 0.766 * 100) / 100
   for (const id of closed) {
     const node = byId.get(id)
     const inferred = !canonical.includes(id)
     const src: EvidenceSource = inferred ? 'inference' : source
     if (!evidence.some((e) => e.fact === id && e.source === src)) {
-      evidence.push(ev(id, src, inferred ? `implied by ${detail}` : detail, inferred ? 0.72 : 0.94))
+      evidence.push(ev(id, src, inferred ? `implied by ${detail}` : detail, inferred ? inferredConf : directConf))
     }
     const kind = node?.kind || prefixKind(id)
     if (kind === 'boss') next.defeatedBosses = add(next.defeatedBosses, id)

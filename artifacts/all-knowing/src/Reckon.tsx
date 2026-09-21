@@ -1,13 +1,12 @@
 import { useMemo, useRef, useState } from 'react'
-import { interview, matchMany } from './knowledge/catalog'
-import { aliasStatus, matchAllWarps } from './lib/aliases'
-import { hintForShot } from './lib/ocr'
-import { searchSync } from './lib/search'
-import { applyAnswers, applyFacts, summarize } from './lib/infer'
+import { interview } from './knowledge/catalog'
+import { aliasStatus } from './lib/aliases'
+import { applyOcrRead, hintForShot, readImage, type OcrOutcome } from './lib/ocr'
+import { applyAnswers, summarize } from './lib/infer'
 import { labelOf } from './lib/links'
 import { NextMoves, Thread } from './Thread'
 import { useWorkspace } from './state'
-import type { Shot, ShotKind } from './types'
+import type { Character, Shot, ShotKind } from './types'
 
 const shotKinds: { id: ShotKind; label: string; ask: string }[] = [
   { id: 'warp-list', label: 'Warp / grace list', ask: 'Map menu → a Site of Grace list. Best single shot a PS5 player can give.' },
@@ -23,7 +22,9 @@ export function ReckonWorkspace() {
   const fileRef = useRef<HTMLInputElement>(null)
   const [kind, setKind] = useState<ShotKind>('warp-list')
   const [blob, setBlob] = useState('')
-  const [pendingHits, setPendingHits] = useState(matchMany(''))
+  const [outcome, setOutcome] = useState<OcrOutcome | null>(null)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
 
   const totals = summarize(character)
 
@@ -32,44 +33,53 @@ export function ReckonWorkspace() {
     setCharacter(applyAnswers({ ...character, answers }))
   }
 
-  function commitHits(ids: string[], sourceDetail: string) {
-    setCharacter(applyFacts(character, ids, sourceDetail.startsWith('shot') ? 'screenshot' : 'answer', sourceDetail))
-    if (ids[0]) setSelectedMarkerId(ids[0])
-  }
-
-  function onFiles(files: FileList | null) {
+  /** Add the images as reference shots, then OCR each one and apply whatever is trusted. */
+  async function onFiles(files: FileList | File[] | null) {
     if (!files?.length) return
-    const shots: Shot[] = []
-    for (const file of Array.from(files)) {
-      if (!file.type.startsWith('image/')) continue
-      shots.push({
-        id: `${file.name}:${file.size}:${file.lastModified}`,
-        kind,
-        name: file.name,
-        url: URL.createObjectURL(file),
-        notes: '',
-        hits: [],
-      })
-    }
-    if (!shots.length) return
-    setCharacter({
+    const images = Array.from(files).filter((file) => file.type.startsWith('image/'))
+    if (!images.length) return
+    const shots: Shot[] = images.map((file) => ({
+      id: `${file.name}:${file.size}:${file.lastModified}`,
+      kind,
+      name: file.name,
+      url: URL.createObjectURL(file),
+      notes: '',
+      hits: [],
+    }))
+    let next: Character = {
       ...character,
       source: character.source === 'save' ? character.source : 'reckon',
       shots: [...shots, ...character.shots],
-    })
+    }
+    setCharacter(next)
+
+    for (let i = 0; i < images.length; i++) {
+      setBusy(true)
+      setError('')
+      try {
+        const read = await readImage(images[i])
+        const result = applyOcrRead(next, read, `screenshot:${shots[i].kind}`)
+        setOutcome(result)
+        if (result.status === 'applied') {
+          next = result.character
+          setCharacter(next)
+          if (result.matches[0]) setSelectedMarkerId(result.matches[0].id)
+        }
+      } catch (e) {
+        setError(e instanceof Error ? e.message : 'Could not read that image.')
+      } finally {
+        setBusy(false)
+      }
+    }
   }
 
   function scanText(text: string, detail: string) {
-    const hits = matchMany(text)
-    const warps = matchAllWarps(text)
-    const extra = searchSync(text)
-    const ids = [...new Set([
-      ...hits.map((h) => h.id),
-      ...warps.map((h) => h.id),
-      ...extra.map((h) => h.id),
-    ])]
-    setPendingHits(hits)
-    if (ids.length) commitHits(ids, detail)
+    const result = applyOcrRead(character, { text, confidence: 1 }, detail)
+    setOutcome(result)
+    if (result.status === 'applied') {
+      setCharacter(result.character)
+      if (result.matches[0]) setSelectedMarkerId(result.matches[0].id)
+    }
     setBlob('')
   }
 
@@ -142,7 +152,16 @@ export function ReckonWorkspace() {
         })}
       </section>
 
-      <section className="panel">
+      <section
+        className="panel"
+        onPaste={(e) => {
+          const files = Array.from(e.clipboardData?.files ?? []).filter((f) => f.type.startsWith('image/'))
+          if (files.length) {
+            e.preventDefault()
+            onFiles(files)
+          }
+        }}
+      >
         <div className="kicker">Screenshots do the heavy lifting</div>
         <h3 style={{ fontFamily: 'var(--font-display)', margin: '6px 0 10px' }}>What are you sending?</h3>
         <div className="opts">
@@ -169,14 +188,46 @@ export function ReckonWorkspace() {
             multiple
             onChange={(e) => onFiles(e.target.files)}
           />
-          <div>Drop PS5 captures here as reference. They stay in this tab.</div>
+          <div>Drop or paste PS5 captures here. They stay in this tab.</div>
           <div className="note" style={{ marginTop: 4 }}>
-            Automatic image reading (OCR) is not available yet — type or paste the names below.
+            Read on-device with Tesseract OCR — nothing is uploaded. Blurry or low-confidence reads
+            are surfaced but never turned into facts.
           </div>
-          <button className="ghost gold" type="button" style={{ marginTop: 8 }} onClick={() => fileRef.current?.click()}>
-            Open screenshots
+          <button
+            className="ghost gold"
+            type="button"
+            style={{ marginTop: 8 }}
+            disabled={busy}
+            onClick={() => fileRef.current?.click()}
+          >
+            {busy ? 'Reading screenshot…' : 'Open screenshots'}
           </button>
         </div>
+
+        {error && (
+          <p className="note" style={{ marginTop: 10, color: 'var(--danger, #c66)' }}>
+            OCR failed: {error}
+          </p>
+        )}
+
+        {outcome && (
+          <div style={{ marginTop: 10 }}>
+            <p className="note" style={{ margin: 0 }}>
+              {outcome.status === 'applied' ? 'Read: ' : ''}
+              {outcome.message}
+            </p>
+            {outcome.text && (
+              <details style={{ marginTop: 4 }}>
+                <summary className="note" style={{ cursor: 'pointer' }}>
+                  Recognized text ({Math.round(outcome.confidence * 100)}% confidence)
+                </summary>
+                <pre className="note" style={{ whiteSpace: 'pre-wrap', margin: '6px 0 0', maxHeight: 160, overflow: 'auto' }}>
+                  {outcome.text}
+                </pre>
+              </details>
+            )}
+          </div>
+        )}
 
         <label className="note" style={{ display: 'block', marginTop: 16 }}>
           Type or paste names you can read on the shot (one per line is fine).
@@ -196,12 +247,6 @@ export function ReckonWorkspace() {
         >
           Read these names
         </button>
-
-        {pendingHits.length > 0 && (
-          <p className="note" style={{ marginTop: 10 }}>
-            Last read: {pendingHits.map((h) => h.name).join(' · ')}
-          </p>
-        )}
 
         <ul className="shots">
           {character.shots.map((s) => (
