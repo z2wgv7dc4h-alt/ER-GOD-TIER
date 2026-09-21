@@ -22,9 +22,10 @@ All under `public/sourced/` unless noted.
 - **Regulation stamp:** `Character.regulation` / `catalog.regulation` are `'1.17-tarnished-pack'`
   (`src/lib/regulation.ts`). The AR data, the atlas marker extract, and `open/names.json` are all
   on that line. The atlas markers and `names.json` were regenerated from this machine's 1.17
-  install in Task 27 (see below); the one source still off-stamp is the upstream
-  `open/paramdex/` dump, which is post-SotE but predates the Tarnished Pack.
-  `regulationAudit()` reports that remaining gap rather than hiding it.
+  install in Task 27 (see below), and the Paramdex equipment name files were topped up from it too.
+  The one source still off-stamp is `open/paramdex/NpcParam.txt` (upstream soulsmods/Paramdex:
+  post-SotE but predates the Tarnished Pack). `regulationAudit()` reports that remaining gap
+  rather than hiding it.
 - **Regenerate the FMG name dump** from a local install:
   `python scripts/extract-fmg-names.py` — reads the install's `item` + `item_dlc02` FMG and
   rewrites `open/names.json` (base + Shadow of the Erdtree + Tarnished Pack names).
