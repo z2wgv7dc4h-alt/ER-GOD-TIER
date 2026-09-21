@@ -19,6 +19,10 @@ All under `public/sourced/` unless noted.
   Tarnished Pack regulation data (MIT). CalcCorrectGraphs, AttackElementCorrect, reinforce rates,
   weapon base damage/scaling/requirements, and Tarnished Pack weapon rows. Loaded on demand by
   `src/lib/ar.ts`. See `THIRD_PARTY_NOTICES.md`.
+- **Regulation stamp:** `Character.regulation` / `catalog.regulation` are `'1.17-tarnished-pack'`
+  (`src/lib/regulation.ts`). The AR data is on that line; the atlas marker extract (local install)
+  and `open/names.json` (base-game FMG) are **not** — `regulationAudit()` reports the mismatch
+  rather than hiding it.
 
 ## Boss combat (Build lab) — real NpcParam
 

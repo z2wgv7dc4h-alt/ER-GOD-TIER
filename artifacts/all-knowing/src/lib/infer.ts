@@ -1,9 +1,14 @@
 import { byId, facts } from '../knowledge/catalog'
-import type { Character, Evidence, EvidenceSource, StartingClass } from '../types'
+import type { Character, Evidence, EvidenceClaim, EvidenceSource, StartingClass } from '../types'
 import { canonicalFactId } from './aliases'
+import { resolveClaim, type ConflictOptions } from './conflict'
 
 function add(list: string[], id: string) {
   return list.includes(id) ? list : [...list, id]
+}
+
+function remove(list: string[], id: string) {
+  return list.includes(id) ? list.filter((x) => x !== id) : list
 }
 
 export function prefixKind(id: string) {
@@ -17,8 +22,44 @@ export function prefixKind(id: string) {
   return 'item'
 }
 
-function ev(fact: string, source: EvidenceSource, detail: string, confidence: number): Evidence {
-  return { id: `${source}:${fact}:${detail}`.slice(0, 120), fact, source, confidence, detail, at: Date.now() }
+function ev(fact: string, source: EvidenceSource, detail: string, confidence: number, claim: EvidenceClaim = 'true'): Evidence {
+  return { id: `${source}:${fact}:${detail}`.slice(0, 120), fact, source, confidence, claim, detail, at: Date.now() }
+}
+
+/**
+ * Recompute the three-state value of each fact from the *full* evidence list
+ * (SCOPE item #5). The winning source decides whether the fact lands on its
+ * kind's list (`true`) or on `deniedFacts` (`false`); the losing evidence is
+ * left in place on `character.evidence`. `unknown` leaves existing state
+ * alone rather than silently flipping a fact.
+ */
+export function reconcileFacts(character: Character, factIds: string[], opts: ConflictOptions = {}): Character {
+  let defeatedBosses = [...character.defeatedBosses]
+  let discoveredGraces = [...character.discoveredGraces]
+  let collectedItems = [...character.collectedItems]
+  let completedQuestSteps = [...character.completedQuestSteps]
+  let deniedFacts = [...(character.deniedFacts || [])]
+
+  for (const id of factIds) {
+    const { state } = resolveClaim(character.evidence, id, opts)
+    if (state === 'unknown') continue
+    const kind = byId.get(id)?.kind || prefixKind(id)
+    if (state === 'true') {
+      deniedFacts = remove(deniedFacts, id)
+      if (kind === 'boss') defeatedBosses = add(defeatedBosses, id)
+      else if (kind === 'grace') discoveredGraces = add(discoveredGraces, id)
+      else if (kind === 'quest') completedQuestSteps = add(completedQuestSteps, id)
+      else collectedItems = add(collectedItems, id)
+    } else {
+      deniedFacts = add(deniedFacts, id)
+      defeatedBosses = remove(defeatedBosses, id)
+      discoveredGraces = remove(discoveredGraces, id)
+      collectedItems = remove(collectedItems, id)
+      completedQuestSteps = remove(completedQuestSteps, id)
+    }
+  }
+
+  return { ...character, defeatedBosses, discoveredGraces, collectedItems, completedQuestSteps, deniedFacts }
 }
 
 export function closeWorld(ids: string[]) {
@@ -49,54 +90,46 @@ export function applyFacts(
    * callers (save, interview) are unchanged. Implied facts scale at ~0.77×.
    */
   confidence?: number,
+  opts: ConflictOptions = {},
 ): Character {
   const canonical = incoming.map((id) => canonicalFactId(id))
   const closed = closeWorld(canonical)
-  let next = { ...character, source: character.source === 'save' ? character.source : 'reckon' as const }
+  const next = { ...character, source: character.source === 'save' ? character.source : 'reckon' as const }
   const evidence = [...character.evidence]
   const directConf = confidence ?? 0.94
   const inferredConf = confidence == null ? 0.72 : Math.round(confidence * 0.766 * 100) / 100
   for (const id of closed) {
-    const node = byId.get(id)
     const inferred = !canonical.includes(id)
     const src: EvidenceSource = inferred ? 'inference' : source
-    if (!evidence.some((e) => e.fact === id && e.source === src)) {
-      evidence.push(ev(id, src, inferred ? `implied by ${detail}` : detail, inferred ? inferredConf : directConf))
+    if (!evidence.some((e) => e.fact === id && e.source === src && (e.claim ?? 'true') === 'true')) {
+      evidence.push(ev(id, src, inferred ? `implied by ${detail}` : detail, inferred ? inferredConf : directConf, 'true'))
     }
-    const kind = node?.kind || prefixKind(id)
-    if (kind === 'boss') next.defeatedBosses = add(next.defeatedBosses, id)
-    else if (kind === 'grace') next.discoveredGraces = add(next.discoveredGraces, id)
-    else if (kind === 'quest') next.completedQuestSteps = add(next.completedQuestSteps, id)
-    else next.collectedItems = add(next.collectedItems, id)
   }
-  next.deniedFacts = (next.deniedFacts || []).filter((id) => !closed.includes(id))
   next.evidence = evidence
-  return next
+  return reconcileFacts(next, closed, opts)
 }
 
-export function denyFacts(character: Character, ids: string[], detail: string): Character {
-  const deniedFacts = [...new Set([...(character.deniedFacts || []), ...ids])]
+export function denyFacts(
+  character: Character,
+  ids: string[],
+  detail: string,
+  opts: ConflictOptions = {},
+): Character {
   const evidence = [...character.evidence]
   for (const id of ids) {
-    if (!evidence.some((e) => e.fact === id && e.detail === detail)) {
+    if (!evidence.some((e) => e.fact === id && e.detail === detail && (e.claim ?? 'true') === 'false')) {
       evidence.push({
-        id: `deny:${id}:${detail}`,
+        id: `deny:${id}:${detail}`.slice(0, 120),
         fact: id,
         source: 'answer',
         confidence: 0.9,
+        claim: 'false',
         detail,
         at: Date.now(),
       })
     }
   }
-  return {
-    ...character,
-    deniedFacts,
-    defeatedBosses: character.defeatedBosses.filter((id) => !ids.includes(id)),
-    discoveredGraces: character.discoveredGraces.filter((id) => !ids.includes(id)),
-    collectedItems: character.collectedItems.filter((id) => !ids.includes(id)),
-    evidence,
-  }
+  return reconcileFacts({ ...character, evidence }, ids, opts)
 }
 
 export function clearFact(character: Character, id: string): Character {

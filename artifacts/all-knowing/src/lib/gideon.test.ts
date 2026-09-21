@@ -5,6 +5,7 @@ import { callDeepSeekJson, hasDeepSeekKey } from './deepseek'
 import type { BossCombat } from './enemy'
 import { askGideon, askGideonRouter, isFastLookup } from './gideon'
 import { buildGrounding, validateGideonAct } from './gideonLlm'
+import { REGULATION_STAMP } from './regulation'
 
 /** The real Task 17 extract, read straight off disk — not a hand-rolled fixture. */
 const combat = JSON.parse(
@@ -19,6 +20,7 @@ vi.mock('./deepseek', () => ({
 const character: Character = {
   source: 'reckon',
   platform: 'ps5',
+  regulation: REGULATION_STAMP,
   name: 'Tarnished',
   level: 40,
   startingClass: 'vagabond',

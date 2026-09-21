@@ -8,7 +8,7 @@ function dedupeEvidence(list: Evidence[]) {
   const seen = new Set<string>()
   const out: Evidence[] = []
   for (const e of list) {
-    const key = `${e.source}:${e.fact}`
+    const key = `${e.source}:${e.fact}:${e.claim ?? 'true'}`
     if (seen.has(key)) continue
     seen.add(key)
     out.push(e)

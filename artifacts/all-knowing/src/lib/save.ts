@@ -1,6 +1,7 @@
 import { emptyCharacter } from '../data/seed'
 import type { Character } from '../types'
 import { applyFacts } from './infer'
+import { REGULATION_STAMP } from './regulation'
 import { analyzeSave, type SaveResult } from './sl2/analyze'
 import type { SaveWorkerResponse } from './sl2/worker'
 
@@ -46,6 +47,7 @@ export function characterFromResult(result: SaveResult, fileName: string): Chara
   const base: Character = {
     source: 'save',
     platform: 'pc',
+    regulation: REGULATION_STAMP,
     fileName,
     name: result.characterName || 'Tarnished',
     level: result.level,

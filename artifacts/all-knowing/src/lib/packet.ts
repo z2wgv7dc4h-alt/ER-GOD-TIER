@@ -1,5 +1,6 @@
 import { emptyCharacter } from '../data/seed'
 import type { Character } from '../types'
+import { REGULATION_STAMP } from './regulation'
 
 export const PACKET_VERSION = 1
 
@@ -15,7 +16,7 @@ export function toPacket(character: Character): Packet {
   return {
     kind: 'all-knowing.packet',
     version: PACKET_VERSION,
-    regulation: '1.17-tarnished-pack',
+    regulation: REGULATION_STAMP,
     exportedAt: Date.now(),
     character: { ...character, shots: [] },
   }
@@ -24,7 +25,8 @@ export function toPacket(character: Character): Packet {
 export function fromPacket(raw: unknown): Character {
   const doc = raw as Packet
   if (!doc || doc.kind !== 'all-knowing.packet') throw new Error('Not an All-Knowing packet.')
-  return { ...emptyCharacter, ...doc.character, shots: [] }
+  const regulation = doc.character?.regulation || doc.regulation || emptyCharacter.regulation
+  return { ...emptyCharacter, ...doc.character, regulation, shots: [] }
 }
 
 function setOf(c: Character) {
