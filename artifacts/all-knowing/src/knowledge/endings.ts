@@ -1,3 +1,4 @@
+import { canonicalFactId } from '../lib/aliases'
 import type { Character, ModuleId } from '../types'
 
 export type PlanStep = {
@@ -5,6 +6,15 @@ export type PlanStep = {
   do: string
   detail: string
   factId?: string
+  /**
+   * Additional acceptable completion markers for this beat. Some real game
+   * beats are recorded under more than one id — a quest-state flag and the item
+   * it hands over, or two equivalent dump families — and none of them is truly
+   * canonical. A step counts as done when the character knows `factId` **or**
+   * any id here. Entries are canonicalised through `canonicalFactId`, so engine
+   * / dump dialects (`bossflag:…`, `grace:…`) resolve against authored slugs.
+   */
+  factIds?: string[]
   module?: ModuleId
   minLevel?: number
   obtain?: string
@@ -53,9 +63,9 @@ export const endings: EndingRoute[] = [
     steps: [
       { id: 's1', do: 'Enter Ranni’s service at Ranni’s Rise', detail: 'Three Sisters, after Caria Manor. Speak to Blaidd, Iji, and Seluvis in the towers.', factId: 'quest:ranni:service', module: 'quests', minLevel: 40, requires: [], grants: ['quest:ranni:service'], lockouts: [] },
       { id: 's2', do: 'Open Nokron — defeat Starscourge Radahn', detail: 'Redmane festival. Talk to Jerren or progress Ranni far enough that the festival is live.', factId: 'boss:radahn', module: 'map', minLevel: 70, obtain: 'Radahn’s Great Rune', requires: ['quest:ranni:service'], grants: ['quest:ranni:festival', 'boss:radahn'], lockouts: [] },
-      { id: 's3', do: 'Retrieve the Fingerslayer Blade', detail: 'Night’s Sacred Ground in Nokron. Give it to Ranni, never to Seluvis.', factId: 'item:fingerslayer', module: 'map', requires: ['quest:ranni:festival'], grants: ['item:fingerslayer'], lockouts: ['quest:seluvis-blade'], lockout: 'Seluvis + this blade ends her line.' },
+      { id: 's3', do: 'Retrieve the Fingerslayer Blade', detail: 'Night’s Sacred Ground in Nokron. Give it to Ranni, never to Seluvis.', factId: 'item:fingerslayer', factIds: ['quest:ranni:nokron'], module: 'map', requires: ['quest:ranni:festival'], grants: ['item:fingerslayer'], lockouts: ['quest:seluvis-blade'], lockout: 'Seluvis + this blade ends her line.' },
       { id: 's4', do: 'Invert the Carian Study Hall', detail: 'Use the Carian Inverted Statue. Divine Tower of Liurnia for the cursemark.', factId: 'quest:ranni:statue', module: 'quests', requires: ['item:fingerslayer'], grants: ['quest:ranni:statue'], lockouts: ['quest:seluvis-blade'] },
-      { id: 's5', do: 'Kill Astel and place the Dark Moon Ring', detail: 'Lake of Rot → Grand Cloister coffin → Moonlight Altar → Cathedral of Manus Celes.', factId: 'quest:ranni:ring', module: 'map', minLevel: 90, obtain: 'Dark Moon Greatsword', requires: ['quest:ranni:statue'], grants: ['quest:ranni:ring', 'item:dark-moon-ring'], lockouts: ['quest:seluvis-blade'] },
+      { id: 's5', do: 'Kill Astel and place the Dark Moon Ring', detail: 'Lake of Rot → Grand Cloister coffin → Moonlight Altar → Cathedral of Manus Celes.', factId: 'quest:ranni:ring', factIds: ['item:dark-moon-ring'], module: 'map', minLevel: 90, obtain: 'Dark Moon Greatsword', requires: ['quest:ranni:statue'], grants: ['quest:ranni:ring', 'item:dark-moon-ring'], lockouts: ['quest:seluvis-blade'] },
       { id: 's6', do: 'Finish the Elden Lord path, then summon Ranni', detail: 'Forge → Farum → Ashen Capital → Elden Beast. Use Ranni’s summon sign after the fight.', factId: 'boss:radagon', module: 'map', minLevel: 110, requires: ['quest:ranni:ring'], grants: ['boss:radagon'], lockouts: ['quest:seluvis-blade'] },
     ],
   },
@@ -68,7 +78,7 @@ export const endings: EndingRoute[] = [
       return null
     },
     steps: [
-      { id: 'f1', do: 'Meet Hyetta or Shabriri', detail: 'Hyetta starts at the Lake-Facing Cliffs grape line. Shabriri appears later on the mountain.', factId: 'grace:lake-shore', module: 'map', minLevel: 30, requires: [], grants: ['grace:lake-shore', 'quest:hyetta:met'], lockouts: [] },
+      { id: 'f1', do: 'Meet Hyetta or Shabriri', detail: 'Hyetta starts at the Lake-Facing Cliffs grape line. Shabriri appears later on the mountain.', factId: 'grace:lake-shore', factIds: ['quest:hyetta:met', 'quest:yura:shabriri'], module: 'map', minLevel: 30, requires: [], grants: ['grace:lake-shore', 'quest:hyetta:met'], lockouts: [] },
       { id: 'f2', do: 'Reach the Forsaken Depths under Leyndell', detail: 'Subterranean Shunning-Grounds, Mohg the Omen, then the floor drop to the Three Fingers.', factId: 'grace:east-capital', module: 'map', minLevel: 80, requires: ['grace:lake-shore'], grants: ['grace:east-capital'], lockouts: [] },
       { id: 'f3', do: 'Take the Frenzied Flame', detail: 'Strip armour, open the door. This locks every other ending unless you complete Millicent + needle at Farum.', factId: 'boss:morgott', module: 'quests', requires: ['grace:east-capital'], grants: ['boss:morgott', 'quest:frenzy:taken'], lockouts: [], lockout: 'Other endings require the Unalloyed Gold Needle in Malenia’s bloom, then Farum.' },
       { id: 'f4', do: 'Beat the Elden Beast and do not use a Mending Rune', detail: 'The cutscene changes if the flame is still in you.', factId: 'boss:radagon', module: 'map', minLevel: 110, requires: ['quest:frenzy:taken'], grants: ['boss:radagon'], lockouts: [] },
@@ -81,7 +91,7 @@ export const endings: EndingRoute[] = [
     lockedIf: () => null,
     steps: [
       { id: 'd1', do: 'Talk to Fia at the Roundtable until she asks for a champion', detail: 'Hold her, then follow D’s brother and the Cursemark path.', factId: 'quest:fia:met', module: 'quests', minLevel: 40, requires: [], grants: ['quest:fia:met'], lockouts: [] },
-      { id: 'd2', do: 'Get the Cursemark of Death', detail: 'Same inverted Study Hall as Ranni. These lines share that tower.', factId: 'quest:ranni:statue', module: 'quests', minLevel: 70, requires: ['quest:fia:met'], grants: ['quest:ranni:statue'], lockouts: ['quest:fia:killed'] },
+      { id: 'd2', do: 'Get the Cursemark of Death', detail: 'Same inverted Study Hall as Ranni. These lines share that tower.', factId: 'quest:ranni:statue', factIds: ['item:cursemark-of-death'], module: 'quests', minLevel: 70, requires: ['quest:fia:met'], grants: ['quest:ranni:statue'], lockouts: ['quest:fia:killed'] },
       { id: 'd3', do: 'Give Fia the cursemark in Deeproot Depths', detail: 'Across the coffin after Godwyn’s prince. Defend her from Lionel, pick the Mending Rune of the Death-Prince.', factId: 'grace:deeproot', module: 'map', minLevel: 90, requires: ['quest:ranni:statue'], grants: ['grace:deeproot', 'quest:fia:cursemark', 'item:mending-rune-death-prince'], lockouts: ['quest:fia:killed'] },
       { id: 'd4', do: 'Use that rune after the Elden Beast', detail: 'Do not take the Frenzied Flame without a way to purge it.', factId: 'boss:radagon', module: 'map', minLevel: 110, requires: ['quest:fia:cursemark'], grants: ['boss:radagon'], lockouts: [] },
     ],
@@ -118,12 +128,44 @@ export function findEnding(text: string) {
 }
 
 export function knownSet(c: Character) {
-  return new Set([
-    ...c.defeatedBosses,
-    ...c.discoveredGraces,
-    ...c.collectedItems,
-    ...c.completedQuestSteps,
-  ])
+  return new Set(
+    [...c.defeatedBosses, ...c.discoveredGraces, ...c.collectedItems, ...c.completedQuestSteps].map((id) =>
+      canonicalFactId(id),
+    ),
+  )
+}
+
+/**
+ * Every completion marker a step accepts, canonicalised and de-duplicated, with
+ * the primary `factId` first. Empty when the step carries no completion marker.
+ */
+export function completionIds(step: PlanStep): string[] {
+  const raw = step.factId ? [step.factId, ...(step.factIds ?? [])] : [...(step.factIds ?? [])]
+  const out: string[] = []
+  for (const id of raw) {
+    const canonical = canonicalFactId(id)
+    if (!out.includes(canonical)) out.push(canonical)
+  }
+  return out
+}
+
+/** True when the character already satisfies any accepted marker for this step. */
+export function isStepDone(character: Character, step: PlanStep): boolean {
+  const have = knownSet(character)
+  return completionIds(step).some((id) => have.has(id))
+}
+
+/**
+ * The marker "I'm done" should apply for this step: the primary `factId` when
+ * the character knows none of the accepted markers. Undefined when the beat is
+ * already satisfied by any marker (so "I'm done" should assert nothing) or the
+ * step carries no completion marker at all.
+ */
+export function nextCompletionId(character: Character, step: PlanStep): string | undefined {
+  const have = knownSet(character)
+  const ids = completionIds(step)
+  if (ids.some((id) => have.has(id))) return undefined
+  return ids[0]
 }
 
 export function planRoute(character: Character, route: EndingRoute) {
@@ -132,7 +174,7 @@ export function planRoute(character: Character, route: EndingRoute) {
   const done: PlanStep[] = []
   const todo: PlanStep[] = []
   for (const step of route.steps) {
-    const finished = step.factId ? have.has(step.factId) : false
+    const finished = completionIds(step).some((id) => have.has(id))
     if (finished) done.push(step)
     else todo.push(step)
   }
@@ -152,7 +194,7 @@ export function planRoute(character: Character, route: EndingRoute) {
     const isForeclosed =
       step.lockouts.some((l) => known.has(l)) ||
       foreclosedByDone.has(step.id) ||
-      (step.factId ? foreclosedByDone.has(step.factId) : false)
+      completionIds(step).some((id) => foreclosedByDone.has(id))
     if (isForeclosed) {
       foreclosed.push(step)
       continue
