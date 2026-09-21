@@ -20,7 +20,7 @@ const sits = [
   {
     id: 'pc-save',
     title: 'PC · I have a save',
-    text: 'Live flags need the map engine (npm run map). .sl2 parsing is not available yet.',
+    text: 'Drop ER0000.sl2 — parsed locally into stats, bosses, and graces. Nothing is uploaded.',
     apply: false,
     platform: 'pc' as const,
     module: 'map' as const,

@@ -112,3 +112,36 @@ SOFTWARE.
 - **What was changed:** The one-sentence `goal` for each chapter is an original summary written
   from general Shadow of the Erdtree knowledge, **not** a copy or edit of the pack's
   `mainGoal`, `summary`, or `lore` prose. No walkthrough prose is reproduced anywhere.
+
+## elden-ring-compass (`@elden-ring-compass/save-parser-ts`) — reference only, NOT vendored
+
+- **Source:** https://github.com/EthanShoeDev/elden-ring-compass
+- **License: none found — all rights reserved.** There is no `LICENSE`/`COPYING` file in the
+  repository, no `license` field in any `package.json`, and the GitHub API reports
+  `"license": null`. An explicit permissive license could not be confirmed, so **no code was
+  copied or vendored from this project.**
+- **What was referenced (not copied):** the public save-format understanding — the `BND4`
+  container, the fixed 10 × `0x280010` slot layout, the sequential little-endian `UserDataX`
+  field order, the packed event-flag bitfield, and the `block → multiplier` flag-addressing
+  formula. `src/lib/sl2/` is an original TypeScript implementation written from that format
+  description.
+- **Test fixture:** the repo's real `ER0000.sl2` fixture
+  (`packages/save-parser/test/fixtures/`) was used locally, inside the gitignored `.scratch/`
+  clone, to validate the parser against its frozen oracle. The fixture and oracle are **not
+  committed** to this repo, and the tests skip when the clone is absent.
+
+## ER-Save-Lib — event-flag addressing data
+
+- **Source:** https://github.com/ClayAmore/ER-Save-Lib
+- **License: none found** (GitHub API reports `"license": null`). It is the upstream source of
+  the reverse-engineered save-format constants.
+- **What was taken:** `src/data/event-flag-bst.json` — the event-flag
+  `block → byte-offset multiplier` table (11,920 rows), reverse-engineered format data rather
+  than creative code, used with the documented addressing formula
+  (`byte = mult*125 + index/8`, `bit = 7 - index%8`) to read flags from the bitfield.
+- **Derived game-fact tables (original joins against our own data):**
+  - `src/data/grace-flags.json` — grace discovery flag ids, derived by matching our
+    `public/sourced/checklists/graces.json` names to the reference grace table (412 of 418).
+  - `src/data/hunt-flags.json` — field-boss kill flags, generated from our own
+    `public/sourced/checklists/hunts.json` (BuLEEto checklist).
+

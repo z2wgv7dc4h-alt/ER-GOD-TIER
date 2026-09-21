@@ -1,27 +1,67 @@
 import { emptyCharacter } from '../data/seed'
 import type { Character } from '../types'
+import { applyFacts } from './infer'
+import { analyzeSave, type SaveResult } from './sl2/analyze'
+import type { SaveWorkerResponse } from './sl2/worker'
 
 /**
- * Save adapter — NOT a real .sl2 parser yet.
+ * Real, local, read-only PC `.sl2` parser.
  *
- * This is intentionally a labelled empty stub (HANDOFF-CLAUDE.md §6 item 5).
- * The production parser should be adapted from EthanShoeDev/elden-ring-compass
- * `packages/save-parser` (pure TypeScript, runs in a worker, never writes the
- * file back). Until then, dropping a save is an honest "not available yet"
- * error instead of silently loading a demo character.
+ * Parsing is a pure-TypeScript, format-understanding port (BND4 container + fixed
+ * little-endian character slots + the packed event-flag bitfield), adapted from the
+ * documented Elden Ring save format and the ER-Save-Lib / elden-ring-compass reference
+ * parsers. It runs client-side (in a Web Worker when available), never uploads the file,
+ * and has no write path — dropping a save can only add facts, never modify the file.
  *
- * Do not upload .sl2 anywhere. File System Access / input[type=file] only.
+ * Facts flow through the normal `applyFacts` pipeline with evidence source `'save'`.
  */
-export async function ingestSave(file: File): Promise<Character> {
-  const header = new Uint8Array(await file.slice(0, 16).arrayBuffer())
-  const looksBinary = header.some((b) => b === 0)
-  if (!looksBinary && file.size < 64) {
-    throw new Error('That does not look like an Elden Ring save.')
-  }
+export async function ingestSave(file: File, slot?: number): Promise<Character> {
+  const buffer = await file.arrayBuffer()
+  const result = await runParse(buffer, slot)
+  return characterFromResult(result, file.name)
+}
 
-  throw new Error(
-    'Save parsing is not available yet. Use Reckoning for a PS5 run, or npm run map for a live PC save.',
-  )
+/** Parse the buffer in a worker when one exists, otherwise inline (tests / SSR). */
+function runParse(buffer: ArrayBuffer, slot?: number): Promise<SaveResult> {
+  if (typeof Worker === 'undefined') {
+    return Promise.resolve(analyzeSave(buffer, slot))
+  }
+  return new Promise<SaveResult>((resolve, reject) => {
+    const worker = new Worker(new URL('./sl2/worker.ts', import.meta.url), { type: 'module' })
+    worker.onmessage = (event: MessageEvent<SaveWorkerResponse>) => {
+      worker.terminate()
+      if (event.data.ok) resolve(event.data.result)
+      else reject(new Error(event.data.error))
+    }
+    worker.onerror = (event) => {
+      worker.terminate()
+      reject(new Error(event.message || 'Could not read that save.'))
+    }
+    worker.postMessage({ buffer, slot }, [buffer])
+  })
+}
+
+/** Build a `Character` from a parsed save and run the facts through `applyFacts`. */
+export function characterFromResult(result: SaveResult, fileName: string): Character {
+  const base: Character = {
+    source: 'save',
+    platform: 'pc',
+    fileName,
+    name: result.characterName || 'Tarnished',
+    level: result.level,
+    startingClass: result.startingClass,
+    stats: result.stats,
+    loadout: [],
+    defeatedBosses: [],
+    discoveredGraces: [],
+    collectedItems: [],
+    completedQuestSteps: [],
+    deniedFacts: [],
+    answers: { platform: 'pc', ...(result.dlc ? { dlc: 'sote' } : {}) },
+    evidence: [],
+    shots: [],
+  }
+  return applyFacts(base, result.facts, 'save', result.detail)
 }
 
 export function resetCharacter(): Character {
