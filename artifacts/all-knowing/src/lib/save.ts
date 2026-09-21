@@ -1,12 +1,14 @@
-import { demoCharacter, emptyCharacter } from '../data/seed'
+import { emptyCharacter } from '../data/seed'
 import type { Character } from '../types'
 
 /**
- * Save adapter.
+ * Save adapter — NOT a real .sl2 parser yet.
  *
- * v1 is a contract + demo ingest. The production parser should be adapted from
- * EthanShoeDev/elden-ring-compass `packages/save-parser` (pure TypeScript,
- * runs in a worker, never writes the file back).
+ * This is intentionally a labelled empty stub (HANDOFF-CLAUDE.md §6 item 5).
+ * The production parser should be adapted from EthanShoeDev/elden-ring-compass
+ * `packages/save-parser` (pure TypeScript, runs in a worker, never writes the
+ * file back). Until then, dropping a save is an honest "not available yet"
+ * error instead of silently loading a demo character.
  *
  * Do not upload .sl2 anywhere. File System Access / input[type=file] only.
  */
@@ -17,13 +19,9 @@ export async function ingestSave(file: File): Promise<Character> {
     throw new Error('That does not look like an Elden Ring save.')
   }
 
-  // Parser hook: replace this with save-parser-ts once vendored.
-  return {
-    ...demoCharacter,
-    source: 'save',
-    fileName: file.name,
-    name: file.name.replace(/\.(sl2|co2)$/i, '') || demoCharacter.name,
-  }
+  throw new Error(
+    'Save parsing is not available yet. Use Reckoning for a PS5 run, or npm run map for a live PC save.',
+  )
 }
 
 export function resetCharacter(): Character {

@@ -204,6 +204,14 @@ export function AtlasWorkspace() {
         </div>
         <p className="note">{worldMeta?.hint}</p>
 
+        {!ps5 && !engineLive && (
+          <p className="note">
+            {w.engineStatus === 'connecting'
+              ? 'Map engine is not answering on :8099 yet. This is the seed atlas until it does.'
+              : 'Map engine offline — showing the seed atlas. Start it with npm run map against a local game install.'}
+          </p>
+        )}
+
         <div className="tally">
           <span>{counts.found} found</span>
           <span className="dim">{counts.unknown} unknown</span>

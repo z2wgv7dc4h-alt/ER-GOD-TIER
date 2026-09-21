@@ -90,8 +90,9 @@ export function ReckonWorkspace() {
         <p className="note">
           A PlayStation save cannot be dropped here. Sit down and answer a few things,
           then throw screenshots at the page — warp list, map, Great Runes, pickups.
-          Warp-list paste matches {aliasStatus().hosted} official grace names (Paramdex).
-          Linked {aliasStatus().linked} of those to seed slugs so the live map and this sheet share ids.
+          Warp-list paste matches {aliasStatus().hosted} official grace names (Paramdex),
+          {aliasStatus().linked} linked to seed slugs. Boss dumps match {aliasStatus().bossHosted} named bosses,
+          {aliasStatus().bossLinked} linked to authored boss facts — so dump flags and this sheet share ids.
         </p>
 
         <div className="tally">
@@ -168,7 +169,10 @@ export function ReckonWorkspace() {
             multiple
             onChange={(e) => onFiles(e.target.files)}
           />
-          <div>Drop PS5 captures here. They stay in this tab.</div>
+          <div>Drop PS5 captures here as reference. They stay in this tab.</div>
+          <div className="note" style={{ marginTop: 4 }}>
+            Automatic image reading (OCR) is not available yet — type or paste the names below.
+          </div>
           <button className="ghost gold" type="button" style={{ marginTop: 8 }} onClick={() => fileRef.current?.click()}>
             Open screenshots
           </button>

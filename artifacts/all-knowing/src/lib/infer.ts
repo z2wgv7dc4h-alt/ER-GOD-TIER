@@ -1,11 +1,12 @@
 import { byId, facts } from '../knowledge/catalog'
 import type { Character, Evidence, EvidenceSource, StartingClass } from '../types'
+import { canonicalFactId } from './aliases'
 
 function add(list: string[], id: string) {
   return list.includes(id) ? list : [...list, id]
 }
 
-function prefixKind(id: string) {
+export function prefixKind(id: string) {
   const p = id.split(':')[0]
   if (p === 'grace' || p === 'point') return 'grace'
   if (p === 'boss' || p === 'hunt' || p === 'bossflag' || p === 'area') return 'boss'
@@ -35,12 +36,13 @@ export function closeWorld(ids: string[]) {
 }
 
 export function applyFacts(character: Character, incoming: string[], source: EvidenceSource, detail: string): Character {
-  const closed = closeWorld(incoming)
+  const canonical = incoming.map((id) => canonicalFactId(id))
+  const closed = closeWorld(canonical)
   let next = { ...character, source: character.source === 'save' ? character.source : 'reckon' as const }
   const evidence = [...character.evidence]
   for (const id of closed) {
     const node = byId.get(id)
-    const inferred = !incoming.includes(id)
+    const inferred = !canonical.includes(id)
     const src: EvidenceSource = inferred ? 'inference' : source
     if (!evidence.some((e) => e.fact === id && e.source === src)) {
       evidence.push(ev(id, src, inferred ? `implied by ${detail}` : detail, inferred ? 0.72 : 0.94))

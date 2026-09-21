@@ -2,11 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { demoCharacter, markers, quests, codex } from './data/seed'
 import { awesomeResources } from './knowledge/awesome'
 import {
-  MAP_ENGINE_BASE,
   characterFromEngine,
   fetchEngineMarkers,
-  markerKind,
-  markerName,
   shownEngineCharacter,
   subscribeEngine,
 } from './lib/mapEngine'
@@ -31,7 +28,7 @@ import { CommandHits, PacketBar, SitToggle, softCapMark, useClipboardShots, useH
 import { allLines } from './knowledge/storylines'
 import { ReckonWorkspace } from './Reckon'
 import { Thread } from './Thread'
-import { WorkspaceProvider, isCollected, useWorkspace, visibleMarkers } from './state'
+import { WorkspaceProvider, isCollected, useWorkspace } from './state'
 import { art } from './art'
 import { attackRatingForSlot, loadWeapons } from './lib/ar'
 import type { AttackRating, Weapon } from './lib/ar'
@@ -254,9 +251,12 @@ function SaveDrop() {
         accept=".sl2,.co2"
         onChange={(e) => void onFile(e.target.files?.[0])}
       />
-      <div>PC: drop ER0000.sl2. PS5: use Reckoning — questions + screenshots.</div>
+      <div>
+        .sl2 parsing is not available yet. PS5: use Reckoning — questions + screenshots.
+        PC: run <code>npm run map</code> against a local install for live flags, or Load demo below.
+      </div>
       <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 8 }}>
-        <button className="ghost" type="button" onClick={() => inputRef.current?.click()}>Open save</button>
+        <button className="ghost" type="button" onClick={() => inputRef.current?.click()}>Open save (not available yet)</button>
         <button
           className="ghost gold"
           type="button"
@@ -269,145 +269,6 @@ function SaveDrop() {
         </button>
       </div>
       {error && <div className="warn" style={{ marginTop: 8 }}>{error}</div>}
-    </div>
-  )
-}
-
-function pinColor(kind: MapMarker['kind']) {
-  switch (kind) {
-    case 'grace': return '#e4c36a'
-    case 'boss': return '#c45c3e'
-    case 'item': return '#8fb3d9'
-    case 'npc': return '#c9a227'
-    case 'fragment': return '#d7b56a'
-    case 'spirit-ash': return '#9ad0c2'
-    case 'dungeon': return '#9a8f78'
-  }
-}
-
-export function MapWorkspace() {
-  const w = useWorkspace()
-  const engineLive = w.engineStatus === 'live' || w.engineMarkers.length > 0
-  const q = w.query.trim().toLowerCase()
-  const engineList = w.engineMarkers.filter((m) => {
-    const kind = markerKind(m.id, m.category)
-    if (!w.layers[kind]) return false
-    const name = markerName(m).toLowerCase()
-    if (q && !`${name} ${m.category ?? ''} ${m.id}`.includes(q)) return false
-    if (w.missingOnly) {
-      const found = new Set([
-        ...w.character.defeatedBosses,
-        ...w.character.discoveredGraces,
-        ...w.character.collectedItems,
-      ])
-      if (found.has(m.id)) return false
-    }
-    return true
-  })
-  const selectedEngine = w.engineMarkers.find((m) => m.id === w.selectedMarkerId) || engineList[0]
-  const shown = visibleMarkers(w.character, w.layers, w.missingOnly, w.query)
-  const selected = markers.find((m) => m.id === w.selectedMarkerId) ?? shown[0]
-  const remaining = {
-    bosses: markers.filter((m) => m.kind === 'boss' && !isCollected(w.character, m)).length,
-    graces: markers.filter((m) => m.kind === 'grace' && !isCollected(w.character, m)).length,
-    items: markers.filter((m) => m.kind === 'item' && !isCollected(w.character, m)).length,
-  }
-  const foundCount = w.character.defeatedBosses.length + w.character.discoveredGraces.length + w.character.collectedItems.length
-
-  return (
-    <div className="map-stage">
-      <div className="atlas">
-        {engineLive ? (
-          <iframe
-            title="Elden Ring live map"
-            className="engine-frame"
-            src={`${MAP_ENGINE_BASE}/?embed=1`}
-          />
-        ) : (
-        <svg viewBox="0 0 100 80" preserveAspectRatio="xMidYMid slice">
-          <text x="8" y="10" fill="#8a7018" fontSize="3" fontFamily="Cinzel">Lands Between</text>
-          <text x="68" y="18" fill="#6b8cae" fontSize="2.4" fontFamily="Cinzel">Realm of Shadow</text>
-          <path d="M8,72 C18,70 22,58 20,46 C16,34 24,22 38,18 C52,14 58,28 70,22 C82,16 90,28 88,42 C86,58 78,70 62,74 C40,78 18,76 8,72 Z" fill="none" stroke="#3a3120" strokeWidth="0.35" />
-          <path d="M66,52 C70,44 78,36 86,34 C92,40 90,52 84,58 C76,62 68,58 66,52 Z" fill="none" stroke="#2a3a4a" strokeWidth="0.3" />
-          {shown.map((m) => (
-            <g key={m.id} className="pin" onClick={() => w.setSelectedMarkerId(m.id)}>
-              <circle
-                cx={m.x}
-                cy={m.y}
-                r={w.selectedMarkerId === m.id ? 1.6 : 1.15}
-                fill={pinColor(m.kind)}
-                opacity={isCollected(w.character, m) ? 0.35 : 1}
-              />
-              {w.selectedMarkerId === m.id && (
-                <text x={m.x + 2} y={m.y + 0.8}>{m.name}</text>
-              )}
-            </g>
-          ))}
-        </svg>
-        )}
-      </div>
-      <aside className="side">
-        <div className="kicker">
-          {w.engineStatus === 'live'
-            ? `egormagurin engine · ${w.engineMarkers.length || w.engineState?.markerCount || 0} markers`
-            : w.engineStatus === 'connecting'
-              ? 'Waiting for map engine on :8099'
-              : 'Engine offline — seed atlas'}
-        </div>
-        <h3>
-          {engineLive
-            ? markerName(selectedEngine || { id: '—' })
-            : (selected?.name ?? 'Select a marker')}
-        </h3>
-        {engineLive && selectedEngine && (
-          <>
-            <p className="note">
-              {markerKind(selectedEngine.id, selectedEngine.category)}
-              {selectedEngine.master ? ` · ${selectedEngine.master}` : ''}
-              {typeof selectedEngine.height === 'number' ? ` · ${selectedEngine.height} m` : ''}
-            </p>
-            {selectedEngine.tip?.text && <p className="note">{selectedEngine.tip.text}</p>}
-            <p className="note">{foundCount} flags set on the live character.</p>
-          </>
-        )}
-        {!engineLive && selected && (
-          <>
-            <p className="note">
-              {selected.kind} · {selected.region} · {selected.campaign === 'sote' ? 'Shadow of the Erdtree' : 'Base'}
-            </p>
-            {selected.note && <p className="note">{selected.note}</p>}
-            <p className="note">
-              {isCollected(w.character, selected) ? 'Already collected on this character.' : 'Still missing on this character.'}
-            </p>
-          </>
-        )}
-        {w.selectedMarkerId && (
-          <Thread id={w.selectedMarkerId} onOpen={w.setSelectedMarkerId} />
-        )}
-        <p className="note">
-          {engineLive
-            ? 'Tiles and flags come from your game install via vendor/elden-ring-map. Setup.bat once, then npm run map.'
-            : `Seed fallback — bosses ${remaining.bosses}, graces ${remaining.graces}, items ${remaining.items}. Start the map engine to replace this sketch.`}
-        </p>
-        <ul className="list">
-          {(engineLive ? engineList.slice(0, 80) : shown).map((m) => {
-            const id = m.id
-            const label = 'name' in m && typeof (m as { name?: string }).name === 'string' && (m as { name?: string }).name
-              ? (m as { name: string }).name
-              : markerName(m as { id: string; names?: { en?: string }; name?: string })
-            const kind = 'kind' in m ? (m as MapMarker).kind : markerKind(m.id, (m as { category?: string }).category)
-            const gone = engineLive
-              ? w.character.defeatedBosses.includes(id) || w.character.discoveredGraces.includes(id) || w.character.collectedItems.includes(id)
-              : isCollected(w.character, m as MapMarker)
-            return (
-              <li key={id} className={gone ? 'gone' : ''} onClick={() => w.setSelectedMarkerId(id)}>
-                <span>{label}</span>
-                <span>{kind}</span>
-              </li>
-            )
-          })}
-        </ul>
-      </aside>
     </div>
   )
 }
