@@ -15,6 +15,12 @@ hand-authoring fresh. The EanNewton tracker (a Google Sheet) is a cross-check fo
 import source. **This is a hand-authoring task**, grounded in general Elden Ring knowledge and
 cross-checked against that sheet, not a port.
 
+If you do fetch anything external (e.g. checking the EanNewton sheet), **save it to `./.scratch/`
+inside this repo (already gitignored), never `/tmp`, `%TEMP%`, or any path outside the project**
+— writing outside your sandboxed working tree gets silently auto-rejected in headless mode and
+terminates the entire run immediately, not just that step. This has already killed several other
+task runs the same way.
+
 ## Objective
 
 Extend `src/knowledge/storylines.ts` and `src/knowledge/endings.ts` from the current 4 NPC

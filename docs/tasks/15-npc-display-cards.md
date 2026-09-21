@@ -19,6 +19,12 @@ not yet actionable without a local game install.
 The user has confirmed this job is authorized to proceed — but **scoped to cosmetic display
 only**. Do not let this data anywhere near combat calculations.
 
+**Save any downloaded file to `./.scratch/` inside this repo (already gitignored), never
+`/tmp`, `%TEMP%`, or any path outside the project.** Writing outside your sandboxed working tree
+gets silently auto-rejected by the permission system in headless mode and **terminates the
+entire run immediately**, not just that one step — this has already killed several other task
+runs the same way. `.scratch/` is inside your working tree and needs no special permission.
+
 ## Objective
 
 Import the EanNewton sheet's player-model/cosmetic NPC data as a small, clearly-labeled

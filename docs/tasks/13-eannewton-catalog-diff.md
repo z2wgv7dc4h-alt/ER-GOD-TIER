@@ -14,6 +14,13 @@ machine-API-downloadable the way a repo is — you'll need to fetch it as a publ
 the right export URL, or fetch the human-readable page and parse it, whichever actually works)
 and note in your report which approach you used.
 
+**Save any downloaded file to `./.scratch/` inside this repo (already gitignored), never
+`/tmp`, `%TEMP%`, or any path outside the project.** A prior run of a similar task died after one
+`curl`/`Read` call because it wrote to `/tmp` — that's outside your sandboxed working tree, so
+the permission system silently auto-rejects it in headless mode and the *entire run* terminates
+right there, not just that step. `.scratch/` is inside your working tree and needs no special
+permission at all.
+
 ## Objective
 
 Compare the sheet's coverage against `src/knowledge/catalog.ts`'s 89 authored facts (24 bosses,

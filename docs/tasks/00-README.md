@@ -11,6 +11,19 @@ Task briefs from here on are cut from `artifacts/all-knowing/HANDOFF-CLAUDE.md`'
 and TODOs (ordered)" list, which is already prioritized P0 → P3. Don't reinvent sequencing —
 follow that list.
 
+## Standing rule for every task brief — no exceptions
+
+**Any file a task downloads, clones, or writes as scratch work MUST go in `./.scratch/` inside
+`artifacts/all-knowing` (gitignored), never `/tmp`, `%TEMP%`, or anywhere outside the working
+tree.** This is not optional per-task guidance — it's a property of the sandbox: `opencode`'s
+permission system silently auto-rejects any write outside the working directory in headless mode,
+and a single rejected permission **kills the entire run immediately**, not just that one step.
+
+This bit Claude four separate times (tasks 08, 08-retry-1, 13, 14) before it was made a standing
+rule instead of a per-brief patch. **When writing a new task brief, this line goes in by default,
+not reactively after a failure.** If a brief doesn't need to fetch/clone anything external, this
+rule is still harmless to include — cheap insurance, not something to skip to save a sentence.
+
 ## How to run one
 
 ```bash
