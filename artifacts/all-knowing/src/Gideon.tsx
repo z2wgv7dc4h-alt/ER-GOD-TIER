@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { opBuilds } from './knowledge/builds'
-import { endings, planRoute } from './knowledge/endings'
+import { endings, nextCompletionId, planRoute } from './knowledge/endings'
 import { allLines, blitz, storylines } from './knowledge/storylines'
 import { applyFacts } from './lib/infer'
 import { askGideon, type GideonMemory } from './lib/gideon'
@@ -75,8 +75,10 @@ export function Gideon() {
   }
 
   function doneNow() {
-    if (!plan?.current?.factId) return
-    w.setCharacter(applyFacts(w.character, [plan.current.factId], 'answer', 'I’m done'))
+    if (!plan?.current) return
+    const factId = nextCompletionId(w.character, plan.current)
+    if (!factId) return
+    w.setCharacter(applyFacts(w.character, [factId], 'answer', 'I’m done'))
     void run('what next')
   }
 

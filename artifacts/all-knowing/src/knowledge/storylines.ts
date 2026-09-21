@@ -12,7 +12,7 @@ export const storylines: Line[] = [
     lockedIf: (c) => (knownSet(c).has('quest:millicent-killed') ? 'Millicent is already dead on this run.' : null),
     steps: [
       { id: 'm1', do: 'Get the Unalloyed Gold Needle from Commander O’Neil', detail: 'Swamp of Aeonia, Caelid. Take it to Gowry in Sellia.', factId: 'quest:millicent:needle', module: 'quests', minLevel: 50, requires: [], grants: ['quest:millicent:needle', 'item:rotted-wing'], lockouts: [] },
-      { id: 'm2', do: 'Cure Millicent at the Church of the Plague', detail: 'Return the repaired needle. She moves to Altus, then Dominula, then Haligtree.', module: 'map', minLevel: 70, requires: ['quest:millicent:needle'], grants: ['quest:millicent:cured'], lockouts: [] },
+      { id: 'm2', do: 'Cure Millicent at the Church of the Plague', detail: 'Return the repaired needle. She moves to Altus, then Dominula, then Haligtree.', factId: 'quest:millicent:cured', module: 'map', minLevel: 70, requires: ['quest:millicent:needle'], grants: ['quest:millicent:cured'], lockouts: [] },
       { id: 'm3', do: 'Help her at the Haligtree drain', detail: 'Choose to aid Millicent, not her sisters. That keeps the needle for a Frenzy purge later.', factId: 'grace:drainage', module: 'map', minLevel: 110, obtain: 'Unalloyed Gold Needle (for Farum / Frenzy undo)', requires: ['quest:millicent:cured'], grants: ['grace:drainage', 'quest:millicent:aid', 'item:miquella-needle'], lockouts: ['quest:millicent-killed', 'quest:millicent:betrayed'], lockout: 'Attacking her here ends the good needle.' },
     ],
   },
@@ -25,7 +25,7 @@ export const storylines: Line[] = [
     steps: [
       { id: 'a1', do: 'Free Alexander from the Limgrave hole', detail: 'South of Stormhill. Hit the ground. Missable if you never crack it, but he can still show later.', factId: 'alexander-1', module: 'quests', requires: [], grants: ['alexander-1', 'quest:alexander:met'], lockouts: ['quest:alexander:missed-limgrave'] },
       { id: 'a2', do: 'Meet him at Gael Tunnel and Redmane', detail: 'Festival fight. Talk after Radahn.', factId: 'boss:radahn', module: 'map', minLevel: 70, requires: ['alexander-1'], grants: ['boss:radahn', 'quest:alexander:festival'], lockouts: ['quest:alexander:missed-limgrave'] },
-      { id: 'a3', do: 'Find him in the Gelmir lava, then Farum', detail: 'Finish the duel in Farum for the Shard of Alexander.', module: 'map', minLevel: 110, obtain: 'Shard of Alexander', requires: ['quest:alexander:festival'], grants: ['quest:alexander:complete', 'item:shard-of-alexander'], lockouts: ['quest:alexander:missed-limgrave'] },
+      { id: 'a3', do: 'Find him in the Gelmir lava, then Farum', detail: 'Finish the duel in Farum for the Shard of Alexander.', factId: 'quest:alexander:complete', module: 'map', minLevel: 110, obtain: 'Shard of Alexander', requires: ['quest:alexander:festival'], grants: ['quest:alexander:complete', 'item:shard-of-alexander'], lockouts: ['quest:alexander:missed-limgrave'] },
     ],
   },
   {
@@ -72,7 +72,7 @@ export const storylines: Line[] = [
     lockedIf: () => null,
     steps: [
       { id: 'nepheli1', do: 'Meet Nepheli inside Stormveil Castle', detail: 'Side room off the ramparts before Godrick. She is hunting her own past.', factId: 'quest:nepheli:met', module: 'quests', minLevel: 30, requires: [], grants: ['quest:nepheli:met'], lockouts: [] },
-      { id: 'nepheli2', do: 'Refuse Seluvis’s potion test', detail: 'Seluvis asks you to test the potion on her. Giving it to her ends her line and makes her a puppet.', module: 'quests', requires: ['quest:nepheli:met'], grants: ['quest:nepheli:refused-potion'], lockouts: ['quest:nepheli:potioned'], lockout: 'Handing Nepheli Seluvis’s potion forecloses her rule of Limgrave.' },
+      { id: 'nepheli2', do: 'Refuse Seluvis’s potion test', detail: 'Seluvis asks you to test the potion on her. Giving it to her ends her line and makes her a puppet.', factId: 'quest:nepheli:refused-potion', module: 'quests', requires: ['quest:nepheli:met'], grants: ['quest:nepheli:refused-potion'], lockouts: ['quest:nepheli:potioned'], lockout: 'Handing Nepheli Seluvis’s potion forecloses her rule of Limgrave.' },
       { id: 'nepheli3', do: 'Give her the Stormhawk King ashes', detail: 'From the Chapel of Anticipation. Do this after Morgott and after speaking to Gideon.', factId: 'quest:nepheli:stormhawk', module: 'quests', minLevel: 90, requires: ['quest:nepheli:refused-potion', 'boss:morgott'], grants: ['quest:nepheli:stormhawk'], lockouts: ['quest:nepheli:potioned'] },
       { id: 'nepheli4', do: 'See Nepheli crowned at Stormveil', detail: 'She takes the throne with Kenneth Haight and rewards you with an Ancient Dragon Smithing Stone.', factId: 'quest:nepheli:ruler', module: 'map', minLevel: 90, requires: ['quest:nepheli:stormhawk'], grants: ['quest:nepheli:ruler', 'item:ancient-dragon-smithing-stone'], lockouts: ['quest:nepheli:potioned'] },
     ],
@@ -98,7 +98,7 @@ export const storylines: Line[] = [
     lockedIf: () => null,
     steps: [
       { id: 'fia1', do: 'Let Fia hold you at the Roundtable Hold', detail: 'She offers an embrace and gives you the Weathered Dagger.', factId: 'quest:fia:met', module: 'quests', minLevel: 30, requires: [], grants: ['quest:fia:met'], lockouts: [] },
-      { id: 'fia2', do: 'Decide the Weathered Dagger’s fate', detail: 'Give it to D and Fia leaves; keep it and D lives. Either way Fia moves to the Deeproot Depths.', module: 'quests', requires: ['quest:fia:met'], grants: ['quest:fia:dagger'], lockouts: ['quest:fia:killed'], lockout: 'Killing Fia at the Roundtable closes the Death-Prince line.' },
+      { id: 'fia2', do: 'Decide the Weathered Dagger’s fate', detail: 'Give it to D and Fia leaves; keep it and D lives. Either way Fia moves to the Deeproot Depths.', factId: 'quest:fia:dagger', module: 'quests', requires: ['quest:fia:met'], grants: ['quest:fia:dagger'], lockouts: ['quest:fia:killed'], lockout: 'Killing Fia at the Roundtable closes the Death-Prince line.' },
       { id: 'fia3', do: 'Give Fia the Cursemark of Death in Deeproot Depths', detail: 'Cursemark from the Carian Study Hall inversion. Defend her from Lionel.', factId: 'quest:fia:cursemark', module: 'map', minLevel: 90, requires: ['quest:fia:dagger'], grants: ['quest:fia:cursemark'], lockouts: ['quest:fia:killed'] },
       { id: 'fia4', do: 'Defeat Lichdragon Fortissax in her dream', detail: 'Take the Mending Rune of the Death-Prince for the Duskborn ending.', factId: 'boss:fortissax', module: 'map', minLevel: 100, requires: ['quest:fia:cursemark'], grants: ['boss:fortissax', 'item:mending-rune-death-prince'], lockouts: ['quest:fia:killed'] },
     ],
@@ -138,7 +138,7 @@ export const storylines: Line[] = [
       { id: 'se1', do: 'Free Sellen from the Waypoint Ruins', detail: 'Defeat the Mad Pumpkin Head in the cellar below the Liurnia ruins.', factId: 'quest:sellen:freed', module: 'map', minLevel: 30, requires: [], grants: ['quest:sellen:freed'], lockouts: [] },
       { id: 'se2', do: 'Find Azur, the Primeval Sorcerer', detail: 'Mt. Gelmir, sealed cave behind the Hermit Village. Sellen’s first master.', factId: 'quest:sellen:azur', module: 'map', minLevel: 80, requires: ['quest:sellen:freed'], grants: ['quest:sellen:azur'], lockouts: [] },
       { id: 'se3', do: 'Find Lusat in the Sellia Hideaway', detail: 'Caelid. Break the illusory wall; the second primeval sorcerer.', factId: 'quest:sellen:lusat', module: 'map', minLevel: 80, requires: ['quest:sellen:freed'], grants: ['quest:sellen:lusat'], lockouts: [] },
-      { id: 'se4', do: 'Side with Sellen at Raya Lucaria', detail: 'After both masters, return to the academy. Choose Sellen over Jerren to get Stars of Ruin and her ending.', factId: 'quest:sellen:side', module: 'quests', minLevel: 90, obtain: 'Stars of Ruin', requires: ['quest:sellen:azur', 'quest:sellen:lusat'], grants: ['quest:sellen:side', 'item:stars-of-ruin'], lockouts: ['quest:sellen:jerren-side'], lockout: 'Siding with Jerren kills Sellen and forfeits Stars of Ruin.' },
+      { id: 'se4', do: 'Side with Sellen at Raya Lucaria', detail: 'After both masters, return to the academy. Choose Sellen over Jerren to get Stars of Ruin and her ending.', factId: 'quest:sellen:side', factIds: ['item:stars-of-ruin'], module: 'quests', minLevel: 90, obtain: 'Stars of Ruin', requires: ['quest:sellen:azur', 'quest:sellen:lusat'], grants: ['quest:sellen:side', 'item:stars-of-ruin'], lockouts: ['quest:sellen:jerren-side'], lockout: 'Siding with Jerren kills Sellen and forfeits Stars of Ruin.' },
     ],
   },
   {
@@ -174,7 +174,7 @@ export const storylines: Line[] = [
     steps: [
       { id: 'd1', do: 'Meet D at Summonwater Village', detail: 'Limgrave. He warns you about Those Who Live in Death and the Tibia Mariner.', factId: 'quest:d:met', module: 'map', minLevel: 20, requires: [], grants: ['quest:d:met'], lockouts: [] },
       { id: 'd2', do: 'Speak with D at the Roundtable Hold', detail: 'He sells incantations and gives you the Skeletal Militiaman Ashes.', factId: 'quest:d:roundtable', module: 'quests', minLevel: 30, requires: ['quest:d:met'], grants: ['quest:d:roundtable'], lockouts: [] },
-      { id: 'd3', do: 'Decide whether to hand D the Weathered Dagger', detail: 'Fia’s dagger. Giving it to D advances Fia but costs D his life.', module: 'quests', minLevel: 60, requires: ['quest:d:roundtable'], grants: ['quest:d:dagger-choice'], lockouts: ['quest:d:killed'], lockout: 'The dagger decision is mutually exclusive with keeping D alive.' },
+      { id: 'd3', do: 'Decide whether to hand D the Weathered Dagger', detail: 'Fia’s dagger. Giving it to D advances Fia but costs D his life.', factId: 'quest:d:dagger-choice', module: 'quests', minLevel: 60, requires: ['quest:d:roundtable'], grants: ['quest:d:dagger-choice'], lockouts: ['quest:d:killed'], lockout: 'The dagger decision is mutually exclusive with keeping D alive.' },
       { id: 'd4', do: 'Meet D’s brother in Nokron / Deeproot', detail: 'The surviving twin inherits D’s armour and hunts Fia.', factId: 'quest:d:brother', module: 'map', minLevel: 90, requires: ['quest:d:dagger-choice'], grants: ['quest:d:brother', 'item:twinned-armor'], lockouts: [] },
     ],
   },
