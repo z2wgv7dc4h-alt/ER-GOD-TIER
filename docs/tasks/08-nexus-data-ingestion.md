@@ -4,10 +4,16 @@
 
 Repo root is `artifacts/all-knowing/` (`cd` there first). Read `HANDOFF-CLAUDE.md`, `DATA.md`
 before starting. A research pass already analyzed four Nexus Mods packs the user downloaded —
-full report at `docs/research/nexus-packs-analysis.md` (path relative to the outer
-`ER MASTER TOOL` folder, i.e. `../../docs/research/nexus-packs-analysis.md` from the repo root).
-Read that report in full before starting this task — it has exact field names, entry counts,
-and JSON structure samples for everything below. This task only covers the report's low-risk
+read that report in full before starting this task, it has exact field names, entry counts, and
+JSON structure samples for everything below. **It's at the literal relative path
+`../../docs/research/nexus-packs-analysis.md` from your current working directory
+(`artifacts/all-knowing`) — use that exact relative path, do not construct an absolute path
+yourself.** Whatever checkout/worktree you're running in, that relative path resolves correctly
+because the full repository (including `docs/`) is always checked out alongside
+`artifacts/all-knowing`, two directories up from where you are. If a tool call for that exact
+relative path somehow fails, stop and report rather than guessing an absolute path — an
+absolute-path guess landing outside your working tree will be treated as an external-directory
+access and silently kill the whole run in headless mode. This task only covers the report's low-risk
 "quick win" items; **do not attempt the map-tiling work** (separate task, `09-map-tiling.md`, a
 bigger architectural lift) or touch Pack 9974 (binary mod, correctly rejected — no action).
 

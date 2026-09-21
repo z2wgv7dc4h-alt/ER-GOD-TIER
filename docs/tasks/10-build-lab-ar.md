@@ -17,8 +17,12 @@ location doesn't match, so the request silently auto-rejects in a non-interactiv
 inside the repo avoids that permission check entirely: e.g.
 `git clone --depth 1 https://github.com/ThomasJClark/elden-ring-weapon-calculator.git .scratch/clark-calc`.
 
-`ThomasJClark/elden-ring-weapon-calculator` (MIT license, confirmed by earlier research at
-`docs/../../PROJECT_BRIEF.md` if you want the full citation) is a React+TS+Vite app — same stack
+`ThomasJClark/elden-ring-weapon-calculator` (MIT license, confirmed by earlier research — full
+citation at the literal relative path `../../PROJECT_BRIEF.md` from your current working
+directory, `artifacts/all-knowing`, if you want it; use that exact relative path, don't construct
+an absolute one — an absolute-path guess landing outside your working tree gets treated as an
+external-directory access and silently kills the whole run in headless mode) is a React+TS+Vite
+app — same stack
 family as this project — with its own attack-rating calculation logic and versioned regulation
 data files (`regulation-vanilla-v1.17.js` is the one `REVIEW.md` calls out as the Tarnished Pack
 patch line — confirm that's still the right version file in the upstream repo, patches may have

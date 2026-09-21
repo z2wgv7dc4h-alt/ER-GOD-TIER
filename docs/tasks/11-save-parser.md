@@ -29,7 +29,11 @@ instead of the current hardcoded demo-character passthrough.
 - **Check the actual license file in the `elden-ring-compass` repo before vendoring anything** —
   an earlier check of the repo's page didn't turn up a clear license; don't assume MIT, confirm
   it. If it's not a permissive license (MIT/Apache/BSD) compatible with this project's licensing
-  policy (see the outer project's `PROJECT_BRIEF.md`), stop and report rather than vendoring code
+  policy — see the outer project's `PROJECT_BRIEF.md`, at the literal relative path
+  `../../PROJECT_BRIEF.md` from your current working directory (`artifacts/all-knowing`); use
+  that exact relative path, don't construct an absolute one, since a wrong absolute-path guess
+  landing outside your working tree silently kills the whole headless run), stop and report
+  rather than vendoring code
   under an incompatible license — port the *format understanding* (BND4 container, event-flag
   tables, checksum/key handling) into an original implementation instead if needed, citing the
   format documentation rather than copying code.
