@@ -33,6 +33,8 @@ import { ReckonWorkspace } from './Reckon'
 import { Thread } from './Thread'
 import { WorkspaceProvider, isCollected, useWorkspace, visibleMarkers } from './state'
 import { art } from './art'
+import { attackRatingForSlot, loadWeapons } from './lib/ar'
+import type { AttackRating, Weapon } from './lib/ar'
 import type { Character, MapMarker, ModuleId, Stats } from './types'
 
 const modules: { id: ModuleId; label: string }[] = [
@@ -283,7 +285,7 @@ function pinColor(kind: MapMarker['kind']) {
   }
 }
 
-function MapWorkspace() {
+export function MapWorkspace() {
   const w = useWorkspace()
   const engineLive = w.engineStatus === 'live' || w.engineMarkers.length > 0
   const q = w.query.trim().toLowerCase()
@@ -410,23 +412,38 @@ function MapWorkspace() {
   )
 }
 
-function estimateAR(character: Character) {
+function estimateDefense(character: Character) {
   const weapon = character.loadout.find((s) => s.kind === 'armament')
-  if (!weapon) return { ar: 0, poise: 0, load: 0, label: 'No armament' }
+  if (!weapon) return { poise: 0, load: 0, label: 'No armament' }
   const upgrade = weapon.upgrade ?? 0
-  const dex = character.stats.dexterity
-  const str = character.stats.strength
-  const keen = weapon.affinity === 'Keen' ? 1.15 : 1
-  const blood = weapon.affinity === 'Blood' ? 0.92 : 1
-  const ar = Math.round((110 + upgrade * 12 + dex * 3.1 + str * 1.2) * keen * blood)
   const poise = 28 + (character.startingClass === 'heavy-knight' ? 49 : 8)
   const load = 48 + character.stats.endurance * 0.8
-  return { ar, poise, load, label: `${weapon.name} +${upgrade} ${weapon.affinity ?? ''}`.trim() }
+  return { poise, load, label: `${weapon.name} +${upgrade} ${weapon.affinity ?? ''}`.trim() }
 }
 
 function BuildWorkspace() {
   const { character, setCharacter, setModule, setSelectedMarkerId } = useWorkspace()
-  const preview = estimateAR(character)
+  const preview = estimateDefense(character)
+  const [weapons, setWeapons] = useState<Weapon[] | null>(null)
+  const [arError, setArError] = useState<string | null>(null)
+  const [twoHanding, setTwoHanding] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
+    void loadWeapons()
+      .then((rows) => { if (!cancelled) setWeapons(rows) })
+      .catch((err: unknown) => {
+        if (!cancelled) setArError(err instanceof Error ? err.message : String(err))
+      })
+    return () => { cancelled = true }
+  }, [])
+
+  const ratings = useMemo<AttackRating[]>(() => {
+    if (!weapons) return []
+    return character.loadout
+      .filter((slot) => slot.kind === 'armament')
+      .map((slot) => attackRatingForSlot(weapons, slot, character.stats, twoHanding))
+  }, [weapons, character.loadout, character.stats, twoHanding])
 
   function patchStat(key: keyof Stats, value: number) {
     setCharacter({
@@ -440,7 +457,7 @@ function BuildWorkspace() {
       <section className="panel">
         <div className="kicker">Character sheet</div>
         <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>Stats drive every other pane</h3>
-        <p className="note">Change a number here and the atlas / quest advice still talk about the same person. Real AR will use Thomas Clark’s calculator + ERDB regulation data.</p>
+        <p className="note">Change a number here and the atlas / quest advice still talk about the same person. Attack rating is the real formula from Thomas Clark’s calculator, run on this project’s vendored vanilla 1.17 regulation data (see THIRD_PARTY_NOTICES.md).</p>
         <div className="stat-grid">
           {(Object.keys(character.stats) as (keyof Stats)[]).map((key) => (
             <div className="stat" key={key}>
@@ -484,13 +501,47 @@ function BuildWorkspace() {
         </div>
       </section>
       <section className="panel">
-        <div className="kicker">Against the next wall</div>
+        <div className="kicker">Attack rating · vanilla 1.17 / Tarnished Pack line</div>
         <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>{preview.label}</h3>
+        <label className="chip" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 10 }}>
+          <input
+            type="checkbox"
+            checked={twoHanding}
+            onChange={(e) => setTwoHanding(e.target.checked)}
+          />
+          Two-handing (×1.5 Str)
+        </label>
+        {arError && (
+          <p className="note" style={{ marginTop: 12 }}>
+            Regulation data unavailable ({arError}). Showing no attack rating rather than guessing.
+          </p>
+        )}
+        {!weapons && !arError && <p className="note" style={{ marginTop: 12 }}>Loading regulation data…</p>}
+        {weapons && ratings.length === 0 && (
+          <p className="note" style={{ marginTop: 12 }}>No armament equipped. Equip a kit or load a save.</p>
+        )}
+        {ratings.length > 0 && (
+          <ul className="list" style={{ marginTop: 10 }}>
+            {ratings.map((r, i) => (
+              <li key={`ar-${i}`} style={{ cursor: 'default' }}>
+                <span>{r.weaponName}{r.status === 'ok' ? ` +${r.upgradeLevel} · ${r.affinity}` : ''}</span>
+                <span>{r.status === 'ok' ? `${r.total} AR` : 'unknown'}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+        {ratings.map((r, i) =>
+          r.status === 'unknown' ? (
+            <p className="note" key={`why-${i}`}>
+              {r.weaponName}: {r.reason}. Left blank rather than guessed.
+            </p>
+          ) : r.ineffectiveAttributes.length > 0 ? (
+            <p className="note" key={`why-${i}`}>
+              {r.weaponName}: below requirement for {r.ineffectiveAttributes.join(', ')} — damage is penalised, not scaled.
+            </p>
+          ) : null,
+        )}
         <div className="meters" style={{ marginTop: 18 }}>
-          <div className="meter">
-            <label><span>Attack rating (sketch)</span><span>{preview.ar}</span></label>
-            <div className="bar"><span style={{ width: `${Math.min(100, preview.ar / 9)}%` }} /></div>
-          </div>
           <div className="meter">
             <label><span>Poise (sketch)</span><span>{preview.poise}</span></label>
             <div className="bar"><span style={{ width: `${Math.min(100, preview.poise)}%` }} /></div>

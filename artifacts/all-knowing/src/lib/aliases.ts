@@ -15,10 +15,6 @@ function norm(s: string) {
   return s.toLowerCase().replace(/[^a-z0-9+]+/g, ' ').trim()
 }
 
-function slug(name: string) {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
-}
-
 /** Seed slugs (grace:elleh) keyed by normalised name. */
 const seedByName = new Map<string, WarpGrace>()
 for (const g of warpGraces) {

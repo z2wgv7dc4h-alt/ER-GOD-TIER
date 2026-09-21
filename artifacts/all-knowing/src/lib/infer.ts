@@ -1,10 +1,6 @@
 import { byId, facts } from '../knowledge/catalog'
 import type { Character, Evidence, EvidenceSource, StartingClass } from '../types'
 
-function uniq(ids: string[]) {
-  return [...new Set(ids)]
-}
-
 function add(list: string[], id: string) {
   return list.includes(id) ? list : [...list, id]
 }

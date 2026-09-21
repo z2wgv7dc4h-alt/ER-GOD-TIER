@@ -1,4 +1,4 @@
-import type { Character, StartingClass, Stats } from '../types'
+import type { Character, Stats } from '../types'
 import { emptyStats } from '../data/seed'
 import { canonicalFactId } from './aliases'
 
