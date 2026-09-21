@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { searchSync } from './search'
+import { GROUP_ORDER, groupHits, searchSync } from './search'
 
 describe('searchSync', () => {
   it('returns nothing for very short queries', () => {
@@ -43,5 +43,33 @@ describe('searchSync', () => {
     for (const q of ['lord', 'grace']) {
       expect(searchSync(q).length).toBeLessThanOrEqual(16)
     }
+  })
+})
+
+describe('search grouping', () => {
+  it('tags every hit with a non-empty section', () => {
+    for (const q of ['godrick', 'elleh', 'moonveil', 'missable']) {
+      for (const hit of searchSync(q)) {
+        expect(hit.group).toBeTruthy()
+      }
+    }
+  })
+
+  it('files bosses, graces and loot under their own headers', () => {
+    expect(searchSync('godrick').find((h) => h.id === 'boss:godrick')?.group).toBe('Bosses')
+    expect(searchSync('elleh').find((h) => h.source === 'warp')?.group).toBe('Graces')
+    expect(searchSync('moonveil').find((h) => h.source === 'loot')?.group).toBe('Loot')
+  })
+
+  it('groupHits buckets results and orders sections by GROUP_ORDER', () => {
+    const hits = searchSync('lord')
+    const sections = groupHits(hits)
+    expect(sections.flatMap((s) => s.hits)).toHaveLength(hits.length)
+    const rank = (group: string) => {
+      const i = GROUP_ORDER.indexOf(group)
+      return i === -1 ? GROUP_ORDER.length : i
+    }
+    const ranks = sections.map((s) => rank(s.group))
+    expect(ranks).toEqual([...ranks].sort((a, b) => a - b))
   })
 })

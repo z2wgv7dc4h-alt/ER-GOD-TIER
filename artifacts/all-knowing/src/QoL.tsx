@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { matchMany } from './knowledge/catalog'
-import { searchSync } from './lib/search'
+import { groupHits, searchSync } from './lib/search'
 import { matchWarp, nextGraces, warpGraces } from './knowledge/graces'
 import { applyFacts, denyFacts } from './lib/infer'
 import { labelOf, moduleFor } from './lib/links'
-import { diffPackets, downloadPacket, fromPacket } from './lib/packet'
+import { diffPacket, downloadPacket, fromPacket, mergePacket, type PacketDiff, type PacketDiffRow } from './lib/packet'
 import { markHelpSeen, resolveHotkey } from './lib/shortcuts'
-import type { Stats } from './types'
+import type { Character, Stats } from './types'
 import { useWorkspace } from './state'
 
 export function useHotkeys() {
@@ -48,20 +48,67 @@ export function useHotkeys() {
   }, [w])
 }
 
+const STATE_LABEL: Record<string, string> = { true: 'have', false: 'no', unknown: '?' }
+
+function DiffSection({ title, rows, tone }: { title: string; rows: PacketDiffRow[]; tone: string }) {
+  if (!rows.length) return null
+  return (
+    <div className={`packet-diff-section ${tone}`}>
+      <div className="kicker">{title} · {rows.length}</div>
+      {rows.slice(0, 40).map((r) => (
+        <div className="packet-diff-row" key={r.fact}>
+          <span className="packet-diff-name">{labelOf(r.fact)}</span>
+          <span className="note">{r.kind} · {STATE_LABEL[r.before]} → {STATE_LABEL[r.after]} · {r.reason}</span>
+        </div>
+      ))}
+      {rows.length > 40 && <div className="note">+{rows.length - 40} more</div>}
+    </div>
+  )
+}
+
 export function PacketBar() {
   const w = useWorkspace()
   const fileRef = useRef<HTMLInputElement>(null)
-  const diffRef = useRef<HTMLInputElement>(null)
-  const [diff, setDiff] = useState('')
+  const [pending, setPending] = useState<{ name: string; character: Character; diff: PacketDiff } | null>(null)
+
+  async function stage(file: File) {
+    try {
+      const character = fromPacket(JSON.parse(await file.text()))
+      setPending({ name: character.name || file.name, character, diff: diffPacket(w.character, character) })
+    } catch (err) {
+      alert((err as Error).message)
+    }
+  }
+
+  function confirm() {
+    if (!pending) return
+    w.setCharacter(mergePacket(w.character, pending.character))
+    setPending(null)
+  }
+
   return (
     <div style={{ padding: '0 4px 10px' }}>
       <div className="opts">
         <button type="button" className="chip" disabled={!w.canUndo} onClick={() => w.undo()}>Undo</button>
         <button type="button" className="chip on" onClick={() => downloadPacket(w.character)}>Save file</button>
         <button type="button" className="chip" onClick={() => fileRef.current?.click()}>Load file</button>
-        <button type="button" className="chip" onClick={() => diffRef.current?.click()}>Diff</button>
       </div>
-      {diff && <p className="note" style={{ marginTop: 8 }}>{diff}</p>}
+      {pending && (
+        <div className="packet-diff">
+          <div className="kicker">Importing {pending.name}</div>
+          <p className="note">
+            {pending.diff.added.length} new · {pending.diff.flipped.length} flip ·{' '}
+            {pending.diff.lost.length} lose · {pending.diff.same} unchanged
+          </p>
+          <DiffSection title="New facts" rows={pending.diff.added} tone="on" />
+          <DiffSection title="Would flip" rows={pending.diff.flipped} tone="warn" />
+          <DiffSection title="Packet loses to local" rows={pending.diff.lost} tone="muted" />
+          <div className="opts" style={{ marginTop: 8 }}>
+            <button type="button" className="chip on" onClick={confirm}>Merge into {w.character.name}</button>
+            <button type="button" className="chip" onClick={() => setPending(null)}>Discard</button>
+          </div>
+        </div>
+      )}
       <input
         ref={fileRef}
         type="file"
@@ -69,30 +116,7 @@ export function PacketBar() {
         hidden
         onChange={async (e) => {
           const file = e.target.files?.[0]
-          if (!file) return
-          try {
-            w.setCharacter(fromPacket(JSON.parse(await file.text())))
-          } catch (err) {
-            alert((err as Error).message)
-          }
-          e.target.value = ''
-        }}
-      />
-      <input
-        ref={diffRef}
-        type="file"
-        accept="application/json,.json"
-        hidden
-        onChange={async (e) => {
-          const file = e.target.files?.[0]
-          if (!file) return
-          try {
-            const other = fromPacket(JSON.parse(await file.text()))
-            const d = diffPackets(w.character, other)
-            setDiff(`Same ${d.same} · only here ${d.onlyHere.length} · only file ${d.onlyThere.length}`)
-          } catch (err) {
-            setDiff((err as Error).message)
-          }
+          if (file) await stage(file)
           e.target.value = ''
         }}
       />
@@ -103,27 +127,32 @@ export function PacketBar() {
 export function CommandHits() {
   const w = useWorkspace()
   const q = w.query.trim().toLowerCase()
-  const hits = useMemo(() => searchSync(q), [q])
-  if (!hits.length) return null
+  const sections = useMemo(() => groupHits(searchSync(q)), [q])
+  if (!sections.length) return null
   return (
     <div className="command-hits">
-      {hits.map((f) => (
-        <button
-          key={f.source + f.id}
-          type="button"
-          className="quest"
-          onClick={() => {
-            w.setSelectedMarkerId(f.id)
-            w.setModule(f.module)
-            w.setQuery('')
-          }}
-        >
-          <header>
-            <strong>{f.name}</strong>
-            <span className="note">{f.source}</span>
-          </header>
-          <div className="note">{f.detail}</div>
-        </button>
+      {sections.map((section) => (
+        <section className="command-group" key={section.group}>
+          <div className="kicker">{section.group} · {section.hits.length}</div>
+          {section.hits.map((f) => (
+            <button
+              key={f.source + f.id}
+              type="button"
+              className="quest"
+              onClick={() => {
+                w.setSelectedMarkerId(f.id)
+                w.setModule(f.module)
+                w.setQuery('')
+              }}
+            >
+              <header>
+                <strong>{f.name}</strong>
+                <span className="note">{f.source}</span>
+              </header>
+              <div className="note">{f.detail}</div>
+            </button>
+          ))}
+        </section>
       ))}
     </div>
   )
