@@ -1,8 +1,10 @@
 import { useMemo } from 'react'
 import { codex } from './data/seed'
 import { awesomeResources } from './knowledge/awesome'
+import { byId, matchMany } from './knowledge/catalog'
 import { fieldHunts } from './knowledge/completion'
 import { applyFacts } from './lib/infer'
+import { labelOf } from './lib/links'
 import { loot } from './knowledge/loot'
 import { useArmory, useHunts } from './lib/armory'
 import { matchOpen, useOpenData } from './lib/openData'
@@ -11,16 +13,19 @@ import { matchGuide, useGuide } from './lib/guide'
 import { flaskUpgrades, mapFragments, scadutreeFragments } from './knowledge/collectibles'
 import { npcDisplayCards } from './knowledge/npc-display'
 import { iconFor } from './lib/sourcePack'
+import { Related } from './Related'
 import { useWorkspace } from './state'
 
 export function CodexWorkspace() {
-  const { query, setSelectedMarkerId, setModule, character, setCharacter } = useWorkspace()
+  const { query, setSelectedMarkerId, setModule, character, setCharacter, selectedMarkerId } = useWorkspace()
   const { weapons, bosses } = useArmory()
   const hunts = useHunts()
   const open = useOpenData()
   const coordRows = useCoords()
   const guide = useGuide()
   const q = query.trim().toLowerCase()
+  const selectedFact = selectedMarkerId ? byId.get(selectedMarkerId) : undefined
+  const catalogHits = useMemo(() => (q.length >= 2 ? matchMany(query) : []), [q, query])
   const guideHits = q.length >= 3 ? matchGuide(q, guide.items, guide.legs) : { items: [], legs: [] }
   const openHits = q.length >= 3 ? matchOpen(q, open.names, open.areas, open.shops, open.ashes, open.spells, open.lots, open.extra) : []
   const coordHits = q.length >= 3 ? matchCoords(q, coordRows) : []
@@ -45,6 +50,37 @@ export function CodexWorkspace() {
   )
   return (
     <div className="codex-wrap">
+      {selectedMarkerId && (
+        <article className="card codex-detail">
+          <div className="kicker">
+            Selected · {selectedFact ? `${selectedFact.kind} · ${selectedFact.region} · ${selectedFact.campaign}` : 'linked entity'}
+          </div>
+          <h3>{selectedFact?.name || labelOf(selectedMarkerId)}</h3>
+          {selectedFact?.note && <p className="note">{selectedFact.note}</p>}
+          <Related id={selectedMarkerId} />
+          <div className="opts">
+            <button type="button" className="chip" onClick={() => setSelectedMarkerId(null)}>Close</button>
+          </div>
+        </article>
+      )}
+      {catalogHits.length > 0 && (
+        <>
+          <h3 className="codex-head">Catalog · {catalogHits.length} cross-linked facts</h3>
+          <div className="codex-grid">
+            {catalogHits.slice(0, 12).map((f) => (
+              <article className="card" key={f.id}>
+                <div className="kicker">{f.kind} · {f.region} · {f.campaign}</div>
+                <h3>{f.name}</h3>
+                {f.note && <p className="note">{f.note}</p>}
+                <Related id={f.id} />
+                <div className="opts">
+                  <button type="button" className="chip" onClick={() => setSelectedMarkerId(f.id)}>Open detail</button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </>
+      )}
       {(guideHits.items.length > 0 || guideHits.legs.length > 0) && (
         <>
           <h3 className="codex-head">Guide · {guide.items.length} items · {guide.legs.length} legs</h3>
@@ -175,6 +211,7 @@ export function CodexWorkspace() {
                 Open nearest grace
               </button>
             )}
+            <Related id={e.id} />
           </article>
         ))}
       </div>

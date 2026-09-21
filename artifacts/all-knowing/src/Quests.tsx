@@ -1,13 +1,19 @@
 import { useState } from 'react'
 import { quests } from './data/seed'
+import { Related } from './Related'
 import { Thread } from './Thread'
 import { useWorkspace } from './state'
 
 export function QuestWorkspace() {
   const { character, setCharacter, query, selectedMarkerId, setSelectedMarkerId } = useWorkspace()
   const [activeId, setActiveId] = useState(quests[0]?.id)
-  const active = quests.find((q) => q.id === activeId) ?? quests[0]
+  // A link from elsewhere (item/boss/Atlas) selects a step id; land on its line.
+  const linkedLine = selectedMarkerId
+    ? quests.find((q) => q.steps.some((s) => s.id === selectedMarkerId))
+    : undefined
+  const active = linkedLine ?? quests.find((q) => q.id === activeId) ?? quests[0]
   const filtered = quests.filter((q) => `${q.npc} ${q.summary}`.toLowerCase().includes(query.trim().toLowerCase()))
+  const linkedStep = linkedLine && linkedLine.id === active.id ? selectedMarkerId : null
 
   function toggleStep(id: string) {
     const has = character.completedQuestSteps.includes(id)
@@ -24,6 +30,11 @@ export function QuestWorkspace() {
     })
   }
 
+  function pickLine(id: string) {
+    setSelectedMarkerId(null)
+    setActiveId(id)
+  }
+
   return (
     <div className="split">
       <section className="panel">
@@ -32,7 +43,7 @@ export function QuestWorkspace() {
           {filtered.map((q) => {
             const done = q.steps.filter((s) => character.completedQuestSteps.includes(s.id)).length
             return (
-              <button key={q.id} className={q.id === activeId ? 'quest active' : 'quest'} onClick={() => setActiveId(q.id)}>
+              <button key={q.id} className={q.id === active.id ? 'quest active' : 'quest'} onClick={() => pickLine(q.id)}>
                 <header>
                   <strong>{q.npc}</strong>
                   <span className="note">{done}/{q.steps.length}</span>
@@ -47,10 +58,10 @@ export function QuestWorkspace() {
         <div className="kicker">{active.campaign}</div>
         <h3 style={{ fontFamily: 'var(--font-display)', margin: '6px 0 8px' }}>{active.npc}</h3>
         <p className="note">{active.summary}</p>
-        {selectedMarkerId && <Thread id={selectedMarkerId} onOpen={setSelectedMarkerId} />}
+        {selectedMarkerId && !linkedStep && <Thread id={selectedMarkerId} />}
         <ul className="steps">
           {active.steps.map((step) => (
-            <li key={step.id}>
+            <li key={step.id} className={step.id === linkedStep ? 'step-linked' : undefined}>
               <input
                 type="checkbox"
                 checked={character.completedQuestSteps.includes(step.id)}
@@ -61,6 +72,7 @@ export function QuestWorkspace() {
                 {step.location && <div className="note">{step.location}</div>}
                 {step.lockout && <div className="warn">{step.lockout}</div>}
                 <button type="button" className="chip" onClick={() => setSelectedMarkerId(step.id)}>Thread</button>
+                <Related id={step.id} />
               </div>
             </li>
           ))}
