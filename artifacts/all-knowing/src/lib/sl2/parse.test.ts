@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import { readFileSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { describe, expect, it } from 'vitest'
+import { beforeAll, describe, expect, it } from 'vitest'
 import { parseSave } from './parse'
 import { SaveMagicError } from './reader'
 
@@ -15,10 +15,17 @@ const oraclePath = fileURLToPath(
 const hasFixture = existsSync(fixture)
 
 describe.skipIf(!hasFixture)('parseSave vs real ER0000.sl2 fixture', () => {
-  const buf = readFileSync(fixture)
-  const ab = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
-  const oracle = JSON.parse(readFileSync(oraclePath, 'utf8'))
-  const parsed = parseSave(ab)
+  // hasFixture only skips the it()s below, not this callback's own body -
+  // the fixture read must happen in beforeAll so it never runs when absent.
+  let oracle: any
+  let parsed: ReturnType<typeof parseSave>
+
+  beforeAll(() => {
+    const buf = readFileSync(fixture)
+    const ab = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
+    oracle = JSON.parse(readFileSync(oraclePath, 'utf8'))
+    parsed = parseSave(ab)
+  })
 
   it('reads the global steam id and the same active slots', () => {
     expect(parsed.globalSteamId).toBe(oracle.global_steam_id)
