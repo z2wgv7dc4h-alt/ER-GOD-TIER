@@ -187,56 +187,101 @@ Close seed `implies`. Store on lists by catalog kind **or** prefix: `grace|point
 
 ## 6. Gaps and TODOs (ordered)
 
+**Status pass 2026-09-22** — a large batch of DeepSeek-driven task work landed since this list
+was written (`../docs/tasks/06-*.md` through `20-*.md` in the outer project, each independently
+re-verified by Claude before merge — see `git log` for the full trail). Markers below: ✅ done,
+🔄 in progress, ⬜ still open/untouched.
+
 ### P0 — must for “not a demo”
-1. **Alias table** — engine grace ids, Paramdex warpId, seed slugs, `boss-xyz.kill` ↔ `boss:slug`.
-2. **Split `App.tsx`** into room files.
-3. **Tests** — `prefixKind`, `searchSync`, `planRoute` lockouts, vault round-trip.
-4. **Typecheck in CI** — this environment often lacked `node_modules/.bin`.
-5. Honest empty states: OCR off, save parser off, engine offline.
+1. ✅ **Alias table** — engine grace ids, Paramdex warpId, seed slugs, `boss-xyz.kill` ↔
+   `boss:slug`. (Task 06 — boss side; graces already existed.)
+2. ⬜ **Split `App.tsx`** into room files. Queued (Task 07) but never actually run — got
+   deprioritized for the parallel data/task work. Still ~700 lines, still a god file, now with
+   more piled into it (quest wiring, save UI, AR wiring) than when this was first written.
+3. ✅ **Tests** — `prefixKind`, `searchSync`, `planRoute` lockouts, vault round-trip. (Task 06,
+   substantially extended by 11/12/15's own test additions — 44 tests total as of Task 18.)
+4. ✅ **Typecheck in CI** — `.github/workflows/ci.yml` now exists (Task 06).
+5. ✅ Honest empty states: OCR off, save parser off (now real, see #27), engine offline. (Task 06)
 
 ### P1 — PS5 state
-6. Wire Tesseract in Reckon **or** delete `ocr.ts` pretence.
-7. Warp-list paste UX: one name per line, show unmatched tokens.
-8. Interview coverage for SotE / Tarnished Pack starts.
-9. Clipboard screenshots already hooked (`useClipboardShots`) — confirm they hit Reckon.
+6. ⬜ Wire Tesseract in Reckon **or** delete `ocr.ts` pretence. Still untouched — `ocr.ts` is
+   still an intentional empty stub, labeled honestly (#5) but not built.
+7. ⬜ Warp-list paste UX — not directly touched by name, though Task 06 extended `aliasStatus()`
+   to report boss coverage in Reckon's copy too. Not verified against this specific UX ask.
+8. ⬜ Interview coverage for SotE / Tarnished Pack starts — not addressed.
+9. ⬜ Clipboard screenshots (`useClipboardShots`) → Reckon — not verified.
 
 ### P1 — Atlas
-10. Pick **one** projection for lots or leave lots off the JPG.
-11. SotE + ashen **plates** missing (only overworld + underground jpgs).
-12. Engine iframe vs plate: don’t draw both sets of pins in conflicting space.
-13. Dungeon bosses have XYZ only (Stormveil etc.) — interior maps not plated.
+10. 🔄 Pick **one** projection for lots or leave lots off the JPG — Task 09 Part C, in progress
+    (retrying after an earlier run hung on `Setup.bat`'s interactive prompt in headless mode).
+11. ✅ SotE + ashen **plates** — both now exist (`m-ashen.jpg`, `m-shadow.jpg`, AI-generated
+    stand-in art wired into `graces.ts`'s `worlds` array; visually confirmed rendering with pins).
+    Real assembled map art for overworld/underground specifically is still Task 09's job.
+12. 🔄 Engine iframe vs plate pin conflict — Task 09 Part C, in progress.
+13. ⬜ Dungeon bosses XYZ-only, no interior maps — explicitly deferred, still open.
 
 ### P1 — Gideon / planner
-14. DeepSeek behind `GideonAct` with grounding pack (stillAvailable + planRoute + searchSync + top catalog).
-15. “I’m done” already ticks `plan.current.factId` — extend to dump ids.
-16. Detours use level only loosely — use Armory boss resists when “stuck”.
-17. 100% spine is Medusa **chapter titles**, not a real checklist.
+14. 🔄 DeepSeek behind `GideonAct` — Task 20, in progress (a prior attempt died on the same
+    scratch-directory permission issue that hit several other tasks; fixed and retrying).
+    Grounding pack + hallucination-guard validation are in the task's requirements.
+15. ⬜ “I’m done” → extend to dump ids — not addressed.
+16. 🔄 Detours use real boss resists — Task 19, queued behind Task 17 (needs real `NpcParam`
+    data first) and Task 20 (shares `gideon.ts`, run sequentially not in parallel).
+17. 🔄 100% spine real checklist — Task 19, same queue position as #16.
 
 ### P2 — data
-18. Parse `ItemLotParam_*` + flags into chest facts (Names txt has no coords; use `world-lots.json`).
-19. Query-load `msb-enemies.json`.
-20. Gathering nodes 21k — nameless AEG until mapped.
-21. FanAPI images via `fanImage()` — Codex cards still text-first.
-22. Sacred tear / golden seed list is a **starter**, not 30+30 complete.
-23. Two hunt lists: tiny `fieldHunts` vs `hunts.json` — merge.
-24. `items.json` 2.4 MB in guide folder — runtime uses `catalog.json`.
-25. vawser event-flag dump not ingested (huge unstructured).
-26. Full Carian JP + dialog not in PWA (size).
+18. ⬜ `ItemLotParam_*` chest facts from `world-lots.json` — not addressed.
+19. ⬜ Query-load `msb-enemies.json` — not addressed.
+20. ⬜ Gathering nodes (21k, nameless AEG) — not addressed.
+21. ⬜ FanAPI images via `fanImage()` — not addressed.
+22. ✅ Sacred tear / golden seed starter → more complete. (Task 16: golden seeds 7→42, sacred
+    tears confirmed matching the authoritative pack at 12/12, plus a new `gesture` category and
+    3 crystal-tear entries filled in from the same pass.)
+23. ⬜ Merge `fieldHunts` and `hunts.json` — not addressed.
+24. ⬜ `items.json` vs `catalog.json` size note — informational, not actioned.
+25. ⬜ vawser event-flag dump — not ingested (Task 11 generated its *own* smaller event-flag
+    table from an original save-format implementation, a different source, for a narrower need).
+26. ✅ Carian JP / dialog — investigated (Task 14): both Elden Refs and Carian Archive turned out
+    to be a strict subset of `names.json` already in-repo (same corpus, EN names identical, 0
+    diff across 34 FMG sections); the only non-redundant payload was JP text with no consumer
+    anywhere in the app. Correctly closed as “nothing to add” rather than forced into the repo.
 
 ### P2 — PC
-27. Real Compass-style TS `.sl2` parser **in browser**, flags → our ids.
-28. `canonicalFactId` is name-equality only.
-29. Live-memory mode is offline / no EAC only (document in UI).
+27. ✅ Real `.sl2` parser in-browser, flags → our ids. (Task 11 — original TypeScript
+    implementation, *not* vendored from Compass: that repo turned out to have no license at all,
+    so only its publicly-documented save-format understanding was used, not its code. Validated
+    byte-for-byte against Compass's own upstream test fixture. Runs in a Web Worker, read-only.)
+28. 🔄 `canonicalFactId` name-equality only → improved for bosses (Task 06 added id-based
+    matching, not just name equality, mirroring the grace pattern) but not audited across every
+    fact category.
+29. ⬜ Live-memory / EAC caution documentation — not touched beyond what was already there.
 
 ### P3 — product polish
-30. Multi-profile UX in the rail (vault API exists).
-31. Packet diff exists in QoL — surface it.
-32. PWA service worker / offline cache of `sourced/` — not done.
-33. Command palette grouping by source.
-34. Watchlist / leftovers — exists; bind to coords layer.
-35. Build lab AR: embed Clark calculator, don’t guess.
-36. Quest DAG lockout edges incomplete vs real flags.
-37. Nightreign: out of v1.
+30. ⬜ Multi-profile UX in the rail — backend (`vault.ts`) already had full profile support before
+    any of this task work started; still not surfaced in the rail UI.
+31. ⬜ Packet diff surfacing — not addressed.
+32. ⬜ PWA service worker / offline cache of `sourced/` — not done.
+33. ⬜ Command palette grouping by source — not addressed.
+34. ⬜ Watchlist / leftovers → coords layer binding — not addressed.
+35. ✅ Build lab AR: real numbers, not guessed. (Task 10 — ported `ThomasJClark/elden-ring-
+    weapon-calculator`'s formula, verified to the decimal against 8 real cases including
+    two-handing by bundling and running Clark's own upstream code against the same vendored
+    regulation data.)
+36. ✅ Quest DAG lockout edges — no longer prose. (Task 12: 11 lines → 24, 42 → 87 steps, 0 → 223
+    real `requires`/`grants`/`lockouts` edges; `planRoute` rebuilt to actually traverse them.
+    Not yet cross-verified against real game event-flag data specifically — the edges are
+    author-encoded from game knowledge, not extracted from `regulation.bin`.)
+37. Nightreign: out of v1 — unchanged, correctly still out of scope.
+
+### Also new since this list was written (not in the original numbering)
+- Catalog fact count: 89 → 226 (Task 18, closing gaps a diff against the EanNewton tracker
+  found — see `docs/research/eannewton-catalog-diff.md`). Added a new `invader:` fact-id prefix
+  (mapped to the `boss` bucket in `prefixKind`, a documented decision, not an oversight).
+- `vendor/elden-ring-map` is now actually cloned in and CORS/embed-patched (Task 09, in
+  progress) — a real local Elden Ring install exists on this dev machine as of 2026-09-22
+  (`C:\Program Files (x86)\Steam\steamapps\common\ELDEN RING\Game\`), which this list's authors
+  did not have when they wrote “SOURCE-PACK.md: the PC in this house does not have Elden Ring.”
+  That constraint is gone; treat any doc still citing it as outdated for extraction-related work.
 
 ---
 
