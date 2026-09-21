@@ -15,6 +15,11 @@ describe('prefixKind', () => {
     expect(prefixKind('area:130')).toBe('boss')
   })
 
+  it('treats invader ids as boss-shaped, not items', () => {
+    expect(prefixKind('invader:nerijus')).toBe('boss')
+    expect(prefixKind('invader:juno-hoslow')).toBe('boss')
+  })
+
   it('maps quest dialects to quest', () => {
     expect(prefixKind('quest:ranni:nokron')).toBe('quest')
     expect(prefixKind('line:blitz-lord')).toBe('quest')

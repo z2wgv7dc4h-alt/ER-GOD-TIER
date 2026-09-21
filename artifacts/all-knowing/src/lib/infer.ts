@@ -9,7 +9,10 @@ function add(list: string[], id: string) {
 export function prefixKind(id: string) {
   const p = id.split(':')[0]
   if (p === 'grace' || p === 'point') return 'grace'
-  if (p === 'boss' || p === 'hunt' || p === 'bossflag' || p === 'area') return 'boss'
+  // `invader:` is boss-shaped on purpose: a named, defeatable NPC encounter belongs on
+  // defeatedBosses, and a separate Character list would change the kernel. The distinct
+  // prefix still lets callers tell invaders apart from true `boss:` facts. See Task 18.
+  if (p === 'boss' || p === 'hunt' || p === 'bossflag' || p === 'area' || p === 'invader') return 'boss'
   if (p === 'quest' || p === 'line') return 'quest'
   return 'item'
 }

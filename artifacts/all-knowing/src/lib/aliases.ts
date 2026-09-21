@@ -77,7 +77,9 @@ export const allWarpRows: WarpGrace[] = hostedGraces.map((g) => {
 
 /** Authored boss facts keyed by normalised name (name + aliases). */
 const seedBossByName = new Map<string, Fact>()
-const seedBosses = facts.filter((f) => f.kind === 'boss')
+// Only true `boss:` facts join the hosted-boss alias table. Invaders are `kind: 'boss'`
+// for storage, but their `invader:` ids have no hosted row and must not inflate coverage.
+const seedBosses = facts.filter((f) => f.kind === 'boss' && f.id.startsWith('boss:'))
 for (const f of seedBosses) {
   seedBossByName.set(norm(f.name), f)
   for (const a of f.aliases) seedBossByName.set(norm(a), f)
