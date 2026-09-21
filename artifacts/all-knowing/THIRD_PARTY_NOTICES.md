@@ -176,3 +176,26 @@ SOFTWARE.
   - `src/data/hunt-flags.json` — field-boss kill flags, generated from our own
     `public/sourced/checklists/hunts.json` (BuLEEto checklist).
 
+## Local-install FMG / marker extraction (Task 27)
+
+- **Source:** the user's own Elden Ring 1.17 (Tarnished Pack) install — **not** a third-party repo.
+  No game files are redistributed; only derived name/id text and marker coordinates are committed
+  or generated locally.
+- **What was taken:**
+  - `public/sourced/open/names.json` — item/NPC/place names, regenerated from the install's own
+    `item.msgbnd.dcx` + `item_dlc02.msgbnd.dcx` message archives by `scripts/extract-fmg-names.py`
+    (8,767 names; previously a 6,820-name base-game Text Explorer dump). The old Text Explorer
+    (`EldenRingExplorer/EldenRingTextExplorer`) provenance is superseded by this local extraction.
+  - `vendor/elden-ring-map/data/markers.json` (gitignored) — atlas markers, generated from the
+    install's `regulation.bin` + DLC archives by the vendored EldenRingMap `tools/build_markers.py`.
+  - `public/sourced/open/paramdex/EquipParamWeapon|Goods|Protector|Accessory|Gem.txt` — the
+    equipment name files, topped up additively (missing ids only) from the install by
+    `scripts/extract-paramdex-names.py`. For these params a row's display name is in an FMG table
+    under the same numeric id (96-100% of rows), which is why they are locally recoverable.
+- **What was changed:** names are emitted in this project's existing `{id, kind, name, info}` shape;
+  DLC placeholder rows (`DLC dummy`) and `[ERROR]` prefixes are stripped. Nothing is written into
+  the game directory (read-only).
+- **Still external:** `public/sourced/open/paramdex/NpcParam.txt` (and the remaining Paramdex
+  files) stay the upstream `soulsmods/Paramdex` ER/Names dump — post-SotE, pre-Tarnished-Pack. Its
+  names are DSMapStudio-resolved, not an FMG row-id join, so it is not regenerated here.
+

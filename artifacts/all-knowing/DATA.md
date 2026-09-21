@@ -20,9 +20,21 @@ All under `public/sourced/` unless noted.
   weapon base damage/scaling/requirements, and Tarnished Pack weapon rows. Loaded on demand by
   `src/lib/ar.ts`. See `THIRD_PARTY_NOTICES.md`.
 - **Regulation stamp:** `Character.regulation` / `catalog.regulation` are `'1.17-tarnished-pack'`
-  (`src/lib/regulation.ts`). The AR data is on that line; the atlas marker extract (local install)
-  and `open/names.json` (base-game FMG) are **not** — `regulationAudit()` reports the mismatch
-  rather than hiding it.
+  (`src/lib/regulation.ts`). The AR data, the atlas marker extract, and `open/names.json` are all
+  on that line. The atlas markers and `names.json` were regenerated from this machine's 1.17
+  install in Task 27 (see below); the one source still off-stamp is the upstream
+  `open/paramdex/` dump, which is post-SotE but predates the Tarnished Pack.
+  `regulationAudit()` reports that remaining gap rather than hiding it.
+- **Regenerate the FMG name dump** from a local install:
+  `python scripts/extract-fmg-names.py` — reads the install's `item` + `item_dlc02` FMG and
+  rewrites `open/names.json` (base + Shadow of the Erdtree + Tarnished Pack names).
+- **Top up the Paramdex equipment names** from a local install:
+  `python scripts/extract-paramdex-names.py` — appends only the ids the upstream dump is missing
+  (`EquipParamWeapon`/`Goods`/`Protector`/`Accessory`/`Gem`; row id == FMG text id). `NpcParam.txt`
+  is not regenerated (its names are DSMapStudio-resolved, not an FMG row-id join).
+- **Regenerate the atlas markers** from a local install:
+  `python vendor/elden-ring-map/tools/build_markers.py "<game dir>"` — writes the
+  gitignored `vendor/elden-ring-map/data/markers.json` (1,106 markers incl. Shadow of the Erdtree).
 
 ## Boss combat (Build lab) — real NpcParam
 
@@ -59,14 +71,14 @@ See `docs/REVIEW.md`.
 
 | File | What |
 |---|---|
-| `open/names.json` | 6.8k EN FMG names |
+| `open/names.json` | 8.8k EN FMG names (base + SotE + Tarnished Pack; `scripts/extract-fmg-names.py`) |
 | `open/shops.json` | 1261 shop rows |
 | `open/world-lots.json` | 10k unique lots + XYZ + flags |
 | `open/boss-xyz.json` / `boss-pins.json` | 215 named bosses; 109 projected |
 | `open/enemies.json` | 520 EN names |
 | `open/msb-enemies.json` | 8.8k placed enemies — **not loaded at runtime** |
 | `open/graces` via checklists/graces.json | 418 warps |
-| `open/paramdex/` | Names txt dump |
+| `open/paramdex/` | Names txt dump; equipment files topped up from install (Tarnished Pack rows); `NpcParam.txt` still upstream (post-SotE) |
 | `src/knowledge/merchants.ts` | 106 vendors full stock |
 | `src/knowledge/bossPins.ts` | sync pin list for Gideon |
 
