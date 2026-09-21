@@ -83,9 +83,31 @@ and they already solved it.
 
 ## Safety
 
-Normal mode: read the save, never write it.
-`--live-memory`: ReadProcessMemory / `/proc`. Offline only. EAC will
-object if you attach while `start_protected_game.exe` is running.
+Normal mode (`npm run map`, no flag): the server reads `ER0000.sl2` and watches
+it for changes. It never writes the save, never opens the game process, and
+makes no network calls. There is nothing for anti-cheat to see.
+
+`--live-memory` / `npm run map:live` is **off by default** and strictly
+additive. When enabled, the server spawns `tools/live_memory.py`, which:
+
+- opens `eldenring.exe` with `PROCESS_VM_READ` **only** (Windows
+  `ReadProcessMemory`, Linux the Proton process's `/proc`) — it can read but
+  not modify the game, and never touches the save;
+- locates structures by byte-signature scan (`CSMenuManImp`, `WorldChrMan`,
+  …), not fixed offsets, so a patch breaks it rather than misreads it;
+- needs administrator rights because Elden Ring runs elevated;
+- does not inject, overlay, send input, call into the game, or use the
+  network — samples go Python → local Node server → browser over localhost;
+- falls back silently to save-file mode if Python is missing, the game is
+  closed, admin rights are absent, or the signatures stop matching.
+
+**EAC.** Elden Ring uses EasyAntiCheat, launched by
+`start_protected_game.exe` for online play. EAC cannot distinguish a
+read-only attach from a hostile one — every memory-reading tool (FPS
+unlockers, autosplitters, speedrun timers, this reader) looks the same to it.
+Attaching while protected play is running risks a ban. Run live mode **offline
+only**, or in a modded setup that skips `start_protected_game.exe`. See the
+README's "Live memory mode" section for the user-facing warning.
 
 ## Pulling upstream
 

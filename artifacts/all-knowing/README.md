@@ -29,7 +29,61 @@ Open the Vite URL. The Atlas pane embeds the live map (`/?embed=1`). Stats,
 found flags, and marker lists flow into Build lab and Quests through one
 `Character` object.
 
-`npm run map:live` is the optional memory reader (offline / no EAC only).
+`npm run map:live` is an **optional** add-on that reads the running game's
+memory for a live player dot. It is **off by default** and carries real
+anti-cheat risk — read [Live memory mode](#live-memory-mode--read-this-before-you-enable-it)
+below before you use it.
+
+## Live memory mode — read this before you enable it
+
+The default `npm run map` never touches the game process. It reads
+`ER0000.sl2` and watches it for changes; that is the whole mechanism. Nothing
+in it is visible to anti-cheat.
+
+`npm run map:live` is a **separate, opt-in flag** (`--live-memory`) that
+additionally reads the running game's process memory for a real-time player
+dot. Because it is not part of the default map and is not started unless you
+pass the flag, a normal install stays on the save-file path.
+
+### What it actually does
+
+- The server spawns `vendor/elden-ring-map/tools/live_memory.py`, which opens
+  `eldenring.exe` with **`PROCESS_VM_READ` only** and samples the player's
+  map-screen location (and world position for height) about 20 times a second.
+- On Windows it reads through `ReadProcessMemory`; on Linux it reads the
+  running Proton process's `/proc` entries.
+- It finds the game's structures by scanning for byte-signature patterns
+  (`CSMenuManImp`, `WorldChrMan`, …) rather than fixed offsets, so a game patch
+  usually breaks it rather than making it read the wrong thing.
+- It needs administrator rights, because Elden Ring itself runs elevated.
+- It is strictly additive: if Python is missing, the game is closed, you are
+  not an admin, or a patch moves the signatures, it logs once and the map
+  keeps working from the save file alone.
+
+### What it does not do
+
+- It **never writes** to game memory — read access only.
+- It never injects a DLL, never draws an overlay, never sends input, and never
+  calls into the game.
+- It never touches `ER0000.sl2`; the save path is a separate, read-only reader.
+- It makes no network calls. Samples go from Python to the local Node server
+  to your browser over localhost only.
+
+### The anti-cheat risk
+
+Elden Ring ships **EasyAntiCheat (EAC)**, a kernel-level anti-cheat service
+launched by `start_protected_game.exe` for online play. EAC is deliberately
+not able to tell an honest read from a malicious one: any process that attaches
+to the game and reads its memory looks the same to it, so memory-reading tools
+of every kind — FPS unlockers, autosplitters, speedrun timers, this reader —
+carry a ban risk when they run alongside EAC. Enabling live mode while
+protected online play is running can put your account at risk.
+
+> **Offline only.** Run `npm run map:live` only when EAC is not running — an
+> offline session, or a modded setup where you launch the game without
+> `start_protected_game.exe`. For normal play, use `npm run map`; progress
+> still updates on every save. If you don't understand the tradeoff, don't
+> enable it.
 
 ## Why this map, not MapGenie
 
@@ -109,6 +163,7 @@ behind a server proxy and stop shipping the key to the client.
 ## Rules
 
 - Save is read-only. No editor in this product.
-- Live memory mode is offline-only.
+- Live memory is opt-in, read-only, and offline-only. Default `npm run map`
+  never opens the game process; `npm run map:live` must not run alongside EAC.
 - Do not commit `web/tiles`, `data/markers.json`, `data/items.json`.
 - Non-commercial fan project. FromSoftware / Bandai Namco own the work.

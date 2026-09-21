@@ -256,7 +256,10 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 28. 🔄 `canonicalFactId` name-equality only → improved for bosses (Task 06 added id-based
     matching, not just name equality, mirroring the grace pattern) but not audited across every
     fact category.
-29. ⬜ Live-memory / EAC caution documentation — not touched beyond what was already there.
+29. ✅ Live-memory / EAC caution documentation — Task 38: README "Live memory mode — read
+    this before you enable it" section (accurate `PROCESS_VM_READ` mechanism, EAC risk, opt-in
+    default) plus an expanded `docs/MAP-ENGINE.md` Safety section. No in-app toggle exists, so
+    no UI warning copy was needed; no functional change.
 
 ### P3 — product polish
 30. ⬜ Multi-profile UX in the rail — backend (`vault.ts`) already had full profile support before
