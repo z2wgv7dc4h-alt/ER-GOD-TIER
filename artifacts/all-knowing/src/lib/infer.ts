@@ -156,8 +156,17 @@ export function applyAnswers(character: Character): Character {
   if (dlc === 'liurnia') seeds.push('region:liurnia')
   if (dlc === 'altus') seeds.push('region:altus', 'region:leyndell')
   if (dlc === 'mountaintops') seeds.push('region:mountaintops')
-  if (dlc === 'sote') seeds.push('region:shadow')
+  // SotE access is gated behind Radahn + Mohg (the withered arm in Mohgwyn). A run that
+  // is already in the Realm of Shadow — whether via the progress question or the explicit
+  // "began in the DLC" start — has necessarily beaten both, so seed the region *and* its
+  // access bosses instead of just the region.
+  if (dlc === 'sote' || a.soteStart === 'yes') seeds.push('region:shadow', 'boss:radahn', 'boss:mohg')
   if (dlc === 'finished') seeds.push('boss:radagon')
+  // Tarnished Pack starts carry their origin armament (Heavy Knight → Hefty Scimitar,
+  // Idus Knight → Idus Sword). Seed it from either the class pick or the pack-start
+  // question, so a pack player's starting weapon is known from the interview alone.
+  if (a.class === 'heavy-knight' || a.tarnished === 'heavy-knight') seeds.push('item:hefty-scimitar')
+  if (a.class === 'idus-knight' || a.tarnished === 'idus-knight') seeds.push('item:idus-sword')
   if (typeof a.lastGrace === 'string' && a.lastGrace.startsWith('grace:')) seeds.push(a.lastGrace)
   if (Array.isArray(a.shardbearers)) seeds.push(...a.shardbearers)
   if (seeds.length) next = applyFacts(next, seeds, 'answer', 'interview')

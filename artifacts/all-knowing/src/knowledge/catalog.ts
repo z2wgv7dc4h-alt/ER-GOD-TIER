@@ -357,6 +357,18 @@ export const interview = [
     ],
   },
   {
+    id: 'tarnished',
+    prompt: 'Tarnished Pack / Tarnished Edition?',
+    hint: 'The Tarnished Pack adds the Heavy Knight and Idus Knight starts and the Leontiel encounter. Pick your start and its origin weapon is seeded.',
+    options: [
+      { value: 'none', label: 'No / base game' },
+      { value: 'heavy-knight', label: 'Heavy Knight start' },
+      { value: 'idus-knight', label: 'Idus Knight start' },
+      { value: 'owned', label: 'Own it, other start' },
+      { value: 'unknown', label: 'Not sure' },
+    ],
+  },
+  {
     id: 'dlc',
     prompt: 'How far has the world opened?',
     hint: 'One answer here unlocks whole regions of the atlas.',
@@ -367,6 +379,15 @@ export const interview = [
       { value: 'mountaintops', label: 'Mountaintops or Farum' },
       { value: 'sote', label: 'Entered the Realm of Shadow' },
       { value: 'finished', label: 'Elden Lord / a final ending' },
+    ],
+  },
+  {
+    id: 'soteStart',
+    prompt: 'Did this run begin with the DLC already open?',
+    hint: 'A post-Radahn start with the Realm of Shadow unlocked already has Radahn and Mohg down — answering yes seeds region:shadow and both access bosses.',
+    options: [
+      { value: 'no', label: 'No — began in the base game' },
+      { value: 'yes', label: 'Yes — DLC already unlocked' },
     ],
   },
   {

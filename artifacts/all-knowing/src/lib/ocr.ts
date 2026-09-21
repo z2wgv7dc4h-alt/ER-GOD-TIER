@@ -30,6 +30,16 @@ export const OCR_CONFIDENCE_FLOOR = 0.55
 
 export type OcrMatch = { id: string; name: string }
 
+/**
+ * One line of a pasted / photographed list and the known names it matched. Bulk warp
+ * lists are line-oriented, so per-line results are what makes a 20-grace paste legible:
+ * the player sees exactly which lines landed and which still need a typed correction.
+ */
+export type OcrLineResult = {
+  line: string
+  matches: OcrMatch[]
+}
+
 export type OcrStatus = 'applied' | 'low-confidence' | 'no-match' | 'empty'
 
 export type OcrOutcome = {
@@ -39,6 +49,8 @@ export type OcrOutcome = {
   confidence: number
   status: OcrStatus
   matches: OcrMatch[]
+  /** Per-line breakdown of `matches` for list-shaped reads (one entry per non-blank line). */
+  lines: OcrLineResult[]
   /** Human-readable, honest explanation of what happened. */
   message: string
 }
@@ -70,6 +82,31 @@ export function factsFromText(text: string): OcrMatch[] {
   return out
 }
 
+/** Dedupe matches by canonical id, preserving first-seen order. */
+function dedupeMatches(matches: OcrMatch[]): OcrMatch[] {
+  const seen = new Set<string>()
+  const out: OcrMatch[] = []
+  for (const m of matches) {
+    if (!m.id || seen.has(m.id)) continue
+    seen.add(m.id)
+    out.push(m)
+  }
+  return out
+}
+
+/**
+ * Bulk-list matcher: split a pasted/recognized blob into non-blank lines and match each
+ * one independently, so a full warp list gets a match/no-match verdict per line instead
+ * of one opaque whole-blob result. Order is preserved (menu order ≈ progress order).
+ */
+export function matchBulkLines(text: string): OcrLineResult[] {
+  return (text || '')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+    .map((line) => ({ line, matches: factsFromText(line) }))
+}
+
 /**
  * Pure inference step: take a read and either apply real `screenshot` evidence or
  * explicitly decline to. Never throws, never fabricates.
@@ -89,6 +126,7 @@ export function applyOcrRead(
       confidence,
       status: 'empty',
       matches: [],
+      lines: [],
       message: 'No text was recognized in that image.',
     }
   }
@@ -100,11 +138,13 @@ export function applyOcrRead(
       confidence,
       status: 'low-confidence',
       matches: [],
+      lines: [],
       message: `Text read at ${pct(confidence)} confidence — too low to trust. Facts stay unknown.`,
     }
   }
 
-  const matches = factsFromText(text)
+  const lines = matchBulkLines(text)
+  const matches = dedupeMatches(lines.flatMap((l) => l.matches))
   if (!matches.length) {
     return {
       character,
@@ -112,18 +152,22 @@ export function applyOcrRead(
       confidence,
       status: 'no-match',
       matches: [],
+      lines,
       message: 'Read the text, but no known names matched. Nothing was inferred.',
     }
   }
 
   const next = applyFacts(character, matches.map((m) => m.id), 'screenshot', detail, confidence)
+  const hitLines = lines.filter((l) => l.matches.length).length
+  const lineNote = lines.length > 1 ? ` across ${hitLines}/${lines.length} lines` : ''
   return {
     character: next,
     text,
     confidence,
     status: 'applied',
     matches,
-    message: `Matched ${matches.length} name${matches.length === 1 ? '' : 's'}: ${matches.map((m) => m.name).join(' · ')}`,
+    lines,
+    message: `Matched ${matches.length} name${matches.length === 1 ? '' : 's'}${lineNote}: ${matches.map((m) => m.name).join(' · ')}`,
   }
 }
 

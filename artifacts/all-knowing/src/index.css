@@ -315,6 +315,28 @@ button { cursor: pointer; }
 }
 .list .gone { color: var(--muted); text-decoration: line-through; }
 
+.warp-lines {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  max-height: 240px;
+  overflow: auto;
+  border: 1px solid var(--line-soft);
+}
+.warp-lines li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 8px;
+  border-top: 1px solid var(--line-soft);
+  font-size: 12px;
+}
+.warp-lines li:first-child { border-top: 0; }
+.warp-lines .line-text { color: var(--ink); }
+.warp-lines .line-hit { color: var(--muted); text-align: right; }
+.warp-lines li.ok .line-hit { color: var(--gold); }
+.warp-lines li.miss .line-text { color: var(--muted); }
+
 .split {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
