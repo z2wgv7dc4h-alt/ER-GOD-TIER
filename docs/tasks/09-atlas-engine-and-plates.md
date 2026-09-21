@@ -67,14 +67,16 @@ this pack has been confirmed cleared by the project owner.
   m0-overworld.jpg into public/sourced/maps when you have the 176 MB plate compressed"*, i.e.
   this exact task was already anticipated in a code comment. Match the existing image's
   dimensions/aspect ratio so pins (percent-based `x`/`y`, see below) still land correctly.
-- Per `HANDOFF-CLAUDE.md` P1 item 11, a Shadow of the Erdtree plate is missing — and it's not
-  just the image: `worlds` in `graces.ts` only has `overworld` and `underground` entries, but
-  `'shadow'` is already used as an `AtlasWorld` value elsewhere in the code (`aliases.ts`'s
-  `world === 'shadow' ? 'sote' : 'base'`, `Atlas.tsx`'s `world === 'shadow'` check) — so you may
-  need to add a third `worlds` entry, not just a file. Check whether Pack 960 or any other
-  already-ingested source has SotE/Shadow Realm map art to back it; if nothing does, say so in
-  your report rather than fabricating a plate or leaving `'shadow'` half-wired (a world value
-  used in logic but with no matching `worlds` entry is worse than not touching it).
+- **Already resolved, don't redo**: the Shadow/Ashen plate gap this section originally described
+  is fixed. `graces.ts`'s `worlds` array now has all four entries (`overworld`, `underground`,
+  `ashen`, `shadow`) each with a real `plate` path — `ashen`/`shadow` use AI-generated stand-in
+  art (`/sourced/maps/m-ashen.jpg`, `/sourced/maps/m-shadow.jpg`), visually confirmed working
+  (Realm of Shadow renders its plate with grace pins overlaid). This task's remaining plate work
+  is upgrading `overworld`/`underground` specifically to Pack 960's real assembled map art — the
+  AI-generated Ashen/Shadow plates are acceptable as decorative stand-ins since no real assembled
+  map source for those worlds has been found, but do not replace them with AI art if you're
+  tempted to do the same for overworld/underground — those should be the real thing per the
+  original guidance below.
 - Confirm the replacement plates don't break the existing SVG pin overlay math in `Atlas.tsx` —
   it draws pins on a `viewBox="0 0 100 80"` percent-based coordinate space, independent of the
   underlying image's native pixel resolution, so this should just work as a drop-in image swap,
