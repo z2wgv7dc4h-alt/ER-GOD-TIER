@@ -1,0 +1,1911 @@
+[
+ {
+  "factId": "boss:margit",
+  "name": "Margit, the Fell Omen",
+  "npcRow": 21300014,
+  "paramName": "Margit, the Fell Omen",
+  "baseHp": 2521,
+  "poise": 80,
+  "negation": {
+   "physical": 0,
+   "magic": 0,
+   "fire": 0,
+   "lightning": 0,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 154,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:godrick",
+  "name": "Godrick the Grafted",
+  "npcRow": 47500000,
+  "paramName": "Godrick the Grafted (Unscaled)",
+  "baseHp": 3354,
+  "poise": 105,
+  "negation": {
+   "physical": 0,
+   "magic": 20,
+   "fire": 20,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 154,
+   "sleep": 154,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:red-wolf",
+  "name": "Red Wolf of Radagon",
+  "npcRow": 31810000,
+  "paramName": "Red Wolf of Radagon",
+  "baseHp": 973,
+  "poise": 120,
+  "negation": {
+   "physical": 0,
+   "magic": 40,
+   "fire": 20,
+   "lightning": 20,
+   "holy": 20
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 252,
+   "sleep": 154,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:rennala",
+  "name": "Rennala, Queen of the Full Moon",
+  "npcRow": 20310000,
+  "paramName": "Rennala, Queen of the Full Moon",
+  "baseHp": 1703,
+  "poise": 80,
+  "negation": {
+   "physical": -10,
+   "magic": 80,
+   "fire": 40,
+   "lightning": 40,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 154,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:radahn",
+  "name": "Starscourge Radahn",
+  "npcRow": 47300000,
+  "paramName": "Starscourge Radahn",
+  "baseHp": 2585,
+  "poise": 200,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": 20,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 112,
+   "bleed": 154,
+   "sleep": 252,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:rykard",
+  "name": "Rykard, Lord of Blasphemy",
+  "npcRow": 47101038,
+  "paramName": "Rykard- Lord of Blasphemy",
+  "baseHp": 12216,
+  "poise": 120,
+  "negation": {
+   "physical": 10,
+   "magic": 40,
+   "fire": 80,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 252,
+   "sleep": 252,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:godfrey-golden",
+  "name": "Godfrey, First Elden Lord (golden shade)",
+  "npcRow": 47200070,
+  "paramName": "Godfrey- First Elden Lord",
+  "baseHp": 1721,
+  "poise": 120,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": 20,
+   "lightning": 0,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 252,
+   "sleep": 252,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:morgott",
+  "name": "Morgott, the Omen King",
+  "npcRow": 21300534,
+  "paramName": "Morgott, the Omen King",
+  "baseHp": 2521,
+  "poise": 80,
+  "negation": {
+   "physical": 0,
+   "magic": 0,
+   "fire": 0,
+   "lightning": 0,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 154,
+   "sleep": 252,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:fire-giant",
+  "name": "Fire Giant",
+  "npcRow": 47600000,
+  "paramName": "Fire Giant",
+  "baseHp": 3489,
+  "poise": 120,
+  "negation": {
+   "physical": 0,
+   "magic": 0,
+   "fire": 50,
+   "lightning": 0,
+   "holy": 20
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 252,
+   "sleep": 252,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:godskin-duo",
+  "name": "Godskin Duo",
+  "npcRow": 35600000,
+  "paramName": "Godskin Apostle (Unscaled)",
+  "baseHp": 2033,
+  "poise": 80,
+  "negation": {
+   "physical": 0,
+   "magic": 20,
+   "fire": 40,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 112,
+   "sleep": 112,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:maliketh",
+  "name": "Maliketh, the Black Blade",
+  "npcRow": 89010000,
+  "paramName": "Beast Clergyman / Maliketh- the Black Blade",
+  "baseHp": 2444,
+  "poise": 70,
+  "negation": {
+   "physical": 0,
+   "magic": 0,
+   "fire": -20,
+   "lightning": 0,
+   "holy": 0
+  },
+  "resist": {
+   "poison": 999,
+   "scarletRot": 999,
+   "bleed": 999,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:gideon",
+  "name": "Sir Gideon Ofnir, the All-Knowing",
+  "npcRow": 523240000,
+  "paramName": "Sir Gideon Ofnir, the All-Knowing",
+  "baseHp": 1551,
+  "poise": 100,
+  "negation": {
+   "physical": 0,
+   "magic": 0,
+   "fire": 0,
+   "lightning": -25,
+   "holy": 0
+  },
+  "resist": {
+   "poison": 100,
+   "scarletRot": 100,
+   "bleed": 100,
+   "sleep": 999,
+   "madness": 0,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:godfrey",
+  "name": "Godfrey, First Elden Lord / Hoarah Loux",
+  "npcRow": 47200070,
+  "paramName": "Godfrey- First Elden Lord",
+  "baseHp": 1721,
+  "poise": 120,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": 20,
+   "lightning": 0,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 252,
+   "sleep": 252,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:radagon",
+  "name": "Radagon of the Golden Order / Elden Beast",
+  "npcRow": 21900078,
+  "paramName": "Radagon of the Golden Order",
+  "baseHp": 1893,
+  "poise": 120,
+  "negation": {
+   "physical": 35,
+   "magic": 20,
+   "fire": 0,
+   "lightning": 20,
+   "holy": 80
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 999,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:mohg",
+  "name": "Mohg, Lord of Blood",
+  "npcRow": 48000068,
+  "paramName": "Mohg, Lord of Blood",
+  "baseHp": 2553,
+  "poise": 110,
+  "negation": {
+   "physical": 10,
+   "magic": 40,
+   "fire": 80,
+   "lightning": 40,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 112,
+   "sleep": 542,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:malenia",
+  "name": "Malenia, Blade of Miquella",
+  "npcRow": 21200000,
+  "paramName": "Malenia, Blade of Miquella",
+  "baseHp": 2489,
+  "poise": 80,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": 0,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 542,
+   "scarletRot": 542,
+   "bleed": 154,
+   "sleep": 252,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:divine-beast",
+  "name": "Divine Beast Dancing Lion",
+  "npcRow": 52100000,
+  "paramName": "Divine Beast Dancing Lion",
+  "baseHp": 2330,
+  "poise": 120,
+  "negation": {
+   "physical": 30,
+   "magic": 40,
+   "fire": 0,
+   "lightning": 40,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 112,
+   "bleed": 112,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:rennala-sote",
+  "name": "Rellana, Twin Moon Knight",
+  "npcRow": 53000000,
+  "paramName": "Rellana, Twin Moon Knight",
+  "baseHp": 2765,
+  "poise": 120,
+  "negation": {
+   "physical": 20,
+   "magic": 40,
+   "fire": 25,
+   "lightning": 0,
+   "holy": 20
+  },
+  "resist": {
+   "poison": 112,
+   "scarletRot": 112,
+   "bleed": 154,
+   "sleep": 112,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:messmer",
+  "name": "Messmer the Impaler",
+  "npcRow": 51300000,
+  "paramName": "Messmer the Impaler",
+  "baseHp": 2963,
+  "poise": 120,
+  "negation": {
+   "physical": 20,
+   "magic": 20,
+   "fire": 40,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 154,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:midra",
+  "name": "Midra, Lord of Frenzied Flame",
+  "npcRow": 50510000,
+  "paramName": "Midra, Lord of Frenzied Flame",
+  "baseHp": 3347,
+  "poise": 80,
+  "negation": {
+   "physical": 20,
+   "magic": 20,
+   "fire": 40,
+   "lightning": 20,
+   "holy": 20
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 154,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:bayle",
+  "name": "Bayle the Dread",
+  "npcRow": 51200000,
+  "paramName": "Bayle the Dread",
+  "baseHp": 2712,
+  "poise": 120,
+  "negation": {
+   "physical": 35,
+   "magic": 40,
+   "fire": 40,
+   "lightning": 40,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 252,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:consort",
+  "name": "Promised Consort Radahn / Radahn, Consort of Miquella",
+  "npcRow": 52200000,
+  "paramName": "Promised Consort Radahn",
+  "baseHp": 3168,
+  "poise": 120,
+  "negation": {
+   "physical": 40,
+   "magic": 40,
+   "fire": 40,
+   "lightning": 40,
+   "holy": 0
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 112,
+   "bleed": 252,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:astel",
+  "name": "Astel, Naturalborn of the Void",
+  "npcRow": 46200000,
+  "paramName": "Astel, Stars of Darkness",
+  "baseHp": 2708,
+  "poise": 120,
+  "negation": {
+   "physical": 10,
+   "magic": 40,
+   "fire": 40,
+   "lightning": 40,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 252,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:placidusax",
+  "name": "Dragonlord Placidusax",
+  "npcRow": 45200072,
+  "paramName": "Dragonlord Placidusax",
+  "baseHp": 3782,
+  "poise": 160,
+  "negation": {
+   "physical": 35,
+   "magic": 40,
+   "fire": 40,
+   "lightning": 40,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 542,
+   "scarletRot": 542,
+   "bleed": 542,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:fortissax",
+  "name": "Lichdragon Fortissax",
+  "npcRow": 45110000,
+  "paramName": "Lichdragon Fortissax",
+  "baseHp": 3128,
+  "poise": 140,
+  "negation": {
+   "physical": 35,
+   "magic": 40,
+   "fire": 40,
+   "lightning": 80,
+   "holy": 80
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 252,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:regal-ancestor",
+  "name": "Regal Ancestor Spirit",
+  "npcRow": 46700065,
+  "paramName": "Ancestor Spirit (Regal)",
+  "baseHp": 1939,
+  "poise": 120,
+  "negation": {
+   "physical": 0,
+   "magic": 20,
+   "fire": -20,
+   "lightning": 0,
+   "holy": -20
+  },
+  "resist": {
+   "poison": 542,
+   "scarletRot": 542,
+   "bleed": 542,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:agheel",
+  "name": "Flying Dragon Agheel",
+  "npcRow": 45000010,
+  "paramName": "Flying Dragon Agheel (Limgrave)",
+  "baseHp": 1639,
+  "poise": 120,
+  "negation": {
+   "physical": 35,
+   "magic": 40,
+   "fire": 40,
+   "lightning": 40,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 252,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:leonine-misbegotten",
+  "name": "Leonine Misbegotten",
+  "npcRow": 34600000,
+  "paramName": "Leonine Misbegotten",
+  "baseHp": 664,
+  "poise": 80,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": 0,
+   "lightning": 20,
+   "holy": 20
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 154,
+   "sleep": 154,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:elemer",
+  "name": "Elemer of the Briar",
+  "npcRow": 31000000,
+  "paramName": "Elemer of the Briar",
+  "baseHp": 1507,
+  "poise": 80,
+  "negation": {
+   "physical": 35,
+   "magic": 40,
+   "fire": 40,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 252,
+   "sleep": 154,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:magma-wyrm-makar",
+  "name": "Magma Wyrm Makar",
+  "npcRow": 49100026,
+  "paramName": "Magma Wyrm Makar (Boss)",
+  "baseHp": 2968,
+  "poise": 120,
+  "negation": {
+   "physical": 10,
+   "magic": 40,
+   "fire": 80,
+   "lightning": 40,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 252,
+   "sleep": 112,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:commander-niall",
+  "name": "Commander Niall",
+  "npcRow": 30500051,
+  "paramName": "Commander Niall",
+  "baseHp": 2834,
+  "poise": 90,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": 20,
+   "lightning": 20,
+   "holy": 20
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 154,
+   "sleep": 154,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:loretta-haligtree",
+  "name": "Loretta, Knight of the Haligtree",
+  "npcRow": 32520054,
+  "paramName": "Loretta, Knight of the Haligtree",
+  "baseHp": 1860,
+  "poise": 80,
+  "negation": {
+   "physical": 10,
+   "magic": 40,
+   "fire": 40,
+   "lightning": 0,
+   "holy": 20
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 252,
+   "sleep": 154,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:adula",
+  "name": "Glintstone Dragon Adula",
+  "npcRow": 45021922,
+  "paramName": "Glintstone Dragon Adula",
+  "baseHp": 1639,
+  "poise": 120,
+  "negation": {
+   "physical": 35,
+   "magic": 80,
+   "fire": 40,
+   "lightning": 40,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 252,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:mimic-tear",
+  "name": "Mimic Tear",
+  "npcRow": 526100965,
+  "paramName": "Mimic Tear",
+  "baseHp": 1551,
+  "poise": 100,
+  "negation": {
+   "physical": 0,
+   "magic": 0,
+   "fire": 0,
+   "lightning": -25,
+   "holy": 0
+  },
+  "resist": {
+   "poison": 0,
+   "scarletRot": 0,
+   "bleed": 0,
+   "sleep": 0,
+   "madness": 0,
+   "curse": 0
+  }
+ },
+ {
+  "factId": "boss:valiant-gargoyle",
+  "name": "Valiant Gargoyle",
+  "npcRow": 47700165,
+  "paramName": "Valiant Gargoyle (Twinblade) (Nokron)",
+  "baseHp": 1745,
+  "poise": 110,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": 40,
+   "lightning": 40,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 999,
+   "scarletRot": 999,
+   "bleed": 999,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:mohg-omen",
+  "name": "Mohg, the Omen",
+  "npcRow": 48000000,
+  "paramName": "Mohg, the Omen",
+  "baseHp": 2553,
+  "poise": 110,
+  "negation": {
+   "physical": 10,
+   "magic": 40,
+   "fire": 80,
+   "lightning": 40,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 112,
+   "sleep": 542,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:godskin-apostle",
+  "name": "Godskin Apostle",
+  "npcRow": 35600030,
+  "paramName": "Godskin Apostle",
+  "baseHp": 2033,
+  "poise": 80,
+  "negation": {
+   "physical": 0,
+   "magic": 20,
+   "fire": 40,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 112,
+   "sleep": 112,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:godskin-noble",
+  "name": "Godskin Noble",
+  "npcRow": 35700950,
+  "paramName": "Godskin Noble",
+  "baseHp": 2439,
+  "poise": 80,
+  "negation": {
+   "physical": 0,
+   "magic": 20,
+   "fire": 40,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 999,
+   "scarletRot": 999,
+   "bleed": 999,
+   "sleep": 112,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:ekzykes",
+  "name": "Decaying Ekzykes",
+  "npcRow": 45010000,
+  "paramName": "Decaying Ekzykes (Unscaled)",
+  "baseHp": 5753,
+  "poise": 120,
+  "negation": {
+   "physical": -40,
+   "magic": -40,
+   "fire": -100,
+   "lightning": -40,
+   "holy": -40
+  },
+  "resist": {
+   "poison": 542,
+   "scarletRot": 542,
+   "bleed": 112,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:borealis",
+  "name": "Borealis the Freezing Fog",
+  "npcRow": 45030000,
+  "paramName": "Borealis the Freezing Fog (Unscaled)",
+  "baseHp": 1639,
+  "poise": 120,
+  "negation": {
+   "physical": 35,
+   "magic": 40,
+   "fire": 40,
+   "lightning": 40,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 252,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:theodorix",
+  "name": "Great Wyrm Theodorix",
+  "npcRow": 49110000,
+  "paramName": "Great Wyrm Theodorix",
+  "baseHp": 3561,
+  "poise": 120,
+  "negation": {
+   "physical": 10,
+   "magic": 40,
+   "fire": 80,
+   "lightning": 40,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 252,
+   "sleep": 112,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:siluria",
+  "name": "Crucible Knight Siluria",
+  "npcRow": 25001066,
+  "paramName": "Crucible Knight Siluria",
+  "baseHp": 840,
+  "poise": 80,
+  "negation": {
+   "physical": 35,
+   "magic": 40,
+   "fire": 20,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 999,
+   "sleep": 252,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:ancestor-spirit",
+  "name": "Ancestor Spirit",
+  "npcRow": 46700000,
+  "paramName": "Ancestor Spirit",
+  "baseHp": 1939,
+  "poise": 120,
+  "negation": {
+   "physical": 0,
+   "magic": 20,
+   "fire": -20,
+   "lightning": 0,
+   "holy": -20
+  },
+  "resist": {
+   "poison": 542,
+   "scarletRot": 542,
+   "bleed": 542,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:dragonkin-soldier",
+  "name": "Dragonkin Soldier",
+  "npcRow": 46500000,
+  "paramName": "Dragonkin Soldier (Ice Lightning) (Unscaled)",
+  "baseHp": 2239,
+  "poise": 120,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": 20,
+   "lightning": 40,
+   "holy": 20
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 252,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:dragonkin-nokstella",
+  "name": "Dragonkin Soldier of Nokstella",
+  "npcRow": 46500900,
+  "paramName": "Dragonkin Soldier of Nokstella Healthbar (Unscaled)",
+  "baseHp": 2239,
+  "poise": 120,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": 20,
+   "lightning": 40,
+   "holy": 20
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 252,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:cemetery-shade",
+  "name": "Cemetery Shade",
+  "npcRow": 36640000,
+  "paramName": "Cemetery Shade",
+  "baseHp": 305,
+  "poise": 70,
+  "negation": {
+   "physical": 10,
+   "magic": 0,
+   "fire": 0,
+   "lightning": 0,
+   "holy": -20
+  },
+  "resist": {
+   "poison": 999,
+   "scarletRot": 999,
+   "bleed": 999,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:stray-mimic-tear",
+  "name": "Stray Mimic Tear",
+  "npcRow": 526100052,
+  "paramName": "Stray Mimic Tear",
+  "baseHp": 1551,
+  "poise": 100,
+  "negation": {
+   "physical": 0,
+   "magic": 0,
+   "fire": 0,
+   "lightning": -25,
+   "holy": 0
+  },
+  "resist": {
+   "poison": 0,
+   "scarletRot": 0,
+   "bleed": 0,
+   "sleep": 0,
+   "madness": 0,
+   "curse": 0
+  }
+ },
+ {
+  "factId": "boss:magma-wyrm",
+  "name": "Magma Wyrm",
+  "npcRow": 49100000,
+  "paramName": "Magma Wyrm",
+  "baseHp": 2968,
+  "poise": 120,
+  "negation": {
+   "physical": 10,
+   "magic": 40,
+   "fire": 80,
+   "lightning": 40,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 252,
+   "sleep": 112,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:godskin-apostle-noble",
+  "name": "Godskin Apostle & Godskin Noble",
+  "npcRow": 35600000,
+  "paramName": "Godskin Apostle (Unscaled)",
+  "baseHp": 2033,
+  "poise": 80,
+  "negation": {
+   "physical": 0,
+   "magic": 20,
+   "fire": 40,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 112,
+   "sleep": 112,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:royal-knight-loretta",
+  "name": "Royal Knight Loretta",
+  "npcRow": 32520921,
+  "paramName": "Royal Knight Loretta",
+  "baseHp": 1860,
+  "poise": 80,
+  "negation": {
+   "physical": 10,
+   "magic": 40,
+   "fire": 40,
+   "lightning": 0,
+   "holy": 20
+  },
+  "resist": {
+   "poison": 999,
+   "scarletRot": 999,
+   "bleed": 999,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:lansseax",
+  "name": "Ancient Dragon Lansseax",
+  "npcRow": 45102030,
+  "paramName": "Ancient Dragon Lansseax (Boss)",
+  "baseHp": 1876,
+  "poise": 120,
+  "negation": {
+   "physical": 35,
+   "magic": 40,
+   "fire": 40,
+   "lightning": 80,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 252,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:black-blade-kindred",
+  "name": "Black Blade Kindred",
+  "npcRow": 47700200,
+  "paramName": "Black Blade Kindred",
+  "baseHp": 1745,
+  "poise": 110,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": 40,
+   "lightning": 40,
+   "holy": 80
+  },
+  "resist": {
+   "poison": 999,
+   "scarletRot": 999,
+   "bleed": 999,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:full-grown-fallingstar",
+  "name": "Full-Grown Fallingstar Beast",
+  "npcRow": 46800000,
+  "paramName": "Full-Grown Fallingstar Beast (Unscaled)",
+  "baseHp": 3154,
+  "poise": 100,
+  "negation": {
+   "physical": 35,
+   "magic": 20,
+   "fire": 20,
+   "lightning": 20,
+   "holy": 20
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 999,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:ulcerated-tree-spirit",
+  "name": "Ulcerated Tree Spirit",
+  "npcRow": 46400000,
+  "paramName": "Ulcerated Tree Spirit",
+  "baseHp": 2713,
+  "poise": 120,
+  "negation": {
+   "physical": 0,
+   "magic": 20,
+   "fire": -20,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 252,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:tree-sentinel",
+  "name": "Tree Sentinel",
+  "npcRow": 32510000,
+  "paramName": "Tree Sentinel (Unscaled)",
+  "baseHp": 1745,
+  "poise": 80,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": 40,
+   "lightning": 0,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 252,
+   "sleep": 154,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:deathbird",
+  "name": "Deathbird",
+  "npcRow": 49800000,
+  "paramName": "Death Bird",
+  "baseHp": 2079,
+  "poise": 120,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": 20,
+   "lightning": 40,
+   "holy": -40
+  },
+  "resist": {
+   "poison": 999,
+   "scarletRot": 252,
+   "bleed": 999,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:death-rite-bird",
+  "name": "Death Rite Bird",
+  "npcRow": 49801000,
+  "paramName": "Death Rite Bird",
+  "baseHp": 2447,
+  "poise": 120,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": 20,
+   "lightning": 40,
+   "holy": -40
+  },
+  "resist": {
+   "poison": 999,
+   "scarletRot": 252,
+   "bleed": 999,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:bell-bearing-hunter",
+  "name": "Bell Bearing Hunter",
+  "npcRow": 31000020,
+  "paramName": "Bell Bearing Hunter",
+  "baseHp": 1507,
+  "poise": 80,
+  "negation": {
+   "physical": 35,
+   "magic": 40,
+   "fire": 40,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 252,
+   "sleep": 154,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:erdtree-avatar",
+  "name": "Erdtree Avatar",
+  "npcRow": 48100000,
+  "paramName": "Erdtree Avatar",
+  "baseHp": 1745,
+  "poise": 120,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": -40,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 999,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:putrid-avatar",
+  "name": "Putrid Avatar",
+  "npcRow": 48110000,
+  "paramName": "Putrid Erdtree Avatar",
+  "baseHp": 1745,
+  "poise": 120,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": -100,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 999,
+   "scarletRot": 999,
+   "bleed": 999,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:tibia-mariner",
+  "name": "Tibia Mariner",
+  "npcRow": 49500000,
+  "paramName": "Tibia Mariner",
+  "baseHp": 1918,
+  "poise": 80,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": 20,
+   "lightning": 40,
+   "holy": -40
+  },
+  "resist": {
+   "poison": 999,
+   "scarletRot": 154,
+   "bleed": 999,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:black-knife-assassin",
+  "name": "Black Knife Assassin",
+  "npcRow": 21000000,
+  "paramName": "Black Knife Assassin (Unscaled)",
+  "baseHp": 731,
+  "poise": 80,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": 20,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 999,
+   "scarletRot": 999,
+   "bleed": 999,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:cleanrot-knight",
+  "name": "Cleanrot Knight",
+  "npcRow": 38000000,
+  "paramName": "Cleanrot Knight",
+  "baseHp": 437,
+  "poise": 65,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": -20,
+   "lightning": 0,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 154,
+   "sleep": 112,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:crystalian-duo",
+  "name": "Crystalian Duo",
+  "npcRow": 33500000,
+  "paramName": "Crystalian",
+  "baseHp": 352,
+  "poise": 70,
+  "negation": {
+   "physical": 10,
+   "magic": 40,
+   "fire": 40,
+   "lightning": 40,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 999,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:grave-warden-duelist",
+  "name": "Grave Warden Duelist",
+  "npcRow": 34000000,
+  "paramName": "Grave Warden Duelist",
+  "baseHp": 1280,
+  "poise": 65,
+  "negation": {
+   "physical": 0,
+   "magic": 0,
+   "fire": 0,
+   "lightning": 0,
+   "holy": 0
+  },
+  "resist": {
+   "poison": 112,
+   "scarletRot": 112,
+   "bleed": 84,
+   "sleep": 112,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:runebear",
+  "name": "Runebear",
+  "npcRow": 46300000,
+  "paramName": "Runebear",
+  "baseHp": 2585,
+  "poise": 80,
+  "negation": {
+   "physical": 0,
+   "magic": 0,
+   "fire": -20,
+   "lightning": 0,
+   "holy": 0
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 252,
+   "sleep": 84,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:omenkiller",
+  "name": "Omenkiller",
+  "npcRow": 48200000,
+  "paramName": "Omenkiller",
+  "baseHp": 429,
+  "poise": 75,
+  "negation": {
+   "physical": 0,
+   "magic": 20,
+   "fire": 40,
+   "lightning": 20,
+   "holy": 20
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 112,
+   "sleep": 84,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:wormface",
+  "name": "Wormface",
+  "npcRow": 45700000,
+  "paramName": "Wormface",
+  "baseHp": 621,
+  "poise": 65,
+  "negation": {
+   "physical": 0,
+   "magic": 0,
+   "fire": 0,
+   "lightning": 0,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 154,
+   "sleep": 154,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:onyx-lord",
+  "name": "Onyx Lord",
+  "npcRow": 36001000,
+  "paramName": "Onyx Lord",
+  "baseHp": 755,
+  "poise": 65,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": 20,
+   "lightning": 20,
+   "holy": 20
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 154,
+   "sleep": 112,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:fallingstar-beast",
+  "name": "Fallingstar Beast",
+  "npcRow": 46801000,
+  "paramName": "Fallingstar Beast (Unscaled)",
+  "baseHp": 1893,
+  "poise": 100,
+  "negation": {
+   "physical": 35,
+   "magic": 20,
+   "fire": 20,
+   "lightning": 20,
+   "holy": 20
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 999,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:grafted-scion",
+  "name": "Grafted Scion",
+  "npcRow": 46900000,
+  "paramName": "Grafted Scion (Unscaled)",
+  "baseHp": 1146,
+  "poise": 80,
+  "negation": {
+   "physical": 0,
+   "magic": 20,
+   "fire": 20,
+   "lightning": 20,
+   "holy": 20
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 112,
+   "sleep": 112,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:spiritcaller-snail",
+  "name": "Spiritcaller Snail",
+  "npcRow": 41402920,
+  "paramName": "Spiritcaller Snail",
+  "baseHp": 380,
+  "poise": 60,
+  "negation": {
+   "physical": -10,
+   "magic": 40,
+   "fire": 0,
+   "lightning": -20,
+   "holy": 0
+  },
+  "resist": {
+   "poison": 84,
+   "scarletRot": 84,
+   "bleed": 84,
+   "sleep": 63,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:darriwil",
+  "name": "Bloodhound Knight Darriwil",
+  "npcRow": 42900010,
+  "paramName": "Bloodhound Knight Darriwil",
+  "baseHp": 438,
+  "poise": 65,
+  "negation": {
+   "physical": 10,
+   "magic": 0,
+   "fire": 0,
+   "lightning": -20,
+   "holy": 0
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 154,
+   "sleep": 112,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:mad-pumpkin-head",
+  "name": "Mad Pumpkin Head",
+  "npcRow": 43400000,
+  "paramName": "Mad Pumpkin Head",
+  "baseHp": 582,
+  "poise": 65,
+  "negation": {
+   "physical": 0,
+   "magic": 0,
+   "fire": 0,
+   "lightning": -20,
+   "holy": 0
+  },
+  "resist": {
+   "poison": 112,
+   "scarletRot": 112,
+   "bleed": 84,
+   "sleep": 154,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:godefroy",
+  "name": "Godefroy the Grafted",
+  "npcRow": 47500030,
+  "paramName": "Godefroy the Grafted (Altus)",
+  "baseHp": 3354,
+  "poise": 105,
+  "negation": {
+   "physical": 0,
+   "magic": 20,
+   "fire": 20,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 154,
+   "sleep": 154,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:erdtree-burial-watchdog",
+  "name": "Erdtree Burial Watchdog",
+  "npcRow": 42600000,
+  "paramName": "Erdtree Burial Watchdog",
+  "baseHp": 1052,
+  "poise": 80,
+  "negation": {
+   "physical": 35,
+   "magic": 40,
+   "fire": 40,
+   "lightning": 40,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 999,
+   "scarletRot": 999,
+   "bleed": 999,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:perfumer-tricia",
+  "name": "Perfumer Tricia & Misbegotten Warrior",
+  "npcRow": 37011930,
+  "paramName": "Perfumer Tricia",
+  "baseHp": 184,
+  "poise": 65,
+  "negation": {
+   "physical": 0,
+   "magic": 40,
+   "fire": 40,
+   "lightning": 40,
+   "holy": 0
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 84,
+   "sleep": 84,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:red-wolf-champion",
+  "name": "Red Wolf of the Champion",
+  "npcRow": 31811032,
+  "paramName": "Red Wolf of the Champion",
+  "baseHp": 973,
+  "poise": 120,
+  "negation": {
+   "physical": 0,
+   "magic": 40,
+   "fire": 20,
+   "lightning": 20,
+   "holy": 20
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 252,
+   "sleep": 154,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:crucible-ordovis",
+  "name": "Crucible Knight Ordovis",
+  "npcRow": 25000933,
+  "paramName": "Crucible Knight Ordovis",
+  "baseHp": 840,
+  "poise": 80,
+  "negation": {
+   "physical": 35,
+   "magic": 40,
+   "fire": 20,
+   "lightning": 20,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 252,
+   "bleed": 999,
+   "sleep": 252,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:ancient-hero-zamor",
+  "name": "Ancient Hero of Zamor",
+  "npcRow": 71000050,
+  "paramName": "Ancient Hero of Zamor",
+  "baseHp": 1418,
+  "poise": 80,
+  "negation": {
+   "physical": 10,
+   "magic": 0,
+   "fire": -20,
+   "lightning": -20,
+   "holy": 0
+  },
+  "resist": {
+   "poison": 154,
+   "scarletRot": 154,
+   "bleed": 252,
+   "sleep": 112,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:demi-human-chiefs",
+  "name": "Demi-Human Chiefs",
+  "npcRow": 41200000,
+  "paramName": "Demi-Human Chief",
+  "baseHp": 534,
+  "poise": 65,
+  "negation": {
+   "physical": -10,
+   "magic": -20,
+   "fire": -20,
+   "lightning": -20,
+   "holy": -20
+  },
+  "resist": {
+   "poison": 84,
+   "scarletRot": 84,
+   "bleed": 112,
+   "sleep": 84,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:guardian-golem",
+  "name": "Guardian Golem",
+  "npcRow": 46600000,
+  "paramName": "Guardian Golem",
+  "baseHp": 5236,
+  "poise": 120,
+  "negation": {
+   "physical": 10,
+   "magic": 20,
+   "fire": 40,
+   "lightning": 40,
+   "holy": 40
+  },
+  "resist": {
+   "poison": 999,
+   "scarletRot": 999,
+   "bleed": 999,
+   "sleep": 999,
+   "madness": 999,
+   "curse": 999
+  }
+ },
+ {
+  "factId": "boss:stonedigger-troll",
+  "name": "Stonedigger Troll",
+  "npcRow": 46030000,
+  "paramName": "Stonedigger Troll",
+  "baseHp": 1135,
+  "poise": 45,
+  "negation": {
+   "physical": 35,
+   "magic": 0,
+   "fire": 20,
+   "lightning": 20,
+   "holy": 0
+  },
+  "resist": {
+   "poison": 252,
+   "scarletRot": 154,
+   "bleed": 154,
+   "sleep": 20,
+   "madness": 999,
+   "curse": 999
+  }
+ }
+]

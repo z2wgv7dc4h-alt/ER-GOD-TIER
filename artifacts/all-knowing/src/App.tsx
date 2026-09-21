@@ -33,6 +33,16 @@ import { WorkspaceProvider, isCollected, useWorkspace } from './state'
 import { art } from './art'
 import { attackRatingForSlot, loadWeapons } from './lib/ar'
 import type { AttackRating, Weapon } from './lib/ar'
+import {
+  bestDamageType,
+  bossCombatFor,
+  damageTypeLabels,
+  damageTypes,
+  effectiveDamage,
+  negationText,
+  resistSummary,
+  useBossCombat,
+} from './lib/enemy'
 import type { Character, MapMarker, ModuleId, Stats } from './types'
 
 const modules: { id: ModuleId; label: string }[] = [
@@ -289,6 +299,8 @@ function BuildWorkspace() {
   const [weapons, setWeapons] = useState<Weapon[] | null>(null)
   const [arError, setArError] = useState<string | null>(null)
   const [twoHanding, setTwoHanding] = useState(false)
+  const { bosses: bossCombat, error: bossError } = useBossCombat()
+  const [bossId, setBossId] = useState('')
 
   useEffect(() => {
     let cancelled = false
@@ -306,6 +318,12 @@ function BuildWorkspace() {
       .filter((slot) => slot.kind === 'armament')
       .map((slot) => attackRatingForSlot(weapons, slot, character.stats, twoHanding))
   }, [weapons, character.loadout, character.stats, twoHanding])
+
+  const nextUndefeatedBoss = markers.find(
+    (m) => m.kind === 'boss' && !isCollected(character, m) && bossCombat.some((b) => b.factId === m.id),
+  )
+  const activeBossId = bossId || nextUndefeatedBoss?.id || bossCombat[0]?.factId || ''
+  const boss = bossCombatFor(bossCombat, activeBossId)
 
   function patchStat(key: keyof Stats, value: number) {
     setCharacter({
@@ -402,6 +420,60 @@ function BuildWorkspace() {
               {r.weaponName}: below requirement for {r.ineffectiveAttributes.join(', ')} — damage is penalised, not scaled.
             </p>
           ) : null,
+        )}
+        <div className="kicker" style={{ marginTop: 20 }}>Boss matchup · NpcParam absorb</div>
+        {bossError && (
+          <p className="note" style={{ marginTop: 10 }}>
+            Boss combat data unavailable ({bossError}). Nothing shown rather than guessed.
+          </p>
+        )}
+        {!bossError && bossCombat.length === 0 && (
+          <p className="note" style={{ marginTop: 10 }}>Loading boss combat data…</p>
+        )}
+        {bossCombat.length > 0 && (
+          <>
+            <label className="note" htmlFor="boss-matchup" style={{ display: 'block', marginTop: 10 }}>Target</label>
+            <select
+              id="boss-matchup"
+              value={activeBossId}
+              onChange={(e) => setBossId(e.target.value)}
+              style={{ marginTop: 6, width: '100%' }}
+            >
+              {bossCombat.map((b) => (
+                <option key={b.factId} value={b.factId}>{b.name}</option>
+              ))}
+            </select>
+          </>
+        )}
+        {boss && (
+          <>
+            <ul className="list" style={{ marginTop: 10 }}>
+              {damageTypes.map((t) => (
+                <li key={t} style={{ cursor: 'default' }}>
+                  <span>{damageTypeLabels[t]}</span>
+                  <span>{negationText(boss.negation[t])}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="note" style={{ marginTop: 8 }}>
+              Weakest to <strong>{damageTypeLabels[bestDamageType(boss)]}</strong>
+              {boss.poise != null ? ` · poise ${boss.poise}` : ''}. Negation is read straight from the
+              game's NpcParam; a negative value means the boss takes extra damage.
+            </p>
+            {ratings.some((r) => r.status === 'ok') && (
+              <ul className="list" style={{ marginTop: 8 }}>
+                {ratings.map((r, i) =>
+                  r.status === 'ok' ? (
+                    <li key={`eff-${i}`} style={{ cursor: 'default' }}>
+                      <span>{r.weaponName} after negation</span>
+                      <span>{Math.floor(effectiveDamage(r.breakdown, boss).total)}</span>
+                    </li>
+                  ) : null,
+                )}
+              </ul>
+            )}
+            <p className="note" style={{ marginTop: 8 }}>Resistances: {resistSummary(boss)}</p>
+          </>
         )}
         <div className="meters" style={{ marginTop: 18 }}>
           <div className="meter">
