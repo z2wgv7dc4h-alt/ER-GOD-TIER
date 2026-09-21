@@ -28,7 +28,9 @@ All-Knowing does not vendor Google Drive folders. It treats the list as a source
 
 - Script: pull Elden Refs / Carian Archive strings → `src/knowledge/aliases.json`.
 - Script: diff RubyRed filenames against `extract_icons` output → missing/cut report.
-- Script: import the NPC stats sheet to `src/knowledge/npc-stats.json` for Build lab cards.
+- Done: import the EanNewton NPC sheet to `src/knowledge/npc-display.ts` as **cosmetic display cards only**
+  (`scripts/ingest-npc-display.mjs`). This is player-model level/stat allocation, not combat stats. It is
+  kept out of the Build lab; `NpcParam` absorb is still ERDB, not this sheet (see `docs/REVIEW.md`).
 - Script: column-diff EanNewton tracker vs `catalog.ts` facts.
 
 Until those run, Codex lists every resource with its job so nothing on the awesome list is a dead link.

@@ -23,6 +23,7 @@ import { matchOpen, useOpenData } from './lib/openData'
 import { matchCoords, useCoords } from './lib/coords'
 import { matchGuide, useGuide } from './lib/guide'
 import { flaskUpgrades, mapFragments, scadutreeFragments } from './knowledge/collectibles'
+import { npcDisplayCards } from './knowledge/npc-display'
 import { iconFor } from './lib/sourcePack'
 import { CommandHits, PacketBar, SitToggle, softCapMark, useClipboardShots, useHotkeys } from './QoL'
 import { allLines } from './knowledge/storylines'
@@ -527,6 +528,10 @@ function CodexWorkspace() {
     () => loot.filter((e) => `${e.name} ${e.how} ${e.region} ${e.kind}`.toLowerCase().includes(q)),
     [q],
   )
+  const npcModelNotes = useMemo(
+    () => npcDisplayCards.filter((e) => !q || `${e.name} ${e.modelId}`.toLowerCase().includes(q)).slice(0, 12),
+    [q],
+  )
   return (
     <div className="codex-wrap">
       {(guideHits.items.length > 0 || guideHits.legs.length > 0) && (
@@ -625,6 +630,22 @@ function CodexWorkspace() {
             >
               Mark down
             </button>
+          </article>
+        ))}
+      </div>
+      <h3 className="codex-head">NPC model notes · cosmetic</h3>
+      <p className="note" style={{ padding: '0 20px' }}>
+        Player-model level and stat allocation from the EanNewton sheet. Display flavor only —
+        not enemy absorb, resistances, or damage. See docs/REVIEW.md.
+      </p>
+      <div className="codex-grid">
+        {npcModelNotes.map((e) => (
+          <article className="card" key={e.id}>
+            <div className="kicker">Model notes · NPC {e.modelId} · Lv {e.level}</div>
+            <h3>{e.name}</h3>
+            <p className="note">
+              VIG {e.stats.vigor} · MND {e.stats.mind} · END {e.stats.endurance} · STR {e.stats.strength} · DEX {e.stats.dexterity} · INT {e.stats.intelligence} · FAI {e.stats.faith} · ARC {e.stats.arcane}
+            </p>
           </article>
         ))}
       </div>
