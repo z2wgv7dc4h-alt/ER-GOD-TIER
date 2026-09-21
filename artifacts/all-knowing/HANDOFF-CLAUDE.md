@@ -55,7 +55,7 @@ Rooms: Reckoning, Atlas, Build lab, Quest graph, Codex
 - `src/lib/mapEngine.ts` — EldenRingMap SSE (`/er-map` in dev)
 - `src/lib/coords.ts` — loads guide pins + boss pins
 - `src/lib/openData.ts` / `guide.ts` — async dumps for Codex
-- `src/lib/ocr.ts` — **empty stub**
+- `src/lib/ocr.ts` — **real Tesseract.js OCR** (worker, local-first; low-confidence stays unknown)
 - `src/lib/save.ts` — **not a real .sl2 parser**
 
 **Knowledge (authored, small)**
@@ -204,8 +204,10 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 5. ✅ Honest empty states: OCR off, save parser off (now real, see #27), engine offline. (Task 06)
 
 ### P1 — PS5 state
-6. ⬜ Wire Tesseract in Reckon **or** delete `ocr.ts` pretence. Still untouched — `ocr.ts` is
-   still an intentional empty stub, labeled honestly (#5) but not built.
+6. ✅ Wire Tesseract in Reckon. (Task 21 — real `tesseract.js` worker in `ocr.ts`; Reckon's
+   drop/paste/upload path OCRs on-device, feeds names through `aliases`/`searchSync`, and records
+   `source: 'screenshot'` evidence. Low-confidence or unmatched reads are surfaced but never
+   turned into facts. Verified end-to-end in a headless browser against generated menu shots.)
 7. ⬜ Warp-list paste UX — not directly touched by name, though Task 06 extended `aliasStatus()`
    to report boss coverage in Reckon's copy too. Not verified against this specific UX ask.
 8. ⬜ Interview coverage for SotE / Tarnished Pack starts — not addressed.
@@ -312,7 +314,7 @@ From Wyatt, keep on the roadmap:
 |---|---|
 | Knows everything | Seed catalog + dumps. Not full param/MSB. |
 | Live map sync | Only if `npm run map` + game install + PC. |
-| OCR | Returns `''`. |
+| OCR | Real (Task 21), but accuracy on stylized in-game fonts is untested against real PS5 captures; low confidence is refused by design. |
 | Save drop | Demo / error path. |
 | 100% | Chapter titles + partial collectibles. |
 | Unified pins | Two calibrations. |
