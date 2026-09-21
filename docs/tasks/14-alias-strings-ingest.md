@@ -12,6 +12,12 @@ don't reproduce any surrounding lore/description prose verbatim if either source
 alongside the plain names — names/ids are functional data either way, prose is a separate
 concern.
 
+**Save any downloaded/cloned file to `./.scratch/` inside this repo (already gitignored), never
+`/tmp`, `%TEMP%`, or any path outside the project.** Writing outside your sandboxed working tree
+gets silently auto-rejected by the permission system in headless mode and **terminates the
+entire run immediately**, not just that one step — this has already killed several task runs
+this exact way. `.scratch/` is inside your working tree and needs no special permission.
+
 ## Objective
 
 Generate `aliases.json` (or extend the existing alias system, your call after reading
