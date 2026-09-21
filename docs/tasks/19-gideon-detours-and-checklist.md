@@ -14,6 +14,11 @@ act") — **this task does not add an LLM**, it improves two specific response h
 existing deterministic router. A separate, larger task covers the eventual LLM upgrade; don't
 attempt that here.
 
+If you need to write any scratch file, save it to `./.scratch/` inside this repo (already
+gitignored), never `/tmp`, `%TEMP%`, or any path outside the project — per the standing rule in
+`docs/tasks/00-README.md`, writing outside the sandboxed working tree gets silently auto-rejected
+in headless mode and kills the entire run immediately.
+
 **Sequencing note**: Task 20 (real LLM behind Gideon) also touches `gideon.ts` substantially. Run
 this task (19) and Task 20 sequentially, not in parallel, to avoid a large merge conflict in the
 same file — whichever lands first, merge and re-verify before starting the other.

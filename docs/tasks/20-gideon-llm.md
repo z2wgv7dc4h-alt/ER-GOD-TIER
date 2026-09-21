@@ -14,6 +14,15 @@ exposed in this environment; for the shipped app itself you'll need a Vite-expos
 `VITE_DEEPSEEK_API_KEY`, read via `import.meta.env` — **never hardcode a key in source, never
 commit one**, document the env var name in the README instead).
 
+**If you need to write any scratch file (e.g. a smoke-test script to verify API connectivity),
+save it to `./.scratch/` inside this repo (already gitignored), never `/tmp`, `%TEMP%`, or any
+path outside the project.** A prior run of this exact task died the moment it tried to write a
+connectivity-check script to `%TEMP%\opencode\...` — writing outside the sandboxed working tree
+gets silently auto-rejected in headless mode and kills the entire run immediately. Test API
+connectivity by writing a throwaway script inside `.scratch/`, or better, just write the real
+implementation directly and test it live via `npm run dev` using the `.env.local` mentioned below
+— you don't need a separate smoke-test script at all.
+
 **This is a local-first, no-backend project.** The API call happens directly from the client
 (browser) to DeepSeek's API. That means the key is present in client-side code at runtime — an
 accepted tradeoff here because this app is run locally by its owner, not deployed as a public
