@@ -253,11 +253,11 @@ function SaveDrop() {
         onChange={(e) => void onFile(e.target.files?.[0])}
       />
       <div>
-        .sl2 parsing is not available yet. PS5: use Reckoning — questions + screenshots.
-        PC: run <code>npm run map</code> against a local install for live flags, or Load demo below.
+        Drop a PC <code>ER0000.sl2</code> to read it locally — stats, bosses, graces. It is parsed
+        in your browser and never uploaded. PS5: use Reckoning — questions + screenshots.
       </div>
       <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 8 }}>
-        <button className="ghost" type="button" onClick={() => inputRef.current?.click()}>Open save (not available yet)</button>
+        <button className="ghost" type="button" onClick={() => inputRef.current?.click()}>Open save (.sl2)</button>
         <button
           className="ghost gold"
           type="button"
