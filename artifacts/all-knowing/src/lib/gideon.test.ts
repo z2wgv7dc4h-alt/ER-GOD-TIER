@@ -122,12 +122,125 @@ describe('100% handler reflects tracked completion', () => {
   })
 })
 
+describe('NPC questline steps', () => {
+  it('answers "what does Ranni want next" with the real ending route', () => {
+    const act = askGideonRouter('what does ranni want next', character, {}, combat)
+    expect(act.say).toContain('Age of Stars')
+    expect(act.say).toContain('Next: Enter Ranni’s service')
+    expect(act.goal).toBe('stars')
+    expect(act.factId).toBe('quest:ranni:service')
+    expect(act.module).toBe('quests')
+  })
+
+  it('answers a new companion line (Seluvis) instead of the old placeholder', () => {
+    const act = askGideonRouter('what does seluvis want', character, {}, combat)
+    expect(act.say).not.toContain('Quest graph')
+    expect(act.say).toContain('Preceptor Seluvis')
+    expect(act.goal).toBe('seluvis')
+    expect(act.factId).toBe('quest:seluvis:met')
+  })
+
+  it('gives the Shadow of the Erdtree lines an honest gate', () => {
+    const act = askGideonRouter('freyja quest', character, {}, combat)
+    expect(act.say).toContain('Realm of Shadow')
+    expect(act.goal).toBe('freyja')
+    expect(act.module).toBe('quests')
+  })
+
+  it('resolves other newly seeded companions', () => {
+    for (const [q, goal] of [
+      ['kenneth haight quest', 'kenneth'],
+      ['latenna quest', 'latenna'],
+      ['tanith quest', 'tanith'],
+      ['rogier quest', 'rogier'],
+      ['gurranq quest', 'gurranq'],
+      ['thiollier quest', 'thiollier'],
+      ['ansbach quest', 'ansbach'],
+    ] as const) {
+      const act = askGideonRouter(q, character, {}, combat)
+      expect(act.goal).toBe(goal)
+      expect(act.module).toBe('quests')
+    }
+  })
+})
+
+describe('generated alias plane widening', () => {
+  it('recognizes "night cavalry" (Night’s Cavalry alias the catalog misses)', () => {
+    const act = askGideonRouter('where is night cavalry', character, {}, combat)
+    expect(act.factId).toBe('boss:nights-cavalry')
+    expect(act.module).toBe('map')
+    expect(act.navigateNow).toBe(true)
+  })
+
+  it('recognizes "pureblood knight medal" (Pureblood Knight’s Medal)', () => {
+    const act = askGideonRouter('where is the pureblood knight medal', character, {}, combat)
+    expect(act.factId).toBe('item:pureblood-medal')
+    expect(act.module).toBe('codex')
+    expect(act.say).toContain("Pureblood Knight's Medal")
+  })
+
+  it('recognizes "giant prayerbook" (Giant’s Prayerbook)', () => {
+    const act = askGideonRouter('where is the giant prayerbook', character, {}, combat)
+    expect(act.factId).toBe('item:prayerbook-giants')
+    expect(act.module).toBe('codex')
+  })
+})
+
+describe('Enia remembrance exchange', () => {
+  it('answers "what does the Radahn remembrance give" with the real two rewards', () => {
+    const act = askGideonRouter('what does the radahn remembrance give', character, {}, combat)
+    expect(act.module).toBe('codex')
+    expect(act.factId).toBe('boss:radahn')
+    expect(act.say).toContain('Starscourge Greatsword')
+    expect(act.say).toContain('Lion Greatbow')
+  })
+
+  it('answers "what can I get from Enia" with the table', () => {
+    const act = askGideonRouter('what can i get from enia', character, {}, combat)
+    expect(act.module).toBe('codex')
+    expect(act.say).toContain('Finger Reader Enia')
+    expect(act.say).toContain('Remembrance of the Grafted')
+  })
+})
+
+describe('comparison handling', () => {
+  it('compares two builds against the current sheet instead of picking one', () => {
+    const act = askGideonRouter('should I use rivers of blood or comet azur', character, {}, combat)
+    expect(act.module).toBe('build')
+    expect(act.buildId).toBe('build:rivers')
+    expect(act.say).toContain('Rivers of Blood')
+    expect(act.say).toContain('Comet Azur glass')
+    expect(act.say).toContain('fits better')
+  })
+
+  it('compares two damage types against a named boss’s real resists', () => {
+    const act = askGideonRouter('is bleed better than sorcery for malenia', character, {}, combat)
+    expect(act.module).toBe('build')
+    expect(act.factId).toBe('boss:malenia')
+    expect(act.say).toContain('bleed soft')
+    expect(act.say).toContain('better line')
+  })
+
+  it('does not declare a winner when both damage types are resisted', () => {
+    const act = askGideonRouter('is bleed better than sorcery for agheel', character, {}, combat)
+    expect(act.factId).toBe('boss:agheel')
+    expect(act.say).toContain('Neither is a clean win')
+  })
+})
+
 describe('isFastLookup', () => {
   it('routes exact single-entity lookups and fixed commands without the LLM', () => {
     expect(isFastLookup('godrick')).toBe(true)
     expect(isFastLookup('What is still available on this run?')).toBe(true)
     expect(isFastLookup('Blitz: Age of Stars. What do I do next?')).toBe(true)
     expect(isFastLookup('I want the Age of Stars ending. What do I do next?')).toBe(true)
+  })
+
+  it('treats the new deterministic capabilities as fast lookups', () => {
+    expect(isFastLookup('where is night cavalry')).toBe(true)
+    expect(isFastLookup('what does the radahn remembrance give')).toBe(true)
+    expect(isFastLookup('should I use rivers of blood or comet azur')).toBe(true)
+    expect(isFastLookup('is bleed better than sorcery for malenia', {}, combat)).toBe(true)
   })
 
   it('sends multi-concept questions to the LLM', () => {

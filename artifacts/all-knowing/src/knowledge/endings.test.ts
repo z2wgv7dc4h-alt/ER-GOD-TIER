@@ -1,11 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import { emptyCharacter } from '../data/seed'
 import { endings, planRoute } from './endings'
-import { storylines } from './storylines'
+import { findNpcLine, storylines } from './storylines'
 
 const stars = endings.find((e) => e.id === 'stars')!
 const alexander = storylines.find((l) => l.id === 'alexander')!
 const leda = storylines.find((l) => l.id === 'leda')!
+const seluvis = storylines.find((l) => l.id === 'seluvis')!
+const kenneth = storylines.find((l) => l.id === 'kenneth')!
+const igon = storylines.find((l) => l.id === 'igon')!
 
 describe('planRoute lockouts', () => {
   it('reports no lockout on a fresh character', () => {
@@ -79,5 +82,39 @@ describe('quest lockout edges', () => {
     expect(plan.locked).toMatch(/Seluvis/)
     expect(plan.foreclosed.map((s) => s.id)).toEqual(expect.arrayContaining(['s4', 's5', 's6']))
     expect(plan.available.map((s) => s.id)).not.toContain('s4')
+  })
+})
+
+describe('newly seeded companion lines', () => {
+  it('locks Seluvis once Ranni has the Fingerslayer Blade', () => {
+    const character = { ...emptyCharacter, completedQuestSteps: ['quest:ranni:nokron'] }
+    const plan = planRoute(character, seluvis)
+    expect(plan.locked).toMatch(/Seluvis is already dead/)
+  })
+
+  it('gates Kenneth’s coronation behind Nepheli’s Stormhawk beat', () => {
+    const plan = planRoute(emptyCharacter, kenneth)
+    expect(plan.current?.id).toBe('kh1')
+    expect(plan.blocked.map((s) => s.id)).toContain('kh3')
+  })
+
+  it('forecloses Kenneth’s coronation if Nepheli drank the potion', () => {
+    const character = { ...emptyCharacter, completedQuestSteps: ['quest:nepheli:potioned'] }
+    const plan = planRoute(character, kenneth)
+    expect(plan.foreclosed.map((s) => s.id)).toContain('kh3')
+    expect(plan.available.map((s) => s.id)).not.toContain('kh3')
+  })
+
+  it('gates Igon’s payoff behind Bayle being alive', () => {
+    const plan = planRoute(emptyCharacter, igon)
+    expect(plan.current?.id).toBe('ig1')
+    expect(plan.blocked.map((s) => s.id)).toContain('ig3')
+  })
+
+  it('resolves NPC names to their lines', () => {
+    expect(findNpcLine('what does ranni want next')?.id).toBe('stars')
+    expect(findNpcLine('kenneth haight quest')?.id).toBe('kenneth')
+    expect(findNpcLine('st trina')?.id).toBe('thiollier')
+    expect(findNpcLine('where is the giant prayerbook')).toBeUndefined()
   })
 })
