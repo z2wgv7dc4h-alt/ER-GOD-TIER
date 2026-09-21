@@ -23,17 +23,8 @@ import { QuestWorkspace } from './Quests'
 import { ReckonWorkspace } from './Reckon'
 import { WorkspaceProvider, useWorkspace } from './state'
 import { art } from './art'
-import type { MapMarker, ModuleId } from './types'
-
-const modules: { id: ModuleId; label: string }[] = [
-  { id: 'reckon', label: 'Reckoning' },
-  { id: 'map', label: 'Atlas' },
-  { id: 'build', label: 'Build lab' },
-  { id: 'quests', label: 'Quest graph' },
-  { id: 'codex', label: 'Codex' },
-]
-
-const layerOrder: MapMarker['kind'][] = ['grace', 'boss', 'item', 'npc', 'fragment', 'spirit-ash', 'dungeon']
+import { layerOrder, modules } from './lib/nav'
+import type { ModuleId } from './types'
 
 function EngineBridge() {
   const w = useWorkspace()
@@ -68,10 +59,31 @@ function AppShell() {
   const w = useWorkspace()
   useHotkeys()
   useClipboardShots()
+  const [sheetOpen, setSheetOpen] = useState(false)
+  const [guideOpen, setGuideOpen] = useState(false)
+  const [ribbonOpen, setRibbonOpen] = useState(false)
+
+  const className = [
+    'app',
+    w.sitMode ? 'sit' : '',
+    sheetOpen ? 'sheet-open' : '',
+    guideOpen ? 'guide-open' : '',
+  ].filter(Boolean).join(' ')
+
+  function openRoom(id: ModuleId) {
+    w.setModule(id)
+    setGuideOpen(false)
+    setSheetOpen(false)
+  }
+
   return (
-    <div className={w.sitMode ? 'app sit' : 'app'}>
+    <div className={className}>
       <EngineBridge />
-      <aside className="rail">
+      <aside className="rail" id="tarnished-sheet">
+        <div className="sheet-head">
+          <span className="kicker">Tarnished</span>
+          <button type="button" className="sheet-close" onClick={() => setSheetOpen(false)}>Done</button>
+        </div>
         <div className="brand">
           <div className="brand-mark" aria-hidden />
           <div>
@@ -82,7 +94,7 @@ function AppShell() {
         <ProfileSwitcher />
         <nav className="nav">
           {modules.map((m) => (
-            <button key={m.id} className={w.module === m.id ? 'active' : ''} onClick={() => w.setModule(m.id)}>
+            <button key={m.id} className={w.module === m.id ? 'active' : ''} onClick={() => openRoom(m.id)}>
               <img src={art.room[m.id]} alt="" />
               {m.label}
             </button>
@@ -91,13 +103,26 @@ function AppShell() {
         <CharacterCard />
         <PacketBar />
         <SaveDrop />
+        <div className="sheet-sit">
+          <SitToggle />
+        </div>
       </aside>
+
       <main className="workspace">
         <header className="topbar">
           <h2>{modules.find((m) => m.id === w.module)?.label}</h2>
+          <button
+            type="button"
+            className="tarnished-toggle"
+            onClick={() => setSheetOpen(true)}
+            aria-controls="tarnished-sheet"
+            aria-expanded={sheetOpen}
+          >
+            {w.character.name} · Lv.{w.character.level}
+          </button>
           <input
             className="search"
-            placeholder="Search · / Ctrl+K · 1–5 rooms · S sit · paste shot"
+            placeholder="Search · / Ctrl+K · paste shot"
             value={w.query}
             onChange={(e) => w.setQuery(e.target.value)}
           />
@@ -113,9 +138,11 @@ function AppShell() {
               ))}
             </div>
           )}
-          <SitToggle />
+          <div className="topbar-sit">
+            <SitToggle />
+          </div>
         </header>
-        <WorldRibbon />
+        <WorldRibbon open={ribbonOpen} onToggle={() => setRibbonOpen((v) => !v)} />
         <CommandHits />
         <div className="stage">
           <FirstSit />
@@ -126,29 +153,71 @@ function AppShell() {
           {w.module === 'codex' && <CodexWorkspace />}
         </div>
       </main>
+
       <aside className="guide">
         <Gideon />
       </aside>
+
+      <nav className="tabbar" aria-label="Rooms">
+        {modules.map((m) => (
+          <button
+            key={m.id}
+            type="button"
+            className={!guideOpen && w.module === m.id ? 'active' : ''}
+            onClick={() => openRoom(m.id)}
+          >
+            <img src={art.room[m.id]} alt="" />
+            <span>{m.short}</span>
+          </button>
+        ))}
+        <button
+          type="button"
+          className={guideOpen ? 'active' : ''}
+          onClick={() => { setGuideOpen((v) => !v); setSheetOpen(false) }}
+        >
+          <img src={art.guide} alt="" />
+          <span>Gideon</span>
+        </button>
+      </nav>
+
+      <button
+        type="button"
+        className="sheet-backdrop"
+        aria-label="Close Tarnished panel"
+        onClick={() => setSheetOpen(false)}
+      />
     </div>
   )
 }
 
-function WorldRibbon() {
+function WorldRibbon({ open, onToggle }: { open: boolean; onToggle: () => void }) {
   const { character, setSelectedMarkerId, setModule } = useWorkspace()
   const banners = worldBanners(character)
   const spoil = character.answers.spoil !== '0'
   const miss = spoil ? leftovers(character) : []
   if (!banners.length && !miss.length) return null
+  const count = banners.length + miss.length
   return (
-    <div className="world-ribbon">
-      {banners.map((b) => (
-        <span key={b.id} className={b.tone === 'warn' ? 'warn chip' : 'chip on'}>{b.text}</span>
-      ))}
-      {miss.slice(0, 2).map((e) => (
-        <button key={e.id} type="button" className="chip" onClick={() => { if (e.grace) setSelectedMarkerId(e.grace); setModule('map') }}>
-          Still in {e.region}: {e.name}
-        </button>
-      ))}
+    <div className={open ? 'world-ribbon open' : 'world-ribbon'}>
+      <button
+        type="button"
+        className="ribbon-toggle"
+        onClick={onToggle}
+        aria-expanded={open}
+      >
+        <span>{count} story flag{count === 1 ? '' : 's'}</span>
+        <span aria-hidden>{open ? '▴' : '▾'}</span>
+      </button>
+      <div className="ribbon-items">
+        {banners.map((b) => (
+          <span key={b.id} className={b.tone === 'warn' ? 'warn chip' : 'chip on'}>{b.text}</span>
+        ))}
+        {miss.slice(0, 2).map((e) => (
+          <button key={e.id} type="button" className="chip" onClick={() => { if (e.grace) setSelectedMarkerId(e.grace); setModule('map') }}>
+            Still in {e.region}: {e.name}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }

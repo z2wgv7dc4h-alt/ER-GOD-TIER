@@ -11,6 +11,7 @@ import {
 import { Thread } from './Thread'
 import { factState, useWorkspace, type FactState } from './state'
 import { useCoords } from './lib/coords'
+import { layerOrder } from './lib/nav'
 import type { MapMarker } from './types'
 
 function pinColor(kind: MapMarker['kind']) {
@@ -38,6 +39,7 @@ export function AtlasWorkspace() {
   const [world, setWorld] = useState<AtlasWorld>(
     w.character.answers.dlc === 'sote' ? 'shadow' : 'overworld',
   )
+  const [sideOpen, setSideOpen] = useState(false)
   const coords = useCoords()
 
   const gracePins: MapMarker[] = useMemo(
@@ -128,7 +130,7 @@ export function AtlasWorkspace() {
   }
 
   return (
-    <div className="map-stage">
+    <div className={sideOpen ? 'map-stage side-open' : 'map-stage'}>
       <div className="atlas">
         {/* Exactly one of these renders: the live engine canvas, or the static
             plate. The engine's pins are drawn inside its own iframe, so the
@@ -184,8 +186,29 @@ export function AtlasWorkspace() {
           </svg>
           </div>
         )}
+        <button
+          type="button"
+          className="atlas-toggle"
+          onClick={() => setSideOpen((v) => !v)}
+          aria-expanded={sideOpen}
+        >
+          {sideOpen ? 'Hide details' : 'Filters & details'}
+        </button>
       </div>
       <aside className="side">
+        <div className="side-controls">
+          <div className="kicker">Map controls</div>
+          <div className="opts" style={{ marginTop: 8 }}>
+            <button className={w.missingOnly ? 'chip on' : 'chip'} onClick={() => w.setMissingOnly(!w.missingOnly)}>
+              Missing only
+            </button>
+            {layerOrder.map((id) => (
+              <button key={id} className={w.layers[id] ? 'chip on' : 'chip'} onClick={() => w.toggleLayer(id)}>
+                {id}
+              </button>
+            ))}
+          </div>
+        </div>
         <div className="kicker">
           {ps5
             ? 'PS5 atlas · warp list + pins, not a save'
