@@ -102,13 +102,30 @@ Same fact, two sources.
 Record the loser on `evidence[]`. Do not silently drop it.
 
 ### 6. Regulation stamp — ✅ done (Task 24: `src/lib/regulation.ts`, `Character.regulation`,
-`catalog.regulation`; packet now reads the shared constant.)
+`catalog.regulation`; packet now reads the shared constant. Task 27 fixed the mismatch.)
 
-**Audit result: the sources do not all agree.** Clark AR is `1.17-tarnished-pack` (upstream commit
-`75a0e97`, "Tarnished edition"). The atlas marker extract (from the local install's own
-`regulation.bin`) and the FMG/Paramdex name dumps are vanilla/base-game extracts — they contain no
-Tarnished Pack rows (`boss:leontiel` absent; `names.json` is base-game-only). `regulationAudit()`
-records and flags this; it is not papered over.
+**Audit result (Task 24) + fix (Task 27).** Task 24 found three of four sources off the
+`1.17-tarnished-pack` stamp. Task 27 diagnosed why: the machine's install *is* the 1.17 Tarnished
+Pack build (its own item FMG carries the Tarnished Pack weapons), but the in-repo `names.json` was
+a stale base-game Text Explorer dump and the atlas markers had not been regenerated from the
+install. Both are now regenerated from the install:
+
+- **FMG names** (`open/names.json`) — 6,820 base-game names → 8,767 including Shadow of the Erdtree
+  and Tarnished Pack (Milady, Rellana, Messmer, Idus Sword, Leontiel's Greatsword).
+  Regenerate: `python scripts/extract-fmg-names.py`.
+- **Atlas markers** (`vendor/elden-ring-map/data/markers.json`, gitignored) — 1,106 markers from the
+  install's own `regulation.bin` + DLC, including Shadow of the Erdtree areas (Belurat, Shadow
+  Keep, Scadutree Avatar). Regenerate: `python vendor/elden-ring-map/tools/build_markers.py`.
+
+- **Paramdex names** (`open/paramdex/`) — the equipment files (`EquipParamWeapon`/`Goods`/
+  `Protector`/`Accessory`/`Gem`) were topped up from the install with `scripts/extract-paramdex-names.py`
+  and now include the Tarnished Pack rows (Idus Sword, Leontiel's Greatsword).
+
+The one source still off-stamp is `open/paramdex/NpcParam.txt`: it remains the upstream
+`soulsmods/Paramdex` dump, post-SotE but pre-Tarnished-Pack. Its names are DSMapStudio-resolved
+(generic model/behaviour names), not an FMG row-id join, so it is not locally regeneratable.
+`regulationAudit()` reports that remaining gap; it is not papered over. (The only Tarnished Pack
+boss it would cover, `boss:leontiel`, is authored-only in the catalog anyway.)
 
 Character and catalog both carry `regulation: '1.17-tarnished-pack'`.  
 Clark AR, marker extract, and FMG dump must be the same stamp or the lab lies.

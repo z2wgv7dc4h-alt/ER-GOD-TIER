@@ -86,7 +86,7 @@ Rooms: Reckoning, Atlas, Build lab, Quest graph, Codex
 ### Open dumps
 | Path | Contents |
 |---|---|
-| `open/names.json` | ~6820 EN FMG names (Text Explorer, JP stripped) |
+| `open/names.json` | ~8770 EN FMG names, base + SotE + Tarnished Pack (`scripts/extract-fmg-names.py`) |
 | `open/shops.json` | 1261 ShopLineup rows |
 | `open/world-lots.json` | 10011 unique lots: flag, lot, map, x/y/z, name |
 | `open/boss-xyz.json` | 215 named bosses + clear/kill flags + XYZ |
