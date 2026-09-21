@@ -11,13 +11,15 @@
 import bstJson from '../../data/event-flag-bst.json'
 import bossRowsJson from '../../data/hosted-bosses.json'
 import graceFlagsJson from '../../data/grace-flags.json'
-import huntFlagsJson from '../../data/hunt-flags.json'
+// The canonical field-hunt dump (same file Codex fetches and completion.ts derives from).
+// There is no separate `hunt-flags.json` copy to drift out of sync.
+import huntsJson from '../../../public/sourced/checklists/hunts.json'
 import { canonicalFactId } from '../aliases'
 import type { ParsedSlot } from './parse'
 
 const BST = new Map<number, number>(bstJson as [number, number][])
 const graceFlags = graceFlagsJson as Record<string, number>
-const huntFlags = huntFlagsJson as { id: string; name: string; flag: number }[]
+const huntFlags = huntsJson as { id: string; name: string; flag: number }[]
 const bossKillFlags = (bossRowsJson as { name: string; kill: number }[])
   .filter((b) => typeof b.kill === 'number' && b.kill > 0)
 

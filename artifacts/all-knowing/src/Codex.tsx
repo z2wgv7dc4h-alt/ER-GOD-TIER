@@ -252,7 +252,7 @@ export function CodexWorkspace() {
       )}
       <h3 className="codex-head">Hunts · {hunts.length || '…'} with flags</h3>
       <div className="codex-grid">
-        {(hunts.length ? hunts : fieldHunts.map((e) => ({ ...e, place: '', flag: 0 }))).filter((e) => !q || `${e.name} ${e.region} ${(e as {place?: string}).place || ''}`.toLowerCase().includes(q)).slice(0, 16).map((e) => (
+        {(hunts.length ? hunts : fieldHunts.map((e) => ({ ...e, flag: 0 }))).filter((e) => !q || `${e.name} ${e.region} ${(e as {place?: string}).place || ''}`.toLowerCase().includes(q)).slice(0, 16).map((e) => (
           <article className="card" key={e.id}>
             <div className="kicker">{e.campaign} · {e.region}{(e as {place?: string}).place ? ` · ${(e as {place: string}).place}` : ''}{(e as {flag?: number}).flag ? ` · flag ${(e as {flag: number}).flag}` : ''}</div>
             <h3>{e.name}</h3>
