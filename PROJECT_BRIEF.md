@@ -240,12 +240,14 @@ but map tiles and marker data are FromSoftware IP and must be generated from **t
 local game install**, never redistributed — this is already how `HANDOFF-CLAUDE.md` describes
 it ("tiles/markers from a local game install, not shipped"), so no policy change needed.
 
-**Action needed, not yet done**: the `vendor/` folder was excluded from the handoff zip (almost
-certainly gitignored as an external dependency) — `artifacts/all-knowing/vendor/elden-ring-map/`
-does not currently exist, so `npm run map` will fail until it's cloned in from the GitHub repo
-above and the user runs `npm run map:setup` against their own local PC install to generate real
-tiles/markers. This is a one-time step on the user's gaming PC, not something a coding agent can
-do in a generic environment.
+**Resolved 2026-09-22**: a local Elden Ring install now exists on this machine —
+`C:\Program Files (x86)\Steam\steamapps\common\ELDEN RING\Game\` (confirmed: `eldenring.exe` and
+`regulation.bin` both present). This unblocks the entire "local game extract" pathway that
+`SOURCE-PACK.md` previously said was completely unavailable — `vendor/elden-ring-map`'s
+`npm run map:setup`, erdb's own extraction, and potentially the 9974 mod's `regulation.bin`
+(moot now — this is a clean unmodified one). `artifacts/all-knowing/vendor/elden-ring-map/` still
+needs to be cloned in (excluded from the original handoff zip), but Setup.bat/`npm run map:setup`
+can now genuinely run and be verified, not just wired and left untested.
 
 **Separately**: the four Nexus Mods zips the user provided (960 resource pack, 9974 boss-
 completion mod, Medusa walkthrough, EldenRingMapV1.2) are under background analysis — in
