@@ -43,12 +43,43 @@ output (`web/tiles`, extracted game data) — `docs/MAP-ENGINE.md` explicitly sa
 `.gitignore` should reflect that (check it covers `vendor/elden-ring-map`'s generated
 directories; add entries if missing).
 
-This part **cannot be fully verified in a generic environment** — running `npm run map:setup`
-needs a local Elden Ring PC install (`eldenring.exe` + `regulation.bin`, per the doc's "Local
-setup" section). If you don't have that available, get as far as: the `vendor/` folder is
-correctly populated, `npm run map` at least starts the Node server without crashing (even if it
-reports no save/game found), and document in your final report exactly what a user with a local
-install still needs to do to finish setup. Don't fake a "verified working" claim you can't back.
+**A real local Elden Ring install now exists on this machine**:
+`C:\Program Files (x86)\Steam\steamapps\common\ELDEN RING\Game\` (confirmed: `eldenring.exe` and
+`regulation.bin` both present). This part is genuinely verifiable now — but with one critical
+change to how you run it.
+
+**Do not run `Setup.bat` / `npm run map:setup` directly.** A prior attempt did exactly that and
+hung indefinitely: `Setup.bat` is a human-oriented interactive wrapper. Its final step (line
+~121, `set /p ans=  Fetch them? [y/N]`) blocks on a real keyboard read with no timeout, and a
+headless agent has no stdin to answer it with — the process sat idle for 30+ minutes waiting.
+(Also plausible as a contributing factor: `pip install` inside the script writes to Python's
+global site-packages, which is outside this repo's working tree and may itself hit the same
+external-directory permission wall documented in `docs/tasks/00-README.md`'s standing rule — one
+more reason to avoid the monolithic script.)
+
+**Instead, call the underlying Python tools directly** — read `Setup.bat` first to see exactly
+what it does step by step (it's short and clear), then replicate steps 1–6 as direct,
+non-interactive commands, skipping step 8 (the optional Fextralife tip-fetch) entirely — that
+step is explicitly optional and outside this task's scope, don't attempt it:
+
+1. Install Python deps: `pip install --quiet --disable-pip-version-check zstandard pycryptodome pillow texture2ddecoder numpy`
+2. `python tools/extract_tiles.py --game-dir "C:\Program Files (x86)\Steam\steamapps\common\ELDEN RING\Game"`
+3. `python tools/build_markers.py "C:\Program Files (x86)\Steam\steamapps\common\ELDEN RING\Game"`
+4. `python tools/enumerate_maps.py`
+5. `python tools/extract_items.py --game-dir "C:\Program Files (x86)\Steam\steamapps\common\ELDEN RING\Game"`
+6. `python tools/extract_icons.py --game-dir "C:\Program Files (x86)\Steam\steamapps\common\ELDEN RING\Game"`
+
+None of these six commands are interactive — none of them contain a `pause` or `set /p` (that's
+only in `Setup.bat` itself and in the separate, skipped `fetch_tips.py`). Quote the game path
+exactly as shown (it has spaces and parentheses — a real source of bugs if unquoted or
+double-escaped). Run each step to completion and check its exit code before moving to the next;
+if any step fails, stop and report the actual error rather than proceeding on a partial extract.
+This can legitimately take a while (the real tile/marker/item extraction is genuinely
+CPU-and-I/O-heavy against a multi-GB game) — that's expected, not a sign of a problem, as long as
+each step's own tool process is what's consuming the time, not a blocked prompt.
+
+After extraction succeeds, confirm `npm run map` starts the Node server without crashing, and
+report what it actually shows connected to a live game/save if you can verify that too.
 
 ## Part B — upgrade the static fallback plates
 
