@@ -66,6 +66,16 @@ See `docs/REVIEW.md`.
 | `src/knowledge/merchants.ts` | 106 vendors full stock |
 | `src/knowledge/bossPins.ts` | sync pin list for Gideon |
 
+## Alias plane (generated)
+
+- `public/sourced/aliases.json` + `src/data/aliases.json` — one generated table mapping engine
+  row id (`grace:100000`, `bossflag:510010`, `npc:21300014`, `goods:8175`, …) → catalog slug →
+  FMG name → aliases, across grace/boss/invader/item/quest/region. The two files are identical;
+  the `public/` copy is the artifact of record, the `src/data/` copy is the synchronously
+  imported one (`canonicalFactId` / `searchSync`). Regenerate with `node scripts/gen-aliases.mjs`
+  from the game-derived dumps above; see `docs/ALIAS-PLANE.md`. Committed because it is
+  name/id-only derived data, not shipped game art.
+
 ## Checklists
 
 FanAPI JSON (weapons, armors, spells, …) + `hunts.json` (207 flags) + `graces.json`.

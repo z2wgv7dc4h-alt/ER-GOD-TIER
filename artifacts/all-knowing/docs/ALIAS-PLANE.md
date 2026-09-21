@@ -1,0 +1,107 @@
+# The generated alias plane
+
+`SCOPE.md` item 2: *"One generated `aliases.json` after extract. Every other plane keys off
+the slug."* This is that file and the pass that produces it (Task 23).
+
+## What it is
+
+`public/sourced/aliases.json` (and an identical bundled copy at `src/data/aliases.json`) is an
+array of rows, each mapping a game **engine row id** to the authored **catalog slug**, the
+extracted **FMG name**, and the searchable **aliases**:
+
+```json
+{
+  "engineId": "goods:8175",
+  "slug": "item:haligtree-secret-medallion",
+  "kind": "item",
+  "fmgName": "Haligtree Secret Medallion (Left)",
+  "aliases": ["haligtree medallion", "haligtree secret medallion", "secret medallion"],
+  "source": "names"
+}
+```
+
+- `engineId` — the FMG / param-table row id (`grace:100000`, `bossflag:510010`, `npc:21300014`,
+  `goods:8175`, …). For authored-only facts (quests, regions) it is the fact id itself.
+- `slug` — the canonical authored id (`grace:godrick-grace`, `boss:margit`,
+  `item:haligtree-secret-medallion`, …), i.e. what `canonicalFactId` returns.
+- `kind` — the fact prefix family: `grace | boss | invader | item | quest | region`.
+- `fmgName` — the name as extracted from the game data.
+- `aliases` — normalised name + authored aliases + the extracted name when it differs.
+- `source` — which dump the row came from (`hosted-graces`, `hosted-bosses`, `npc-combat`,
+  `names`, `paramdex-npc`, `authored`).
+
+## Regenerate
+
+From `artifacts/all-knowing`:
+
+```bash
+node scripts/gen-aliases.mjs
+```
+
+That rewrites both `public/sourced/aliases.json` and `src/data/aliases.json` in one pass and
+prints the per-category coverage. A test asserts the two copies stay identical, so a stale
+bundled copy fails CI rather than drifting silently.
+
+### Where the inputs come from
+
+The generator reads the game-derived dumps this repo already carries — it does not touch the
+install itself, so it is fast and repeatable:
+
+| Input | Extracted from | Refresh |
+|---|---|---|
+| `public/sourced/open/names.json` | EN FMG text (Text Explorer) | `bash scripts/ingest-open.sh` |
+| `public/sourced/open/paramdex/*.txt` | `soulsmods/Paramdex` `ER/Names` param row names | `bash scripts/ingest-open.sh` |
+| `src/data/hosted-graces.json` | `BonfireWarpParam` | Task 06 ingest |
+| `src/data/hosted-bosses.json` | boss flags / `boss-xyz.json` | Task 06 ingest |
+| `public/sourced/npc-combat.json` | `NpcParam` from the local `regulation.bin` | Task 17 (erdb + soulstruct) |
+
+So the chain is: **local install → (erdb / paramdex / Text Explorer dumps) → `gen-aliases.mjs`
+→ `aliases.json`**. Task 14's finding still holds: Elden Refs and Carian Archive add nothing
+beyond `names.json` for the name half, so they are not used here.
+
+Matching is deliberately strict — exact normalised name/alias equality (possessives,
+parentheticals and leading articles normalised away). Containment was tried and rejected: a
+one-word alias like `godrick` pulled in every spirit-summon and soldier variant, and reverse
+containment turned `Dagger` into `Weathered Dagger`. Precision matters because
+`canonicalFactId` trusts these mappings.
+
+## Wiring
+
+- `src/lib/aliases.ts` loads the bundled rows into `generatedEngineToSlug` (engine id → slug),
+  `generatedNameToSlug` (unambiguous name → slug) and exposes `matchGeneratedAliases()`,
+  `generatedAliasStatus()` and `generatedAliasBySlug()`.
+- `canonicalFactId(id, name)` checks the generated engine map after the curated grace/boss maps,
+  and the generated name map after the curated grace/boss name maps — so every category
+  canonicalises, and the verified grace/boss behaviour is untouched.
+- `searchSync` adds a final `alias` source that only fills slots the curated sources left open.
+
+## Coverage
+
+Catalog totals: grace 24, boss 87, invader 24, item 73, quest 8, region 10 (226 facts).
+"Before" is the state with no generated plane (only the hand-curated grace/boss links existed).
+
+| Category | Facts | Engine-backed rows after | Zero generated aliases before → after |
+|---|---|---|---|
+| grace | 24 | 22 | 24 → 0 |
+| boss | 87 | 86 | 87 → 0 |
+| invader | 24 | 22 | 24 → 0 |
+| item | 73 | 65 | 73 → 0 |
+| quest | 8 | 0 (authored) | 8 → 0 |
+| region | 10 | 0 (authored) | 10 → 0 |
+
+Every fact now has at least one generated row (engine-backed where the game tables name it,
+authored otherwise), so name/alias lookup exists for every category. The two facts that remain
+authored-only in a game-backed category are `boss:leontiel` (a Tarnished Pack mod boss with no
+vanilla `NpcParam` row, the same limitation Task 17 documented) and `grace:deeproot` (the
+catalog grace name differs from the warp-list name).
+
+## Why this is committed
+
+`aliases.json` is committed, unlike `vendor/elden-ring-map/data/markers.json`. The `.gitignore`
+rule for the vendor tree exists because tiles and `markers.json` are FromSoftware **art / marker
+dumps** produced by the map engine from the install. `aliases.json` is name/id-only — no asset
+bytes — the same class of derived data as the already-committed `open/names.json`,
+`open/paramdex/`, `hosted-graces.json` and `npc-combat.json`. It is also needed at import time
+for the synchronous `canonicalFactId`/`searchSync` paths, and at ~138 KB it is small enough to
+bundle. Committing it keeps the alias plane reproducible and reviewable; it can still be
+regenerated from the local install with the command above.
