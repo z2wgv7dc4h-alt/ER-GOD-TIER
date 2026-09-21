@@ -1,17 +1,18 @@
-import { opBuilds } from '../knowledge/builds'
+import { opBuilds, type OpBuild } from '../knowledge/builds'
 import { planRoute, type EndingRoute } from '../knowledge/endings'
 import { medusaChapters } from '../knowledge/medusa'
-import { allLines, findLine, stillAvailable } from '../knowledge/storylines'
-import { facts, matchMany } from '../knowledge/catalog'
+import { allLines, findLine, findNpcLine, stillAvailable } from '../knowledge/storylines'
+import { byId, facts, matchMany } from '../knowledge/catalog'
 import { matchLoot } from '../knowledge/loot'
 import { fieldHunts } from '../knowledge/completion'
 import { findBossPin } from '../knowledge/bossPins'
 import { mapFragments, scadutreeFragments } from '../knowledge/collectibles'
-import { findSellers } from '../knowledge/merchants'
+import { findSellers, merchants } from '../knowledge/merchants'
+import { remembrances, findRemembrance } from '../knowledge/remembrances'
 import { missables } from '../knowledge/missables'
-import { matchAllWarps } from './aliases'
+import { matchAllWarps, matchGeneratedAliases } from './aliases'
 import { searchSync } from './search'
-import { labelOf, nextMoves } from './links'
+import { labelOf, moduleFor, nextMoves } from './links'
 import { summarize } from './infer'
 import {
   bossCombatFor,
@@ -143,6 +144,172 @@ function firstOpenFact(character: Character): string | undefined {
   return f?.name
 }
 
+// ---------------------------------------------------------------------------
+// Comparison handling ("is X better than Y", "X vs Y", "build A or build B")
+// ---------------------------------------------------------------------------
+
+type Comparison = { a: string; b: string; boss?: string }
+
+/** Pull the two things being compared out of the common question shapes. */
+function parseComparison(q: string): Comparison | undefined {
+  const betterFor = q.match(/\b(?:is|are)\s+(.+?)\s+(?:better|worse|stronger|weaker)\s+than\s+(.+?)\s+for\s+(.+?)[?.!]*$/)
+  if (betterFor) return { a: betterFor[1], b: betterFor[2], boss: betterFor[3] }
+  const better = q.match(/\b(?:is|are)\s+(.+?)\s+(?:better|worse|stronger|weaker)\s+than\s+(.+?)[?.!]*$/)
+  if (better) return { a: better[1], b: better[2] }
+  const versusFor = q.match(/\b(?:is\s+|are\s+)?(.+?)\s+(?:vs\.?|versus)\s+(.+?)\s+for\s+(.+?)[?.!]*$/)
+  if (versusFor) return { a: versusFor[1], b: versusFor[2], boss: versusFor[3] }
+  const versus = q.match(/\b(?:is\s+|are\s+)?(.+?)\s+(?:vs\.?|versus)\s+(.+?)[?.!]*$/)
+  if (versus) return { a: versus[1], b: versus[2] }
+  const orUse = q.match(/\b(?:should i (?:use|wear|pick)|use|wear|pick)\s+(.+?)\s+or\s+(.+?)[?.!]*$/)
+  if (orUse) return { a: orUse[1], b: orUse[2] }
+  const either = q.match(/^(?:is\s+|are\s+)?(.+?)\s+or\s+(.+?)[?.!]*$/)
+  if (either) return { a: either[1], b: either[2] }
+  return undefined
+}
+
+const BUILD_KEYWORDS: [RegExp, string][] = [
+  [/\b(rivers|rob|bleed|arcane|exultation)\b/, 'build:rivers'],
+  [/\b(azur|comet|glass|intelligence)\b/, 'build:azur'],
+  [/\b(blasphem|taker.?s flames|faith|holy)\b/, 'build:blasphemous'],
+  [/\b(night comet|sellia|staff of loss)\b/, 'build:night-comet'],
+  [/\b(leontiel|matador|idus)\b/, 'build:leontiel'],
+  [/\b(bonk|heavy knight|giant.?crusher|anvil|cragblade)\b/, 'build:heavy-bonk'],
+]
+
+function buildFromText(text: string): OpBuild | undefined {
+  const n = text.toLowerCase()
+  const byName = opBuilds.find((b) => n.includes(b.name.toLowerCase()))
+  if (byName) return byName
+  for (const [re, id] of BUILD_KEYWORDS) {
+    if (re.test(n)) return opBuilds.find((b) => b.id === id)
+  }
+  return undefined
+}
+
+type DamageKey = 'bleed' | 'rot' | 'poison' | 'magic' | 'fire' | 'lightning' | 'holy' | 'physical'
+
+const DAMAGE_KEYWORDS: [RegExp, DamageKey][] = [
+  [/\bbleed\w*/, 'bleed'],
+  [/\b(scarlet rot|rot)\b/, 'rot'],
+  [/\bpoison\w*/, 'poison'],
+  [/\b(sorcer\w*|magic\w*|intelligence|\bint\b|glintstone|comet)\b/, 'magic'],
+  [/\b(fire|flame\w*|blasphem\w*)\b/, 'fire'],
+  [/\b(lightning|dragon cult)\b/, 'lightning'],
+  [/\b(holy|faith\w*|golden order|incant\w*)\b/, 'holy'],
+  [/\b(physical|strength|bonk|strike|slash|pierce)\b/, 'physical'],
+]
+
+function damageFromText(text: string): DamageKey | undefined {
+  const n = text.toLowerCase()
+  for (const [re, key] of DAMAGE_KEYWORDS) {
+    if (re.test(n)) return key
+  }
+  return undefined
+}
+
+/** How well a build's target stat line matches the character's current sheet. */
+function buildFit(build: OpBuild, c: Character): number {
+  let fit = 0
+  for (const key of Object.keys(c.stats) as (keyof typeof c.stats)[]) {
+    fit += Math.min(c.stats[key], build.stats[key])
+  }
+  return fit
+}
+
+/**
+ * Higher score = better for the player. Status resistance (0–1000, lower is
+ * better) and damage negation (percent, negative is better) are on different
+ * scales, so each is bucketed — soft/weak, hard/neutral, immune/resist — with
+ * the raw value only breaking ties inside a bucket.
+ */
+const STATUS_LABELS: Record<'bleed' | 'rot' | 'poison', string> = {
+  bleed: 'bleed',
+  rot: 'scarlet rot',
+  poison: 'poison',
+}
+
+function damageScore(boss: BossCombat, key: DamageKey): { score: number; label: string } {
+  if (key === 'bleed' || key === 'rot' || key === 'poison') {
+    const value = key === 'bleed' ? boss.resist.bleed : key === 'rot' ? boss.resist.scarletRot : boss.resist.poison
+    const tag = resistTag(value)
+    return { score: tag === 'soft' ? 3 : tag === 'hard' ? 1 : 0, label: `${STATUS_LABELS[key]} ${tag} (${value})` }
+  }
+  const neg = boss.negation[key]
+  const label = neg > 0 ? `${damageTypeLabels[key]} ${neg}% resist` : neg < 0 ? `${damageTypeLabels[key]} ${-neg}% weak` : `${damageTypeLabels[key]} neutral`
+  return { score: neg < 0 ? 3 : neg === 0 ? 2 : 0, label }
+}
+
+/**
+ * A real two-sided comparison. Builds are compared against the character's
+ * current stats; damage types against the named boss's real NpcParam row.
+ * Returns undefined when the question is not a comparison the router can ground.
+ */
+function compareAct(question: string, character: Character, combat: BossCombat[]): GideonAct | undefined {
+  const q = question.toLowerCase()
+  const cmp = parseComparison(q)
+  if (!cmp) return undefined
+
+  const buildA = buildFromText(cmp.a)
+  const buildB = buildFromText(cmp.b)
+  if (buildA && buildB && buildA.id !== buildB.id) {
+    const fitA = buildFit(buildA, character)
+    const fitB = buildFit(buildB, character)
+    const winner = fitA >= fitB ? buildA : buildB
+    const loser = winner === buildA ? buildB : buildA
+    const gap = Math.abs(fitA - fitB)
+    return {
+      say: `${buildA.name} (${buildA.tag}, L${buildA.level}) vs ${buildB.name} (${buildB.tag}, L${buildB.level}). ${buildA.why} ${buildB.why} On this sheet ${winner.name} fits better (${gap} stat points closer to its target line), but ${loser.name} is the swap if you want its payoff.`,
+      module: 'build',
+      buildId: winner.id,
+      offer: { label: `Wear ${winner.name}`, prompt: `use the ${winner.name} build` },
+    }
+  }
+
+  const dmgA = damageFromText(cmp.a)
+  const dmgB = damageFromText(cmp.b)
+  if (dmgA && dmgB && dmgA !== dmgB && cmp.boss) {
+    const bossFact = matchMany(cmp.boss)[0]
+    const boss = bossCombatFor(combat, bossFact?.id) || bossCombatFor(combat, findBossPin(cmp.boss)?.id)
+    if (boss) {
+      const a = damageScore(boss, dmgA)
+      const b = damageScore(boss, dmgB)
+      // Buckets are coarse on purpose; only call a winner when the gap is real
+      // (soft/weak vs neutral, or neutral vs resisted), not hard vs resisted.
+      const diff = a.score - b.score
+      const winner: DamageKey | undefined = Math.abs(diff) >= 2 ? (diff > 0 ? dmgA : dmgB) : undefined
+      const advice = bossResistAdvice(boss)
+      const head = `${boss.name}: ${a.label} vs ${b.label}.`
+      const verdict = winner
+        ? `${winner === dmgA ? a.label : b.label} is the better line here — ${winner === dmgA ? b.label : a.label} is the harder ask.`
+        : 'Neither is a clean win — both are resisted, so pick by the build you already have.'
+      return {
+        say: `${head} ${verdict} ${advice.line}`,
+        module: 'build',
+        factId: bossFact?.id,
+        offer: advice.offer,
+      }
+    }
+  }
+  return undefined
+}
+
+/** True when `compareAct` would produce a grounded answer for this question. */
+function isComparable(question: string, combat: BossCombat[]): boolean {
+  const q = question.toLowerCase()
+  const cmp = parseComparison(q)
+  if (!cmp) return false
+  const buildA = buildFromText(cmp.a)
+  const buildB = buildFromText(cmp.b)
+  if (buildA && buildB && buildA.id !== buildB.id) return true
+  const dmgA = damageFromText(cmp.a)
+  const dmgB = damageFromText(cmp.b)
+  if (dmgA && dmgB && dmgA !== dmgB && cmp.boss) {
+    const bossFact = matchMany(cmp.boss)[0]
+    return Boolean(bossCombatFor(combat, bossFact?.id) || bossCombatFor(combat, findBossPin(cmp.boss)?.id))
+  }
+  return false
+}
+
 /**
  * Deterministic keyword router. This is the fallback and the fast path: it
  * answers lookups (a named ending, a warp, a build, still-available, "I'm
@@ -182,6 +349,26 @@ export function askGideonRouter(
     }
   }
 
+  if (/\b(enia|finger reader|remembrance|rememberance)\b/.test(q)) {
+    const rem = findRemembrance(q)
+    if (rem) {
+      const rewards = rem.rewards.map((r) => r.name).join(' or ')
+      const source = rem.bossFactId ? `Drops from ${rem.bossName}.` : `From ${rem.bossName}.`
+      return {
+        say: `${rem.name}: hand it to Finger Reader Enia for ${rewards}. ${source} A Walking Mausoleum lets you duplicate it for the other option, but you only keep one copy at a time.`,
+        module: 'codex',
+        factId: rem.bossFactId || rem.id,
+        offer: { label: 'Show the boss', prompt: `where is ${rem.bossName}` },
+      }
+    }
+    const eniaArmour = merchants.filter((m) => /^enia\b/i.test(m.vendor)).length
+    const list = remembrances.slice(0, 6).map((r) => `${r.name} → ${r.rewards.map((x) => x.name).join(' / ')}`).join('\n')
+    return {
+      say: `Finger Reader Enia trades remembrances one-for-one at the Roundtable Hold:\n${list}\n…${remembrances.length} in total, base game and Shadow of the Erdtree.${eniaArmour ? ` She also sells ${eniaArmour} boss armour pieces after each kill.` : ''} Name a remembrance for its two rewards.`,
+      module: 'codex',
+    }
+  }
+
   if (/\b(available|still (open|available)|what can i|what have i (got|left)|mid[- ]?play|pick up)\b/.test(q)) {
     const s = stillAvailable(character)
     const fmt = (rows: typeof s.open) => rows.map((r) => `${r.line.name}: ${r.note}`).join('\n')
@@ -189,6 +376,15 @@ export function askGideonRouter(
       say: `Mid-run survey.\nActive:\n${fmt(s.active) || '—'}\nOpen:\n${fmt(s.open) || '—'}\nLocked:\n${fmt(s.locked) || '—'}\nDone:\n${fmt(s.done) || '—'}\nSay a name to pick up that line, or Blitz Elden Lord to skip flavour.`,
       module: 'quests',
     }
+  }
+
+  const compared = compareAct(question, character, combat)
+  if (compared) return compared
+
+  const npcLine = findNpcLine(q)
+  const questIntent = /\b(quest|questline|story|line|want|need|next|now|continue|step|steps|do|how|path|route|finish|plan|blitz|guide|help)\b/.test(q)
+  if (npcLine && (questIntent || q.split(/\s+/).length <= 2)) {
+    return speakPlan(character, npcLine)
   }
 
   const line = findLine(q) || (memory.goalId && /\b(what next|what now|continue|plan|blitz)\b/.test(q) ? routeById(memory.goalId) : undefined)
@@ -320,10 +516,6 @@ export function askGideonRouter(
     }
   }
 
-  if (/\b(ranni|seluvis|alexander|boc|leda|millicent|quest)\b/.test(q) && !findLine(q)) {
-    return { say: 'Quest graph. If this is for an ending, say the ending name so I can order the beats.', module: 'quests' }
-  }
-
   const sellers = findSellers(q)
   if (sellers.length && (/\b(buy|shop|sells|merchant|stock|who sells)\b/.test(q) || sellers.some((s) => s.item.toLowerCase() === q))) {
     const lines = sellers.slice(0, 5).map((s) => `${s.item} — ${s.vendor}`).join('\n')
@@ -371,6 +563,29 @@ export function askGideonRouter(
     return { say: `${f.name} — ${f.kind} in ${f.region}.`, module: 'map', factId: f.id }
   }
 
+  // The generated alias plane (Task 23) indexes every fact category by engine id
+  // and name, including alias spellings the hand-curated matchers above miss
+  // ("night cavalry" for Night's Cavalry, "pureblood knight medal", "giant
+  // prayerbook"). Consult it before the generic search so the router returns a
+  // real entity + module instead of a bare search dump.
+  const genHits = matchGeneratedAliases(question)
+  if (genHits.length) {
+    const g = genHits[0]
+    const module = moduleFor(g.slug)
+    const region = byId.get(g.slug)?.region
+    return {
+      say: `${g.fmgName} — ${g.kind}${region ? ` · ${region}` : ''}.`,
+      module,
+      factId: g.slug,
+      navigateNow: module === 'map',
+    }
+  }
+
+  if (/\b(quest|questline|storyline|npc|companion)\b/.test(q)) {
+    const names = allLines.filter((l) => l.kind === 'story').map((l) => l.name).join(', ')
+    return { say: `Seeded companion lines: ${names}. Name one and I will give its next beat.`, module: 'quests' }
+  }
+
   const found = searchSync(question)
   if (found.length) {
     const top = found[0]
@@ -382,7 +597,8 @@ export function askGideonRouter(
   }
 
   return {
-    say: 'Say an ending, a grace, a boss, or who sells a spell.',
+    say: 'Say an ending, a companion NPC (Ranni, Millicent, Alexander…), a grace, a boss, or who sells a spell.',
+    module: 'quests',
   }
 }
 
@@ -404,7 +620,11 @@ export function askGideonRouter(
 const REASONING_MARKER =
   /\b(and|but|if|before|after|or|should|which|why|better|instead|versus|vs|because|while|when|can i|priorit|worth|advice|recommend|difference|between|both|even though|already)\b/
 
-export function isFastLookup(question: string, memory: GideonMemory = {}): boolean {
+export function isFastLookup(
+  question: string,
+  memory: GideonMemory = {},
+  combat: BossCombat[] = cachedBossCombat(),
+): boolean {
   const q = question.toLowerCase().trim()
   if (!q) return true
 
@@ -417,17 +637,26 @@ export function isFastLookup(question: string, memory: GideonMemory = {}): boole
   if (/\b100\s*%|\b(completionist|everything in|full clear|medusa)\b/.test(q)) return true
   if (/\b(blitz|speedrun|rush the game|fast ending)\b/.test(q)) return true
 
+  // Deterministic knowledge questions that would otherwise trip the reasoning
+  // markers ("better than", "or", "should"): a comparison between two known
+  // builds, or two damage types against a boss whose NpcParam row we hold, is
+  // grounded and exact. Same for the remembrance table and companion questlines.
+  if (/\b(enia|finger reader|remembrance|rememberance)\b/.test(q)) return true
+  if (isComparable(question, combat)) return true
+
   // A conjunction or conditional means the question crosses concepts: reason.
   if (REASONING_MARKER.test(q)) return false
 
   // An exact single-entity lookup is still fast even when phrased as a question
   // ("I want the Age of Stars ending. What do I do next?").
+  if (findNpcLine(q)) return true
   if (findLine(question)) return true
   if (matchAllWarps(question).length) return true
   if (matchLoot(question).length) return true
   if (opBuilds.some((b) => q.includes(b.name.toLowerCase()))) return true
   if (findBossPin(question)) return true
   if (matchMany(question).length) return true
+  if (matchGeneratedAliases(question).length) return true
 
   // Nothing matched and the query is a bare fragment: let the router answer.
   if (!q.includes('?') && q.split(/\s+/).length < 4) return true
@@ -449,10 +678,12 @@ export async function askGideon(
   // The "stuck" handler needs the real NpcParam table, which is loaded async by
   // the UI. Warm it here so a first-ask still gets specific resists, and let the
   // router fall back to generic advice if the fetch fails.
-  const wantsCombat = /\b(stuck|wipe|cannot|can't beat|help with)\b/.test(question.toLowerCase())
+  const wantsCombat =
+    /\b(stuck|wipe|cannot|can't beat|help with)\b/.test(question.toLowerCase()) ||
+    parseComparison(question.toLowerCase()) !== undefined
   const combat = wantsCombat ? await loadBossCombat().catch(() => []) : undefined
   const router = askGideonRouter(question, character, memory, combat)
-  if (isFastLookup(question, memory)) return router
+  if (isFastLookup(question, memory, combat ?? cachedBossCombat())) return router
 
   if (!hasDeepSeekKey()) {
     if (!warnedNoKey) {

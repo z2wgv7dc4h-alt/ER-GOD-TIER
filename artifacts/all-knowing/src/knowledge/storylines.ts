@@ -214,6 +214,128 @@ export const storylines: Line[] = [
       { id: 'ir3', do: 'Face the Revenger at the Revenger’s Shack', detail: 'After Irina is found dead, Edgar invades you on the Liurnia road. Missable if you never return.', factId: 'quest:edgar:revenger', module: 'map', minLevel: 50, requires: ['quest:edgar:letter'], grants: ['quest:edgar:revenger'], lockouts: ['quest:irina:killed'] },
     ],
   },
+  {
+    id: 'seluvis',
+    kind: 'story',
+    name: 'Preceptor Seluvis',
+    aliases: ['seluvis', 'seluvis puppet', 'preceptor seluvis', 'seluvis potion'],
+    lockedIf: (c) => (knownSet(c).has('quest:ranni:nokron') ? 'Ranni has the Fingerslayer Blade; Seluvis is already dead on this run.' : null),
+    steps: [
+      { id: 'sv1', do: 'Enter Ranni’s service and meet Seluvis at Seluvis’s Rise', detail: 'Three Sisters, after Caria Manor. He sells sorceries and wants a puppet errand.', factId: 'quest:seluvis:met', module: 'quests', minLevel: 40, requires: [], grants: ['quest:seluvis:met'], lockouts: [] },
+      { id: 'sv2', do: 'Take Seluvis’s potion and choose a target', detail: 'He asks you to pour it into Nepheli or Dung Eater. Both choices permanently change those lines — give it to neither if you want their endings.', factId: 'quest:seluvis:potion', module: 'quests', requires: ['quest:seluvis:met'], grants: ['quest:seluvis:potion'], lockouts: [], lockout: 'Nepheli loses her rule and Dung Eater loses the Mending Rune if they drink it.' },
+      { id: 'sv3', do: 'Buy out his puppet stock before Nokron', detail: 'Once Ranni has the Fingerslayer Blade, Seluvis is found dead in his rise and his spells and the Magic Scorpion Charm are gone for the run.', factId: 'quest:seluvis:concluded', module: 'quests', requires: ['quest:seluvis:potion'], grants: ['quest:seluvis:concluded'], lockouts: ['quest:ranni:nokron'], lockout: 'Advancing Ranni past the blade closes Seluvis permanently.' },
+    ],
+  },
+  {
+    id: 'kenneth',
+    kind: 'story',
+    name: 'Kenneth Haight',
+    aliases: ['kenneth', 'kenneth haight', 'fort haight', 'limgrave ruler'],
+    lockedIf: () => null,
+    steps: [
+      { id: 'kh1', do: 'Clear Fort Haight and meet Kenneth', detail: 'East Limgrave. Kill the Demi-Human Chief on the ramparts, then take the Bloody Slash ash and Kenneth’s request.', factId: 'quest:kenneth:fort', module: 'map', minLevel: 20, requires: [], grants: ['quest:kenneth:fort'], lockouts: [] },
+      { id: 'kh2', do: 'Accept his knightly errand at Mistwood Ruins', detail: 'He asks you to find a worthy ruler for Limgrave. Nepheli Loux is that ruler.', factId: 'quest:kenneth:knighthood', module: 'quests', minLevel: 40, requires: ['quest:kenneth:fort'], grants: ['quest:kenneth:knighthood'], lockouts: [] },
+      { id: 'kh3', do: 'Crown Nepheli at Stormveil with Kenneth as steward', detail: 'After Morgott and after giving Nepheli the Stormhawk King ashes, return to the Stormveil throne room. Requires the Nepheli line, not Seluvis’s potion.', factId: 'quest:kenneth:ruler', module: 'map', minLevel: 90, requires: ['quest:kenneth:knighthood', 'quest:nepheli:stormhawk'], grants: ['quest:kenneth:ruler'], lockouts: ['quest:nepheli:potioned'], lockout: 'If Nepheli drank Seluvis’s potion there is no coronation.' },
+    ],
+  },
+  {
+    id: 'rogier',
+    kind: 'story',
+    name: 'Sorcerer Rogier',
+    aliases: ['rogier', 'sorcerer rogier', 'black knifeprint', 'knifeprint'],
+    lockedIf: () => null,
+    steps: [
+      { id: 'rg1', do: 'Meet Rogier in Stormveil and again at the Roundtable Hold', detail: 'He sits in the chapel with the corpse of Godwyn’s face, then at the Roundtable by the fireplace.', factId: 'quest:rogier:met', module: 'quests', minLevel: 30, requires: [], grants: ['quest:rogier:met'], lockouts: [] },
+      { id: 'rg2', do: 'Bring him the Black Knifeprint from Black Knife Catacombs', detail: 'He is dying from the deathroot curse. The knifeprint is the key to Ranni’s service.', factId: 'item:black-knifeprint', module: 'map', minLevel: 50, requires: ['quest:rogier:met'], grants: ['quest:rogier:knifeprint', 'item:black-knifeprint'], lockouts: [] },
+      { id: 'rg3', do: 'Show the knifeprint to Ranni and enter her service', detail: 'This is the alternate door into the Age of Stars line; you can still serve her without it.', factId: 'quest:ranni:service', module: 'quests', minLevel: 50, requires: ['quest:rogier:knifeprint'], grants: ['quest:ranni:service'], lockouts: [] },
+      { id: 'rg4', do: 'Find Rogier’s body in Deeproot Depths and take his set', detail: 'After he dies at the Roundtable, his body rests in the Deeproot Depths near the Prince of Death’s throne.', factId: 'quest:rogier:concluded', module: 'map', minLevel: 90, requires: ['quest:rogier:knifeprint'], grants: ['quest:rogier:concluded'], lockouts: [] },
+    ],
+  },
+  {
+    id: 'tanith',
+    kind: 'story',
+    name: 'Lady Tanith / Volcano Manor',
+    aliases: ['tanith', 'lady tanith', 'recusant', 'volcano contracts'],
+    lockedIf: () => null,
+    steps: [
+      { id: 'ta1', do: 'Join Volcano Manor and take Tanith’s first contract', detail: 'After Rya’s invitation. Tanith hands you invasion contracts against the Erdtree’s servants.', factId: 'quest:tanith:contracts', module: 'quests', minLevel: 70, requires: [], grants: ['quest:tanith:contracts'], lockouts: [] },
+      { id: 'ta2', do: 'Complete the named contracts (Istvan, Rileigh, Hoslow)', detail: 'Each is a red summon sign in the world. Finishing them opens the drawing room and Tanith’s reward.', factId: 'quest:tanith:targets', module: 'quests', minLevel: 90, requires: ['quest:tanith:contracts'], grants: ['quest:tanith:targets'], lockouts: ['boss:rykard'], lockout: 'Killing Rykard ends the contract window.' },
+      { id: 'ta3', do: 'Defeat Rykard, then hear Tanith’s request', detail: 'She asks you to devour the god together. Refuse and she leaves; agree and she stays by his corpse.', factId: 'quest:tanith:concluded', module: 'map', minLevel: 100, requires: ['quest:tanith:targets'], grants: ['quest:tanith:concluded'], lockouts: ['boss:rykard'], lockout: 'Rykard’s death is the point of no return for the manor.' },
+    ],
+  },
+  {
+    id: 'gurranq',
+    kind: 'story',
+    name: 'Gurranq, Beast Clergyman',
+    aliases: ['gurranq', 'beast sanctum', 'deathroot', 'beast clergyman quest'],
+    lockedIf: () => null,
+    steps: [
+      { id: 'gu1', do: 'Reach the Bestial Sanctum and meet Gurranq', detail: 'Portal behind the Third Church of Marika in Limgrave, or the Divine Bridge teleporter. He begs for Deathroot.', factId: 'quest:gurranq:met', module: 'map', minLevel: 40, requires: [], grants: ['quest:gurranq:met'], lockouts: [] },
+      { id: 'gu2', do: 'Feed him Deathroot from the Tibia Mariners and elsewhere', detail: 'Nine Deathroot exist; each turn-in teaches a Beast incantation and the Clawmark Seal. He is Maliketh in disguise.', factId: 'quest:gurranq:deathroot', module: 'quests', minLevel: 70, requires: ['quest:gurranq:met'], grants: ['quest:gurranq:deathroot'], lockouts: [] },
+      { id: 'gu3', do: 'Finish the Deathroot and face him', detail: 'After the ninth he turns hostile in the sanctum. The Farum Azula fight is the same character, so this is a preview, not a second boss.', factId: 'quest:gurranq:concluded', module: 'map', minLevel: 100, requires: ['quest:gurranq:deathroot'], grants: ['quest:gurranq:concluded'], lockouts: [] },
+    ],
+  },
+  {
+    id: 'latenna',
+    kind: 'story',
+    name: 'Latenna the Albinauric',
+    aliases: ['latenna', 'latenna the albinauric', 'albinauric woman', 'apostate derelict'],
+    lockedIf: () => null,
+    steps: [
+      { id: 'la1', do: 'Meet Latenna at the Slumbering Wolf’s Shack', detail: 'Liurnia, south-west past the gate town. She is the last of the Albinaurics and gives you the Haligtree Secret Medallion (Right).', factId: 'quest:latenna:met', module: 'map', minLevel: 40, requires: [], grants: ['quest:latenna:met', 'item:haligtree-secret-medallion'], lockouts: [] },
+      { id: 'la2', do: 'Take Castle Sol for the medallion’s other half', detail: 'Commander Niall holds the (Left) half. Both halves open the Grand Lift of Rold’s hidden path to the Consecrated Snowfield.', factId: 'boss:commander-niall', module: 'map', minLevel: 110, requires: ['quest:latenna:met'], grants: ['boss:commander-niall'], lockouts: [] },
+      { id: 'la3', do: 'Summon Latenna at the Apostate Derelict', detail: 'In the Consecrated Snowfield. She reunites with her wolf Lobo; her spirit ash is complete and she can be summoned anywhere.', factId: 'quest:latenna:concluded', module: 'map', minLevel: 110, requires: ['quest:latenna:met', 'item:haligtree-secret-medallion'], grants: ['quest:latenna:concluded'], lockouts: [] },
+    ],
+  },
+  {
+    id: 'freyja',
+    kind: 'story',
+    name: 'Redmane Freyja',
+    aliases: ['freyja', 'redmane freyja'],
+    lockedIf: (c) => (!knownSet(c).has('region:shadow') ? 'You have not entered the Realm of Shadow yet. Need Mohg + the withered arm.' : null),
+    steps: [
+      { id: 'fr1', do: 'Meet Freyja at the Three-Path Cross', detail: 'Gravesite Plain, near the first Miquella’s Cross. She is searching for the meaning of her Redmane oath.', factId: 'quest:freyja:met', module: 'map', requires: [], grants: ['quest:freyja:met'], lockouts: [] },
+      { id: 'fr2', do: 'Find her in the Shadow Keep Specimen Storehouse', detail: 'She studies the jars and asks you to keep her counsel. Do not attack her; the Keep invitations decide who lives.', factId: 'quest:freyja:keep', module: 'map', minLevel: 150, requires: ['quest:freyja:met'], grants: ['quest:freyja:keep'], lockouts: ['quest:leda:invitations-locked'], lockout: 'The Sealing Tree closes the invitation window and freezes alliances.' },
+      { id: 'fr3', do: 'Carry her alliance into Enir-Ilim', detail: 'She can be summoned for the Leda fights. Siding against Leda keeps her; siding with Leda forecloses her.', factId: 'quest:freyja:concluded', module: 'map', minLevel: 170, requires: ['quest:freyja:keep'], grants: ['quest:freyja:concluded'], lockouts: ['quest:leda:invitations-locked'] },
+    ],
+  },
+  {
+    id: 'igon',
+    kind: 'story',
+    name: 'Igon',
+    aliases: ['igon', 'dragon hunter igon', 'jagged peak'],
+    lockedIf: (c) => (!knownSet(c).has('region:shadow') ? 'You have not entered the Realm of Shadow yet. Need Mohg + the withered arm.' : null),
+    steps: [
+      { id: 'ig1', do: 'Find Igon on the path up the Jagged Peak', detail: 'He is crawling toward Bayle the Dread, obsessed with revenge. Talk to him twice as you climb.', factId: 'quest:igon:met', module: 'map', requires: [], grants: ['quest:igon:met'], lockouts: [] },
+      { id: 'ig2', do: 'Meet him again at the peak’s edge', detail: 'He is spent but still points you at Bayle. His summon sign appears at the boss gate.', factId: 'quest:igon:peak', module: 'map', minLevel: 150, requires: ['quest:igon:met'], grants: ['quest:igon:peak'], lockouts: ['boss:bayle'], lockout: 'Bayle must be alive for the summon and the payoff.' },
+      { id: 'ig3', do: 'Summon Igon and kill Bayle the Dread', detail: 'His summon survives the fight. His quest closes with Igon’s Harpoon and the Dragon Hunter’s Great Katana world drop nearby.', factId: 'boss:bayle', module: 'map', minLevel: 160, obtain: 'Igon’s Harpoon', requires: ['quest:igon:peak'], grants: ['boss:bayle', 'quest:igon:concluded'], lockouts: [] },
+    ],
+  },
+  {
+    id: 'thiollier',
+    kind: 'story',
+    name: 'Thiollier & St. Trina',
+    aliases: ['thiollier', 'st trina', 'st. trina', 'saint trina', 'nectar'],
+    lockedIf: (c) => (!knownSet(c).has('region:shadow') ? 'You have not entered the Realm of Shadow yet. Need Mohg + the withered arm.' : null),
+    steps: [
+      { id: 'th1', do: 'Meet Thiollier at the Three-Path Cross', detail: 'He seeks St. Trina and offers his concoctions. He moves to the Church of Consolation on the Gravesite Plain.', factId: 'quest:thiollier:met', module: 'map', requires: [], grants: ['quest:thiollier:met'], lockouts: [] },
+      { id: 'th2', do: 'Find St. Trina’s Nectar in the Stone Coffin Fissure', detail: 'Give it to Thiollier and he asks you to seek her. The nectar can also be drunk at the Garden of Deep Purple.', factId: 'quest:thiollier:nectar', module: 'map', minLevel: 150, requires: ['quest:thiollier:met'], grants: ['quest:thiollier:nectar'], lockouts: [] },
+      { id: 'th3', do: 'Hear St. Trina at the Garden of Deep Purple', detail: 'Drink the nectar repeatedly to reach her voice. This is the St. Trina thread and explains Miquella’s fate.', factId: 'quest:thiollier:sttrina', module: 'quests', minLevel: 160, requires: ['quest:thiollier:nectar'], grants: ['quest:thiollier:sttrina'], lockouts: [] },
+      { id: 'th4', do: 'Choose Thiollier’s side at Enir-Ilim', detail: 'He can be summoned against Leda if you kept him. Attacking him forecloses his gear.', factId: 'quest:thiollier:concluded', module: 'map', minLevel: 170, requires: ['quest:thiollier:sttrina'], grants: ['quest:thiollier:concluded'], lockouts: ['quest:leda:invitations-locked'] },
+    ],
+  },
+  {
+    id: 'ansbach',
+    kind: 'story',
+    name: 'Sir Ansbach',
+    aliases: ['ansbach', 'sir ansbach', 'pureblood knight ansbach'],
+    lockedIf: (c) => (!knownSet(c).has('region:shadow') ? 'You have not entered the Realm of Shadow yet. Need Mohg + the withered arm.' : null),
+    steps: [
+      { id: 'an1', do: 'Free and meet Ansbach in the Shadow Keep', detail: 'He is imprisoned in the Specimen Storehouse. He once served Mohg and knows Miquella’s charm.', factId: 'quest:ansbach:met', module: 'map', requires: [], grants: ['quest:ansbach:met'], lockouts: [] },
+      { id: 'an2', do: 'Learn what Miquella did to Mohg', detail: 'Talk him through the charm and the withered arm. This unlocks the Leda alliance choice at the Sealing Tree.', factId: 'quest:ansbach:mohg', module: 'quests', minLevel: 150, requires: ['quest:ansbach:met'], grants: ['quest:ansbach:mohg'], lockouts: ['quest:leda:invitations-locked'], lockout: 'The Sealing Tree is the last window to pick a side.' },
+      { id: 'an3', do: 'Side with Ansbach at Enir-Ilim', detail: 'He can be summoned for the Leda fight and the Consort. Killing him loses his set and the summon.', factId: 'quest:ansbach:concluded', module: 'map', minLevel: 170, requires: ['quest:ansbach:mohg'], grants: ['quest:ansbach:concluded'], lockouts: ['quest:leda:invitations-locked'] },
+    ],
+  },
 ]
 
 export const blitz: Line[] = [
@@ -254,6 +376,66 @@ export const allLines: Line[] = [
 export function findLine(text: string) {
   const n = text.toLowerCase()
   return allLines.find((e) => e.aliases.some((a) => n.includes(a)) || n.includes(e.name.toLowerCase()) || n.includes(e.id))
+}
+
+/**
+ * Companion-NPC mention -> line id, for routing "what does Ranni want next"
+ * style questions. `findLine` already catches many of these through line aliases,
+ * but a bare first name is ambiguous ("ranni" is also an item, "azur" is a
+ * spell) and some NPCs share no alias with their line. This index is checked
+ * only when the question reads like a quest-intent question, so a location
+ * lookup for an item named after an NPC still wins.
+ */
+export const npcLines: { alias: string; line: string }[] = [
+  { alias: 'ranni', line: 'stars' },
+  { alias: 'seluvis', line: 'seluvis' },
+  { alias: 'alexander', line: 'alexander' },
+  { alias: 'nepheli', line: 'nepheli' },
+  { alias: 'kenneth', line: 'kenneth' },
+  { alias: 'boc', line: 'boc' },
+  { alias: 'seamster', line: 'boc' },
+  { alias: 'millicent', line: 'millicent' },
+  { alias: 'dung eater', line: 'dung-eater' },
+  { alias: 'defiler', line: 'dung-eater' },
+  { alias: 'fia', line: 'fia' },
+  { alias: 'deathbed', line: 'fia' },
+  { alias: 'rogier', line: 'rogier' },
+  { alias: 'rya', line: 'rya' },
+  { alias: 'zorayas', line: 'rya' },
+  { alias: 'tanith', line: 'tanith' },
+  { alias: 'hyetta', line: 'hyetta' },
+  { alias: 'yura', line: 'yura' },
+  { alias: 'gowry', line: 'gowry' },
+  { alias: 'gurranq', line: 'gurranq' },
+  { alias: 'deathroot', line: 'gurranq' },
+  { alias: 'd hunter', line: 'd-hunter' },
+  { alias: 'hunter of the dead', line: 'd-hunter' },
+  { alias: 'corhyn', line: 'corhyn' },
+  { alias: 'goldmask', line: 'corhyn' },
+  { alias: 'thops', line: 'thops' },
+  { alias: 'irina', line: 'irina' },
+  { alias: 'edgar', line: 'irina' },
+  { alias: 'latenna', line: 'latenna' },
+  { alias: 'freyja', line: 'freyja' },
+  { alias: 'igon', line: 'igon' },
+  { alias: 'thiollier', line: 'thiollier' },
+  { alias: 'st trina', line: 'thiollier' },
+  { alias: 'st. trina', line: 'thiollier' },
+  { alias: 'saint trina', line: 'thiollier' },
+  { alias: 'ansbach', line: 'ansbach' },
+  { alias: 'varre', line: 'varre' },
+  { alias: 'leda', line: 'leda' },
+  { alias: 'sellen', line: 'sellen' },
+]
+
+/** The line a companion NPC name refers to, if any. */
+export function findNpcLine(text: string): Line | undefined {
+  const n = text.toLowerCase()
+  for (const { alias, line } of npcLines) {
+    const re = new RegExp(`\\b${alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`)
+    if (re.test(n)) return allLines.find((l) => l.id === line)
+  }
+  return undefined
 }
 
 export type LineStatus = {
