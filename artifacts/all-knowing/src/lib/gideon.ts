@@ -13,6 +13,8 @@ import { matchAllWarps } from './aliases'
 import { searchSync } from './search'
 import { nextMoves } from './links'
 import { factState } from '../state'
+import { callDeepSeekJson, hasDeepSeekKey } from './deepseek'
+import { buildGrounding, gideonMessages, validateGideonAct } from './gideonLlm'
 import type { Character, ModuleId } from '../types'
 
 export type GideonAct = {
@@ -74,7 +76,12 @@ function speakPlan(character: Character, route: EndingRoute): GideonAct {
   }
 }
 
-export function askGideon(question: string, character: Character, memory: GideonMemory = {}): GideonAct {
+/**
+ * Deterministic keyword router. This is the fallback and the fast path: it
+ * answers lookups (a named ending, a warp, a build, still-available, "I'm
+ * stuck") without a network round-trip.
+ */
+export function askGideonRouter(question: string, character: Character, memory: GideonMemory = {}): GideonAct {
   const q = question.toLowerCase().trim()
   if (!q) return { say: 'Name an ending, or ask what to do next.' }
 
@@ -277,5 +284,91 @@ export function askGideon(question: string, character: Character, memory: Gideon
 
   return {
     say: 'Say an ending, a grace, a boss, or who sells a spell.',
+  }
+}
+
+/**
+ * Cost/latency heuristic: when to skip the LLM and let the router answer.
+ *
+ * The router is free, instant, and exact at single-entity lookups. The LLM earns
+ * its round-trip only when the question needs reasoning across the grounding
+ * pack. So we send these straight to the router:
+ *  - a follow-up "yes / show it" when a goal is already in memory
+ *  - the fixed command phrases the UI chips emit (still-available, what-next,
+ *    stuck, 100% spine, blitz)
+ *  - a short query naming exactly one known entity (line, warp, loot, build,
+ *    boss pin, catalog fact) with no reasoning markers
+ * Everything else — multiple concepts, comparisons, conditionals, "should I",
+ * "can I still", questions over ~10 words — goes to DeepSeek, then falls back to
+ * this router if the key is absent, the call fails, or validation rejects it.
+ */
+const REASONING_MARKER =
+  /\b(and|but|if|before|after|or|should|which|why|better|instead|versus|vs|because|while|when|can i|priorit|worth|advice|recommend|difference|between|both|even though|already)\b/
+
+export function isFastLookup(question: string, memory: GideonMemory = {}): boolean {
+  const q = question.toLowerCase().trim()
+  if (!q) return true
+
+  const affirm =
+    /^(y|yes|yeah|ok|okay|sure|do it|show( me)?|give (me )?(the )?(steps|instructions)|navigate|take me)\b/.test(q) ||
+    /\b(show (it|me) on the map|give instructions|take me there)\b/.test(q)
+  if (affirm && memory.goalId) return true
+
+  if (/^(what is still available|what'?s still available|still available|what next|what now|what do i do|where to|continue|i am stuck|i'?m stuck|stuck|help with this wall)\b/.test(q)) return true
+  if (/\b(100%|completionist|everything in|full clear|medusa)\b/.test(q)) return true
+  if (/\b(blitz|speedrun|rush the game|fast ending)\b/.test(q)) return true
+
+  // A conjunction or conditional means the question crosses concepts: reason.
+  if (REASONING_MARKER.test(q)) return false
+
+  // An exact single-entity lookup is still fast even when phrased as a question
+  // ("I want the Age of Stars ending. What do I do next?").
+  if (findLine(question)) return true
+  if (matchAllWarps(question).length) return true
+  if (matchLoot(question).length) return true
+  if (opBuilds.some((b) => q.includes(b.name.toLowerCase()))) return true
+  if (findBossPin(question)) return true
+  if (matchMany(question).length) return true
+
+  // Nothing matched and the query is a bare fragment: let the router answer.
+  if (!q.includes('?') && q.split(/\s+/).length < 4) return true
+  return false
+}
+
+let warnedNoKey = false
+
+/**
+ * Front for Gideon. Returns the same `GideonAct` as the old router so the UI and
+ * the shell are unchanged. Fast/confident lookups stay deterministic; open-ended
+ * questions go to DeepSeek with a grounding pack and are validated before use.
+ */
+export async function askGideon(
+  question: string,
+  character: Character,
+  memory: GideonMemory = {},
+): Promise<GideonAct> {
+  const router = askGideonRouter(question, character, memory)
+  if (isFastLookup(question, memory)) return router
+
+  if (!hasDeepSeekKey()) {
+    if (!warnedNoKey) {
+      warnedNoKey = true
+      console.info('[gideon] VITE_DEEPSEEK_API_KEY is not set — using the deterministic router only.')
+    }
+    return router
+  }
+
+  try {
+    const grounding = buildGrounding(question, character, memory)
+    const raw = await callDeepSeekJson(gideonMessages(question, grounding))
+    const { act, rejected } = validateGideonAct(raw, grounding)
+    if (!act) {
+      console.warn('[gideon] DeepSeek response rejected (invented or invalid ids); using the router.', rejected)
+      return router
+    }
+    return act
+  } catch (err) {
+    console.warn('[gideon] DeepSeek call failed; using the deterministic router.', err)
+    return router
   }
 }
