@@ -19,9 +19,17 @@
 
 *Redundancy check:* Project already has `public/sourced/open/names.json` with ~6,820 EN FMG names (sourced from Text Explorer, JP stripped). **Question:** Does Carian Archive provide JP names (different id scheme or same IDs with JP text), or is it a redundant EN dump? Checking the repo directly would show whether the data extends beyond what names.json covers.
 
+**Resolution (Task 14, 2026-09-22): Redundant — no alias deliverable.** Both sources were fetched and diffed against `names.json`:
+
+- **Elden Refs and Carian Archive are the same corpus.** Elden Refs is a static mirror of Carian Archive's `Master.html`; section-by-section the two are identical (34 FMG sections, 0 differences). Neither carries a LICENSE file; Carian Archive was last pushed **2022-06-29**, i.e. pre-Shadow of the Erdtree.
+- **Carian Archive's EN names are a strict subset of `names.json`.** For all eight name FMGs it carries (`GoodsName`, `AccessoryName`, `ArtsName`, `GemName`, `ProtectorName`, `NpcName`, `PlaceName`, `WeaponName`), every FMG row id and every name is already in `names.json`; the only delta was the HTML-escape artifact `Nightmaiden &amp; Swordstress Puppets`. Same id scheme (`kind:fmgRowId`), no new categories (`MagicName.fmg` is empty; `EventTextForMap`/`LoadingTitle` are UI strings, not names). `names.json` is itself base-game-only, so neither source adds SotE/Tarnished Pack coverage.
+- **The only non-redundant payload is JP text (`MasterJP.html`).** The project has no JP consumer (OCR is a stub, no JP matcher, the SCOPE "Alias plane" shape is language-agnostic), so ingesting it would be a speculative file with no resolver behind it.
+
+Net: no new `aliases.json` category is unlocked. The existing `names.json` is the authoritative EN string corpus.
+
 *Alias shape:* Current `src/lib/aliases.ts` uses `name → seed slug` mapping for 418 warp graces and bosses. Generated `aliases.json` would need to bind engine grace ids (e.g., `grace:10000800`), seed slugs (e.g., `grace:elleh`), FMG names (e.g., `Church of Elleh`), and icon filenames (from RubyRed). The structure is already defined in SCOPE.md (point 2: "Alias plane").
 
-**Verdict: Ready to task-brief, with license caveats.** Elden Refs is unlicensed and must be verified as public domain or acceptable fair use. Carian Archive similarly lacks a license statement and would need written clarification or WHOIS research before use. Both sites are functional and structured. The task is to write a script that: (1) fetches/parses both sources, (2) deduplicates against existing names.json, (3) outputs `aliases.json` in the shape expected by `aliases.ts`, and (4) flags license/attribution needs.
+**Verdict: Closed as redundant (Task 14).** The license gate was lifted for this personal/non-commercial project, but the redundancy check above shows both sources duplicate `names.json`'s EN names and add no new category or id scheme; only JP strings are new, and nothing consumes them. No script and no `aliases.json` should be written from these sources. Re-open only if a JP OCR/matcher consumer is built, or a post-SotE string dump is sourced.
 
 ---
 
@@ -98,7 +106,7 @@ The tracker is publicly accessible as a Google Sheet. No local install needed. T
 
 | Job | Actionable | Blocker | Next Step |
 |---|---|---|---|
-| 1. Elden Refs / Carian Archive → aliases.json | Yes, with caveats | License verification needed for both sources (no LICENSE files published) | Write task brief; confirm licensing & attribution approach |
+| 1. Elden Refs / Carian Archive → aliases.json | No (redundant) | EN names already covered by `names.json`; only JP is new and unconsumed | Closed — no deliverable. Re-open on a JP consumer or a post-SotE dump |
 | 2. RubyRed diff → missing/cut report | No | Requires user to download Drive folder manually + local game extract for `extract_icons` output | Ask user to provide both artifacts; then task |
 | 3. EanNewton NPC stats → npc-stats.json | No / Clarification needed | Conflation with combat stats (ERDB NpcParam); sheet is player-model only | Clarify product need: cosmetic display cards or combat stats? If cosmetic, task is ready. If combat, use ERDB instead. |
 | 4. EanNewton tracker vs catalog.ts | Yes | None | Write task brief; sheet is public, catalog is in repo, diff is well-defined |
@@ -107,7 +115,7 @@ The tracker is publicly accessible as a Google Sheet. No local install needed. T
 
 **Key Findings:**
 
-1. **Elden Refs & Carian Archive** — both sites exist and are publicly accessible with structured data, but neither has published license information. Research and written approval needed before ingesting.
+1. **Elden Refs & Carian Archive** — same corpus (Elden Refs mirrors Carian's `Master.html`). Their EN names are a strict subset of the already-ingested `names.json`; no new category or id scheme. Only JP strings are new, and no JP consumer exists. Redundant — no ingest.
 
 2. **RubyRed icon diff** — blocked on user action (manual Drive folder download) and local game extract. Not a script-writing task until artifacts are present.
 
