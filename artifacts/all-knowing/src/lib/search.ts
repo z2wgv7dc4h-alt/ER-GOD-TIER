@@ -3,7 +3,7 @@ import { matchLoot } from '../knowledge/loot'
 import { findSellers } from '../knowledge/merchants'
 import { missables } from '../knowledge/missables'
 import { findBossPin } from '../knowledge/bossPins'
-import { matchAllWarps } from './aliases'
+import { matchAllWarps, matchGeneratedAliases } from './aliases'
 import { moduleFor } from './links'
 import type { ModuleId } from '../types'
 
@@ -11,7 +11,7 @@ export type SearchHit = {
   id: string
   name: string
   detail: string
-  source: 'seed' | 'warp' | 'loot' | 'shop' | 'boss' | 'missable'
+  source: 'seed' | 'warp' | 'loot' | 'shop' | 'boss' | 'missable' | 'alias'
   module: ModuleId
 }
 
@@ -47,6 +47,11 @@ export function searchSync(query: string): SearchHit[] {
     if (n.includes('missable') || m.id.replace(/-/g, ' ').includes(n) || m.lockedBy.toLowerCase().includes(n)) {
       add({ id: m.id, name: m.id, detail: `${m.lockedBy} — ${m.note}`, source: 'missable', module: 'quests' })
     }
+  }
+  // Generated alias plane last: it covers every fact category (items, quests,
+  // invaders, regions) and only fills slots the curated sources left open.
+  for (const a of matchGeneratedAliases(q).slice(0, 6)) {
+    add({ id: a.slug, name: a.fmgName, detail: `${a.kind} · alias`, source: 'alias', module: moduleFor(a.slug) })
   }
   return hits.slice(0, 16)
 }
