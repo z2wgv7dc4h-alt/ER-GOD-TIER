@@ -72,6 +72,37 @@ SOFTWARE.
 
 ---
 
+## ERDB / ERExporter / SoulsFormats — NpcParam boss combat data
+
+- **Sources:**
+  - ERDB — https://github.com/EldenRingDatabase/erdb
+  - ERExporter — https://github.com/EldenRingDatabase/ERExporter
+  - SoulsFormats — https://github.com/JKAnderson/SoulsFormats
+- **Licenses:** ERDB MIT — Copyright (c) 2021 Filip Tomaszewski. SoulsFormats MIT. ERExporter
+  ships **no** LICENSE file; it was used as a build-time binary only and is not vendored or
+  redistributed.
+- **Used by:** `public/sourced/npc-combat.json`, `src/lib/enemy.ts`, and the Build lab's
+  "what should I hit this with" panel.
+- **What was taken:** the numeric `NpcParam` combat fields only — per-damage-type damage cut rates
+  (negation), status resistances, poise and base HP — for the named bosses in
+  `src/knowledge/catalog.ts`.
+- **Extraction method (one-time, local, read-only against the game install):**
+  1. Cloned ERDB into the gitignored `.scratch/erdb` and let it download its own `ERExporter.Param`
+     tool (`erdb.utils.sourcer`).
+  2. ERExporter 1.1.0's bundled 2022 SoulsFormats predates ZSTD-compressed DCX ("used in Elden Ring
+     since the DLC release"), so the container was decoded with a small Python shim: AES-256-CBC
+     decrypt with SoulsFormats' published `erRegulationKey`, DCX/ZSTD decompress to the BND4, then
+     BND4 extract of `NpcParam.param`. This mirrors `SFUtil.DecryptERRegulation` and
+     `DCX.DecompressDCXZSTD`; no SoulsFormats code is vendored.
+  3. The extracted `.param` was parsed with soulstruct's maintained `NPC_PARAM_ST` paramdef
+     (Grimrukh/soulstruct, GPL-3.0-or-later) — **build-time tool only; no soulstruct code is
+     vendored or shipped** — because ERExporter's 2022 paramdef misaligns the post-DLC fields
+     (`getSoul`/defence read as constants, and the real `*DamageCutRate` fields were missing).
+  4. Row ids were joined to names from the existing `public/sourced/open/paramdex/NpcParam.txt`.
+- **What was changed:** reduced to an 83-row boss subset keyed to catalog fact ids; damage cut
+  rates converted to integer negation percentages. `baseHp` is the raw param value before the
+  game's area/NG scaling, not the HP bar.
+
 ## EldenRingMap V1.2 (Nexus Mods #10354)
 
 - **Source:** Nexus Mods pack "EldenRingMap V1.2", by **CreateDDy**
