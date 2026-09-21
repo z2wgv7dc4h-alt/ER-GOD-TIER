@@ -111,6 +111,14 @@ export function AtlasWorkspace() {
   }
 
   const worldMeta = worlds.find((x) => x.id === world)
+  const plate = worldMeta?.plate
+  // Pins are percent of the plate image. The viewBox uses the image's pixel
+  // size (or 100x80 when there is no plate) so the SVG and the `object-fit:
+  // contain` image letterbox identically and the pins stay on the art.
+  const vw = worldMeta?.w ?? 100
+  const vh = worldMeta?.h ?? 80
+  const k = plate ? vw / 100 : 1
+  const at = (m: MapMarker) => (plate ? { x: (m.x / 100) * vw, y: (m.y / 100) * vh } : { x: m.x, y: m.y })
 
   function mark(state: FactState) {
     if (!selectedId) return
@@ -126,14 +134,14 @@ export function AtlasWorkspace() {
           <iframe title="Elden Ring live map" className="engine-frame" src={`${MAP_ENGINE_BASE}/?embed=1`} />
         ) : (
           <div className="atlas-plate">
-            {worldMeta?.plate && (
-              <img className="atlas-art" src={worldMeta.plate} alt="" />
+            {plate && (
+              <img className="atlas-art" src={plate} alt="" />
             )}
-          <svg viewBox="0 0 100 80" preserveAspectRatio="xMidYMid slice">
-            <text x="8" y="8" fill="#8a7018" fontSize="3" fontFamily="Cinzel">
+          <svg viewBox={plate ? `0 0 ${vw} ${vh}` : '0 0 100 80'} preserveAspectRatio="xMidYMid meet">
+            <text x={8 * k} y={8 * k} fill="#8a7018" fontSize={3 * k} fontFamily="Cinzel">
               {worldMeta?.label}
             </text>
-            {!worldMeta?.plate && (
+            {!plate && (
               <>
             <path d="M8,72 C18,70 22,58 20,46 C16,34 24,22 38,18 C52,14 58,28 70,22 C82,16 90,28 88,42 C86,58 78,70 62,74 C40,78 18,76 8,72 Z" fill="none" stroke="#3a3120" strokeWidth="0.35" />
             <path d="M66,52 C70,44 78,36 86,34 C92,40 90,52 84,58 C76,62 68,58 66,52 Z" fill="none" stroke="#2a3a4a" strokeWidth="0.3" />
@@ -141,30 +149,31 @@ export function AtlasWorkspace() {
             )}
             {shown.map((m) => {
               const st = factState(w.character, m.id)
+              const p = at(m)
               return (
                 <g key={m.id} className="pin" onClick={() => w.setSelectedMarkerId(m.id)}>
                   {mapIcons[m.kind] ? (
                     <image
                       href={mapIcons[m.kind]}
-                      x={m.x - 2}
-                      y={m.y - 2}
-                      width="4"
-                      height="4"
+                      x={p.x - 2 * k}
+                      y={p.y - 2 * k}
+                      width={4 * k}
+                      height={4 * k}
                       opacity={st === 'true' ? 1 : st === 'false' ? 0.3 : 0.75}
                     />
                   ) : (
                   <circle
-                    cx={m.x}
-                    cy={m.y}
-                    r={w.selectedMarkerId === m.id ? 1.7 : 1.15}
+                    cx={p.x}
+                    cy={p.y}
+                    r={(w.selectedMarkerId === m.id ? 1.7 : 1.15) * k}
                     fill={stateFill(st, m.kind)}
                     opacity={st === 'true' ? 1 : st === 'false' ? 0.35 : 0.7}
                     stroke={st === 'unknown' ? '#e4c36a' : 'none'}
-                    strokeWidth={st === 'unknown' ? 0.25 : 0}
+                    strokeWidth={st === 'unknown' ? 0.25 * k : 0}
                   />
                   )}
                   {w.selectedMarkerId === m.id && (
-                    <text x={m.x + 2} y={m.y + 0.8}>{m.name}</text>
+                    <text x={p.x + 2 * k} y={p.y + 0.8 * k}>{m.name}</text>
                   )}
                 </g>
               )
