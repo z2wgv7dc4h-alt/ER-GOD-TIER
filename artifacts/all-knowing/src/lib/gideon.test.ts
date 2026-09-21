@@ -122,12 +122,75 @@ describe('100% handler reflects tracked completion', () => {
   })
 })
 
+describe('PvP router', () => {
+  it('returns a real PvP build for a generic PvP question', () => {
+    const act = askGideonRouter('what is good for pvp', character)
+    expect(act.module).toBe('build')
+    expect(act.buildId).toMatch(/^build:pvp-/)
+    expect(act.say).toContain('Beats:')
+    expect(act.say).toContain('Watch out for:')
+  })
+
+  it('answers a bleed matchup with real counter-tech, not the PvE bleed build', () => {
+    const act = askGideonRouter('how do I beat a bleed build in PvP', character)
+    expect(act.say).toContain('Corpse Piler')
+    expect(act.say).toContain('status')
+    expect(act.buildId).toBeUndefined()
+    expect(act.offer?.label).toBe('PvP kits')
+  })
+
+  it('answers a mage matchup with Eternal Darkness', () => {
+    const act = askGideonRouter('how do I counter a mage in pvp', character)
+    expect(act.say).toContain('Eternal Darkness')
+  })
+
+  it('routes invade questions to an invade build and duel questions to a duel build', () => {
+    const invade = askGideonRouter('what is a good invasion build', character)
+    expect(invade.buildId).toBe('build:pvp-wretch')
+    const duel = askGideonRouter('what is a good duel build', character)
+    expect(duel.buildId).toBe('build:pvp-sorcerer-duelist')
+  })
+
+  it('recognises a PvP build by name in the build branch', () => {
+    const act = askGideonRouter('use the Colossal poise monster (RL150) build', character)
+    expect(act.buildId).toBe('build:pvp-colossal')
+    expect(act.module).toBe('build')
+  })
+})
+
+describe('tips / tech router', () => {
+  it('answers a named tech question with the real entry', () => {
+    const act = askGideonRouter('tips for stance break', character)
+    expect(act.say).toContain("Lion's Claw")
+    expect(act.say).toContain('How:')
+    expect(act.module).toBe('codex')
+  })
+
+  it('answers a specific spirit-ash question', () => {
+    const act = askGideonRouter('is mimic tear a good spirit ash', character)
+    expect(act.say).toContain('Mimic Tear')
+    expect(act.say).toContain('660')
+  })
+
+  it('returns a real list for a general tips question', () => {
+    const act = askGideonRouter('show me tips and tricks', character)
+    expect(act.say).toContain('Strong tech worth knowing')
+    expect(act.say).toContain('Lion')
+    expect(act.module).toBe('codex')
+  })
+})
+
 describe('isFastLookup', () => {
   it('routes exact single-entity lookups and fixed commands without the LLM', () => {
     expect(isFastLookup('godrick')).toBe(true)
     expect(isFastLookup('What is still available on this run?')).toBe(true)
     expect(isFastLookup('Blitz: Age of Stars. What do I do next?')).toBe(true)
     expect(isFastLookup('I want the Age of Stars ending. What do I do next?')).toBe(true)
+  })
+
+  it('keeps PvP and tips questions on the deterministic path', () => {
+    expect(isFastLookup('how do I beat a bleed build in PvP')).toBe(true)
+    expect(isFastLookup('show me tips and tricks')).toBe(true)
   })
 
   it('sends multi-concept questions to the LLM', () => {
