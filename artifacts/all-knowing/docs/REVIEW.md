@@ -18,7 +18,7 @@ everything below; this table is kept as a quick summary.
 | Gap | Why it matters | Next | Status |
 |---|---|---|---|
 | Engine marker ids ≠ catalog slugs | PC live map and PS5 interview still two namespaces | Generated `aliases.json`: param row → slug, FMG name → slug | ✅ graces+bosses (Task 06); full generated `aliases.json` from a real extract still Task 09/17's territory |
-| No OCR | PS5 shots are stored, not read | Tesseract on warp-list / pickup-banner crops; match Elden Refs | ⬜ still deliberately deferred |
+| OCR wired | PS5 shots OCR'd but low-confidence reads refused | N/A | ✅ done (Task 21) — real Tesseract.js in Reckon clipboard paste path |
 | No icon templates in-repo | Screenshot “deduce from item picture” needs pixels | `extract_icons` → `public/icons`; RubyRed only for cut IDs | 🔄 `extract_icons.py` is part of Task 09's direct-tool-call plan, in progress |
 | AR is a sketch | Build lab numbers are fake | Port `ThomasJClark/elden-ring-weapon-calculator` + `regulation-vanilla-v1.17.js` | ✅ done (Task 10), verified to the decimal against Clark's own upstream code |
 | Slot walk has no inventory | Save snapshot is flags + stats | Extend EldenRingMap walk *or* vendor Compass parser | ✅ done differently (Task 11) — Compass has no license at all, so an original parser was written from its public format docs instead of vendoring its code |

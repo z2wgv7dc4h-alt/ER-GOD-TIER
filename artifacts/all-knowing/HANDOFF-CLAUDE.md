@@ -195,9 +195,9 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 ### P0 — must for “not a demo”
 1. ✅ **Alias table** — engine grace ids, Paramdex warpId, seed slugs, `boss-xyz.kill` ↔
    `boss:slug`. (Task 06 — boss side; graces already existed.)
-2. ⬜ **Split `App.tsx`** into room files. Queued (Task 07) but never actually run — got
-   deprioritized for the parallel data/task work. Still ~700 lines, still a god file, now with
-   more piled into it (quest wiring, save UI, AR wiring) than when this was first written.
+2. ✅ **Split `App.tsx`** into room files. (Task 07 — split 776 → 272 lines, queued right
+   after Task 06 but deferred for the parallel batch 08-20; finally run as part of a full
+   review/critique pass.)
 3. ✅ **Tests** — `prefixKind`, `searchSync`, `planRoute` lockouts, vault round-trip. (Task 06,
    substantially extended by 11/12/15's own test additions — 44 tests total as of Task 18.)
 4. ✅ **Typecheck in CI** — `.github/workflows/ci.yml` now exists (Task 06).
@@ -208,10 +208,13 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
    drop/paste/upload path OCRs on-device, feeds names through `aliases`/`searchSync`, and records
    `source: 'screenshot'` evidence. Low-confidence or unmatched reads are surfaced but never
    turned into facts. Verified end-to-end in a headless browser against generated menu shots.)
-7. ⬜ Warp-list paste UX — not directly touched by name, though Task 06 extended `aliasStatus()`
-   to report boss coverage in Reckon's copy too. Not verified against this specific UX ask.
-8. ⬜ Interview coverage for SotE / Tarnished Pack starts — not addressed.
-9. ⬜ Clipboard screenshots (`useClipboardShots`) → Reckon — not verified.
+7. ✅ Warp-list paste UX — per-line bulk warp-list matching wired. (Task 34 — DLC-aware
+   interview seeding + per-line bulk warp-list matching in Reckon.)
+8. ✅ Interview coverage for SotE / Tarnished Pack starts — now seeded with DLC-aware
+   interview questions. (Task 34.)
+9. ✅ Clipboard screenshots → Reckon — wired real Tesseract.js OCR. (Task 21 — OCR drops
+   into Reckon's clipboard paste path; low-confidence reads are surfaced but not turned
+   into facts.)
 
 ### P1 — Atlas
 10. 🔄 Pick **one** projection for lots or leave lots off the JPG — Task 09 Part C, in progress
@@ -226,7 +229,8 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 14. 🔄 DeepSeek behind `GideonAct` — Task 20, in progress (a prior attempt died on the same
     scratch-directory permission issue that hit several other tasks; fixed and retrying).
     Grounding pack + hallucination-guard validation are in the task's requirements.
-15. ⬜ “I’m done” → extend to dump ids — not addressed.
+15. ✅ “I’m done” → extend to dump ids — multi-id plan-step completion now resolves steps
+    against a set of acceptable dump ids. (Task 35 — fixes 5 stalling questline beats.)
 16. 🔄 Detours use real boss resists — Task 19, queued behind Task 17 (needs real `NpcParam`
     data first) and Task 20 (shares `gideon.ts`, run sequentially not in parallel).
 17. 🔄 100% spine real checklist — Task 19, same queue position as #16.
@@ -278,17 +282,20 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
     no UI warning copy was needed; no functional change.
 
 ### P3 — product polish
-30. ⬜ Multi-profile UX in the rail — backend (`vault.ts`) already had full profile support before
-    any of this task work started; still not surfaced in the rail UI.
-31. ⬜ Packet diff surfacing — not addressed.
+30. ✅ Multi-profile UX in the rail — real ProfileSwitcher component in the rail. (Task 30
+    — fixes a real cross-profile recentFacts leak.)
+31. ✅ Packet diff surfacing — real UI diff before import. (Task 32 — mergePacket/diffPacket
+    with UI surfacing.)
 32. ✅ **PWA service worker / offline cache of `sourced/`** — Task 28: `vite-plugin-pwa`
    (`generateSW`) emits `sw.js` + a real manifest. App shell + art + a small critical
    `sourced/` JSON set are precached; the rest of `sourced/` is runtime-cached lazily
    (JSON stale-while-revalidate, media cache-first). The live map engine is `NetworkOnly`
    so Task 06's offline detection still sees real failures. Verified offline in headless
    Edge against `vite preview` (12/12 checks). See `src/lib/pwa.ts` + `src/lib/pwa.test.ts`.
-33. ⬜ Command palette grouping by source — not addressed.
-34. ⬜ Watchlist / leftovers → coords layer binding — not addressed.
+33. ✅ Command palette grouping by source — now groups hits by source. (Task 32 — groupHits
+    in search.ts.)
+34. ✅ Watchlist / leftovers → coords layer binding — toggleable leftover pin layer on the
+    Atlas. (Task 33.)
 35. ✅ Build lab AR: real numbers, not guessed. (Task 10 — ported `ThomasJClark/elden-ring-
     weapon-calculator`'s formula, verified to the decimal against 8 real cases including
     two-handing by bundling and running Clark's own upstream code against the same vendored
@@ -300,6 +307,14 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 37. Nightreign: out of v1 — unchanged, correctly still out of scope.
 
 ### Also new since this list was written (not in the original numbering)
+
+**Task 21–40 batch summary** (large parallel work landed 2026-09-22, each independently re-verified before merge):
+
+- **Data/content**: Task 22 added 3401 chest facts + 2271 enemy combat rows. Task 23 generated the aliases plane. Task 27 fixed vanilla/Tarnished-Pack regulation mismatch (2 of 3 sources). Task 29 added conditional merchant stock + achievement sets. Task 36 wired 2244 FanAPI item/boss thumbnails into the Codex.
+- **Gideon**: Task 21 wired real Tesseract.js OCR into Reckon (clipboard paste path). Task 25 deepened Gideon questline coverage (10 new companion lines, Enia table, comparisons). Task 40 added OP builds (6→14), PvP builds/matchups, and tips.
+- **UX/mobile**: Task 26 shipped real mobile-first layout (bottom tab bar, map 73-77% of screen at <700px). Task 30 surfaced multi-profile switching in the rail. Task 31 made every real shortcut/gesture discoverable in-app. Task 32 added packet diff surfacing + command palette source grouping. Task 33 bound leftovers/watchlist to a toggleable Atlas layer.
+- **Infrastructure**: Task 28 added installable offline PWA (service worker + lazy runtime cache). Task 34 added DLC-aware interview starts + per-line bulk warp-list matching. Task 35 resolved plan steps against acceptable dump ids (fixes 5 stalling questline beats). Task 37 consolidated field-hunt data into one canonical source (fixes 3-dialect id drift). Task 38 documented live-memory / EAC caution accurately. Task 39 added real cross-linking index between items, bosses, quests, locations.
+
 - Catalog fact count: 89 → 226 (Task 18, closing gaps a diff against the EanNewton tracker
   found — see `docs/research/eannewton-catalog-diff.md`). Added a new `invader:` fact-id prefix
   (mapped to the `boss` bucket in `prefixKind`, a documented decision, not an oversight).
