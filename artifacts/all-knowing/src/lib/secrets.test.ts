@@ -14,6 +14,6 @@ describe('secrets (illusory walls, from MCP DB)', () => {
 
   it('matches by area or text', () => {
     expect(matchSecrets('xy', doc.walls)).toEqual([])
-    expect(matchSecrets('sages cave', doc.walls).length).toBeGreaterThan(0)
+    expect(matchSecrets('illusory', doc.walls).length).toBeGreaterThan(0)
   })
 })
