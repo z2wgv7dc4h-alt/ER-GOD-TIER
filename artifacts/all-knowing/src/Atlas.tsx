@@ -63,7 +63,6 @@ function EngineEmbed({ onFail }: { onFail: () => void }) {
 
 export function AtlasWorkspace() {
   const w = useWorkspace()
-  const ps5 = w.character.platform === 'ps5' || w.character.platform === 'both'
   const [embedFailed, setEmbedFailed] = useState(false)
   const [showDown, setShowDown] = useState(false)
   const failEmbed = useCallback(() => setEmbedFailed(true), [])
@@ -397,9 +396,7 @@ export function AtlasWorkspace() {
         </button>
       </div>
       <aside className="side">
-        <div className="kicker">
-          {ps5 ? 'PS5 atlas · warp list + pins, not a save' : banner.label}
-        </div>
+        <div className="kicker">{banner.label}</div>
 
         <div className="legend-pins">
           <span className="note" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -449,13 +446,11 @@ export function AtlasWorkspace() {
         </div>
         <p className="note">{worldMeta?.hint}</p>
 
-        {!ps5 && (
-          <p className="note">
-            {banner.detail}
-            {engineLive && ` · ${w.engineMarkers.length || w.engineState?.markerCount || 0} markers`}
-            {banner.liveMemory && ' · live-memory on (read-only, offline only)'}
-          </p>
-        )}
+        <p className="note">
+          {banner.detail}
+          {engineLive && ` · ${w.engineMarkers.length || w.engineState?.markerCount || 0} markers`}
+          {banner.liveMemory && ' · live-memory on (read-only, offline only)'}
+        </p>
 
         <div className="tally">
           <span>{counts.found} found</span>
@@ -494,13 +489,11 @@ export function AtlasWorkspace() {
           </div>
         )}
 
-        {ps5 && (
-          <p className="note">
-            Best captures: open the map → Options → the Site of Grace list for this area.
-            Underground and Shadow are different map screens. Fog on a screenshot is not
-            “not discovered” — it is unknown until the name is on the warp list.
-          </p>
-        )}
+        <p className="note">
+          Best captures: open the map → Options → the Site of Grace list for this area.
+          Underground and Shadow are different map screens. Fog on a screenshot is not
+          “not discovered” — it is unknown until the name is on the warp list.
+        </p>
 
         <h3>{selectedName}</h3>
         {selected && (
