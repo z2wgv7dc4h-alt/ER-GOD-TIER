@@ -2,7 +2,15 @@ import { describe, expect, it } from 'vitest'
 import { emptyCharacter } from '../data/seed'
 import type { Character, Evidence, EvidenceClaim, EvidenceSource } from '../types'
 import { reconcileFacts } from './infer'
-import { diffPacket, mergeEvidence, mergePacket, type PacketDiffRow } from './packet'
+import {
+  QR_MAX_BYTES,
+  diffPacket,
+  mergeEvidence,
+  mergePacket,
+  packetFileName,
+  packetJson,
+  type PacketDiffRow,
+} from './packet'
 
 function claim(fact: string, source: EvidenceSource, polarity: EvidenceClaim, at: number): Evidence {
   return { id: `${source}:${fact}:${at}`, fact, source, confidence: 0.9, claim: polarity, at }
@@ -15,6 +23,40 @@ function characterWith(evidence: Evidence[], facts: string[]): Character {
 function rowFor(rows: PacketDiffRow[], fact: string) {
   return rows.find((r) => r.fact === fact)
 }
+
+describe('packet share payload (Task 57)', () => {
+  it('exports compact JSON with no screenshot blobs', () => {
+    const c: Character = {
+      ...emptyCharacter,
+      shots: [{ id: 's', kind: 'map', name: 'x', url: 'blob:http://local/x', notes: '', hits: [] }],
+    }
+    const json = packetJson(c)
+    expect(json).not.toContain('blob:')
+    expect(json).toContain('"kind":"all-knowing.packet"')
+    expect((JSON.parse(json) as { character: { shots: unknown[] } }).character.shots).toEqual([])
+  })
+
+  it('names the file from the character', () => {
+    expect(packetFileName({ ...emptyCharacter, name: 'Tarnished One' })).toBe('tarnished-one.all-knowing.json')
+    expect(packetFileName({ ...emptyCharacter, name: '' })).toBe('tarnished.all-knowing.json')
+  })
+
+  it('is larger than a QR can hold for a realistic run, so the handoff is hash-only', () => {
+    const c: Character = {
+      ...emptyCharacter,
+      collectedItems: Array.from({ length: 40 }, (_, i) => `item:x${i}`),
+      evidence: Array.from({ length: 40 }, (_, i) => ({
+        id: `e${i}`,
+        fact: `item:x${i}`,
+        source: 'answer' as const,
+        confidence: 0.9,
+        at: i,
+        detail: 'seed',
+      })),
+    }
+    expect(new Blob([packetJson(c)]).size).toBeGreaterThan(QR_MAX_BYTES)
+  })
+})
 
 describe('mergeEvidence', () => {
   it('pools both sides and keeps one entry per id', () => {

@@ -4,7 +4,19 @@ import { groupHits, searchSync } from './lib/search'
 import { matchWarp, nextGraces, warpGraces } from './knowledge/graces'
 import { applyFacts, denyFacts } from './lib/infer'
 import { labelOf, moduleFor } from './lib/links'
-import { diffPacket, downloadPacket, fromPacket, mergePacket, type PacketDiff, type PacketDiffRow } from './lib/packet'
+import {
+  copyPacket,
+  diffPacket,
+  downloadPacket,
+  fromPacket,
+  mergePacket,
+  packetFileName,
+  packetHash,
+  packetJson,
+  type PacketDiff,
+  type PacketDiffRow,
+} from './lib/packet'
+import { packetQr, type PacketQr } from './lib/packetQr'
 import { markHelpSeen, resolveHotkey } from './lib/shortcuts'
 import type { Character, Stats } from './types'
 import { useWorkspace } from './state'
@@ -69,30 +81,167 @@ function DiffSection({ title, rows, tone }: { title: string; rows: PacketDiffRow
 export function PacketBar() {
   const w = useWorkspace()
   const fileRef = useRef<HTMLInputElement>(null)
+  const noticeTimer = useRef<number | undefined>(undefined)
   const [pending, setPending] = useState<{ name: string; character: Character; diff: PacketDiff } | null>(null)
+  const [notice, setNotice] = useState('')
+  const [pasteOpen, setPasteOpen] = useState(false)
+  const [pasteText, setPasteText] = useState('')
+  const [hash, setHash] = useState('')
+  const [qr, setQr] = useState<PacketQr | null>(null)
+  const [qrLarge, setQrLarge] = useState(false)
 
-  async function stage(file: File) {
+  const json = useMemo(() => packetJson(w.character), [w.character])
+  const fileName = useMemo(() => packetFileName(w.character), [w.character])
+  const bytes = useMemo(() => new Blob([json]).size, [json])
+
+  useEffect(() => {
+    let cancelled = false
+    void packetHash(w.character).then((h) => { if (!cancelled) setHash(h) })
+    return () => { cancelled = true }
+  }, [json, w.character])
+
+  // The scannable QR: the real packet when it fits, else the handoff card.
+  useEffect(() => {
+    let cancelled = false
+    setQr(null)
+    void packetQr(w.character).then((next) => { if (!cancelled) setQr(next) })
+    return () => { cancelled = true }
+  }, [json, w.character])
+
+  useEffect(() => () => { if (noticeTimer.current) window.clearTimeout(noticeTimer.current) }, [])
+
+  function showNotice(text: string) {
+    setNotice(text)
+    if (noticeTimer.current) window.clearTimeout(noticeTimer.current)
+    noticeTimer.current = window.setTimeout(() => setNotice(''), 5000)
+  }
+
+  /** Stage a packet for diff-before-import. Nothing is merged until Confirm. */
+  function stageText(text: string, name: string) {
     try {
-      const character = fromPacket(JSON.parse(await file.text()))
-      setPending({ name: character.name || file.name, character, diff: diffPacket(w.character, character) })
+      const character = fromPacket(JSON.parse(text))
+      setPending({ name: character.name || name, character, diff: diffPacket(w.character, character) })
+      setPasteOpen(false)
+      setPasteText('')
     } catch (err) {
-      alert((err as Error).message)
+      showNotice(`Not an All-Knowing packet: ${(err as Error).message}`)
     }
   }
 
   function confirm() {
     if (!pending) return
+    const merged = pending.diff.added.length + pending.diff.flipped.length
     w.setCharacter(mergePacket(w.character, pending.character))
     setPending(null)
+    showNotice(`Merged ${merged} fact${merged === 1 ? '' : 's'}.`)
+  }
+
+  async function onCopy() {
+    const ok = await copyPacket(w.character)
+    showNotice(ok ? 'All-Knowing packet copied to clipboard.' : 'Copy was blocked — use Save file instead.')
   }
 
   return (
-    <div style={{ padding: '0 4px 10px' }}>
+    <div
+      style={{ padding: '0 4px 10px' }}
+      onDragOver={(e) => { if (Array.from(e.dataTransfer?.types ?? []).includes('Files')) e.preventDefault() }}
+      onDrop={(e) => {
+        const file = e.dataTransfer?.files?.[0]
+        if (!file) return
+        e.preventDefault()
+        void file.text().then((text) => stageText(text, file.name))
+      }}
+    >
       <div className="opts">
         <button type="button" className="chip" disabled={!w.canUndo} onClick={() => w.undo()}>Undo</button>
-        <button type="button" className="chip on" onClick={() => downloadPacket(w.character)}>Save file</button>
+        <button
+          type="button"
+          className="chip on"
+          title="Copy the All-Knowing packet JSON"
+          onClick={() => void onCopy()}
+        >
+          Copy packet
+        </button>
+        <button type="button" className="chip" onClick={() => { downloadPacket(w.character); showNotice(`Saved ${fileName}.`) }}>
+          Save file
+        </button>
         <button type="button" className="chip" onClick={() => fileRef.current?.click()}>Load file</button>
+        <button type="button" className={pasteOpen ? 'chip on' : 'chip'} onClick={() => setPasteOpen((v) => !v)}>
+          Paste
+        </button>
       </div>
+
+      <p className="note" style={{ margin: '6px 0 0' }}>
+        {bytes} bytes · {fileName}
+        {hash ? ` · SHA-256 ${hash.slice(0, 12)}…` : ' · hash needs a secure context'}
+      </p>
+      {qr && (
+        <div className="packet-qr">
+          <button
+            type="button"
+            className="packet-qr-btn"
+            onClick={() => setQrLarge(true)}
+            title="Tap to enlarge"
+            aria-label="Enlarge packet QR"
+          >
+            <span className="packet-qr-svg" dangerouslySetInnerHTML={{ __html: qr.svg }} />
+          </button>
+          <p className="note" style={{ margin: 0 }}>
+            {qr.mode === 'packet'
+              ? `Scan = full packet (${qr.bytes} bytes)`
+              : 'Scan = filename + SHA-256 only. Copy/Save for the JSON.'}
+          </p>
+        </div>
+      )}
+
+      {qrLarge && qr && (
+        <div
+          className="qr-overlay"
+          role="dialog"
+          aria-label="Packet QR, enlarged"
+          onClick={() => setQrLarge(false)}
+        >
+          <div className="qr-large" dangerouslySetInnerHTML={{ __html: qr.svg }} />
+          <p className="note">
+            {qr.mode === 'packet' ? `Full packet · ${qr.bytes} bytes` : 'Handoff card · Copy/Save for the JSON'}
+          </p>
+        </div>
+      )}
+
+      {pasteOpen && (
+        <div style={{ marginTop: 8 }}>
+          <textarea
+            className="search"
+            style={{ width: '100%', minHeight: 72, resize: 'vertical' }}
+            placeholder="Paste an All-Knowing packet JSON here"
+            value={pasteText}
+            onChange={(e) => setPasteText(e.target.value)}
+          />
+          <div className="opts" style={{ marginTop: 6 }}>
+            <button
+              type="button"
+              className="chip on"
+              disabled={!pasteText.trim()}
+              onClick={() => stageText(pasteText, 'pasted packet')}
+            >
+              Read pasted packet
+            </button>
+            <button
+              type="button"
+              className="chip"
+              disabled={!navigator.clipboard?.readText}
+              onClick={() => { void navigator.clipboard?.readText?.().then((t) => { if (t) setPasteText(t) }) }}
+            >
+              Paste from clipboard
+            </button>
+          </div>
+        </div>
+      )}
+
+      {notice && (
+        <p className="note" role="status" style={{ marginTop: 8, color: 'var(--ok)' }}>{notice}</p>
+      )}
+
       {pending && (
         <div className="packet-diff">
           <div className="kicker">Importing {pending.name}</div>
@@ -116,7 +265,7 @@ export function PacketBar() {
         hidden
         onChange={async (e) => {
           const file = e.target.files?.[0]
-          if (file) await stage(file)
+          if (file) stageText(await file.text(), file.name)
           e.target.value = ''
         }}
       />
@@ -124,10 +273,29 @@ export function PacketBar() {
   )
 }
 
+/**
+ * A value that settles `delay` ms after the last change. Used so the command
+ * palette runs `searchSync` on the pause, not on every keystroke — typing stays
+ * smooth and the results still update live.
+ */
+function useDebounced<T>(value: T, delay: number): T {
+  const [settled, setSettled] = useState(value)
+  useEffect(() => {
+    const id = window.setTimeout(() => setSettled(value), delay)
+    return () => window.clearTimeout(id)
+  }, [value, delay])
+  return settled
+}
+
+/** Minimum typed length before the palette searches. `searchSync` itself floors at 2. */
+export const LIVE_SEARCH_MIN = 2
+
 export function CommandHits() {
   const w = useWorkspace()
-  const q = w.query.trim().toLowerCase()
-  const sections = useMemo(() => groupHits(searchSync(q)), [q])
+  const debounced = useDebounced(w.query, 175)
+  const q = debounced.trim().toLowerCase()
+  // Live, debounced, and only from `searchSync`/`groupHits` — no new matcher.
+  const sections = useMemo(() => (q.length >= LIVE_SEARCH_MIN ? groupHits(searchSync(q)) : []), [q])
   if (!sections.length) return null
   return (
     <div className="command-hits">

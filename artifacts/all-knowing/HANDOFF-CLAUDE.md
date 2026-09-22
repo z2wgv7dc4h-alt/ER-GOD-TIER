@@ -474,6 +474,42 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 - Build lab: the AR math is unchanged and ignores blessing, so a SotE run now shows the honest
   one-liner "AR is base-game; Scadutree Blessing not applied."
 
+**Task 42 — proactive suggestions + live search** (landed after 60):
+
+- `src/lib/suggestions.ts` — `idleSuggestions(character)`: 2–3 real next actions from
+  `stillAvailable()` / `approachingGates()` / `nextMoves()` / `leftovers()`, deduped, shown as a
+  small dismissible `.gideon-suggest` strip when Gideon's input is idle. Each chip runs the existing
+  `run(prompt)` path — no parallel suggestion engine.
+- `CommandHits` debounces the query 175 ms and renders `groupHits(searchSync(q))` live as you type;
+  the existing 2-char floor is kept (no new matcher).
+
+**Task 50 — confirm-before-tick lockout warnings** (landed after 42):
+
+- `src/lib/lockWarnings.ts` reuses `planRoute`/`applyFacts` (no second DAG walker): it simulates the
+  tick, diffs each line's `foreclosed` set, and reports only lines the character has started (≥1
+  step done) or is currently chasing (`answers.gideonGoal`).
+- `src/LockoutPrompt.tsx` is the confirm modal; it gates **both** completion paths — `Quests.tsx`'s
+  mark-done and Gideon's `markDone` (done-report) and "I'm done". Nothing is applied until confirmed.
+  Fingerslayer on the golden fixture does not warn (no false Leyndell lock).
+
+**Task 57 — packet share UX** (landed after 50):
+
+- `PacketBar`: primary **Copy packet** (async Clipboard API + textarea fallback) with a visible
+  toast; secondary **Save file**; **Load file**, a **Paste** textarea / clipboard read, and
+  drag-and-drop. Task 32's diff-before-import is unchanged, and Confirm reports "Merged N facts."
+- `src/lib/packet.ts` gained `packetJson` / `packetFileName` / `packetHash` / `copyPacket`.
+  `*.all-knowing.json` stays the source of truth; no screenshot blobs, no accounts/server.
+
+**Task 63 — scannable packet QR** (landed after 57):
+
+- `src/lib/packetQr.ts` uses `uqr` 0.1.3 (MIT, zero deps, pinned dependency) for `encode` +
+  `renderSVG`. `packet` mode when the compact JSON is ≤ 2953 bytes; otherwise a 5-line
+  `ALL-KNOWING-HANDOFF` card (filename + `sha256` + bytes) — never truncated, gzipped, multi-tiled,
+  or put in a URL.
+- PacketBar renders a 192 px high-contrast SVG (tap-to-enlarge). `@paulmillr/qr` 0.3.0 is a
+  **devDependency** used only in `packetQr.test.ts` to decode both modes (no BarcodeDetector; the
+  decoder is not in the app bundle).
+
 ---
 
 ## 7. Product ideas still valid (not built)

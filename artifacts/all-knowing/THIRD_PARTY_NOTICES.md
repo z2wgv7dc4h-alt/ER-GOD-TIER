@@ -261,3 +261,21 @@ SOFTWARE.
   `unicode-range` is preserved. There is no request to Google at runtime; the files are
   precached by the service worker (Task 58).
 
+## uqr — QR code encoder (Task 63)
+
+- **Source:** https://github.com/unjs/uqr — v0.1.3 (pinned dependency).
+- **License:** MIT — Copyright (c) Project Nayuki; Copyright (c) 2023 Anthony Fu.
+- **Used by:** `src/lib/packetQr.ts` (`encode`, `renderSVG`); the resulting SVG is shown in the
+  character-sheet PacketBar.
+- **What was taken:** the encoder + SVG renderer, used as an exact-pinned npm dependency (not
+  vendored), zero runtime deps. It only renders QR codes for data this repo authors (the packet
+  JSON, or the filename + SHA-256 handoff card); no data leaves the machine.
+
+## @paulmillr/qr — QR decoder, test-only (Task 63)
+
+- **Source:** https://github.com/paulmillr/qr — v0.3.0 (pinned **devDependency**).
+- **License:** MIT OR Apache-2.0 — Copyright (c) 2023 Paul Miller (paulmillr.com).
+- **Used by:** `src/lib/packetQr.test.ts` only, to decode the encoder's own matrix back to text and
+  prove both packet and handoff modes round-trip without a camera or `BarcodeDetector`. It is a
+  devDependency and is **not** part of the app bundle.
+

@@ -37,10 +37,18 @@ Intents already wired: ending/line plan, blitz, still-available, wear build, loo
 
 Replace the router later; do not replace the act.
 
+Idle proactive chips (`src/lib/suggestions.ts` → `idleSuggestions`) reuse `stillAvailable` /
+`nextMoves` / `leftovers` / `approachingGates` and run through the same `run()` path; the command
+palette debounces `searchSync`. Before any step is ticked (Quests.tsx or Gideon markDone / “I'm
+done”), `src/lib/lockWarnings.ts` confirms via `LockoutPrompt` when `planRoute` would foreclose a
+line the character started — no second DAG walker.
+
 ## Persistence
 
 `all-knowing.vault.v1` — profiles + UI (room, sit, selected pin).
-Packet `*.all-knowing.json` — character only, no shots.
+Packet `*.all-knowing.json` — character only, no shots. PacketBar shares it by clipboard/download
+and a scannable QR: the full JSON when ≤ 2953 bytes, else a filename + SHA-256 handoff card
+(`src/lib/packetQr.ts`, `uqr`).
 
 ## Hosted data
 

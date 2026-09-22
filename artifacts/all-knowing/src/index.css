@@ -658,6 +658,53 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   max-width: 340px;
 }
 .command-group .kicker { margin-bottom: 2px; }
+.packet-qr { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; margin-top: 10px; }
+.packet-qr-btn {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 6px;
+  cursor: zoom-in;
+  line-height: 0;
+}
+.packet-qr-btn:hover { border-color: var(--gold); }
+.packet-qr-svg svg { display: block; width: 192px; height: 192px; }
+.qr-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.86);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+  cursor: zoom-out;
+}
+.qr-large { background: #ffffff; padding: 10px; border-radius: 8px; line-height: 0; }
+.qr-large svg { display: block; width: min(80vmin, 520px); height: auto; }
+.lockout-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  background: rgba(0, 0, 0, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.lockout-sheet {
+  width: 100%;
+  max-width: 460px;
+  background: var(--bg-panel);
+  border: 1px solid var(--gold-dim);
+  border-radius: 8px;
+  padding: 18px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+.lockout-sheet .list { margin: 10px 0 0; }
+.lockout-sheet .list li { flex-direction: column; align-items: flex-start; gap: 3px; }
 .packet-diff {
   border: 1px solid var(--line);
   background: var(--bg-raised);
@@ -702,6 +749,23 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   background: var(--bg-raised);
 }
 .gideon-now h3 { font-family: var(--font-display); margin: 4px 0 8px; font-size: 16px; }
+.gideon-suggest {
+  border: 1px solid var(--line-soft);
+  background: var(--bg-raised);
+  padding: 8px 10px;
+  margin-bottom: 10px;
+}
+.gideon-suggest .kicker { display: flex; align-items: center; justify-content: space-between; }
+.gideon-suggest-x {
+  background: none;
+  border: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1;
+  padding: 2px 6px;
+  cursor: pointer;
+}
+.gideon-suggest-x:hover { color: var(--ink); }
 .gideon-log { max-height: 180px; overflow: auto; margin: 8px 0; white-space: pre-wrap; }
 .gideon-log p { font-size: 13px; line-height: 1.4; margin: 0 0 8px; }
 .app.sit .drop,

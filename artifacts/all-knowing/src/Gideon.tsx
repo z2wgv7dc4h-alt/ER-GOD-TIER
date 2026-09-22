@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { opBuilds } from './knowledge/builds'
 import { endings, nextCompletionId, planRoute } from './knowledge/endings'
 import { pvpBuilds } from './knowledge/pvp'
@@ -9,6 +9,9 @@ import { art } from './art'
 import { searchSync } from './lib/search'
 import { medusaChapters } from './knowledge/medusa'
 import { leftovers, toggleWatch, watchlistOf } from './lib/leftovers'
+import { idleSuggestions } from './lib/suggestions'
+import { lockoutWarningsFor, type LockWarning } from './lib/lockWarnings'
+import { LockoutPrompt } from './LockoutPrompt'
 import { packStatus } from './lib/sourcePack'
 import { useWorkspace } from './state'
 
@@ -18,12 +21,19 @@ export function Gideon() {
   const [q, setQ] = useState('')
   const [memory, setMemory] = useState<GideonMemory>({ goalId: savedGoal })
   const [offer, setOffer] = useState<{ label: string; prompt: string } | null>(null)
+  const [dismissed, setDismissed] = useState(false)
+  const [lockPending, setLockPending] = useState<{ ids: string[]; warnings: LockWarning[]; after?: () => void } | null>(null)
   const [log, setLog] = useState<{ role: 'you' | 'gideon'; text: string }[]>([
     { role: 'gideon', text: 'Name a line, tap Blitz, or ask what is still available. Show it pins the atlas. I’m done ticks the beat.' },
   ])
 
   const line = allLines.find((e) => e.id === memory.goalId)
   const plan = useMemo(() => (line ? planRoute(w.character, line) : null), [line, w.character])
+  // Real next actions for this character; recomputed only when the character
+  // changes, never per keystroke, so the input stays responsive.
+  const suggestions = useMemo(() => idleSuggestions(w.character, 3), [w.character])
+  // A new character is a new context: let the strip offer again.
+  useEffect(() => { setDismissed(false) }, [w.character])
 
   function persistGoal(id?: string) {
     if (!id || w.character.answers.gideonGoal === id) return
@@ -48,7 +58,13 @@ export function Gideon() {
       if (b) w.setCharacter({ ...w.character, stats: b.stats, level: b.level, loadout: b.kit })
     }
     if (act.markDone?.length) {
-      w.setCharacter(applyFacts(w.character, act.markDone, 'answer', `Gideon: ${text}`))
+      // Confirm-before-tick: only mutate once a lockout warning is acknowledged.
+      const warnings = lockoutWarningsFor(w.character, act.markDone)
+      if (warnings.length) {
+        setLockPending({ ids: act.markDone, warnings })
+      } else {
+        w.setCharacter(applyFacts(w.character, act.markDone, 'answer', `Gideon: ${text}`))
+      }
     }
     setOffer(act.offer ?? null)
     setLog((rows) => [...rows, { role: 'you' as const, text }, { role: 'gideon' as const, text: act.say }].slice(-10))
@@ -82,8 +98,21 @@ export function Gideon() {
     if (!plan?.current) return
     const factId = nextCompletionId(w.character, plan.current)
     if (!factId) return
+    const warnings = lockoutWarningsFor(w.character, [factId])
+    if (warnings.length) {
+      setLockPending({ ids: [factId], warnings, after: () => void run('what next') })
+      return
+    }
     w.setCharacter(applyFacts(w.character, [factId], 'answer', 'I’m done'))
     void run('what next')
+  }
+
+  function confirmLock() {
+    if (!lockPending) return
+    w.setCharacter(applyFacts(w.character, lockPending.ids, 'answer', 'Gideon: confirmed lockout'))
+    const after = lockPending.after
+    setLockPending(null)
+    after?.()
   }
 
   return (
@@ -108,6 +137,38 @@ export function Gideon() {
         </div>
       ) : (
         <p className="note">No beat yet. Pick a line below or ask what is still available.</p>
+      )}
+
+      {q.trim() === '' && !dismissed && suggestions.length > 0 && (
+        <div className="gideon-suggest">
+          <div className="kicker">
+            Next, maybe
+            <button
+              type="button"
+              className="gideon-suggest-x"
+              aria-label="Dismiss suggestions"
+              onClick={() => setDismissed(true)}
+            >
+              ×
+            </button>
+          </div>
+          <div className="opts">
+            {suggestions.map((s) => (
+              <button
+                key={s.id}
+                type="button"
+                className="chip"
+                title={s.prompt}
+                onClick={() => {
+                  setDismissed(true)
+                  void run(s.prompt)
+                }}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+        </div>
       )}
 
       {leftovers(w.character).length > 0 && (
@@ -182,6 +243,14 @@ export function Gideon() {
         />
         <button type="button" className="chip on" onClick={submit}>Go</button>
       </div>
+
+      {lockPending && (
+        <LockoutPrompt
+          warnings={lockPending.warnings}
+          onCancel={() => setLockPending(null)}
+          onConfirm={confirmLock}
+        />
+      )}
     </section>
   )
 }

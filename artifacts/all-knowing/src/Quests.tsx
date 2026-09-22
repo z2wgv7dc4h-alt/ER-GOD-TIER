@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import { quests } from './data/seed'
+import { LockoutPrompt } from './LockoutPrompt'
 import { Related } from './Related'
 import { Thread } from './Thread'
+import { lockoutWarnings, type LockWarning } from './lib/lockWarnings'
 import { useWorkspace } from './state'
 
 export function QuestWorkspace() {
   const { character, setCharacter, query, selectedMarkerId, setSelectedMarkerId } = useWorkspace()
   const [activeId, setActiveId] = useState(quests[0]?.id)
+  const [pendingLock, setPendingLock] = useState<{ id: string; warnings: LockWarning[] } | null>(null)
   // A link from elsewhere (item/boss/Atlas) selects a step id; land on its line.
   const linkedLine = selectedMarkerId
     ? quests.find((q) => q.steps.some((s) => s.id === selectedMarkerId))
@@ -15,19 +18,40 @@ export function QuestWorkspace() {
   const filtered = quests.filter((q) => `${q.npc} ${q.summary}`.toLowerCase().includes(query.trim().toLowerCase()))
   const linkedStep = linkedLine && linkedLine.id === active.id ? selectedMarkerId : null
 
-  function toggleStep(id: string) {
+  function commitStep(id: string) {
     const has = character.completedQuestSteps.includes(id)
-    const step = active.steps.find((s) => s.id === id)
-    if (!has && step?.lockout) {
-      const ok = confirm(`This can lock a line:\n\n${step.lockout}\n\nMark it done anyway?`)
-      if (!ok) return
-    }
     setCharacter({
       ...character,
       completedQuestSteps: has
         ? character.completedQuestSteps.filter((s) => s !== id)
         : [...character.completedQuestSteps, id],
     })
+  }
+
+  function toggleStep(id: string) {
+    // Un-ticking never locks anything.
+    if (character.completedQuestSteps.includes(id)) {
+      commitStep(id)
+      return
+    }
+    // Real DAG lockouts first (reuses planRoute); then the seed step's own prose
+    // warning, only when that line is actually in play for this character.
+    const warnings = lockoutWarnings(character, id)
+    const step = active.steps.find((s) => s.id === id)
+    if (step?.lockout && !warnings.some((w) => w.lineId === active.id)) {
+      warnings.push({
+        lineId: active.id,
+        lineName: active.npc,
+        steps: [{ id: step.id, do: step.text }],
+        note: step.lockout,
+        started: active.steps.some((s) => character.completedQuestSteps.includes(s.id)),
+      })
+    }
+    if (warnings.length) {
+      setPendingLock({ id, warnings })
+      return
+    }
+    commitStep(id)
   }
 
   function pickLine(id: string) {
@@ -78,6 +102,17 @@ export function QuestWorkspace() {
           ))}
         </ul>
       </section>
+      {pendingLock && (
+        <LockoutPrompt
+          warnings={pendingLock.warnings}
+          onCancel={() => setPendingLock(null)}
+          onConfirm={() => {
+            const id = pendingLock.id
+            setPendingLock(null)
+            commitStep(id)
+          }}
+        />
+      )}
     </div>
   )
 }

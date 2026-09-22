@@ -201,12 +201,76 @@ export function diffPacket(current: Character, other: Character, opts: ConflictO
   return { added, flipped, lost, same }
 }
 
+/** The packet as compact JSON — the single clipboard / share payload. */
+export function packetJson(character: Character): string {
+  return JSON.stringify(toPacket(character))
+}
+
+/** The download filename for a character's packet. */
+export function packetFileName(character: Character): string {
+  return `${character.name.replace(/\s+/g, '-').toLowerCase() || 'tarnished'}.all-knowing.json`
+}
+
+/**
+ * SHA-256 of the packet JSON as hex — the short handoff fingerprint shown beside
+ * the filename. Browser-native `crypto.subtle`; returns '' when the page is not a
+ * secure context (no subtle crypto), so the UI can say so instead of inventing a
+ * checksum.
+ */
+export async function packetHash(character: Character): Promise<string> {
+  if (!globalThis.crypto?.subtle) return ''
+  const bytes = new TextEncoder().encode(packetJson(character))
+  const digest = await crypto.subtle.digest('SHA-256', bytes)
+  return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('')
+}
+
+/**
+ * Largest standard QR (version 40, error-correction L, byte mode) holds 2953
+ * bytes. Used only to *classify* a packet for the handoff UI. We do not render a
+ * QR here: there is no browser QR-generator API, and Task 57 forbids a new
+ * dependency, so the packet is handed off by clipboard/download and a fingerprint
+ * rather than by a truncated code. See `copyPacket`.
+ */
+export const QR_MAX_BYTES = 2953
+
+/**
+ * Copy the packet JSON to the clipboard. Primary share path for a phone. Prefers
+ * the async Clipboard API and falls back to a hidden textarea + `execCommand('copy')`
+ * for embedded/older contexts. Resolves to false when neither path worked so the
+ * caller can point at the download instead of lying about it.
+ */
+export async function copyPacket(character: Character): Promise<boolean> {
+  const text = packetJson(character)
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text)
+      return true
+    }
+  } catch {
+    /* permission denied or no clipboard — try the legacy path */
+  }
+  try {
+    const area = document.createElement('textarea')
+    area.value = text
+    area.setAttribute('readonly', '')
+    area.style.position = 'fixed'
+    area.style.top = '-1000px'
+    document.body.appendChild(area)
+    area.select()
+    const ok = document.execCommand('copy')
+    area.remove()
+    return ok
+  } catch {
+    return false
+  }
+}
+
 export function downloadPacket(character: Character) {
   const blob = new Blob([JSON.stringify(toPacket(character), null, 2)], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
-  a.download = `${character.name.replace(/\s+/g, '-').toLowerCase() || 'tarnished'}.all-knowing.json`
+  a.download = packetFileName(character)
   a.click()
   URL.revokeObjectURL(url)
 }
