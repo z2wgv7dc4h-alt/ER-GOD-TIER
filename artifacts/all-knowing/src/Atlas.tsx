@@ -12,7 +12,7 @@ import {
 import { Thread } from './Thread'
 import { factState, useWorkspace, type FactState } from './state'
 import { useCoords } from './lib/coords'
-import { useEldenringMapPins } from './lib/eldenringMapPins'
+import { useEnginePins } from './lib/engineMarkers'
 import { layerOrder } from './lib/nav'
 import { resolveSelection } from './lib/atlasSelection'
 import { leftoverPins } from './lib/leftoverPins'
@@ -88,7 +88,7 @@ export function AtlasWorkspace() {
   const [sideOpen, setSideOpen] = useState(false)
   const [layersOpen, setLayersOpen] = useState(false)
   const coords = useCoords()
-  const ermPins = useEldenringMapPins(world)
+  const enginePins = useEnginePins(world)
 
   const gracePins: MapMarker[] = useMemo(
     () =>
@@ -129,16 +129,17 @@ export function AtlasWorkspace() {
       }))
     const seen = new Set(gracePins.map((g) => g.name.toLowerCase()))
     const extraWeb = fromWeb.filter((c) => !seen.has(c.name.toLowerCase()))
-    // The EldenRingMap pack repeats many of the same dungeons the web-coord pins
+    // The engine's own markers overlap the web-coord pins, so only add pins whose
+    // names are not already present.
     // already plot, so only add its markers whose names are not already present.
     const known = new Set([
       ...seen,
       ...mapped.map((m) => m.name.toLowerCase()),
       ...fromWeb.map((c) => c.name.toLowerCase()),
     ])
-    const ermNew = ermPins.filter((p) => !known.has(p.name.toLowerCase()))
+    const ermNew = enginePins.filter((p) => !known.has(p.name.toLowerCase()))
     return [...gracePins, ...mapped, ...extraWeb, ...ermNew]
-  }, [gracePins, world, coords, w.layers, ermPins])
+  }, [gracePins, world, coords, w.layers, enginePins])
 
   const leftoverList = useMemo(
     () => leftoverPins(w.character, coords, { world }),

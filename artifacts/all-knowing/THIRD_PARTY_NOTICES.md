@@ -290,9 +290,10 @@ SOFTWARE.
 Taken under the permissive sources policy (`HANDOFF-CLAUDE.md` §4). Nothing here ships game art or
 article HTML; only structured fields/text, each row keeping its source.
 
-- **EldenRingMap Nexus V1.2** (egormagurin) — `DATA/*_en.json` marker positions (graces, dungeons,
-  merchants, night bosses, collectibles). Used by `scripts/ingest-packs.py`; output
-  `public/sourced/open/eldenringmap.json`. Positions are data; no images are copied.
+- **EldenRingMap Nexus V1.2** (egormagurin) — the same project as the vendored engine, so its markers
+  are **not** ingested separately; the app reads the engine's own `data/markers.json` +
+  `data/items.json` and exports them to `public/sourced/open/engine-markers.json`
+  (`scripts/export-engine-markers.mjs`). Positions are data; no images are copied.
 - **ER Checklist** (Nexus 9953) — `mods/ercl/items.json` categorised item ids/names →
   `public/sourced/open/ercl-items.json`.
 - **Elden Medusa** (Nexus 10286) — the 100% walkthrough text (`data/en/act*/`), text only →

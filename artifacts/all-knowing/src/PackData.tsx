@@ -2,14 +2,15 @@ import { useEffect, useState } from 'react'
 import { WikiText } from './WikiText'
 import {
   erclItems,
-  ermLocations,
-  loadEldenringMap,
   loadErcl,
   matchErcl,
-  matchErm,
   type ErclItem,
-  type ErmLocation,
 } from './lib/packs'
+import {
+  loadEngineMarkers,
+  matchEngineItems,
+  type EngineItem,
+} from './lib/engineMarkers'
 import { loadMedusaRoute, matchMedusa, medusaQuests, type MedusaQuest } from './lib/medusaRoute'
 import { loadBossDrops, matchBossDrops, type FextBoss } from './lib/bosses'
 import { guideExcerpts, loadGuides, matchGuides, type GuideExcerpt } from './lib/guides'
@@ -20,30 +21,31 @@ import {
   type NpcPlacement,
 } from './lib/npcPlacements'
 
-/** Map locations (graces/dungeons/merchants) from the EldenRingMap pack. */
-export function EldenringMapSection({ query, preloaded }: { query: string; preloaded?: ErmLocation[] }) {
-  const [rows, setRows] = useState<ErmLocation[] | null>(preloaded ?? null)
+/** Named pickups from the engine's own map data, with nearest grace. */
+export function EngineItemSection({ query, preloaded }: { query: string; preloaded?: EngineItem[] }) {
+  const [rows, setRows] = useState<EngineItem[] | null>(preloaded ?? null)
   const q = query.trim()
   useEffect(() => {
     if (q.length < 3 || rows) return
     let cancelled = false
-    void loadEldenringMap()
-      .then((doc) => { if (!cancelled) setRows(ermLocations(doc)) })
-      .catch(() => { /* pack absent: section stays hidden */ })
+    void loadEngineMarkers()
+      .then((d) => { if (!cancelled) setRows(d.items) })
+      .catch(() => { /* engine data absent: section stays hidden */ })
     return () => { cancelled = true }
   }, [q, rows])
   const data = preloaded ?? rows
   if (q.length < 3 || !data) return null
-  const hits = matchErm(q, data)
+  const hits = matchEngineItems(q, data)
   if (hits.length === 0) return null
   return (
     <>
-      <h3 className="codex-head">Map locations · EldenRingMap pack</h3>
+      <h3 className="codex-head">Where to find · engine map</h3>
       <div className="codex-grid">
         {hits.map((r) => (
-          <article className="card" key={`${r.kind}:${r.name}:${r.region}`}>
-            <div className="kicker">{r.kind} · {r.region} · {r.world}</div>
+          <article className="card" key={r.id}>
+            <div className="kicker">{r.cat} · {r.map || '—'}</div>
             <h3>{r.name}</h3>
+            {r.near && <p className="note">Nearest grace: {r.near}</p>}
           </article>
         ))}
       </div>

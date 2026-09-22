@@ -96,7 +96,7 @@ resolves to exactly one entity in the **active** view via `src/lib/atlasSelectio
 resolves in whichever pin set owns it; with no id the default is the engine's first marker when live,
 else the first shown plate pin. So the mark chips can never silently target a pin that is not on
 screen. World-XYZ LOTs stay off the plate (`src/lib/coords.ts`), but grounded points that already have
-a frame are drawn: the EldenRingMap pack markers (`src/lib/eldenringMapPins.ts`, `px/10496*100`) and the
+a frame are drawn: the engine's own markers (`src/lib/engineMarkers.ts`, `px/10496*100`) and the
 projected NPC placements (`sourced/npc-placements.json`).
 
 ## Data plane (local packs, game text, dialogue, placements)
@@ -106,9 +106,10 @@ projected NPC placements (`sourced/npc-placements.json`).
 - **Dialogue owners** — `open/dialogue-owners.json`: ESD `TalkID` -> MSB PARTS `TalkID` ->
   `NPCParamID` -> `NpcName`, i.e. the game's own resolve, no invented speaker (`src/lib/dialogueOwners.ts`,
   quoting in `src/lib/dialogueQuote.ts`).
-- **Local packs** — `open/eldenringmap.json`, `open/ercl-items.json`, `open/medusa-route.json`
-  (Nexus packs, ingested by `scripts/ingest-packs.py`; `src/lib/packs.ts`, `src/lib/medusaRoute.ts`,
-  Codex in `src/PackData.tsx`).
+- **Local packs** — `open/ercl-items.json`, `open/medusa-route.json` (Nexus packs;
+  `src/lib/packs.ts`, `src/lib/medusaRoute.ts`, Codex in `src/PackData.tsx`). The engine's own
+  markers/items are exported to `open/engine-markers.json` (`src/lib/engineMarkers.ts`) — the Nexus
+  "EldenRingMap" pack is the same project and is not ingested separately.
 - **NPC placements** — `sourced/npc-placements.json`, projected to the engine pixel frame with the
   engine affine + `legacy-conv.json` (`scripts/extract-npc-placements.py`, `src/lib/npcPlacements.ts`).
 - **Interactive engine** — absorbed as a plain runtime dependency. `erlib` lives in `scripts/erlib/`

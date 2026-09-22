@@ -51,10 +51,11 @@ surface requirements/scaling/base attack in the Codex (previously only FanAPI we
 - **Dialogue owners** `open/dialogue-owners.json` (95 speakers / 1,952 lines) — ESD `TalkID` -> MSB
   PARTS `TalkID` -> `NPCParamID` -> name (`scripts/extract-dialogue-owners.py`). Gideon quotes real
   lines (`src/lib/dialogueQuote.ts`); `findMedusaStep` answers route steps.
-- **Local packs** `open/eldenringmap.json` (350 graces, 64 dungeons, 19 merchants, 21 night bosses,
-  collectibles), `open/ercl-items.json` (154 talismans, 129 incantations, …), `open/medusa-route.json`
-  (9 acts / 367 steps) — `scripts/ingest-packs.py`; loaders `src/lib/packs.ts`, `src/lib/medusaRoute.ts`;
-  Codex sections in `src/PackData.tsx`.
+- **Local packs** `open/ercl-items.json` (154 talismans, 129 incantations, …) and
+  `open/medusa-route.json` (9 acts / 367 steps) — `scripts/ingest-packs.py`; loaders
+  `src/lib/packs.ts` / `src/lib/medusaRoute.ts`. The map engine's own markers/items are exported to
+  `open/engine-markers.json` (`scripts/export-engine-markers.mjs`, `src/lib/engineMarkers.ts`); the
+  Nexus "EldenRingMap" pack is the same project and was dropped as a duplicate.
 - **NPC placements** `sourced/npc-placements.json` (1,370 placements, 95 talkers) — projected to the
   engine pixel frame with the engine affine + `legacy-conv.json` (`scripts/extract-npc-placements.py`);
   `src/lib/npcPlacements.ts`; Gideon "where is X" fallback.
