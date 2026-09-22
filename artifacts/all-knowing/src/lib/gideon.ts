@@ -16,7 +16,7 @@ import { missables } from '../knowledge/missables'
 import { matchAllWarps, matchGeneratedAliases } from './aliases'
 import { searchSync } from './search'
 import { labelOf, moduleFor, nextMoves } from './links'
-import { summarize } from './infer'
+import { applyFacts, summarize } from './infer'
 import {
   bossCombatFor,
   cachedBossCombat,
@@ -38,6 +38,14 @@ export type GideonAct = {
   offer?: { label: string; prompt: string }
   goal?: string
   navigateNow?: boolean
+  /**
+   * Fact ids the router determined the player just reported as true (e.g.
+   * "I killed Margit"), not merely asked about. The caller must actually
+   * apply these (applyFacts) — the router itself is pure and cannot mutate
+   * the character, it only computes its "what next" answer as if they were
+   * already applied.
+   */
+  markDone?: string[]
 }
 
 export type GideonMemory = {
@@ -338,6 +346,16 @@ function isComparable(question: string, combat: BossCombat[]): boolean {
 }
 
 /**
+ * "I've done X" / "I killed X" — a completion report, not a question.
+ * `beat` alone is deliberately excluded unless it has a completion auxiliary
+ * ('ve/have) or `just` in front: "beat" is its own past tense in English, so
+ * a bare "I beat" is indistinguishable from "how do I beat X" / "I [will]
+ * beat X". "beaten", "killed", "defeated", "finished", "cleared", and "done"
+ * are unambiguous past tense on their own.
+ */
+const DONE_REPORT = /\b(i(?:'ve| have) (?:done|beat(?:en)?|killed|defeated|finished|cleared)|i (?:beaten|killed|defeated|finished|cleared|done)\b|just (?:beat(?:en)?|killed|defeated|finished|cleared))\b/
+
+/**
  * Deterministic keyword router. This is the fallback and the fast path: it
  * answers lookups (a named ending, a warp, a build, still-available, "I'm
  * stuck") without a network round-trip.
@@ -435,12 +453,76 @@ export function askGideonRouter(
     return speakPlan(character, npcLine)
   }
 
-  const line = findLine(q) || (memory.goalId && /\b(what next|what now|continue|plan|blitz)\b/.test(q) ? routeById(memory.goalId) : undefined)
+  // "I've done X" / "I killed X" — the player is reporting a fact as true,
+  // not just asking a question. Resolve X, answer "what next" as if it were
+  // already applied, and carry it home in markDone so the caller actually
+  // persists it. Checked before the generic "what next" handler below, so
+  // "I killed margit, what now" doesn't quietly ignore the first half and
+  // answer from stale state. Ask a real clarifying question rather than
+  // silently doing nothing when the report can't be resolved to anything.
+  if (DONE_REPORT.test(q)) {
+    const factHit = matchMany(q)[0]
+    const bossHit = findBossPin(q)
+    const aliasHit = matchGeneratedAliases(q)[0]
+    const warpHit = matchAllWarps(q)[0]
+    const reported = factHit
+      ? { id: factHit.id, name: factHit.name }
+      : bossHit
+        ? { id: bossHit.id, name: bossHit.name }
+        : aliasHit
+          ? { id: aliasHit.slug, name: aliasHit.fmgName }
+          : warpHit
+            ? { id: warpHit.id, name: warpHit.name }
+            : undefined
+    if (!reported) {
+      return {
+        say: 'Which one? Name the boss, grace, or item you just finished and I\'ll mark it and line up what\'s next.',
+      }
+    }
+    const name = reported.name || labelOf(reported.id)
+    const updated = applyFacts(character, [reported.id], 'answer', `reported: ${question}`)
+    const ack = `Marked ${name} done.`
+    if (memory.goalId) {
+      const route = routeById(memory.goalId)
+      if (route) {
+        const plan = speakPlan(updated, route)
+        return { ...plan, say: `${ack} ${plan.say}`, markDone: [reported.id] }
+      }
+    }
+    const s = stillAvailable(updated)
+    const pick = s.active[0] || s.open[0]
+    const moves = nextMoves(updated, 3)
+    if (pick) {
+      return {
+        say: `${ack} ${pick.line.name} ${pick.state}: ${pick.note} Say “blitz” for the shortest Lord path, or “what is still available.”`,
+        goal: pick.line.id,
+        factId: pick.current?.factId,
+        module: 'quests',
+        markDone: [reported.id],
+        offer: { label: pick.line.name, prompt: `I want to continue ${pick.line.name}. What do I do next?` },
+      }
+    }
+    if (!moves.length) {
+      return {
+        say: `${ack} Nothing else seeded to chase yet — say "what is still available" or name an ending.`,
+        module: 'quests',
+        markDone: [reported.id],
+      }
+    }
+    return {
+      say: `${ack} Nearest thread: ${moves[0].id}. ${moves[0].reason}`,
+      module: 'reckon',
+      factId: moves[0].id,
+      markDone: [reported.id],
+    }
+  }
+
+  const line = findLine(q) || (memory.goalId && /\b(what next|what now|what should i do|continue|plan|blitz)\b/.test(q) ? routeById(memory.goalId) : undefined)
   if (line && (/\b(ending|want|get|do|how|path|route|finish|plan|next|blitz|story|quest|line)\b/.test(q) || findLine(q))) {
     return speakPlan(character, line)
   }
 
-  if (/\b(what next|what now|where to|what do i do|continue)\b/.test(q)) {
+  if (/\b(what next|what now|what should i do|where to|what do i do|continue)\b/.test(q)) {
     if (memory.goalId) {
       const route = routeById(memory.goalId)
       if (route) return speakPlan(character, route)
@@ -729,7 +811,7 @@ export function isFastLookup(
     /\b(show (it|me) on the map|give instructions|take me there)\b/.test(q)
   if (affirm && memory.goalId) return true
 
-  if (/^(what is still available|what'?s still available|still available|what next|what now|what do i do|where to|continue|i am stuck|i'?m stuck|stuck|help with this wall)\b/.test(q)) return true
+  if (/^(what is still available|what'?s still available|still available|what next|what now|what should i do|what do i do|where to|continue|i am stuck|i'?m stuck|stuck|help with this wall)\b/.test(q)) return true
   if (/\b100\s*%|\b(completionist|everything in|full clear|medusa)\b/.test(q)) return true
   if (/\b(blitz|speedrun|rush the game|fast ending)\b/.test(q)) return true
 
@@ -747,6 +829,14 @@ export function isFastLookup(
 
   // A conjunction or conditional means the question crosses concepts: reason.
   if (REASONING_MARKER.test(q)) return false
+
+  // "I've done X" / "I killed X" reports are handled deterministically, but
+  // only once a question has cleared the reasoning-marker gate above: a
+  // report embedded in an otherwise multi-concept question ("...and I killed
+  // Seluvis?") still needs the LLM for the rest of the question, so this
+  // can't short-circuit before that gate the way the other fast-path checks
+  // above it do.
+  if (DONE_REPORT.test(q)) return true
 
   // An exact single-entity lookup is still fast even when phrased as a question
   // ("I want the Age of Stars ending. What do I do next?").

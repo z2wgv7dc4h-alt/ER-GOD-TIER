@@ -47,6 +47,9 @@ export function Gideon() {
       const b = [...opBuilds, ...pvpBuilds].find((x) => x.id === act.buildId)
       if (b) w.setCharacter({ ...w.character, stats: b.stats, level: b.level, loadout: b.kit })
     }
+    if (act.markDone?.length) {
+      w.setCharacter(applyFacts(w.character, act.markDone, 'answer', `Gideon: ${text}`))
+    }
     setOffer(act.offer ?? null)
     setLog((rows) => [...rows, { role: 'you' as const, text }, { role: 'gideon' as const, text: act.say }].slice(-10))
   }
