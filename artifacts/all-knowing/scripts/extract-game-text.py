@@ -45,6 +45,14 @@ ERROR_PREFIX = "[ERROR]"
 SENTINEL = "dlc dummy"
 DLC_SUFFIX = re.compile(r"_dlc\d*$")
 
+# Tables with no in-game reference value for this app: legal text, player
+# death/bloodstain spam, network error strings, embedded-image names, and the
+# one-off placeholder magic tables. Dropped so the corpus stays lore/mechanics.
+EXCLUDE = {
+    "ToS_win64", "BloodMsg", "NetworkMessage", "TextEmbedImageName_win64",
+    "MovieSubtitle", "MagicName", "MagicInfo", "MagicCaption",
+}
+
 
 def strip_error(text):
     if text.startswith(ERROR_PREFIX):
@@ -68,6 +76,8 @@ def load_tables(game_dir, oodle_helper):
             data = dvd.read(path)
             for fmg_name, table in fmg.load_msgbnd(data, oodle=oodle_helper).items():
                 key = DLC_SUFFIX.sub("", fmg_name)
+                if key in EXCLUDE:
+                    continue
                 dest = merged.setdefault(key, {})
                 src = provenance.setdefault(key, set())
                 for tid, value in table.items():

@@ -1,7 +1,7 @@
 {
  "locale": "en",
- "tableCount": 44,
- "stringCount": 45169,
+ "tableCount": 36,
+ "stringCount": 34053,
  "tables": [
   {
    "table": "AccessoryCaption",
@@ -49,14 +49,6 @@
    "sources": [
     "item.msgbnd.dcx",
     "item_dlc02.msgbnd.dcx"
-   ]
-  },
-  {
-   "table": "BloodMsg",
-   "count": 9691,
-   "sources": [
-    "menu.msgbnd.dcx",
-    "menu_dlc02.msgbnd.dcx"
    ]
   },
   {
@@ -201,42 +193,6 @@
    ]
   },
   {
-   "table": "MagicCaption",
-   "count": 1,
-   "sources": [
-    "item_dlc02.msgbnd.dcx"
-   ]
-  },
-  {
-   "table": "MagicInfo",
-   "count": 1,
-   "sources": [
-    "item_dlc02.msgbnd.dcx"
-   ]
-  },
-  {
-   "table": "MagicName",
-   "count": 1,
-   "sources": [
-    "item_dlc02.msgbnd.dcx"
-   ]
-  },
-  {
-   "table": "MovieSubtitle",
-   "count": 1,
-   "sources": [
-    "menu.msgbnd.dcx"
-   ]
-  },
-  {
-   "table": "NetworkMessage",
-   "count": 363,
-   "sources": [
-    "menu.msgbnd.dcx",
-    "menu_dlc02.msgbnd.dcx"
-   ]
-  },
-  {
    "table": "NpcName",
    "count": 482,
    "sources": [
@@ -281,20 +237,6 @@
    "sources": [
     "menu.msgbnd.dcx",
     "menu_dlc02.msgbnd.dcx"
-   ]
-  },
-  {
-   "table": "TextEmbedImageName_win64",
-   "count": 145,
-   "sources": [
-    "menu.msgbnd.dcx"
-   ]
-  },
-  {
-   "table": "ToS_win64",
-   "count": 913,
-   "sources": [
-    "menu.msgbnd.dcx"
    ]
   },
   {
