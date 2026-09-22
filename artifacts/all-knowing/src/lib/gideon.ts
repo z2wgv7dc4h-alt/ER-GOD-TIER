@@ -1113,7 +1113,7 @@ export function askGideonRouter(
   }
 
   // Fextralife guide excerpts for how-to / mechanics questions.
-  if (guides && /\b(how|guide|upgrade|smithing|somber|bell bearing|talisman|incantation|sorcer|damage type|stats?|buff)\b/.test(q)) {
+  if (guides && /\b(how|guide|upgrade|smithing|somber|bell bearing|talisman|incantation|sorcer|damage type|stats?|buff|craft|recipe|cookbook)\b/.test(q)) {
     const hits = matchGuides(question, guides, 1)
     if (hits.length) {
       const g = hits[0]
@@ -1285,7 +1285,7 @@ export async function askGideon(
   const wantsDialogue = isDialogueAsk(question)
   const wantsPlacements = /\b(where|find|locate)\b/.test(ql)
   const wantsMedusa = /\b(medusa|walkthrough|route)\b/.test(ql)
-  const wantsGuides = /\b(how|guide|upgrade|smithing|somber|bell bearing|talisman|incantation|sorcer|damage type|stats?|buff)\b/.test(ql)
+  const wantsGuides = /\b(how|guide|upgrade|smithing|somber|bell bearing|talisman|incantation|sorcer|damage type|stats?|buff|craft|recipe|cookbook)\b/.test(ql)
   const wantsWeapons = /\b(upgrade|reinforce|respec|rebirth|different weapon|switch weapons?|stat allocation|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(ql)
   const wantsLevels = /\b(what level|recommended level|am i (ready|overlevel|underlevel)|overlevell?ed|underlevell?ed|outlevell?ed|before i (go|leave|move)|i(?:'| a)m here)\b/.test(ql)
 

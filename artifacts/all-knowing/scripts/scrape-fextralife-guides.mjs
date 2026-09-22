@@ -22,7 +22,7 @@ const SLUGS = [
   'Game_Progress_Route', 'Side_Quests', 'Stats', 'Damage_Types', 'Status_Effects',
   'Ashes_of_War', 'Talismans', 'Spirit_Ashes', 'Incantations', 'Sorceries',
   'Weapons', 'Shields', 'Armor', 'Key_Items', 'Consumables', 'Merchants',
-  'Crafting', 'Buffs_and_Debuffs', 'Great_Runes', 'Remembrance_Weapons_(Boss_Weapons)',
+  'Crafting', 'Cookbooks', 'Buffs_and_Debuffs', 'Great_Runes', 'Remembrance_Weapons_(Boss_Weapons)',
   'Keepsakes', 'Classes',
 ]
 
