@@ -20,6 +20,39 @@ const CACHE_KEY = 'all-knowing-gideon'
 const DEFAULT_TIMEOUT_MS = 45000
 
 /**
+ * The GideonAct shape, as a strict JSON schema. Decoding is constrained to this,
+ * so the model can no longer return malformed JSON or extra fields — we can drop
+ * the loose `json_object` parsing. Root is a plain object, every property is in
+ * `required`, and `additionalProperties:false`, per the strict subset.
+ */
+const ACT_SCHEMA = {
+  type: 'json_schema',
+  json_schema: {
+    name: 'GideonAct',
+    strict: true,
+    schema: {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        say: { type: 'string' },
+        module: { type: ['string', 'null'], enum: ['reckon', 'map', 'build', 'quests', 'codex', null] },
+        factId: { type: ['string', 'null'] },
+        buildId: { type: ['string', 'null'] },
+        goal: { type: ['string', 'null'] },
+        offer: {
+          type: ['object', 'null'],
+          additionalProperties: false,
+          properties: { label: { type: 'string' }, prompt: { type: 'string' } },
+          required: ['label', 'prompt'],
+        },
+        navigateNow: { type: 'boolean' },
+      },
+      required: ['say', 'module', 'factId', 'buildId', 'goal', 'offer', 'navigateNow'],
+    },
+  },
+} as const
+
+/**
  * Optional Gideon LLM: **Meta Muse Spark 1.3 Contributor**.
  *
  * Router-first by design: `askGideon` always runs the deterministic router first
@@ -100,7 +133,8 @@ function requestBodies(messages: ChatMessage[], opts: GideonLlmOptions): Attempt
       body: {
         model,
         messages,
-        response_format: { type: 'json_object' },
+        // Schema-constrained decoding (not just json_object).
+        response_format: ACT_SCHEMA,
         // minimal: the shortest pass (docs: use the lowest level that works).
         reasoning_effort: opts.reasoningEffort ?? DEFAULT_REASONING_EFFORT,
         // Stable cache key: system prompt + history reuse the cached prefix.
