@@ -23,6 +23,7 @@ import { Related } from './Related'
 import { DialogueHits, DialogueBySpeaker } from './Dialogue'
 import { WeaponStatsSection } from './WeaponStats'
 import { EngineItemSection, ErclSection, MedusaSection, NpcPlacementSection, BossDropsSection, GuidesSection, MetaBuildsSection } from './PackData'
+import { RecipesSection, SecretsSection, AcquisitionSection, QuestStepsSection, WikiTextSection } from './CodexData'
 import { DungeonChecklist } from './Dungeon'
 import { useWorkspace } from './state'
 import { matchGatheringNodes, useGatheringNodes } from './lib/gatheringNodes'
@@ -224,6 +225,11 @@ export function CodexWorkspace() {
       <BossDropsSection query={query} />
       <GuidesSection query={query} />
       <MetaBuildsSection query={query} />
+      <RecipesSection query={query} />
+      <SecretsSection query={query} />
+      <AcquisitionSection query={query} />
+      <QuestStepsSection query={query} />
+      <WikiTextSection query={query} />
       {(guideHits.items.length > 0 || guideHits.legs.length > 0) && (
         <>
           <h3 className="codex-head">Guide · {guide.items.length} items · {guide.legs.length} legs</h3>

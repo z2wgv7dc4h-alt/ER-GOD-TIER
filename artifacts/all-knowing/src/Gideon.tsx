@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { opBuilds } from './knowledge/builds'
 import { nextCompletionId, planRoute } from './knowledge/endings'
 import { pvpBuilds } from './knowledge/pvp'
@@ -53,6 +53,12 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
   const showPin = header.factId ? beatPin(w.character, header.factId, coords) : null
   // The latest Gideon answer gets an explicit link + its real graph edges.
   const lastGideonIdx = log.reduce((acc, r, i) => (r.role === 'gideon' ? i : acc), -1)
+  // Keep the newest turn in view as the conversation grows.
+  const logRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = logRef.current
+    if (el) el.scrollTop = el.scrollHeight
+  }, [log])
   // A new character is a new context: let the strip offer again.
   useEffect(() => { setDismissed(false) }, [w.character])
 
@@ -279,6 +285,7 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
       <div className="opts" style={{ marginBottom: 8 }}>
         <button type="button" className="chip" onClick={() => run('I am here, before I go on, what should I do so I do not outlevel it')}>Before I go</button>
         <button type="button" className="chip" onClick={() => run('What did I miss here?')}>Missed here</button>
+        <button type="button" className="chip" onClick={() => run('Where are the illusory walls here?')}>Secrets</button>
         <button type="button" className="chip" onClick={() => run('What are good early weapons?')}>Upgrade advice</button>
         <button type="button" className="chip" onClick={() => run('What is on my list?')}>My list</button>
       </div>
@@ -287,7 +294,7 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
         <button type="button" className="chip on" onClick={() => run(offer.prompt)}>{offer.label}</button>
       )}
 
-      <div className="gideon-log">
+      <div className="gideon-log" ref={logRef}>
         {log.map((row, i) => (
           <div key={i}>
             <p className={row.role === 'gideon' ? 'note' : ''}>
