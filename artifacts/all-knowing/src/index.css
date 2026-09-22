@@ -441,6 +441,22 @@ button { cursor: pointer; }
   border: 0;
   background: #0b0906;
 }
+/* Task 82: fail-closed banner over the plate when the engine is down or the
+   embed failed. Bottom-left clears the phone job chips (top) and the
+   Filters & details toggle (bottom-right). */
+.atlas-banner {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 6;
+  max-width: min(440px, calc(100% - 120px));
+  padding: 8px 12px;
+  background: rgba(20, 17, 12, 0.94);
+  border: 1px solid var(--danger);
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.4;
+}
 .pin { cursor: pointer; }
 .pin text {
   font-family: var(--font-body);

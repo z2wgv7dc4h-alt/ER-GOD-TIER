@@ -770,7 +770,7 @@ export function askGideonRouter(
     }
     const hunt = buildHunt(character, named)
     const missing = hunt.missing.map((m) => m.name)
-    const firstPin = hunt.missing.find((m) => m.pin)
+    const firstPin = hunt.pinTarget
     const unresolved = hunt.unresolved.length
       ? ` ${hunt.unresolved.length} id${hunt.unresolved.length === 1 ? '' : 's'} not in our data yet, listed not dropped.`
       : ''

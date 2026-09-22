@@ -11,6 +11,12 @@ export type OpBuild = {
   stats: Stats
   kit: LoadoutSlot[]
   need: string[]
+  /**
+   * Task 90: the collection order for this kit, as resolved catalog/loot fact
+   * ids. `buildHunt` sorts `missing` by it so the first pinnable piece is the
+   * right "Show on map" target. Only a handful of kits carry one.
+   */
+  route?: string[]
   /** Task 65: where the idea came from (title or URL). */
   source?: string
   /** Task 65: honest power state at the current 1.17 regulation line. */
@@ -33,6 +39,7 @@ export const opBuilds: OpBuild[] = [
       { id: 'white-mask', name: 'White Mask', kind: 'armor' },
     ],
     need: ['loot:rivers', 'loot:lord-blood-exul', 'boss:radahn'],
+    route: ['loot:rivers', 'loot:uchigatana', 'loot:lord-blood-exul', 'loot:winged-sword-insignia', 'loot:white-mask', 'boss:radahn'],
   },
   {
     id: 'build:azur',
@@ -48,6 +55,7 @@ export const opBuilds: OpBuild[] = [
       { id: 'godfrey-icon', name: 'Godfrey Icon', kind: 'talisman' },
     ],
     need: ['loot:comet-azur', 'loot:radagon-icon', 'loot:godfrey-icon'],
+    route: ['loot:comet-azur', 'loot:lusats-staff', 'loot:radagon-icon', 'loot:godfrey-icon'],
   },
   {
     id: 'build:blasphemous',
@@ -63,6 +71,7 @@ export const opBuilds: OpBuild[] = [
       { id: 'fire-scorp', name: 'Fire Scorpion Charm', kind: 'talisman' },
     ],
     need: ['loot:blasphemous', 'loot:flame-grant', 'loot:golden-vow', 'boss:rykard'],
+    route: ['loot:blasphemous', 'loot:flame-grant', 'loot:golden-vow', 'boss:rykard'],
   },
   {
     id: 'build:heavy-bonk',
@@ -78,6 +87,7 @@ export const opBuilds: OpBuild[] = [
       { id: 'alex', name: 'Shard of Alexander', kind: 'talisman' },
     ],
     need: ['loot:anvil-hammer', 'loot:cragblade', 'loot:shard-alexander'],
+    route: ['loot:anvil-hammer', 'loot:giant-crusher', 'loot:cragblade', 'loot:shard-alexander'],
   },
   {
     id: 'build:night-comet',
@@ -124,6 +134,7 @@ export const opBuilds: OpBuild[] = [
       { id: 'claw-tal', name: 'Claw Talisman', kind: 'talisman' },
     ],
     need: ['loot:lions-claw', 'loot:shard-alexander', 'loot:greatsword'],
+    route: ['loot:greatsword', 'loot:lions-claw', 'loot:shard-alexander', 'loot:axe-talisman', 'loot:claw-talisman'],
   },
   {
     id: 'build:dark-moon',
@@ -139,6 +150,7 @@ export const opBuilds: OpBuild[] = [
       { id: 'alex', name: 'Shard of Alexander', kind: 'talisman' },
     ],
     need: ['loot:dark-moon', 'loot:magic-scorpion', 'loot:godfrey-icon'],
+    route: ['loot:dark-moon-gs', 'loot:magic-scorpion', 'loot:godfrey-icon', 'loot:shard-alexander'],
   },
   {
     id: 'build:moonveil',
@@ -154,6 +166,7 @@ export const opBuilds: OpBuild[] = [
       { id: 'carian-crest', name: 'Carian Filigreed Crest', kind: 'talisman' },
     ],
     need: ['loot:moonveil', 'loot:magic-scorpion', 'boss:magma-wyrm'],
+    route: ['loot:moonveil', 'loot:uchigatana', 'loot:magic-scorpion', 'loot:carian-filigreed-crest', 'boss:magma-wyrm'],
   },
   {
     id: 'build:blackflame',
@@ -202,6 +215,7 @@ export const opBuilds: OpBuild[] = [
       { id: 'lightning-scorp', name: 'Lightning Scorpion Charm', kind: 'talisman' },
     ],
     need: ['loot:bolt-gransax', 'loot:godfrey-icon', 'loot:shard-alexander'],
+    route: ['loot:bolt-gransax', 'loot:godfrey-icon', 'loot:shard-alexander', 'loot:lightning-scorpion-charm'],
   },
   {
     id: 'build:frost-bleed',

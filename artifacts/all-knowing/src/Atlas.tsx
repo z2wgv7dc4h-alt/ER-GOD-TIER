@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { markers } from './data/seed'
 import { warpGraces, worlds, type AtlasWorld } from './knowledge/graces'
 import { applyFacts, clearFact, denyFacts } from './lib/infer'
@@ -35,11 +35,51 @@ function stateFill(state: FactState, kind: MapMarker['kind']) {
   return '#7a6a3a'
 }
 
+/**
+ * Task 82: the live map embed fails closed. If the iframe never fires `load`
+ * (or errors), we do not leave a silent blank canvas — the caller swaps in the
+ * static plate and a different banner.
+ */
+function EngineEmbed({ onFail }: { onFail: () => void }) {
+  const [loaded, setLoaded] = useState(false)
+  useEffect(() => {
+    if (loaded) return
+    const t = window.setTimeout(onFail, 8000)
+    return () => window.clearTimeout(t)
+  }, [loaded, onFail])
+  return (
+    <iframe
+      title="Elden Ring live map"
+      className="engine-frame"
+      src={`${MAP_ENGINE_BASE}/?embed=1`}
+      onLoad={() => setLoaded(true)}
+      onError={onFail}
+    />
+  )
+}
+
 export function AtlasWorkspace() {
   const w = useWorkspace()
   const ps5 = w.character.platform === 'ps5' || w.character.platform === 'both'
-  const engineLive = !ps5 && (w.engineStatus === 'live' || w.engineMarkers.length > 0)
+  const [embedFailed, setEmbedFailed] = useState(false)
+  const [showDown, setShowDown] = useState(false)
+  const failEmbed = useCallback(() => setEmbedFailed(true), [])
+  // Task 82: fail closed. The iframe is only "live" while the engine is actually
+  // up (SSE live, or markers loaded while connecting) and the embed has not
+  // failed; a dropped engine or a failed embed falls back to the static plate.
+  const engineUp = !ps5 && (w.engineStatus === 'live' || (w.engineStatus === 'connecting' && w.engineMarkers.length > 0))
+  const engineLive = engineUp && !embedFailed
+  const engineDown = !ps5 && !engineUp
   const banner = engineBanner(w.engineStatus, w.engineState)
+  // Don't flash "offline" on the very first frame before the bridge connects.
+  useEffect(() => {
+    if (!engineDown || embedFailed) {
+      setShowDown(false)
+      return
+    }
+    const t = window.setTimeout(() => setShowDown(true), 1500)
+    return () => window.clearTimeout(t)
+  }, [engineDown, embedFailed])
   const [world, setWorld] = useState<AtlasWorld>(
     w.character.answers.dlc === 'sote' ? 'shadow' : 'overworld',
   )
@@ -164,7 +204,7 @@ export function AtlasWorkspace() {
             plate. The engine's pins are drawn inside its own iframe, so the
             two pin sets never share a view. */}
         {engineLive ? (
-          <iframe title="Elden Ring live map" className="engine-frame" src={`${MAP_ENGINE_BASE}/?embed=1`} />
+          <EngineEmbed onFail={failEmbed} />
         ) : (
           <div className="atlas-plate">
             {plate && (
@@ -227,6 +267,16 @@ export function AtlasWorkspace() {
               )
             })}
           </svg>
+          </div>
+        )}
+        {/* Task 82: the engine never fails silently — a visible banner says why
+            the static plate is showing, and it differs for a down engine vs a
+            failed embed. */}
+        {!ps5 && (embedFailed || showDown) && (
+          <div className="atlas-banner" role="status">
+            {embedFailed
+              ? 'Live map embed failed — showing the static plate. Restart the engine (npm start) and reload.'
+              : 'Map engine offline (:8099) — showing the static plate. Start it with npm start.'}
           </div>
         )}
         {/* Task 69: the phone Atlas surface. `.topbar .toggles` is hidden under

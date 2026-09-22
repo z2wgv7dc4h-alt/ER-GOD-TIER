@@ -841,6 +841,47 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
   FanAPI / gathering grids) can never mount behind Map / Now / Kit. `Codex.tsx` is not deleted;
   `searchSync('elleh')` still hits `grace:elleh`. `src/Codex.is.search.test.ts`.
 
+**Task 82 — Atlas fails closed** (landed after 86):
+
+- The live `?embed=1` iframe only draws while the engine is actually up (`live`, or `connecting`
+  with markers loaded) and the embed has not failed; otherwise the static plate shows with a
+  visible banner. A down engine and a failed embed get **different** banners, `EngineEmbed` carries
+  `onError`/`onLoad` plus an 8s timeout, and a dropped engine falls back even if stale markers
+  remain — no silent iframe, no invented tiles. The phone `.atlas-jobs` chips stay.
+  `docs/MAP-ENGINE.md` "If the map is blank"; `src/Atlas.failClosed.guard.test.ts`.
+
+**Task 87 — docs match the shell** (landed after 86):
+
+- Root + inner README, the Help overlay and the shortcut catalog now describe Map / Now / Kit, the
+  Tarnished sheet, Codex-as-search and the `Kits…` drawer; the old Sit feature copy is gone
+  (`Sit mode` = 0 hits across both READMEs + Help). The snowfield cover is kept and no doc claims
+  dungeon interiors.
+
+**Task 88 — shell guards** (landed after 87):
+
+- `src/App.shell.guards.test.ts` reads production source only and pins: no Sit APIs
+  (`sitMode`/`setSitMode`/`SitToggle`/`FirstSit`/`sheet-sit`/`topbar-sit`/`first-sit`) in
+  App/state/QoL/shortcuts/vault/CSS; tabs exactly Map / Now / Kit; no `sit` class on the root;
+  Packet/Recents/ProfileSwitcher/CharacterCard/SaveDrop only inside the closed sheet; sheet closed
+  by default. If a leftover ever appears, delete it — do not weaken the test.
+
+**Task 89 — goods paste** (landed after 88):
+
+- `src/lib/goods.ts` `ingestGoodsList` / `goodsLineId`: a line marks only when it is exactly **one
+  confident catalog/loot hit** (exact normalized name/alias in a conflict-checked index, else a
+  unique combined `matchFacts` + `matchLoot`), writing through `applyFacts`; anything else stays
+  unknown and the character is returned unchanged. No new OCR / ids. `src/GoodsPaste.tsx` is a
+  textarea in the Tarnished sheet. Fixture: "Fingerslayer Blade" → `item:fingerslayer`; "asdf" →
+  nothing. `src/lib/goods.test.ts`.
+
+**Task 90 — hunt order** (landed after 89):
+
+- `OpBuild.route?: string[]` on **8** kits; `buildHunt` sorts `missing` along the route and adds
+  `pinTarget` = the first missing piece that already has a pin. **Show on map** (Gideon's wear kit
+  and Kit's active hunt) now targets `pinTarget`, not the first missing. No new kits or pins.
+  Test: Rivers of Blood's `pinTarget` is the Zamor row `loot:rivers`; `build:azur` skips the
+  unpinnable `loot:comet-azur` down to `loot:radagon-icon`. `src/lib/buildHunt.test.ts`.
+
 ---
 
 ## 7. Product ideas still valid (not built)

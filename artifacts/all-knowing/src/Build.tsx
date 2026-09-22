@@ -188,6 +188,22 @@ export function BuildWorkspace() {
                   {hunt.missing.length} missing · {hunt.pins.length} with a pin. Picking a kit only sets
                   stats and loadout — nothing here is marked until you say so.
                 </p>
+                {hunt.pinTarget && (
+                  <button
+                    type="button"
+                    className="chip on"
+                    style={{ marginTop: 6 }}
+                    onClick={() => {
+                      const t = hunt.pinTarget!
+                      if (!watchlistOf(character).includes(t.factId)) setCharacter(toggleWatch(character, t.factId))
+                      if (!showLeftovers) toggleLeftovers()
+                      setSelectedMarkerId(t.factId)
+                      setModule('map')
+                    }}
+                  >
+                    Show on map · {hunt.pinTarget.name}
+                  </button>
+                )}
                 <ul className="list">
                   {hunt.missing.map((p) => (
                     <li key={p.factId} style={{ display: 'block', cursor: 'default' }}>

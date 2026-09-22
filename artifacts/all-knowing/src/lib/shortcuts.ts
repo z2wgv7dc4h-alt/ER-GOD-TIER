@@ -102,8 +102,11 @@ export const SHORTCUT_GROUPS: ShortcutGroup[] = [
   {
     title: 'Also worth knowing',
     items: [
-      { keys: 'Enter', label: 'Send a question to Gideon', note: 'his ask box' },
+      { keys: 'Enter', label: 'Send a question to Gideon', note: 'his ask box on Now' },
       { keys: 'Search', label: 'Jump straight to a grace, boss, item or shop', note: 'results appear above the room' },
+      { keys: 'Tabs', label: 'Map / Now / Kit — the three surfaces', note: 'tabs on a phone; the Now strip on desktop' },
+      { keys: 'Codex', label: 'Opens from the Tarnished sheet or a / search hit', note: 'never a tab' },
+      { keys: 'Kits…', label: 'OP / PvP library, AR detail, matchup and build codes', note: 'Kit room, closed by default' },
       { keys: 'Missing only', label: 'Hide everything you already have', note: 'Atlas' },
       { keys: 'Tarnished menu', label: 'Switch, rename or forget profiles', note: 'Tarnished sheet' },
       { keys: 'Diff', label: 'Compare this character against another packet', note: 'Tarnished sheet' },

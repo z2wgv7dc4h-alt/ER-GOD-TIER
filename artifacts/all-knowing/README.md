@@ -14,10 +14,11 @@ The atlas is [egormagurin/EldenRingMap](https://github.com/egormagurin/EldenRing
 
 ## Features
 
-**Play shell** — desktop is a 280px Now strip beside the stage; a phone gets three tabs, Map / Now / Kit. The identity rail is a sheet behind your name. Sit mode is gone.  
+**Play shell** — desktop is a 280px Now strip beside the stage; a phone gets three tabs, Map / Now / Kit. The identity rail is a sheet behind your name, and the old lean-back toggle is gone.  
 **Reckoning** — interview, warp-list paste, on-device Tesseract, inference with undo.  
-**Atlas** — plates or live engine, leftover / gate / hunt pins, phone job chips.  
-**Build lab** — Clark AR, soft caps, a one-AR first paint with the OP/PvP list, AR detail, matchup and `akb1.` codes behind one `Kits…` drawer.  
+**Atlas** — plates or live engine, leftover / gate / hunt pins, phone job chips. Fails closed: if the engine is down or the embed fails it shows the plate and a banner, never a blank iframe.  
+**Build lab** — Clark AR, soft caps, a one-AR first paint with the active hunt (missing pieces ordered by the kit's route) and the OP/PvP list, AR detail, matchup and `akb1.` codes behind one `Kits…` drawer. Show on map targets the first pinnable missing piece.  
+**Goods paste** — paste an item list; one confident catalog/loot hit per line marks, anything else stays unknown (no OCR).  
 **Quests** — the same `allLines()` graph Gideon plans, incl. the remaining companion lines; confirm before a lockout. Now's “N open · M locked” line opens this archive.  
 **Codex** — guide, chests, merchants, achievement-shaped sets, SotE meters. Opened from the Tarnished sheet or a `/` search hit, never a tab.  
 **Gideon** — router, Now strip (current beat · one gate · Show/Done), co-op toggle, idle chips, command palette. Optional local LLM behind an env key.  

@@ -16,6 +16,7 @@ import { summarize } from './lib/infer'
 import { worldBanners } from './lib/worldState'
 import { CommandHits, PacketBar, Recents, SpoilerToggle, softCapMark, useClipboardShots, useHotkeys } from './QoL'
 import { ProfileSwitcher } from './ProfileSwitcher'
+import { GoodsPaste } from './GoodsPaste'
 import { allLines } from './knowledge/storylines'
 import { WorkspaceProvider, useWorkspace } from './state'
 
@@ -160,6 +161,7 @@ function AppShell() {
         <Recents />
         <PacketBar />
         <SaveDrop />
+        <GoodsPaste />
         <div className="opts">
           <SpoilerToggle />
         </div>

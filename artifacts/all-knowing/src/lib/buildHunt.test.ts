@@ -101,3 +101,31 @@ describe('buildHunt', () => {
     }
   })
 })
+
+describe('buildHunt route order (Task 90)', () => {
+  it('orders Rivers of Blood along its route and targets the Zamor row for Show on map', () => {
+    const rivers = allBuilds.find((b) => b.id === 'build:rivers')!
+    const hunt = buildHunt(character, rivers)
+    // Rivers of Blood is pinned at grace:zamor — the first pinnable piece.
+    expect(hunt.pinTarget?.factId).toBe('loot:rivers')
+    expect(hunt.pinTarget?.pin?.id).toBe('loot:rivers')
+    const route = rivers.route ?? []
+    const present = hunt.missing.map((m) => m.factId).filter((id) => route.includes(id))
+    expect(present).toEqual(route.filter((id) => hunt.missing.some((m) => m.factId === id)))
+  })
+
+  it('skips a non-pinnable first missing piece for the Show target', () => {
+    const azur = allBuilds.find((b) => b.id === 'build:azur')!
+    const hunt = buildHunt(character, azur)
+    expect(hunt.missing[0]?.factId).toBe('loot:comet-azur')
+    expect(hunt.missing[0]?.pin).toBeNull()
+    expect(hunt.pinTarget?.factId).toBe('loot:radagon-icon')
+  })
+
+  it('gives at most eight kits a route, all resolvable', () => {
+    const routed = allBuilds.filter((b) => b.route?.length)
+    expect(routed.length).toBeGreaterThan(0)
+    expect(routed.length).toBeLessThanOrEqual(8)
+    for (const b of routed) for (const id of b.route!) expect(resolveBuildId(id), `${b.id} ${id}`).toBeTruthy()
+  })
+})

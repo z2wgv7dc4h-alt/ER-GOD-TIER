@@ -93,6 +93,14 @@ export function HelpSheet({ onClose }: { onClose: () => void }) {
         </div>
         <p className="kicker" style={{ marginTop: 20 }}>What this does</p>
         <p className="note">
+          <strong>Map / Now / Kit.</strong> Those are the three surfaces. A phone shows them as tabs;
+          desktop is the Now strip beside the stage. The Tarnished sheet (your name button) holds
+          profiles, the packet, saves, recents and the five room links, so Reckon / Quests / Codex
+          are links there — not tabs. The Codex also opens from a <kbd>/</kbd> search hit, and the
+          Build library (OP/PvP chips, AR detail, matchup, build codes, compare) sits behind the
+          closed <strong>Kits…</strong> drawer.
+        </p>
+        <p className="note">
           <strong>Lockout confirm.</strong> Ticking a beat that would foreclose a line you have
           already started opens a lockout confirm first — nothing is applied until you agree.
         </p>

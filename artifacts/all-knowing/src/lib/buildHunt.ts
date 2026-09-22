@@ -81,8 +81,11 @@ export type BuildHunt = {
   buildId: string
   buildName: string
   have: HuntPiece[]
+  /** Missing pieces, in the kit's Task 90 route order when it has one. */
   missing: HuntPiece[]
   pins: MapMarker[]
+  /** The first missing piece that already has a plate pin — the Show target. */
+  pinTarget: HuntPiece | null
   unresolved: HuntUnresolved[]
 }
 
@@ -190,9 +193,17 @@ export function buildHunt(
       have.push(piece)
     } else {
       missing.push(piece)
-      if (pin) pins.push(pin)
     }
   }
 
-  return { buildId: build.id, buildName: build.name, have, missing, pins, unresolved }
+  // Task 90: a kit with an authored route orders its missing pieces along it,
+  // and "Show on map" targets the first missing piece that actually has a pin.
+  if (build.route?.length) {
+    const rank = new Map(build.route.map((id, i) => [id, i]))
+    missing.sort((a, b) => (rank.get(a.factId) ?? Number.MAX_SAFE_INTEGER) - (rank.get(b.factId) ?? Number.MAX_SAFE_INTEGER))
+  }
+  for (const m of missing) if (m.pin) pins.push(m.pin)
+  const pinTarget = missing.find((m) => m.pin) ?? null
+
+  return { buildId: build.id, buildName: build.name, have, missing, pins, pinTarget, unresolved }
 }

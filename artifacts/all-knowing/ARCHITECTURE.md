@@ -81,6 +81,14 @@ companions at existing graces (Task 79). Co-op (`answers.coop`, `src/lib/coop.ts
 Torrent advice (Task 81). `src/knowledge/dungeons.ts` is the Stormveil checklist (`Dungeon.tsx`,
 Task 80). The Kit room's first paint is stats + one AR + the active hunt; the library (OP/PvP chips,
 AR detail, matchup, `akb1.` codes, compare) sits behind one closed `Kits…` disclosure (Task 85).
+`OpBuild.route` + `buildHunt`'s `pinTarget` order a kit's missing pieces and pick the first pinnable
+one for **Show on map** (Task 90), and `src/lib/goods.ts` turns a pasted name list into facts
+(`ingestGoodsList`; exactly one confident catalog/loot hit per line, else unknown) through the
+`GoodsPaste` textarea in the sheet (Task 89).
+
+The Atlas fails closed (Task 82): the live `?embed=1` iframe only draws while the engine is up and
+the embed has loaded — a down engine and a failed embed show the static plate with two distinct
+banners, never a blank iframe. `docs/MAP-ENGINE.md` has the "If the map is blank" checklist.
 
 ## Persistence
 

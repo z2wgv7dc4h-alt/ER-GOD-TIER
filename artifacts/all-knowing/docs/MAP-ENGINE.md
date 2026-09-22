@@ -165,3 +165,16 @@ controls unreachable. Under `@media (max-width: 700px)` the Atlas now renders it
 
 `src/Atlas.test.tsx` renders the workspace and asserts the three job controls stay in the tree, so a
 future JS-side hide (not just a CSS query) fails the suite.
+
+## If the map is blank
+
+`AtlasWorkspace` fails closed (Task 82): it only draws the live `?embed=1` iframe while the engine is
+actually up, and otherwise shows the static plate plus a visible banner — never a silent iframe.
+
+1. Engine up? `npm start` starts it on :8099; `npm run map` runs the engine alone.
+2. Banner "offline (:8099)": nothing is listening — start it; on a phone the plates are expected.
+3. Banner "embed failed": the server answered but the iframe never loaded in 8s — restart, reload.
+4. Plate with no pins: the plates need `public/sourced/open/coords.json`; live pins live in the iframe.
+5. Tiles missing: run `vendor/elden-ring-map` `Setup.bat` / `setup-linux.sh` once against your install.
+6. Tiles are never shipped, and we do not invent them — an unextracted install draws nothing.
+7. The banner is a status, not an error wall: the static plate is a supported view, not a failure.
