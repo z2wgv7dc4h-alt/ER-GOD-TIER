@@ -11,6 +11,7 @@ import {
 } from './lib/packs'
 import { loadMedusaRoute, matchMedusa, medusaQuests, type MedusaQuest } from './lib/medusaRoute'
 import { loadBossDrops, matchBossDrops, type FextBoss } from './lib/bosses'
+import { guideExcerpts, loadGuides, matchGuides, type GuideExcerpt } from './lib/guides'
 import {
   loadNpcPlacements,
   matchNpcPlacements,
@@ -35,11 +36,11 @@ export function EldenringMapSection({ query, preloaded }: { query: string; prelo
   if (hits.length === 0) return null
   return (
     <>
-      <h3 className="codex-head">Map locations Â· EldenRingMap pack</h3>
+      <h3 className="codex-head">Map locations Ã‚Â· EldenRingMap pack</h3>
       <div className="codex-grid">
         {hits.map((r) => (
           <article className="card" key={`${r.kind}:${r.name}:${r.region}`}>
-            <div className="kicker">{r.kind} Â· {r.region} Â· {r.world}</div>
+            <div className="kicker">{r.kind} Ã‚Â· {r.region} Ã‚Â· {r.world}</div>
             <h3>{r.name}</h3>
           </article>
         ))}
@@ -66,7 +67,7 @@ export function ErclSection({ query, preloaded }: { query: string; preloaded?: E
   if (hits.length === 0) return null
   return (
     <>
-      <h3 className="codex-head">Checklist Â· ER Checklist pack</h3>
+      <h3 className="codex-head">Checklist Ã‚Â· ER Checklist pack</h3>
       <div className="codex-grid">
         {hits.map((r) => (
           <article className="card" key={`${r.category}:${r.name}`}>
@@ -97,11 +98,11 @@ export function MedusaSection({ query, preloaded }: { query: string; preloaded?:
   if (hits.length === 0) return null
   return (
     <>
-      <h3 className="codex-head">Walkthrough Â· Medusa 100% route</h3>
+      <h3 className="codex-head">Walkthrough Ã‚Â· Medusa 100% route</h3>
       <div className="codex-grid">
         {hits.map((r) => (
           <article className="card" key={r.id}>
-            <div className="kicker">{r.actName} Â· {r.chapterName} Â· {r.type}</div>
+            <div className="kicker">{r.actName} Ã‚Â· {r.chapterName} Ã‚Â· {r.type}</div>
             <h3>{r.title}</h3>
             <p className="note">{r.summary}</p>
             {r.directions && <p className="note">{r.directions}</p>}
@@ -136,11 +137,11 @@ export function NpcPlacementSection({ query, preloaded }: { query: string; prelo
   }
   return (
     <>
-      <h3 className="codex-head">NPC placements Â· from the map files</h3>
+      <h3 className="codex-head">NPC placements Ã‚Â· from the map files</h3>
       <div className="codex-grid">
         {[...byName.entries()].map(([name, list]) => (
           <article className="card" key={name}>
-            <div className="kicker">{list.length} placement{list.length === 1 ? '' : 's'} Â· map MSB</div>
+            <div className="kicker">{list.length} placement{list.length === 1 ? '' : 's'} Ã‚Â· map MSB</div>
             <h3>{name}</h3>
             <p className="note">{[...new Set(list.map((p) => p.map))].sort().join(', ')}</p>
           </article>
@@ -168,13 +169,44 @@ export function BossDropsSection({ query, preloaded }: { query: string; preloade
   if (hits.length === 0) return null
   return (
     <>
-      <h3 className="codex-head">Bosses Â· drops (Fextralife)</h3>
+      <h3 className="codex-head">Bosses Ã‚Â· drops (Fextralife)</h3>
       <div className="codex-grid">
         {hits.map((b) => (
           <article className="card" key={b.name}>
-            <div className="kicker">{b.locations.join(' / ') || 'boss'}{b.hp ? ` Â· ${b.hp} HP` : ''}</div>
+            <div className="kicker">{b.locations.join(' / ') || 'boss'}{b.hp ? ` Ã‚Â· ${b.hp} HP` : ''}</div>
             <h3>{b.name}</h3>
-            <p className="note">{b.drops.length ? b.drops.join(' Â· ') : 'no drops listed'}</p>
+            <p className="note">{b.drops.length ? b.drops.join(' Ã‚Â· ') : 'no drops listed'}</p>
+          </article>
+        ))}
+      </div>
+    </>
+  )
+}
+
+/** Fextralife guide excerpts matching the query. */
+export function GuidesSection({ query, preloaded }: { query: string; preloaded?: GuideExcerpt[] }) {
+  const [rows, setRows] = useState<GuideExcerpt[] | null>(preloaded ?? null)
+  const q = query.trim()
+  useEffect(() => {
+    if (q.length < 3 || rows) return
+    let cancelled = false
+    void loadGuides()
+      .then((d) => { if (!cancelled) setRows(guideExcerpts(d)) })
+      .catch(() => { /* dataset absent: section stays hidden */ })
+    return () => { cancelled = true }
+  }, [q, rows])
+  const data = preloaded ?? rows
+  if (q.length < 3 || !data) return null
+  const hits = matchGuides(q, data)
+  if (hits.length === 0) return null
+  return (
+    <>
+      <h3 className="codex-head">Guides Â· Fextralife</h3>
+      <div className="codex-grid">
+        {hits.map((g, i) => (
+          <article className="card" key={g.page + ':' + g.heading + ':' + i}>
+            <div className="kicker">{g.page} Â· {g.heading}</div>
+            <p className="note">{g.text.slice(0, 600)}</p>
           </article>
         ))}
       </div>

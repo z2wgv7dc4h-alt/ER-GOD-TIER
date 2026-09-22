@@ -38,6 +38,7 @@ import { loadDialogueOwners, type DialogueOwners } from './dialogueOwners'
 import { loadGameTextTable } from './gameText'
 import { loadNpcPlacements, type NpcPlacement } from './npcPlacements'
 import { loadMedusaRoute, findMedusaStep, medusaQuests, type MedusaQuest } from './medusaRoute'
+import { guideExcerpts, loadGuides, matchGuides, type GuideExcerpt } from './guides'
 import type { Character, ModuleId } from '../types'
 
 export type GideonAct = {
@@ -502,6 +503,7 @@ export function askGideonRouter(
   dialogue?: GideonDialogue,
   placements?: NpcPlacement[],
   medusaSteps?: MedusaQuest[],
+  guides?: GuideExcerpt[],
 ): GideonAct {
   const q = question.toLowerCase().trim()
   if (!q) return { say: 'Name an ending, or ask what to do next.' }
@@ -1036,6 +1038,15 @@ export function askGideonRouter(
     }
   }
 
+  // Fextralife guide excerpts for how-to / mechanics questions.
+  if (guides && /\b(how|guide|upgrade|smithing|somber|bell bearing|talisman|incantation|sorcer|damage type|stats?|buff)\b/.test(q)) {
+    const hits = matchGuides(question, guides, 1)
+    if (hits.length) {
+      const g = hits[0]
+      return { say: `${g.page} — ${g.heading}.\n${g.text.slice(0, 600)}`, module: 'codex' }
+    }
+  }
+
   // The generated alias plane (Task 23) indexes every fact category by engine id
   // and name, including alias spellings the hand-curated matchers above miss
   // ("night cavalry" for Night's Cavalry, "pureblood knight medal", "giant
@@ -1100,6 +1111,7 @@ export function isFastLookup(
   combat: BossCombat[] = cachedBossCombat(),
   placements?: NpcPlacement[],
   medusaSteps?: MedusaQuest[],
+  guides?: GuideExcerpt[],
 ): boolean {
   const q = question.toLowerCase().trim()
   if (!q) return true
@@ -1136,6 +1148,9 @@ export function isFastLookup(
 
   // A Medusa walkthrough step is a deterministic answer.
   if (medusaSteps && /\b(medusa|walkthrough|route)\b/.test(q) && findMedusaStep(question, medusaSteps).length) return true
+
+  // A matched Fextralife guide excerpt is a deterministic answer.
+  if (guides && matchGuides(question, guides).length) return true
 
   // A verbatim-dialogue ask is answered from the game's own attributed lines.
   if (isDialogueAsk(q)) return true
@@ -1203,8 +1218,12 @@ export async function askGideon(
   if (/\b(medusa|walkthrough|route)\b/i.test(question)) {
     medusaSteps = await loadMedusaRoute().then((d) => medusaQuests(d)).catch(() => undefined)
   }
-  const router = askGideonRouter(question, character, memory, combat, dialogue, placements, medusaSteps)
-  if (isFastLookup(question, memory, combat ?? cachedBossCombat(), placements, medusaSteps)) return router
+  let guides: GuideExcerpt[] | undefined
+  if (/\b(how|guide|upgrade|smithing|somber|bell bearing|talisman|incantation|sorcer|damage type|stats?|buff)\b/i.test(question)) {
+    guides = await loadGuides().then((d) => guideExcerpts(d)).catch(() => undefined)
+  }
+  const router = askGideonRouter(question, character, memory, combat, dialogue, placements, medusaSteps, guides)
+  if (isFastLookup(question, memory, combat ?? cachedBossCombat(), placements, medusaSteps, guides)) return router
 
   if (!hasGideonKey()) {
     if (!warnedNoKey) {
