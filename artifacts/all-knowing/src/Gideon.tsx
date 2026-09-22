@@ -16,6 +16,9 @@ import { lockoutWarningsFor, type LockWarning } from './lib/lockWarnings'
 import { LockoutPrompt } from './LockoutPrompt'
 import { packStatus } from './lib/sourcePack'
 import { hasGideonKey, type ChatMessage } from './lib/muse'
+import { labelOf } from './lib/links'
+import { Related } from './Related'
+import { targetModule } from './lib/related'
 import { WikiText } from './WikiText'
 import { useWorkspace } from './state'
 
@@ -30,7 +33,7 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
   // Muse is a reasoning model — a turn takes seconds, so show that it is working.
   const [busy, setBusy] = useState(false)
   const [lockPending, setLockPending] = useState<{ ids: string[]; warnings: LockWarning[]; after?: () => void } | null>(null)
-  const [log, setLog] = useState<{ role: 'you' | 'gideon'; text: string }[]>([
+  const [log, setLog] = useState<{ role: 'you' | 'gideon'; text: string; factId?: string }[]>([
     { role: 'gideon', text: 'Name a line, tap Blitz, or ask what is still available. Show it pins the atlas. I’m done ticks the beat.' },
   ])
 
@@ -48,6 +51,8 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
   const openCount = survey.active.length + survey.open.length
   const lockedCount = survey.locked.length
   const showPin = header.factId ? beatPin(w.character, header.factId, coords) : null
+  // The latest Gideon answer gets an explicit link + its real graph edges.
+  const lastGideonIdx = log.reduce((acc, r, i) => (r.role === 'gideon' ? i : acc), -1)
   // A new character is a new context: let the strip offer again.
   useEffect(() => { setDismissed(false) }, [w.character])
 
@@ -107,7 +112,7 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
       }
     }
     setOffer(act.offer ?? null)
-    setLog((rows) => [...rows, { role: 'you' as const, text }, { role: 'gideon' as const, text: act.say }].slice(-10))
+    setLog((rows) => [...rows, { role: 'you' as const, text }, { role: 'gideon' as const, text: act.say, factId: act.factId }].slice(-10))
   }
 
   function submit() {
@@ -269,10 +274,27 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
 
       <div className="gideon-log">
         {log.map((row, i) => (
-          <p key={i} className={row.role === 'gideon' ? 'note' : ''}>
-            <strong>{row.role === 'gideon' ? 'Gideon' : 'You'} · </strong>
-            <WikiText text={row.text} />
-          </p>
+          <div key={i}>
+            <p className={row.role === 'gideon' ? 'note' : ''}>
+              <strong>{row.role === 'gideon' ? 'Gideon' : 'You'} · </strong>
+              <WikiText text={row.text} />
+            </p>
+            {row.role === 'gideon' && row.factId && i === lastGideonIdx && (
+              <>
+                <button
+                  type="button"
+                  className="chip on"
+                  onClick={() => {
+                    w.setSelectedMarkerId(row.factId!)
+                    w.setModule(targetModule(row.factId!))
+                  }}
+                >
+                  Open {labelOf(row.factId)}
+                </button>
+                <Related id={row.factId} />
+              </>
+            )}
+          </div>
         ))}
       </div>
 
