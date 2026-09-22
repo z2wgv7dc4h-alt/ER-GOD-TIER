@@ -19,30 +19,30 @@ Do not add a module that cannot read or write `Character`.
 task work started (verified, not built fresh). Item 7 is now done. Item 2 partially done. Item 8
 is in progress. See each item below for specifics.
 
-### 1. Three-state facts â€” âœ… already implemented (verified 2026-09-22, not built fresh:
+### 1. Three-state facts — ✅ already implemented (verified 2026-09-22, not built fresh:
 `factState()` / `FactState` (`true | false | unknown`) already existed before this batch of task
 work started)
 
-Today a grace is either on a list or not. That collapses â€œnever been thereâ€ and â€œwe have not asked.â€
+Today a grace is either on a list or not. That collapses “never been there” and “we have not asked.”
 
 ```
 FactState = true | false | unknown
 ```
 
-- Save flag set â†’ `true`
-- Save flag unset *and* parser trusted â†’ `false` for that flag
-- Interview / screenshot silent â†’ `unknown`
-- â€œMissing onlyâ€ on the atlas means `unknown | false`, never `true`
+- Save flag set → `true`
+- Save flag unset *and* parser trusted → `false` for that flag
+- Interview / screenshot silent → `unknown`
+- “Missing only” on the atlas means `unknown | false`, never `true`
 
 Without this, a PS5 player who has not photographed Caelid looks the same as someone who skipped it.
 
-### 2. Alias plane â€” ðŸ”„ partially done
+### 2. Alias plane — 🔄 partially done
 
 Done for graces and bosses (`src/lib/aliases.ts`, Task 06's boss extension). Task 14 investigated
 the FMG-name half of this (Elden Refs / Carian Archive) and found both redundant with
-`names.json` already in-repo â€” closed as no deliverable, not because the alias plane is finished,
+`names.json` already in-repo — closed as no deliverable, not because the alias plane is finished,
 but because those two specific sources had nothing left to add. The generated-after-extract
-`aliases.json` this section describes (param row â†’ slug, FMG name â†’ slug, fed by a real game
+`aliases.json` this section describes (param row → slug, FMG name → slug, fed by a real game
 extract) is Task 09/17's territory, in progress.
 
 ```
@@ -54,9 +54,9 @@ aliases    elleh, church of elleh
 
 One generated `aliases.json` after extract. Every other plane keys off the slug. This is the last real blocker between Reckoning and the live map.
 
-### 3. Profiles â€” âœ… already implemented (verified 2026-09-22: `src/lib/vault.ts` already had a
+### 3. Profiles — ✅ already implemented (verified 2026-09-22: `src/lib/vault.ts` already had a
 full `Profile` type, `addProfile`/`switchProfile`/`deleteProfile`/`activeProfile`, before this
-batch of task work started. Not yet surfaced in the rail UI â€” see `HANDOFF-CLAUDE.md` P3 item 30)
+batch of task work started. Not yet surfaced in the rail UI — see `HANDOFF-CLAUDE.md` P3 item 30)
 
 A household is more than one Tarnished.
 
@@ -69,9 +69,9 @@ PC: profiles are save-slot index + character name from the header.
 
 localStorage today is one blob. That will collide the moment someone tests a second run.
 
-### 4. Export packet â€” âœ… already implemented (verified 2026-09-22: `src/lib/packet.ts` /
-`vault.ts` already handled this â€” Task 06's tests confirmed a packet never contains screenshot
-blobs â€” before this batch of task work started)
+### 4. Export packet — ✅ already implemented (verified 2026-09-22: `src/lib/packet.ts` /
+`vault.ts` already handled this — Task 06's tests confirmed a packet never contains screenshot
+blobs — before this batch of task work started)
 
 PS5 play is on a TV. Reckoning is on a phone. PC extract is on another box.
 
@@ -82,9 +82,9 @@ all-knowing.packet.json
 
 QR or file share, local only. This is how a living-room player gets state onto the PC that ran the one-time map setup (`npm run map:setup`). Not an account.
 
-### 5. Conflict rules â€” âœ… done (Task 24: `src/lib/conflict.ts`, `applyFacts`/`denyFacts` now
+### 5. Conflict rules — ✅ done (Task 24: `src/lib/conflict.ts`, `applyFacts`/`denyFacts` now
 reconcile from the full evidence list; all four winner-table rows have real tests. The loser is
-kept on `evidence[]` â€” `Evidence` gained an explicit `claim: 'true' | 'false'`.)
+kept on `evidence[]` — `Evidence` gained an explicit `claim: 'true' | 'false'`.)
 
 `src/lib/infer.ts`'s `Evidence` shape already carries a confidence score (0.94 direct / 0.72
 inferred, per Task 06) which is adjacent to this, but the specific winner-table below has not
@@ -101,7 +101,7 @@ Same fact, two sources.
 
 Record the loser on `evidence[]`. Do not silently drop it.
 
-### 6. Regulation stamp â€” âœ… done (Task 24: `src/lib/regulation.ts`, `Character.regulation`,
+### 6. Regulation stamp — ✅ done (Task 24: `src/lib/regulation.ts`, `Character.regulation`,
 `catalog.regulation`; packet now reads the shared constant. Task 27 fixed the mismatch.)
 
 **Audit result (Task 24) + fix (Task 27).** Task 24 found three of four sources off the
@@ -110,14 +110,14 @@ Pack build (its own item FMG carries the Tarnished Pack weapons), but the in-rep
 a stale base-game Text Explorer dump and the atlas markers had not been regenerated from the
 install. Both are now regenerated from the install:
 
-- **FMG names** (`open/names.json`) â€” 6,820 base-game names â†’ 8,767 including Shadow of the Erdtree
+- **FMG names** (`open/names.json`) — 6,820 base-game names → 8,767 including Shadow of the Erdtree
   and Tarnished Pack (Milady, Rellana, Messmer, Idus Sword, Leontiel's Greatsword).
   Regenerate: `python scripts/extract-fmg-names.py`.
-- **Atlas markers** (`vendor/elden-ring-map/data/markers.json`, gitignored) â€” 1,106 markers from the
+- **Atlas markers** (`vendor/elden-ring-map/data/markers.json`, gitignored) — 1,106 markers from the
   install's own `regulation.bin` + DLC, including Shadow of the Erdtree areas (Belurat, Shadow
   Keep, Scadutree Avatar). Regenerate: `python vendor/elden-ring-map/tools/build_markers.py`.
 
-- **Paramdex names** (`open/paramdex/`) â€” the equipment files (`EquipParamWeapon`/`Goods`/
+- **Paramdex names** (`open/paramdex/`) — the equipment files (`EquipParamWeapon`/`Goods`/
   `Protector`/`Accessory`/`Gem`) were topped up from the install with `scripts/extract-paramdex-names.py`
   and now include the Tarnished Pack rows (Idus Sword, Leontiel's Greatsword).
 
@@ -132,7 +132,7 @@ Clark AR, marker extract, and FMG dump must be the same stamp or the lab lies.
 
 Tarnished Pack is not a campaign tag on three weapons. It is a regulation overlay.
 
-### 7. Quest edges, not quest prose â€” âœ… done (Task 12: `PlanStep` now carries real `requires`/
+### 7. Quest edges, not quest prose — ✅ done (Task 12: `PlanStep` now carries real `requires`/
 `grants`/`lockouts` arrays, `planRoute` traverses them, both named test cases below are covered
 by real tests)
 
@@ -141,12 +141,12 @@ Step { id, requires[], grants[], lockouts[], flag? }
 ```
 
 Lockout is an edge to a forbidden later step, not a warning paragraph.  
-Alexander in the Limgrave hole and Ledaâ€™s Enir-Ilim invitations are the test cases.
+Alexander in the Limgrave hole and Leda’s Enir-Ilim invitations are the test cases.
 
-### 8. Enemy absorb table â€” ðŸ”„ in progress (Task 17, real `NpcParam` extraction via erdb against
+### 8. Enemy absorb table — 🔄 in progress (Task 17, real `NpcParam` extraction via erdb against
 the local game install now available on this machine)
 
-Build lab question 2 (â€œwhat should I hit this with?â€) needs a boss row: absorb, stance, resistances, status.  
+Build lab question 2 (“what should I hit this with?”) needs a boss row: absorb, stance, resistances, status.  
 Source: ERDB `NpcParam` + a hand table for legendary fights.  
 Zullie player-model sheet is not this table.
 
@@ -156,23 +156,23 @@ Zullie player-model sheet is not this table.
 - Seamless Co-op / randomizers as first-class worlds (regulation overlays later)
 - Save editor, item spawn, flag writer
 - Hosted tiles, hosted icon CDN
-- Accounts, cloud sync, â€œlogin with PSNâ€
+- Accounts, cloud sync, “login with PSN”
 - Live memory on a machine running EAC
 - Auto-play / overlay that injects into the game
 - Crowdsourced marker edits as truth
 
 ## Feature ideas that look like scope but are not architecture
 
-These can wait until 1â€“8 exist. They do not change the kernel.
+These can wait until 1–8 exist. They do not change the kernel.
 
 - Soft-cap graphs, fashion tab, transmog
 - Voice interview
-- â€œWhat if I give Seluvis the bladeâ€
+- “What if I give Seluvis the blade”
 - Build codes / shareable loadouts
 - Wiki-style lore pages
 - Achievement checklist as its own module (it is just more facts)
 
-## What â€œdoneâ€ for the MVP actually is
+## What “done” for the MVP actually is
 
 A PS5 player can, on a phone, in one sitting:
 
@@ -182,6 +182,6 @@ A PS5 player can, on a phone, in one sitting:
 4. Export a packet
 5. Open that packet on a PC that already ran extract and see the same ticks on the real map
 
-A PC player can skip 1â€“4 and drop a save / run the engine and land in the same place.
+A PC player can skip 1–4 and drop a save / run the engine and land in the same place.
 
 If a new idea does not serve that sitting, it is not v1.

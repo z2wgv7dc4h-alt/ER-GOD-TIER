@@ -1,4 +1,4 @@
-# Map engine â€” egormagurin/EldenRingMap
+# Map engine — egormagurin/EldenRingMap
 
 Vendored at `vendor/elden-ring-map`. Upstream:
 https://github.com/egormagurin/EldenRingMap
@@ -9,14 +9,14 @@ This is the atlas. All-Knowing does not grow a second map.
 
 Took:
 
-- Tile extract (`tools/extract_tiles.py`) â€” archives â†’ DCX/Oodle â†’ TPF/BC7 â†’ pyramid
-- Marker extract (`tools/build_markers.py`, `extract_items.py`) â€” 864 MSB files + params
-- World â†’ pixel (`server/lib/project.js`, `WorldMapLegacyConvParam`)
+- Tile extract (`tools/extract_tiles.py`) — archives → DCX/Oodle → TPF/BC7 → pyramid
+- Marker extract (`tools/build_markers.py`, `extract_items.py`) — 864 MSB files + params
+- World → pixel (`server/lib/project.js`, `WorldMapLegacyConvParam`)
 - Save decode (`server/lib/saveParser.js`, `slotWalk.js`, `bnd4.js`)
 - Event flags via `data/eventflag_bst.txt` (from ER-Save-Lib)
 - Watcher + SSE (`/api/events`)
 - Canvas map (`web/js/map.js`) and category UI (`web/js/app.js`)
-- Optional live position (`tools/live_memory.py`) â€” **not** wired as default
+- Optional live position (`tools/live_memory.py`) — **not** wired as default
 
 Did not take:
 
@@ -39,7 +39,7 @@ Did not take:
 Atlas. Task 59 (which supersedes Task 43) audited every user-facing control and gave the floating,
 embed-mode-only copies below. The pattern is always the same: the builders/wiring populate **every
 element sharing a class**, never one id, so the sidebar's copy and the embed copy stay in sync.
-All floating embed controls are phone-sized (â‰¥40px). The bottom-anchored ones sit inside the
+All floating embed controls are phone-sized (≥40px). The bottom-anchored ones sit inside the
 iframe; All-Knowing's mobile tab bar is its own grid row, so it does not overlap the embedded map
 and no iframe padding was needed.
 
@@ -55,7 +55,7 @@ and no iframe padding was needed.
 | Progress (overall found / total) | `#progress-label` / `#progress-fill` | No | Generalised `.progress-label` / `.progress-fill`; `refreshCounts()` updates every copy, including the `#embed-tools` bar. |
 | Display options (hide found / labels / icons) | `#hide-found` / `#show-labels` / `#show-icons` | No | Generalised `[data-option]`; floating copies in `#embed-tools`; one shared `state` flag, all copies kept in sync via `setOptionInputs()`. |
 | Language switch | `#lang-switch` (`.lang-switch`) | No | `buildLangSwitch()` populates every `.lang-switch`; floating copy in `#embed-tools`. |
-| Zoom + / âˆ’ / fit / centre-on-player | `#zoom-controls` (`#stage`) | **Yes** â€” never was in the sidebar | No move needed; embed buttons grown to 40Ã—40 for touch. |
+| Zoom + / − / fit / centre-on-player | `#zoom-controls` (`#stage`) | **Yes** — never was in the sidebar | No move needed; embed buttons grown to 40×40 for touch. |
 | Drag-pan / pinch-zoom | canvas pointer handlers (`map.js`) | **Yes** | `touch-action:none` + two-finger pinch (fixed before 59); unchanged. |
 | Collapse / expand sidebar | `#sb-collapse` / `#sb-expand` | N/A (no sidebar in embed) | Hidden in embed; no floating copy needed. |
 
@@ -69,8 +69,8 @@ Character snapshot fields we map:
 ```
 name, level
 stats.{vigor,mind,endurance,strength,dexterity,intelligence,faith,arcane}
-found[]          â†’ defeatedBosses / discoveredGraces / collectedItems
-mapPixel         â†’ follow / â€œwhere am Iâ€
+found[]          → defeatedBosses / discoveredGraces / collectedItems
+mapPixel         → follow / “where am I”
 deaths, secondsPlayed, lastRestedGrace
 ```
 
@@ -92,7 +92,7 @@ Haligtree, Finger Birthing Grounds must pick one row per block
 (`isBasePoint`, then non-origin anchor) or the region tears.
 
 Tiles: pick the variant in `71_maptile.mtmskbnd` per
-`lod*10000 + col*100 + row`. â€œMost bits setâ€ is wrong on 247 cells.
+`lod*10000 + col*100 + row`. “Most bits set” is wrong on 247 cells.
 
 ## Local setup
 
@@ -118,19 +118,19 @@ makes no network calls. There is nothing for anti-cheat to see.
 additive. When enabled, the server spawns `tools/live_memory.py`, which:
 
 - opens `eldenring.exe` with `PROCESS_VM_READ` **only** (Windows
-  `ReadProcessMemory`, Linux the Proton process's `/proc`) â€” it can read but
+  `ReadProcessMemory`, Linux the Proton process's `/proc`) — it can read but
   not modify the game, and never touches the save;
 - locates structures by byte-signature scan (`CSMenuManImp`, `WorldChrMan`,
-  â€¦), not fixed offsets, so a patch breaks it rather than misreads it;
+  …), not fixed offsets, so a patch breaks it rather than misreads it;
 - needs administrator rights because Elden Ring runs elevated;
 - does not inject, overlay, send input, call into the game, or use the
-  network â€” samples go Python â†’ local Node server â†’ browser over localhost;
+  network — samples go Python → local Node server → browser over localhost;
 - falls back silently to save-file mode if Python is missing, the game is
   closed, admin rights are absent, or the signatures stop matching.
 
 **EAC.** Elden Ring uses EasyAntiCheat, launched by
 `start_protected_game.exe` for online play. EAC cannot distinguish a
-read-only attach from a hostile one â€” every memory-reading tool (FPS
+read-only attach from a hostile one — every memory-reading tool (FPS
 unlockers, autosplitters, speedrun timers, this reader) looks the same to it.
 Attaching while protected play is running risks a ban. Run live mode **offline
 only**, or in a modded setup that skips `start_protected_game.exe`. See the
@@ -159,7 +159,7 @@ controls unreachable. Under `@media (max-width: 700px)` the Atlas now renders it
   fragment / spirit-ash / dungeon. This is the only Atlas layer UI under 700px; the old duplicated
   `.side-controls` block in the map side panel was removed (`src/index.css`, `src/Atlas.tsx`).
 - Desktop keeps the topbar toggles unchanged; `.atlas-jobs` / `.atlas-layers` are hidden there.
-- All chips are â‰¥ 38px. The engine iframe's own `?embed=1` controls (Task 59) are untouched, and no
+- All chips are ≥ 38px. The engine iframe's own `?embed=1` controls (Task 59) are untouched, and no
   new pin system is introduced.
 
 `src/Atlas.test.tsx` renders the workspace and asserts the three job controls stay in the tree, so a
@@ -168,12 +168,12 @@ future JS-side hide (not just a CSS query) fails the suite.
 ## If the map is blank
 
 `AtlasWorkspace` fails closed (Task 82): it only draws the live `?embed=1` iframe while the engine is
-actually up, and otherwise shows the static plate plus a visible banner â€” never a silent iframe.
+actually up, and otherwise shows the static plate plus a visible banner — never a silent iframe.
 
 1. Engine up? `npm start` starts it on :8099; `npm run map` runs the engine alone.
-2. Banner "offline (:8099)": nothing is listening â€” start it; on a phone the plates are expected.
-3. Banner "embed failed": the server answered but the iframe never loaded in 8s â€” restart, reload.
+2. Banner "offline (:8099)": nothing is listening — start it; on a phone the plates are expected.
+3. Banner "embed failed": the server answered but the iframe never loaded in 8s — restart, reload.
 4. Plate with no pins: the plates need `public/sourced/open/coords.json`; live pins live in the iframe.
 5. Tiles missing: run the engine tools (`tools/extract_tiles.py`, `tools/build_markers.py`) once against your install.
-6. Tiles are never shipped, and we do not invent them â€” an unextracted install draws nothing.
+6. Tiles are never shipped, and we do not invent them — an unextracted install draws nothing.
 7. The banner is a status, not an error wall: the static plate is a supported view, not a failure.

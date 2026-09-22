@@ -1,7 +1,7 @@
 # EanNewton/Awesome-Elden-Ring-Resources
 
 Upstream: https://github.com/EanNewton/Awesome-Elden-Ring-Resources  
-The *list* is CC0. The *dumps it points at* are still FromSoftware text/art or someone elseâ€™s sheets.
+The *list* is CC0. The *dumps it points at* are still FromSoftware text/art or someone else’s sheets.
 
 All-Knowing does not vendor Google Drive folders. It treats the list as a source map.
 
@@ -22,12 +22,12 @@ All-Knowing does not vendor Google Drive folders. It treats the list as a source
 1. Crop pickup banner / warp list / inventory icon well.
 2. OCR against **Elden Refs / Carian Archive** strings (EN + JP).
 3. If an icon is visible, template-match against **extracted** menu icons. RubyRed dump is the gap list, not the runtime pack.
-4. Hit â†’ fact id â†’ `infer.ts` implications.
+4. Hit → fact id → `infer.ts` implications.
 
 ## Ingest jobs still open
 
-- Script: pull Elden Refs / Carian Archive strings â†’ `src/knowledge/aliases.json`.
-- Script: diff RubyRed filenames against `extract_icons` output â†’ missing/cut report.
+- Script: pull Elden Refs / Carian Archive strings → `src/knowledge/aliases.json`.
+- Script: diff RubyRed filenames against `extract_icons` output → missing/cut report.
 - Done: import the EanNewton NPC sheet to `src/knowledge/npc-display.ts` as **cosmetic display cards only**
   (`scripts/ingest-npc-display.mjs`). This is player-model level/stat allocation, not combat stats. It is
   kept out of the Build lab; `NpcParam` absorb is still ERDB, not this sheet (see `docs/REVIEW.md`).
