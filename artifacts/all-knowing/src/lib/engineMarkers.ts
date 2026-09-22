@@ -43,11 +43,15 @@ const KIND: Record<string, MarkerKind> = {
   fragment: 'fragment',
 }
 
-/** The engine's graces/bosses/landmarks/poi as static-plate pins for a world. */
+/** The engine's bosses + map fragments as static-plate pins for a world.
+ *  Graces and dungeons already come from `warpGraces`/`coords` (name-deduped in
+ *  the Atlas), so only the kinds the app does not otherwise plot are added —
+ *  this keeps the plate readable instead of 1,000+ overlapping dots. */
 export function enginePins(doc: EngineMarkersDoc, world: AtlasWorld): MapMarker[] {
   const out: MapMarker[] = []
   for (const m of doc.markers) {
     if (WORLD_BY_MASTER[m.master] !== world) continue
+    if (m.cat !== 'boss' && m.cat !== 'fragment') continue
     const kind = KIND[m.cat] ?? 'item'
     out.push({
       id: `engine:${m.id}`,
@@ -63,14 +67,15 @@ export function enginePins(doc: EngineMarkersDoc, world: AtlasWorld): MapMarker[
   return out
 }
 
-export function useEnginePins(world: AtlasWorld): MapMarker[] {
+export function useEnginePins(world: AtlasWorld, enabled = true): MapMarker[] {
   const [doc, setDoc] = useState<EngineMarkersDoc | null>(null)
   useEffect(() => {
+    if (!enabled || doc) return
     let cancelled = false
     void loadEngineMarkers()
       .then((d) => { if (!cancelled) setDoc(d) })
       .catch(() => { /* engine data absent: no extra pins */ })
     return () => { cancelled = true }
-  }, [])
-  return useMemo(() => (doc ? enginePins(doc, world) : []), [doc, world])
+  }, [enabled, doc])
+  return useMemo(() => (enabled && doc ? enginePins(doc, world) : []), [enabled, doc, world])
 }

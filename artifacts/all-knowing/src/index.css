@@ -1262,3 +1262,12 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   cursor: pointer;
 }
 .wikilink:hover { color: #ffe08a; }
+
+
+/* Accessibility: visible keyboard focus + reduced motion. */
+:focus-visible { outline: 2px solid var(--gold, #c9a227); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+/* Roomier tap target for chips on touch. */
+.chip { min-height: 34px; }

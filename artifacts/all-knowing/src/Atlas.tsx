@@ -88,7 +88,7 @@ export function AtlasWorkspace() {
   const [sideOpen, setSideOpen] = useState(false)
   const [layersOpen, setLayersOpen] = useState(false)
   const coords = useCoords()
-  const enginePins = useEnginePins(world)
+  const enginePins = useEnginePins(world, !engineLive)
 
   const gracePins: MapMarker[] = useMemo(
     () =>

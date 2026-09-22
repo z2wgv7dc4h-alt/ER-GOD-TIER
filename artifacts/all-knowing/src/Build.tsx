@@ -3,6 +3,7 @@ import { markers } from './data/seed'
 import { opBuilds } from './knowledge/builds'
 import { pvpBuilds, pvpMatchups } from './knowledge/pvp'
 import { isCollected, useWorkspace } from './state'
+import { RespecAdvisor } from './RespecAdvisor'
 import { applyFacts } from './lib/infer'
 import { buildHunt } from './lib/buildHunt'
 import { useCoords } from './lib/coords'
@@ -176,6 +177,8 @@ export function BuildWorkspace() {
           1.17 regulation data (Thomas Clark); Vigor/Mind/Endurance use the community
           HP/FP/stamina breakpoints. See <code>src/lib/softCaps.ts</code>.
         </p>
+
+        <RespecAdvisor />
 
         {selectedBuild && hunt ? (
           <div className="kit-hunt" style={{ marginTop: 14 }}>
