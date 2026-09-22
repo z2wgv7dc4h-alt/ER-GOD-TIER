@@ -15,6 +15,7 @@ import { useCoords } from './lib/coords'
 import { useEnginePins } from './lib/engineMarkers'
 import { layerOrder } from './lib/nav'
 import { resolveSelection } from './lib/atlasSelection'
+import { clusterMarkers } from './lib/cluster'
 import { leftoverPins } from './lib/leftoverPins'
 import { approachingGateList, gatePins, unresolvedGateLocks } from './lib/gatePins'
 import type { MapMarker } from './types'
@@ -212,6 +213,14 @@ export function AtlasWorkspace() {
   const vh = worldMeta?.h ?? 80
   const k = plate ? vw / 100 : 1
   const at = (m: MapMarker) => (plate ? { x: (m.x / 100) * vw, y: (m.y / 100) * vh } : { x: m.x, y: m.y })
+  // Collapse the dense iconless pins into counted clusters when the plate is busy.
+  const { singles, clusters } = useMemo(() => clusterMarkers(shown, (100 / 45) * (plate ? vw / 100 : 1)), [shown, plate, vw])
+  // Per-kind counts for the layer toggles, so a filter's size is visible.
+  const countsByKind = useMemo(() => {
+    const out: Record<string, number> = {}
+    for (const m of allPins) out[m.kind] = (out[m.kind] ?? 0) + 1
+    return out
+  }, [allPins])
 
   function mark(state: FactState) {
     if (!selectedId) return
@@ -243,7 +252,7 @@ export function AtlasWorkspace() {
             <path d="M66,52 C70,44 78,36 86,34 C92,40 90,52 84,58 C76,62 68,58 66,52 Z" fill="none" stroke="#2a3a4a" strokeWidth="0.3" />
               </>
             )}
-            {shown.map((m) => {
+            {singles.map((m) => {
               const st = factState(w.character, m.id)
               const p = at(m)
               return (
@@ -286,6 +295,17 @@ export function AtlasWorkspace() {
                   {w.selectedMarkerId === m.id && (
                     <text x={p.x + 2 * k} y={p.y + 0.8 * k}>{m.name}</text>
                   )}
+                </g>
+              )
+            })}
+            {clusters.map((c, i) => {
+              const p = plate ? { x: (c.x / 100) * vw, y: (c.y / 100) * vh } : { x: c.x, y: c.y }
+              return (
+                <g key={`cluster:${i}`} className="pin cluster" onClick={() => w.setSelectedMarkerId(c.first.id)}>
+                  <circle cx={p.x} cy={p.y} r={2 * k} fill="#6b5a2a" fillOpacity={0.85} stroke="#e4c36a" strokeWidth={0.25 * k} />
+                  <text x={p.x} y={p.y + 0.9 * k} textAnchor="middle" fill="#f3e6b8" fontSize={2 * k}>
+                    {c.count}
+                  </text>
                 </g>
               )
             })}
@@ -351,7 +371,7 @@ export function AtlasWorkspace() {
                 aria-pressed={w.layers[id]}
                 onClick={() => w.toggleLayer(id)}
               >
-                {id}
+                {id}{countsByKind[id] ? ` ${countsByKind[id]}` : ''}
               </button>
             ))}
           </div>

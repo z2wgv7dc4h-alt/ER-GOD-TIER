@@ -6,6 +6,16 @@ import { pwaOptions } from './src/lib/pwa.ts'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), VitePWA(pwaOptions)],
+  build: {
+    rollupOptions: {
+      output: {
+        // Keep the React runtime in its own long-lived chunk so app/data edits
+        // don't invalidate it on every deploy.
+        manualChunks: (id: string) =>
+          /node_modules[\\/](react|react-dom|scheduler)[\\/]/.test(id) ? 'react' : undefined,
+      },
+    },
+  },
   server: {
     host: true,
     // `.scratch/` is gitignored task scratch (clones, dumps, headless-browser profiles).
