@@ -905,17 +905,22 @@ async function toggleCheck(id, on) {
 /* ------------------------------------------------------------------- ui */
 
 function buildLayerButtons() {
-  const wrap = $('layer-buttons');
-  wrap.innerHTML = '';
+  // Populates every ".layer-buttons" element in the page, not just the
+  // sidebar's - the embed-mode floating switcher (#embed-layer-buttons) is a
+  // second copy for when ?embed=1 hides the sidebar entirely.
+  const wraps = document.querySelectorAll('.layer-buttons');
   const order = ['M00', 'M01', 'M10', 'M11'];
-  for (const id of order) {
-    const info = masterInfo(id);
-    const b = document.createElement('button');
-    b.className = 'layer-btn' + (id === state.master ? ' active' : '');
-    b.textContent = t('master.' + id);
-    b.disabled = !info;
-    b.onclick = () => switchMaster(id);
-    wrap.appendChild(b);
+  for (const wrap of wraps) {
+    wrap.innerHTML = '';
+    for (const id of order) {
+      const info = masterInfo(id);
+      const b = document.createElement('button');
+      b.className = 'layer-btn' + (id === state.master ? ' active' : '');
+      b.textContent = t('master.' + id);
+      b.disabled = !info;
+      b.onclick = () => switchMaster(id);
+      wrap.appendChild(b);
+    }
   }
 }
 

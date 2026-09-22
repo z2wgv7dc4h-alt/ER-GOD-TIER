@@ -115,6 +115,12 @@
 
     <button type="button" id="sb-expand" class="sb-expand" data-i18n-title="sb.expand" title="Expand sidebar" aria-hidden="true">»</button>
 
+    <!-- All-Knowing: the sidebar (and the map-switcher inside it) is hidden
+         in ?embed=1 mode. Without this, there is no way to reach Underground/
+         Realm of Shadow/etc from the embedded map at all. buildLayerButtons()
+         populates every ".layer-buttons" element, this one included. -->
+    <div id="embed-layer-buttons" class="layer-buttons embed-layer-buttons"></div>
+
     <div id="zoom-controls">
       <button type="button" id="zoom-in" data-i18n-title="zoom.in" title="Zoom in">+</button>
       <button type="button" id="zoom-out" data-i18n-title="zoom.out" title="Zoom out">−</button>

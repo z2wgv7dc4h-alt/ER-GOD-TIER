@@ -75,6 +75,7 @@ html, body {
 /* All-Knowing: embedded (iframe) mode - canvas only, no sidebar chrome. */
 #app.embed #sidebar { display: none; }
 #app.embed .sb-expand { display: none; }
+#app.embed .embed-layer-buttons { display: grid; }
 .lang-switch { margin-left: auto; display: flex; gap: 3px; align-self: center; }
 .lang-btn {
   background: none; border: 1px solid var(--line); color: var(--dim);
@@ -221,12 +222,28 @@ html, body {
 /* ------------------------------------------------------------- stage */
 
 #stage { position: relative; flex: 1 1 auto; overflow: hidden; background: #070705; }
-#map { display: block; width: 100%; height: 100%; cursor: grab; }
+/* touch-action: none hands every touch gesture on the canvas to our own
+   pointer handlers (pan / pinch-zoom in map.js) instead of letting the
+   browser also try to pan/zoom the page itself - without this, a pinch
+   here zooms the whole embedding page, not the map. */
+#map { display: block; width: 100%; height: 100%; cursor: grab; touch-action: none; }
 #map.dragging { cursor: grabbing; }
 
 #zoom-controls {
   position: absolute; right: 14px; top: 14px; z-index: 20;
   display: flex; flex-direction: column; gap: 5px;
+}
+
+/* Only shown in ?embed=1 (see #app.embed .embed-layer-buttons above) - the
+   sidebar's own copy of these buttons is hidden there, so this is the only
+   way to reach Underground / Realm of Shadow / etc from the embedded map. */
+.embed-layer-buttons {
+  display: none;
+  position: absolute; left: 14px; top: 14px; z-index: 20;
+  grid-template-columns: 1fr 1fr; gap: 5px; width: 140px;
+}
+.embed-layer-buttons .layer-btn {
+  background: rgba(22,20,15,.92); box-shadow: var(--shadow);
 }
 #zoom-controls button {
   width: 32px; height: 32px; font-size: 16px; line-height: 1;

@@ -231,16 +231,52 @@ class TileMap {
   _bind() {
     const c = this.canvas;
     let dragging = false, lastX = 0, lastY = 0, moved = 0;
+    // Active touch pointers, by id, for pinch-to-zoom. Two fingers down means
+    // this is a pinch, not a pan - single-finger dragging is suspended while
+    // a second finger is active and does not resume until back to one.
+    const touches = new Map();
+    let pinchDist = 0, pinchMidX = 0, pinchMidY = 0;
+
+    const midpoint = () => {
+      const pts = [...touches.values()];
+      return {
+        x: (pts[0].x + pts[1].x) / 2,
+        y: (pts[0].y + pts[1].y) / 2,
+        d: Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y),
+      };
+    };
 
     c.addEventListener('pointerdown', (e) => {
+      c.setPointerCapture(e.pointerId);
+      if (e.pointerType === 'touch') {
+        const r = c.getBoundingClientRect();
+        touches.set(e.pointerId, { x: e.clientX - r.left, y: e.clientY - r.top });
+        if (touches.size === 2) {
+          dragging = false;
+          const m = midpoint();
+          pinchDist = m.d; pinchMidX = m.x; pinchMidY = m.y;
+          return;
+        }
+        if (touches.size > 2) return;
+      }
       dragging = true; moved = 0;
       lastX = e.clientX; lastY = e.clientY;
-      c.setPointerCapture(e.pointerId);
       c.classList.add('dragging');
     });
 
     c.addEventListener('pointermove', (e) => {
       const r = c.getBoundingClientRect();
+      if (e.pointerType === 'touch' && touches.has(e.pointerId)) {
+        touches.set(e.pointerId, { x: e.clientX - r.left, y: e.clientY - r.top });
+      }
+      if (touches.size === 2) {
+        const m = midpoint();
+        if (pinchDist > 0 && m.d > 0) {
+          this.zoomBy(m.d / pinchDist, m.x, m.y);
+        }
+        pinchDist = m.d; pinchMidX = m.x; pinchMidY = m.y;
+        return;
+      }
       if (dragging) {
         const dx = e.clientX - lastX, dy = e.clientY - lastY;
         moved += Math.abs(dx) + Math.abs(dy);
@@ -255,6 +291,8 @@ class TileMap {
     });
 
     const end = (e) => {
+      if (e.pointerType === 'touch') touches.delete(e.pointerId);
+      if (touches.size < 2) pinchDist = 0;
       if (!dragging) return;
       dragging = false;
       c.classList.remove('dragging');
@@ -262,7 +300,10 @@ class TileMap {
       if (moved < 5) this.onClick(e.clientX - r.left, e.clientY - r.top, e);
     };
     c.addEventListener('pointerup', end);
-    c.addEventListener('pointercancel', () => { dragging = false; c.classList.remove('dragging'); });
+    c.addEventListener('pointercancel', () => {
+      touches.clear(); pinchDist = 0;
+      dragging = false; c.classList.remove('dragging');
+    });
 
     c.addEventListener('wheel', (e) => {
       e.preventDefault();
