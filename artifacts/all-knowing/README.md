@@ -1,6 +1,6 @@
 # All-Knowing
 
-Local-first Elden Ring workspace. One character. Three rooms. Map, build, quests.
+Local-first Elden Ring workspace. One character. Five rooms: Reckon, Atlas, Build lab, Quests, Codex.
 
 The atlas is not a sketch waiting to be replaced later. It is
 **[egormagurin/EldenRingMap](https://github.com/egormagurin/EldenRingMap)**
@@ -139,8 +139,10 @@ Details: `docs/MAP-ENGINE.md` and their own `vendor/elden-ring-map/docs/HOW-IT-W
 v1 worlds: base game + Shadow of the Erdtree + Tarnished Pack.
 Nightreign is a later campaign tab.
 
-Still to land on top of this engine: Thomas Clark AR math, a real quest DAG
-tied to flag ids, inventory from the slot (not just flags).
+Landed on top of the map engine: real attack-rating math ported from Thomas Clark's
+calculator and run on this repo's vendored 1.17 regulation data; a traversable
+quest/ending DAG with real lockout edges; a build-hunt checklist that pins the missing
+pieces of an OP/PvP kit; and a Codex backed by structured reference data (below).
 
 ## Gideon and the optional LLM
 
@@ -175,6 +177,33 @@ browser calls the provider directly and the key is present in client code at
 runtime. That is accepted because the app runs on its owner's machine and is not a
 public multi-tenant service. If the distribution model ever changes, move the call
 behind a server proxy and stop shipping the key to the client.
+
+## Build lab and kit hunt
+
+The Build lab sets stats, level and loadout from the OP/PvP kits. Picking a kit also shows its
+**hunt list**: `src/lib/buildHunt.ts` resolves each `need[]` id and kit slot through `loot.ts`, the
+catalog and the generated alias plane, splits them into have/missing, and pins the missing pieces
+that already have a loot row on the existing leftover/coords frames — no third pin system. "Show on
+map" adds the piece to the watchlist, "Mark" ticks it. Clicking a kit only sets stats and loadout;
+it never marks the gear collected by itself.
+
+## Codex reference data
+
+Codex search also matches structured reference data pulled from the FanAPI
+(`public/sourced/open/fanapi/*.json`, refreshed by `node scripts/ingest-fanapi.mjs`): armor poise
+and negation, talisman effects, spell cost/slots/requirements, Ash of War skill, spirit-ash FP/HP,
+boss HP/drops, item effects, class stats, NPC locations and more. Only structured fields are
+stored — no article bodies or images, and weapon/shield attack numbers are deliberately omitted so
+attack rating stays on the in-repo regulation data. Base-game only; the FanAPI predates Shadow of
+the Erdtree.
+
+## Sources
+
+Facts, locations-in-prose, build ideas and one-line citations may come from anywhere — in-repo
+dumps, your run, Fextralife, wiki.gg, YouTube, Discord, patch notes. Param numbers, AR, soft caps,
+item names-as-ids and pin coordinates come only from the in-repo regulation / `names.json` /
+`coords.json` / `loot.ts` / catalog, and lat/lng, event flags and lockouts are never invented. Full
+policy: `HANDOFF-CLAUDE.md` §4.
 
 ## Rules
 

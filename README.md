@@ -1,10 +1,11 @@
 # ER GOD TIER
 
 A local-first Elden Ring companion — one shared character state driving an interactive atlas, a
-real attack-rating build lab, a quest/ending planner with real lockout edges, a save-file reader,
-on-device OCR for PS5 players, and Gideon: a router that answers "where is X," "what should I do
-now," and "I've done X, what now" from real game data, with an optional DeepSeek LLM layer behind
-it when a key is configured.
+real attack-rating build lab with an OP/PvP kit hunt, a quest/ending planner with real lockout
+edges, a save-file reader, on-device OCR for PS5 players, and Gideon: a router that answers "where
+is X," "what should I do now," and "I've done X, what now" from real game data, with an optional LLM
+layer (Meta Muse Spark 1.3 Contributor) behind it when a key is configured. The Codex is searchable
+against structured FanAPI reference data (armor poise, talisman effects, spell costs, boss HP/drops).
 
 Base game + Shadow of the Erdtree + Tarnished Pack. No accounts, no server, no uploads — save
 files and screenshots are parsed entirely in the browser.

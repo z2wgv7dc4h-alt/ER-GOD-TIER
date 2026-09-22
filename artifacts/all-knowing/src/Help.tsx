@@ -101,6 +101,12 @@ export function HelpSheet({ onClose }: { onClose: () => void }) {
           the small critical data set are cached on first load. The live map still needs
           the local engine; without it the atlas just draws the static plates.
         </p>
+        <p className="note" style={{ marginTop: 8 }}>
+          Codex search reaches past this repo's own facts into structured reference data
+          (armor poise, talisman effects, spell costs, boss HP/drops). Attack rating and
+          pin coordinates always come from the in-repo regulation and coord data, never a
+          wiki.
+        </p>
       </div>
     </div>
   )
