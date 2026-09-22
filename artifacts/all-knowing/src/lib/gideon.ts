@@ -45,6 +45,7 @@ import { loadMedusaRoute, findMedusaStep, medusaQuests, type MedusaQuest } from 
 import { guideExcerpts, loadGuides, matchGuides, type GuideExcerpt } from './guides'
 import { loadWeapons, type Weapon } from './ar'
 import { earlyWeaponRanking, weaponAdvice, dominantAttributes } from './upgradeAdvice'
+import { respecAdvice } from './respecAdvice'
 import type { Character, ModuleId } from '../types'
 
 export type GideonAct = {
@@ -523,6 +524,15 @@ export function askGideonRouter(
     if (quote) {
       const body = quote.lines.map((l) => `“${l.text}”`).join('\n')
       return { say: `${quote.speaker}:\n${body}\n— verbatim in-game dialogue.`, module: 'codex' }
+    }
+  }
+
+  // Respec / "use a different weapon" advice: where the points should go.
+  if (weapons && /\b(respec|rebirth|larval tear|where should (my )?points|stat allocation|redistribute|different weapon|switch weapons?|change weapon)\b/.test(q)) {
+    const adv = respecAdvice(weapons, question, character.stats)
+    if (adv) {
+      const buildId = [...opBuilds, ...pvpBuilds].find((b) => b.name === adv.name)?.id
+      return { say: `${adv.note} Rennala respecs for a Larval Tear.`, module: 'build', buildId }
     }
   }
 
@@ -1219,7 +1229,7 @@ export function isFastLookup(
   if (guides && matchGuides(question, guides).length) return true
 
   // Weapon upgrade / early-weapon advice is deterministic from the AR engine.
-  if (weapons && /\b(upgrade|reinforce|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(q)) return true
+  if (weapons && /\b(upgrade|reinforce|respec|rebirth|different weapon|switch weapons?|stat allocation|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(q)) return true
 
   // To-do list + level/zone advice are deterministic.
   if (/\b(come back|go back|my (todo|list|watchlist)|what(?:'| i)?s on my (todo|list)|remember to|don'?t forget)\b/.test(q)) return true
@@ -1276,7 +1286,7 @@ export async function askGideon(
   const wantsPlacements = /\b(where|find|locate)\b/.test(ql)
   const wantsMedusa = /\b(medusa|walkthrough|route)\b/.test(ql)
   const wantsGuides = /\b(how|guide|upgrade|smithing|somber|bell bearing|talisman|incantation|sorcer|damage type|stats?|buff)\b/.test(ql)
-  const wantsWeapons = /\b(upgrade|reinforce|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(ql)
+  const wantsWeapons = /\b(upgrade|reinforce|respec|rebirth|different weapon|switch weapons?|stat allocation|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(ql)
   const wantsLevels = /\b(what level|recommended level|am i (ready|overlevel|underlevel)|overlevell?ed|underlevell?ed|outlevell?ed|before i (go|leave|move)|i(?:'| a)m here)\b/.test(ql)
 
   // Load every optional context source in parallel — they are independent

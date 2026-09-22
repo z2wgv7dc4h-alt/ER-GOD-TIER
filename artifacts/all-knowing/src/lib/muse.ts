@@ -198,7 +198,76 @@ export async function callGideonLlm(
   throw lastError ?? new Error('Gideon LLM request failed')
 }
 
-// --- Agent transport: tool calling + multi-turn ---------------------------
+// --- Responses API (agent, reasoning continuity) --------------------------
+
+export type ResponsesResult = {
+  id: string
+  outputText: string
+  functionCalls: ToolCall[]
+}
+
+/** Responses uses FLAT tool objects (name/description/parameters at top level). */
+function toResponsesTools(tools: AgentTool[]): unknown[] {
+  return tools.map((t) =>
+    t.type === 'function'
+      ? { type: 'function', name: t.function.name, description: t.function.description, parameters: t.function.parameters }
+      : { type: 'web_search' },
+  )
+}
+
+/**
+ * The Responses API path. The server keeps the conversation (reasoning +
+ * tool calls) via `previous_response_id`, so a follow-up only sends the new
+ * turn — the recommended transport for tool-calling agents. We extract any
+ * `function_call` items for local execution and the final `output_text`.
+ */
+export async function callGideonResponses(
+  input: unknown,
+  tools: AgentTool[],
+  previousResponseId: string | undefined,
+  opts: GideonLlmOptions = {},
+): Promise<ResponsesResult> {
+  const key = gideonKey()
+  if (!key) throw new Error('VITE_GIDEON_API_KEY is not set')
+  const body: Record<string, unknown> = {
+    model: gideonModel(),
+    input,
+    reasoning: { effort: opts.reasoningEffort ?? DEFAULT_REASONING_EFFORT },
+    prompt_cache_key: CACHE_KEY,
+    max_output_tokens: opts.maxTokens ?? DEFAULT_MAX_TOKENS,
+  }
+  if (tools.length) body.tools = toResponsesTools(tools)
+  if (previousResponseId) body.previous_response_id = previousResponseId
+
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), opts.timeoutMs ?? DEFAULT_TIMEOUT_MS)
+  try {
+    const res = await fetch(`${gideonBaseUrl()}/responses`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
+      signal: controller.signal,
+      body: JSON.stringify(body),
+    })
+    if (!res.ok) throw new Error(`Gideon responses HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`)
+    const data = (await res.json()) as {
+      id?: string
+      output_text?: unknown
+      output?: { type?: string; name?: string; arguments?: string; call_id?: string; content?: { text?: unknown }[] }[]
+    }
+    const functionCalls: ToolCall[] = (data.output ?? [])
+      .filter((i) => i.type === 'function_call')
+      .map((i) => ({ id: String(i.call_id ?? ''), name: String(i.name ?? ''), arguments: String(i.arguments ?? '') }))
+    let outputText = typeof data.output_text === 'string' ? data.output_text : ''
+    if (!outputText) {
+      for (const item of data.output ?? []) {
+        for (const part of item.content ?? []) if (typeof part.text === 'string') outputText += part.text
+      }
+    }
+    return { id: String(data.id ?? ''), outputText, functionCalls }
+  } finally {
+    clearTimeout(timeout)
+  }
+}
 
 export type AgentMessage = {
   role: 'system' | 'user' | 'assistant' | 'tool'

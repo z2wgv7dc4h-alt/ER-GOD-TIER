@@ -2,11 +2,23 @@ import { useMemo, useRef, useState } from 'react'
 import { interview } from './knowledge/catalog'
 import { aliasStatus } from './lib/aliases'
 import { applyOcrRead, hintForShot, matchBulkLines, readImage, type OcrLineResult, type OcrOutcome } from './lib/ocr'
+import { parseEquipmentText } from './lib/equipmentOcr'
+import { readCharacterScreen } from './lib/museVision'
+import { hasGideonKey } from './lib/muse'
 import { applyAnswers, clearFact, summarize } from './lib/infer'
 import { labelOf } from './lib/links'
 import { NextMoves, Thread } from './Thread'
 import { useWorkspace } from './state'
 import type { Character, Shot, ShotKind } from './types'
+
+function fileToDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader()
+    fr.onload = () => resolve(String(fr.result))
+    fr.onerror = () => reject(fr.error)
+    fr.readAsDataURL(file)
+  })
+}
 
 const shotKinds: { id: ShotKind; label: string; ask: string }[] = [
   { id: 'warp-list', label: 'Warp / grace list', ask: 'Map menu → a Site of Grace list. Best single shot a PS5 player can give.' },
@@ -17,8 +29,7 @@ const shotKinds: { id: ShotKind; label: string; ask: string }[] = [
   { id: 'boss', label: 'Boss remembrance / arena', ask: 'A remembrance or the “legend felled” banner.' },
 ]
 
-/** Per-line verdicts for a pasted/recognized list: every line gets a match or a miss. */
-function LineResults({ lines }: { lines: OcrLineResult[] }) {
+/** Per-line verdicts for a pasted/recognized list: every line gets a match or a miss. */function LineResults({ lines }: { lines: OcrLineResult[] }) {
   if (!lines.length) return null
   const hit = lines.filter((l) => l.matches.length).length
   return (
@@ -81,7 +92,37 @@ export function ReckonWorkspace() {
       setError('')
       try {
         const read = await readImage(images[i])
-        const result = applyOcrRead(next, read, `screenshot:${shots[i].kind}`)
+        let result = applyOcrRead(next, read, `screenshot:${shots[i].kind}`)
+
+        // Equipment screen: read stats + gear. Muse vision reads the icons too;
+        // Tesseract + regex is the no-key fallback.
+        if (shots[i].kind === 'equipment') {
+          const parsed = parseEquipmentText(read.text)
+          const vision = hasGideonKey() ? await readCharacterScreen(await fileToDataUrl(images[i])) : null
+          const stats = { ...parsed.stats, ...(vision?.stats ?? {}) }
+          const level = vision?.level ?? parsed.level
+          const gear = vision?.gear?.length ? vision.gear : parsed.gear
+          if (Object.keys(stats).length || level || gear.length) {
+            next = {
+              ...next,
+              level: level ?? next.level,
+              stats: { ...next.stats, ...stats },
+              loadout: gear.length ? gear.map((name, idx) => ({ id: `shot-gear-${idx}`, name, kind: 'armament' as const })) : next.loadout,
+            }
+            if (gear.length) {
+              const g = applyOcrRead(next, { text: gear.join('\n'), confidence: 0.9 }, 'screenshot:equipment')
+              if (g.status === 'applied') next = g.character
+            }
+            setCharacter(next)
+            result = {
+              ...result,
+              character: next,
+              status: 'applied',
+              message: `Equipment read: Lv ${level ?? '?'} · ${Object.keys(stats).length} stats · ${gear.length} gear`,
+            }
+          }
+        }
+
         setOutcome(result)
         if (result.status === 'applied') {
           next = result.character

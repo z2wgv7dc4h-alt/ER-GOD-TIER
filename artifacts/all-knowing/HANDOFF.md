@@ -86,10 +86,17 @@ sentences naming an ungrounded id are stripped.
 
 Harness (`src/lib/gideonAgent.ts`, `src/lib/gideonTools.ts`): the model is given our deterministic
 functions as **tools** — search, here, level_check, boss, guide, upgrade, dialogue — runs them on real
-data and answers from the results (bounded 4-turn loop, every id real/hyperlinkable). Output is
-**schema-constrained** (`response_format: json_schema`, strict `GideonAct`). Optional built-in
-`web_search` behind `VITE_GIDEON_WEB_SEARCH=1`. Evals: `src/lib/gideon.eval.test.ts` (router
-fixtures) + `gideonTools.test.ts`.
+data and answers from the results (bounded 4-turn loop, every id real/hyperlinkable). Transport is the
+**Responses API** (`previous_response_id` threads reasoning + tool calls server-side), falling back to
+a Chat Completions loop. Output is **schema-constrained** (`json_schema`, strict `GideonAct`). Optional
+built-in `web_search` behind `VITE_GIDEON_WEB_SEARCH=1`. Evals: `gideon.eval.test.ts` +
+`gideonTools.test.ts`.
+
+Build/respec: `src/lib/respecAdvice.ts` answers "respec onto X / where should my points go" from the
+authored build stats or a weapon's real requirements/scaling. Character-screen photos:
+`src/lib/museVision.ts` reads level/stats/gear with Muse vision (icons included), with
+`src/lib/equipmentOcr.ts` (Tesseract + regex) as the no-key fallback; wired into Reckon's *Equipment*
+shot kind.
 
 Interlinking: `src/lib/interlink.ts` + `src/WikiText.tsx` turn any known entity mention (build text,
 boss drops, guides, dialogue, Gideon's answers) into a link that opens its Codex/Quests/Atlas view;
