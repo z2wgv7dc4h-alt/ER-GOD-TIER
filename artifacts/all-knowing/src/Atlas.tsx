@@ -214,7 +214,8 @@ export function AtlasWorkspace() {
   const k = plate ? vw / 100 : 1
   const at = (m: MapMarker) => (plate ? { x: (m.x / 100) * vw, y: (m.y / 100) * vh } : { x: m.x, y: m.y })
   // Collapse the dense iconless pins into counted clusters when the plate is busy.
-  const { singles, clusters } = useMemo(() => clusterMarkers(shown, (100 / 45) * (plate ? vw / 100 : 1)), [shown, plate, vw])
+  // Pins are percent (0..100), so the grid cell is too — not plate pixels.
+  const { singles, clusters } = useMemo(() => clusterMarkers(shown, 100 / 45), [shown])
   // Per-kind counts for the layer toggles, so a filter's size is visible.
   const countsByKind = useMemo(() => {
     const out: Record<string, number> = {}
