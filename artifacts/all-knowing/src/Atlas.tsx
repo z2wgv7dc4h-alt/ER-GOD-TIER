@@ -231,7 +231,7 @@ export function AtlasWorkspace() {
         )}
         {/* Task 69: the phone Atlas surface. `.topbar .toggles` is hidden under
             700px, so these are the only place the three job controls render on a
-            phone; the seven pin kinds sit behind one "layers" overflow. Desktop
+            phone; the seven pin kinds hide behind one "layers" overflow. Desktop
             keeps the topbar toggles and never shows this bar. */}
         <div className="atlas-jobs" role="group" aria-label="Map job filters">
           <button

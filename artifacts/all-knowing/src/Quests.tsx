@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import { isStepDone, planRoute, type PlanStep } from './knowledge/endings'
+import { npcLocate } from './knowledge/npcLocations'
 import { allLines, type Line } from './knowledge/storylines'
 import { LockoutPrompt } from './LockoutPrompt'
 import { Related } from './Related'
 import { Thread } from './Thread'
 import { applyFacts, clearFact } from './lib/infer'
+import { beatPin } from './lib/beatPins'
+import { useCoords } from './lib/coords'
 import { lockoutWarnings, type LockWarning } from './lib/lockWarnings'
 import { factState, useWorkspace } from './state'
 import type { Character } from './types'
@@ -27,7 +30,8 @@ export function currentStepId(character: Character, line: Line): string | null {
 }
 
 export function QuestWorkspace() {
-  const { character, setCharacter, query, selectedMarkerId, setSelectedMarkerId } = useWorkspace()
+  const { character, setCharacter, setModule, query, selectedMarkerId, setSelectedMarkerId } = useWorkspace()
+  const coords = useCoords()
   const [activeId, setActiveId] = useState(allLines[0]?.id)
   const [pendingLock, setPendingLock] = useState<{ factId: string; warnings: LockWarning[] } | null>(null)
 
@@ -40,6 +44,12 @@ export function QuestWorkspace() {
   const filtered = allLines.filter((l) => `${l.name} ${l.aliases.join(' ')}`.toLowerCase().includes(q))
   const linkedStep = linkedLine && linkedLine.id === active?.id ? selectedMarkerId : null
   const currentId = active ? currentStepId(character, active) : null
+  // Task 78: the current beat gets Show on map only if a pin already exists.
+  const currentStep = active?.steps.find((s) => s.id === currentId)
+  const currentFact = currentStep ? stepFact(currentStep) : null
+  const currentPin = currentFact ? beatPin(character, currentFact, coords) : null
+  // Task 79: a one-line "where is the companion" when the locator has a pin.
+  const npcLoc = active ? npcLocate(character, active.id) : null
 
   function commit(factId: string) {
     setCharacter(applyFacts(character, [factId], 'answer', `quests: ${active?.name ?? factId}`))
@@ -95,6 +105,11 @@ export function QuestWorkspace() {
       <section className="panel">
         <div className="kicker">{active.kind}</div>
         <h3 style={{ fontFamily: 'var(--font-display)', margin: '6px 0 8px' }}>{active.name}</h3>
+        {npcLoc && (
+          <p className="note" style={{ marginBottom: 8 }}>
+            {npcLoc.name} is at {npcLoc.graceName}.
+          </p>
+        )}
         {selectedMarkerId && !linkedStep && <Thread id={selectedMarkerId} />}
         <ul className="steps">
           {active.steps.map((step) => {
@@ -121,6 +136,18 @@ export function QuestWorkspace() {
                   {factId && (
                     <button type="button" className="chip" onClick={() => setSelectedMarkerId(factId)}>
                       Thread
+                    </button>
+                  )}
+                  {step.id === currentId && currentPin && factId && (
+                    <button
+                      type="button"
+                      className="chip"
+                      onClick={() => {
+                        setSelectedMarkerId(factId)
+                        setModule('map')
+                      }}
+                    >
+                      Show on map
                     </button>
                   )}
                   <Related id={factId ?? step.id} />

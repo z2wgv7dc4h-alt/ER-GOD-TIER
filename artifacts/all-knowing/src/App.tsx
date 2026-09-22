@@ -10,12 +10,11 @@ import {
 } from './lib/mapEngine'
 import { mergeCharacter } from './lib/merge'
 import { ingestSave } from './lib/save'
-import { FirstSit } from './FirstSit'
 import { Help } from './Help'
 import { leftovers } from './lib/leftovers'
 import { summarize } from './lib/infer'
 import { worldBanners } from './lib/worldState'
-import { CommandHits, PacketBar, Recents, SitToggle, softCapMark, useClipboardShots, useHotkeys } from './QoL'
+import { CommandHits, PacketBar, Recents, SpoilerToggle, softCapMark, useClipboardShots, useHotkeys } from './QoL'
 import { ProfileSwitcher } from './ProfileSwitcher'
 import { allLines } from './knowledge/storylines'
 import { WorkspaceProvider, useWorkspace } from './state'
@@ -74,26 +73,62 @@ function EngineChip() {
   )
 }
 
+/** Task 81: solo / co-op chip. Anything but an explicit `'yes'` is solo. */
+function CoopChip() {
+  const { character, setCharacter } = useWorkspace()
+  const coop = character.answers.coop === 'yes'
+  return (
+    <div className="opts" style={{ margin: '6px 0' }}>
+      <button
+        type="button"
+        className={coop ? 'chip on' : 'chip'}
+        aria-pressed={coop}
+        title={coop ? 'Co-op: no Mimic Tear or Torrent advice.' : 'Solo: normal advice.'}
+        onClick={() =>
+          setCharacter({ ...character, answers: { ...character.answers, coop: coop ? 'no' : 'yes' } })
+        }
+      >
+        co-op: {coop ? 'yes' : 'no'}
+      </button>
+    </div>
+  )
+}
+
 function AppShell() {
   const w = useWorkspace()
   useHotkeys()
   useClipboardShots()
   const [sheetOpen, setSheetOpen] = useState(false)
-  const [guideOpen, setGuideOpen] = useState(false)
+  const [mobileNow, setMobileNow] = useState(false)
   const [ribbonOpen, setRibbonOpen] = useState(false)
 
   const className = [
     'app',
-    w.sitMode ? 'sit' : '',
     sheetOpen ? 'sheet-open' : '',
-    guideOpen ? 'guide-open' : '',
+    mobileNow ? 'now-open' : '',
   ].filter(Boolean).join(' ')
 
   function openRoom(id: ModuleId) {
     w.setModule(id)
-    setGuideOpen(false)
+    setSheetOpen(false)
+    setMobileNow(false)
+  }
+
+  function openNow() {
+    setSheetOpen(false)
+    setMobileNow(true)
+  }
+
+  // The Now panel's "N open · M locked" line opens the Quests archive. Quests
+  // is a link in the Tarnished sheet, never a play tab (Task 84).
+  function openArchive() {
+    w.setModule('quests')
+    setMobileNow(false)
     setSheetOpen(false)
   }
+
+  // Exactly three play tabs; Reckon/Quests/Codex are links in the sheet.
+  const tab = mobileNow ? 'now' : w.module === 'map' ? 'map' : w.module === 'build' ? 'kit' : null
 
   return (
     <div className={className}>
@@ -112,6 +147,7 @@ function AppShell() {
         </div>
         <ProfileSwitcher />
         <EngineChip />
+        <CoopChip />
         <nav className="nav">
           {modules.map((m) => (
             <button key={m.id} className={w.module === m.id ? 'active' : ''} onClick={() => openRoom(m.id)}>
@@ -124,8 +160,8 @@ function AppShell() {
         <Recents />
         <PacketBar />
         <SaveDrop />
-        <div className="sheet-sit">
-          <SitToggle />
+        <div className="opts">
+          <SpoilerToggle />
         </div>
       </aside>
 
@@ -144,7 +180,7 @@ function AppShell() {
           <input
             id="command-search"
             className="search"
-            placeholder="Search · / Ctrl+K · 1–5 rooms · S sit · paste shot · ? help"
+            placeholder="Search · / Ctrl+K · 1–5 rooms · paste shot · ? help"
             value={w.query}
             onChange={(e) => w.setQuery(e.target.value)}
           />
@@ -166,50 +202,46 @@ function AppShell() {
               ))}
             </div>
           )}
-          <div className="topbar-sit">
-            <SitToggle />
-          </div>
           <Help />
         </header>
         <WorldRibbon open={ribbonOpen} onToggle={() => setRibbonOpen((v) => !v)} />
         <CommandHits />
         <div className="stage">
-          <FirstSit />
           <Suspense fallback={null}>
-            {w.module === 'reckon' && <ReckonWorkspace />}
-            {w.module === 'map' && <AtlasWorkspace />}
-            {w.module === 'build' && <BuildWorkspace />}
-            {w.module === 'quests' && <QuestWorkspace />}
-            {w.module === 'codex' && <CodexWorkspace />}
+            {/* Task 86: the Now tab mounts no room, so the Codex (and its FanAPI
+                / gathering grids) can never mount behind Map / Now / Kit. The
+                Codex is opened only from the Tarnished sheet or a "/" hit. */}
+            {!mobileNow && (
+              <>
+                {w.module === 'reckon' && <ReckonWorkspace />}
+                {w.module === 'map' && <AtlasWorkspace />}
+                {w.module === 'build' && <BuildWorkspace />}
+                {w.module === 'quests' && <QuestWorkspace />}
+                {w.module === 'codex' && <CodexWorkspace />}
+              </>
+            )}
           </Suspense>
         </div>
       </main>
 
       <aside className="guide">
         <Suspense fallback={null}>
-          <Gideon />
+          <Gideon onOpenArchive={openArchive} />
         </Suspense>
       </aside>
 
-      <nav className="tabbar" aria-label="Rooms">
-        {modules.map((m) => (
-          <button
-            key={m.id}
-            type="button"
-            className={!guideOpen && w.module === m.id ? 'active' : ''}
-            onClick={() => openRoom(m.id)}
-          >
-            <img src={art.room[m.id]} alt="" />
-            <span>{m.short}</span>
-          </button>
-        ))}
-        <button
-          type="button"
-          className={guideOpen ? 'active' : ''}
-          onClick={() => { setGuideOpen((v) => !v); setSheetOpen(false) }}
-        >
+      <nav className="tabbar" aria-label="Play">
+        <button type="button" className={tab === 'map' ? 'active' : ''} onClick={() => openRoom('map')}>
+          <img src={art.room.map} alt="" />
+          <span>Map</span>
+        </button>
+        <button type="button" className={tab === 'now' ? 'active' : ''} onClick={openNow}>
           <img src={art.guide} alt="" />
-          <span>Gideon</span>
+          <span>Now</span>
+        </button>
+        <button type="button" className={tab === 'kit' ? 'active' : ''} onClick={() => openRoom('build')}>
+          <img src={art.room.build} alt="" />
+          <span>Kit</span>
         </button>
       </nav>
 

@@ -1,23 +1,26 @@
 import { useEffect, useMemo, useState } from 'react'
 import { opBuilds } from './knowledge/builds'
-import { endings, nextCompletionId, planRoute } from './knowledge/endings'
+import { nextCompletionId, planRoute } from './knowledge/endings'
 import { pvpBuilds } from './knowledge/pvp'
-import { allLines, blitz, storylines } from './knowledge/storylines'
+import { allLines, stillAvailable } from './knowledge/storylines'
 import { applyFacts } from './lib/infer'
 import { askGideon, type GideonMemory } from './lib/gideon'
-import { art } from './art'
+import { beatPin } from './lib/beatPins'
+import { useCoords } from './lib/coords'
 import { searchSync } from './lib/search'
 import { medusaChapters } from './knowledge/medusa'
 import { leftovers, toggleWatch, watchlistOf } from './lib/leftovers'
 import { idleSuggestions } from './lib/suggestions'
+import { gideonHeader } from './lib/gideonHeader'
 import { lockoutWarningsFor, type LockWarning } from './lib/lockWarnings'
 import { LockoutPrompt } from './LockoutPrompt'
 import { packStatus } from './lib/sourcePack'
 import { hasGideonKey } from './lib/muse'
 import { useWorkspace } from './state'
 
-export function Gideon() {
+export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
   const w = useWorkspace()
+  const coords = useCoords()
   const savedGoal = typeof w.character.answers.gideonGoal === 'string' ? w.character.answers.gideonGoal : undefined
   const [q, setQ] = useState('')
   const [memory, setMemory] = useState<GideonMemory>({ goalId: savedGoal })
@@ -33,6 +36,15 @@ export function Gideon() {
   // Real next actions for this character; recomputed only when the character
   // changes, never per keystroke, so the input stays responsive.
   const suggestions = useMemo(() => idleSuggestions(w.character, 3), [w.character])
+  // Task 72: one sticky context bar (goal · beat · gate) above the log. Pure,
+  // reuses planRoute / idleSuggestions / approachingGates — no router change.
+  const header = useMemo(() => gideonHeader(w.character), [w.character])
+  // Task 84: the Now panel is current beat + one gate + Show/Done + a counts
+  // line into the Quests archive. Counts come from the same survey the room uses.
+  const survey = useMemo(() => stillAvailable(w.character), [w.character])
+  const openCount = survey.active.length + survey.open.length
+  const lockedCount = survey.locked.length
+  const showPin = header.factId ? beatPin(w.character, header.factId, coords) : null
   // A new character is a new context: let the strip offer again.
   useEffect(() => { setDismissed(false) }, [w.character])
 
@@ -106,13 +118,6 @@ export function Gideon() {
     setQ('')
   }
 
-  function showNow() {
-    if (!plan?.current) return
-    w.setModule(plan.current.module || 'map')
-    if (plan.current.factId) w.setSelectedMarkerId(plan.current.factId)
-    setMemory((m) => ({ ...m, lastFact: plan.current?.factId, lastModule: plan.current?.module }))
-  }
-
   function doneNow() {
     if (!plan?.current) return
     const factId = nextCompletionId(w.character, plan.current)
@@ -141,25 +146,41 @@ export function Gideon() {
       <p className="note" style={{ opacity: 0.6 }}>
         {hasGideonKey() ? 'Muse 1.3 contributor (optional)' : 'router only'}
       </p>
-      {plan?.current ? (
-        <div className="gideon-now">
-          <div className="kicker">Now · {line?.name}</div>
-          <h3>{plan.current.do}</h3>
-          <p className="note">{plan.current.detail}</p>
-          {plan.detours[0] && <p className="note">{plan.detours[0]}</p>}
+      {header.beat ? (
+        <div className="gideon-header gideon-now" role="status" aria-label="Current beat">
+          <div className="kicker">Now{header.goal ? ` · ${header.goal}` : ''}</div>
+          <h3>{header.beat}</h3>
+          {header.gate && <p className="note" style={{ margin: '4px 0 0' }}>Gate ahead: {header.gate}</p>}
           <div className="opts" style={{ marginTop: 10 }}>
-            <button type="button" className="chip on" onClick={showNow}>Show on map</button>
-            <button type="button" className="chip" onClick={doneNow}>I’m done</button>
+            {showPin && (
+              <button
+                type="button"
+                className="chip on"
+                onClick={() => {
+                  w.setSelectedMarkerId(showPin.id)
+                  w.setModule('map')
+                }}
+              >
+                Show
+              </button>
+            )}
+            {plan?.current && (
+              <button type="button" className="chip" onClick={doneNow}>Done</button>
+            )}
           </div>
-          {plan.todo.slice(1, 4).length > 0 && (
-            <p className="note" style={{ marginTop: 10 }}>
-              Tonight: {plan.todo.slice(1, 4).map((s) => s.do).join(' · ')}
-            </p>
-          )}
         </div>
       ) : (
-        <p className="note">No beat yet. Pick a line below or ask what is still available.</p>
+        <p className="note">No beat yet. Ask what is still available.</p>
       )}
+
+      <button
+        type="button"
+        className="chip"
+        style={{ marginTop: 8 }}
+        onClick={() => (onOpenArchive ? onOpenArchive() : w.setModule('quests'))}
+      >
+        {openCount} open · {lockedCount} locked
+      </button>
 
       {q.trim() === '' && !dismissed && suggestions.length > 0 && (
         <div className="gideon-suggest">
@@ -222,24 +243,6 @@ export function Gideon() {
         >
           100% · {medusaChapters[0].name}
         </button>
-        {blitz.map((e) => (
-          <button key={e.id} type="button" className={memory.goalId === e.id ? 'chip on' : 'chip'} onClick={() => run(`Blitz: ${e.name}. What do I do next?`)}>
-            <img className="seal-chip" src={art.ending[e.id] || art.kind.helm} alt="" />
-            {e.name}
-          </button>
-        ))}
-        {endings.map((e) => (
-          <button key={e.id} type="button" className={memory.goalId === e.id ? 'chip on' : 'chip'} onClick={() => run(`I want the ${e.name} ending. What do I do next?`)}>
-            <img className="seal-chip" src={art.ending[e.id] || art.sigil} alt="" />
-            {e.name}
-          </button>
-        ))}
-        {storylines.map((e) => (
-          <button key={e.id} type="button" className={memory.goalId === e.id ? 'chip on' : 'chip'} onClick={() => run(`I want to continue ${e.name}. What do I do next?`)}>
-            <img className="seal-chip" src={art.kind.grace} alt="" />
-            {e.name}
-          </button>
-        ))}
       </div>
 
       {offer && (

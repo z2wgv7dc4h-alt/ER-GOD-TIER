@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { opBuilds } from '../knowledge/builds'
 import type { Character } from '../types'
 import { callGideonLlm, hasGideonKey } from './muse'
 import type { BossCombat } from './enemy'
@@ -330,6 +331,11 @@ describe('isFastLookup', () => {
     expect(isFastLookup('show me tips and tricks')).toBe(true)
   })
 
+  it('keeps the wear-kit intent deterministic', () => {
+    expect(isFastLookup('wear the Rivers of Blood kit')).toBe(true)
+    expect(isFastLookup('equip the Colossal poise monster (RL150) build')).toBe(true)
+  })
+
   it('sends multi-concept questions to the LLM', () => {
     expect(isFastLookup(OPEN_QUESTION)).toBe(false)
     expect(isFastLookup('I am level 35 and stuck on Radahn, what should I do?')).toBe(false)
@@ -403,6 +409,35 @@ describe('stripUngroundedSentences', () => {
     )
     expect(act?.say).toBe(`Go to ${factId}.`)
     expect(act?.factId).toBe(factId)
+  })
+})
+
+describe('Gideon wear kit (Task 76)', () => {
+  it('wears a named kit via buildId and offers the first pinned missing piece', () => {
+    const act = askGideonRouter('wear the Rivers of Blood kit', character)
+    expect(act.module).toBe('build')
+    expect(act.buildId).toBe('build:rivers')
+    expect(act.say).toMatch(/missing/i)
+    // First unresolved piece with a grounded pin (loot:rivers -> grace:zamor).
+    expect(act.factId).toBe('loot:rivers')
+    expect(act.offer).toEqual({ label: 'Show on map', prompt: 'where is Rivers of Blood' })
+    // Hunt only: never marks collected, never mutates the watchlist.
+    expect(act.markDone).toBeUndefined()
+    expect(act.watch).toBeUndefined()
+  })
+
+  it('leaves stats alone and lists five labels for an unknown kit name', () => {
+    const act = askGideonRouter('wear the Flibbertigibbet kit', character)
+    expect(act.buildId).toBeUndefined()
+    expect(act.module).toBe('build')
+    expect(act.say).toMatch(/left your stats alone/i)
+    for (const b of opBuilds.slice(0, 5)) expect(act.say).toContain(b.name)
+  })
+
+  it('still resolves a named PvP kit through the wear path', () => {
+    const act = askGideonRouter('equip the Colossal poise monster (RL150) build', character)
+    expect(act.buildId).toBe('build:pvp-colossal')
+    expect(act.module).toBe('build')
   })
 })
 

@@ -30,4 +30,25 @@ describe('HelpSheet', () => {
       }
     }
   })
+
+  it('names the real capabilities, without claims it cannot back', () => {
+    const lower = text.toLowerCase()
+    for (const phrase of [
+      'lockout confirm',
+      'packet qr',
+      'sha-256',
+      'hunt list + show on map',
+      'grounded position',
+      'blessing meters',
+      'scadutree fragment',
+      'live memory is off by default',
+      'fanapi is reference, not ar',
+      'in-repo regulation',
+    ]) {
+      expect(lower, phrase).toContain(phrase)
+    }
+    // No dungeon interiors, no gathering nodes plotted on the map.
+    expect(text).not.toMatch(/dungeon interior/i)
+    expect(text).not.toMatch(/gathering nodes? (on|displayed|shown|plotted)/i)
+  })
 })

@@ -63,6 +63,19 @@ function stripArticle(s) {
 }
 
 /**
+ * Deterministic slug for a name-derived grace stub (Task 73). A warp with no
+ * authored slug still needs a stable `grace:{slug}` id, derived from its English
+ * name. Only ascii letters/digits survive; runs collapse to one dash.
+ */
+function slugify(name) {
+  return String(name)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+}
+
+/**
  * Match an extracted engine name to a catalog/seed row. The loose fallback is
  * exact normalised equality only (possessives, parentheticals and articles are
  * normalised away). Containment was tried and rejected — a one-word alias like
@@ -161,16 +174,38 @@ function emit(engineId, slug, fmgName, aliases, source) {
 }
 
 // Graces: BonfireWarpParam rows (418) -> authored warp slug where one exists,
-// otherwise the authored catalog grace fact of the same name. No coordinate is
-// invented; a grace with neither simply has no slug and is reported unmatched.
+// otherwise the authored catalog grace fact of the same name. Task 73: a warp
+// with neither gets a name-derived `grace:{slug}` stub (no pin, no implies), so
+// every engine warp id canonicalises and is searchable. No coordinate is invented.
+const authoredGraceIds = new Set([...warpGraces.map((g) => g.id), ...catalogGraces.map((f) => f.id)])
 const unmatchedGraces = []
 for (const g of checklistsGraces) {
   const seed = findSeed(g.name, warpGraces) || findSeed(g.name, catalogGraces)
-  if (!seed) {
+  if (seed) {
+    // Authored slug wins: a `graces.ts` seed (with a real pin) or a catalog grace.
+    emit(`grace:${g.warpId}`, seed.id, g.name, rowAliases(seed.name, seed.aliases, g.name), 'hosted-graces')
+    continue
+  }
+  // Task 73: no authored slug — emit a name-only `grace:{slug}` stub so the
+  // engine warp id still canonicalises and search finds it. These carry no
+  // implication edges and no pin; a pin exists only where `graces.ts`/`coords`
+  // already names the grace.
+  const slug = slugify(g.name)
+  if (!slug) {
     unmatchedGraces.push(g)
     continue
   }
-  emit(`grace:${g.warpId}`, seed.id, g.name, rowAliases(seed.name, seed.aliases, g.name), 'hosted-graces')
+  const stubId = `grace:${slug}`
+  // Authored ids still win: if the derived slug is an existing authored grace id
+  // (the warp name is a variant of it), map onto that fact instead of stubbing.
+  const authored = authoredGraceIds.has(stubId)
+    ? catalogGraces.find((f) => f.id === stubId) || warpGraces.find((w) => w.id === stubId)
+    : null
+  if (authored) {
+    emit(`grace:${g.warpId}`, stubId, g.name, rowAliases(authored.name, authored.aliases, g.name), 'hosted-graces')
+    continue
+  }
+  emit(`grace:${g.warpId}`, stubId, g.name, rowAliases(g.name, [], g.name), 'grace-stub')
 }
 
 // Bosses: hosted boss flags + extracted NpcParam rows -> authored boss slug.

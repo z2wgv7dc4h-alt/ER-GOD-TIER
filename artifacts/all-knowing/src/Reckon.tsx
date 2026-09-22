@@ -132,8 +132,8 @@ export function ReckonWorkspace() {
         <div className="kicker">PS5 first · PC still welcome</div>
         <h3 style={{ fontFamily: 'var(--font-display)', margin: '6px 0 10px' }}>Reckon the run</h3>
         <p className="note">
-          A PlayStation save cannot be dropped here. Sit down and answer a few things,
-          then throw screenshots at the page — warp list, map, Great Runes, pickups.
+           A PlayStation save cannot be dropped here. Answer a few things,
+           then throw screenshots at the page — warp list, map, Great Runes, pickups.
           Warp-list paste matches {aliasStatus().hosted} official grace names (Paramdex),
           {aliasStatus().linked} linked to seed slugs. Boss dumps match {aliasStatus().bossHosted} named bosses,
           {aliasStatus().bossLinked} linked to authored boss facts — so dump flags and this sheet share ids.

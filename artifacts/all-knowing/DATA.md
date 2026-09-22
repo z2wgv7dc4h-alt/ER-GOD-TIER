@@ -126,15 +126,17 @@ See `docs/REVIEW.md`.
   synchronously imported one (`canonicalFactId` / `searchSync`). Regenerate with
   `node scripts/gen-aliases.mjs` from the game-derived dumps above; see `docs/ALIAS-PLANE.md`.
   Committed because it is name/id-only derived data, not shipped game art.
-- **Task 55 completeness pass:** 856 rows / 188 KB. The generator now also reads
-  `checklists/hunts.json` (kind `hunt`) and maps every `BonfireWarpParam` row to an authored
-  **catalog** grace when no `graces.ts` seed exists (`grace:120208` → `grace:night-sacred-ground`).
-  Strict parenthetical-preserving matching makes `goods:8175/8176` resolve to
-  `item:haligtree-medallion-left/-right`. Run twice = byte-identical. Engine-backed by catalog
-  prefix: grace 25/25, boss 87/88, item 84/86, invader 22/24. **Unmatched, reported not dropped:
-  360/418 warps and 79/215 bosses have no slug** (they have no authored catalog fact to map onto;
-  no slug or coordinate is invented). `searchSync("church of elleh")` / `("elleh")` both hit
-  `grace:elleh`; 10k lot ids are not put in `searchSync`.
+- **Task 55 completeness pass:** the generator also reads `checklists/hunts.json` (kind `hunt`) and
+  maps every `BonfireWarpParam` row to an authored **catalog** grace when no `graces.ts` seed exists
+  (`grace:120208` → `grace:night-sacred-ground`). Strict parenthetical-preserving matching makes
+  `goods:8175/8176` resolve to `item:haligtree-medallion-left/-right`.
+- **Task 73 warp stubs:** every remaining warp gets a name-derived `grace:{slug}` alias row
+  (`source: 'grace-stub'`) — no catalog fact, no pin, no implications — and an authored id still
+  wins on a collision. Output is now **1273 rows / ~274 KB**; **unmatched warps 360 → 0**, bosses
+  79/215. Engine-backed by catalog prefix: grace 25/25, boss 88/89, item 89/91, invader 22/24. Run
+  twice = byte-identical (the `docs/ALIAS-PLANE.md` table is the live snapshot).
+  `searchSync("church of elleh")` / `("elleh")` both hit `grace:elleh`; 10k lot ids are not put in
+  `searchSync`.
 
 ## Checklists
 
@@ -169,7 +171,14 @@ Codex fetches it, `src/knowledge/completion.ts` derives `fieldHunts` from it, an
 
 ## Authored (small, keep)
 
-`src/knowledge/{catalog,endings,storylines,loot,builds,collectibles,completion,gates,inferChains,missables}.ts`
+`src/knowledge/{catalog,endings,storylines,loot,builds,collectibles,completion,gates,inferChains,missables,dungeons,npcLocations}.ts`
+
+- `dungeons.ts` — the Stormveil checklist (Task 80): 8 beats on the three Stormveil-region graces,
+  rendered by `src/Dungeon.tsx`; ticking goes through `applyFacts` / `clearFact`.
+- `npcLocations.ts` — 8 companions × staged `{ graceId, whenFacts }` rows (Task 79); every grace id
+  is validated against warps ∪ catalog ∪ aliases, invalid rows are skipped and reported.
+- Lib helpers alongside: `src/lib/{beatPins,regionLeftovers,gideonHeader,coop}.ts` (Tasks
+  75/72/78/81).
 
 ## Self-hosted fonts (Task 58)
 

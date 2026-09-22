@@ -8,7 +8,7 @@ import {
   type Hotkey,
 } from './shortcuts'
 
-const ALL_TYPES: Hotkey['type'][] = ['search', 'packet', 'undo', 'module', 'sit', 'help']
+const ALL_TYPES: Hotkey['type'][] = ['search', 'packet', 'undo', 'module', 'help']
 
 function memoryStorage(): Storage {
   const map = new Map<string, string>()

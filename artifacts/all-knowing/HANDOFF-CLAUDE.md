@@ -637,7 +637,7 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 - `src/lib/blessings.ts`: cited per-level thresholds for Scadutree (0–50) and Revered Spirit Ash
   (0–25) plus `levelFromCount`, so `blessingLine` prints a real level instead of `Lv —`.
 
-**Task 67 — FanAPI structured reference data** (landed after 66):
+**Task 67a — FanAPI structured reference data** (landed after 66; originally labelled "67"):
 
 - `scripts/ingest-fanapi.mjs` pulls the FanAPI JSON (the source already named in §4 and
   `awesome.ts`) into `public/sourced/open/fanapi/`: `armors.json` (568 — poise, negation,
@@ -660,6 +660,20 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 - `src/lib/fanapiData.ts` + `Codex.tsx` now cover all 14 sets through one generic `RefSection`
   renderer; `Open` codex search matches Items, Locations, Bosses, Field enemies, NPCs, Ammunition,
   Classes, Weapons and Shields.
+
+**Task 74 — remaining companion lines** (the quest-graph line pass; 67a/67b above are the FanAPI pass, a different ticket):
+
+- 79 new authored catalog facts (`implies: []`) and nine companion lines in
+  `knowledge/storylines.ts`: three new (`patches` 6 beats, `roderika-hewg` 5, `diallos` 6) and
+  six existing lines expanded to six beats where the real arc supports it (`alexander`,
+  `nepheli`, `boc`, `hyetta`, `irina`), plus `igon` (5). `roderika-hewg` and `igon` are
+  documented as genuinely short. No Task 53 line was rewritten and `planRoute` is untouched.
+- The Alexander line now splits the Gael Tunnel beat from the Redmane festival and adds the
+  Jar-Bairn epilogue; its completion marker `quest:alexander:complete` still sits on step `a3`
+  (the `endings.test` contract). Golden fixture: with the early shardbearers down and Alexander
+  not freed, the current beat is the Limgrave hole, never the Farum endgame —
+  `src/knowledge/questLines.test.ts`. `boss:bayle` became a real catalog boss, so the alias
+  coverage snapshot moved 88 → 89 in `src/lib/aliases.test.ts`.
 
 **Task 68 — Quests renders the one graph** (landed after 67b):
 
@@ -709,6 +723,124 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
   computes attack rating only). `src/Build.preview.test.ts` asserts the function returns no numeric
   `poise`/`load` and that the old constants are gone from `Build.tsx`.
 
+**Task 72 — sticky Gideon header** (landed after 71):
+
+- `src/lib/gideonHeader.ts` is a pure helper: `gideonHeader(character)` returns
+  `{ goal?, beat?, gate?, factId?, offer? }`. `goal` is the display name of `answers.gideonGoal`;
+  `beat`/`factId` come from `planRoute` (falling back to the first `idleSuggestions` item);
+  `gate` is `approachingGates(character)[0]`; `offer` reuses the router's standing
+  `{ label: 'Show it', prompt: 'yes show me on the map and give instructions' }`.
+- `Gideon.tsx` renders a `.gideon-header` (`position: sticky; top: 0` inside the `.guide` scroll
+  column) above `.gideon-log`, so goal · beat · gate stay in view. No `askGideonRouter` change, no
+  LLM call, no cloned bubble. `src/lib/gideonHeader.test.ts` carries the Task 53 golden fixture
+  (Radahn dead + Ranni service + knifeprint → `item:fingerslayer`) plus a no-goal fallback and a
+  purity check.
+
+**Task 73 — warp slug stubs** (landed after 72):
+
+- `scripts/gen-aliases.mjs` now emits a name-derived `grace:{slug}` **stub** alias row for every
+  `checklists/graces.json` warp that has no authored slug (`source: 'grace-stub'`). A stub is
+  alias-plane-only: no catalog fact, so `implies: []` by construction, and no pin — a grace is
+  pinned only where `coords` / `graces.ts` already names it. Authored ids still win: if a derived
+  slug equals an existing authored grace id (warp "Haligtree Town" → `grace:haligtree-town`) the
+  row maps onto that fact.
+- `aliases.json` 856 → 1273 rows (~274 KB); unmatched warps **360 → 0**, bosses stay 79/215.
+  `canonicalFactId('grace:{warpId}')` resolves for all 418 warps and `searchSync` finds them by
+  English name; the 16-hit cap is unchanged. Two consecutive runs are byte-identical and the
+  public/bundled copies match. `src/lib/warpSlugs.test.ts` pins five formerly-unmatched names
+  (Gateside Chamber, Liftside Chamber, Ainsel River Main, Grand Cloister, West Capital Rampart).
+  See `docs/ALIAS-PLANE.md`.
+
+**Task 75 — "what did I miss here" (region leftovers)** (landed after 73):
+
+- `src/lib/regionLeftovers.ts` is pure: `regionLeftovers(character, query?, cap = 8)` returns
+  `{ region, scoped, items, more, total }`. It reuses `leftovers` / `stillAvailable` /
+  `approachingGates`; region membership comes only from in-repo loot / warp-grace / catalog
+  metadata (no wiki table). A query with no resolvable region stays **global** and never claims
+  "here". Call sites: Gideon's `MISSED_HERE` intent ("what did I miss here" / "missed in
+  Limgrave") and the region chip in `idleSuggestions`. Fixture: the mid-Ranni Fingerslayer beat
+  shows for a Nokron/Nokron+Siofra selection and not for Limgrave. `src/lib/regionLeftovers.test.ts`.
+
+**Task 76 — Gideon "wear kit"** (landed after 75):
+
+- A `WEAR_KIT` branch in `askGideonRouter`: "wear/equip/use the X kit|build". A named kit returns
+  the same `buildId` the OP/PvP chips set (one `setCharacter` path) plus the same `buildHunt`
+  list; the first missing piece with a grounded pin becomes `factId` + a "Show on map" offer.
+  Unknown name mutates nothing and lists five kit labels. Never marks items collected.
+  `src/lib/gideon.test.ts`.
+
+**Task 77 — help copy matches the product** (landed after 76):
+
+- `HelpSheet` gained a "What this does" block: lockout confirm, packet QR / SHA-256, hunt list +
+  Show on map, blessing meters, live memory off by default, and "FanAPI is reference, not AR".
+  No shortcut rows added; no dungeon-interior or gathering-on-map claims. `src/Help.test.tsx`.
+
+**Task 78 — quest beat Show on map** (landed after 77):
+
+- `src/lib/beatPins.ts` `beatPin(character, factId, coords?)` resolves a plan beat to a pin from
+  the authored grace coords, a loot row (`lootPin`), or the current `leftoverPins` layer — never a
+  new coordinate. `Quests.tsx` renders a **Show** chip only on the current beat and only when a
+  pin exists; click → `setSelectedMarkerId` + Atlas. Fixture: Fingerslayer has no pin (text only),
+  three other current beats (frenzy `grace:east-capital`, order `grace:ergtree-grazing`, fia
+  `grace:deeproot`) pin. `src/lib/beatPins.test.ts`.
+
+**Task 79 — NPC locator** (landed after 78):
+
+- `src/knowledge/npcLocations.ts`: an 8-NPC stage table (`{ npc, name, aliases, graceId,
+  whenFacts, note? }`, 20 valid rows). Every `graceId` is validated against warps ∪ catalog ∪ the
+  alias plane; a row whose slug does not exist is skipped and reported (`refusedNpcLocations` —
+  Roderika's Roundtable stage). `npcLocate` picks the most-satisfied stage, else the baseline;
+  `matchNpc` resolves a free-text mention. Gideon answers "where is Blaidd"; Quests shows a
+  one-line companion location. `src/knowledge/npcLocations.test.ts`, `src/Quests.locate.test.tsx`.
+
+**Task 80 — Stormveil dungeon checklist** (landed after 79):
+
+- `src/knowledge/dungeons.ts`: one authored dungeon (Stormveil, 8 beats) using only the three
+  Stormveil-region graces (`grace:castleward`, `grace:rampart-tower`, `grace:godrick-grace`);
+  the block title says "not every corpse or chest". Ticking runs `applyFacts` / `clearFact`;
+  **Show on map** renders only for beats whose grace slug exists. Raya / Volcano / Haligtree not
+  authored. Rendered by `src/Dungeon.tsx` inside the Codex. `src/knowledge/dungeons.test.ts`,
+  `src/Dungeon.test.tsx`.
+
+**Task 81 — co-op toggle** (landed after 80):
+
+- `answers.coop: 'yes' | 'no'`, default solo. `src/lib/coop.ts` (`isCoop`, `coopAvoids`,
+  `COOP_LINE`). Interview question + rail `CoopChip`. In co-op, `idleSuggestions` and Gideon drop
+  the Mimic Tear / Torrent and say "In co-op, do not also summon the NPC." instead; catalog rows
+  are not deleted; the packet carries the answer like any other. `src/lib/coop.test.ts`.
+
+**Task 83 — the play shell** (landed after 81; supersedes the old three-column frame):
+
+- **Sit is gone**: `sitMode` / `setSitMode`, `SitToggle`, `FirstSit`, `.app.sit`, the `S` hotkey,
+  and the Help row were all removed (`(?i)\bsit\b` now has zero `src/` hits).
+- Two layouts: **<700px** → three tabs exactly **Map / Now / Kit** (Now = Gideon full stage), rail
+  is an off-canvas sheet behind the name. **≥700px** → `280px Now strip | stage`, no third Gideon
+  column, no identity rail. The `@media (max-width:1100px)` horizontal-rail layout is deleted.
+- Packet / sl2 drop / Recents / profiles / full CharacterCard / the five room buttons all live in
+  the Tarnished sheet; Reckon / Quests / Codex are links there (with the `1–5` keys and search),
+  not tabs. `src/App.shell.guard.test.ts`. (Spoiler toggle survives as `SpoilerToggle`.)
+
+**Task 84 — Now is not the quest wall** (landed after 83):
+
+- The Now strip shows only: current beat (goal · beat), one gate or nothing, **Show** only when
+  `beatPin` finds a pin, **Done** via the existing lockout confirm, and one line
+  "N open · M locked" that opens the Quests archive. The blitz / endings / storylines chip wall
+  was removed. `src/Gideon.now.test.tsx`.
+
+**Task 85 — Kit is not the library** (landed after 84):
+
+- Kit first paint = stats + **one AR** + the active hunt (or "Pick a kit…"). OP/PvP chips, the PvP
+  matchups, the full AR detail, the NpcParam matchup, `akb1.` build codes and the weapon compare
+  all moved behind one closed `Kits…` `<details>`. No blessing meters, no new kits, AR formula
+  unchanged. `src/Build.kits.test.tsx`.
+
+**Task 86 — Codex is a search destination** (landed after 85):
+
+- No Codex tab; it opens from the Tarnished sheet's room links or a `/` search hit (`CommandHits`
+  sets `hit.module`). The stage now mounts rooms only when `!mobileNow`, so the Codex (and its
+  FanAPI / gathering grids) can never mount behind Map / Now / Kit. `Codex.tsx` is not deleted;
+  `searchSync('elleh')` still hits `grace:elleh`. `src/Codex.is.search.test.ts`.
+
 ---
 
 ## 7. Product ideas still valid (not built)
@@ -728,7 +860,8 @@ From Wyatt, keep on the roadmap:
 - Merchant “who sells X after I give Y scroll.”
 - Rememberance shop (Enia) as a table.
 - ✅ Soft caps already marked on the stat card. (Task 44 — real per-stat dot tiers in `Build.tsx`.)
-- Sit / lean-back UI for the living room.
+- Lean-back UI for the living room. (Task 83 removed Sit mode; the two play-shell layouts — the
+  Now strip on desktop and the Map / Now / Kit tabs on a phone — are the current lean-back frame.)
 - Profiles per Tarnished, packet to a friend or another device.
 
 ---
@@ -740,7 +873,7 @@ From Wyatt, keep on the roadmap:
 | Knows everything | Seed catalog + dumps. Not full param/MSB. |
 | Live map sync | Only if `npm run map` + game install + PC. |
 | OCR | Real (Task 21), but accuracy on stylized in-game fonts is untested against real PS5 captures; low confidence is refused by design. |
-| Save drop | Demo / error path. |
+| Save drop | Real read-only in-browser `.sl2` parser (Task 11). |
 | 100% | Chapter titles + partial collectibles. |
 | Unified pins | Two calibrations. |
 | 9974 zip | Rules + public flags, not regulation.bin. |

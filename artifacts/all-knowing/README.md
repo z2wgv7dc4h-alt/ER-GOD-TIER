@@ -14,13 +14,16 @@ The atlas is [egormagurin/EldenRingMap](https://github.com/egormagurin/EldenRing
 
 ## Features
 
+**Play shell** — desktop is a 280px Now strip beside the stage; a phone gets three tabs, Map / Now / Kit. The identity rail is a sheet behind your name. Sit mode is gone.  
 **Reckoning** — interview, warp-list paste, on-device Tesseract, inference with undo.  
 **Atlas** — plates or live engine, leftover / gate / hunt pins, phone job chips.  
-**Build lab** — Clark AR, soft caps, compare, OP/PvP hunt list, `akb1.` codes.  
-**Quests** — the same `allLines()` graph Gideon plans; confirm before a lockout.  
-**Codex** — guide, chests, merchants, achievement-shaped sets, SotE meters.  
-**Gideon** — router, idle chips, command palette. Optional local LLM behind an env key.  
-**Vault** — profiles, packet copy/paste/QR, PWA offline shell.
+**Build lab** — Clark AR, soft caps, a one-AR first paint with the OP/PvP list, AR detail, matchup and `akb1.` codes behind one `Kits…` drawer.  
+**Quests** — the same `allLines()` graph Gideon plans, incl. the remaining companion lines; confirm before a lockout. Now's “N open · M locked” line opens this archive.  
+**Codex** — guide, chests, merchants, achievement-shaped sets, SotE meters. Opened from the Tarnished sheet or a `/` search hit, never a tab.  
+**Gideon** — router, Now strip (current beat · one gate · Show/Done), co-op toggle, idle chips, command palette. Optional local LLM behind an env key.  
+**Companions** — where-is-it locator for eight NPCs, region “what did I miss here”, a Stormveil checklist, and a co-op mode that drops Mimic / Torrent advice.  
+**Vault** — profiles, packet copy/paste/QR, PWA offline shell.  
+**Alias plane** — every warp-list grace canonicalises to a slug: authored where one exists, else a name-derived stub (no invented pin).
 
 Live status and task history: `HANDOFF-CLAUDE.md`. Data inventory: `DATA.md`. Kernel: `ARCHITECTURE.md`.
 
@@ -65,14 +68,17 @@ If you do not know why you want it, leave it off.
 
 ## Rooms
 
+The three play tabs are **Map / Now / Kit**. Everything else opens from the Tarnished sheet (or the
+`1–5` keys / search).
+
 | Room | Job |
 |---|---|
-| Reckoning | How this Tarnished entered the world |
-| Atlas | Where to walk, what locks, what is still on the ground |
-| Build lab | Whether the numbers are real |
-| Quests | Which line you are on, and what a tick would kill |
-| Codex | The warehouse |
-| Gideon | Ask it |
+| Map (Atlas) | Where to walk, what locks, what is still on the ground |
+| Now (Gideon) | The current beat, one gate, Show / Done — ask it |
+| Kit (Build lab) | Whether the numbers are real |
+| Reckoning | How this Tarnished entered the world (sheet link) |
+| Quests | Which line you are on, and what a tick would kill (sheet link) |
+| Codex | The warehouse (sheet link or `/` search hit) |
 
 ---
 

@@ -14,9 +14,12 @@ import { findSellers, merchants } from '../knowledge/merchants'
 import { remembrances, findRemembrance } from '../knowledge/remembrances'
 import { matchConditionalStock } from '../knowledge/merchantConditions'
 import { missables } from '../knowledge/missables'
+import { matchNpc, npcLocate } from '../knowledge/npcLocations'
 import { matchAllWarps, matchGeneratedAliases } from './aliases'
+import { COOP_LINE, coopAvoids, isCoop } from './coop'
 import { searchSync } from './search'
 import { labelOf, moduleFor, nextMoves } from './links'
+import { regionLeftovers } from './regionLeftovers'
 import { applyFacts, summarize } from './infer'
 import {
   bossCombatFor,
@@ -373,6 +376,20 @@ const DONE_REPORT = /\b(i(?:'ve| have) (?:done|beat(?:en)?|killed|defeated|finis
 const GATE_ASK =
   /\b(keep (going|walking)|if i (?:continue|proceed|keep|walk)|what (?:do|will) i (?:miss|lock)|what am i locking|am i locking|before (?:the )?(?:forge|fire giant|maliketh|sealing tree|shadow keep|capital|ashen capital|erdtree)|walk(?:ing)? into (?:leyndell|the capital|the forge|shadow keep|farum|the erdtree))\b/
 
+/**
+ * Task 75: "what did I miss here" / "missed in Limgrave". Past-tense and
+ * region/here phrasing only, so the present-tense Task 52 gate ask ("what do I
+ * miss before the forge") still routes to `speakGates`.
+ */
+const MISSED_HERE =
+  /\b(what did i miss|what am i missing|missed (?:here|anything|in|around|at)|what'?s left (?:here|in|around)|did i miss (?:here|in|anything))\b/
+
+/**
+ * Task 76: "wear/equip/use the X kit/build". The verb must precede the noun in
+ * the same sentence, so "what build should I use" does not match.
+ */
+const WEAR_KIT = /\b(wear|equip|put on|use|swap to)\b[^.!?]*\b(kit|build|set|loadout|gear)\b/
+
 /** NPC-flavoured label for a line (Ranni, not "Age of Stars"). */
 function threadLabel(line: Line): string {
   const npc = npcLines.find((n) => n.line === line.id)
@@ -423,6 +440,35 @@ function speakGates(character: Character, question: string): GideonAct {
   if (threads.length) bits.push(`Still open on this run (finish before you commit): ${threads.join('; ')}.`)
 
   return { say: bits.join(' '), module: 'quests', goal: named?.id }
+}
+
+/**
+ * Task 75: region-scoped "what did I miss" — reuses `regionLeftovers`, which in
+ * turn reuses leftovers / stillAvailable / approachingGates. Caps at 8 and adds
+ * "and N more"; never claims a region that wasn't actually resolved.
+ */
+function speakMissed(character: Character, question: string): GideonAct {
+  const res = regionLeftovers(character, question, 8)
+  // Task 81: co-op drops solo summon tools from the region list.
+  const avoided = res.items.filter((m) => coopAvoids(character, m.id, m.name))
+  const items = res.items.filter((m) => !coopAvoids(character, m.id, m.name))
+  const scope = res.region ? ` in ${res.region}` : ''
+  if (!items.length) {
+    if (avoided.length) return { say: COOP_LINE, module: 'map' }
+    return res.scoped
+      ? { say: `Nothing seeded is still open${scope}.`, module: 'map' }
+      : { say: 'Nothing seeded is still open. Name an ending, or ask what is still available.', module: 'quests' }
+  }
+  const list = items.map((m) => (m.region && !res.scoped ? `${m.name} (${m.region})` : m.name))
+  const tail = res.more ? ` — and ${res.more} more.` : '.'
+  const coopNote = avoided.length ? ` ${COOP_LINE}` : ''
+  const top = items[0]
+  return {
+    say: `${res.scoped ? `Missed${scope}` : 'Still open'}: ${list.join(', ')}${tail}${coopNote}`,
+    module: 'map',
+    factId: top.id,
+    offer: { label: 'Show it', prompt: `where is ${top.name}` },
+  }
 }
 
 /** Short "gate ahead" line for plain what-next answers. Empty when none is near. */
@@ -505,6 +551,11 @@ export function askGideonRouter(
       module: 'quests',
     }
   }
+
+  // "What did I miss here" / "missed in Limgrave" — region-scoped leftovers.
+  // Before the gate ask so the past-tense phrasing wins, but the present-tense
+  // "what do I miss before the forge" still falls through to `speakGates`.
+  if (MISSED_HERE.test(q)) return speakMissed(character, q)
 
   // "If I keep going / what do I lock" — world-state gates, answered from this
   // character. Checked before the quest matchers so "before the forge" is not
@@ -681,6 +732,10 @@ export function askGideonRouter(
     const hit = techTips.find((t) => q.includes(t.name.toLowerCase()))
       || techTips.find((t) => t.tags.some((tag) => q.includes(tag)))
     if (hit) {
+      // Task 81: co-op skips solo summon tools rather than recommending them.
+      if (coopAvoids(character, hit.id, hit.name, hit.tags.join(' '))) {
+        return { say: COOP_LINE, module: 'codex' }
+      }
       const patch = hit.patch ? ` (${hit.patch})` : ''
       return {
         say: `${hit.name} — ${hit.what} ${hit.why} How: ${hit.how}${patch}`,
@@ -688,10 +743,47 @@ export function askGideonRouter(
         offer: { label: 'More tech', prompt: 'show me tips and tricks' },
       }
     }
-    const top = techTips.slice(0, 4)
+    const top = techTips
+      .filter((t) => !coopAvoids(character, t.id, t.name, t.tags.join(' ')))
+      .slice(0, 4)
+    const coopNote = isCoop(character) ? ` ${COOP_LINE}` : ''
     return {
-      say: `Strong tech worth knowing:\n${top.map((t) => `${t.name} — ${t.what}`).join('\n')} Ask about any one for the how.`,
+      say: `Strong tech worth knowing:\n${top.map((t) => `${t.name} — ${t.what}`).join('\n')} Ask about any one for the how.${coopNote}`,
       module: 'codex',
+    }
+  }
+
+  // Wear kit (Task 76): "wear the X kit" / "use the X build" resolves by exact
+  // name (or the existing keyword resolver) and hands back the kit's `buildId`,
+  // the same value the OP/PvP chips set, so Gideon.tsx applies it through the one
+  // setCharacter path. It also runs the same `buildHunt`: nothing is marked
+  // collected, and the first missing piece with a grounded pin is offered as
+  // Show on map. An unknown name changes nothing — no buildId, just five labels.
+  if (WEAR_KIT.test(q)) {
+    const named = allBuilds.find((b) => q.includes(b.name.toLowerCase())) || buildFromText(q)
+    if (!named) {
+      const labels = allBuilds.slice(0, 5).map((b) => b.name).join(', ')
+      return {
+        say: `I don't have a kit named that, so I left your stats alone. Five I do have: ${labels}. Say “wear the <name> kit”.`,
+        module: 'build',
+      }
+    }
+    const hunt = buildHunt(character, named)
+    const missing = hunt.missing.map((m) => m.name)
+    const firstPin = hunt.missing.find((m) => m.pin)
+    const unresolved = hunt.unresolved.length
+      ? ` ${hunt.unresolved.length} id${hunt.unresolved.length === 1 ? '' : 's'} not in our data yet, listed not dropped.`
+      : ''
+    const body = missing.length
+      ? `Wearing ${named.name}. Still missing ${missing.length}: ${missing.join(', ')}.`
+      : `Wearing ${named.name}. Every seeded piece is already logged on this character.`
+    const pinLine = firstPin ? ` First pin: ${firstPin.name}.` : ''
+    return {
+      say: `${body}${unresolved}${pinLine}`,
+      module: 'build',
+      buildId: named.id,
+      factId: firstPin?.factId,
+      offer: firstPin ? { label: 'Show on map', prompt: `where is ${firstPin.name}` } : undefined,
     }
   }
 
@@ -784,7 +876,11 @@ export function askGideonRouter(
       }
     }
     return {
-      say: `${who}. Level ${character.level}. If this is a wall: summon, swap to strike/slash/pierce you have not tried, or leave and come back two shardbearers later. Want a bleed or comet sheet instead?`,
+      say: `${who}. Level ${character.level}. ${
+        isCoop(character)
+          ? COOP_LINE
+          : 'If this is a wall: summon, swap to strike/slash/pierce you have not tried, or leave and come back two shardbearers later.'
+      } Want a bleed or comet sheet instead?`,
       module: 'build',
       factId: hunt?.id || named?.id,
       offer: { label: 'Bleed sheet', prompt: 'use the Rivers of Blood build' },
@@ -875,6 +971,23 @@ export function askGideonRouter(
     return { say: `${f.name} — ${f.kind} in ${f.region}.`, module: 'map', factId: f.id }
   }
 
+  // Task 79: NPC locator — "where is Blaidd". A small authored stage table; it
+  // answers only when the named NPC is in the table and its latest known stage
+  // points at a real grace. A stage with no grace resolves to no pin, never a
+  // stale earlier one. No dialogue, no new line.
+  if (/\b(where|find|locate)\b/.test(q)) {
+    const npcKey = matchNpc(q)
+    const npc = npcKey ? npcLocate(character, npcKey) : null
+    if (npc) {
+      return {
+        say: `${npc.name} is at ${npc.graceName}.${npc.note ? ` ${npc.note}` : ''}`,
+        module: 'map',
+        factId: npc.graceId,
+        navigateNow: true,
+      }
+    }
+  }
+
   // The generated alias plane (Task 23) indexes every fact category by engine id
   // and name, including alias spellings the hand-curated matchers above miss
   // ("night cavalry" for Night's Cavalry, "pureblood knight medal", "giant
@@ -962,6 +1075,12 @@ export function isFastLookup(
   // they stay on the fast path even when phrased as a multi-word question.
   if (/\b(pvp|invasion|invade|invader|duel|colosseum|badredman|gank)\b/.test(q)) return true
   if (/\b(tips?|tricks?|tech|jump attack|jumping attack|stance break|buff stack|spirit ash|cheese)\b/.test(q)) return true
+
+  // Wearing a kit is the same deterministic buildHunt path as the kit questions.
+  if (WEAR_KIT.test(q)) return true
+
+  // NPC locations come from an authored table, never the model.
+  if (/\b(where|find|locate)\b/.test(q) && matchNpc(q)) return true
 
   // A conjunction or conditional means the question crosses concepts: reason.
   if (REASONING_MARKER.test(q)) return false

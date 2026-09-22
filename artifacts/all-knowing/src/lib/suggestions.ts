@@ -1,8 +1,10 @@
 import { approachingGates } from '../knowledge/gates'
 import { stillAvailable } from '../knowledge/storylines'
 import type { Character, ModuleId } from '../types'
+import { coopAvoids, isCoop } from './coop'
 import { labelOf, moduleFor, nextMoves } from './links'
-import { leftovers } from './leftovers'
+import { currentRegion, leftovers } from './leftovers'
+import { regionLeftovers } from './regionLeftovers'
 
 /**
  * Proactive next-action suggestions for Gideon (Task 42). Presentation only:
@@ -64,6 +66,23 @@ export function idleSuggestions(character: Character, limit = 3): Suggestion[] {
     })
   }
 
+  // 2b. Region-scoped "missed here" chip when the current region is known
+  //     (Task 75). Same helper the Gideon intent answers with.
+  const region = currentRegion(character)
+  if (region) {
+    const top = regionLeftovers(character, region, 1).items[0]
+    if (top) {
+      push({
+        id: `region:${region}:${top.id}`,
+        label: `Missed in ${region}: ${top.name}`,
+        prompt: `what did I miss in ${region}`,
+        factId: top.id,
+        module: top.source === 'line' ? undefined : 'map',
+        source: 'leftover',
+      })
+    }
+  }
+
   // 3. Facts one step past what this character already proved.
   for (const move of nextMoves(character, 4)) {
     push({
@@ -88,5 +107,9 @@ export function idleSuggestions(character: Character, limit = 3): Suggestion[] {
     })
   }
 
-  return out.slice(0, limit)
+  // Task 81: co-op players get no solo summon tools.
+  const shown = isCoop(character)
+    ? out.filter((s) => !coopAvoids(character, s.id, s.label, s.prompt))
+    : out
+  return shown.slice(0, limit)
 }

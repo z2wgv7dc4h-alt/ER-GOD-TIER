@@ -78,23 +78,25 @@ containment turned `Dagger` into `Weathered Dagger`. Precision matters because
 
 ## Coverage
 
-Catalog totals: grace 24, boss 87, invader 24, item 73, quest 8, region 10 (226 facts).
+Catalog totals: grace 25, boss 89, invader 24, item 91, quest 109, region 10 (348 facts).
 "Before" is the state with no generated plane (only the hand-curated grace/boss links existed).
 
 | Category | Facts | Engine-backed rows after | Zero generated aliases before → after |
 |---|---|---|---|
-| grace | 24 | 22 | 24 → 0 |
-| boss | 87 | 86 | 87 → 0 |
+| grace | 25 | 25 | 25 → 0 |
+| boss | 89 | 88 | 89 → 0 |
 | invader | 24 | 22 | 24 → 0 |
-| item | 73 | 65 | 73 → 0 |
-| quest | 8 | 0 (authored) | 8 → 0 |
+| item | 91 | 89 | 91 → 0 |
+| quest | 109 | 0 (authored) | 109 → 0 |
 | region | 10 | 0 (authored) | 10 → 0 |
 
-Every fact now has at least one generated row (engine-backed where the game tables name it,
-authored otherwise), so name/alias lookup exists for every category. The two facts that remain
+Every fact has at least one generated row (engine-backed where the game tables name it,
+authored otherwise), so name/alias lookup exists for every category. The facts that remain
 authored-only in a game-backed category are `boss:leontiel` (a Tarnished Pack mod boss with no
-vanilla `NpcParam` row, the same limitation Task 17 documented) and `grace:deeproot` (the
-catalog grace name differs from the warp-list name).
+vanilla `NpcParam` row), two items whose FMG names differ (`item:rennala-great-rune`,
+`item:haligtree-secret-medallion`) and two invaders with no `NpcParam` row
+(`invader:great-horned-targoth`, `invader:millicents-sisters`). The catalog totals grow as tasks
+add facts; the table is refreshed on each generator run.
 
 ## Task 55 completeness pass
 
@@ -106,24 +108,36 @@ preserving name match, so `goods:8175` / `goods:8176` resolve to
 `item:haligtree-medallion-left` / `-right` rather than the bare both-halves fact.
 The row sort is a plain code-unit comparison, so a second run is byte-identical.
 
-Current output: **856 rows** (188 KB), sources `hosted-bosses` 271, `hunts` 154,
-`paramdex-npc` 116, `names` 102, `npc-combat` 83, `authored` 72,
-`hosted-graces` 58. Engine-backed by catalog prefix: grace 25/25, boss 87/88,
-item 84/86, invader 22/24, quest 0/57 (authored), region 0/10 (authored).
+Current output: **1273 rows** (274 KB), sources `grace-stub` 359,
+`hosted-bosses` 271, `hunts` 154, `authored` 124, `paramdex-npc` 116,
+`names` 107, `npc-combat` 83, `hosted-graces` 59. Engine-backed by catalog
+prefix: grace 25/25, boss 88/89, item 89/91, invader 22/24,
+quest 0/109 (authored), region 0/10 (authored).
+
+### Task 73 warp slug stubs
+
+Every `checklists/graces.json` warp now resolves: where no authored slug exists,
+the pass emits a name-derived `grace:{slug}` **stub** row (`source: 'grace-stub'`).
+A stub carries no catalog fact, so it has `implies: []` by construction — nothing
+can chain off it — and no pin is created; a grace is only pinned where `coords` /
+`graces.ts` already names it. Authored catalog ids still win: if a stub slug equals
+an existing authored grace id (the warp name is a variant of it, e.g. warp
+"Haligtree Town" → `grace:haligtree-town`) the row maps onto that authored fact.
+`canonicalFactId('grace:{warpId}')` therefore returns the authored/stub slug for
+all 418 warps, and `searchSync` finds the warp by its English name.
 
 ### Honest unmatched report (not silently dropped)
 
 | Source | With a slug | Unmatched |
 |---|---|---|
-| Warps (`checklists/graces.json`, 418) | 58 | **360** |
+| Warps (`checklists/graces.json`, 418) | 418 | **0** |
 | Hosted bosses (`open/boss-xyz.json`, 215) | 136 | **79** |
 
-Unmatched warps are graces with neither an authored `graces.ts` seed nor a catalog
-grace fact of the same name; unmatched bosses are NpcParam rows the catalog has no
-boss fact for. They still appear in the engine's own data — this plane simply has
-no slug to map them onto, and inventing one (or a coordinate) is out of scope. The
-regenerate command prints the counts and, with `ALIAS_UNMATCHED=1`, the full name
-list.
+After Task 73 every warp has a slug (authored or stub), so its unmatched count is
+zero. Unmatched bosses are NpcParam rows the catalog has no boss fact for; they
+still appear in the engine's own data — this plane simply has no slug to map them
+onto, and inventing one (or a coordinate) is out of scope. The regenerate command
+prints the counts and, with `ALIAS_UNMATCHED=1`, the full name list.
 
 ## Why this is committed
 

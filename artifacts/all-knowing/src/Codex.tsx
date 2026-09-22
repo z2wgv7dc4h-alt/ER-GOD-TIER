@@ -20,6 +20,7 @@ import { npcDisplayCards } from './knowledge/npc-display'
 import { iconFor } from './lib/sourcePack'
 import { fanImage } from './lib/fanImage'
 import { Related } from './Related'
+import { DungeonChecklist } from './Dungeon'
 import { useWorkspace } from './state'
 import { matchGatheringNodes, useGatheringNodes } from './lib/gatheringNodes'
 import {
@@ -446,6 +447,7 @@ export function CodexWorkspace() {
           </div>
         )
       })}
+      <DungeonChecklist />
       <h3 className="codex-head">
         Merchant conditionals · {conditionalHits.length} of {conditionalUnlocks.length}
       </h3>

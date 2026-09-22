@@ -42,8 +42,6 @@ type Workspace = {
   setEngineMarkers: (m: EngineMarker[]) => void
   undo: () => void
   canUndo: boolean
-  sitMode: boolean
-  setSitMode: (v: boolean) => void
   helpOpen: boolean
   setHelpOpen: (v: boolean) => void
   recentFacts: string[]
@@ -83,7 +81,6 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [engineState, setEngineState] = useState<EngineState | null>(null)
   const [engineMarkers, setEngineMarkers] = useState<EngineMarker[]>([])
   const [history, setHistory] = useState<Character[]>([])
-  const [sitMode, setSitMode] = useState(bootProfile.ui.sitMode)
   const [helpOpen, setHelpOpen] = useState(false)
   const [recentFacts, setRecentFacts] = useState<string[]>([])
 
@@ -107,12 +104,12 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     const next = upsertActive(vaultRef.current, {
       character: { ...character, shots: [] },
       label: character.name || activeProfile(vaultRef.current).label,
-      ui: { module, missingOnly, sitMode, selectedMarkerId },
+      ui: { module, missingOnly, selectedMarkerId },
     })
     vaultRef.current = next
     setVault(next)
     saveVault(next)
-  }, [character, module, missingOnly, sitMode, selectedMarkerId])
+  }, [character, module, missingOnly, selectedMarkerId])
 
   function applyVault(next: Vault) {
     const p = activeProfile(next)
@@ -121,7 +118,6 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setCharacter(p.character)
     setModule(p.ui.module)
     setMissingOnly(p.ui.missingOnly)
-    setSitMode(p.ui.sitMode)
     setSelectedMarkerId(p.ui.selectedMarkerId)
     setHistory([])
     // Recents are derived from the previous Tarnished's pins; don't let one
@@ -158,8 +154,6 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       setEngineMarkers,
       undo,
       canUndo: history.length > 0,
-      sitMode,
-      setSitMode,
       helpOpen,
       setHelpOpen,
       recentFacts,
@@ -175,7 +169,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         setCharacter({ ...character, name: label })
       },
     }),
-    [module, character, selectedMarkerId, layers, showLeftovers, showGates, missingOnly, query, engineStatus, engineState, engineMarkers, history, sitMode, helpOpen, recentFacts, vault],
+    [module, character, selectedMarkerId, layers, showLeftovers, showGates, missingOnly, query, engineStatus, engineState, engineMarkers, history, helpOpen, recentFacts, vault],
   )
 
   return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>

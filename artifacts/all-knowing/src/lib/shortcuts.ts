@@ -20,7 +20,6 @@ export type Hotkey =
   | { type: 'packet' }
   | { type: 'undo' }
   | { type: 'module'; id: ModuleId }
-  | { type: 'sit' }
   | { type: 'help' }
 
 export type HotkeyContext = {
@@ -48,7 +47,6 @@ export function resolveHotkey(e: KeyLike, ctx: HotkeyContext): Hotkey | null {
   if (e.key === '?') return { type: 'help' }
   if (ROOMS[e.key]) return { type: 'module', id: ROOMS[e.key] }
   if (e.key === '/') return { type: 'search' }
-  if (!mod && key === 's') return { type: 'sit' }
   return null
 }
 
@@ -90,14 +88,13 @@ export const SHORTCUT_GROUPS: ShortcutGroup[] = [
       { keys: 'Ctrl / ⌘ S', label: 'Save this character to a packet file', probe: { key: 's', ctrlKey: true }, action: 'packet' },
       { keys: 'Ctrl / ⌘ Z', label: 'Undo the last character change', probe: { key: 'z', ctrlKey: true }, action: 'undo' },
       { keys: 'Paste image', label: 'Add a clipboard screenshot to Reckoning', note: 'Ctrl / ⌘ V anywhere' },
-      { keys: 'Drop ER0000.sl2', label: 'Read a PC save locally — stats, bosses, graces', note: 'rail' },
+      { keys: 'Drop ER0000.sl2', label: 'Read a PC save locally — stats, bosses, graces', note: 'Tarnished sheet' },
       { keys: 'Drop / paste images', label: 'OCR a PS5 screenshot on-device', note: 'Reckoning' },
     ],
   },
   {
     title: 'View',
     items: [
-      { keys: 'S', label: 'Toggle sit mode', probe: { key: 's' }, action: 'sit' },
       { keys: '?', label: 'Open this help', probe: { key: '?' }, action: 'help' },
       { keys: 'Esc', label: 'Close this help', probe: { key: 'Escape' }, action: 'help', needsHelpOpen: true },
     ],
@@ -108,9 +105,9 @@ export const SHORTCUT_GROUPS: ShortcutGroup[] = [
       { keys: 'Enter', label: 'Send a question to Gideon', note: 'his ask box' },
       { keys: 'Search', label: 'Jump straight to a grace, boss, item or shop', note: 'results appear above the room' },
       { keys: 'Missing only', label: 'Hide everything you already have', note: 'Atlas' },
-      { keys: 'Tarnished menu', label: 'Switch, rename or forget profiles', note: 'rail' },
-      { keys: 'Diff', label: 'Compare this character against another packet', note: 'rail' },
-      { keys: 'Spoilers on / off', label: 'Hide or show what is still ahead', note: 'top bar' },
+      { keys: 'Tarnished menu', label: 'Switch, rename or forget profiles', note: 'Tarnished sheet' },
+      { keys: 'Diff', label: 'Compare this character against another packet', note: 'Tarnished sheet' },
+      { keys: 'Spoilers on / off', label: 'Hide or show what is still ahead', note: 'Tarnished sheet' },
     ],
   },
 ]

@@ -491,7 +491,7 @@ export const pvpMatchups: PvpMatchup[] = [
     tell: 'Fast curved swords or a caster fishing for a Frostbite proc to cut your stamina.',
     counters: [
       'Carry a frost-resistant talisman or armour for the matchup; the proc amplifies the hit that follows, so never eat the second chain.',
-      'Clear the frostbite bar with a boluse before re-engaging rather than letting it sit.',
+      'Clear the frostbite bar with a boluse before re-engaging rather than letting it linger.',
       'Punish the caster between Glintstone Icecrag casts; the frost weapons have to come to you.',
     ],
     note: 'Frostbite stamina effect and damage amplification are wiki mechanics (Fextralife, Frostbite).',

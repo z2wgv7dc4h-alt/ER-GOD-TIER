@@ -46,9 +46,6 @@ export function useHotkeys() {
         case 'module':
           w.setModule(hit.id)
           break
-        case 'sit':
-          w.setSitMode(!w.sitMode)
-          break
         case 'help':
           e.preventDefault()
           markHelpSeen()
@@ -461,22 +458,17 @@ export function Recents() {
   )
 }
 
-export function SitToggle() {
-  const { sitMode, setSitMode, character, setCharacter } = useWorkspace()
+export function SpoilerToggle() {
+  const { character, setCharacter } = useWorkspace()
   const spoil = character.answers.spoil !== '0'
   return (
-    <>
-      <button type="button" className={sitMode ? 'chip on' : 'chip'} onClick={() => setSitMode(!sitMode)}>
-        {sitMode ? 'Sit mode on' : 'Sit mode'}
-      </button>
-      <button
-        type="button"
-        className={spoil ? 'chip on' : 'chip'}
-        onClick={() => setCharacter({ ...character, answers: { ...character.answers, spoil: spoil ? '0' : '1' } })}
-      >
-        {spoil ? 'Spoilers on' : 'No spoilers'}
-      </button>
-    </>
+    <button
+      type="button"
+      className={spoil ? 'chip on' : 'chip'}
+      onClick={() => setCharacter({ ...character, answers: { ...character.answers, spoil: spoil ? '0' : '1' } })}
+    >
+      {spoil ? 'Spoilers on' : 'No spoilers'}
+    </button>
   )
 }
 

@@ -42,7 +42,8 @@ describe('boss alias table', () => {
   it('reports hosted / seeded / linked boss coverage', () => {
     const status = aliasStatus()
     expect(status.bossHosted).toBe(215)
-    expect(status.bossSeeded).toBe(88)
+    // Task 74 added the real `boss:bayle` catalog fact, so the seeded roster is 89.
+    expect(status.bossSeeded).toBe(89)
     expect(status.bossLinked).toBe(84)
   })
 

@@ -155,54 +155,93 @@ body {
 }
 
 .stage { position: relative; }
-.first-sit {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  background: rgba(11, 9, 6, 0.92);
-  padding: 48px 36px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.sit-choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
-.sit-choice { text-align: left; }
 .world-ribbon {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   padding: 8px 16px 0;
 }
-@media (max-width: 980px) {
-  .sit-choices { grid-template-columns: 1fr; }
-}
 
 button, input { font: inherit; color: inherit; }
 button { cursor: pointer; }
 
+/* ── Play shell (Task 83) ──────────────────────────────────────────────
+   Two columns: a 280px "Now" strip (Gideon) and the stage. There is no
+   identity rail on the first screen — the Tarnished sheet is an off-canvas
+   drawer behind the name button at every width. Mobile turns this into a
+   single stage with three tabs (Map / Now / Kit). */
 .app {
   height: 100%;
   display: grid;
-  grid-template-columns: 200px minmax(0, 1fr) 320px;
+  grid-template-columns: 280px minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   background:
     radial-gradient(1200px 600px at 10% -10%, #1d1810 0%, transparent 55%),
     var(--bg);
 }
-.app.sit {
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto;
-}
-.app.sit .rail { grid-row: 1; border-right: 0; border-bottom: 1px solid var(--line); flex-direction: row; flex-wrap: wrap; gap: 8px; padding: 10px 12px; align-items: center; }
-.app.sit .workspace { grid-row: 2; }
-.app.sit .guide { grid-row: 3; border-left: 0; border-top: 1px solid var(--line); max-height: 42vh; }
 
+/* Off-canvas Tarnished sheet, closed by default. */
 .rail {
-  border-right: 1px solid var(--line);
-  background: linear-gradient(180deg, #120f0a 0%, #0b0906 100%);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: min(380px, 92vw);
+  z-index: 40;
   display: flex;
   flex-direction: column;
-  padding: 20px 16px;
-  min-width: 0;
+  gap: 12px;
+  padding: 18px 16px calc(18px + env(safe-area-inset-bottom, 0px));
+  border-right: 1px solid var(--line);
+  background: linear-gradient(180deg, #14110c 0%, #0b0906 100%);
+  overflow: auto;
+  transform: translateX(-105%);
+  transition: transform 0.25s ease;
+}
+.app.sheet-open .rail { transform: translateX(0); }
+
+.sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.sheet-close {
+  min-height: 40px;
+  padding: 6px 16px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 39;
+  border: 0;
+  padding: 0;
+  background: rgba(11, 9, 6, 0.62);
+  display: none;
+}
+.app.sheet-open .sheet-backdrop { display: block; }
+
+.tarnished-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 6px 12px;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  max-width: 46vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .brand {
@@ -333,7 +372,7 @@ button { cursor: pointer; }
 }
 .ghost.gold { border-color: var(--gold-dim); color: var(--gold); }
 
-.workspace { display: grid; grid-template-rows: 56px auto minmax(0, 1fr); min-width: 0; min-height: 0; }
+.workspace { grid-column: 2; grid-row: 1; display: grid; grid-template-rows: 56px auto minmax(0, 1fr); min-width: 0; min-height: 0; }
 
 .topbar {
   display: flex;
@@ -790,7 +829,9 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
 .pickup-row { display: flex; gap: 6px; margin-top: 6px; }
 .pickup-row .search { flex: 1; min-width: 0; }
 .guide {
-  border-left: 1px solid var(--line);
+  grid-column: 1;
+  grid-row: 1;
+  border-right: 1px solid var(--line);
   background: linear-gradient(180deg, #120f0a 0%, #0b0906 100%);
   padding: 16px 14px;
   overflow: auto;
@@ -815,6 +856,26 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   background: var(--bg-raised);
 }
 .gideon-now h3 { font-family: var(--font-display); margin: 4px 0 8px; font-size: 16px; }
+/* Task 72: sticky goal/beat/gate bar so the context never scrolls away with the
+   log. `.guide` is the scroll container, so it pins to the column's top. */
+.gideon-header {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  margin: 0 0 8px;
+  padding: 8px 10px;
+  background: linear-gradient(180deg, #14110c 0%, #0f0c08 100%);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--gold-dim);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45);
+}
+.gideon-header-beat {
+  font-family: var(--font-display);
+  font-size: 15px;
+  line-height: 1.3;
+  margin: 2px 0 4px;
+}
+.gideon-header .chip { margin-top: 4px; }
 .gideon-suggest {
   border: 1px solid var(--line-soft);
   background: var(--bg-raised);
@@ -834,8 +895,6 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
 .gideon-suggest-x:hover { color: var(--ink); }
 .gideon-log { max-height: 180px; overflow: auto; margin: 8px 0; white-space: pre-wrap; }
 .gideon-log p { font-size: 13px; line-height: 1.4; margin: 0 0 8px; }
-.app.sit .drop,
-.app.sit .meters { display: none; }
 .stat-edit { padding: 0 4px 12px; }
 .stat-edit .stats label { display: flex; flex-direction: column; gap: 4px; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 .stat-edit input {
@@ -943,28 +1002,8 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
 .help-groups li em { color: var(--muted); font-style: normal; font-size: 11px; }
 
 @media (max-width: 1100px) {
-  .app { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr) auto; }
-  .workspace { grid-template-rows: auto auto minmax(0, 1fr); }
   .topbar { flex-wrap: wrap; gap: 8px; padding: 8px 12px; }
   .help-hint { top: 56px; left: 12px; right: 12px; max-width: none; }
-  .rail {
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 12px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    max-height: 25vh;
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .brand { margin: 0; flex-shrink: 0; }
-  .profile-switcher { flex-shrink: 0; margin-bottom: 0; }
-  .char-card { flex-shrink: 0; }
-  .char-card .stats, .drop { display: none; }
-  .nav { flex-direction: row; flex-shrink: 0; }
-  .guide { border-left: 0; border-top: 1px solid var(--line); max-height: 30vh; }
   .world-ribbon { max-height: 15vh; overflow-y: auto; }
   .map-stage, .split { grid-template-columns: 1fr; }
   .side, .panel + .panel { border-left: 0; border-top: 1px solid var(--line); }
@@ -974,9 +1013,6 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
    Hidden by default so desktop renders exactly as before; the
    max-width:700px block below reveals and lays them out. */
 .tabbar { display: none; }
-.tarnished-toggle { display: none; }
-.sheet-head { display: none; }
-.sheet-backdrop { display: none; }
 .ribbon-toggle { display: none; }
 .atlas-toggle { display: none; }
 /* Phone Atlas job surface (Task 69): the three job chips stay on the map while
@@ -984,11 +1020,9 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
    — the topbar `.toggles` is the control surface there and this bar is hidden. */
 .atlas-jobs { display: none; }
 .atlas-layers { display: none; }
-.sheet-sit { display: none; }
 /* `contents` keeps the wrapper invisible on desktop: the children stay
    direct flex items of their parent, so desktop spacing is untouched. */
 .ribbon-items { display: contents; }
-.topbar-sit { display: contents; }
 
 @media (max-width: 700px) {
   /* ── Phone base: arm's-length type scale ─────────────────────────── */
@@ -1017,11 +1051,11 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   .gideon .chip { min-height: 42px; }
 
   /* ── App frame: one row for the room, one for the tab bar ────────── */
-  .app,
-  .app.sit {
+  .app {
     grid-template-columns: 1fr;
     grid-template-rows: minmax(0, 1fr) auto;
   }
+  .workspace { grid-column: 1; grid-row: 1; }
 
   /* ── Bottom tab bar ──────────────────────────────────────────────── */
   .tabbar {
@@ -1072,81 +1106,8 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   .topbar h2 { font-size: 13px; }
   .topbar .search { order: 10; flex: 1 1 100%; }
   .topbar .toggles { display: none; }
-  .topbar-sit { display: none; }
 
-  .tarnished-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-left: auto;
-    min-height: 38px;
-    padding: 6px 12px;
-    background: var(--bg-raised);
-    border: 1px solid var(--line);
-    color: var(--gold);
-    font-size: 12px;
-    letter-spacing: 0.05em;
-    max-width: 52vw;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  /* ── Tarnished sheet (the old rail) ──────────────────────────────── */
-  .rail {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    max-height: 84vh;
-    z-index: 40;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 14px 16px calc(20px + env(safe-area-inset-bottom, 0px));
-    border: 0;
-    border-top: 1px solid var(--line);
-    border-radius: 16px 16px 0 0;
-    background: linear-gradient(180deg, #14110c 0%, #0b0906 100%);
-    overflow: auto;
-    transform: translateY(105%);
-    transition: transform 0.25s ease;
-  }
-  .app.sheet-open .rail { transform: translateY(0); }
-  .rail .brand,
-  .rail .nav { display: none; }
-  .char-card { margin-top: 0; flex-shrink: 1; }
-  .rail .char-card .stats { display: grid; }
-  .rail .drop { display: block; }
-
-  .sheet-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
-  .sheet-close {
-    min-height: 40px;
-    padding: 6px 16px;
-    background: transparent;
-    border: 1px solid var(--line);
-    color: var(--ink);
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .sheet-sit { display: block; }
-  .sheet-sit .chip { margin-right: 8px; margin-top: 4px; }
-
-  .sheet-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 39;
-    border: 0;
-    padding: 0;
-    background: rgba(11, 9, 6, 0.62);
-  }
-  .app.sheet-open .sheet-backdrop { display: block; }
+  .tarnished-toggle { margin-left: auto; max-width: 52vw; }
 
   /* ── World ribbon: one line, tap to expand ───────────────────────── */
   .world-ribbon {
@@ -1230,7 +1191,7 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   .map-stage.side-open .side { transform: translateY(0); }
 
   /* ── Phone Atlas job chips ──────────────────────────────────────────
-     The three job controls are always on the map; the seven pin kinds sit in
+     The three job controls are always on the map; the seven pin kinds live in
      the "layers" overflow so one tap opens the full layer list. This is the
      only Atlas control surface under 700px — the topbar toggles are hidden. */
   .atlas-jobs {
@@ -1260,23 +1221,15 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   }
   .atlas-layers .chip { min-height: 38px; }
 
-  /* ── Gideon as a full-height overlay tab ─────────────────────────── */
+  /* ── Now: Gideon becomes the full stage (the "Now" tab) ──────────── */
   .guide { display: none; }
-  .app.guide-open .guide {
+  .app.now-open .guide {
     display: block;
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: calc(58px + env(safe-area-inset-bottom, 0px));
-    max-height: none;
-    z-index: 25;
+    grid-column: 1;
+    grid-row: 1;
+    border: 0;
     overflow: auto;
     padding: 16px 14px 28px;
-    border: 0;
-    background: linear-gradient(180deg, #120f0a 0%, #0b0906 100%);
   }
-
-  /* ── First-run overlay fits a phone ──────────────────────────────── */
-  .first-sit { padding: 24px 16px; overflow: auto; }
+  .app.now-open .workspace { display: none; }
 }

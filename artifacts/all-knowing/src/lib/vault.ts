@@ -5,7 +5,6 @@ import { fromPacket, toPacket, type Packet } from './packet'
 export type VaultUi = {
   module: ModuleId
   missingOnly: boolean
-  sitMode: boolean
   selectedMarkerId: string | null
 }
 
@@ -25,12 +24,10 @@ export type Vault = {
 
 const VAULT_KEY = 'all-knowing.vault.v1'
 const LEGACY_KEY = 'all-knowing.character.v1'
-const SIT_KEY = 'all-knowing.sit'
 
 export const defaultUi = (): VaultUi => ({
   module: 'reckon',
   missingOnly: true,
-  sitMode: false,
   selectedMarkerId: null,
 })
 
@@ -62,8 +59,6 @@ export function loadVault(): Vault {
       migrated.character = { ...emptyCharacter, ...JSON.parse(legacy), shots: [] }
       migrated.label = migrated.character.name || 'Tarnished'
     }
-    const sit = localStorage.getItem(SIT_KEY)
-    if (sit === '1') migrated.ui.sitMode = true
   } catch { /* ignore */ }
 
   const vault = { version: 1 as const, activeId: migrated.id, profiles: [migrated] }

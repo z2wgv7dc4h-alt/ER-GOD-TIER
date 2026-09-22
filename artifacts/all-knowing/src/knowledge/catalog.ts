@@ -390,6 +390,85 @@ export const facts: Fact[] = [
   { id: 'item:mimic-tear-ashes', kind: 'item', name: 'Mimic Tear Ashes', aliases: ['mimic tear ashes', 'mimic ash'], region: 'Nokron', campaign: 'base', implies: [] },
   { id: 'item:haligtree-medallion-left', kind: 'item', name: 'Haligtree Secret Medallion (Left)', aliases: ['haligtree medallion left'], region: 'Mountaintops', campaign: 'base', implies: [] },
   { id: 'item:haligtree-medallion-right', kind: 'item', name: 'Haligtree Secret Medallion (Right)', aliases: ['haligtree medallion right'], region: 'Liurnia', campaign: 'base', implies: [] },
+
+  // Task 74: the remaining companion lines. Every row is authored quest state
+  // (`implies: []`) — no extracted flag is invented, and no new fact closes the
+  // world on its own. Item names are real `open/names.json` entries.
+  // Alexander + the Jar-Bairn epilogue.
+  { id: 'quest:alexander:met', kind: 'quest', name: 'Alexander — freed from the Limgrave hole', aliases: [], region: 'Limgrave', campaign: 'base', implies: [] },
+  { id: 'quest:alexander:gael', kind: 'quest', name: 'Alexander — met near Gael Tunnel', aliases: [], region: 'Caelid', campaign: 'base', implies: [] },
+  { id: 'quest:alexander:festival', kind: 'quest', name: 'Alexander — met at the Radahn festival', aliases: [], region: 'Caelid', campaign: 'base', implies: [] },
+  { id: 'quest:alexander:complete', kind: 'quest', name: 'Alexander — duel in Farum Azula', aliases: [], region: 'Farum Azula', campaign: 'base', implies: [] },
+  { id: 'quest:alexander:missed-limgrave', kind: 'quest', name: 'Alexander — never freed in Limgrave', aliases: [], region: 'Limgrave', campaign: 'base', implies: [] },
+  { id: 'item:alexanders-innards', kind: 'item', name: "Alexander's Innards", aliases: ['alexander innards'], region: 'Farum Azula', campaign: 'base', implies: [] },
+  { id: 'quest:jarbairn:concluded', kind: 'quest', name: 'Jar-Bairn — vows to grow strong', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+
+  // Nepheli Loux.
+  { id: 'quest:nepheli:met', kind: 'quest', name: 'Nepheli — met in Stormveil', aliases: [], region: 'Stormveil', campaign: 'base', implies: [] },
+  { id: 'quest:nepheli:roundtable', kind: 'quest', name: 'Nepheli — spoken to at the Roundtable', aliases: [], region: 'Roundtable', campaign: 'base', implies: [] },
+  { id: 'quest:nepheli:despair', kind: 'quest', name: 'Nepheli — found in despair after the Omenkiller', aliases: [], region: 'Roundtable', campaign: 'base', implies: [] },
+  { id: 'quest:nepheli:refused-potion', kind: 'quest', name: 'Nepheli — Seluvis potion refused', aliases: [], region: 'Roundtable', campaign: 'base', implies: [] },
+  { id: 'quest:nepheli:stormhawk', kind: 'quest', name: 'Nepheli — Stormhawk King ashes given', aliases: [], region: 'Roundtable', campaign: 'base', implies: [] },
+  { id: 'quest:nepheli:ruler', kind: 'quest', name: 'Nepheli — crowned at Stormveil', aliases: [], region: 'Stormveil', campaign: 'base', implies: [] },
+  { id: 'quest:nepheli:potioned', kind: 'quest', name: 'Nepheli — made a Seluvis puppet', aliases: [], region: 'Roundtable', campaign: 'base', implies: [] },
+
+  // Boc the Seamster.
+  { id: 'quest:boc:freed', kind: 'quest', name: 'Boc — freed from the illusory tree', aliases: [], region: 'Limgrave', campaign: 'base', implies: [] },
+  { id: 'quest:boc:cave', kind: 'quest', name: 'Boc — met at the Coastal Cave', aliases: [], region: 'Limgrave', campaign: 'base', implies: [] },
+  { id: 'quest:boc:doubt', kind: 'quest', name: 'Boc — doubts his looks in Leyndell', aliases: [], region: 'Leyndell', campaign: 'base', implies: [] },
+  { id: 'quest:boc:beautiful', kind: 'quest', name: 'Boc — reassured with the Prattling Pate', aliases: [], region: 'Leyndell', campaign: 'base', implies: [] },
+  { id: 'quest:boc:rebirth', kind: 'quest', name: 'Boc — sent to seek rebirth', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+
+  // Hyetta / the Frenzied Flame grapes.
+  { id: 'quest:hyetta:met', kind: 'quest', name: 'Hyetta — met at the Lake-Facing Cliffs', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:hyetta:grapes', kind: 'quest', name: 'Hyetta — first Shabriri Grape given', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:hyetta:purified', kind: 'quest', name: 'Hyetta — grape at the Purified Ruins', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:hyetta:gatetown', kind: 'quest', name: 'Hyetta — grape at the Gate Town Bridge', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:hyetta:bellum', kind: 'quest', name: 'Hyetta — Fingerprint Grape at Bellum Church', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:hyetta:maiden', kind: 'quest', name: 'Hyetta — maiden of the Three Fingers', aliases: [], region: 'Leyndell', campaign: 'base', implies: [] },
+  { id: 'quest:hyetta:killed', kind: 'quest', name: 'Hyetta is dead this run', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+
+  // Irina & Edgar of Castle Morne.
+  { id: 'quest:irina:met', kind: 'quest', name: 'Irina — met below the Bridge of Sacrifice', aliases: [], region: 'Weeping Peninsula', campaign: 'base', implies: [] },
+  { id: 'quest:edgar:letter', kind: 'quest', name: 'Edgar — Irina’s letter delivered', aliases: [], region: 'Weeping Peninsula', campaign: 'base', implies: [] },
+  { id: 'quest:irina:castle', kind: 'quest', name: 'Castle Morne — Leonine Misbegotten felled', aliases: [], region: 'Weeping Peninsula', campaign: 'base', implies: [] },
+  { id: 'quest:irina:dead', kind: 'quest', name: 'Irina is found dead', aliases: [], region: 'Weeping Peninsula', campaign: 'base', implies: [] },
+  { id: 'quest:edgar:revenger', kind: 'quest', name: 'Edgar the Revenger defeated', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:irina:killed', kind: 'quest', name: 'Irina killed before the letter', aliases: [], region: 'Weeping Peninsula', campaign: 'base', implies: [] },
+  { id: 'item:shabriri-grape', kind: 'item', name: 'Shabriri Grape', aliases: ['shabriri grapes'], region: 'Liurnia', campaign: 'base', implies: [] },
+
+  // Patches.
+  { id: 'quest:patches:ambush', kind: 'quest', name: 'Patches — survived the Murkwater ambush', aliases: [], region: 'Limgrave', campaign: 'base', implies: [] },
+  { id: 'quest:patches:forgiven', kind: 'quest', name: 'Patches — forgiven, shop opened', aliases: [], region: 'Limgrave', campaign: 'base', implies: [] },
+  { id: 'quest:patches:volcano', kind: 'quest', name: 'Patches — met again at Volcano Manor', aliases: [], region: 'Volcano Manor', campaign: 'base', implies: [] },
+  { id: 'quest:patches:contracts', kind: 'quest', name: 'Patches — Volcano Manor contracts done', aliases: [], region: 'Volcano Manor', campaign: 'base', implies: [] },
+  { id: 'quest:patches:shaded', kind: 'quest', name: 'Patches — found wounded at the Shaded Castle', aliases: [], region: 'Altus', campaign: 'base', implies: [] },
+  { id: 'quest:patches:castanets', kind: 'quest', name: 'Patches — Dancer’s Castanets taken', aliases: [], region: 'Altus', campaign: 'base', implies: [] },
+
+  // Roderika & Hewg.
+  { id: 'quest:roderika:met', kind: 'quest', name: 'Roderika — met at the Stormhill Shack', aliases: [], region: 'Limgrave', campaign: 'base', implies: [] },
+  { id: 'quest:roderika:memento', kind: 'quest', name: 'Roderika — Chrysalids’ Memento recovered', aliases: [], region: 'Stormveil', campaign: 'base', implies: [] },
+  { id: 'quest:roderika:given', kind: 'quest', name: 'Roderika — memento delivered', aliases: [], region: 'Limgrave', campaign: 'base', implies: [] },
+  { id: 'quest:hewg:roderika', kind: 'quest', name: 'Hewg — agrees to take Roderika on', aliases: [], region: 'Roundtable', campaign: 'base', implies: [] },
+  { id: 'quest:roderika:tuner', kind: 'quest', name: 'Roderika — spirit tuning unlocked', aliases: [], region: 'Roundtable', campaign: 'base', implies: [] },
+  { id: 'item:chrysalids-memento', kind: 'item', name: "Chrysalids' Memento", aliases: ['chrysalids memento'], region: 'Stormveil', campaign: 'base', implies: [] },
+
+  // Diallos.
+  { id: 'quest:diallos:met', kind: 'quest', name: 'Diallos — met at the Roundtable', aliases: [], region: 'Roundtable', campaign: 'base', implies: [] },
+  { id: 'quest:diallos:lanya', kind: 'quest', name: 'Diallos — searching for Lanya', aliases: [], region: 'Roundtable', campaign: 'base', implies: [] },
+  { id: 'quest:diallos:village', kind: 'quest', name: 'Diallos — met at the Village of the Albinaurics', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:diallos:jarburg', kind: 'quest', name: 'Diallos — reached Jarburg', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:diallos:poachers', kind: 'quest', name: 'Diallos — Jarburg defended from the poachers', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:diallos:concluded', kind: 'quest', name: 'Diallos — wounded at Jarburg', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'item:diallos-mask', kind: 'item', name: "Diallos's Mask", aliases: ['diallos mask'], region: 'Liurnia', campaign: 'base', implies: [] },
+
+  // Igon & Bayle.
+  { id: 'quest:igon:met', kind: 'quest', name: 'Igon — met on the road up the Jagged Peak', aliases: [], region: 'Jagged Peak', campaign: 'sote', implies: [] },
+  { id: 'quest:igon:peak', kind: 'quest', name: 'Igon — met again at the peak', aliases: [], region: 'Jagged Peak', campaign: 'sote', implies: [] },
+  { id: 'quest:igon:summon', kind: 'quest', name: 'Igon — summoned at the Bayle fog gate', aliases: [], region: 'Jagged Peak', campaign: 'sote', implies: [] },
+  { id: 'quest:igon:concluded', kind: 'quest', name: 'Igon — his revenge fulfilled', aliases: [], region: 'Jagged Peak', campaign: 'sote', implies: [] },
+  { id: 'boss:bayle', kind: 'boss', name: 'Bayle the Dread', aliases: ['bayle'], region: 'Jagged Peak', campaign: 'sote', implies: [] },
+  { id: 'item:igons-harpoon', kind: 'item', name: "Igon's Harpoon", aliases: ['igon harpoon'], region: 'Jagged Peak', campaign: 'sote', implies: [] },
 ]
 
 export const byId = new Map(facts.map((f) => [f.id, f]))
@@ -492,7 +571,7 @@ export const interview = [
   },
   {
     id: 'lastGrace',
-    prompt: 'Where did you last sit?',
+    prompt: 'Where did you last rest?',
     hint: 'One warp name lights that region and everything required to reach it.',
     options: [
       { value: 'grace:elleh', label: 'Church of Elleh' },
@@ -518,6 +597,15 @@ export const interview = [
       { value: 'boss:morgott', label: 'Morgott' },
       { value: 'boss:mohg', label: 'Mohg' },
       { value: 'boss:malenia', label: 'Malenia' },
+    ],
+  },
+  {
+    id: 'coop',
+    prompt: 'Playing in co-op?',
+    hint: 'In co-op, Gideon drops solo summon tools — no Mimic Tear and no Torrent. Default is solo.',
+    options: [
+      { value: 'no', label: 'No — solo' },
+      { value: 'yes', label: 'Yes — co-op' },
     ],
   },
 ]
