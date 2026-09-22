@@ -254,6 +254,15 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
         </button>
       </div>
 
+      {/* Guided asks: the deterministic router answers these exactly. Free text
+          stays for open-ended questions, which go to the optional model. */}
+      <div className="opts" style={{ marginBottom: 8 }}>
+        <button type="button" className="chip" onClick={() => run('I am here, before I go on, what should I do so I do not outlevel it')}>Before I go</button>
+        <button type="button" className="chip" onClick={() => run('What did I miss here?')}>Missed here</button>
+        <button type="button" className="chip" onClick={() => run('What are good early weapons?')}>Upgrade advice</button>
+        <button type="button" className="chip" onClick={() => run('What is on my list?')}>My list</button>
+      </div>
+
       {offer && (
         <button type="button" className="chip on" onClick={() => run(offer.prompt)}>{offer.label}</button>
       )}
@@ -271,7 +280,7 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
         <input
           className="search"
           value={q}
-          placeholder="Ask, or type a grace / item to log"
+          placeholder="Ask anything — open-ended goes to Muse, or type a grace / item to log"
           onChange={(e) => setQ(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter' && !busy) submit() }}
         />

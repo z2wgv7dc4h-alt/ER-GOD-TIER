@@ -69,6 +69,21 @@ function parseBoss(html, slug) {
     .map((m) => m[1])
     .filter((v, idx, arr) => v && arr.indexOf(v) === idx)
 
+  // Full page body: strategy / combat / lore. Cutscene dialogue is skipped.
+  const bodyStart = html.indexOf('mw-parser-output')
+  const body = bodyStart >= 0 ? html.slice(bodyStart) : html
+  const SKIP = /search|contents|popular wikis|follow us|image gallery|dialogues/i
+  const sections = []
+  const heads = [...body.matchAll(/<h([23])[^>]*>([\s\S]*?)<\/h\1>/g)]
+  for (let i = 0; i < heads.length; i++) {
+    const heading = plainText(heads[i][2])
+    if (!heading || SKIP.test(heading)) continue
+    const from = heads[i].index + heads[i][0].length
+    const to = i + 1 < heads.length ? heads[i + 1].index : body.length
+    const text = plainText(body.slice(from, to)).slice(0, 5000)
+    if (text.length >= 40) sections.push({ heading, text })
+  }
+
   const drops = []
   for (const m of html.matchAll(/er-boss-location-drops"[^>]*>([\s\S]*?)<\/div>/g)) {
     const seg = m[1]
@@ -84,7 +99,7 @@ function parseBoss(html, slug) {
     }
   }
 
-  return { name, locations, drops, hp, url: `${BASE}/${slug}` }
+  return { name, locations, drops, hp, sections, url: `${BASE}/${slug}` }
 }
 
 async function main() {

@@ -20,6 +20,9 @@ import { COOP_LINE, coopAvoids, isCoop } from './coop'
 import { searchSync } from './search'
 import { labelOf, moduleFor, nextMoves } from './links'
 import { regionLeftovers } from './regionLeftovers'
+import { beforeYouGo } from './beforeYouGo'
+import { loadRegionLevels, type RegionLevel } from './regionLevels'
+import { watchlistOf } from './leftovers'
 import { applyFacts, summarize } from './infer'
 import {
   bossCombatFor,
@@ -507,6 +510,7 @@ export function askGideonRouter(
   medusaSteps?: MedusaQuest[],
   guides?: GuideExcerpt[],
   weapons?: Weapon[],
+  regionLevelList?: RegionLevel[],
 ): GideonAct {
   const q = question.toLowerCase().trim()
   if (!q) return { say: 'Name an ending, or ask what to do next.' }
@@ -610,6 +614,27 @@ export function askGideonRouter(
       say: `Mid-run survey.\nActive:\n${fmt(s.active) || '—'}\nOpen:\n${fmt(s.open) || '—'}\nLocked:\n${fmt(s.locked) || '—'}\nDone:\n${fmt(s.done) || '—'}\nSay a name to pick up that line, or Blitz Elden Lord to skip flavour.`,
       module: 'quests',
     }
+  }
+
+  // "Come back to X" -> a real to-do on the leftovers watchlist. "what's on my list" reads it.
+  if (/\b(come back|go back|do it later|add .*(to )?(my )?(todo|list|watchlist)|remember to|don'?t forget|save .* for later)\b/.test(q)) {
+    const hit = matchMany(question)[0] || matchAllWarps(question)[0] || searchSync(question)[0]
+    if (hit) {
+      return { say: `Noted — ${hit.name} is on your list. Ask "what is on my list" any time.`, watch: [hit.id], module: 'map' }
+    }
+  }
+  if (/\b(my (todo|list|watchlist)|what(?:'| i)?s on my (todo|list)|what did i want to come back to)\b/.test(q)) {
+    const ids = watchlistOf(character)
+    return ids.length
+      ? { say: `On your list: ${ids.map((id) => labelOf(id)).join(', ')}.`, module: 'map' }
+      : { say: 'Your list is empty. Say "come back to X" and I will keep it for you.', module: 'map' }
+  }
+
+  // Level-aware zone / "before I go" advice, from the Progress Route bands.
+  if (regionLevelList
+    && /\b(what level|recommended level|am i (ready|overlevel|underlevel)|overlevell?ed|underlevell?ed|outlevell?ed|before i (go|leave|move)|i(?:'| a)m here)\b/.test(q)) {
+    const by = beforeYouGo(character, question, regionLevelList)
+    if (by.band || by.open.length) return { say: by.advice, module: 'map' }
   }
 
   // "What did I miss here" / "missed in Limgrave" — region-scoped leftovers.
@@ -1151,6 +1176,7 @@ export function isFastLookup(
   medusaSteps?: MedusaQuest[],
   guides?: GuideExcerpt[],
   weapons?: Weapon[],
+  regionLevelList?: RegionLevel[],
 ): boolean {
   const q = question.toLowerCase().trim()
   if (!q) return true
@@ -1193,6 +1219,10 @@ export function isFastLookup(
 
   // Weapon upgrade / early-weapon advice is deterministic from the AR engine.
   if (weapons && /\b(upgrade|reinforce|somber|smithing|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(q)) return true
+
+  // To-do list + level/zone advice are deterministic.
+  if (/\b(come back|go back|my (todo|list|watchlist)|what(?:'| i)?s on my (todo|list)|remember to|don'?t forget)\b/.test(q)) return true
+  if (regionLevelList && /\b(what level|recommended level|am i (ready|overlevel|underlevel)|overlevell?ed|underlevell?ed|outlevell?ed|before i (go|leave|move)|i(?:'| a)m here)\b/.test(q)) return true
 
   // A verbatim-dialogue ask is answered from the game's own attributed lines.
   if (isDialogueAsk(q)) return true
@@ -1246,11 +1276,12 @@ export async function askGideon(
   const wantsMedusa = /\b(medusa|walkthrough|route)\b/.test(ql)
   const wantsGuides = /\b(how|guide|upgrade|smithing|somber|bell bearing|talisman|incantation|sorcer|damage type|stats?|buff)\b/.test(ql)
   const wantsWeapons = /\b(upgrade|reinforce|somber|smithing|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(ql)
+  const wantsLevels = /\b(what level|recommended level|am i (ready|overlevel|underlevel)|overlevell?ed|underlevell?ed|outlevell?ed|before i (go|leave|move)|i(?:'| a)m here)\b/.test(ql)
 
   // Load every optional context source in parallel — they are independent
   // fetches, and serialising them added seconds before the answer (or before
   // the LLM call) on a cold cache.
-  const [combat, dialogue, placements, medusaSteps, guides, weapons] = await Promise.all([
+  const [combat, dialogue, placements, medusaSteps, guides, weapons, regionLevels] = await Promise.all([
     wantsCombat ? loadBossCombat().catch(() => [] as BossCombat[]) : Promise.resolve(undefined),
     wantsDialogue
       ? Promise.all([loadDialogueOwners().catch(() => null), loadGameTextTable('TalkMsg').catch(() => null)])
@@ -1260,9 +1291,11 @@ export async function askGideon(
     wantsMedusa ? loadMedusaRoute().then((d) => medusaQuests(d)).catch(() => undefined) : Promise.resolve(undefined),
     wantsGuides ? loadGuides().then((d) => guideExcerpts(d)).catch(() => undefined) : Promise.resolve(undefined),
     wantsWeapons ? loadWeapons().catch(() => undefined) : Promise.resolve(undefined),
+    wantsLevels ? loadRegionLevels().then((d) => d.areas).catch(() => undefined) : Promise.resolve(undefined),
   ])
-  const router = askGideonRouter(question, character, memory, combat, dialogue, placements, medusaSteps, guides, weapons)
-  if (isFastLookup(question, memory, combat ?? cachedBossCombat(), placements, medusaSteps, guides, weapons)) return router
+  const regionLevelList = regionLevels
+  const router = askGideonRouter(question, character, memory, combat, dialogue, placements, medusaSteps, guides, weapons, regionLevelList)
+  if (isFastLookup(question, memory, combat ?? cachedBossCombat(), placements, medusaSteps, guides, weapons, regionLevelList)) return router
 
   if (!hasGideonKey()) {
     if (!warnedNoKey) {
