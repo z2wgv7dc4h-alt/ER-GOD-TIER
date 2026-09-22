@@ -3,6 +3,10 @@ import { markers } from './data/seed'
 import { opBuilds } from './knowledge/builds'
 import { pvpBuilds, pvpMatchups } from './knowledge/pvp'
 import { isCollected, useWorkspace } from './state'
+import { applyFacts } from './lib/infer'
+import { buildHunt } from './lib/buildHunt'
+import { useCoords } from './lib/coords'
+import { toggleWatch, watchlistOf } from './lib/leftovers'
 import { attackRatingForSlot, loadWeapons } from './lib/ar'
 import type { AttackRating, Weapon } from './lib/ar'
 import { REGULATION_STAMP } from './lib/regulation'
@@ -34,8 +38,16 @@ function estimateDefense(character: Character) {
 }
 
 export function BuildWorkspace() {
-  const { character, setCharacter, setModule, setSelectedMarkerId } = useWorkspace()
+  const { character, setCharacter, setModule, setSelectedMarkerId, showLeftovers, toggleLeftovers } = useWorkspace()
+  const coords = useCoords()
   const preview = estimateDefense(character)
+  const allBuilds = useMemo(() => [...opBuilds, ...pvpBuilds], [])
+  const kitId = typeof character.answers.buildKit === 'string' ? character.answers.buildKit : ''
+  const selectedBuild = allBuilds.find((b) => b.id === kitId)
+  const hunt = useMemo(
+    () => (selectedBuild ? buildHunt(character, selectedBuild, coords) : null),
+    [character, selectedBuild, coords],
+  )
   const [weapons, setWeapons] = useState<Weapon[] | null>(null)
   const [arError, setArError] = useState<string | null>(null)
   const [twoHanding, setTwoHanding] = useState(false)
@@ -167,7 +179,7 @@ export function BuildWorkspace() {
               key={b.id}
               type="button"
               className="chip"
-              onClick={() => setCharacter({ ...character, stats: b.stats, level: b.level, loadout: b.kit })}
+              onClick={() => setCharacter({ ...character, stats: b.stats, level: b.level, loadout: b.kit, answers: { ...character.answers, buildKit: b.id } })}
             >
               {b.name}
             </button>
@@ -189,7 +201,7 @@ export function BuildWorkspace() {
               type="button"
               className="chip"
               onClick={() => {
-                setCharacter({ ...character, stats: b.stats, level: b.level, loadout: b.kit })
+                setCharacter({ ...character, stats: b.stats, level: b.level, loadout: b.kit, answers: { ...character.answers, buildKit: b.id } })
                 setPvpId(b.id)
               }}
             >
@@ -214,6 +226,61 @@ export function BuildWorkspace() {
             </li>
           ))}
         </ul>
+        {selectedBuild && hunt && (
+          <div className="kit-hunt" style={{ marginTop: 14 }}>
+            <div className="kicker">Kit hunt · {selectedBuild.name}</div>
+            {hunt.missing.length === 0 ? (
+              <p className="note">Every seeded piece of this kit is already logged on this character.</p>
+            ) : (
+              <>
+                <p className="note">
+                  {hunt.missing.length} missing · {hunt.pins.length} with a pin. Picking a kit only sets
+                  stats and loadout — nothing here is marked until you say so.
+                </p>
+                <ul className="list">
+                  {hunt.missing.map((p) => (
+                    <li key={p.factId} style={{ display: 'block', cursor: 'default' }}>
+                      <span>
+                        {p.name} <em className="dim">{p.factId}</em>
+                      </span>
+                      <div className="opts" style={{ marginTop: 4 }}>
+                        <button
+                          type="button"
+                          className="chip"
+                          onClick={() => setCharacter(applyFacts(character, [p.factId], 'answer', 'build hunt mark'))}
+                        >
+                          Mark
+                        </button>
+                        {p.pin && (
+                          <button
+                            type="button"
+                            className="chip"
+                            onClick={() => {
+                              if (!watchlistOf(character).includes(p.factId)) {
+                                setCharacter(toggleWatch(character, p.factId))
+                              }
+                              if (!showLeftovers) toggleLeftovers()
+                              setSelectedMarkerId(p.factId)
+                              setModule('map')
+                            }}
+                          >
+                            Show on map
+                          </button>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+            {hunt.unresolved.length > 0 && (
+              <p className="note">
+                No row yet for {hunt.unresolved.length} id{hunt.unresolved.length === 1 ? '' : 's'} (
+                {hunt.unresolved.map((u) => u.id).join(', ')}), listed not dropped.
+              </p>
+            )}
+          </div>
+        )}
         <div className="gear">
           {character.loadout.length === 0 && <p className="note">Load a save, an OP kit, or the demo character.</p>}
           {character.loadout.map((slot) => (

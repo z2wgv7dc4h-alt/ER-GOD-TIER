@@ -17,6 +17,14 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/er-map/, '') || '/',
       },
+      // Optional Gideon LLM (Meta Muse Spark). Dev-only, so the browser is not
+      // blocked by CORS. The default base is `/gideon-llm/v1` in dev; an explicit
+      // VITE_GIDEON_BASE_URL bypasses this and calls the provider directly.
+      '/gideon-llm': {
+        target: 'https://api.meta.ai',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/gideon-llm/, '') || '/',
+      },
     },
   },
 })

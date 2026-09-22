@@ -13,6 +13,7 @@ import { idleSuggestions } from './lib/suggestions'
 import { lockoutWarningsFor, type LockWarning } from './lib/lockWarnings'
 import { LockoutPrompt } from './LockoutPrompt'
 import { packStatus } from './lib/sourcePack'
+import { hasGideonKey } from './lib/muse'
 import { useWorkspace } from './state'
 
 export function Gideon() {
@@ -53,10 +54,28 @@ export function Gideon() {
     if (act.factId && (act.navigateNow || act.module === 'map' || /show|take me|pin/i.test(text))) {
       w.setSelectedMarkerId(act.factId)
     }
+    // One commit for build stats/loadout + hunt watchlist: two setCharacter
+    // calls in the same tick would each start from the stale render value.
+    let next = w.character
+    let changed = false
     if (act.buildId) {
       const b = [...opBuilds, ...pvpBuilds].find((x) => x.id === act.buildId)
-      if (b) w.setCharacter({ ...w.character, stats: b.stats, level: b.level, loadout: b.kit })
+      if (b) {
+        next = { ...next, stats: b.stats, level: b.level, loadout: b.kit, answers: { ...next.answers, buildKit: b.id } }
+        changed = true
+      }
     }
+    if (act.watch?.length) {
+      // Build-hunt pins: add the missing loot to the existing watchlist layer.
+      const wl = watchlistOf(next)
+      const add = act.watch.filter((id) => !wl.includes(id))
+      if (add.length) {
+        next = { ...next, answers: { ...next.answers, watch: [...wl, ...add].join(',') } }
+        changed = true
+      }
+      if (!w.showLeftovers) w.toggleLeftovers()
+    }
+    if (changed) w.setCharacter(next)
     if (act.markDone?.length) {
       // Confirm-before-tick: only mutate once a lockout warning is acknowledged.
       const warnings = lockoutWarningsFor(w.character, act.markDone)
@@ -119,6 +138,9 @@ export function Gideon() {
     <section className="gideon">
       <img className="guide-face" src="/art/guide.jpg" alt="" />
       <div className="kicker">Guide · {packStatus().hint}</div>
+      <p className="note" style={{ opacity: 0.6 }}>
+        {hasGideonKey() ? 'Muse 1.3 contributor (optional)' : 'router only'}
+      </p>
       {plan?.current ? (
         <div className="gideon-now">
           <div className="kicker">Now · {line?.name}</div>

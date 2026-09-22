@@ -51,7 +51,9 @@ Each step MUST have:
 - Millicent aid vs betray must be two terminal steps with mutual lockouts (Rotten Winged Sword
   Insignia vs Millicent's Prosthesis).
 - Do not paste copyrighted walkthrough prose. Short original detail sentences only.
-- Do not scrape MapGenie / Fextra HTML.
+- Facts and one-line citations may be fetched/scraped from anywhere (MapGenie, Fextra, patch
+  notes). Still write original short detail sentences, and do not invent lat/lng, flags, or
+  lockouts.
 - Add catalog facts for key items these steps grant (Fingerslayer, secret medallion halves,
   seedbed curse, drawing rooms, iris, etc.) if missing.
 

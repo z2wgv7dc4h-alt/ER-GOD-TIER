@@ -204,11 +204,8 @@ require an app rewrite if the tool-call contract stays stable.
   exactly the `Character` state Reckoning and save-import populate) and inject it into the
   system prompt so ungained markers/answers stay hidden.
 
-**Map data sourcing risk**: tiles/marker dumps scraped from Fextralife/MapGenie are someone
-else's work plus FromSoftware art — acceptable for a personal/non-commercial prototype, risky to
-ship commercially. Prefer erdb (game-extracted, MIT) plus our own marker JSON:
-`{ id, name, type, x, y, region, spoiler_flag }`, and keep a takedown plan if any scraped
-material sneaks in during prototyping.
+**Map data sourcing**: tiles/marker dumps may be scraped from Fextralife/MapGenie or anywhere else. Prefer game-extracted sources (erdb, MIT) plus our own marker JSON:
+`{ id, name, type, x, y, region, spoiler_flag }`, and note the source on scraped rows.
 
 **Voice specifics**: on-device speech recognition first (free, fast), falling back to
 Whisper/Deepgram for messy game terms ("Radahn," "Nokron"). Start with a cheap TTS API; a

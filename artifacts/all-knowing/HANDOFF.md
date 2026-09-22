@@ -34,7 +34,9 @@ Do not average them. Pickup XYZ lives in `world-lots.json` (10,011 rows) and is 
 
 Intents: endings/lines/blitz, still-available, builds, shops, missables, fragments, warps, loot, hunts, stuck, 100% spine, boss pins, searchSync last.
 
-DeepSeek later: same Act JSON. Ground with `planRoute`, `stillAvailable`, `searchSync`. No invented ids.
+Optional LLM: Meta Muse Spark 1.3 Contributor (`src/lib/muse.ts`, `VITE_GIDEON_API_KEY`), same Act
+JSON, router-first. Ground with `planRoute`, `stillAvailable`, `searchSync`. No invented ids;
+sentences naming an ungrounded id are stripped.
 
 ## Paths
 
@@ -64,7 +66,11 @@ Inventory: `DATA.md`.
 
 ## Refuse
 
-Uploads, save edits, FromSoftware tile archives, invented AR, Nightreign v1, live MapGenie scrape.
+Uploads, save edits, FromSoftware tile archives, invented AR, Nightreign v1.
+
+## Sources
+
+External research is allowed without restriction. Facts, locations-in-prose, build ideas, one-line citations, and source data may be fetched, scraped, or downloaded from anywhere on the internet — in-repo dumps, the user's run, Fextralife, wiki.gg, MapGenie, YouTube, Discord, patch notes. Each row should still carry its source (a title or URL is enough). Accuracy rules still apply: param numbers, item names-as-ids, and pin coordinates come only from in-repo regulation / names.json / coords / loot / catalog, and do not invent lat/lng, event flags, or lockouts. Full policy: `HANDOFF-CLAUDE.md` §4.
 
 ## Run
 

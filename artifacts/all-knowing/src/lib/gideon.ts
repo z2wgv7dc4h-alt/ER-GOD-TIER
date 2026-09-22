@@ -27,8 +27,9 @@ import {
   type BossCombat,
 } from './enemy'
 import { factState } from '../state'
-import { callDeepSeekJson, hasDeepSeekKey } from './deepseek'
+import { callGideonLlm, hasGideonKey } from './muse'
 import { buildGrounding, gideonMessages, validateGideonAct } from './gideonLlm'
+import { buildHunt } from './buildHunt'
 import type { Character, ModuleId } from '../types'
 
 export type GideonAct = {
@@ -47,6 +48,13 @@ export type GideonAct = {
    * already applied.
    */
   markDone?: string[]
+  /**
+   * Loot ids the router wants added to the character's watchlist (the Task 33
+   * leftovers layer). Used by the build-hunt "show the X kit" answer so the
+   * missing pieces appear as pins without marking them collected. The caller
+   * mutates via `toggleWatch`; the router itself stays pure.
+   */
+  watch?: string[]
 }
 
 export type GideonMemory = {
@@ -687,6 +695,50 @@ export function askGideonRouter(
     }
   }
 
+  // Build hunt (Task 64): "how do I build X" / "show the X kit" turns the kit into a
+  // checklist of missing pieces. The show branch reuses the leftover pin layer by
+  // adding the placeable loot ids to the watchlist; nothing is marked collected.
+  if (/\b(kit|how (do|can|should) i (build|make|get)|what do i need|missing (pieces|gear))\b/.test(q)) {
+    const pick =
+      allBuilds.find((b) => q.includes(b.name.toLowerCase())) ||
+      buildFromText(q) ||
+      opBuilds[0]
+    if (pick) {
+      const hunt = buildHunt(character, pick)
+      const wantsMap = /\b(show|pin|map|where)\b/.test(q)
+      if (wantsMap) {
+        const watch = hunt.pins.map((p) => p.id)
+        if (watch.length) {
+          return {
+            say: `${pick.name} — placing ${watch.length} piece${watch.length === 1 ? '' : 's'} we can pin (${hunt.pins.map((p) => p.name).join(', ')}). The rest are listed in the Build lab.`,
+            module: 'map',
+            buildId: pick.id,
+            factId: watch[0],
+            navigateNow: true,
+            watch,
+          }
+        }
+        return {
+          say: `${pick.name} — no piece of this kit has a grounded pin yet. The full list is in the Build lab.`,
+          module: 'build',
+          buildId: pick.id,
+        }
+      }
+      const missing = hunt.missing.map((m) => m.name)
+      const tail = hunt.unresolved.length
+        ? ` ${hunt.unresolved.length} id${hunt.unresolved.length === 1 ? '' : 's'} not in our data yet (${hunt.unresolved.map((u) => u.id).join(', ')}), listed not dropped.`
+        : ''
+      return {
+        say: missing.length
+          ? `${pick.name} — still missing ${missing.length}: ${missing.join(', ')}.${tail}${hunt.pins.length ? ' Want the atlas pins for the ones we can place?' : ''}`
+          : `Every seeded piece of ${pick.name} is already logged on this character.${tail}`,
+        module: 'build',
+        buildId: pick.id,
+        offer: hunt.pins.length ? { label: 'Show on map', prompt: `show the ${pick.name} kit` } : undefined,
+      }
+    }
+  }
+
   if (/\b(build|op|meta|bleed|sorcer|bonk|faith|arcane)\b/.test(q) || allBuilds.some((b) => q.includes(b.name.toLowerCase()))) {
     const byName = allBuilds.find((b) => q.includes(b.name.toLowerCase()))
     const route = BUILD_ROUTES.find((r) => r.re.test(q))
@@ -874,8 +926,9 @@ export function askGideonRouter(
  *  - a short query naming exactly one known entity (line, warp, loot, build,
  *    boss pin, catalog fact) with no reasoning markers
  * Everything else — multiple concepts, comparisons, conditionals, "should I",
- * "can I still", questions over ~10 words — goes to DeepSeek, then falls back to
- * this router if the key is absent, the call fails, or validation rejects it.
+ * "can I still", questions over ~10 words — goes to the Muse model, then falls
+ * back to this router if the key is absent, the call fails, or validation rejects
+ * it.
  */
 const REASONING_MARKER =
   /\b(and|but|if|before|after|or|should|which|why|better|instead|versus|vs|because|while|when|can i|priorit|worth|advice|recommend|difference|between|both|even though|already)\b/
@@ -942,7 +995,8 @@ let warnedNoKey = false
 /**
  * Front for Gideon. Returns the same `GideonAct` as the old router so the UI and
  * the shell are unchanged. Fast/confident lookups stay deterministic; open-ended
- * questions go to DeepSeek with a grounding pack and are validated before use.
+ * questions go to the optional Meta Muse Spark 1.3 Contributor model with a
+ * grounding pack and are validated before use.
  */
 export async function askGideon(
   question: string,
@@ -959,25 +1013,25 @@ export async function askGideon(
   const router = askGideonRouter(question, character, memory, combat)
   if (isFastLookup(question, memory, combat ?? cachedBossCombat())) return router
 
-  if (!hasDeepSeekKey()) {
+  if (!hasGideonKey()) {
     if (!warnedNoKey) {
       warnedNoKey = true
-      console.info('[gideon] VITE_DEEPSEEK_API_KEY is not set — using the deterministic router only.')
+      console.info('[gideon] VITE_GIDEON_API_KEY is not set — using the deterministic router only.')
     }
     return router
   }
 
   try {
     const grounding = buildGrounding(question, character, memory)
-    const raw = await callDeepSeekJson(gideonMessages(question, grounding))
+    const raw = await callGideonLlm(gideonMessages(question, grounding))
     const { act, rejected } = validateGideonAct(raw, grounding)
     if (!act) {
-      console.warn('[gideon] DeepSeek response rejected (invented or invalid ids); using the router.', rejected)
+      console.warn('[gideon] Muse response rejected (invented or invalid ids); using the router.', rejected)
       return router
     }
     return act
   } catch (err) {
-    console.warn('[gideon] DeepSeek call failed; using the deterministic router.', err)
+    console.warn('[gideon] Muse call failed; using the deterministic router.', err)
     return router
   }
 }

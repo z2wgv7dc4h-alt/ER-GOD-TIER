@@ -1,10 +1,10 @@
 import { readFileSync } from 'node:fs'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Character } from '../types'
-import { callDeepSeekJson, hasDeepSeekKey } from './deepseek'
+import { callGideonLlm, hasGideonKey } from './muse'
 import type { BossCombat } from './enemy'
 import { askGideon, askGideonRouter, isFastLookup } from './gideon'
-import { buildGrounding, validateGideonAct } from './gideonLlm'
+import { buildGrounding, stripUngroundedSentences, validateGideonAct } from './gideonLlm'
 import { REGULATION_STAMP } from './regulation'
 
 /** The real Task 17 extract, read straight off disk — not a hand-rolled fixture. */
@@ -12,9 +12,9 @@ const combat = JSON.parse(
   readFileSync(new URL('../../public/sourced/npc-combat.json', import.meta.url), 'utf8'),
 ) as BossCombat[]
 
-vi.mock('./deepseek', () => ({
-  hasDeepSeekKey: vi.fn(),
-  callDeepSeekJson: vi.fn(),
+vi.mock('./muse', () => ({
+  hasGideonKey: vi.fn(),
+  callGideonLlm: vi.fn(),
 }))
 
 const character: Character = {
@@ -338,38 +338,38 @@ describe('isFastLookup', () => {
 
 describe('askGideon front', () => {
   beforeEach(() => {
-    vi.mocked(hasDeepSeekKey).mockReset()
-    vi.mocked(callDeepSeekJson).mockReset()
+    vi.mocked(hasGideonKey).mockReset()
+    vi.mocked(callGideonLlm).mockReset()
   })
 
   it('falls back to the deterministic router when no key is configured', async () => {
-    vi.mocked(hasDeepSeekKey).mockReturnValue(false)
+    vi.mocked(hasGideonKey).mockReturnValue(false)
     const act = await askGideon(OPEN_QUESTION, character)
     expect(act).toEqual(askGideonRouter(OPEN_QUESTION, character))
-    expect(callDeepSeekJson).not.toHaveBeenCalled()
+    expect(callGideonLlm).not.toHaveBeenCalled()
   })
 
   it('does not call the LLM for a fast lookup even with a key', async () => {
-    vi.mocked(hasDeepSeekKey).mockReturnValue(true)
+    vi.mocked(hasGideonKey).mockReturnValue(true)
     const act = await askGideon('godrick', character)
     expect(act).toEqual(askGideonRouter('godrick', character))
-    expect(callDeepSeekJson).not.toHaveBeenCalled()
+    expect(callGideonLlm).not.toHaveBeenCalled()
   })
 
   it('passes a grounded response through', async () => {
-    vi.mocked(hasDeepSeekKey).mockReturnValue(true)
+    vi.mocked(hasGideonKey).mockReturnValue(true)
     const g = buildGrounding(OPEN_QUESTION, character)
     const factId = [...g.factIds][0]
-    vi.mocked(callDeepSeekJson).mockResolvedValue({ say: 'Grounded answer.', module: 'map', factId })
+    vi.mocked(callGideonLlm).mockResolvedValue({ say: 'Grounded answer.', module: 'map', factId })
     const act = await askGideon(OPEN_QUESTION, character)
-    expect(callDeepSeekJson).toHaveBeenCalledTimes(1)
+    expect(callGideonLlm).toHaveBeenCalledTimes(1)
     expect(act.say).toBe('Grounded answer.')
     expect(act.factId).toBe(factId)
   })
 
   it('falls back to the router when the model hallucinates an id', async () => {
-    vi.mocked(hasDeepSeekKey).mockReturnValue(true)
-    vi.mocked(callDeepSeekJson).mockResolvedValue({
+    vi.mocked(hasGideonKey).mockReturnValue(true)
+    vi.mocked(callGideonLlm).mockResolvedValue({
       say: 'Follow boss:godrick-prime, the secret second Godrick.',
       module: 'map',
       factId: 'boss:godrick-prime',
@@ -379,9 +379,59 @@ describe('askGideon front', () => {
   })
 
   it('falls back to the router when the API call fails', async () => {
-    vi.mocked(hasDeepSeekKey).mockReturnValue(true)
-    vi.mocked(callDeepSeekJson).mockRejectedValue(new Error('network down'))
+    vi.mocked(hasGideonKey).mockReturnValue(true)
+    vi.mocked(callGideonLlm).mockRejectedValue(new Error('network down'))
     const act = await askGideon(OPEN_QUESTION, character)
     expect(act).toEqual(askGideonRouter(OPEN_QUESTION, character))
+  })
+})
+
+describe('stripUngroundedSentences', () => {
+  it('drops only the sentence naming an id outside the catalog', () => {
+    const g = buildGrounding('godrick', character)
+    const factId = [...g.factIds][0]
+    const say = `Head to ${factId} now. Follow boss:godrick-prime, the secret one.`
+    expect(stripUngroundedSentences(say, g)).toBe(`Head to ${factId} now.`)
+  })
+
+  it('keeps the rest of a valid act when one sentence is stripped', () => {
+    const g = buildGrounding('godrick', character)
+    const factId = [...g.factIds][0]
+    const { act } = validateGideonAct(
+      { say: `Go to ${factId}. Then follow boss:godrick-prime.`, factId },
+      g,
+    )
+    expect(act?.say).toBe(`Go to ${factId}.`)
+    expect(act?.factId).toBe(factId)
+  })
+})
+
+describe('Gideon build hunt', () => {
+  it('answers "how do I build X" with the missing-piece list and a map offer', async () => {
+    vi.mocked(hasGideonKey).mockReturnValue(false)
+    const act = await askGideon('how do I build Rivers of Blood', character)
+    expect(act.module).toBe('build')
+    expect(act.buildId).toBe('build:rivers')
+    expect(act.say).toMatch(/missing/i)
+    expect(act.say).toContain('Rivers of Blood')
+    expect(act.offer?.label).toBe('Show on map')
+    expect(act.offer?.prompt).toMatch(/kit/i)
+  })
+
+  it('answers "show the X kit" by marking watchlist loot for the leftover pin layer', async () => {
+    vi.mocked(hasGideonKey).mockReturnValue(false)
+    const act = await askGideon('show the Rivers of Blood kit', character)
+    expect(act.module).toBe('map')
+    expect(act.buildId).toBe('build:rivers')
+    expect(act.navigateNow).toBe(true)
+    expect(act.watch).toContain('loot:rivers')
+  })
+
+  it('stays on the deterministic router for a kit question (no key, no fetch)', async () => {
+    vi.mocked(hasGideonKey).mockReturnValue(false)
+    vi.mocked(callGideonLlm).mockReset()
+    const act = await askGideon('what do I need for the Rivers of Blood kit', character)
+    expect(act.buildId).toBe('build:rivers')
+    expect(callGideonLlm).not.toHaveBeenCalled()
   })
 })

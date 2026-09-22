@@ -125,7 +125,13 @@ Clones: er-guide, eldenring-api, Paramdex ER/Names, ERR-MapForGoblins-DLL data.
 
 ---
 
-## 4. Live / remote sources to leverage (do not scrape MapGenie)
+## 4. Live / remote sources to leverage
+
+**Sources policy.** External research is allowed without restriction. Facts, locations-in-prose, build ideas, one-line citations, and source data may be fetched, scraped, or downloaded from anywhere on the internet — wiki.gg, Fextralife, MapGenie, YouTube, Discord, patch notes, wherever. Each row should still carry its source (a title or URL is enough).
+
+Accuracy rules still apply, because they are about correctness, not permission:
+- Param, AR, soft caps, item names-as-ids, and pin coordinates come only from in-repo regulation / names.json / coords / loot / catalog. Wiki numbers do not override the Clark formula or regulation.bin extracts.
+- Do not invent lat/lng, event flags, or lockouts.
 
 | Source | URL / note |
 |---|---|
@@ -227,9 +233,11 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 13. ⬜ Dungeon bosses XYZ-only, no interior maps — explicitly deferred, still open.
 
 ### P1 — Gideon / planner
-14. 🔄 DeepSeek behind `GideonAct` — Task 20, in progress (a prior attempt died on the same
-    scratch-directory permission issue that hit several other tasks; fixed and retrying).
-    Grounding pack + hallucination-guard validation are in the task's requirements.
+14. ✅ DeepSeek behind `GideonAct` → **Meta Muse Spark 1.3 Contributor** (router-first, optional).
+    `src/lib/muse.ts` reads `VITE_GIDEON_API_KEY` only, tries `/chat/completions` then `/responses`,
+    and runs behind the dev Vite proxy `/gideon-llm` so CORS does not block it. Grounding pack +
+    hallucination guard live in `src/lib/gideonLlm.ts`; any sentence naming an ungrounded id is
+    stripped before the act is used. No key ⇒ router only, no fetch.
 15. ✅ “I’m done” → extend to dump ids — multi-id plan-step completion now resolves steps
     against a set of acceptable dump ids. (Task 35 — fixes 5 stalling questline beats.)
 16. 🔄 Detours use real boss resists — Task 19, queued behind Task 17 (needs real `NpcParam`
@@ -560,6 +568,55 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
   one-click jump). Cap raised 8 → 12. Per-profile isolation kept: history is cleared on switch and is
   not part of the persisted `VaultUi`.
 
+**Task 20 — Gideon optional LLM = Meta Muse Spark 1.3 Contributor** (landed after 51):
+
+- `src/lib/muse.ts` replaces the old `deepseek.ts` transport. Hard-coded defaults: base
+  `https://api.meta.ai/v1`, model `muse-spark-1.3-contributor`, key **only** from
+  `VITE_GIDEON_API_KEY` (`VITE_GIDEON_BASE_URL` / `VITE_GIDEON_MODEL` override). `POST
+  {base}/chat/completions` first, `POST {base}/responses` (Meta `input` body) on a 404; no third
+  shape guessed. Any other non-OK response throws.
+- Router-first: no key ⇒ no `fetch`; a fast lookup or a rejected act stays on the deterministic
+  router. `validateGideonAct` runs `stripUngroundedSentences`, so a sentence naming an id outside
+  catalog/aliases is dropped before the act is used.
+- Dev goes through the Vite proxy `/gideon-llm` → `api.meta.ai`; `.env.example` ships an empty key
+  and `.env.local` stays gitignored. `Gideon.tsx` shows one muted line ("Muse 1.3 contributor
+  (optional)" / "router only") and never the key. Brief 20's tests + endpoint fallback are mocked.
+
+**Task 64 — build hunt pins** (landed after 20):
+
+- `src/lib/buildHunt.ts` → `buildHunt(character, build, coords?)` returning
+  `{ have, missing, pins, unresolved }`. Resolver order: one explicit display-slug/dangling-id
+  table, then exact loot id, exact catalog id, then name match in `loot.ts`, the catalog, and the
+  generated alias plane. Pure — it never marks a kit's gear as collected.
+- Pins reuse the Task 33 leftover layer (`lootPin`, same grace/coords frames) — no third pin system
+  and no invented coordinates. `Build.tsx` shows the selected kit's missing pieces with
+  **Mark** / **Show on map**; "Show on map" adds the loot id to the watchlist. Chips still only set
+  stats + loadout + the selected-kit marker.
+- Gideon answers "how do I build X" / "show the X kit" (the act gained `watch[]`; the UI enables the
+  leftovers layer and pins). Tests: `src/lib/buildHunt.test.ts`.
+
+**Task 65 — OP + PvP library** (landed after 64):
+
+- opBuilds 14 → **28**, pvpBuilds 6 → **16**, pvpMatchups 6 → **12**. Every new build carries
+  `kit[]`, `need[]` of real fact ids, one original `why`, `patch`
+  (`still-strong | nerfed-but-works | sote | pre-1.08-dead`) and `source`. Stats stay target spreads
+  (no AR invented); an RL30 kit is tested not to carry an RL125 spread.
+- 50 new `loot.ts` rows (total 87), each added **only** where the English name exists in
+  `public/sourced/open/names.json`, with one original `how`; no lat/lng and no invented grace slug.
+  `build:blackflame`'s dangling `boss:godskin` fixed to the real `boss:godskin-apostle`. After the
+  new rows, **zero** `need[]` ids remain unresolved.
+- Skipped "Poison flower" (no `names.json` name). New `src/knowledge/buildLibrary.test.ts`.
+
+**Sources policy patch** (docs only, after 65):
+
+- Replaced the old "do not scrape Fextralife / MapGenie" standing ban with a permissive policy in
+  `HANDOFF-CLAUDE.md` §4, `ARCHITECTURE.md`, `HANDOFF.md`, `docs/tasks/00-README.md`, briefs 52–53,
+  and the outer `PROJECT_BRIEF.md` + `docs/research/nexus-packs-analysis.md`: facts, locations,
+  build ideas and citations may come from anywhere (in-repo dumps, the run, Fextra, wiki.gg,
+  YouTube, Discord, patch notes). Accuracy rules still apply — param/AR/soft caps/ids/pin coords
+  come only from in-repo regulation / names.json / coords / loot / catalog, and no lat/lng, event
+  flags, or lockouts are invented.
+
 ---
 
 ## 7. Product ideas still valid (not built)
@@ -595,7 +652,7 @@ From Wyatt, keep on the roadmap:
 | 100% | Chapter titles + partial collectibles. |
 | Unified pins | Two calibrations. |
 | 9974 zip | Rules + public flags, not regulation.bin. |
-| Medusa pack | Index only, no scraped walkthrough text (copyright). |
+| Medusa pack | Index; walkthrough prose can be ingested with the source noted. |
 
 ---
 

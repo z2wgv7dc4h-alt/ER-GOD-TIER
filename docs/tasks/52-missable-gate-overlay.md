@@ -50,8 +50,11 @@ Each Gate:
 
 - `locks[]` must use existing catalog / storyline / missable ids where they exist. Add new fact
   ids only when the locked thing is real and missing from the catalog.
-- Do not scrape Fextralife. Author from in-repo `missables.ts`, `guide/missables.json`, storyline
-  `lockouts`, and flag families already documented in `DATA.md`.
+- Facts, locations-in-prose, and one-line citations may be fetched/scraped from anywhere (Fextra,
+  wiki.gg, MapGenie, patch notes). Author lockouts from in-repo `missables.ts`,
+  `guide/missables.json`, storyline `lockouts`, and flag families already documented in `DATA.md`.
+  Accuracy still matters: pins and flags come from in-repo data, and do not invent lat/lng, event
+  flags, or lockouts.
 - If you are unsure a thing actually locks, omit it. Wrong lockouts are worse than a short list.
 - `planRoute` / `stillAvailable` must consult gates. If the next authored beat is a
   `triggerFact`, Gideon says the lock list **before** the walk-forward instruction.

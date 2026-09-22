@@ -58,6 +58,12 @@ export function resolveLeftover(entry: Loot, coords: CoordPin[]): Resolved | nul
   return null
 }
 
+/** Build one pin from a resolved loot row — the shared tail of the leftover layer. */
+export function lootPin(entry: Loot, coords: CoordPin[]): MapMarker | null {
+  const pos = resolveLeftover(entry, coords)
+  return pos ? toPin(entry, pos) : null
+}
+
 function toPin(entry: Loot, pos: Resolved): MapMarker {
   return {
     id: entry.id,

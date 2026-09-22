@@ -4,8 +4,8 @@ import { byId, matchMany, type Fact } from '../knowledge/catalog'
 import { planRoute } from '../knowledge/endings'
 import { allLines, findLine, stillAvailable } from '../knowledge/storylines'
 import type { Character, ModuleId } from '../types'
-import { matchAllWarps } from './aliases'
-import type { ChatMessage } from './deepseek'
+import { generatedAliases, matchAllWarps } from './aliases'
+import type { ChatMessage } from './muse'
 import type { GideonAct, GideonMemory } from './gideon'
 import { searchSync } from './search'
 
@@ -123,6 +123,42 @@ export function gideonMessages(question: string, g: Grounding): ChatMessage[] {
   ]
 }
 
+/** Anything shaped `prefix:slug` (boss:godrick, grace:church-of-elleh, …). */
+const ID_TOKEN = /\b[a-z][a-z0-9]*(?::[a-z0-9][a-z0-9:_-]*)\b/gi
+
+/** Every id the model is allowed to *name*: grounding pack plus catalog/aliases. */
+function allowedIds(g: Grounding): Set<string> {
+  const allowed = new Set<string>([...g.factIds, ...g.buildIds, ...g.goalIds, ...byId.keys()])
+  for (const a of generatedAliases) {
+    allowed.add(a.slug)
+    allowed.add(a.engineId)
+  }
+  return allowed
+}
+
+function splitSentences(say: string): string[] {
+  return say
+    .match(/[^.!?]+[.!?]*/g)
+    ?.map((s) => s.trim())
+    .filter(Boolean) ?? [say.trim()]
+}
+
+/**
+ * Requirement: never ship a sentence that names a fact id outside catalog/aliases.
+ * Each sentence is inspected for `prefix:slug` tokens; a sentence with any unknown
+ * token is dropped whole rather than edited. Returns the surviving prose.
+ */
+export function stripUngroundedSentences(say: string, g: Grounding): string {
+  const allowed = allowedIds(g)
+  return splitSentences(say)
+    .filter((sentence) => {
+      const tokens = sentence.match(ID_TOKEN) ?? []
+      return tokens.every((token) => allowed.has(token))
+    })
+    .join(' ')
+    .trim()
+}
+
 export type Validation = { act: GideonAct | null; rejected: string[] }
 
 /**
@@ -136,8 +172,14 @@ export function validateGideonAct(raw: unknown, g: Grounding): Validation {
   const rejected: string[] = []
   if (!raw || typeof raw !== 'object') return { act: null, rejected: ['response'] }
   const r = raw as Record<string, unknown>
-  const say = typeof r.say === 'string' ? r.say.trim() : ''
-  if (!say) return { act: null, rejected: ['say'] }
+  const rawSay = typeof r.say === 'string' ? r.say.trim() : ''
+  if (!rawSay) return { act: null, rejected: ['say'] }
+
+  // Drop any sentence that names an id the grounding pack and catalog do not
+  // know. Keep validating the id fields below so the report lists every problem;
+  // an empty result rejects the turn and the router takes over either way.
+  const say = stripUngroundedSentences(rawSay, g)
+  if (!say) rejected.push('say:ungrounded')
 
   const act: GideonAct = { say }
 

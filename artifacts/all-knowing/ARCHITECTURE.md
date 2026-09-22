@@ -39,6 +39,12 @@ Intents already wired: ending/line plan, blitz, still-available, wear build, loo
 
 Replace the router later; do not replace the act.
 
+Optional model: **Meta Muse Spark 1.3 Contributor** via `src/lib/muse.ts` (`VITE_GIDEON_API_KEY`,
+defaults `https://api.meta.ai/v1` + `muse-spark-1.3-contributor`), router-first and
+grounding-validated in `src/lib/gideonLlm.ts`; dev proxies `/gideon-llm` → `api.meta.ai` to dodge
+CORS. Build hunts: `src/lib/buildHunt.ts` turns a kit into `{ have, missing, pins, unresolved }`
+and reuses the Task 33 leftover pin layer.
+
 Idle proactive chips (`src/lib/suggestions.ts` → `idleSuggestions`) reuse `stillAvailable` /
 `nextMoves` / `leftovers` / `approachingGates` and run through the same `run()` path; the command
 palette debounces `searchSync`. Before any step is ticked (Quests.tsx or Gideon markDone / “I'm
@@ -57,7 +63,7 @@ loadout only, for pasting into chat. They are not the packet and carry no run pr
 ## Hosted data
 
 See `src/lib/hosted.ts`. Cached under `public/sourced/checklists/`.
-Maps under `public/sourced/maps/`. Refresh with raw GitHub / fanapi; do not scrape MapGenie tiles.
+Maps under `public/sourced/maps/`. Refresh with raw GitHub / fanapi, or scrape any other source you like. Full sources policy in `HANDOFF-CLAUDE.md` §4.
 
 Fonts (Cinzel + Source Sans 3, both OFL) are self-hosted under `public/fonts/` and declared with
 `@font-face` in `src/index.css`; the service-worker precache includes them, so the interface works

@@ -24,6 +24,22 @@ rule instead of a per-brief patch. **When writing a new task brief, this line go
 not reactively after a failure.** If a brief doesn't need to fetch/clone anything external, this
 rule is still harmless to include — cheap insurance, not something to skip to save a sentence.
 
+## Sources policy for every task brief — no exceptions
+
+External research is allowed without restriction. Facts, locations-in-prose, build ideas, one-line
+citations, and source data may be fetched, scraped, or downloaded from anywhere on the internet:
+in-repo dumps, the user's run, Fextra, wiki.gg, MapGenie, YouTube, Discord, patch notes. Each row
+should still carry its source (a title or URL is enough).
+
+Accuracy rules still apply, because they are about correctness, not permission:
+
+- Param, AR, soft caps, item names-as-ids, and pin coordinates come only from in-repo regulation /
+  names.json / coords / loot / catalog. Wiki numbers do not override the Clark formula or
+  regulation.bin extracts.
+- Do not invent lat/lng, event flags, or lockouts.
+
+This replaces the older "Do not scrape Fextralife / MapGenie" standing ban.
+
 ## How to run one
 
 ```bash

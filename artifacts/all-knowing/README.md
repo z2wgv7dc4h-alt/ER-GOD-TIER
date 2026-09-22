@@ -145,29 +145,35 @@ tied to flag ids, inventory from the slot (not just flags).
 ## Gideon and the optional LLM
 
 Gideon's planner is a deterministic router (`src/lib/gideon.ts`) that returns a
-`GideonAct`. When `VITE_DEEPSEEK_API_KEY` is set, open-ended questions are
-answered by DeepSeek instead; lookups (a named ending, a warp, a build, "what is
-still available") stay on the router for speed and cost. Both paths return the
-same act shape, so the UI does not change.
+`GideonAct`. When `VITE_GIDEON_API_KEY` is set, open-ended questions are answered
+by the optional **Meta Muse Spark 1.3 Contributor** model instead; lookups (a
+named ending, a warp, a build, "what is still available") stay on the router for
+speed and cost. Both paths return the same act shape, so the UI does not change.
 
-Set the key in `.env.local` (gitignored, matched by `*.local`):
+Set the key in `.env.local` (gitignored). `.env.example` lists every variable:
 
 ```bash
-VITE_DEEPSEEK_API_KEY=sk-...
-# optional: VITE_DEEPSEEK_MODEL (default deepseek-flash)
+VITE_GIDEON_API_KEY=
+VITE_GIDEON_BASE_URL=https://api.meta.ai/v1
+VITE_GIDEON_MODEL=muse-spark-1.3-contributor
 ```
+
+In dev the request goes through the Vite proxy (`/gideon-llm` → `https://api.meta.ai`)
+so the browser is not blocked by CORS; an explicit `VITE_GIDEON_BASE_URL` bypasses
+the proxy. The client tries `POST {base}/chat/completions` first and falls back to
+`POST {base}/responses` on a 404.
 
 The model only sees a grounding pack built from this repo's own structured data
 (`stillAvailable`, `planRoute`, `searchSync`, a bounded catalog slice). Every
-`factId` / `buildId` / `goal` it returns is validated against that pack before
-it is used; an invented id rejects the turn and falls back to the router. With no
-key configured the app behaves exactly as before — router only, with one
-informational log line.
+`factId` / `buildId` / `goal` it returns is validated against that pack before it
+is used, and any sentence naming an id outside the catalog/aliases is stripped; an
+invented id rejects the turn and falls back to the router. With no key configured
+the app behaves exactly as before — router only, with one informational log line.
 
 **Client-side key tradeoff.** This is a local-first PWA with no backend, so the
-browser calls DeepSeek directly and the key is present in client code at runtime.
-That is accepted because the app runs on its owner's machine and is not a public
-multi-tenant service. If the distribution model ever changes, move the call
+browser calls the provider directly and the key is present in client code at
+runtime. That is accepted because the app runs on its owner's machine and is not a
+public multi-tenant service. If the distribution model ever changes, move the call
 behind a server proxy and stop shipping the key to the client.
 
 ## Rules

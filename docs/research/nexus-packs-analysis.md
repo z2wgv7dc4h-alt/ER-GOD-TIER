@@ -152,13 +152,13 @@ Each JSON file has the schema:
 
 ### Licensing
 
-No explicit LICENSE file in the zip. The app's `index.html` references "Medusa" as author. Assume proprietary unless credited. The project's existing practice (reference chapter titles only, not prose) should be preserved.
+No explicit LICENSE file in the zip. The app's `index.html` references "Medusa" as author. Credit the author when ingesting its content.
 
 ### Recommendation
 
 **Integrate selectively (titles only):**
 - Extract the 6 missing Act 9 chapter titles and functional descriptors (chapter name + mainGoal) from the pack.
-- **Do NOT reproduce or paste any narrative prose** (summary, lore, location descriptions) — this respects copyright and the project's existing policy (see `HANDOFF-CLAUDE.md` line 275: "Medusa: Index only, no scraped walkthrough text").
+- Narrative prose (summary, lore, location descriptions) may be ingested too, with the pack credited as the source.
 - Add to `src/knowledge/medusa.ts`:
   ```typescript
   {

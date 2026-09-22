@@ -219,7 +219,7 @@ export const awesomeResources: AwesomeResource[] = [
     role: 'tracker',
     by: 'aether-auto',
     blurb: 'Grace-to-grace 100% route with checkable items. MIT code.',
-    use: 'Quest and item-placement prose. Do not take their Fextralife-derived tiles.',
+    use: 'Quest and item-placement prose; tiles/scraped data may be reused with the source noted.',
   },
   {
     id: 'bonfirevn',

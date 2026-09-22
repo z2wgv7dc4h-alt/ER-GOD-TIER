@@ -1,5 +1,7 @@
 import type { LoadoutSlot, Stats } from '../types'
 
+export type PatchFlag = 'still-strong' | 'nerfed-but-works' | 'sote' | 'pre-1.08-dead'
+
 export type OpBuild = {
   id: string
   name: string
@@ -9,6 +11,10 @@ export type OpBuild = {
   stats: Stats
   kit: LoadoutSlot[]
   need: string[]
+  /** Task 65: where the idea came from (title or URL). */
+  source?: string
+  /** Task 65: honest power state at the current 1.17 regulation line. */
+  patch?: PatchFlag
 }
 
 export const opBuilds: OpBuild[] = [
@@ -163,7 +169,7 @@ export const opBuilds: OpBuild[] = [
       { id: 'flock', name: 'Flock’s Canvas Talisman', kind: 'talisman' },
       { id: 'radagon-icon', name: 'Radagon Icon', kind: 'talisman' },
     ],
-    need: ['loot:black-flame', 'loot:godslayer-seal', 'boss:godskin'],
+    need: ['loot:black-flame', 'loot:godslayer-seal', 'boss:godskin-apostle'],
   },
   {
     id: 'build:dragon-communion',
@@ -228,5 +234,247 @@ export const opBuilds: OpBuild[] = [
       { id: 'curved-tal', name: 'Curved Sword Talisman', kind: 'talisman' },
     ],
     need: ['loot:fingerprint-shield', 'loot:antspur-rapier', 'loot:greatshield-talisman'],
+  },
+
+  // --- Task 65 additions. Stats are target spreads (legal for the listed RL, not extracted).
+  // Every `need` id is a real fact id: it either resolves to a loot/catalog row or is reported
+  // in buildHunt()'s `unresolved` list. `why` is one original sentence.
+  {
+    id: 'build:pest-threads-plus',
+    name: 'Pest-Thread Spears faith',
+    tag: 'faith / arcane',
+    why: 'Pest-Thread Spears hits many times through a big body, and the Dragon Communion Seal turns Arcane into incantation scaling on the same spread.',
+    level: 150,
+    stats: { vigor: 55, mind: 30, endurance: 25, strength: 16, dexterity: 14, intelligence: 7, faith: 40, arcane: 40 },
+    kit: [
+      { id: 'pest', name: 'Pest-Thread Spears', kind: 'ash' },
+      { id: 'dc-seal', name: 'Dragon Communion Seal', kind: 'catalyst', upgrade: 10 },
+      { id: 'faithful-canvas', name: "Faithful's Canvas Talisman", kind: 'talisman' },
+      { id: 'flock', name: "Flock's Canvas Talisman", kind: 'talisman' },
+    ],
+    need: ['loot:pest-threads-plus', 'loot:dragon-communion-seal', 'item:flock-canvas-talisman'],
+    patch: 'still-strong',
+    source: 'Fextralife, Pest-Thread Spears (patch 1.17).',
+  },
+  {
+    id: 'build:mimic-status',
+    name: 'Mimic Tear bleed',
+    tag: 'bleed / summon',
+    why: 'The Mimic copies your bleed kit and doubles the Hemorrhage pressure, so the fight ends before either of you runs out of flasks.',
+    level: 150,
+    stats: { vigor: 50, mind: 20, endurance: 25, strength: 12, dexterity: 40, intelligence: 9, faith: 8, arcane: 45 },
+    kit: [
+      { id: 'mimic', name: 'Mimic Tear Ashes', kind: 'ash', upgrade: 10 },
+      { id: 'rob', name: 'Rivers of Blood', kind: 'armament', upgrade: 10 },
+      { id: 'white-mask', name: 'White Mask', kind: 'armor' },
+      { id: 'exult', name: "Lord of Blood's Exultation", kind: 'talisman' },
+    ],
+    need: ['loot:mimic', 'loot:rivers', 'loot:lord-blood-exul', 'loot:white-mask'],
+    patch: 'still-strong',
+    source: 'Fextralife, Mimic Tear Ashes (patch 1.17).',
+  },
+  {
+    id: 'build:sword-night-flame',
+    name: 'Sword of Night and Flame',
+    tag: 'int / faith hybrid',
+    why: 'Night and Flame stance still gives a ranged magic beam and a close flame sweep, so one weapon covers both ranges without a second catalyst.',
+    level: 150,
+    stats: { vigor: 55, mind: 25, endurance: 25, strength: 16, dexterity: 16, intelligence: 40, faith: 40, arcane: 8 },
+    kit: [
+      { id: 'sonaf', name: 'Sword of Night and Flame', kind: 'armament', upgrade: 10 },
+      { id: 'carian-crest', name: 'Carian Filigreed Crest', kind: 'talisman' },
+      { id: 'radagon-icon', name: 'Radagon Icon', kind: 'talisman' },
+      { id: 'old-lords', name: "Old Lord's Talisman", kind: 'talisman' },
+    ],
+    need: ['loot:sword-night-flame', 'loot:carian-filigreed-crest', 'loot:radagon-icon', 'loot:old-lords-talisman'],
+    patch: 'nerfed-but-works',
+    source: 'Fextralife, Sword of Night and Flame (patch 1.17).',
+  },
+  {
+    id: 'build:deaths-poker',
+    name: "Death's Poker frost",
+    tag: 'int / frost',
+    why: 'Ghostflame Ignition leaves a patch that keeps ticking, and the charged R2 beam is a safe ranged punish on anything that respects frost.',
+    level: 150,
+    stats: { vigor: 55, mind: 22, endurance: 25, strength: 14, dexterity: 18, intelligence: 55, faith: 8, arcane: 9 },
+    kit: [
+      { id: 'deaths-poker', name: "Death's Poker", kind: 'armament', upgrade: 10 },
+      { id: 'magic-scorp', name: 'Magic Scorpion Charm', kind: 'talisman' },
+      { id: 'alex', name: 'Shard of Alexander', kind: 'talisman' },
+      { id: 'old-lords', name: "Old Lord's Talisman", kind: 'talisman' },
+    ],
+    need: ['loot:deaths-poker', 'loot:magic-scorpion', 'loot:shard-alexander', 'loot:old-lords-talisman'],
+    patch: 'still-strong',
+    source: 'Fextralife, Death\u2019s Poker (patch 1.17).',
+  },
+  {
+    id: 'build:wing-of-astel',
+    name: 'Wing of Astel',
+    tag: 'int / dex',
+    why: 'Nebula is a free ranged burst on a light curved sword, and the weapon still keeps normal dex scaling for the melee you actually land.',
+    level: 150,
+    stats: { vigor: 55, mind: 25, endurance: 22, strength: 12, dexterity: 40, intelligence: 45, faith: 8, arcane: 9 },
+    kit: [
+      { id: 'wing-astel', name: 'Wing of Astel', kind: 'armament', upgrade: 10 },
+      { id: 'graven-mass', name: 'Graven-Mass Talisman', kind: 'talisman' },
+      { id: 'magic-scorp', name: 'Magic Scorpion Charm', kind: 'talisman' },
+      { id: 'ritual-sword', name: 'Ritual Sword Talisman', kind: 'talisman' },
+    ],
+    need: ['loot:wing-of-astel', 'loot:graven-mass', 'loot:magic-scorpion', 'loot:ritual-sword'],
+    patch: 'still-strong',
+    source: 'Fextralife, Wing of Astel (patch 1.17).',
+  },
+  {
+    id: 'build:giant-crusher-jump',
+    name: 'Giant-Crusher jump attack',
+    tag: 'strength / jump',
+    why: 'A jump attack from a colossal greathammer does huge stance damage, and Claw plus Axe Talisman both reward the same jumping R2.',
+    level: 150,
+    stats: { vigor: 60, mind: 12, endurance: 40, strength: 80, dexterity: 14, intelligence: 7, faith: 8, arcane: 7 },
+    kit: [
+      { id: 'crusher', name: 'Giant-Crusher', kind: 'armament', affinity: 'Heavy', upgrade: 25 },
+      { id: 'claw-tal', name: 'Claw Talisman', kind: 'talisman' },
+      { id: 'axe-tal', name: 'Axe Talisman', kind: 'talisman' },
+      { id: 'alex', name: 'Shard of Alexander', kind: 'talisman' },
+    ],
+    need: ['loot:giant-crusher', 'loot:claw-talisman', 'loot:axe-talisman', 'loot:shard-alexander'],
+    patch: 'still-strong',
+    source: 'Fextralife, Giant-Crusher (patch 1.17).',
+  },
+  {
+    id: 'build:bloodfiends-arm',
+    name: "Bloodfiend's Arm",
+    tag: 'arcane / bleed',
+    why: 'The Bloodfiend\u2019s Arm builds Hemorrhage on a big arcane-scaled strike, so each opening both procs bleed and heals you back.',
+    level: 150,
+    stats: { vigor: 55, mind: 20, endurance: 25, strength: 18, dexterity: 20, intelligence: 9, faith: 8, arcane: 50 },
+    kit: [
+      { id: 'bloodfiend', name: "Bloodfiend's Arm", kind: 'armament', affinity: 'Blood', upgrade: 25 },
+      { id: 'white-mask', name: 'White Mask', kind: 'armor' },
+      { id: 'exult', name: "Lord of Blood's Exultation", kind: 'talisman' },
+      { id: 'winged', name: 'Rotten Winged Sword Insignia', kind: 'talisman' },
+    ],
+    need: ['loot:bloodfiends-arm', 'loot:white-mask', 'loot:lord-blood-exul', 'item:rotten-winged-sword-insignia'],
+    patch: 'sote',
+    source: 'Fextralife, Bloodfiend\u2019s Arm (SotE, patch 1.17).',
+  },
+  {
+    id: 'build:great-stars-crag',
+    name: 'Great Stars Cragblade',
+    tag: 'strength / poise',
+    why: 'Cragblade adds stamina damage against guards and poise damage in the open, which a heavy Great Stars turns into constant staggers.',
+    level: 150,
+    stats: { vigor: 60, mind: 12, endurance: 40, strength: 70, dexterity: 14, intelligence: 7, faith: 8, arcane: 7 },
+    kit: [
+      { id: 'great-stars', name: 'Great Stars', kind: 'armament', affinity: 'Heavy', upgrade: 25 },
+      { id: 'crag', name: 'Cragblade', kind: 'ash' },
+      { id: 'axe-tal', name: 'Axe Talisman', kind: 'talisman' },
+      { id: 'claw-tal', name: 'Claw Talisman', kind: 'talisman' },
+    ],
+    need: ['loot:great-stars', 'loot:cragblade', 'loot:axe-talisman', 'loot:claw-talisman'],
+    patch: 'still-strong',
+    source: 'Fextralife, Cragblade (patch 1.17).',
+  },
+  {
+    id: 'build:starscourge',
+    name: 'Starscourge pull',
+    tag: 'strength / gravity',
+    why: 'Starcaller Cry pulls a whole pack into one swing, so the Starscourge Greatsword clears groups and stance-breaks single targets at the same time.',
+    level: 150,
+    stats: { vigor: 60, mind: 15, endurance: 35, strength: 70, dexterity: 12, intelligence: 7, faith: 8, arcane: 7 },
+    kit: [
+      { id: 'starscourge', name: 'Starscourge Greatsword', kind: 'armament', upgrade: 10 },
+      { id: 'alex', name: 'Shard of Alexander', kind: 'talisman' },
+      { id: 'great-jar', name: "Great-Jar's Arsenal", kind: 'talisman' },
+      { id: 'bullgoat', name: "Bull-Goat's Talisman", kind: 'talisman' },
+    ],
+    need: ['loot:starscourge-greatsword', 'loot:shard-alexander', 'loot:great-jar', 'loot:bullgoat'],
+    patch: 'nerfed-but-works',
+    source: 'Fextralife, Starscourge Greatsword (patch 1.17).',
+  },
+  {
+    id: 'build:meteoric-ore',
+    name: 'Meteoric Ore arcane',
+    tag: 'strength / arcane',
+    why: 'The Ancient Meteoric Ore Greatsword scales off Arcane as well as Strength, so one spread feeds both the weapon and a bleed-heavy talisman set.',
+    level: 150,
+    stats: { vigor: 55, mind: 15, endurance: 30, strength: 50, dexterity: 12, intelligence: 9, faith: 8, arcane: 40 },
+    kit: [
+      { id: 'meteoric-ore', name: 'Ancient Meteoric Ore Greatsword', kind: 'armament', upgrade: 10 },
+      { id: 'exult', name: "Lord of Blood's Exultation", kind: 'talisman' },
+      { id: 'alex', name: 'Shard of Alexander', kind: 'talisman' },
+      { id: 'white-mask', name: 'White Mask', kind: 'armor' },
+    ],
+    need: ['loot:ancient-meteoric-ore-gs', 'loot:lord-blood-exul', 'loot:shard-alexander', 'loot:white-mask'],
+    patch: 'sote',
+    source: 'Fextralife, Ancient Meteoric Ore Greatsword (SotE, patch 1.17).',
+  },
+  {
+    id: 'build:ripple-arc',
+    name: 'Ripple arcane',
+    tag: 'arcane / status',
+    why: 'The Ripple Crescent Halberd scales purely on Arcane, so the whole stat line goes into bleed buildup and Lord of Blood\u2019s Exultation uptime.',
+    level: 125,
+    stats: { vigor: 50, mind: 15, endurance: 25, strength: 16, dexterity: 30, intelligence: 9, faith: 8, arcane: 45 },
+    kit: [
+      { id: 'ripple', name: 'Ripple Crescent Halberd', kind: 'armament', affinity: 'Blood', upgrade: 25 },
+      { id: 'exult', name: "Lord of Blood's Exultation", kind: 'talisman' },
+      { id: 'winged', name: 'Winged Sword Insignia', kind: 'talisman' },
+      { id: 'white-mask', name: 'White Mask', kind: 'armor' },
+    ],
+    need: ['loot:ripple-crescent-halberd', 'loot:lord-blood-exul', 'loot:winged-sword-insignia', 'loot:white-mask'],
+    patch: 'still-strong',
+    source: 'Fextralife, Ripple Crescent Halberd (patch 1.17).',
+  },
+  {
+    id: 'build:eleonora',
+    name: "Eleonora's Poleblade",
+    tag: 'dex / arcane bleed',
+    why: 'Bloodblade Dance chains fast Hemorrhage on a dex-arcane twinblade, and the two Winged Insignia talismans ramp the damage as the combo lands.',
+    level: 125,
+    stats: { vigor: 50, mind: 18, endurance: 25, strength: 16, dexterity: 43, intelligence: 9, faith: 8, arcane: 35 },
+    kit: [
+      { id: 'eleonora', name: "Eleonora's Poleblade", kind: 'armament', upgrade: 10 },
+      { id: 'millicent', name: "Millicent's Prosthesis", kind: 'talisman' },
+      { id: 'winged', name: 'Rotten Winged Sword Insignia', kind: 'talisman' },
+      { id: 'exult', name: "Lord of Blood's Exultation", kind: 'talisman' },
+    ],
+    need: ['loot:eleonora-poleblade', 'item:millicent-prosthesis', 'item:rotten-winged-sword-insignia', 'loot:lord-blood-exul'],
+    patch: 'still-strong',
+    source: 'Fextralife, Eleonora\u2019s Poleblade (patch 1.17).',
+  },
+  {
+    id: 'build:helphens',
+    name: "Helphen's Steeple",
+    tag: 'int / strength death',
+    why: 'Helphen\u2019s Steeple buffs itself with ghostflame on the skill, so a strength-int spread gets frostbite pressure and a real melee threat on one weapon.',
+    level: 150,
+    stats: { vigor: 55, mind: 20, endurance: 28, strength: 16, dexterity: 14, intelligence: 50, faith: 8, arcane: 9 },
+    kit: [
+      { id: 'helphen', name: "Helphen's Steeple", kind: 'armament', upgrade: 10 },
+      { id: 'magic-scorp', name: 'Magic Scorpion Charm', kind: 'talisman' },
+      { id: 'alex', name: 'Shard of Alexander', kind: 'talisman' },
+      { id: 'ritual-sword', name: 'Ritual Sword Talisman', kind: 'talisman' },
+    ],
+    need: ['loot:helphens-steeple', 'loot:magic-scorpion', 'loot:shard-alexander', 'loot:ritual-sword'],
+    patch: 'still-strong',
+    source: 'Fextralife, Helphen\u2019s Steeple (patch 1.17).',
+  },
+  {
+    id: 'build:marais',
+    name: "Marais Executioner's Sword",
+    tag: 'arcane / strength',
+    why: 'Eochaid\u2019s Dancing Blade spins the sword into a buzzsaw that scales off Arcane, so the arcane-bleed talisman stack lifts the whole skill.',
+    level: 150,
+    stats: { vigor: 55, mind: 15, endurance: 30, strength: 30, dexterity: 14, intelligence: 9, faith: 8, arcane: 45 },
+    kit: [
+      { id: 'marais', name: "Marais Executioner's Sword", kind: 'armament', upgrade: 10 },
+      { id: 'alex', name: 'Shard of Alexander', kind: 'talisman' },
+      { id: 'exult', name: "Lord of Blood's Exultation", kind: 'talisman' },
+      { id: 'winged', name: 'Rotten Winged Sword Insignia', kind: 'talisman' },
+    ],
+    need: ['loot:marais-executioner-sword', 'loot:shard-alexander', 'loot:lord-blood-exul', 'item:rotten-winged-sword-insignia'],
+    patch: 'still-strong',
+    source: 'Fextralife, Marais Executioner\u2019s Sword (patch 1.17).',
   },
 ]
