@@ -29,23 +29,26 @@ describe('gathering nodes (AEG placements -> queryable facts)', () => {
     expect(facts.every((f) => f.id.startsWith('node:'))).toBe(true)
   })
 
-  it('assigns each node to a world based on area number', () => {
+  it('assigns each node to a world based on the confirmed 60/61 world-tile grids', () => {
     const worlds = new Set(facts.map((f) => f.world))
     expect(worlds.has('overworld')).toBe(true)
     expect(worlds.has('underground')).toBe(true)
-    expect(worlds.has('ashen')).toBe(true)
     expect(worlds.has('shadow')).toBe(true)
+    // 'ashen' is never claimed: nothing in this dump distinguishes Ashen
+    // Capital's map id from living Leyndell's, so guessing one would be a
+    // fabrication, not a finding — see the areaToWorld() doc comment.
+    expect(worlds.has('ashen')).toBe(false)
   })
 
   it('resolves a real node to its area and region', () => {
     const sample = facts.find((f) => f.model === 'AEG099_821')
     expect(sample).toBeDefined()
     expect(sample!.area).toBeGreaterThan(0)
-    // World should match the area (this particular model exists in multiple areas)
-    if (sample!.area === 60) expect(sample!.world).toBe('ashen')
-    if (sample!.area === 61) expect(sample!.world).toBe('shadow')
-    if (sample!.area >= 20 && sample!.area <= 29) expect(sample!.world).toBe('underground')
-    if ((sample!.area >= 10 && sample!.area <= 19) || (sample!.area >= 30 && sample!.area <= 59)) expect(sample!.world).toBe('overworld')
+    // Only area 60/61 are confirmed (m60_*/m61_* world-tile grids); every
+    // other area falls into 'underground' as the closest unverified bucket.
+    if (sample!.area === 60) expect(sample!.world).toBe('overworld')
+    else if (sample!.area === 61) expect(sample!.world).toBe('shadow')
+    else expect(sample!.world).toBe('underground')
     expect(sample!.x).toBeDefined()
     expect(sample!.y).toBeDefined()
     expect(sample!.z).toBeDefined()
@@ -77,18 +80,17 @@ describe('gathering nodes (AEG placements -> queryable facts)', () => {
   it('distinguishes nodes in different worlds by area', () => {
     const overworldNodes = facts.filter((f) => f.world === 'overworld')
     const undergroundNodes = facts.filter((f) => f.world === 'underground')
-    const ashenNodes = facts.filter((f) => f.world === 'ashen')
     const shadowNodes = facts.filter((f) => f.world === 'shadow')
 
     expect(overworldNodes.length).toBeGreaterThan(0)
     expect(undergroundNodes.length).toBeGreaterThan(0)
-    expect(ashenNodes.length).toBeGreaterThan(0)
     expect(shadowNodes.length).toBeGreaterThan(0)
 
-    // Verify world-to-area mapping is consistent
+    // Verify world-to-area mapping is consistent with the confirmed grids.
     for (const node of facts) {
-      if (node.world === 'ashen') expect(node.area).toBe(60)
+      if (node.world === 'overworld') expect(node.area).toBe(60)
       if (node.world === 'shadow') expect(node.area).toBe(61)
+      if (node.world === 'underground') expect(node.area === 60 || node.area === 61).toBe(false)
     }
   })
 })

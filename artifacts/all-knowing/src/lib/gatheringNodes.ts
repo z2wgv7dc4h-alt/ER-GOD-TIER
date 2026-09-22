@@ -38,18 +38,35 @@ export type GraceRegion = {
 }
 
 /**
- * Infer world (overworld/underground/ashen/shadow) from area number.
- * Heuristic based on Elden Ring geography:
- * - 10-19, 30-59: overworld (base game)
- * - 20-29, 35: underground (Siofra, Ainsel, Nokron, Deeproot + DLC cave areas)
- * - 60: ashen capital
- * - 61: shadow realm (DLC)
+ * Infer world (overworld/underground/ashen/shadow) from the MSB `area` number
+ * (this dump's `area` field is the game's own map-id prefix, e.g. area 60 rows
+ * all carry `map: "m60_BB_CC_00"`).
+ *
+ * Only two mappings are actually confirmed, cross-checked against this repo's
+ * own `boss-xyz.json`/`grace-xyz.json` world-tile grid (`ARCHITECTURE.md`
+ * "Goblins XYZ × m60/m61 grid"): `m60_*` is the continuous Lands Between
+ * overworld grid (274 distinct sub-map tiles in this dump — consistent with
+ * "the whole open world"), `m61_*` is the Realm of Shadow DLC's equivalent
+ * grid (126 tiles). An earlier pass at this heuristic guessed `m60` was
+ * "Ashen Capital" and lumped every other legacy-dungeon area into "overworld"
+ * — both wrong, confirmed by checking the actual per-area map-id counts
+ * against the architecture this repo already established elsewhere.
+ *
+ * Every other area id (10-19, 20-22, 28, 30-43 — Stormveil, Leyndell,
+ * catacombs, Siofra/Ainsel/Nokron/Deeproot, and other legacy dungeons/
+ * interiors) genuinely is not the open overworld, but this repo has no
+ * verified per-area name table to sort them individually into "underground"
+ * vs. a true fourth bucket, and `AtlasWorld` has no "legacy dungeon" option.
+ * Bucketing them as `underground` is the closer of the two remaining options
+ * (enclosed, not open-world) but is NOT independently verified the way 60/61
+ * are — do not present it as more precise than that. No area is ever labeled
+ * `ashen`: nothing in this dump distinguishes Ashen Capital's map id from
+ * living Leyndell's, so that specific claim would be a guess, not a finding.
  */
 function areaToWorld(area: number): AtlasWorld {
-  if (area === 60) return 'ashen'
+  if (area === 60) return 'overworld'
   if (area === 61) return 'shadow'
-  if ((area >= 20 && area <= 29) || area === 35) return 'underground'
-  return 'overworld'
+  return 'underground'
 }
 
 export function nearestRegion(regionsByArea: Map<number, GraceRegion[]>, area: number, x: number, y: number, z: number): string {
