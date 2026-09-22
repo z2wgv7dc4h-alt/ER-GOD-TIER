@@ -3,7 +3,12 @@ export type ChatMessage = { role: 'system' | 'user'; content: string }
 /** Hard-coded provider defaults. Both are overridable by env; the key never is. */
 export const DEFAULT_GIDEON_BASE_URL = 'https://api.meta.ai/v1'
 export const DEFAULT_GIDEON_MODEL = 'muse-spark-1.3-contributor'
-const DEFAULT_TIMEOUT_MS = 8000
+// Murmur is a *reasoning* model: a plain turn spends several hundred reasoning
+// tokens before the answer, so the old 8s budget both aborted mid-think and left
+// too little room for content. 60s covers the observed 7-45s range.
+const DEFAULT_TIMEOUT_MS = 60000
+// Room for reasoning + the JSON act. 700 was too small and returned null content.
+const DEFAULT_MAX_TOKENS = 2500
 
 /**
  * Optional Gideon LLM: **Meta Muse Spark 1.3 Contributor**.
@@ -86,13 +91,17 @@ function requestBodies(messages: ChatMessage[], opts: GideonLlmOptions): Attempt
         model,
         messages,
         response_format: { type: 'json_object' },
+        // Verified against api.meta.ai: accepted, and keeps the reasoning budget
+        // (and so latency) down. The `/responses` body rejects `reasoning_effort`
+        // and uses the nested `reasoning` shape instead.
+        reasoning_effort: 'low',
         temperature: opts.temperature ?? 0.3,
-        max_tokens: opts.maxTokens ?? 700,
+        max_tokens: opts.maxTokens ?? DEFAULT_MAX_TOKENS,
       },
     },
     {
       path: '/responses',
-      body: { model, input: messages, max_output_tokens: opts.maxTokens ?? 700 },
+      body: { model, input: messages, reasoning: { effort: 'low' }, max_output_tokens: opts.maxTokens ?? DEFAULT_MAX_TOKENS },
     },
   ]
 }

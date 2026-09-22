@@ -26,6 +26,8 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
   const [memory, setMemory] = useState<GideonMemory>({ goalId: savedGoal })
   const [offer, setOffer] = useState<{ label: string; prompt: string } | null>(null)
   const [dismissed, setDismissed] = useState(false)
+  // Muse is a reasoning model — a turn takes seconds, so show that it is working.
+  const [busy, setBusy] = useState(false)
   const [lockPending, setLockPending] = useState<{ ids: string[]; warnings: LockWarning[]; after?: () => void } | null>(null)
   const [log, setLog] = useState<{ role: 'you' | 'gideon'; text: string }[]>([
     { role: 'gideon', text: 'Name a line, tap Blitz, or ask what is still available. Show it pins the atlas. I’m done ticks the beat.' },
@@ -54,7 +56,8 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
   }
 
   async function run(text: string) {
-    const act = await askGideon(text, w.character, memory)
+    setBusy(true)
+    const act = await askGideon(text, w.character, memory).finally(() => setBusy(false))
     const nextMem: GideonMemory = {
       goalId: act.goal ?? memory.goalId,
       lastFact: act.factId ?? memory.lastFact,
@@ -264,10 +267,17 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
           value={q}
           placeholder="Ask, or type a grace / item to log"
           onChange={(e) => setQ(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') submit() }}
+          onKeyDown={(e) => { if (e.key === 'Enter' && !busy) submit() }}
         />
-        <button type="button" className="chip on" onClick={submit}>Go</button>
+        <button type="button" className="chip on" disabled={busy} onClick={submit}>
+          {busy ? 'Thinking…' : 'Go'}
+        </button>
       </div>
+      {busy && (
+        <p className="note" role="status" style={{ marginTop: 6 }}>
+          Gideon is thinking…
+        </p>
+      )}
 
       {lockPending && (
         <LockoutPrompt

@@ -71,7 +71,11 @@ describe('callGideonLlm', () => {
     expect(url).toBe('https://api.meta.ai/v1/chat/completions')
     expect(init.method).toBe('POST')
     expect((init.headers as Record<string, string>).authorization).toBe('Bearer test-key')
-    expect(JSON.parse(init.body as string).messages).toEqual(messages)
+    const body = JSON.parse(init.body as string)
+    expect(body.messages).toEqual(messages)
+    // Reasoning model: low effort + room for reasoning + the JSON act.
+    expect(body.reasoning_effort).toBe('low')
+    expect(body.max_tokens).toBeGreaterThanOrEqual(1500)
   })
 
   it('falls back to POST /responses when /chat/completions 404s (Meta input body)', async () => {
@@ -92,6 +96,8 @@ describe('callGideonLlm', () => {
     const body = JSON.parse(init.body as string)
     expect(body.input).toEqual(messages)
     expect(body.messages).toBeUndefined()
+    expect(body.reasoning).toEqual({ effort: 'low' })
+    expect(body.max_output_tokens).toBeGreaterThanOrEqual(1500)
   })
 
   it('throws (so the router takes over) on other HTTP errors', async () => {
