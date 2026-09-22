@@ -54,6 +54,7 @@ const shotKinds: { id: ShotKind; label: string; ask: string }[] = [
 export function ReckonWorkspace() {
   const { character, setCharacter, selectedMarkerId, setSelectedMarkerId } = useWorkspace()
   const fileRef = useRef<HTMLInputElement>(null)
+  const cameraRef = useRef<HTMLInputElement>(null)
   const [kind, setKind] = useState<ShotKind>('warp-list')
   const [blob, setBlob] = useState('')
   const [outcome, setOutcome] = useState<OcrOutcome | null>(null)
@@ -263,20 +264,37 @@ export function ReckonWorkspace() {
             multiple
             onChange={(e) => onFiles(e.target.files)}
           />
-          <div>Drop or paste PS5 captures here. They stay in this tab.</div>
+          {/* Direct rear camera, no OS picker (mobile). */}
+          <input
+            ref={cameraRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={(e) => onFiles(e.target.files)}
+          />
+          <div>Drop or paste captures here, or snap the screen with your phone camera.</div>
           <div className="note" style={{ marginTop: 4 }}>
-            Read on-device with Tesseract OCR — nothing is uploaded. Blurry or low-confidence reads
-            are surfaced but never turned into facts.
+            Read on-device with Tesseract OCR — nothing leaves this tab. (An Equipment shot also uses
+            Muse vision if a key is set, which does send that image to the model.)
           </div>
-          <button
-            className="ghost gold"
-            type="button"
-            style={{ marginTop: 8 }}
-            disabled={busy}
-            onClick={() => fileRef.current?.click()}
-          >
-            {busy ? 'Reading screenshot…' : 'Open screenshots'}
-          </button>
+          <div className="opts" style={{ marginTop: 8, justifyContent: 'center' }}>
+            <button
+              className="ghost gold"
+              type="button"
+              disabled={busy}
+              onClick={() => cameraRef.current?.click()}
+            >
+              📷 Take photo
+            </button>
+            <button
+              className="ghost"
+              type="button"
+              disabled={busy}
+              onClick={() => fileRef.current?.click()}
+            >
+              {busy ? 'Reading…' : 'Open screenshots'}
+            </button>
+          </div>
         </div>
 
         {error && (
