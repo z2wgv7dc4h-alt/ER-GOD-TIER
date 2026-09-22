@@ -74,6 +74,9 @@ export const SHORTCUT_GROUPS: ShortcutGroup[] = [
     items: [
       { keys: '/', label: 'Focus the search bar', probe: { key: '/' }, action: 'search' },
       { keys: 'Ctrl / ⌘ K', label: 'Focus the search bar', note: 'command palette', probe: { key: 'k', ctrlKey: true }, action: 'search' },
+      { keys: '↑ ↓', label: 'Move through the command palette results', note: 'while the search is focused' },
+      { keys: 'Enter', label: 'Open the highlighted search result', note: 'command palette' },
+      { keys: 'Esc', label: 'Clear the search and close the results', note: 'command palette' },
       { keys: '1', label: 'Reckoning', probe: { key: '1' }, action: 'module' },
       { keys: '2', label: 'Atlas', probe: { key: '2' }, action: 'module' },
       { keys: '3', label: 'Build lab', probe: { key: '3' }, action: 'module' },

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { matchMany } from './knowledge/catalog'
-import { groupHits, searchSync } from './lib/search'
+import { groupHits, searchSync, type SearchHit } from './lib/search'
+import { flattenHits, moveActive, resolvePaletteKey } from './lib/palette'
 import { matchWarp, nextGraces, warpGraces } from './knowledge/graces'
 import { applyFacts, denyFacts } from './lib/infer'
 import { labelOf, moduleFor } from './lib/links'
@@ -296,30 +297,75 @@ export function CommandHits() {
   const q = debounced.trim().toLowerCase()
   // Live, debounced, and only from `searchSync`/`groupHits` — no new matcher.
   const sections = useMemo(() => (q.length >= LIVE_SEARCH_MIN ? groupHits(searchSync(q)) : []), [q])
+  const flat = useMemo(() => flattenHits(sections), [sections])
+  const [active, setActive] = useState(0)
+  const listRef = useRef<HTMLDivElement>(null)
+
+  // New query → start at the top; a shrunken list clamps the stale index.
+  useEffect(() => setActive(0), [q])
+  useEffect(() => {
+    setActive((i) => (flat.length ? Math.min(Math.max(i, 0), flat.length - 1) : 0))
+  }, [flat])
+
+  /** The one select action, shared by click and Enter (no duplicate handler). */
+  function choose(hit: SearchHit | undefined) {
+    if (!hit) return
+    w.setSelectedMarkerId(hit.id)
+    w.setModule(hit.module)
+    w.setQuery('')
+  }
+
+  useEffect(() => {
+    if (!flat.length) return
+    function onKey(e: KeyboardEvent) {
+      const input = document.getElementById('command-search')
+      const inputFocused = input != null && document.activeElement === input
+      const key = resolvePaletteKey(e, { inputFocused, resultsOpen: flat.length > 0 })
+      if (!key) return
+      e.preventDefault()
+      if (key === 'next') setActive((i) => moveActive(i, 1, flat.length))
+      else if (key === 'prev') setActive((i) => moveActive(i, -1, flat.length))
+      else if (key === 'select') choose(flat[active])
+      else if (key === 'close') {
+        w.setQuery('')
+        if (input instanceof HTMLElement) input.blur()
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [flat, active, w])
+
+  // Keep the highlighted row in view as it moves.
+  useEffect(() => {
+    listRef.current?.querySelector('.palette-active')?.scrollIntoView({ block: 'nearest' })
+  }, [active, flat])
+
   if (!sections.length) return null
+  let index = -1
   return (
-    <div className="command-hits">
+    <div className="command-hits" ref={listRef}>
       {sections.map((section) => (
         <section className="command-group" key={section.group}>
           <div className="kicker">{section.group} · {section.hits.length}</div>
-          {section.hits.map((f) => (
-            <button
-              key={f.source + f.id}
-              type="button"
-              className="quest"
-              onClick={() => {
-                w.setSelectedMarkerId(f.id)
-                w.setModule(f.module)
-                w.setQuery('')
-              }}
-            >
-              <header>
-                <strong>{f.name}</strong>
-                <span className="note">{f.source}</span>
-              </header>
-              <div className="note">{f.detail}</div>
-            </button>
-          ))}
+          {section.hits.map((f) => {
+            index += 1
+            const isActive = index === active
+            return (
+              <button
+                key={f.source + f.id}
+                type="button"
+                className={isActive ? 'quest palette-active' : 'quest'}
+                aria-current={isActive ? 'true' : undefined}
+                onClick={() => choose(f)}
+              >
+                <header>
+                  <strong>{f.name}</strong>
+                  <span className="note">{f.source}</span>
+                </header>
+                <div className="note">{f.detail}</div>
+              </button>
+            )
+          })}
         </section>
       ))}
     </div>
@@ -392,21 +438,26 @@ export function Recents() {
   const { recentFacts, setSelectedMarkerId, setModule } = useWorkspace()
   if (!recentFacts.length) return null
   return (
-    <div className="opts" style={{ padding: '0 4px 8px' }}>
-      {recentFacts.map((id) => (
-        <button
-          key={id}
-          type="button"
-          className="chip"
-          onClick={() => {
-            setSelectedMarkerId(id)
-            setModule(moduleFor(id))
-          }}
-        >
-          {labelOf(id)}
-        </button>
-      ))}
-    </div>
+    <section className="recent-panel">
+      <div className="kicker">Recently viewed</div>
+      <ul className="recent-list">
+        {recentFacts.map((id) => (
+          <li key={id}>
+            <button
+              type="button"
+              className="recent-item"
+              onClick={() => {
+                setSelectedMarkerId(id)
+                setModule(moduleFor(id))
+              }}
+            >
+              <span>{labelOf(id)}</span>
+              <span className="dim">{moduleFor(id)}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </section>
   )
 }
 

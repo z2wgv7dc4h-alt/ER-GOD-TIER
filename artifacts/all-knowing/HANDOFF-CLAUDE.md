@@ -529,6 +529,37 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 - `Build.tsx` shows per-stat dot tiers inline (filled as reached, both/three tiers — not a
   capped/not boolean). `softCaps.test.ts` covers Vigor, Mind, Endurance and all five offensive stats.
 
+**Task 47 — shareable build codes** (landed after 44):
+
+- `src/lib/buildCode.ts`: `akb1.` + base64url of a small JSON `{ l, s, k, n? }` (level, the 8 stats,
+  loadout rows, optional short build label). Deliberately not the Task 32 packet — no progress or
+  evidence. `Build.tsx` "Export build" copies the code (with a toast); "Import build code" applies
+  through the same `setCharacter({ ...character, stats, level, loadout })` path the OP/PvP chips use.
+  Malformed input shows a visible error and changes nothing. The optional name is the **build's**,
+  never the Tarnished's — importing cannot rename a character.
+
+**Task 48 — side-by-side weapon comparison** (landed after 47):
+
+- `src/lib/weaponCompare.ts` + `src/WeaponCompare.tsx`: two weapon/affinity/upgrade pickers, real AR
+  per side via `attackRatingForSlot` (no second engine), per-side two-handing, live on the current
+  stats, and `effectiveDamage` vs the selected target. Additive — the single-weapon flow is untouched.
+
+**Task 49 — command-palette keyboard navigation** (landed after 48):
+
+- `src/lib/palette.ts`: `flattenHits`, a **wrapping** `moveActive`, and `resolvePaletteKey` that only
+  fires while the command search is focused with results open. `CommandHits` highlights the active
+  row (`.palette-active`, gold like `.chip.on`), reuses one `choose()` handler for click and Enter,
+  and Escape clears/closes. Registered in `src/lib/shortcuts.ts` so it shows in the `?` overlay.
+
+**Task 51 — recently-viewed / quick-nav history** (landed after 49):
+
+- Audit: every real navigation already went through `setSelectedMarkerId`, so the recorder covered
+  Atlas, Codex, Related, Gideon, Reckon, Thread and the palette — the gap was that `Recents` was
+  never rendered. `src/lib/recent.ts` now holds `RECENT_CAP = 12`, `pushRecent` (newest-first,
+  deduped, bounded) and `recentAfterProfileSwitch`; `Recents` is a real rail panel (last 12, named,
+  one-click jump). Cap raised 8 → 12. Per-profile isolation kept: history is cleared on switch and is
+  not part of the persisted `VaultUi`.
+
 ---
 
 ## 7. Product ideas still valid (not built)
@@ -547,7 +578,7 @@ From Wyatt, keep on the roadmap:
 - Cookbook / bell bearing / whetblade / crystal tear sets (achievement-shaped).
 - Merchant “who sells X after I give Y scroll.”
 - Rememberance shop (Enia) as a table.
-- Soft caps already marked on the stat card.
+- ✅ Soft caps already marked on the stat card. (Task 44 — real per-stat dot tiers in `Build.tsx`.)
 - Sit / lean-back UI for the living room.
 - Profiles per Tarnished, packet to a friend or another device.
 

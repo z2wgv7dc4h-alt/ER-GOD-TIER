@@ -15,7 +15,7 @@ import { Help } from './Help'
 import { leftovers } from './lib/leftovers'
 import { summarize } from './lib/infer'
 import { worldBanners } from './lib/worldState'
-import { CommandHits, PacketBar, SitToggle, softCapMark, useClipboardShots, useHotkeys } from './QoL'
+import { CommandHits, PacketBar, Recents, SitToggle, softCapMark, useClipboardShots, useHotkeys } from './QoL'
 import { ProfileSwitcher } from './ProfileSwitcher'
 import { allLines } from './knowledge/storylines'
 import { WorkspaceProvider, useWorkspace } from './state'
@@ -121,6 +121,7 @@ function AppShell() {
           ))}
         </nav>
         <CharacterCard />
+        <Recents />
         <PacketBar />
         <SaveDrop />
         <div className="sheet-sit">
@@ -141,6 +142,7 @@ function AppShell() {
             {w.character.name} · Lv.{w.character.level}
           </button>
           <input
+            id="command-search"
             className="search"
             placeholder="Search · / Ctrl+K · 1–5 rooms · S sit · paste shot · ? help"
             value={w.query}

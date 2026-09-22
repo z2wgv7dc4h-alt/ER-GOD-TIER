@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { markers } from './data/seed'
 import type { EngineMarker, EngineState, EngineStatus } from './lib/mapEngine'
+import { pushRecent, recentAfterProfileSwitch } from './lib/recent'
 import {
   activeProfile,
   addProfile,
@@ -125,7 +126,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setHistory([])
     // Recents are derived from the previous Tarnished's pins; don't let one
     // profile's fact history leak into another's rail.
-    setRecentFacts([])
+    setRecentFacts(recentAfterProfileSwitch())
   }
 
   const value = useMemo<Workspace>(
@@ -137,7 +138,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       selectedMarkerId,
       setSelectedMarkerId: (id) => {
         setSelectedMarkerId(id)
-        if (id) setRecentFacts((r) => [id, ...r.filter((x) => x !== id)].slice(0, 8))
+        if (id) setRecentFacts((r) => pushRecent(r, id))
       },
       layers,
       toggleLayer: (id) => setLayers((prev) => ({ ...prev, [id]: !prev[id] })),

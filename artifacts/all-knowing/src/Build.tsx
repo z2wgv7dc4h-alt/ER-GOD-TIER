@@ -8,7 +8,9 @@ import type { AttackRating, Weapon } from './lib/ar'
 import { REGULATION_STAMP } from './lib/regulation'
 import { isSoteRun } from './lib/blessings'
 import { SOFT_CAPS, softCapLabel } from './lib/softCaps'
+import { BUILD_CODE_PREFIX, copyBuildCode, encodeBuildCode, tryDecodeBuildCode } from './lib/buildCode'
 import { Related } from './Related'
+import { WeaponCompare } from './WeaponCompare'
 import {
   bestDamageType,
   combatTargetFor,
@@ -41,6 +43,10 @@ export function BuildWorkspace() {
   const [targetId, setTargetId] = useState('')
   const [enemyQuery, setEnemyQuery] = useState('')
   const [pvpId, setPvpId] = useState('')
+  const [buildLabel, setBuildLabel] = useState('')
+  const [buildCode, setBuildCode] = useState('')
+  const [importCode, setImportCode] = useState('')
+  const [buildMsg, setBuildMsg] = useState<{ ok: boolean; text: string } | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -78,6 +84,38 @@ export function BuildWorkspace() {
     setCharacter({
       ...character,
       stats: { ...character.stats, [key]: Math.max(1, Math.min(99, value || 1)) },
+    })
+  }
+
+  async function exportBuild() {
+    const code = encodeBuildCode({
+      level: character.level,
+      stats: character.stats,
+      loadout: character.loadout,
+      name: buildLabel.trim() || undefined,
+    })
+    setBuildCode(code)
+    const copied = await copyBuildCode(code)
+    setBuildMsg({
+      ok: true,
+      text: copied ? 'Build code copied to clipboard.' : 'Copy blocked — select the code below.',
+    })
+  }
+
+  function importBuild() {
+    const result = tryDecodeBuildCode(importCode)
+    if (!result.ok) {
+      // Visible error, nothing applied.
+      setBuildMsg({ ok: false, text: result.error })
+      return
+    }
+    // Same apply path as the OP/PvP kit chips.
+    const { level, stats, loadout, name } = result.build
+    setCharacter({ ...character, stats, level, loadout })
+    setImportCode('')
+    setBuildMsg({
+      ok: true,
+      text: `Applied ${name ? `“${name}”` : 'build'}: Lv ${level}, ${loadout.length} gear slot${loadout.length === 1 ? '' : 's'}.`,
     })
   }
 
@@ -186,6 +224,57 @@ export function BuildWorkspace() {
             </div>
           ))}
         </div>
+
+        <div className="kicker" style={{ marginTop: 18 }}>Build code</div>
+        <p className="note">
+          Share just the build — stats, level and gear. Not a packet: it carries no run
+          progress, and importing a code never renames your Tarnished.
+        </p>
+        <div className="opts" style={{ marginTop: 8 }}>
+          <input
+            className="search"
+            style={{ minWidth: 150 }}
+            placeholder="Build label (optional)"
+            maxLength={40}
+            value={buildLabel}
+            onChange={(e) => setBuildLabel(e.target.value)}
+          />
+          <button type="button" className="chip on" onClick={() => void exportBuild()}>
+            Export build
+          </button>
+        </div>
+        {buildCode && (
+          <input
+            className="search"
+            style={{ width: '100%', marginTop: 6 }}
+            readOnly
+            value={buildCode}
+            aria-label="Build code"
+            onFocus={(e) => e.target.select()}
+          />
+        )}
+        <div className="kicker" style={{ marginTop: 12 }}>Import a build code</div>
+        <textarea
+          className="search"
+          style={{ width: '100%', minHeight: 56, marginTop: 6, resize: 'vertical' }}
+          placeholder={`Paste a code starting with ${BUILD_CODE_PREFIX}`}
+          value={importCode}
+          onChange={(e) => setImportCode(e.target.value)}
+        />
+        <div className="opts" style={{ marginTop: 6 }}>
+          <button type="button" className="chip on" disabled={!importCode.trim()} onClick={importBuild}>
+            Apply build code
+          </button>
+        </div>
+        {buildMsg && (
+          <p
+            className="note"
+            role="status"
+            style={{ color: buildMsg.ok ? 'var(--ok)' : 'var(--danger)' }}
+          >
+            {buildMsg.text}
+          </p>
+        )}
       </section>
       <section className="panel">
         <div className="kicker">Attack rating · regulation {REGULATION_STAMP}</div>
@@ -337,6 +426,14 @@ export function BuildWorkspace() {
         >
           Show on atlas
         </button>
+        {weapons && (
+          <WeaponCompare
+            weapons={weapons}
+            stats={character.stats}
+            target={target}
+            targetName={target?.name}
+          />
+        )}
       </section>
     </div>
   )

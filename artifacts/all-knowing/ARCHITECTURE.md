@@ -27,6 +27,8 @@ Identity        current room    Gideon
 ```
 
 `sit` class: Stage then Guide. Hotkeys in `QoL.tsx` (`/` search, `1–5` rooms, `u` undo, `⌘S` packet).
+The command palette navigates with ↑/↓ (wrapping), Enter selects, Esc clears (`src/lib/palette.ts`).
+A rail "Recently viewed" panel (`src/lib/recent.ts`) offers one-click jump-back to the last 12 facts.
 
 ## AI
 
@@ -49,6 +51,8 @@ line the character started — no second DAG walker.
 Packet `*.all-knowing.json` — character only, no shots. PacketBar shares it by clipboard/download
 and a scannable QR: the full JSON when ≤ 2953 bytes, else a filename + SHA-256 handoff card
 (`src/lib/packetQr.ts`, `uqr`).
+Build codes (`src/lib/buildCode.ts`, `akb1.…`) are a separate, smaller concern — stats + level +
+loadout only, for pasting into chat. They are not the packet and carry no run progress.
 
 ## Hosted data
 
