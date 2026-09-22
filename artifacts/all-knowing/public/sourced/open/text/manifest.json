@@ -1,0 +1,349 @@
+{
+ "locale": "en",
+ "tableCount": 44,
+ "stringCount": 45169,
+ "tables": [
+  {
+   "table": "AccessoryCaption",
+   "count": 157,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "AccessoryInfo",
+   "count": 157,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "AccessoryName",
+   "count": 157,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "ActionButtonText",
+   "count": 231,
+   "sources": [
+    "menu.msgbnd.dcx",
+    "menu_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "ArtsCaption",
+   "count": 270,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "ArtsName",
+   "count": 265,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "BloodMsg",
+   "count": 9691,
+   "sources": [
+    "menu.msgbnd.dcx",
+    "menu_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "EventTextForMap",
+   "count": 211,
+   "sources": [
+    "menu.msgbnd.dcx",
+    "menu_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "EventTextForTalk",
+   "count": 906,
+   "sources": [
+    "menu.msgbnd.dcx",
+    "menu_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "GR_Dialogues",
+   "count": 262,
+   "sources": [
+    "menu.msgbnd.dcx",
+    "menu_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "GR_KeyGuide",
+   "count": 100,
+   "sources": [
+    "menu.msgbnd.dcx",
+    "menu_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "GR_LineHelp",
+   "count": 346,
+   "sources": [
+    "menu.msgbnd.dcx",
+    "menu_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "GR_MenuText",
+   "count": 1511,
+   "sources": [
+    "menu.msgbnd.dcx",
+    "menu_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "GR_System_Message_win64",
+   "count": 110,
+   "sources": [
+    "menu.msgbnd.dcx",
+    "menu_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "GemCaption",
+   "count": 123,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "GemEffect",
+   "count": 0,
+   "sources": []
+  },
+  {
+   "table": "GemInfo",
+   "count": 123,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "GemName",
+   "count": 126,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "GoodsCaption",
+   "count": 2179,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "GoodsDialog",
+   "count": 54,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "GoodsInfo",
+   "count": 2182,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "GoodsInfo2",
+   "count": 1075,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "GoodsName",
+   "count": 2221,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "LoadingText",
+   "count": 74,
+   "sources": [
+    "menu.msgbnd.dcx",
+    "menu_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "LoadingTitle",
+   "count": 74,
+   "sources": [
+    "menu.msgbnd.dcx",
+    "menu_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "MagicCaption",
+   "count": 1,
+   "sources": [
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "MagicInfo",
+   "count": 1,
+   "sources": [
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "MagicName",
+   "count": 1,
+   "sources": [
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "MovieSubtitle",
+   "count": 1,
+   "sources": [
+    "menu.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "NetworkMessage",
+   "count": 363,
+   "sources": [
+    "menu.msgbnd.dcx",
+    "menu_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "NpcName",
+   "count": 482,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "PlaceName",
+   "count": 1006,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "ProtectorCaption",
+   "count": 748,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "ProtectorInfo",
+   "count": 578,
+   "sources": [
+    "item.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "ProtectorName",
+   "count": 788,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "TalkMsg",
+   "count": 9818,
+   "sources": [
+    "menu.msgbnd.dcx",
+    "menu_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "TextEmbedImageName_win64",
+   "count": 145,
+   "sources": [
+    "menu.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "ToS_win64",
+   "count": 913,
+   "sources": [
+    "menu.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "TutorialBody",
+   "count": 89,
+   "sources": [
+    "menu.msgbnd.dcx",
+    "menu_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "TutorialTitle",
+   "count": 77,
+   "sources": [
+    "menu.msgbnd.dcx",
+    "menu_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "WeaponCaption",
+   "count": 3722,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "WeaponEffect",
+   "count": 69,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "WeaponInfo",
+   "count": 40,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  },
+  {
+   "table": "WeaponName",
+   "count": 3722,
+   "sources": [
+    "item.msgbnd.dcx",
+    "item_dlc02.msgbnd.dcx"
+   ]
+  }
+ ]
+}
