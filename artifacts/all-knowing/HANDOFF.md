@@ -7,10 +7,13 @@ Read this before writing code. Do not invent a second kernel.
 Local-first PWA. One `Character` is the world. Atlas, Build, Quests, Codex, Reckoning, Gideon are views.
 
 ```
-Identity 220px │ Stage 1fr │ Gideon 320px
+Desktop  280px Now (Gideon) │ Stage 1fr
+Phone    tabs: Map / Now / Kit
 ```
 
-Sit mode stacks Guide under Stage.
+The identity rail is an off-canvas **Tarnished sheet** behind the name button (profiles, packet,
+save drop, recents, the full character card, the five room links). Reckon / Quests / Codex are links
+in that sheet, not tabs; the Codex also opens from a `/` search hit. Sit mode was removed (Task 83).
 
 ## Do not break
 
@@ -32,7 +35,12 @@ Do not average them. Pickup XYZ lives in `world-lots.json` (10,011 rows) and is 
 
 `src/lib/gideon.ts` + `src/Gideon.tsx`.
 
-Intents: endings/lines/blitz, still-available, builds, shops, missables, fragments, warps, loot, hunts, stuck, 100% spine, boss pins, searchSync last.
+Intents: endings/lines/blitz, still-available, builds, shops, missables, fragments, warps, loot,
+hunts, stuck, 100% spine, boss pins, and (Tasks 74–86) region "what did I miss here", wear a named
+kit through the same `buildId` the chips set, "where is <companion>" from `npcLocations.ts`, and
+co-op filtering (`answers.coop`). Both the Now strip and Quests read the one `allLines()` graph;
+`buildHunt` turns a kit into `{ have, missing, pins, unresolved }`; `beatPin` resolves a plan beat to
+an existing pin for **Show**. `searchSync` remains the last resort.
 
 Optional LLM: Meta Muse Spark 1.3 Contributor (`src/lib/muse.ts`, `VITE_GIDEON_API_KEY`), same Act
 JSON, router-first. Ground with `planRoute`, `stillAvailable`, `searchSync`. No invented ids;
@@ -40,9 +48,9 @@ sentences naming an ungrounded id are stripped.
 
 ## Paths
 
-- PS5: Reckoning + paste. `src/lib/ocr.ts` is empty on purpose.
-- PC: `npm run map` SSE. `canonicalFactId` only when names match.
-- `.sl2` parser is not real.
+- PS5: Reckoning interview + paste; `src/lib/ocr.ts` runs real on-device Tesseract.
+- PC: `npm run map` SSE, or drop `ER0000.sl2` — `src/lib/save.ts` is a real read-only in-browser parser.
+- `canonicalFactId` still only fires when names match.
 
 ## Refresh data
 
@@ -58,12 +66,12 @@ Inventory: `DATA.md`.
 
 ## Next (in order)
 
-1. Alias table: engine `grace:{row}` + `bossflag:{clear}` + seed slugs.
-2. Split `App.tsx`.
-3. One coordinate frame for lots, or keep XYZ off the plate.
-4. Query-only load of `msb-enemies.json`.
-5. Tesseract behind `readImageText` or delete OCR.
-6. Tests for `prefixKind` + `searchSync`.
+Live list is `HANDOFF-CLAUDE.md` §6–§8. As of Task 86 the open threads are:
+
+1. One projection for lots on the plate (Task 09 Part C), or keep them off.
+2. Dungeon interiors (bosses are XYZ-only today).
+3. `canonicalFactId` audit across every fact category (bosses improved, the rest not).
+4. Real 100% spine checklist + detours from real `NpcParam` data.
 
 ## Refuse
 
