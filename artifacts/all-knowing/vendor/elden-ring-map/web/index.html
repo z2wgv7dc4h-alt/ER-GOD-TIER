@@ -26,18 +26,18 @@
       <div class="panel-body">
         <div class="char-head">
           <div>
-            <div id="char-name">—</div>
-            <div id="char-meta" class="dim" data-i18n="app.noSave">no save loaded</div>
+            <div id="char-name" class="char-name">—</div>
+            <div id="char-meta" class="dim char-meta" data-i18n="app.noSave">no save loaded</div>
           </div>
           <div id="live" class="live off" data-i18n-title="live.title">
             <span class="dot"></span><span id="live-text" data-i18n="live.off">offline</span>
           </div>
         </div>
         <div id="char-stats" class="stats"></div>
-        <div id="char-where" class="where dim"></div>
+        <div id="char-where" class="where dim char-where"></div>
         <div class="save-picker">
-          <label><span data-i18n="save.extension">Save type</span><select id="save-extension"></select></label>
-          <label><span data-i18n="save.character">Character</span><select id="save-character"></select></label>
+          <label><span data-i18n="save.extension">Save type</span><select id="save-extension" class="save-extension"></select></label>
+          <label><span data-i18n="save.character">Character</span><select id="save-character" class="save-character"></select></label>
         </div>
       </div>
     </section>
@@ -49,9 +49,9 @@
       <div class="panel-body">
         <div class="progress-head">
           <span data-i18n="progress.overall">Overall</span>
-          <span id="progress-label" class="dim">0 / 0</span>
+          <span id="progress-label" class="dim progress-label">0 / 0</span>
         </div>
-        <div class="bar"><div id="progress-fill" class="fill"></div></div>
+        <div class="bar"><div id="progress-fill" class="fill progress-fill"></div></div>
       </div>
     </section>
 
@@ -60,9 +60,9 @@
         <span data-i18n="panel.search">Search</span><span class="chev">▾</span>
       </button>
       <div class="panel-body">
-        <input id="search" type="search" data-i18n-placeholder="search.placeholder"
+        <input id="search" class="marker-search" type="search" data-i18n-placeholder="search.placeholder"
                placeholder="Search markers…" autocomplete="off" spellcheck="false">
-        <div id="search-results"></div>
+        <div id="search-results" class="search-results"></div>
       </div>
     </section>
 
@@ -93,15 +93,15 @@
       </button>
       <div class="panel-body">
         <label class="row-check">
-          <input type="checkbox" id="hide-found">
+          <input type="checkbox" id="hide-found" data-option="hideFound">
           <span data-i18n="opt.hideFound">Hide found</span>
         </label>
         <label class="row-check">
-          <input type="checkbox" id="show-labels" checked>
+          <input type="checkbox" id="show-labels" data-option="showLabels" checked>
           <span data-i18n="opt.showLabels">Show labels when zoomed</span>
         </label>
         <label class="row-check">
-          <input type="checkbox" id="show-icons" checked>
+          <input type="checkbox" id="show-icons" data-option="showIcons" checked>
           <span data-i18n="opt.showIcons">Use the game's map icons</span>
         </label>
       </div>
@@ -130,6 +130,57 @@
     <div id="embed-categories" class="embed-categories">
       <button type="button" id="embed-toggle-all" class="mini toggle-all-btn" data-i18n="panel.selectNone">none</button>
       <div id="embed-category-list" class="category-list"></div>
+    </div>
+
+    <!-- All-Knowing: the rest of the sidebar content is search, the save
+         picker, the display options and the language switch - all hidden with
+         #sidebar in ?embed=1. Each is a second copy carrying the same class
+         (.marker-search / .search-results / .save-picker / [data-option] /
+         .lang-switch / .char-*) so the existing builders and wiring populate
+         every matching element, exactly like buildLayerButtons/buildCategories.
+         Collapsed by default so it never covers the map until asked for. -->
+    <button type="button" id="embed-tools-toggle" class="embed-tools-toggle" aria-expanded="false">Tools</button>
+    <div id="embed-tools" class="embed-tools">
+      <section class="embed-tool-section search-wrap">
+        <input id="embed-search" class="marker-search" type="search" data-i18n-placeholder="search.placeholder"
+               placeholder="Search markers…" autocomplete="off" spellcheck="false">
+        <div id="embed-search-results" class="search-results"></div>
+      </section>
+      <section class="embed-tool-section">
+        <div class="embed-tools-title" data-i18n="panel.character">Character</div>
+        <div class="char-name">—</div>
+        <div class="char-meta dim" data-i18n="app.noSave">no save loaded</div>
+        <div class="char-where dim"></div>
+        <div class="save-picker">
+          <label><span data-i18n="save.extension">Save type</span><select id="embed-save-extension" class="save-extension"></select></label>
+          <label><span data-i18n="save.character">Character</span><select id="embed-save-character" class="save-character"></select></label>
+        </div>
+      </section>
+      <section class="embed-tool-section">
+        <div class="embed-tools-title" data-i18n="panel.options">Options</div>
+        <label class="row-check">
+          <input type="checkbox" data-option="hideFound">
+          <span data-i18n="opt.hideFound">Hide found</span>
+        </label>
+        <label class="row-check">
+          <input type="checkbox" data-option="showLabels" checked>
+          <span data-i18n="opt.showLabels">Show labels when zoomed</span>
+        </label>
+        <label class="row-check">
+          <input type="checkbox" data-option="showIcons" checked>
+          <span data-i18n="opt.showIcons">Use the game's map icons</span>
+        </label>
+      </section>
+      <section class="embed-tool-section">
+        <div class="embed-tools-title" data-i18n="progress.overall">Overall</div>
+        <div class="progress-head">
+          <span class="dim progress-label">0 / 0</span>
+        </div>
+        <div class="bar"><div class="fill progress-fill"></div></div>
+      </section>
+      <section class="embed-tool-section">
+        <div class="lang-switch"></div>
+      </section>
     </div>
 
     <div id="zoom-controls">

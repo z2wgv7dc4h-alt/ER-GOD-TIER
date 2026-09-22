@@ -334,8 +334,8 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
   pointer-based pan. (2) The world-switcher (Underground/Realm of Shadow/etc.) and the ~50
   category filter checkboxes were both unreachable — added floating embed-mode-only copies of
   both, generalizing `buildLayerButtons()`/`buildCategories()` to populate every matching element
-  instead of one sidebar id. **Task 43 is queued to systematically audit the rest of the sidebar
-  for the same pattern** rather than fixing the next instance reactively.
+  instead of one sidebar id. **Task 59 (superseding the queued Task 43) has now audited the rest of
+  the sidebar for the same pattern** — see its status block below and `docs/MAP-ENGINE.md`.
 - Extended the Gideon router (`src/lib/gideon.ts`): "what should I do now" now matches the
   existing "what next" handling (it fell through to the generic catch-all before). "I've done X" /
   "I killed X" is now parsed as a completion report — the router resolves X, answers "what next"
@@ -441,6 +441,22 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
   the existing output glob (precache 61 → 67 entries) while `**/sourced/**` stays runtime-only.
 - The Help sheet gained an "Install / available offline" note. Verified with `vite preview` + a
   node fetch (headless), not a physical phone.
+
+**Task 59 — embed-mode control audit (vendor map)** (landed after 58; supersedes Task 43):
+
+- Every sidebar-only control is now reachable in `?embed=1` (Atlas always embeds). The existing
+  world-switch and category-filter fixes were joined by a floating `#embed-tools` panel covering
+  search, the save/character picker, the character/live indicator, progress, the hide-found/labels/
+  icons options, and the language switch. Zoom + drag/pinch were already in `#stage`; embed zoom
+  buttons grew to 40×40.
+- The pattern is uniform: builders/wiring populate **every element sharing a class**, never one id
+  (`buildLangSwitch`, `buildSavePicker`/`syncSavePicker`, `renderCharacter`/`renderWhere`,
+  `refreshCounts`, `bindSearch`, `[data-option]` options), so the sidebar and embed copies share one
+  state and can't drift. Touch targets on the floating copies are ≥40px.
+- No iframe padding was needed — All-Knowing's mobile tab bar is its own grid row, not an overlay
+  on the map stage.
+- Verified with a headless-Edge `--dump-dom` against the running map server at `?embed=1` (DOM
+  after JS ran), not a physical device. Full table in `docs/MAP-ENGINE.md`.
 
 ---
 

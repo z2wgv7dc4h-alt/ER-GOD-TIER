@@ -162,19 +162,21 @@ html, body {
 /* ------------------------------------------------------------- search */
 
 .search-wrap { position: relative; padding: 10px 12px; border-bottom: 1px solid var(--line); }
-#search {
+/* Class, not id: the embed-mode tools panel carries a second .marker-search /
+   .search-results pair, and the wiring binds every copy. */
+.marker-search {
   width: 100%; padding: 8px 10px;
   background: var(--panel); border: 1px solid var(--line); border-radius: 4px;
   color: var(--text); font-size: 13px; outline: none;
 }
-#search:focus { border-color: var(--gold); }
-#search-results {
+.marker-search:focus { border-color: var(--gold); }
+.search-results {
   position: absolute; left: 12px; right: 12px; top: 46px; z-index: 40;
   background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px;
   max-height: 320px; overflow-y: auto; box-shadow: var(--shadow);
   display: none;
 }
-#search-results.open { display: block; }
+.search-results.open { display: block; }
 .sr-item { padding: 7px 10px; cursor: pointer; font-size: 13px; display: flex; gap: 8px; align-items: center; }
 .sr-item:hover { background: #262218; }
 .sr-item .sr-cat { font-size: 10px; color: var(--dim); margin-left: auto; text-transform: uppercase; }
@@ -272,6 +274,56 @@ html, body {
 }
 .embed-categories.open { display: block; }
 #app.embed #embed-cat-toggle { display: block; }
+
+/* All-Knowing: embed-mode tools - the sidebar's search, save picker, display
+   options, progress and language switch, all hidden with #sidebar in ?embed=1.
+   Collapsed by default; each internal control is a second copy with the same
+   class as the sidebar's, so the existing wiring drives both. */
+.embed-tools-toggle {
+  display: none;
+  /* Below the 4-button, 2-row world switch at top:14 (which ends ~108px). */
+  position: absolute; left: 14px; top: 116px; z-index: 20;
+  min-height: 40px; padding: 0 14px;
+  background: rgba(22,20,15,.92); color: var(--text);
+  border: 1px solid var(--line); border-radius: 4px; cursor: pointer;
+  font-size: 12px; letter-spacing: .04em; box-shadow: var(--shadow);
+}
+.embed-tools-toggle:hover, .embed-tools-toggle[aria-expanded="true"] {
+  border-color: var(--gold); color: var(--gold);
+}
+.embed-tools {
+  display: none;
+  position: absolute; left: 14px; top: 164px; z-index: 20;
+  width: min(300px, calc(100vw - 28px)); max-height: calc(100vh - 178px);
+  background: rgba(16,14,10,.98); border: 1px solid var(--line);
+  border-radius: 6px; box-shadow: var(--shadow);
+  padding: 10px 12px; overflow: auto;
+}
+.embed-tools.open { display: block; }
+#app.embed #embed-tools-toggle { display: block; }
+.embed-tool-section { margin-bottom: 12px; }
+.embed-tool-section:last-child { margin-bottom: 0; }
+.embed-tool-section.search-wrap { padding: 0 0 10px; border-bottom: 1px solid var(--line); }
+.embed-tools-title {
+  font-size: 10px; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 6px;
+}
+.embed-tools .char-name { font-size: 15px; font-weight: 600; color: var(--gold); }
+.embed-tools .char-meta { font-size: 12px; }
+.embed-tools .char-where { margin-top: 6px; font-size: 11px; }
+.embed-tools .search-results { top: 42px; }
+/* Touch targets: the floating embed copies are phone-sized, so every control
+   is at least 40px. The sidebar keeps its denser desktop sizing. */
+.embed-layer-buttons .layer-btn { min-height: 40px; }
+#embed-cat-toggle { min-height: 40px; }
+.embed-tools .marker-search { min-height: 40px; }
+.embed-tools .row-check { min-height: 40px; }
+.embed-tools select { min-height: 40px; }
+.embed-tools .save-picker { grid-template-columns: 1fr; }
+.embed-tools .lang-switch { margin-left: 0; }
+.embed-tools .lang-btn { min-width: 44px; min-height: 40px; font-size: 12px; }
+#app.embed #zoom-controls button { width: 40px; height: 40px; }
+
 #zoom-controls button {
   width: 32px; height: 32px; font-size: 16px; line-height: 1;
   background: rgba(22,20,15,.92); color: var(--text);

@@ -88,6 +88,11 @@ const OFF_BY_DEFAULT = new Set(['misc', 'consumables', 'crafting_materials', 'am
 const FOUND_COLOR = '#6fcf7a';
 
 const $ = (id) => document.getElementById(id);
+/** Every element matching a selector - the embed-mode copies share classes with
+ * the sidebar, so builders/wiring populate all of them, not just one id. */
+const all = (sel) => Array.from(document.querySelectorAll(sel));
+const setTextAll = (sel, text) => { for (const el of all(sel)) el.textContent = text; };
+const setHtmlAll = (sel, html) => { for (const el of all(sel)) el.innerHTML = html; };
 const t = (k) => I18n.t(k);
 const nameOf = (m) => I18n.name(m);
 const catLabel = (k) => t('cat.' + k);
@@ -215,10 +220,14 @@ function applyPrefsToUi(prefs) {
     if (el) el.classList.add('collapsed');
   }
   if (prefs.sidebarCollapsed) document.getElementById('app').classList.add('sb-collapsed');
-  $('hide-found').checked = state.hideFound;
-  $('show-labels').checked = state.showLabels;
-  const gi = $('show-icons');
-  if (gi) gi.checked = state.showIcons;
+  setOptionInputs('hideFound', state.hideFound);
+  setOptionInputs('showLabels', state.showLabels);
+  setOptionInputs('showIcons', state.showIcons);
+}
+
+/** Check every copy of an option checkbox (sidebar + embed tools) to a value. */
+function setOptionInputs(name, value) {
+  for (const el of all(`[data-option="${name}"]`)) el.checked = value;
 }
 
 /* --------------------------------------------------------------- boot */
@@ -281,21 +290,24 @@ async function boot() {
       const m = state.byId.get(state.selected);
       if (m) showPopup(m);
     }
-    $('toggle-all').textContent = state.enabled.size ? t('panel.selectNone') : t('panel.selectAll');
+    setTextAll('.toggle-all-btn', state.enabled.size ? t('panel.selectNone') : t('panel.selectAll'));
     if (map) map.requestDraw();
   });
 }
 
 function buildLangSwitch() {
-  const wrap = $('lang-switch');
-  wrap.innerHTML = '';
-  for (const l of window.I18N_LANGS) {
-    const b = document.createElement('button');
-    b.className = 'lang-btn' + (l.code === I18n.lang ? ' active' : '');
-    b.textContent = l.code.toUpperCase();
-    b.title = l.label;
-    b.onclick = () => I18n.set(l.code);
-    wrap.appendChild(b);
+  // Populates every ".lang-switch" element - the embed-mode tools panel has a
+  // second copy, since the sidebar's #lang-switch is hidden in ?embed=1.
+  for (const wrap of all('.lang-switch')) {
+    wrap.innerHTML = '';
+    for (const l of window.I18N_LANGS) {
+      const b = document.createElement('button');
+      b.className = 'lang-btn' + (l.code === I18n.lang ? ' active' : '');
+      b.textContent = l.code.toUpperCase();
+      b.title = l.label;
+      b.onclick = () => I18n.set(l.code);
+      wrap.appendChild(b);
+    }
   }
 }
 
@@ -983,83 +995,91 @@ function buildCategories() {
 let pickerOptions = [];   // { path, slot, label } behind each character <option>
 
 function buildSavePicker() {
-  const extension = $('save-extension');
-  const character = $('save-character');
-  const extensions = [...new Set(state.saves.map((save) => save.extension))];
-  const selected = state.saves.find((save) => save.path === state.savePath);
-  extension.innerHTML = extensions.map((value) =>
-    `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join('');
-  extension.value = (selected && selected.extension) || extensions[0] || '';
+  // Populates every ".save-picker" element - the embed-mode tools panel has a
+  // second copy of the save/character selects, since #sidebar is hidden there.
+  // Both copies share the one `pickerOptions` list (identical for each), so the
+  // change handlers stay in sync.
+  for (const picker of all('.save-picker')) {
+    const extension = picker.querySelector('.save-extension');
+    const character = picker.querySelector('.save-character');
+    if (!extension || !character) continue;
+    const extensions = [...new Set(state.saves.map((save) => save.extension))];
+    const selected = state.saves.find((save) => save.path === state.savePath);
+    extension.innerHTML = extensions.map((value) =>
+      `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join('');
+    extension.value = (selected && selected.extension) || extensions[0] || '';
 
-  const renderCharacters = () => {
-    const matches = state.saves.filter((save) => save.extension === extension.value);
-    const accounts = new Set(matches.map((save) => save.account));
-    pickerOptions = [];
-    for (const save of matches) {
-      const suffix = accounts.size > 1 ? ` · ${save.account}` : '';
-      const chars = save.characters || [];
-      if (!chars.length) {
-        pickerOptions.push({ path: save.path, slot: null,
-                             label: `${t('save.account')} ${save.account}` });
+    const renderCharacters = () => {
+      const matches = state.saves.filter((save) => save.extension === extension.value);
+      const accounts = new Set(matches.map((save) => save.account));
+      pickerOptions = [];
+      for (const save of matches) {
+        const suffix = accounts.size > 1 ? ` · ${save.account}` : '';
+        const chars = save.characters || [];
+        if (!chars.length) {
+          pickerOptions.push({ path: save.path, slot: null,
+                               label: `${t('save.account')} ${save.account}` });
+        }
+        for (const c of chars) {
+          pickerOptions.push({ path: save.path, slot: c.slot,
+                               label: `${c.name} · ${t('char.level')} ${c.level}${suffix}` });
+        }
       }
-      for (const c of chars) {
-        pickerOptions.push({ path: save.path, slot: c.slot,
-                             label: `${c.name} · ${t('char.level')} ${c.level}${suffix}` });
-      }
-    }
-    character.innerHTML = pickerOptions.map((o, i) =>
-      `<option value="${i}" title="${escapeHtml(o.path)}">${escapeHtml(o.label)}</option>`).join('');
-    character.disabled = pickerOptions.length === 0;
-    selectPickerOption(state.savePath, state.character ? state.character.slot : null);
-  };
-
-  extension.onchange = renderCharacters;
-  character.onchange = async () => {
-    const option = pickerOptions[Number(character.value)];
-    if (!option) return;
-    const shown = state.character ? state.character.slot : null;
-    if (option.path === state.savePath && option.slot === shown) return;
-    extension.disabled = true;
-    character.disabled = true;
-    try {
-      const response = await fetch('api/saves', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ path: option.path, slot: option.slot }),
-      });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.error || t('save.switchFailed'));
-      state.savePath = result.current;
-      // The new snapshot arrives over the event stream and syncs the picker.
-    } catch (error) {
-      toast(t('save.switchFailed'), error.message);
-      syncSavePicker();       // back to what is actually on screen
-    } finally {
-      extension.disabled = false;
+      character.innerHTML = pickerOptions.map((o, i) =>
+        `<option value="${i}" title="${escapeHtml(o.path)}">${escapeHtml(o.label)}</option>`).join('');
       character.disabled = pickerOptions.length === 0;
-    }
-  };
-  renderCharacters();
+      selectPickerOption(state.savePath, state.character ? state.character.slot : null);
+    };
+
+    extension.onchange = renderCharacters;
+    character.onchange = async () => {
+      const option = pickerOptions[Number(character.value)];
+      if (!option) return;
+      const shown = state.character ? state.character.slot : null;
+      if (option.path === state.savePath && option.slot === shown) return;
+      extension.disabled = true;
+      character.disabled = true;
+      try {
+        const response = await fetch('api/saves', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path: option.path, slot: option.slot }),
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || t('save.switchFailed'));
+        state.savePath = result.current;
+        // The new snapshot arrives over the event stream and syncs the picker.
+      } catch (error) {
+        toast(t('save.switchFailed'), error.message);
+        syncSavePicker();       // back to what is actually on screen
+      } finally {
+        extension.disabled = false;
+        character.disabled = pickerOptions.length === 0;
+      }
+    };
+    renderCharacters();
+  }
 }
 
-/** Select (path, slot) in the character dropdown; the file's first entry when the slot is unknown. */
+/** Select (path, slot) in every character dropdown; the file's first entry when the slot is unknown. */
 function selectPickerOption(path, slot) {
   let index = pickerOptions.findIndex((o) => o.path === path && o.slot === slot);
   if (index < 0) index = pickerOptions.findIndex((o) => o.path === path);
-  if (index >= 0) $('save-character').value = String(index);
+  if (index >= 0) for (const el of all('.save-character')) el.value = String(index);
 }
 
 /**
- * Make the picker agree with the character on screen. Runs for every snapshot
- * and whenever the live matcher moves to another slot, so the dropdown follows
+ * Make every picker agree with the character on screen. Runs for each snapshot
+ * and whenever the live matcher moves to another slot, so the dropdowns follow
  * the running character rather than the other way round.
  */
 function syncSavePicker() {
-  const extension = $('save-extension');
   const save = state.saves.find((s) => s.path === state.savePath);
-  if (save && extension.value !== save.extension && typeof extension.onchange === 'function') {
-    extension.value = save.extension;
-    extension.onchange();        // rebuilds the character list, then selects
-    return;
+  for (const picker of all('.save-picker')) {
+    const extension = picker.querySelector('.save-extension');
+    if (save && extension && extension.value !== save.extension && typeof extension.onchange === 'function') {
+      extension.value = save.extension;
+      extension.onchange();      // rebuilds the character list, then selects
+    }
   }
   selectPickerOption(state.savePath, state.character ? state.character.slot : null);
 }
@@ -1084,14 +1104,15 @@ function refreshCounts() {
     const all = state.markers.filter((m) => m.cat === key && m.master === state.master);
     const f = all.filter(isFound).length;
     total += all.length; found += f;
-    const row = document.querySelector(`.cat[data-cat="${key}"]`);
-    if (!row) continue;
-    row.querySelector('.count').textContent = `${f}/${all.length}`;
-    row.querySelector('.minibar i').style.width = all.length ? (f / all.length * 100) + '%' : '0%';
-    row.style.display = all.length ? '' : 'none';
+    // Every copy of the row: sidebar + the embed-mode filter panel.
+    for (const row of document.querySelectorAll(`.cat[data-cat="${key}"]`)) {
+      row.querySelector('.count').textContent = `${f}/${all.length}`;
+      row.querySelector('.minibar i').style.width = all.length ? (f / all.length * 100) + '%' : '0%';
+      row.style.display = all.length ? '' : 'none';
+    }
   }
-  $('progress-label').textContent = `${found} / ${total}`;
-  $('progress-fill').style.width = total ? (found / total * 100) + '%' : '0%';
+  setTextAll('.progress-label', `${found} / ${total}`);
+  for (const el of all('.progress-fill')) el.style.width = total ? (found / total * 100) + '%' : '0%';
 }
 
 function wireUi() {
@@ -1121,6 +1142,17 @@ function wireUi() {
     };
   }
 
+  // All-Knowing: the embed-mode tools panel (search / character+save / options
+  // / progress / language), collapsed by default for the same reason.
+  const toolsToggle = $('embed-tools-toggle');
+  const toolsPanel = $('embed-tools');
+  if (toolsToggle && toolsPanel) {
+    toolsToggle.onclick = () => {
+      const open = toolsPanel.classList.toggle('open');
+      toolsToggle.setAttribute('aria-expanded', String(open));
+    };
+  }
+
   $('zoom-in').onclick = () => map.zoomBy(1.6);
   $('zoom-out').onclick = () => map.zoomBy(1 / 1.6);
   $('zoom-fit').onclick = () => map.fit();
@@ -1130,12 +1162,18 @@ function wireUi() {
     setFollow(true);      // engage regardless: it takes effect once a fix arrives
   };
 
-  $('hide-found').onchange = (e) => { state.hideFound = e.target.checked; savePrefs(); map.requestDraw(); };
-  $('show-labels').onchange = (e) => { state.showLabels = e.target.checked; savePrefs(); map.requestDraw(); };
-  const gi = $('show-icons');
-  if (gi) {
-    gi.checked = state.showIcons;
-    gi.onchange = (e) => { state.showIcons = e.target.checked; savePrefs(); map.requestDraw(); };
+  // Display options (hide found / labels / icons): every [data-option] copy -
+  // sidebar + embed tools - shares one state flag, so either checkbox updates
+  // both and the map.
+  for (const input of all('[data-option]')) {
+    const name = input.dataset.option;
+    input.checked = state[name];
+    input.onchange = (e) => {
+      state[name] = e.target.checked;
+      setOptionInputs(name, e.target.checked);
+      savePrefs();
+      map.requestDraw();
+    };
   }
 
   const toggleAll = () => {
@@ -1151,45 +1189,63 @@ function wireUi() {
   };
   document.querySelectorAll('.toggle-all-btn').forEach((b) => { b.onclick = toggleAll; });
 
-  const search = $('search');
-  const results = $('search-results');
-  search.oninput = () => {
-    const q = search.value.trim().toLowerCase();
-    if (q.length < 2) { results.classList.remove('open'); return; }
-    // Search every locale's name, so an English query still finds a marker
-    // while the UI is in Russian (and vice versa).
-    const hits = state.markers
-      .filter((m) => {
-        const names = m.names ? Object.values(m.names) : [m.name || ''];
-        return names.some((n) => n && n.toLowerCase().includes(q));
-      })
-      .slice(0, 40);
-    results.innerHTML = hits.length
-      ? hits.map((m) => `<div class="sr-item" data-id="${m.id}">
-           <span class="swatch" style="width:9px;height:9px;border-radius:50%;background:${(CATS[m.cat]||CATS.poi).color}"></span>
-           <span>${escapeHtml(nameOf(m))}</span>
-           <span class="sr-cat">${isFound(m) ? '✓ ' : ''}${m.master || ''}</span></div>`).join('')
-      : `<div class="sr-item dim">${escapeHtml(t('search.none'))}</div>`;
-    results.classList.add('open');
-    results.querySelectorAll('.sr-item[data-id]').forEach((el) => {
-      el.onclick = () => {
-        const m = state.byId.get(el.dataset.id);
-        if (!m) return;
-        if (m.master !== state.master) switchMaster(m.master);
-        results.classList.remove('open');
-        search.value = '';
-        map.flyTo(m.px, m.py, Math.max(map.scale, 1.4));
-        setTimeout(() => showPopup(m), 430);
-      };
-    });
-  };
+  // Search: bind every ".marker-search" to the ".search-results" in its own
+  // ".search-wrap". The embed-mode tools panel carries a second copy, so the
+  // find-marker box works in ?embed=1 as well as in the sidebar.
+  function bindSearch(input, results) {
+    input.oninput = () => {
+      const q = input.value.trim().toLowerCase();
+      if (q.length < 2) { results.classList.remove('open'); return; }
+      // Search every locale's name, so an English query still finds a marker
+      // while the UI is in Russian (and vice versa).
+      const hits = state.markers
+        .filter((m) => {
+          const names = m.names ? Object.values(m.names) : [m.name || ''];
+          return names.some((n) => n && n.toLowerCase().includes(q));
+        })
+        .slice(0, 40);
+      results.innerHTML = hits.length
+        ? hits.map((m) => `<div class="sr-item" data-id="${m.id}">
+             <span class="swatch" style="width:9px;height:9px;border-radius:50%;background:${(CATS[m.cat]||CATS.poi).color}"></span>
+             <span>${escapeHtml(nameOf(m))}</span>
+             <span class="sr-cat">${isFound(m) ? '✓ ' : ''}${m.master || ''}</span></div>`).join('')
+        : `<div class="sr-item dim">${escapeHtml(t('search.none'))}</div>`;
+      results.classList.add('open');
+      results.querySelectorAll('.sr-item[data-id]').forEach((el) => {
+        el.onclick = () => {
+          const m = state.byId.get(el.dataset.id);
+          if (!m) return;
+          if (m.master !== state.master) switchMaster(m.master);
+          results.classList.remove('open');
+          input.value = '';
+          map.flyTo(m.px, m.py, Math.max(map.scale, 1.4));
+          setTimeout(() => showPopup(m), 430);
+        };
+      });
+    };
+  }
+  for (const input of all('.marker-search')) {
+    const wrap = input.closest('.search-wrap') || input.parentElement;
+    const results = wrap ? wrap.querySelector('.search-results') : null;
+    if (results) bindSearch(input, results);
+  }
+  const visibleSearch = () => all('.marker-search').find((el) => el.offsetParent !== null) || $('search');
   document.addEventListener('click', (e) => {
-    if (!e.target.closest('.search-wrap')) results.classList.remove('open');
+    if (!e.target.closest('.search-wrap')) {
+      for (const r of all('.search-results')) r.classList.remove('open');
+    }
   });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') { closePopup(); results.classList.remove('open'); }
-    if (e.key === '/' && document.activeElement !== search) { e.preventDefault(); search.focus(); }
+    if (e.key === 'Escape') {
+      closePopup();
+      for (const r of all('.search-results')) r.classList.remove('open');
+    }
+    const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement && document.activeElement.tagName);
+    if (e.key === '/' && !typing) {
+      const target = visibleSearch();
+      if (target) { e.preventDefault(); target.focus(); }
+    }
   });
 
   setTimeout(() => $('hint').classList.add('gone'), 6000);
@@ -1274,7 +1330,7 @@ function applyState(s) {
   refreshSaveEntry(s);
   syncSavePicker();
   if (!c) {
-    $('char-name').textContent = t('app.noCharacter');
+    setTextAll('.char-name', t('app.noCharacter'));
     refreshCounts();
     if (map) map.requestDraw();
     return;
@@ -1318,27 +1374,27 @@ function liveBadge() {
  * rebuild the stat grid for nothing.
  */
 function renderWhere(c) {
-  const el = $('char-where');
-  if (!el) return;
+  // Every ".char-where" - sidebar + the embed-mode tools panel.
   if (c && !c.position && c.error) {
-    el.innerHTML = `<span style="color:#e05a5a">${escapeHtml(t('err.saveRead'))}: ${escapeHtml(c.error)}</span>`;
+    setHtmlAll('.char-where',
+      `<span style="color:#e05a5a">${escapeHtml(t('err.saveRead'))}: ${escapeHtml(c.error)}</span>`);
     return;
   }
   const you = playerTarget();
   const h = you && typeof you.h === 'number'
     ? `${escapeHtml(t('label.height'))} <b>${you.h}</b> ${escapeHtml(t('unit.m'))}` : '';
-  el.innerHTML = h + liveBadge();
+  setHtmlAll('.char-where', h + liveBadge());
 }
 
 function renderCharacter(c) {
-  $('char-name').textContent = c.name || '—';
+  setTextAll('.char-name', c.name || '—');
   const secs = c.secondsPlayed || 0;
   const hrs = Math.floor(secs / 3600);
   const mins = Math.floor((secs % 3600) / 60);
-  $('char-meta').textContent =
+  setTextAll('.char-meta',
     `${t('char.level')} ${c.level} · ${hrs}${t('char.hoursShort')} ` +
     `${String(mins).padStart(2, '0')}${t('char.minutesShort')}` +
-    (c.deaths != null ? ` · ${c.deaths} ${I18n.plural('char.deaths', c.deaths)}` : '');
+    (c.deaths != null ? ` · ${c.deaths} ${I18n.plural('char.deaths', c.deaths)}` : ''));
 
   // Stat abbreviations are the same glyphs the game uses in both languages.
   const st = c.stats;

@@ -35,15 +35,32 @@ Did not take:
 | `POST /api/check` | manual override (local user-state.json) |
 | `GET /?embed=1` | map canvas without their sidebar |
 
-`?embed=1` hides `#sidebar` entirely, which also hides every control that used to live inside it
-— the world/master switcher (Underground, Realm of Shadow, etc.) and the ~50 marker-category
-filter checkboxes both turned out to be silently unreachable this way, not broken. Both got a
-floating, embed-mode-only copy (`#embed-layer-buttons`, `#embed-categories`) added directly to
-`web/js/app.js`/`index.html`/`css/app.css`, generalizing the functions that used to populate one
-sidebar element by id (`buildLayerButtons()`, `buildCategories()`) to populate every element
-sharing a class instead. Task 43 (`docs/tasks/43-embed-mode-control-audit.md`) is queued to check
-the rest of `#sidebar` for the same pattern (search box, options checkboxes, save picker) rather
-than waiting for the next one to get reported.
+`?embed=1` hides `#sidebar` entirely, so any control that lives only inside it is unreachable in
+Atlas. Task 59 (which supersedes Task 43) audited every user-facing control and gave the floating,
+embed-mode-only copies below. The pattern is always the same: the builders/wiring populate **every
+element sharing a class**, never one id, so the sidebar's copy and the embed copy stay in sync.
+All floating embed controls are phone-sized (≥40px). The bottom-anchored ones sit inside the
+iframe; All-Knowing's mobile tab bar is its own grid row, so it does not overlap the embedded map
+and no iframe padding was needed.
+
+### Embed-mode control audit (Task 59)
+
+| Control | Where it lives | Visible in `?embed=1` before | What Task 59 did |
+|---|---|---|---|
+| World / plate switch (overworld, underground, shadow, ashen) | `#layer-buttons` (sidebar) | No | Floating `#embed-layer-buttons`; `buildLayerButtons()` populates every `.layer-buttons`. *(Landed before 59.)* |
+| Category filter checkboxes (~50) | `#category-list` (sidebar) | No | Floating `#embed-cat-toggle` + `#embed-categories`; `buildCategories()` populates every `.category-list`; `.toggle-all-btn` bound to every copy; `refreshCounts()` now updates every `.cat[data-cat]` row. *(Landed before 59; counts generalised in 59.)* |
+| Search / find marker | `#search` + `#search-results` | No | Generalised `.marker-search` / `.search-results`; floating copy `#embed-search` / `#embed-search-results` in `#embed-tools`; `bindSearch()` binds every pair; click-away, Escape and `/` act on every copy. |
+| Save type + character (slot) picker | `#save-extension` / `#save-character` (`.save-picker`) | No | Generalised `.save-picker` / `.save-extension` / `.save-character`; floating copy in `#embed-tools`; `buildSavePicker` / `syncSavePicker` / `selectPickerOption` drive every copy. |
+| Character / live indicator | `#char-name` / `#char-meta` / `#char-where` | No | Generalised `.char-name` / `.char-meta` / `.char-where`; `renderCharacter` / `renderWhere` / `applyState` update every copy (floating copy in `#embed-tools`). |
+| Progress (overall found / total) | `#progress-label` / `#progress-fill` | No | Generalised `.progress-label` / `.progress-fill`; `refreshCounts()` updates every copy, including the `#embed-tools` bar. |
+| Display options (hide found / labels / icons) | `#hide-found` / `#show-labels` / `#show-icons` | No | Generalised `[data-option]`; floating copies in `#embed-tools`; one shared `state` flag, all copies kept in sync via `setOptionInputs()`. |
+| Language switch | `#lang-switch` (`.lang-switch`) | No | `buildLangSwitch()` populates every `.lang-switch`; floating copy in `#embed-tools`. |
+| Zoom + / − / fit / centre-on-player | `#zoom-controls` (`#stage`) | **Yes** — never was in the sidebar | No move needed; embed buttons grown to 40×40 for touch. |
+| Drag-pan / pinch-zoom | canvas pointer handlers (`map.js`) | **Yes** | `touch-action:none` + two-finger pinch (fixed before 59); unchanged. |
+| Collapse / expand sidebar | `#sb-collapse` / `#sb-expand` | N/A (no sidebar in embed) | Hidden in embed; no floating copy needed. |
+
+`#embed-tools` is collapsed by default (it holds search, character/save, options, progress and the
+language switch) so it never covers the map until the player opens it.
 
 Marker ids are stable enough to key Character fields: `grace:{row}`, `boss:{row}`.
 
