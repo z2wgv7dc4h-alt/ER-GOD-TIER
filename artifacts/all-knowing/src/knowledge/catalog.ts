@@ -467,7 +467,6 @@ export const facts: Fact[] = [
   { id: 'quest:igon:peak', kind: 'quest', name: 'Igon — met again at the peak', aliases: [], region: 'Jagged Peak', campaign: 'sote', implies: [] },
   { id: 'quest:igon:summon', kind: 'quest', name: 'Igon — summoned at the Bayle fog gate', aliases: [], region: 'Jagged Peak', campaign: 'sote', implies: [] },
   { id: 'quest:igon:concluded', kind: 'quest', name: 'Igon — his revenge fulfilled', aliases: [], region: 'Jagged Peak', campaign: 'sote', implies: [] },
-  { id: 'boss:bayle', kind: 'boss', name: 'Bayle the Dread', aliases: ['bayle'], region: 'Jagged Peak', campaign: 'sote', implies: [] },
   { id: 'item:igons-harpoon', kind: 'item', name: "Igon's Harpoon", aliases: ['igon harpoon'], region: 'Jagged Peak', campaign: 'sote', implies: [] },
 ]
 

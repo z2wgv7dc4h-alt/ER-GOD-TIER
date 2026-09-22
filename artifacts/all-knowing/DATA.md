@@ -133,7 +133,7 @@ See `docs/REVIEW.md`.
 - **Task 73 warp stubs:** every remaining warp gets a name-derived `grace:{slug}` alias row
   (`source: 'grace-stub'`) — no catalog fact, no pin, no implications — and an authored id still
   wins on a collision. Output is now **1273 rows / ~274 KB**; **unmatched warps 360 → 0**, bosses
-  79/215. Engine-backed by catalog prefix: grace 25/25, boss 88/89, item 89/91, invader 22/24. Run
+  79/215. Engine-backed by catalog prefix: grace 25/25, boss 87/88, item 89/91, invader 22/24. Run
   twice = byte-identical (the `docs/ALIAS-PLANE.md` table is the live snapshot).
   `searchSync("church of elleh")` / `("elleh")` both hit `grace:elleh`; 10k lot ids are not put in
   `searchSync`.

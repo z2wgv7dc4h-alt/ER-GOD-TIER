@@ -44,6 +44,8 @@ describe('HelpSheet', () => {
       'live memory is off by default',
       'fanapi is reference, not ar',
       'in-repo regulation',
+      'co-op & goods paste',
+      'atlas never goes blank',
     ]) {
       expect(lower, phrase).toContain(phrase)
     }

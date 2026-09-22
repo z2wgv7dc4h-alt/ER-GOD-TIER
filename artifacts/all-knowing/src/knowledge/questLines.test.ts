@@ -32,7 +32,7 @@ const NEW_FACTS = [
   'item:chrysalids-memento',
   'quest:diallos:met', 'quest:diallos:lanya', 'quest:diallos:village', 'quest:diallos:jarburg', 'quest:diallos:poachers',
   'quest:diallos:concluded', 'item:diallos-mask',
-  'quest:igon:met', 'quest:igon:peak', 'quest:igon:summon', 'quest:igon:concluded', 'boss:bayle', 'item:igons-harpoon',
+  'quest:igon:met', 'quest:igon:peak', 'quest:igon:summon', 'quest:igon:concluded', 'item:igons-harpoon',
 ]
 
 const lineOf = (id: string) => {

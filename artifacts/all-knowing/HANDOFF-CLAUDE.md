@@ -21,8 +21,8 @@ A single tool that beats wiki tabs + MapGenie + spreadsheet trackers.
 - Base + SotE + Tarnished Pack. Not Nightreign in v1.
 
 **Tone / UI**
-- Dark ER: gold on soot, three columns (Identity / Stage / Guide).
-- Sit mode for TV / phone / PS5 companion.
+- Dark ER: gold on soot. Desktop is a 280px Now strip beside the stage; a phone gets Map / Now / Kit.
+- The identity rail is the Tarnished sheet behind the name (Task 83; Sit mode is gone).
 - Gideon is Gideon Ofnir, not a generic chatbot.
 
 **Non-goals**
@@ -39,8 +39,8 @@ A single tool that beats wiki tabs + MapGenie + spreadsheet trackers.
 Repo: `artifacts/all-knowing`
 
 ```
-Identity 220 │ Stage │ Gideon 320
-Rooms: Reckoning, Atlas, Build lab, Quest graph, Codex
+Desktop: Now strip 280px │ Stage. Phone tabs: Map / Now / Kit.
+Sheet links: Reckoning, Atlas, Build lab, Quest graph, Codex (Codex also via a '/' search hit)
 ```
 
 **Kernel**
@@ -63,7 +63,7 @@ Rooms: Reckoning, Atlas, Build lab, Quest graph, Codex
 `src/knowledge/{catalog,endings,storylines,loot,builds,graces,collectibles,completion,gates,inferChains,medusa,missables,merchants,bossPins,awesome}.ts`
 
 **Shell**
-`App.tsx` is a god file (~27k). Split rooms when you touch UI.
+`App.tsx` is now just the play-shell chrome (~400 lines); every room is its own lazy chunk.
 
 **Vendor**
 `vendor/elden-ring-map` — egormagurin/EldenRingMap. `npm start` / `npm run map`. Tiles/markers from a **local game install**, not shipped.
@@ -228,8 +228,9 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
    into facts.)
 
 ### P1 — Atlas
-10. 🔄 Pick **one** projection for lots or leave lots off the JPG — Task 09 Part C, in progress
-    (retrying after an earlier run hung on `Setup.bat`'s interactive prompt in headless mode).
+10. ✅ Lots stay **off** the plate. `src/lib/coords.ts` draws only the two documented frames
+    (er-guide percent + boss-pins), never the 10k pickup XYZ; the 109 boss pins are the only
+    world-lots-derived points. Recorded as a decision rather than adding a third projection.
 11. ✅ SotE + ashen **plates** — both now exist (`m-ashen.jpg`, `m-shadow.jpg`, AI-generated
     stand-in art wired into `graces.ts`'s `worlds` array; visually confirmed rendering with pins).
     Real assembled map art for overworld/underground specifically is still Task 09's job.
@@ -256,8 +257,9 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
     enemy `NPCParamID`, producing `public/sourced/enemy-combat.json` (2271 non-boss enemies with
     absorb/poise/resistances), consumed by the Build lab through the same interface as the boss
     table.
-20. ⬜ Gathering nodes (21k, nameless AEG) — not addressed (the source `all_gathering_nodes_final.json`
-    exists in the Goblins dump but is still un-ingested).
+20. ✅ Gathering nodes (21.8k) ingested by Task 41 into `public/sourced/open/gathering-nodes.json`
+    → `src/lib/gatheringNodes.ts`, Codex-only and labelled "unverified placement, model code only";
+    `gatheringNodes.guard.test.ts` keeps them off the player map.
 21. ✅ FanAPI images via `fanImage()` — Task 36. No stub existed; built `src/lib/fanImage.ts`
     over a generated `src/data/image-index.json` and 2,244 cached 160 px WebP thumbnails under
     `public/sourced/images/` (`scripts/ingest-images.py`). Wired into the Codex (guide, loot,
@@ -286,9 +288,9 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
     implementation, *not* vendored from Compass: that repo turned out to have no license at all,
     so only its publicly-documented save-format understanding was used, not its code. Validated
     byte-for-byte against Compass's own upstream test fixture. Runs in a Web Worker, read-only.)
-28. 🔄 `canonicalFactId` name-equality only → improved for bosses (Task 06 added id-based
-    matching, not just name equality, mirroring the grace pattern) but not audited across every
-    fact category.
+28. 🔄 `canonicalFactId` improved for bosses (Task 06, id-based matching) and every authored
+    catalog id now round-trips unchanged (guard test in `src/knowledge/idIntegrity.test.ts`);
+    engine→slug coverage per category is still not exhaustively audited.
 29. ✅ Live-memory / EAC caution documentation — Task 38: README "Live memory mode — read
     this before you enable it" section (accurate `PROCESS_VM_READ` mechanism, EAC risk, opt-in
     default) plus an expanded `docs/MAP-ENGINE.md` Safety section. No in-app toggle exists, so
@@ -672,8 +674,8 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
   Jar-Bairn epilogue; its completion marker `quest:alexander:complete` still sits on step `a3`
   (the `endings.test` contract). Golden fixture: with the early shardbearers down and Alexander
   not freed, the current beat is the Limgrave hole, never the Farum endgame —
-  `src/knowledge/questLines.test.ts`. `boss:bayle` became a real catalog boss, so the alias
-  coverage snapshot moved 88 → 89 in `src/lib/aliases.test.ts`.
+  `src/knowledge/questLines.test.ts`. (`boss:bayle` already existed in the catalog; a later
+  duplicate row was removed, so the alias boss count is 88, not 89.)
 
 **Task 68 — Quests renders the one graph** (landed after 67b):
 

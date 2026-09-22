@@ -13,7 +13,7 @@ Phone    tabs: Map / Now / Kit
 
 The identity rail is an off-canvas **Tarnished sheet** behind the name button (profiles, packet,
 save drop, recents, the full character card, the five room links). Reckon / Quests / Codex are links
-in that sheet, not tabs; the Codex also opens from a `/` search hit. Sit mode was removed (Task 83).
+in that sheet, not tabs; the Codex also opens from a `/` search hit. The old lean-back toggle was removed (Task 83).
 
 ## Do not break
 

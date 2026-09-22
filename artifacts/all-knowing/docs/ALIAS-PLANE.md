@@ -78,13 +78,13 @@ containment turned `Dagger` into `Weathered Dagger`. Precision matters because
 
 ## Coverage
 
-Catalog totals: grace 25, boss 89, invader 24, item 91, quest 109, region 10 (348 facts).
+Catalog totals: grace 25, boss 88, invader 24, item 91, quest 109, region 10 (347 facts).
 "Before" is the state with no generated plane (only the hand-curated grace/boss links existed).
 
 | Category | Facts | Engine-backed rows after | Zero generated aliases before → after |
 |---|---|---|---|
 | grace | 25 | 25 | 25 → 0 |
-| boss | 89 | 88 | 89 → 0 |
+| boss | 88 | 87 | 88 → 0 |
 | invader | 24 | 22 | 24 → 0 |
 | item | 91 | 89 | 91 → 0 |
 | quest | 109 | 0 (authored) | 109 → 0 |
@@ -111,7 +111,7 @@ The row sort is a plain code-unit comparison, so a second run is byte-identical.
 Current output: **1273 rows** (274 KB), sources `grace-stub` 359,
 `hosted-bosses` 271, `hunts` 154, `authored` 124, `paramdex-npc` 116,
 `names` 107, `npc-combat` 83, `hosted-graces` 59. Engine-backed by catalog
-prefix: grace 25/25, boss 88/89, item 89/91, invader 22/24,
+prefix: grace 25/25, boss 87/88, item 89/91, invader 22/24,
 quest 0/109 (authored), region 0/10 (authored).
 
 ### Task 73 warp slug stubs

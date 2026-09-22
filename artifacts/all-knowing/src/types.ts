@@ -56,24 +56,6 @@ export type MapMarker = {
   gate?: boolean
 }
 
-export type QuestStep = {
-  id: string
-  text: string
-  location?: string
-  optional?: boolean
-  lockout?: string
-  flagHint?: string
-}
-
-export type Questline = {
-  id: string
-  npc: string
-  campaign: Campaign
-  ending?: boolean
-  summary: string
-  steps: QuestStep[]
-}
-
 export type CodexEntry = {
   id: string
   name: string

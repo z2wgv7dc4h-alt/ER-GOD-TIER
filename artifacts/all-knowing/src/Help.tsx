@@ -119,6 +119,15 @@ export function HelpSheet({ onClose }: { onClose: () => void }) {
           tracked in the Codex.
         </p>
         <p className="note">
+          <strong>Co-op &amp; goods paste.</strong> The co-op toggle (Tarnished sheet or the interview)
+          drops Mimic / Torrent advice. The sheet also has a goods-paste box: a line marks only when
+          it is one confident name, anything else stays unknown.
+        </p>
+        <p className="note">
+          <strong>Atlas never goes blank.</strong> If the map engine is down or the embed fails, you
+          get the static plate and a banner that says why — never a silent empty iframe.
+        </p>
+        <p className="note">
           <strong>Live memory is off by default.</strong> The normal map reads your save file; the
           optional process-memory player dot is opt-in and offline-only.
         </p>
