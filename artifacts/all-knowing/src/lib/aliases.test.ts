@@ -35,8 +35,8 @@ describe('boss alias table', () => {
   it('reports hosted / seeded / linked boss coverage', () => {
     const status = aliasStatus()
     expect(status.bossHosted).toBe(215)
-    expect(status.bossSeeded).toBe(87)
-    expect(status.bossLinked).toBe(83)
+    expect(status.bossSeeded).toBe(88)
+    expect(status.bossLinked).toBe(84)
   })
 
   it('looks bosses up by slug or dump id', () => {

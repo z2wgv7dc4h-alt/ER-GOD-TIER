@@ -27,6 +27,8 @@ type Workspace = {
   toggleLayer: (id: LayerId) => void
   showLeftovers: boolean
   toggleLeftovers: () => void
+  showGates: boolean
+  toggleGates: () => void
   missingOnly: boolean
   setMissingOnly: (v: boolean) => void
   query: string
@@ -73,6 +75,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(bootProfile.ui.selectedMarkerId)
   const [layers, setLayers] = useState(defaultLayers)
   const [showLeftovers, setShowLeftovers] = useState(false)
+  const [showGates, setShowGates] = useState(false)
   const [missingOnly, setMissingOnly] = useState(bootProfile.ui.missingOnly)
   const [query, setQuery] = useState('')
   const [engineStatus, setEngineStatus] = useState<EngineStatus>('offline')
@@ -140,6 +143,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       toggleLayer: (id) => setLayers((prev) => ({ ...prev, [id]: !prev[id] })),
       showLeftovers,
       toggleLeftovers: () => setShowLeftovers((v) => !v),
+      showGates,
+      toggleGates: () => setShowGates((v) => !v),
       missingOnly,
       setMissingOnly,
       query,
@@ -169,7 +174,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         setCharacter({ ...character, name: label })
       },
     }),
-    [module, character, selectedMarkerId, layers, showLeftovers, missingOnly, query, engineStatus, engineState, engineMarkers, history, sitMode, helpOpen, recentFacts, vault],
+    [module, character, selectedMarkerId, layers, showLeftovers, showGates, missingOnly, query, engineStatus, engineState, engineMarkers, history, sitMode, helpOpen, recentFacts, vault],
   )
 
   return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>

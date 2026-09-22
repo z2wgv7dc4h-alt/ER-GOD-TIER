@@ -1,9 +1,25 @@
 import { endings, knownSet, planRoute, type EndingRoute, type PlanStep } from './endings'
+import { approachingGates, triggeredGates } from './gates'
 import type { Character } from '../types'
 
 export type Line = EndingRoute & { kind: 'ending' | 'story' | 'blitz' }
 
+/**
+ * The Age of Stars route is owned by `endings.ts`, but Ranni also has to be a
+ * traversable companion line (Task 53). Share the exact `steps` array rather than
+ * copy it, so there is one lockout graph and the two can never disagree.
+ */
+const ageOfStars = endings.find((e) => e.id === 'stars')!
+
 export const storylines: Line[] = [
+  {
+    id: 'ranni',
+    kind: 'story',
+    name: 'Ranni, the Witch',
+    aliases: ['ranni', 'lunar princess', 'ranni the witch'],
+    lockedIf: (c) => ageOfStars.lockedIf(c),
+    steps: ageOfStars.steps,
+  },
   {
     id: 'millicent',
     kind: 'story',
@@ -11,9 +27,13 @@ export const storylines: Line[] = [
     aliases: ['millicent', 'gower', 'unalloyed', 'rot girl'],
     lockedIf: (c) => (knownSet(c).has('quest:millicent-killed') ? 'Millicent is already dead on this run.' : null),
     steps: [
-      { id: 'm1', do: 'Get the Unalloyed Gold Needle from Commander O’Neil', detail: 'Swamp of Aeonia, Caelid. Take it to Gowry in Sellia.', factId: 'quest:millicent:needle', module: 'quests', minLevel: 50, requires: [], grants: ['quest:millicent:needle', 'item:rotted-wing'], lockouts: [] },
-      { id: 'm2', do: 'Cure Millicent at the Church of the Plague', detail: 'Return the repaired needle. She moves to Altus, then Dominula, then Haligtree.', factId: 'quest:millicent:cured', module: 'map', minLevel: 70, requires: ['quest:millicent:needle'], grants: ['quest:millicent:cured'], lockouts: [] },
-      { id: 'm3', do: 'Help her at the Haligtree drain', detail: 'Choose to aid Millicent, not her sisters. That keeps the needle for a Frenzy purge later.', factId: 'grace:drainage', module: 'map', minLevel: 110, obtain: 'Unalloyed Gold Needle (for Farum / Frenzy undo)', requires: ['quest:millicent:cured'], grants: ['grace:drainage', 'quest:millicent:aid', 'item:miquella-needle'], lockouts: ['quest:millicent-killed', 'quest:millicent:betrayed'], lockout: 'Attacking her here ends the good needle.' },
+      { id: 'm1', do: 'Get the Unalloyed Gold Needle from Commander O’Neil', detail: 'Swamp of Aeonia, Caelid. Gowry in Sellia asks for it first; O’Neil drops it.', factId: 'quest:millicent:needle', module: 'map', minLevel: 50, requires: [], grants: ['quest:millicent:needle', 'item:rotted-wing'], lockouts: ['quest:millicent-killed'] },
+      { id: 'm2', do: 'Cure Millicent at the Church of the Plague', detail: 'Gowry repairs the needle; give it to the rot-afflicted Millicent in the swamp church. She then travels toward Altus.', factId: 'quest:millicent:cured', module: 'map', minLevel: 60, requires: ['quest:millicent:needle'], grants: ['quest:millicent:cured'], lockouts: ['quest:millicent-killed'] },
+      { id: 'm3', do: 'Meet Millicent at Erdtree-Gazing Hill', detail: 'She waits on the Altus plateau road and repeats her thanks. Keep the conversation going or the line stalls.', factId: 'quest:millicent:altus', module: 'map', minLevel: 70, requires: ['quest:millicent:cured'], grants: ['quest:millicent:altus'], lockouts: ['quest:millicent-killed'] },
+      { id: 'm4', do: 'Aid her at Dominula and the Godskin Apostle', detail: 'Windmill Village. Her gold summon sign sits by the Godskin Apostle; fight beside her, then talk to her.', factId: 'quest:millicent:godskin', module: 'map', minLevel: 80, requires: ['quest:millicent:altus'], grants: ['quest:millicent:godskin'], lockouts: ['quest:millicent-killed'] },
+      { id: 'm5', do: 'Bring her the Valkyrie’s Prosthesis', detail: 'She asks for the prosthesis once her travels resume. Gowry rewards the errand with the Prosthesis-Wearer Heirloom.', factId: 'quest:millicent:prosthesis', module: 'quests', minLevel: 90, requires: ['quest:millicent:godskin'], grants: ['quest:millicent:prosthesis'], lockouts: ['quest:millicent-killed'] },
+      { id: 'm6', do: 'Aid Millicent at Elphael (gold sign)', detail: 'Below the Haligtree, choose the gold summon sign and beat her four sisters. She leaves the Unalloyed Gold Needle behind.', factId: 'quest:millicent:aid', module: 'map', minLevel: 110, obtain: 'Unalloyed Gold Needle', requires: ['quest:millicent:godskin'], grants: ['quest:millicent:aid', 'item:miquella-needle', 'item:rotten-winged-sword-insignia'], lockouts: ['quest:millicent:betrayed', 'quest:millicent-killed'], lockout: 'The two Elphael signs are mutually exclusive.' },
+      { id: 'm7', do: 'Challenge Millicent at Elphael (red sign)', detail: 'The red summon sign makes her an enemy. You get her prosthesis; you lose the needle and the insignia.', factId: 'quest:millicent:betrayed', module: 'map', minLevel: 110, obtain: "Millicent's Prosthesis", requires: ['quest:millicent:godskin'], grants: ['quest:millicent:betrayed', 'item:millicent-prosthesis'], lockouts: ['quest:millicent:aid', 'quest:millicent-killed'], lockout: 'The two Elphael signs are mutually exclusive.' },
     ],
   },
   {
@@ -47,9 +67,14 @@ export const storylines: Line[] = [
     aliases: ['leda', 'enir-ilim', 'shadow story', 'miquella'],
     lockedIf: (c) => (!knownSet(c).has('region:shadow') && !knownSet(c).has('item:shadow-realm-blessing') ? 'You have not entered the Realm of Shadow yet. Need Mohg + the withered arm.' : null),
     steps: [
-      { id: 'ld1', do: 'Meet Leda at the Gravesite cross', detail: 'Talk to Freyja, Hornsent, Ansbach, Thiollier before the Keep turns.', factId: 'grace:gravesite', module: 'map', requires: [], grants: ['grace:gravesite', 'quest:leda:met'], lockouts: [] },
-      { id: 'ld2', do: 'Clear Shadow Keep invitations', detail: 'Who you side with changes Enir-Ilim. Crossing the Sealing Tree locks several.', factId: 'grace:shadow-keep', module: 'map', minLevel: 150, requires: ['quest:leda:met'], grants: ['grace:shadow-keep', 'quest:leda:invitations'], lockouts: ['quest:leda:invitations-locked'], lockout: 'Sealing Tree is the last invitation window.' },
-      { id: 'ld3', do: 'Enir-Ilim and the Consort', detail: 'Promised Consort Radahn. Bring the allies you kept.', factId: 'boss:consort', module: 'map', minLevel: 170, requires: ['quest:leda:invitations'], grants: ['boss:consort'], lockouts: ['quest:leda:invitations-locked'], lockout: 'Allies killed before the Sealing Tree do not return for the Enir-Ilim assault.' },
+      { id: 'ld1', do: 'Meet Leda at the Three-Path Cross', detail: 'Gravesite Plain. Leda, Hornsent and Freyja wait at the first Miquella’s Cross; Thiollier is nearby.', factId: 'quest:leda:met', module: 'map', requires: [], grants: ['quest:leda:met', 'quest:hornsent:met'], lockouts: [] },
+      { id: 'ld2', do: 'Clear Castle Ensis and meet them at the Highroad Cross', detail: 'The next Miquella’s Cross sits past Rellana. Freyja and Thiollier have their own words there.', factId: 'quest:leda:highroad', module: 'map', minLevel: 140, requires: ['quest:leda:met'], grants: ['quest:leda:highroad', 'quest:freyja:met', 'quest:thiollier:met'], lockouts: [] },
+      { id: 'ld3', do: 'Enter the Shadow Keep and free Ansbach', detail: 'The Specimen Storehouse holds Sir Ansbach. He once served Mohg and knows Miquella’s charm.', factId: 'quest:ansbach:met', module: 'map', minLevel: 150, requires: ['quest:leda:highroad'], grants: ['quest:ansbach:met'], lockouts: ['quest:leda:invitations-locked'] },
+      { id: 'ld4', do: 'Clear the Shadow Keep invitations', detail: 'Leda offers an invitation on the storehouse floor. Which allies you keep decides the Enir-Ilim assault.', factId: 'quest:leda:invitations', module: 'map', minLevel: 150, requires: ['quest:ansbach:met'], grants: ['quest:leda:invitations'], lockouts: ['quest:leda:invitations-locked'], lockout: 'The invitations close at the Sealing Tree.' },
+      { id: 'ld5', do: 'Defeat Messmer the Impaler', detail: 'The Shadow Keep’s lord. His flame is the key to burning the Sealing Tree.', factId: 'boss:messmer', module: 'map', minLevel: 155, requires: ['quest:leda:invitations'], grants: ['boss:messmer'], lockouts: ['quest:leda:invitations-locked'] },
+      { id: 'ld6', do: 'Burn the Sealing Tree', detail: 'The last window. Crossing it locks every unfinished Keep invitation and freezes the alliance choices.', factId: 'quest:leda:invitations-locked', module: 'map', minLevel: 160, requires: ['boss:messmer'], grants: ['quest:leda:invitations-locked'], lockouts: [] },
+      { id: 'ld7', do: 'Side with your allies at Enir-Ilim', detail: 'Leda turns on whoever remains. Keep the allies you want summons from and fight the rest.', factId: 'quest:leda:concluded', module: 'map', minLevel: 170, requires: ['quest:leda:invitations-locked'], grants: ['quest:leda:concluded'], lockouts: [] },
+      { id: 'ld8', do: 'Promised Consort Radahn', detail: 'Miquella’s consort at the top of Enir-Ilim. Bring the allies you kept.', factId: 'boss:consort', module: 'map', minLevel: 175, requires: ['quest:leda:concluded'], grants: ['boss:consort'], lockouts: [] },
     ],
   },
   {
@@ -85,9 +110,12 @@ export const storylines: Line[] = [
     lockedIf: () => null,
     steps: [
       { id: 'de1', do: 'Talk to Dung Eater at the Roundtable Hold', detail: 'Behind the door on the lower level. He asks you to help him defile.', factId: 'quest:dungeater:met', module: 'quests', requires: [], grants: ['quest:dungeater:met'], lockouts: [] },
-      { id: 'de2', do: 'Open his cell in the Subterranean Shunning-Grounds', detail: 'Find the body in Leyndell’s sewers and the key, then free him for the invasion.', factId: 'quest:dungeater:freed', module: 'map', minLevel: 80, requires: ['quest:dungeater:met'], grants: ['quest:dungeater:freed'], lockouts: [] },
+      { id: 'de2', do: 'Open his cell in the Subterranean Shunning-Grounds', detail: 'Find the body and the key in Leyndell’s sewers, then free him for the invasion.', factId: 'quest:dungeater:freed', module: 'map', minLevel: 80, requires: ['quest:dungeater:met'], grants: ['quest:dungeater:freed'], lockouts: [] },
       { id: 'de3', do: 'Defeat him at the Leyndell moat invasion', detail: 'Sword of Milos drops here. Must happen before the Erdtree burns.', factId: 'quest:dungeater:invasion', module: 'map', minLevel: 90, obtain: 'Sword of Milos', requires: ['quest:dungeater:freed'], grants: ['quest:dungeater:invasion', 'item:sword-of-milos'], lockouts: ['boss:fire-giant'], lockout: 'The moat invasion does not occur in the Ashen Capital.' },
-      { id: 'de4', do: 'Give him five Seedbed Curses for the Mending Rune', detail: 'Or use Seluvis’s potion to make him a puppet, which forfeits the rune.', factId: 'item:mending-rune-fell-curse', module: 'quests', minLevel: 100, requires: ['quest:dungeater:invasion'], grants: ['item:mending-rune-fell-curse'], lockouts: ['quest:dungeater:potioned'], lockout: 'Making him a puppet with Seluvis’s potion ends the Mending Rune path.' },
+      { id: 'de4', do: 'Collect five Seedbed Curses', detail: 'One from the Roundtable’s corpse after he is freed, the rest across Leyndell, the sewers and the Mountaintops.', factId: 'item:seedbed-curse', module: 'map', minLevel: 85, requires: ['quest:dungeater:freed'], grants: ['item:seedbed-curse'], lockouts: ['quest:dungeater:potioned'] },
+      { id: 'de5', do: 'Give him the Seedbed Curses for the Mending Rune', detail: 'Hand over five curses and he relents, giving the Mending Rune of the Fell Curse.', factId: 'item:mending-rune-fell-curse', module: 'quests', minLevel: 100, requires: ['quest:dungeater:invasion', 'item:seedbed-curse'], grants: ['item:mending-rune-fell-curse'], lockouts: ['quest:dungeater:potioned'], lockout: 'Making him a puppet with Seluvis’s potion ends the Mending Rune path.' },
+      { id: 'de6', do: 'Or pour Seluvis’s potion into him', detail: 'The puppet fork. It forecloses the Fell Curse rune but yields the Dung Eater puppet.', factId: 'quest:dungeater:potioned', module: 'quests', minLevel: 70, requires: ['quest:dungeater:freed'], grants: ['quest:dungeater:potioned'], lockouts: ['item:mending-rune-fell-curse'], lockout: 'The potion and the Mending Rune are mutually exclusive.' },
+      { id: 'de7', do: 'Use the Fell Curse rune after the Elden Beast', detail: 'The curse blesses everyone equally. Only if he is not a puppet.', factId: 'boss:radagon', module: 'map', minLevel: 110, requires: ['item:mending-rune-fell-curse'], grants: ['boss:radagon'], lockouts: [] },
     ],
   },
   {
@@ -97,10 +125,13 @@ export const storylines: Line[] = [
     aliases: ['fia', 'deathbed', 'cursemark', 'lichdragon', 'fortissax'],
     lockedIf: () => null,
     steps: [
-      { id: 'fia1', do: 'Let Fia hold you at the Roundtable Hold', detail: 'She offers an embrace and gives you the Weathered Dagger.', factId: 'quest:fia:met', module: 'quests', minLevel: 30, requires: [], grants: ['quest:fia:met'], lockouts: [] },
-      { id: 'fia2', do: 'Decide the Weathered Dagger’s fate', detail: 'Give it to D and Fia leaves; keep it and D lives. Either way Fia moves to the Deeproot Depths.', factId: 'quest:fia:dagger', module: 'quests', requires: ['quest:fia:met'], grants: ['quest:fia:dagger'], lockouts: ['quest:fia:killed'], lockout: 'Killing Fia at the Roundtable closes the Death-Prince line.' },
-      { id: 'fia3', do: 'Give Fia the Cursemark of Death in Deeproot Depths', detail: 'Cursemark from the Carian Study Hall inversion. Defend her from Lionel.', factId: 'quest:fia:cursemark', module: 'map', minLevel: 90, requires: ['quest:fia:dagger'], grants: ['quest:fia:cursemark'], lockouts: ['quest:fia:killed'] },
-      { id: 'fia4', do: 'Defeat Lichdragon Fortissax in her dream', detail: 'Take the Mending Rune of the Death-Prince for the Duskborn ending.', factId: 'boss:fortissax', module: 'map', minLevel: 100, requires: ['quest:fia:cursemark'], grants: ['boss:fortissax', 'item:mending-rune-death-prince'], lockouts: ['quest:fia:killed'] },
+      { id: 'fia1', do: 'Let Fia hold you at the Roundtable Hold', detail: 'She offers an embrace and the Weathered Dagger. Rogier’s knifeprint is the thread that leads here.', factId: 'quest:fia:met', module: 'quests', minLevel: 30, requires: [], grants: ['quest:fia:met'], lockouts: ['quest:fia:killed'] },
+      { id: 'fia2', do: 'Decide the Weathered Dagger’s fate', detail: 'Give it to D and Fia leaves the Roundtable; keep it and D lives. Either way she moves to the Deeproot Depths.', factId: 'quest:fia:dagger', module: 'quests', minLevel: 50, requires: ['quest:fia:met'], grants: ['quest:fia:dagger'], lockouts: ['quest:fia:killed'], lockout: 'Killing Fia at the Roundtable closes the Death-Prince line.' },
+      { id: 'fia3', do: 'Ride the coffin down to the Deeproot Depths', detail: 'Past the Valiant Gargoyles in Nokron, the coffin lifts you to the Prince of Death’s throne.', factId: 'grace:deeproot', module: 'map', minLevel: 80, requires: ['quest:fia:dagger'], grants: ['grace:deeproot'], lockouts: ['quest:fia:killed'] },
+      { id: 'fia4', do: 'Give Fia the Cursemark of Death', detail: 'From the inverted Carian Study Hall. Defend her from Lionel’s puppets, then accept the Mending Rune of the Death-Prince.', factId: 'quest:fia:cursemark', module: 'map', minLevel: 90, requires: ['grace:deeproot', 'quest:ranni:statue'], grants: ['quest:fia:cursemark', 'item:cursemark-of-death'], lockouts: ['quest:fia:killed'] },
+      { id: 'fia5', do: 'Defeat Lichdragon Fortissax in her dream', detail: 'Sleep in her deathbed; the dragon is the last guardian of the Death-Prince’s rune.', factId: 'boss:fortissax', module: 'map', minLevel: 100, obtain: 'Mending Rune of the Death-Prince', requires: ['quest:fia:cursemark'], grants: ['boss:fortissax', 'item:mending-rune-death-prince'], lockouts: ['quest:fia:killed'] },
+      { id: 'fia6', do: 'Meet D’s brother in Deeproot', detail: 'The surviving twin inherits D’s Twinned Armor and hunts Fia. This is the fork against the Death-Prince line.', factId: 'quest:d:brother', module: 'map', minLevel: 90, requires: ['quest:fia:dagger'], grants: ['quest:d:brother', 'item:twinned-armor'], lockouts: ['quest:fia:killed'] },
+      { id: 'fia7', do: 'Use the Mending Rune after the Elden Beast', detail: 'The Death-Prince ending, or keep another rune instead.', factId: 'boss:radagon', module: 'map', minLevel: 110, requires: ['item:mending-rune-death-prince'], grants: ['boss:radagon'], lockouts: [] },
     ],
   },
   {
@@ -138,7 +169,10 @@ export const storylines: Line[] = [
       { id: 'se1', do: 'Free Sellen from the Waypoint Ruins', detail: 'Defeat the Mad Pumpkin Head in the cellar below the Liurnia ruins.', factId: 'quest:sellen:freed', module: 'map', minLevel: 30, requires: [], grants: ['quest:sellen:freed'], lockouts: [] },
       { id: 'se2', do: 'Find Azur, the Primeval Sorcerer', detail: 'Mt. Gelmir, sealed cave behind the Hermit Village. Sellen’s first master.', factId: 'quest:sellen:azur', module: 'map', minLevel: 80, requires: ['quest:sellen:freed'], grants: ['quest:sellen:azur'], lockouts: [] },
       { id: 'se3', do: 'Find Lusat in the Sellia Hideaway', detail: 'Caelid. Break the illusory wall; the second primeval sorcerer.', factId: 'quest:sellen:lusat', module: 'map', minLevel: 80, requires: ['quest:sellen:freed'], grants: ['quest:sellen:lusat'], lockouts: [] },
-      { id: 'se4', do: 'Side with Sellen at Raya Lucaria', detail: 'After both masters, return to the academy. Choose Sellen over Jerren to get Stars of Ruin and her ending.', factId: 'quest:sellen:side', factIds: ['item:stars-of-ruin'], module: 'quests', minLevel: 90, obtain: 'Stars of Ruin', requires: ['quest:sellen:azur', 'quest:sellen:lusat'], grants: ['quest:sellen:side', 'item:stars-of-ruin'], lockouts: ['quest:sellen:jerren-side'], lockout: 'Siding with Jerren kills Sellen and forfeits Stars of Ruin.' },
+      { id: 'se4', do: 'Report both primeval sorcerers to Sellen', detail: 'Tell her of Azur and Lusat and she asks you to meet her at the academy.', factId: 'quest:sellen:primers', module: 'quests', minLevel: 85, requires: ['quest:sellen:azur', 'quest:sellen:lusat'], grants: ['quest:sellen:primers'], lockouts: ['quest:sellen:jerren-side'] },
+      { id: 'se5', do: 'Meet Witch-Hunter Jerren at Raya Lucaria', detail: 'Jerren waits in the Debate Parlor, hunting the witch. Which side you take is final.', factId: 'quest:sellen:jerren', module: 'map', minLevel: 90, requires: ['quest:sellen:primers'], grants: ['quest:sellen:jerren'], lockouts: ['quest:sellen:jerren-side'] },
+      { id: 'se6', do: 'Side with Sellen', detail: 'Help her against Jerren to earn Stars of Ruin and her ending.', factId: 'quest:sellen:side', factIds: ['item:stars-of-ruin'], module: 'quests', minLevel: 90, obtain: 'Stars of Ruin', requires: ['quest:sellen:jerren'], grants: ['quest:sellen:side', 'item:stars-of-ruin'], lockouts: ['quest:sellen:jerren-side'], lockout: 'Siding with Jerren kills Sellen and forfeits Stars of Ruin.' },
+      { id: 'se7', do: 'Or side with Jerren', detail: 'Take the Witch-Hunter’s side; Sellen is lost, and her spells and bell bearing go with her.', factId: 'quest:sellen:jerren-side', module: 'quests', minLevel: 90, requires: ['quest:sellen:jerren'], grants: ['quest:sellen:jerren-side'], lockouts: ['quest:sellen:side'], lockout: 'Siding with Sellen forfeits the Witch-Hunter’s side.' },
     ],
   },
   {
@@ -258,9 +292,14 @@ export const storylines: Line[] = [
     aliases: ['tanith', 'lady tanith', 'recusant', 'volcano contracts'],
     lockedIf: () => null,
     steps: [
-      { id: 'ta1', do: 'Join Volcano Manor and take Tanith’s first contract', detail: 'After Rya’s invitation. Tanith hands you invasion contracts against the Erdtree’s servants.', factId: 'quest:tanith:contracts', module: 'quests', minLevel: 70, requires: [], grants: ['quest:tanith:contracts'], lockouts: [] },
-      { id: 'ta2', do: 'Complete the named contracts (Istvan, Rileigh, Hoslow)', detail: 'Each is a red summon sign in the world. Finishing them opens the drawing room and Tanith’s reward.', factId: 'quest:tanith:targets', module: 'quests', minLevel: 90, requires: ['quest:tanith:contracts'], grants: ['quest:tanith:targets'], lockouts: ['boss:rykard'], lockout: 'Killing Rykard ends the contract window.' },
-      { id: 'ta3', do: 'Defeat Rykard, then hear Tanith’s request', detail: 'She asks you to devour the god together. Refuse and she leaves; agree and she stays by his corpse.', factId: 'quest:tanith:concluded', module: 'map', minLevel: 100, requires: ['quest:tanith:targets'], grants: ['quest:tanith:concluded'], lockouts: ['boss:rykard'], lockout: 'Rykard’s death is the point of no return for the manor.' },
+      { id: 'ta1', do: 'Recover Rya’s necklace and accept her invitation', detail: 'Big Boggart in the Liurnia marsh has it. Returning it opens Volcano Manor to you.', factId: 'quest:rya:necklace', module: 'map', minLevel: 40, requires: [], grants: ['quest:rya:necklace', 'quest:rya:manor', 'item:volcano-manor-invitation'], lockouts: ['quest:rya:killed'] },
+      { id: 'ta2', do: 'Take Tanith’s first contract', detail: 'Inside the manor, Lady Tanith hands you invasion contracts against the Erdtree’s servants.', factId: 'quest:tanith:contracts', module: 'quests', minLevel: 60, requires: ['quest:rya:manor'], grants: ['quest:tanith:contracts'], lockouts: ['boss:rykard'] },
+      { id: 'ta3', do: 'Complete the named contracts (Istvan, Rileigh, Hoslow)', detail: 'Each is a red summon sign in the world. Finishing them opens the drawing room and Tanith’s reward.', factId: 'quest:tanith:targets', module: 'quests', minLevel: 90, requires: ['quest:tanith:contracts'], grants: ['quest:tanith:targets'], lockouts: ['boss:rykard'] },
+      { id: 'ta4', do: 'Take the Drawing-Room Key and search the manor', detail: 'Tanith’s key opens the upstairs rooms; letters and a hidden imp statue guard a serpent’s amnion.', factId: 'item:drawing-room-key', module: 'map', minLevel: 80, requires: ['quest:tanith:targets'], grants: ['item:drawing-room-key', 'item:serpent-amnion'], lockouts: ['boss:rykard'] },
+      { id: 'ta5', do: 'Give Rya the Serpent’s Amnion', detail: 'She learns she is the serpent’s daughter. Do this before Rykard dies.', factId: 'quest:rya:amnion', module: 'quests', minLevel: 80, requires: ['quest:rya:manor', 'item:serpent-amnion'], grants: ['quest:rya:amnion'], lockouts: ['quest:rya:killed', 'boss:rykard'], lockout: 'Killing Rykard first strands Rya.' },
+      { id: 'ta6', do: 'Defeat Rykard, Lord of Blasphemy', detail: 'The serpent-devouring god. His death is the point of no return for the manor.', factId: 'boss:rykard', module: 'map', minLevel: 100, requires: ['quest:tanith:contracts'], grants: ['boss:rykard'], lockouts: [] },
+      { id: 'ta7', do: 'Hear Tanith’s final request, or end her', detail: 'She asks you to devour the god together. Refuse and she leaves; strike her and she stays by his corpse.', factId: 'quest:tanith:concluded', module: 'map', minLevel: 100, requires: ['boss:rykard'], grants: ['quest:tanith:concluded'], lockouts: [] },
+      { id: 'ta8', do: 'Choose Rya’s aftermath', detail: 'Spare her or tell her the truth of her birth. The manor is quiet either way.', factId: 'quest:rya:concluded', module: 'map', minLevel: 100, requires: ['quest:rya:amnion'], grants: ['quest:rya:concluded'], lockouts: ['quest:rya:killed'] },
     ],
   },
   {
@@ -334,6 +373,23 @@ export const storylines: Line[] = [
       { id: 'an1', do: 'Free and meet Ansbach in the Shadow Keep', detail: 'He is imprisoned in the Specimen Storehouse. He once served Mohg and knows Miquella’s charm.', factId: 'quest:ansbach:met', module: 'map', requires: [], grants: ['quest:ansbach:met'], lockouts: [] },
       { id: 'an2', do: 'Learn what Miquella did to Mohg', detail: 'Talk him through the charm and the withered arm. This unlocks the Leda alliance choice at the Sealing Tree.', factId: 'quest:ansbach:mohg', module: 'quests', minLevel: 150, requires: ['quest:ansbach:met'], grants: ['quest:ansbach:mohg'], lockouts: ['quest:leda:invitations-locked'], lockout: 'The Sealing Tree is the last window to pick a side.' },
       { id: 'an3', do: 'Side with Ansbach at Enir-Ilim', detail: 'He can be summoned for the Leda fight and the Consort. Killing him loses his set and the summon.', factId: 'quest:ansbach:concluded', module: 'map', minLevel: 170, requires: ['quest:ansbach:mohg'], grants: ['quest:ansbach:concluded'], lockouts: ['quest:leda:invitations-locked'] },
+    ],
+  },
+  {
+    id: 'ymir',
+    kind: 'story',
+    name: 'Count Ymir, Mother of Fingers',
+    aliases: ['ymir', 'count ymir', 'finger ruins', 'metyr', 'jolan', 'mother of fingers'],
+    lockedIf: (c) => (!knownSet(c).has('region:shadow') && !knownSet(c).has('item:shadow-realm-blessing') ? 'You have not entered the Realm of Shadow yet. Need Mohg + the withered arm.' : null),
+    steps: [
+      { id: 'ym1', do: 'Meet Count Ymir at the Cathedral of Manus Metyr', detail: 'On the Gravesite Plain. He asks you to ring the bells at the Finger Ruins.', factId: 'quest:ymir:met', module: 'map', requires: [], grants: ['quest:ymir:met'], lockouts: [] },
+      { id: 'ym2', do: 'Ring the bell at the Finger Ruins of Rhia', detail: 'South of the cathedral, past the fissure. Report back to Ymir.', factId: 'quest:ymir:rhia', module: 'map', minLevel: 130, requires: ['quest:ymir:met'], grants: ['quest:ymir:rhia'], lockouts: [] },
+      { id: 'ym3', do: 'Ring the bell at the Finger Ruins of Dheo', detail: 'North of the cathedral, on the Scadu Altus plateau. Report back again.', factId: 'quest:ymir:dheo', module: 'map', minLevel: 140, requires: ['quest:ymir:rhia'], grants: ['quest:ymir:dheo'], lockouts: [] },
+      { id: 'ym4', do: 'Meet Jolan, Swordhand of Night', detail: 'Ymir’s follower watches the cathedral. Her line runs alongside the Count’s.', factId: 'quest:jolan:met', module: 'map', minLevel: 130, requires: ['quest:ymir:met'], grants: ['quest:jolan:met'], lockouts: [] },
+      { id: 'ym5', do: 'Descend beneath the cathedral and defeat Metyr', detail: 'With both bells rung, the hidden stair opens. Metyr, Mother of Fingers, is the Greater Will’s envoy.', factId: 'boss:metyr', module: 'map', minLevel: 150, requires: ['quest:ymir:dheo'], grants: ['boss:metyr'], lockouts: [] },
+      { id: 'ym6', do: 'Claim the Iris of Grace', detail: 'Ymir’s reward for the bells. It decides the ending of his line.', factId: 'item:iris-of-grace', module: 'codex', minLevel: 150, requires: ['boss:metyr'], grants: ['item:iris-of-grace'], lockouts: [] },
+      { id: 'ym7', do: 'Claim the Iris of Occultation', detail: 'The other Iris, for the fork Jolan offers at the altar.', factId: 'item:iris-of-occultation', module: 'codex', minLevel: 150, requires: ['boss:metyr'], grants: ['item:iris-of-occultation'], lockouts: [] },
+      { id: 'ym8', do: 'Choose whose age to begin', detail: 'Use one Iris at the altar to close Ymir’s line and settle what Jolan becomes.', factId: 'quest:ymir:concluded', module: 'map', minLevel: 150, requires: ['boss:metyr'], grants: ['quest:ymir:concluded'], lockouts: [] },
     ],
   },
 ]
@@ -426,6 +482,8 @@ export const npcLines: { alias: string; line: string }[] = [
   { alias: 'varre', line: 'varre' },
   { alias: 'leda', line: 'leda' },
   { alias: 'sellen', line: 'sellen' },
+  { alias: 'ymir', line: 'ymir' },
+  { alias: 'jolan', line: 'ymir' },
 ]
 
 /** The line a companion NPC name refers to, if any. */
@@ -470,5 +528,8 @@ export function stillAvailable(character: Character) {
     done: rows.filter((r) => r.state === 'done'),
     active: rows.filter((r) => r.state === 'active'),
     open: rows.filter((r) => r.state === 'open'),
+    // Task 52: the survey consults world-state gates too, so callers can warn
+    // before a line's next beat walks into a point of no return.
+    gates: { approaching: approachingGates(character), fired: triggeredGates(character) },
   }
 }

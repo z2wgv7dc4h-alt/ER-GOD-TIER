@@ -59,7 +59,7 @@ Rooms: Reckoning, Atlas, Build lab, Quest graph, Codex
 - `src/lib/save.ts` — **not a real .sl2 parser**
 
 **Knowledge (authored, small)**
-`src/knowledge/{catalog,endings,storylines,loot,builds,graces,collectibles,completion,medusa,missables,merchants,bossPins,awesome}.ts`
+`src/knowledge/{catalog,endings,storylines,loot,builds,graces,collectibles,completion,gates,medusa,missables,merchants,bossPins,awesome}.ts`
 
 **Shell**
 `App.tsx` is a god file (~27k). Split rooms when you touch UI.
@@ -352,6 +352,41 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
   (`C:\Program Files (x86)\Steam\steamapps\common\ELDEN RING\Game\`), which this list's authors
   did not have when they wrote “SOURCE-PACK.md: the PC in this house does not have Elden Ring.”
   That constraint is gone; treat any doc still citing it as outdated for extraction-related work.
+
+**Task 52 — missable gate overlay** (landed after 41, verified against the brief):
+
+- New `src/knowledge/gates.ts` + `gates.test.ts`: a first-class `Gate` model
+  (triggerFacts / approachingWhen / locks / stillOk) for ten world-state tripwires — the Forge,
+  Maliketh, the Sealing Tree, the Ranni / frenzy / dung-eater ending commits, Seluvis's potion,
+  Volcano Manor, Millicent's Elphael fork, and Varré. Lock lists are deliberately short and
+  verifiable; Ranni / Millicent / Rya / Varré are recorded as `stillOk` at the Forge rather than
+  as false lockouts.
+- `planRoute` now returns `approachingGates` + `gateWarning`, and `stillAvailable` returns
+  `gates`. The router answers "if I keep going / what do I miss / before the forge|maliketh|shadow
+  keep / am I locking" and puts the lock list ahead of a walk-forward beat.
+- Atlas: a toggleable "locks if you continue" pin layer (`src/lib/gatePins.ts`) reusing the
+  existing loot→grace and `coords.json` frames only; locks with no pin are listed in the side
+  panel instead of given an invented position.
+- Follow-up fix (mandated before 53): `gate:forge.triggerFacts = ['quest:erdtree-burned']` only.
+  The Fire Giant kill and the Forge grace are `approachingWhen`, because killing him does not
+  burn the tree. Six catalog items the gate names were added (`bolt-of-gransax`,
+  `sanctified-whetblade`, `blessed-dew-talisman`, `black-whetblade`,
+  `rotten-winged-sword-insignia`, `millicent-prosthesis`).
+
+**Task 53 — wiki-grade lockable lines** (landed after 52; `storylines.test.ts` added):
+
+- Expanded the eight lockable lines in place to 7–8 steps each: `ranni` (added as a traversable
+  line that shares the `stars` ending's step array **by reference**, so there is one lockout
+  graph, not two that disagree), `millicent`, `fia`, `dung-eater`, `tanith`, `leda`, `sellen`,
+  and `ymir` (new). Millicent's Elphael aid/betray are terminal steps with mutual lockouts
+  (Rotten Winged Sword Insignia vs Millicent's Prosthesis); Leda is one beat per invitation
+  window.
+- Added 54 catalog facts: 49 `quest:` state ids, 4 key items (Seedbed Curse, Drawing-Room Key,
+  Iris of Grace, Iris of Occultation) and `boss:metyr`. Catalog row count 226 → 286. Quest facts
+  carry `implies: []` where a beat does not prove an earlier one — no invented event flags.
+- Golden-fixture test: Radahn dead + Ranni's service + Rogier's knifeprint ⇒
+  `planRoute(ranni)` nexts the Fingerslayer hand-in (not "meet Ranni"); `planRoute(millicent)`
+  nexts Gowry's Unalloyed needle; Gideon with goal `ranni` names Fingerslayer and offers Show it.
 
 ---
 

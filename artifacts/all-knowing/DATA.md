@@ -144,7 +144,7 @@ Codex fetches it, `src/knowledge/completion.ts` derives `fieldHunts` from it, an
 
 ## Authored (small, keep)
 
-`src/knowledge/{catalog,endings,storylines,loot,builds,collectibles,completion,missables}.ts`
+`src/knowledge/{catalog,endings,storylines,loot,builds,collectibles,completion,gates,missables}.ts`
 
 ## Cosmetic display (not combat)
 
@@ -153,6 +153,21 @@ Codex fetches it, `src/knowledge/completion.ts` derives `fieldHunts` from it, an
   `scripts/ingest-npc-display.mjs`. Not enemy absorb/resistance; the combat source is
   `public/sourced/npc-combat.json` + `src/lib/enemy.ts` (extracted `NpcParam`, above).
 See `docs/REVIEW.md`.
+
+## Gates + wiki-grade lines (Tasks 52–53)
+
+- `src/knowledge/gates.ts` — ten authored world-state gates (Forge, Maliketh, Sealing Tree,
+  Ranni / frenzy / dung-eater ending commits, Seluvis potion, Volcano Manor, Millicent's Elphael
+  fork, Varré). Not extracted data: each gate is authored from `missables.ts`,
+  `guide/missables.json`, storyline `lockouts`, and facts already in `catalog.ts`. The Forge's
+  only trigger is `quest:erdtree-burned`; the Fire Giant kill / Forge grace are one-beat-away
+  signals, since killing him does not burn the tree.
+- `src/lib/gatePins.ts` — binds approaching gates' locks onto the Atlas plate using only the two
+  existing frames (loot→grace, `coords.json`). Unplaced locks are listed in the side panel.
+- Task 53 added 54 authored catalog facts (49 `quest:` state ids across the eight lines, plus
+  Seedbed Curse, Drawing-Room Key, Iris of Grace, Iris of Occultation, `boss:metyr`); catalog row
+  count 226 → 286. These are quest state, not extracted `regulation.bin` flags — no event flag id
+  is invented. `src/knowledge/storylines.test.ts` carries the Task 53 golden fixture.
 
 ## Achievement sets + conditional merchant stock (Task 29)
 

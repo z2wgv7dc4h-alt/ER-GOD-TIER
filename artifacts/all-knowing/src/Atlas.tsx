@@ -13,6 +13,7 @@ import { factState, useWorkspace, type FactState } from './state'
 import { useCoords } from './lib/coords'
 import { layerOrder } from './lib/nav'
 import { leftoverPins } from './lib/leftoverPins'
+import { approachingGateList, gatePins, unresolvedGateLocks } from './lib/gatePins'
 import type { MapMarker } from './types'
 
 function pinColor(kind: MapMarker['kind']) {
@@ -90,11 +91,23 @@ export function AtlasWorkspace() {
     [w.character, coords, world],
   )
 
-  const allPins = useMemo(() => [...seedPins, ...leftoverList], [seedPins, leftoverList])
+  const gateList = useMemo(() => gatePins(w.character, coords, { world }), [w.character, coords, world])
+  const unresolvedGates = useMemo(
+    () => unresolvedGateLocks(w.character, coords),
+    [w.character, coords],
+  )
+  const approaching = useMemo(() => approachingGateList(w.character), [w.character])
+
+  const allPins = useMemo(
+    () => [...seedPins, ...leftoverList, ...gateList],
+    [seedPins, leftoverList, gateList],
+  )
 
   const q = w.query.trim().toLowerCase()
   const shown = allPins.filter((m) => {
-    if (m.leftover) {
+    if (m.gate) {
+      if (!w.showGates) return false
+    } else if (m.leftover) {
       if (!w.showLeftovers) return false
     } else if (m.kind !== 'grace' && !w.layers[m.kind]) {
       return false
@@ -168,14 +181,18 @@ export function AtlasWorkspace() {
               const st = factState(w.character, m.id)
               const p = at(m)
               return (
-                <g key={m.id} className={m.leftover ? 'pin leftover' : 'pin'} onClick={() => w.setSelectedMarkerId(m.id)}>
-                  {m.leftover && (
+                <g
+                  key={m.id}
+                  className={m.gate ? 'pin gate' : m.leftover ? 'pin leftover' : 'pin'}
+                  onClick={() => w.setSelectedMarkerId(m.id)}
+                >
+                  {(m.leftover || m.gate) && (
                     <circle
                       cx={p.x}
                       cy={p.y}
                       r={2.4 * k}
                       fill="none"
-                      stroke="#e4c36a"
+                      stroke={m.gate ? '#c45c3e' : '#e4c36a'}
                       strokeWidth={0.28 * k}
                       strokeDasharray={`${0.8 * k} ${0.55 * k}`}
                     />
@@ -225,6 +242,9 @@ export function AtlasWorkspace() {
             <button className={w.missingOnly ? 'chip on' : 'chip'} onClick={() => w.setMissingOnly(!w.missingOnly)}>
               Missing only
             </button>
+            <button className={w.showGates ? 'chip on' : 'chip'} onClick={() => w.toggleGates()}>
+              locks if you continue
+            </button>
             {layerOrder.map((id) => (
               <button key={id} className={w.layers[id] ? 'chip on' : 'chip'} onClick={() => w.toggleLayer(id)}>
                 {id}
@@ -266,6 +286,20 @@ export function AtlasWorkspace() {
               leftovers
             </span>
           )}
+          {w.showGates && (
+            <span className="note" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span
+                style={{
+                  width: 12,
+                  height: 12,
+                  borderRadius: '50%',
+                  border: '2px dashed #c45c3e',
+                  display: 'inline-block',
+                }}
+              />
+              locks if you continue
+            </span>
+          )}
         </div>
         <div className="opts" style={{ margin: '10px 0' }}>
           {worlds.map((wr) => (
@@ -289,6 +323,37 @@ export function AtlasWorkspace() {
           <span className="dim">{counts.unknown} unknown</span>
           <span className="dim">{counts.denied} not there</span>
         </div>
+
+        {w.showGates && (
+          <div className="gate-locks">
+            <div className="kicker">Locks if you continue</div>
+            {approaching.length === 0 ? (
+              <p className="note">No world-state gate is one beat away on this character.</p>
+            ) : (
+              <ul className="list">
+                {approaching.map((g) => (
+                  <li key={g.id}>
+                    <span>{g.name}</span>
+                    <span className="dim">{g.locks.length} lock{g.locks.length === 1 ? '' : 's'}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {unresolvedGates.length > 0 && (
+              <>
+                <p className="note">No pin — listed here, not placed on the plate:</p>
+                <ul className="list">
+                  {unresolvedGates.map(({ gate, lock }) => (
+                    <li key={lock.factId}>
+                      <span>{lock.name}</span>
+                      <span className="dim">{gate.id.replace('gate:', '')}</span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
+        )}
 
         {ps5 && (
           <p className="note">

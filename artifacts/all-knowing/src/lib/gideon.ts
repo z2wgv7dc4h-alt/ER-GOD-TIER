@@ -3,7 +3,8 @@ import { pvpBuilds, pvpMatchups } from '../knowledge/pvp'
 import { techTips } from '../knowledge/tech'
 import { planRoute, type EndingRoute } from '../knowledge/endings'
 import { medusaChapters } from '../knowledge/medusa'
-import { allLines, findLine, findNpcLine, stillAvailable } from '../knowledge/storylines'
+import { allLines, findLine, findNpcLine, npcLines, stillAvailable, type Line } from '../knowledge/storylines'
+import { approachingGates, findGate, gateState, triggeredGates } from '../knowledge/gates'
 import { byId, facts, matchMany } from '../knowledge/catalog'
 import { matchLoot } from '../knowledge/loot'
 import { fieldHunts } from '../knowledge/completion'
@@ -112,8 +113,9 @@ function speakPlan(character: Character, route: EndingRoute): GideonAct {
   const later = plan.todo.slice(1, 3).map((s) => s.do)
   const tail = later.length ? ` After that: ${later.join('; ')}.` : ''
   const kind = 'kind' in route ? String((route as { kind?: string }).kind) : 'ending'
+  const warn = plan.gateWarning ? `${plan.gateWarning} ` : ''
   return {
-    say: `${route.name} (${kind}) is still open (${plan.done.length}/${plan.total}). Next: ${plan.current.do}. ${plan.current.detail}${extra}${tail} Want the map pin and the short instruction list?`,
+    say: `${warn}${route.name} (${kind}) is still open (${plan.done.length}/${plan.total}). Next: ${plan.current.do}. ${plan.current.detail}${extra}${tail} Want the map pin and the short instruction list?`,
     module: 'quests',
     factId: plan.current.factId,
     goal: route.id,
@@ -356,6 +358,77 @@ function isComparable(question: string, combat: BossCombat[]): boolean {
 const DONE_REPORT = /\b(i(?:'ve| have) (?:done|beat(?:en)?|killed|defeated|finished|cleared)|i (?:beaten|killed|defeated|finished|cleared|done)\b|just (?:beat(?:en)?|killed|defeated|finished|cleared))\b/
 
 /**
+ * "If I keep walking, what do I lock?" — the Task 52 gate prompts. Kept narrow:
+ * an explicit point-of-no-return phrase or a named transition, so a plain
+ * location lookup never turns into a wall of warnings.
+ */
+const GATE_ASK =
+  /\b(keep (going|walking)|if i (?:continue|proceed|keep|walk)|what (?:do|will) i (?:miss|lock)|what am i locking|am i locking|before (?:the )?(?:forge|fire giant|maliketh|sealing tree|shadow keep|capital|ashen capital|erdtree)|walk(?:ing)? into (?:leyndell|the capital|the forge|shadow keep|farum|the erdtree))\b/
+
+/** NPC-flavoured label for a line (Ranni, not "Age of Stars"). */
+function threadLabel(line: Line): string {
+  const npc = npcLines.find((n) => n.line === line.id)
+  if (npc) return npc.alias.replace(/\b[a-z]/g, (m) => m.toUpperCase())
+  return line.name
+}
+
+/**
+ * Answer a gate question from *this* character: the named gate's honest lock
+ * list, the things that survive it, and the lines still open. Never claims a
+ * lock that does not actually fire.
+ */
+function speakGates(character: Character, question: string): GideonAct {
+  const named = findGate(question)
+  const approaching = approachingGates(character)
+  const fired = triggeredGates(character)
+  const bits: string[] = []
+
+  if (named) {
+    const state = gateState(character, named)
+    if (state === 'fired') bits.push(`${named.name} has already fired on this character.`)
+    else if (state === 'approaching') bits.push(`${named.name} is one beat away.`)
+    else bits.push(`${named.name} is still ahead.`)
+    if (named.locks.length) {
+      bits.push(`If you commit, it locks: ${named.locks.map((l) => `${l.name} — ${l.why}`).join('; ')}.`)
+    } else {
+      bits.push(`Nothing is hard-locked by ${named.name} itself.`)
+    }
+    if (named.stillOk?.length) {
+      bits.push(`It does not lock: ${named.stillOk.map((s) => s.name).join('; ')}.`)
+    }
+  } else if (approaching.length) {
+    bits.push(
+      `Gates one beat away on this run: ${approaching
+        .map((g) => `${g.name} — locks ${g.locks.map((l) => l.name).join(', ') || 'nothing already'}`)
+        .join(' | ')}.`,
+    )
+  } else if (fired.length) {
+    bits.push(`Gates already passed: ${fired.map((g) => g.name).join(', ')}. No new gate is one beat away.`)
+  } else {
+    bits.push(
+      'No world-state gate is one beat away. Nothing you are about to walk into is a point of no return on this character.',
+    )
+  }
+
+  const s = stillAvailable(character)
+  const threads = [...s.active, ...s.open].slice(0, 12).map((r) => `${threadLabel(r.line)} — ${r.note}`)
+  if (threads.length) bits.push(`Still open on this run (finish before you commit): ${threads.join('; ')}.`)
+
+  return { say: bits.join(' '), module: 'quests', goal: named?.id }
+}
+
+/** Short "gate ahead" line for plain what-next answers. Empty when none is near. */
+function approachingGateLine(character: Character): string {
+  const approaching = approachingGates(character)
+  if (!approaching.length) return ''
+  const top = approaching[0]
+  const names = top.locks.map((l) => l.name)
+  return names.length
+    ? `Gate ahead — ${top.name}: continuing locks ${names.join(', ')}. `
+    : `Gate ahead — ${top.name}. `
+}
+
+/**
  * Deterministic keyword router. This is the fallback and the fast path: it
  * answers lookups (a named ending, a warp, a build, still-available, "I'm
  * stuck") without a network round-trip.
@@ -424,6 +497,11 @@ export function askGideonRouter(
       module: 'quests',
     }
   }
+
+  // "If I keep going / what do I lock" — world-state gates, answered from this
+  // character. Checked before the quest matchers so "before the forge" is not
+  // mistaken for a location.
+  if (GATE_ASK.test(q)) return speakGates(character, q)
 
   // Merchant stock questions ("who sells X", "what does X sell after I give Y")
   // outrank the questline matcher: "sellen" names both a questline and a vendor.
@@ -525,14 +603,18 @@ export function askGideonRouter(
   if (/\b(what next|what now|what should i do|where to|what do i do|continue)\b/.test(q)) {
     if (memory.goalId) {
       const route = routeById(memory.goalId)
-      if (route) return speakPlan(character, route)
+      if (route) {
+        const act = speakPlan(character, route)
+        const hint = approachingGateLine(character)
+        return hint ? { ...act, say: `${hint}${act.say}` } : act
+      }
     }
     const s = stillAvailable(character)
     const pick = s.active[0] || s.open[0]
     const moves = nextMoves(character, 3)
     if (pick) {
       return {
-        say: `No goal set. You already have ${pick.line.name} ${pick.state}: ${pick.note} Say “blitz” for the shortest Lord path, or “what is still available.”`,
+        say: `${approachingGateLine(character)}No goal set. You already have ${pick.line.name} ${pick.state}: ${pick.note} Say “blitz” for the shortest Lord path, or “what is still available.”`,
         goal: pick.line.id,
         factId: pick.current?.factId,
         module: 'quests',
@@ -814,6 +896,7 @@ export function isFastLookup(
   if (/^(what is still available|what'?s still available|still available|what next|what now|what should i do|what do i do|where to|continue|i am stuck|i'?m stuck|stuck|help with this wall)\b/.test(q)) return true
   if (/\b100\s*%|\b(completionist|everything in|full clear|medusa)\b/.test(q)) return true
   if (/\b(blitz|speedrun|rush the game|fast ending)\b/.test(q)) return true
+  if (GATE_ASK.test(q)) return true
 
   // Deterministic knowledge questions that would otherwise trip the reasoning
   // markers ("better than", "or", "should"): a comparison between two known

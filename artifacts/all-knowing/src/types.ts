@@ -52,6 +52,8 @@ export type MapMarker = {
   note?: string
   /** Part of the leftover/watchlist layer, not a seed/coords pin. */
   leftover?: boolean
+  /** Part of the "locks if you continue" gate layer (Task 52). */
+  gate?: boolean
 }
 
 export type QuestStep = {

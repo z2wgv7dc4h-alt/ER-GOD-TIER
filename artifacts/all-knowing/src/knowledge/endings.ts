@@ -1,4 +1,5 @@
 import { canonicalFactId } from '../lib/aliases'
+import { approachingGates, gateWarningForStep } from './gates'
 import type { Character, ModuleId } from '../types'
 
 export type PlanStep = {
@@ -61,12 +62,14 @@ export const endings: EndingRoute[] = [
       return null
     },
     steps: [
-      { id: 's1', do: 'Enter Ranni’s service at Ranni’s Rise', detail: 'Three Sisters, after Caria Manor. Speak to Blaidd, Iji, and Seluvis in the towers.', factId: 'quest:ranni:service', module: 'quests', minLevel: 40, requires: [], grants: ['quest:ranni:service'], lockouts: [] },
+      { id: 's1', do: 'Enter Ranni’s service at Ranni’s Rise', detail: 'Three Sisters, after Caria Manor. Speak to Blaidd, Iji, and Seluvis in the towers; Iji and Blaidd are the ones who point you at Nokron and warn you off Seluvis.', factId: 'quest:ranni:service', module: 'quests', minLevel: 40, requires: [], grants: ['quest:ranni:service', 'quest:ranni:iji', 'quest:ranni:blaidd'], lockouts: ['quest:seluvis-blade'] },
       { id: 's2', do: 'Open Nokron — defeat Starscourge Radahn', detail: 'Redmane festival. Talk to Jerren or progress Ranni far enough that the festival is live.', factId: 'boss:radahn', module: 'map', minLevel: 70, obtain: 'Radahn’s Great Rune', requires: ['quest:ranni:service'], grants: ['quest:ranni:festival', 'boss:radahn'], lockouts: [] },
       { id: 's3', do: 'Retrieve the Fingerslayer Blade', detail: 'Night’s Sacred Ground in Nokron. Give it to Ranni, never to Seluvis.', factId: 'item:fingerslayer', factIds: ['quest:ranni:nokron'], module: 'map', requires: ['quest:ranni:festival'], grants: ['item:fingerslayer'], lockouts: ['quest:seluvis-blade'], lockout: 'Seluvis + this blade ends her line.' },
       { id: 's4', do: 'Invert the Carian Study Hall', detail: 'Use the Carian Inverted Statue. Divine Tower of Liurnia for the cursemark.', factId: 'quest:ranni:statue', module: 'quests', requires: ['item:fingerslayer'], grants: ['quest:ranni:statue'], lockouts: ['quest:seluvis-blade'] },
       { id: 's5', do: 'Kill Astel and place the Dark Moon Ring', detail: 'Lake of Rot → Grand Cloister coffin → Moonlight Altar → Cathedral of Manus Celes.', factId: 'quest:ranni:ring', factIds: ['item:dark-moon-ring'], module: 'map', minLevel: 90, obtain: 'Dark Moon Greatsword', requires: ['quest:ranni:statue'], grants: ['quest:ranni:ring', 'item:dark-moon-ring'], lockouts: ['quest:seluvis-blade'] },
       { id: 's6', do: 'Finish the Elden Lord path, then summon Ranni', detail: 'Forge → Farum → Ashen Capital → Elden Beast. Use Ranni’s summon sign after the fight.', factId: 'boss:radagon', module: 'map', minLevel: 110, requires: ['quest:ranni:ring'], grants: ['boss:radagon'], lockouts: ['quest:seluvis-blade'] },
+      { id: 's7', do: 'Find Blaidd at Ranni’s Rise', detail: 'Once the ring is placed, Blaidd is waiting — and no longer himself. This is the loose end of her service.', factId: 'quest:ranni:blaidd-fate', module: 'quests', minLevel: 100, requires: ['quest:ranni:ring'], grants: ['quest:ranni:blaidd-fate'], lockouts: ['quest:seluvis-blade'] },
+      { id: 's8', do: 'Hear Iji’s last counsel', detail: 'The smith in the Three Sisters knows what became of Blaidd, and what Ranni chose. His story ends here too.', factId: 'quest:ranni:iji-fate', module: 'quests', minLevel: 100, requires: ['quest:ranni:ring'], grants: ['quest:ranni:iji-fate'], lockouts: ['quest:seluvis-blade'] },
     ],
   },
   {
@@ -216,5 +219,21 @@ export function planRoute(character: Character, route: EndingRoute) {
   }
   if (current?.obtain) detours.push(`While you are there, take ${current.obtain}.`)
   if (current?.lockout) detours.push(`Lockout: ${current.lockout}`)
-  return { locked, done, todo, current, detours, remain: todo.length, total: route.steps.length, foreclosed, blocked, available }
+  // Task 52: world-state gates consult the character too, so a plan that is about
+  // to walk into the Forge / Maliketh / Sealing Tree carries the lock list.
+  const gateWarning = current ? gateWarningForStep(current) : undefined
+  return {
+    locked,
+    done,
+    todo,
+    current,
+    detours,
+    remain: todo.length,
+    total: route.steps.length,
+    foreclosed,
+    blocked,
+    available,
+    approachingGates: approachingGates(character),
+    gateWarning,
+  }
 }

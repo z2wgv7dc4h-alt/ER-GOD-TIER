@@ -139,6 +139,9 @@ function AppShell() {
               <button className={w.showLeftovers ? 'chip on' : 'chip'} onClick={() => w.toggleLeftovers()}>
                 leftovers
               </button>
+              <button className={w.showGates ? 'chip on' : 'chip'} onClick={() => w.toggleGates()}>
+                locks
+              </button>
               {layerOrder.map((id) => (
                 <button key={id} className={w.layers[id] ? 'chip on' : 'chip'} onClick={() => w.toggleLayer(id)}>
                   {id}

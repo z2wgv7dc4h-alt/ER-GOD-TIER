@@ -290,6 +290,93 @@ export const facts: Fact[] = [
   { id: 'item:flock-canvas-talisman', kind: 'item', name: "Flock's Canvas Talisman", aliases: ['flock canvas'], region: 'Caelid', campaign: 'base', implies: ['quest:gowry:concluded'] },
   { id: 'item:twinned-armor', kind: 'item', name: 'Twinned Armor', aliases: ['twinned set'], region: 'Deeproot Depths', campaign: 'base', implies: ['quest:d:brother'] },
   { id: 'item:thops-barrier', kind: 'item', name: "Thops's Barrier", aliases: ['thops barrier'], region: 'Raya Lucaria', campaign: 'base', implies: ['quest:thops:barrier'] },
+
+  // Missable items the Task 52 gate overlay names (source: public/sourced/guide/missables.json,
+  // the same file src/knowledge/missables.ts is built from). Real locked-away items that had no
+  // catalog row; adding the fact does not invent a location or an unlock.
+  { id: 'item:bolt-of-gransax', kind: 'item', name: 'Bolt of Gransax', aliases: ['gransax'], region: 'Leyndell', campaign: 'base', implies: ['region:leyndell'] },
+  { id: 'item:sanctified-whetblade', kind: 'item', name: 'Sanctified Whetblade', aliases: ['sanctified whetblade'], region: 'Leyndell', campaign: 'base', implies: ['region:leyndell'] },
+  { id: 'item:blessed-dew-talisman', kind: 'item', name: 'Blessed Dew Talisman', aliases: ['blessed dew'], region: 'Leyndell', campaign: 'base', implies: ['region:leyndell'] },
+  { id: 'item:black-whetblade', kind: 'item', name: 'Black Whetblade', aliases: ['black whetblade'], region: 'Nokron', campaign: 'base', implies: ['boss:radahn'] },
+  { id: 'item:rotten-winged-sword-insignia', kind: 'item', name: 'Rotten Winged Sword Insignia', aliases: ['rotten winged insignia'], region: 'Elphael', campaign: 'base', implies: ['grace:drainage'] },
+  { id: 'item:millicent-prosthesis', kind: 'item', name: "Millicent's Prosthesis", aliases: ['millicent prosthesis'], region: 'Elphael', campaign: 'base', implies: ['grace:drainage'] },
+
+  // Task 53: quest-state and key-item facts the eight wiki-grade lines need. Names come from
+  // the in-repo dumps (open/names.json goods/npcs/places, guide/items.json acquisition text,
+  // guide/map-extras.json) and the existing route authoring; no scraped walkthrough prose.
+  // `implies: []` on quest state on purpose: a beat being done does not, by itself, prove a
+  // region or an earlier beat, and inventing that chain is exactly what Task 12 warned against.
+  { id: 'quest:erdtree-burned', kind: 'quest', name: 'The Erdtree burned at the Forge of the Giants', aliases: ['burned the erdtree'], region: 'Mountaintops', campaign: 'base', implies: [] },
+  { id: 'quest:seluvis-blade', kind: 'quest', name: 'Seluvis has the Fingerslayer Blade', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+
+  // Ranni — servant states that gate the Fingerslayer hand-in and the fork.
+  { id: 'quest:ranni:iji', kind: 'quest', name: 'Ranni — Iji counselled', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:ranni:blaidd', kind: 'quest', name: 'Ranni — Blaidd met', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:ranni:blaidd-fate', kind: 'quest', name: "Ranni — Blaidd's fate at the Rise", aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:ranni:iji-fate', kind: 'quest', name: "Ranni — Iji's last counsel", aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+
+  // Millicent — Gowry needle through the Elphael gold/red fork.
+  { id: 'quest:millicent:cured', kind: 'quest', name: 'Millicent — cured at the Church of the Plague', aliases: [], region: 'Caelid', campaign: 'base', implies: [] },
+  { id: 'quest:millicent:altus', kind: 'quest', name: 'Millicent — met at Erdtree-Gazing Hill', aliases: [], region: 'Altus', campaign: 'base', implies: [] },
+  { id: 'quest:millicent:godskin', kind: 'quest', name: 'Millicent — aided at Dominula', aliases: [], region: 'Altus', campaign: 'base', implies: [] },
+  { id: 'quest:millicent:prosthesis', kind: 'quest', name: 'Millicent — Valkyrie’s Prosthesis given', aliases: [], region: 'Altus', campaign: 'base', implies: [] },
+  { id: 'quest:millicent:aid', kind: 'quest', name: 'Millicent — aided at Elphael (gold sign)', aliases: [], region: 'Elphael', campaign: 'base', implies: [] },
+  { id: 'quest:millicent:betrayed', kind: 'quest', name: 'Millicent — challenged at Elphael (red sign)', aliases: [], region: 'Elphael', campaign: 'base', implies: [] },
+  { id: 'quest:millicent-killed', kind: 'quest', name: 'Millicent is dead this run', aliases: [], region: 'Elphael', campaign: 'base', implies: [] },
+
+  // Fia — knifeprint join, Deeproot, Fortissax, ending vs D’s brother.
+  { id: 'quest:fia:met', kind: 'quest', name: 'Fia — held at the Roundtable', aliases: [], region: 'Roundtable', campaign: 'base', implies: [] },
+  { id: 'quest:fia:dagger', kind: 'quest', name: 'Fia — Weathered Dagger decided', aliases: [], region: 'Roundtable', campaign: 'base', implies: [] },
+  { id: 'quest:fia:cursemark', kind: 'quest', name: 'Fia — Cursemark of Death given', aliases: [], region: 'Deeproot Depths', campaign: 'base', implies: [] },
+  { id: 'quest:fia:concluded', kind: 'quest', name: 'Fia — Death-Prince line concluded', aliases: [], region: 'Deeproot Depths', campaign: 'base', implies: [] },
+  { id: 'quest:d:brother', kind: 'quest', name: "D's brother met in Deeproot", aliases: [], region: 'Deeproot Depths', campaign: 'base', implies: [] },
+
+  // Dung Eater — seedbeds, potion fork, blessing / curse.
+  { id: 'quest:dungeater:met', kind: 'quest', name: 'Dung Eater — met at the Roundtable', aliases: [], region: 'Roundtable', campaign: 'base', implies: [] },
+  { id: 'quest:dungeater:freed', kind: 'quest', name: 'Dung Eater — cell opened in the Shunning-Grounds', aliases: [], region: 'Leyndell', campaign: 'base', implies: [] },
+  { id: 'quest:dungeater:invasion', kind: 'quest', name: 'Dung Eater — defeated at the Leyndell moat', aliases: [], region: 'Leyndell', campaign: 'base', implies: [] },
+  { id: 'quest:dungeater:potioned', kind: 'quest', name: 'Dung Eater — made a Seluvis puppet', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+
+  // Tanith / Volcano Manor — Rya recruit, drawings, Rykard, Rya aftermath.
+  { id: 'quest:tanith:contracts', kind: 'quest', name: 'Tanith — first contract taken', aliases: [], region: 'Volcano Manor', campaign: 'base', implies: [] },
+  { id: 'quest:tanith:targets', kind: 'quest', name: 'Tanith — named contracts complete', aliases: [], region: 'Volcano Manor', campaign: 'base', implies: [] },
+  { id: 'quest:tanith:concluded', kind: 'quest', name: 'Tanith — final request heard', aliases: [], region: 'Volcano Manor', campaign: 'base', implies: [] },
+  { id: 'quest:rya:necklace', kind: 'quest', name: 'Rya — necklace recovered', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:rya:manor', kind: 'quest', name: 'Rya — joined Volcano Manor', aliases: [], region: 'Volcano Manor', campaign: 'base', implies: [] },
+  { id: 'quest:rya:concluded', kind: 'quest', name: 'Rya — aftermath chosen', aliases: [], region: 'Volcano Manor', campaign: 'base', implies: [] },
+
+  // Leda — one beat per invitation window, then Sealing Tree and Enir-Ilim.
+  { id: 'quest:leda:met', kind: 'quest', name: 'Leda — met at the Three-Path Cross', aliases: [], region: 'Gravesite Plain', campaign: 'sote', implies: [] },
+  { id: 'quest:leda:highroad', kind: 'quest', name: 'Leda — met at the Highroad Cross', aliases: [], region: 'Scadu Altus', campaign: 'sote', implies: [] },
+  { id: 'quest:leda:invitations', kind: 'quest', name: 'Leda — Shadow Keep invitations cleared', aliases: [], region: 'Shadow Keep', campaign: 'sote', implies: [] },
+  { id: 'quest:leda:invitations-locked', kind: 'quest', name: 'Leda — invitation window closed at the Sealing Tree', aliases: [], region: 'Shadow Keep', campaign: 'sote', implies: [] },
+  { id: 'quest:leda:concluded', kind: 'quest', name: 'Leda — Enir-Ilim alliance resolved', aliases: [], region: 'Enir-Ilim', campaign: 'sote', implies: [] },
+  { id: 'quest:hornsent:met', kind: 'quest', name: 'Hornsent — met at the Three-Path Cross', aliases: [], region: 'Gravesite Plain', campaign: 'sote', implies: [] },
+  { id: 'quest:freyja:met', kind: 'quest', name: 'Freyja — met at the Three-Path Cross', aliases: [], region: 'Gravesite Plain', campaign: 'sote', implies: [] },
+  { id: 'quest:thiollier:met', kind: 'quest', name: 'Thiollier — met at the Three-Path Cross', aliases: [], region: 'Gravesite Plain', campaign: 'sote', implies: [] },
+  { id: 'quest:ansbach:met', kind: 'quest', name: 'Ansbach — freed in the Shadow Keep', aliases: [], region: 'Shadow Keep', campaign: 'sote', implies: [] },
+
+  // Sellen — Jerren, Lusat, Azur, the fork.
+  { id: 'quest:sellen:freed', kind: 'quest', name: 'Sellen — freed from the Waypoint Ruins', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:sellen:azur', kind: 'quest', name: 'Sellen — Azur found', aliases: [], region: 'Mt. Gelmir', campaign: 'base', implies: [] },
+  { id: 'quest:sellen:lusat', kind: 'quest', name: 'Sellen — Lusat found', aliases: [], region: 'Caelid', campaign: 'base', implies: [] },
+  { id: 'quest:sellen:primers', kind: 'quest', name: 'Sellen — both primeval sorcerers reported', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:sellen:jerren', kind: 'quest', name: 'Sellen — Witch-Hunter Jerren met', aliases: [], region: 'Raya Lucaria', campaign: 'base', implies: [] },
+  { id: 'quest:sellen:side', kind: 'quest', name: 'Sellen — sided with her against Jerren', aliases: [], region: 'Raya Lucaria', campaign: 'base', implies: [] },
+  { id: 'quest:sellen:jerren-side', kind: 'quest', name: 'Sellen — sided with Jerren', aliases: [], region: 'Raya Lucaria', campaign: 'base', implies: [] },
+
+  // Count Ymir — finger-ruin bells, Jolan, Metyr, the Iris choice.
+  { id: 'quest:ymir:met', kind: 'quest', name: 'Ymir — met at the Cathedral of Manus Metyr', aliases: [], region: 'Gravesite Plain', campaign: 'sote', implies: [] },
+  { id: 'quest:ymir:rhia', kind: 'quest', name: 'Ymir — bell rung at the Finger Ruins of Rhia', aliases: [], region: 'Gravesite Plain', campaign: 'sote', implies: [] },
+  { id: 'quest:ymir:dheo', kind: 'quest', name: 'Ymir — bell rung at the Finger Ruins of Dheo', aliases: [], region: 'Scadu Altus', campaign: 'sote', implies: [] },
+  { id: 'quest:jolan:met', kind: 'quest', name: 'Jolan, Swordhand of Night — met', aliases: [], region: 'Gravesite Plain', campaign: 'sote', implies: [] },
+  { id: 'quest:ymir:concluded', kind: 'quest', name: 'Ymir — Iris choice made', aliases: [], region: 'Gravesite Plain', campaign: 'sote', implies: [] },
+
+  { id: 'item:seedbed-curse', kind: 'item', name: 'Seedbed Curse', aliases: ['seedbed'], region: 'Leyndell', campaign: 'base', implies: [] },
+  { id: 'item:drawing-room-key', kind: 'item', name: 'Drawing-Room Key', aliases: ['drawing room key'], region: 'Volcano Manor', campaign: 'base', implies: [] },
+  { id: 'item:iris-of-grace', kind: 'item', name: 'Iris of Grace', aliases: [], region: 'Gravesite Plain', campaign: 'sote', implies: [] },
+  { id: 'item:iris-of-occultation', kind: 'item', name: 'Iris of Occultation', aliases: [], region: 'Gravesite Plain', campaign: 'sote', implies: [] },
+  { id: 'boss:metyr', kind: 'boss', name: 'Metyr, Mother of Fingers', aliases: ['metyr', 'mother of fingers'], region: 'Gravesite Plain', campaign: 'sote', implies: [] },
 ]
 
 export const byId = new Map(facts.map((f) => [f.id, f]))

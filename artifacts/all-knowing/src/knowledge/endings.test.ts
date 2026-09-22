@@ -149,7 +149,7 @@ describe('multi-id step completion', () => {
     { line: 'duskborn', step: 'd2', primary: 'quest:ranni:statue', alt: 'item:cursemark-of-death', list: 'collectedItems' },
     { line: 'frenzy', step: 'f1', primary: 'grace:lake-shore', alt: 'quest:hyetta:met', list: 'completedQuestSteps' },
     { line: 'frenzy', step: 'f1', primary: 'grace:lake-shore', alt: 'quest:yura:shabriri', list: 'completedQuestSteps' },
-    { line: 'sellen', step: 'se4', primary: 'quest:sellen:side', alt: 'item:stars-of-ruin', list: 'collectedItems' },
+    { line: 'sellen', step: 'se6', primary: 'quest:sellen:side', alt: 'item:stars-of-ruin', list: 'collectedItems' },
   ]
 
   it('lists the primary marker first and includes the alternatives', () => {
