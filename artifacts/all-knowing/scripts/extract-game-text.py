@@ -1,4 +1,4 @@
-﻿"""Regenerate public/sourced/open/text/ from a local Elden Ring install.
+"""Regenerate public/sourced/open/text/ from a local Elden Ring install.
 
 This is the *full text* dump beside names.json: every FMG string table the game
 ships in English, not just item names. That includes the verbatim NPC dialogue

@@ -69,7 +69,9 @@ export const pwaOptions: Partial<VitePWAOptions> = {
         options: {
           cacheName: SOURCED_DATA_CACHE,
           cacheableResponse: { statuses: [0, 200] },
-          expiration: { maxEntries: 80, maxAgeSeconds: 60 * 60 * 24 * 30 },
+          // The text corpus alone is 36 tables; keep room for it plus the
+          // fanapi/checklists/open dumps that load lazily.
+          expiration: { maxEntries: 160, maxAgeSeconds: 60 * 60 * 24 * 30 },
         },
       },
       {

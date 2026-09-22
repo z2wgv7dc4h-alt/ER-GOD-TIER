@@ -1,4 +1,4 @@
-﻿"""Refresh the item-name Paramdex dumps from a local Elden Ring install.
+"""Refresh the item-name Paramdex dumps from a local Elden Ring install.
 
 `soulsmods/Paramdex` ER/Names is an upstream name dump. The copy vendored here is
 post-Shadow-of-the-Erdtree but predates the Tarnished Pack: it has Milady and

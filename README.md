@@ -66,9 +66,7 @@ Open the Vite URL. Atlas embeds `/?embed=1` when the engine is up; otherwise you
 
 ```bash
 # first time on a PC that has the game
-cd vendor/elden-ring-map
-# Windows: Setup.bat
-# Linux:   ./setup-linux.sh
+npm run map:setup   # extract tiles + markers from your local install
 ```
 
 Two terminals still work: `npm run map` and `npm run dev`.  

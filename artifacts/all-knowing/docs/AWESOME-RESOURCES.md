@@ -1,4 +1,4 @@
-﻿# EanNewton/Awesome-Elden-Ring-Resources
+# EanNewton/Awesome-Elden-Ring-Resources
 
 Upstream: https://github.com/EanNewton/Awesome-Elden-Ring-Resources  
 The *list* is CC0. The *dumps it points at* are still FromSoftware text/art or someone elseâ€™s sheets.

@@ -1,4 +1,4 @@
-﻿"""Regenerate public/sourced/open/names.json from a local Elden Ring install.
+"""Regenerate public/sourced/open/names.json from a local Elden Ring install.
 
 The FMG name dump is the app's item/NPC/place name index (Codex search + the
 generated alias plane). The version shipped in the repo's initial commit was a

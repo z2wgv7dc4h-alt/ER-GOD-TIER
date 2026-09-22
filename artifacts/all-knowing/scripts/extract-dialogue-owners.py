@@ -1,4 +1,4 @@
-﻿"""Attribute verbatim dialogue lines to the NPC that owns them.
+"""Attribute verbatim dialogue lines to the NPC that owns them.
 
 The game's text bundle gives `TalkMsg` as an id->line map but no speaker;
 `TalkParam` records only `msgId`/`voiceId`. The speaker is found the way the

@@ -1,4 +1,4 @@
-﻿# Handoff â€” All-Knowing
+# Handoff â€” All-Knowing
 
 Read this before writing code. Do not invent a second kernel.
 

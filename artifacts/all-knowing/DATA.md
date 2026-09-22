@@ -1,4 +1,4 @@
-﻿# Data on disk
+# Data on disk
 
 All under `public/sourced/` unless noted.
 

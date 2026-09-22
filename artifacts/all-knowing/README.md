@@ -40,9 +40,7 @@ npm start      # map engine (:8099) + workspace (:5173)
 Open the Vite URL. If the engine is not set up, Atlas uses static plates and says so.
 
 ```bash
-cd vendor/elden-ring-map
-# Windows: Setup.bat
-# Linux:   ./setup-linux.sh
+npm run map:setup   # one-time: extract tiles + markers from your local install
 ```
 
 `npm run map` and `npm run dev` still work as two terminals.  

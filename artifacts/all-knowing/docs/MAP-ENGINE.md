@@ -1,4 +1,4 @@
-﻿# Map engine â€” egormagurin/EldenRingMap
+# Map engine â€” egormagurin/EldenRingMap
 
 Vendored at `vendor/elden-ring-map`. Upstream:
 https://github.com/egormagurin/EldenRingMap
@@ -100,8 +100,7 @@ Needs the game directory (`eldenring.exe` + `regulation.bin`), Node 18,
 Python 3.9, and on Linux an Oodle shim against `oo2core_6_win64.dll`.
 
 ```
-vendor/elden-ring-map/Setup.bat          # Windows
-vendor/elden-ring-map/setup-linux.sh     # Proton
+npm run map:setup                        # extract tiles + markers from your install
 npm start                                # from All-Knowing root: engine + Vite together
 # or just the engine:  npm run map       (npm run dev runs Vite separately)
 ```

@@ -1,4 +1,4 @@
-﻿"""Every talking NPC and where it stands, from the map MSBs.
+"""Every talking NPC and where it stands, from the map MSBs.
 
 The MSB PARTS list holds one entry per placed entity. This walks every map and
 keeps only the NPCs that actually have dialogue (those in

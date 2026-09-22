@@ -129,7 +129,15 @@ export function AtlasWorkspace() {
       }))
     const seen = new Set(gracePins.map((g) => g.name.toLowerCase()))
     const extraWeb = fromWeb.filter((c) => !seen.has(c.name.toLowerCase()))
-    return [...gracePins, ...mapped, ...extraWeb, ...ermPins]
+    // The EldenRingMap pack repeats many of the same dungeons the web-coord pins
+    // already plot, so only add its markers whose names are not already present.
+    const known = new Set([
+      ...seen,
+      ...mapped.map((m) => m.name.toLowerCase()),
+      ...fromWeb.map((c) => c.name.toLowerCase()),
+    ])
+    const ermNew = ermPins.filter((p) => !known.has(p.name.toLowerCase()))
+    return [...gracePins, ...mapped, ...extraWeb, ...ermNew]
   }, [gracePins, world, coords, w.layers, ermPins])
 
   const leftoverList = useMemo(

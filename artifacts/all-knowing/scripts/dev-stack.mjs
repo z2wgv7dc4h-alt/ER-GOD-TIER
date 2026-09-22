@@ -8,10 +8,10 @@
 // Deliberately a ~50-line supervisor rather than a process-manager dependency:
 // it works on Windows and POSIX with no install step. If the map engine is not
 // set up or stops, Vite keeps running so the workspace still works on the static
-// plates — offline is a normal state, not an error.
+// plates â€” offline is a normal state, not an error.
 //
 // Scratch rule: this writes nothing. Tiles/markers are produced once by the
-// vendor setup scripts (Setup.bat / setup-linux.sh), never from here.
+// the engine tools (npm run map:setup), never from here.
 
 import { spawn } from 'node:child_process'
 import { existsSync } from 'node:fs'
@@ -39,7 +39,7 @@ const mapEntry = join(root, 'vendor', 'elden-ring-map', 'server', 'index.js')
 const viteEntry = join(root, 'node_modules', 'vite', 'bin', 'vite.js')
 
 if (!existsSync(viteEntry)) {
-  console.error('vite is not installed — run `npm install` first, then `npm start`.')
+  console.error('vite is not installed â€” run `npm install` first, then `npm start`.')
   process.exit(1)
 }
 
