@@ -20,6 +20,7 @@ import { iconFor } from './lib/sourcePack'
 import { fanImage } from './lib/fanImage'
 import { Related } from './Related'
 import { useWorkspace } from './state'
+import { matchGatheringNodes, useGatheringNodes } from './lib/gatheringNodes'
 
 function CodexThumb({ name, aliases }: { name: string; aliases?: string[] }) {
   const src = fanImage(name, aliases)
@@ -35,6 +36,7 @@ export function CodexWorkspace() {
   const coordRows = useCoords()
   const guide = useGuide()
   const regions = useGraceRegions()
+  const gatheringNodes = useGatheringNodes()
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
   const q = query.trim().toLowerCase()
   const selectedFact = selectedMarkerId ? byId.get(selectedMarkerId) : undefined
@@ -44,6 +46,7 @@ export function CodexWorkspace() {
   const coordHits = q.length >= 3 ? matchCoords(q, coordRows) : []
   const chests = useMemo(() => buildChestFacts(open.lots, regions), [open.lots, regions])
   const chestHits = q.length >= 3 ? matchChests(q, chests) : []
+  const gatheringHits = q.length >= 3 ? matchGatheringNodes(q, gatheringNodes) : []
   const achievements = useMemo(
     () => achievementProgress(guide.items, character.collectedItems),
     [guide.items, character.collectedItems],
@@ -177,6 +180,28 @@ export function CodexWorkspace() {
                   onClick={() => setCharacter(applyFacts(character, c.catalogIds.length ? c.catalogIds : [c.id], 'answer', `chest ${c.region || c.map}`))}
                 >
                   Log items
+                </button>
+              </article>
+            ))}
+          </div>
+        </>
+      )}
+      {gatheringHits.length > 0 && (
+        <>
+          <h3 className="codex-head">Gathering nodes · {gatheringNodes.length} placements (AEG assets, nameless)</h3>
+          <p className="note" style={{ padding: '0 20px' }}>
+            Locations of gathering-node assets (bushes, rocks, pots, etc.). The model code is generic (e.g. AEG099_821); see the map to know what's actually there. Search by region, map, or model.
+          </p>
+          <div className="codex-grid">
+            {gatheringHits.slice(0, 20).map((n) => (
+              <article className="card" key={n.id}>
+                <div className="kicker">{n.world} · {n.region || n.map} · area {n.area}</div>
+                <h3>{n.model}</h3>
+                <p className="note">
+                  {n.map} · x {n.x.toFixed(1)}, y {n.y.toFixed(1)}, z {n.z.toFixed(1)}
+                </p>
+                <button type="button" className="chip" onClick={() => { setSelectedMarkerId(n.id); setModule('map') }}>
+                  Show on map
                 </button>
               </article>
             ))}
