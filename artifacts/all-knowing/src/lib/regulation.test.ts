@@ -116,14 +116,16 @@ describe('regulation audit against the real data', () => {
 // must show Shadow of the Erdtree content (the install is the 1.17 build).
 describe('atlas marker extract (when generated locally)', () => {
   const markerPath = new URL('../../vendor/elden-ring-map/data/markers.json', import.meta.url)
-  if (existsSync(markerPath)) {
-    it('includes Shadow of the Erdtree markers from the 1.17 install', () => {
-      const data = JSON.parse(readFileSync(markerPath, 'utf8')) as {
-        markers: { names: { en: string } }[]
-      }
-      const text = data.markers.map((m) => m.names.en).join('\n')
-      expect(text).toContain('Belurat')
-      expect(text).toContain('Shadow Keep')
-    })
-  }
+  // A runtime `if` around `it()` leaves this suite with zero registered tests
+  // (and some Vitest configs fail a describe block with no tests) on any
+  // fresh checkout or CI runner, which never has this gitignored, game-
+  // derived file. `skipIf` always registers the test, just marks it skipped.
+  it.skipIf(!existsSync(markerPath))('includes Shadow of the Erdtree markers from the 1.17 install', () => {
+    const data = JSON.parse(readFileSync(markerPath, 'utf8')) as {
+      markers: { names: { en: string } }[]
+    }
+    const text = data.markers.map((m) => m.names.en).join('\n')
+    expect(text).toContain('Belurat')
+    expect(text).toContain('Shadow Keep')
+  })
 })
