@@ -90,6 +90,14 @@ The Atlas fails closed (Task 82): the live `?embed=1` iframe only draws while th
 the embed has loaded — a down engine and a failed embed show the static plate with two distinct
 banners, never a blank iframe. `docs/MAP-ENGINE.md` has the "If the map is blank" checklist.
 
+The engine iframe and the static plate are one projection, never two (Task 09 Part C). They are
+mutually exclusive render paths, and the shared detail panel (name, Found/Unknown/Not-there, Thread)
+resolves to exactly one entity in the **active** view via `src/lib/atlasSelection.ts`: an explicit id
+resolves in whichever pin set owns it; with no id the default is the engine's first marker when live,
+else the first shown plate pin. So the mark chips can never silently target a pin that is not on
+screen. No LOT/world-XYZ set is drawn on the plate — that detail is the live engine's job
+(`src/lib/coords.ts`).
+
 ## Persistence
 
 `all-knowing.vault.v1` — profiles + UI (room, missingOnly, selected pin).

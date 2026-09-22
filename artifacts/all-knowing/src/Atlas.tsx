@@ -13,6 +13,7 @@ import { Thread } from './Thread'
 import { factState, useWorkspace, type FactState } from './state'
 import { useCoords } from './lib/coords'
 import { layerOrder } from './lib/nav'
+import { resolveSelection } from './lib/atlasSelection'
 import { leftoverPins } from './lib/leftoverPins'
 import { approachingGateList, gatePins, unresolvedGateLocks } from './lib/gatePins'
 import type { MapMarker } from './types'
@@ -169,9 +170,20 @@ export function AtlasWorkspace() {
     return true
   })
 
-  const selected = allPins.find((m) => m.id === w.selectedMarkerId) ?? shown[0]
-  const selectedEngine = w.engineMarkers.find((m) => m.id === w.selectedMarkerId) || engineList[0]
-  const selectedId = w.selectedMarkerId || selected?.id
+  // Task 09 Part C — the single selection projection, shared by the engine-iframe
+  // and static-plate paths. See lib/atlasSelection.ts for the rule.
+  const {
+    selectedId,
+    selectedName,
+    pin: selected,
+  } = resolveSelection({
+    selectedQ: w.selectedMarkerId,
+    engineLive,
+    platePins: allPins,
+    shown,
+    enginePins: w.engineMarkers,
+    engineList,
+  })
   const selectedState = selectedId ? factState(w.character, selectedId) : 'unknown'
 
   const counts = {
@@ -448,7 +460,7 @@ export function AtlasWorkspace() {
           </p>
         )}
 
-        <h3>{engineLive ? markerName(selectedEngine || { id: '—' }) : (selected?.name ?? 'Select a pin')}</h3>
+        <h3>{selectedName}</h3>
         {selected && (
           <p className="note">
             {selected.leftover ? 'leftover · ' : ''}{selected.kind} · {selected.region} · {selectedState}
