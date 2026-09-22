@@ -21,6 +21,7 @@ Emits public/sourced/open/acquisition.json and public/sourced/open/npc-quests.js
 import argparse
 import json
 import os
+import re
 import sqlite3
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -78,15 +79,44 @@ def main():
     for q in quests:
         q["steps"].sort(key=lambda s: s["order"] or 0)
 
+    # Crafting recipes: craftable item pages carry a "Required items" section
+    # listing the materials, e.g. "- Mushroom x1 - Smoldering Butterfly x1".
+    recipes = []
+    for page_id, title, url, markdown in cur.execute(
+        """select s.page_id, p.title, p.url, s.markdown
+           from sections s join pages p on p.id = s.page_id
+           where lower(s.heading) like '%required item%'"""
+    ):
+        mats = []
+        for line in (markdown or "").splitlines():
+            m = re.match(r"^\s*[-*]\s+(.+?)\s*$", line)
+            if not m:
+                continue
+            item = m.group(1).strip()
+            lead = re.match(r"^(\d+)\s*x\s+(.+)$", item)      # "1 x Sacramental Bud"
+            trail = re.match(r"^(.+?)\s*x\s*(\d+)$", item)    # "Mushroom x1"
+            if lead:
+                mats.append({"name": lead.group(2).strip(), "qty": int(lead.group(1))})
+            elif trail:
+                mats.append({"name": trail.group(1).strip(), "qty": int(trail.group(2))})
+            else:
+                mats.append({"name": item, "qty": 1})
+        if mats:
+            recipes.append({"id": f"recipe:{page_id}", "name": title or "", "materials": mats, "url": url or ""})
+    recipes.sort(key=lambda r: r["name"].lower())
+
     os.makedirs(OUT_DIR, exist_ok=True)
     with open(os.path.join(OUT_DIR, "acquisition.json"), "w", encoding="utf-8") as f:
         json.dump({"source": SOURCE, "rows": acq}, f, ensure_ascii=False, separators=(",", ":"))
     with open(os.path.join(OUT_DIR, "npc-quests.json"), "w", encoding="utf-8") as f:
         json.dump({"source": SOURCE, "quests": quests}, f, ensure_ascii=False, separators=(",", ":"))
+    with open(os.path.join(OUT_DIR, "recipes.json"), "w", encoding="utf-8") as f:
+        json.dump({"source": SOURCE, "recipes": recipes}, f, ensure_ascii=False, separators=(",", ":"))
 
     miss = sum(1 for r in acq if r["missable"])
     print(f"wrote acquisition.json  rows: {len(acq)}  missable: {miss}")
     print(f"wrote npc-quests.json   npcs: {len(quests)}  steps: {sum(len(q['steps']) for q in quests)}")
+    print(f"wrote recipes.json      recipes: {len(recipes)}")
 
 
 if __name__ == "__main__":

@@ -11,6 +11,7 @@ import { loadDialogueOwners } from './dialogueOwners'
 import { loadEngineMarkers, matchEngineItems } from './engineMarkers'
 import { loadAcquisition, matchAcquisition } from './acquisition'
 import { findQuest, loadNpcQuests } from './npcQuests'
+import { loadRecipes, matchRecipes } from './recipes'
 import { loadGameTextTable } from './gameText'
 import { quoteFor } from './dialogueQuote'
 import { opBuilds } from '../knowledge/builds'
@@ -101,6 +102,14 @@ export const GIDEON_TOOLS: ToolDef[] = [
   {
     type: 'function',
     function: {
+      name: 'recipe',
+      description: 'Crafting recipe for a named craftable item: the materials and quantities required.',
+      parameters: { type: 'object', properties: { name: str('craftable item name') }, required: ['name'], additionalProperties: false },
+    },
+  },
+  {
+    type: 'function',
+    function: {
       name: 'quest_steps',
       description: 'Step-by-step walkthrough for a named NPC quest (ordered locations + actions, and which step breaks it).',
       parameters: { type: 'object', properties: { npc: str('NPC name') }, required: ['npc'], additionalProperties: false },
@@ -182,6 +191,11 @@ export async function runGideonTool(name: string, args: Record<string, unknown>,
           ? { method: a.method, where: a.location.slice(0, 300), near: a.near, missable: a.missable, prereqs: a.prereqs }
           : null,
       }
+    }
+    case 'recipe': {
+      const doc = await loadRecipes().catch(() => null)
+      const hits = doc ? matchRecipes(String(args.name ?? ''), doc.recipes, 3) : []
+      return hits.map((r) => ({ name: r.name, materials: r.materials }))
     }
     case 'quest_steps': {
       const doc = await loadNpcQuests().catch(() => null)
