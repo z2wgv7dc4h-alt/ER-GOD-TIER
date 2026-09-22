@@ -67,12 +67,12 @@ export function AtlasWorkspace() {
   const [embedFailed, setEmbedFailed] = useState(false)
   const [showDown, setShowDown] = useState(false)
   const failEmbed = useCallback(() => setEmbedFailed(true), [])
-  // Task 82: fail closed. The iframe is only "live" while the engine is actually
-  // up (SSE live, or markers loaded while connecting) and the embed has not
-  // failed; a dropped engine or a failed embed falls back to the static plate.
-  const engineUp = !ps5 && (w.engineStatus === 'live' || (w.engineStatus === 'connecting' && w.engineMarkers.length > 0))
+  // The engine is served by our own app now (/engine), so it is offered on every
+  // platform — phone and PS5 included. Fail closed: only fall back to the static
+  // plate when the engine is genuinely down or the embed errors.
+  const engineUp = w.engineStatus === 'live' || (w.engineStatus === 'connecting' && w.engineMarkers.length > 0)
   const engineLive = engineUp && !embedFailed
-  const engineDown = !ps5 && !engineUp
+  const engineDown = !engineUp
   const banner = engineBanner(w.engineStatus, w.engineState)
   // Don't flash "offline" on the very first frame before the bridge connects.
   useEffect(() => {
@@ -326,7 +326,7 @@ export function AtlasWorkspace() {
         {/* Task 82: the engine never fails silently — a visible banner says why
             the static plate is showing, and it differs for a down engine vs a
             failed embed. */}
-        {!ps5 && (embedFailed || showDown) && (
+        {(embedFailed || showDown) && (
           <div className="atlas-banner" role="status">
             {embedFailed
               ? 'Live map embed failed — showing the static plate. Restart the engine (npm start) and reload.'
