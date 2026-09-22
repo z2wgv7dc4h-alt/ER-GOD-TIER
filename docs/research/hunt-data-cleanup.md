@@ -6,7 +6,7 @@
 
 ## What the two sources actually were
 
-| | `fieldHunts` (`src/knowledge/completion.ts`) | `hunts.json` (`public/sourced/checklists/hunts.json`) |
+| | `fieldHunts` (`src/knowledge/completion.ts`) | `hunts.json` (`src/data/hunts.json`) |
 |---|---|---|
 | Rows | 24 (hand-authored literals) | 207 (154 unique bosses; multi-spawn bosses share one `id`) |
 | Fields | `id`, `name`, `aliases`, `region`, `campaign` | `id`, `name`, `place`, `region`, `flag`, `campaign` |
@@ -34,7 +34,7 @@ described the *same bosses*, and the overlap was real:
 
 ## What was done
 
-`public/sourced/checklists/hunts.json` is the single canonical source. Everything else derives:
+`src/data/hunts.json` is the single canonical source. Everything else derives:
 
 1. **`src/knowledge/completion.ts`** now imports `hunts.json` and builds `fieldHunts` from it.
    The only authored data left is `HUNT_CURATION`: the alias list plus an optional `place`

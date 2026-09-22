@@ -7,8 +7,8 @@ Read this before writing code. Do not invent a second kernel.
 Local-first PWA. One `Character` is the world. Atlas, Build, Quests, Codex, Reckoning, Gideon are views.
 
 ```
-Desktop  280px Now (Gideon) │ Stage 1fr
-Phone    tabs: Map / Now / Kit
+Desktop  280px Gideon │ Stage 1fr
+Phone    tabs: Map / Gideon / Kit
 ```
 
 The identity rail is an off-canvas **Tarnished sheet** behind the name button (profiles, packet,
@@ -75,7 +75,7 @@ surface requirements/scaling/base attack in the Codex (previously only FanAPI we
 Intents: endings/lines/blitz, still-available, builds, shops, missables, fragments, warps, loot,
 hunts, stuck, 100% spine, boss pins, and (Tasks 74–86) region "what did I miss here", wear a named
 kit through the same `buildId` the chips set, "where is <companion>" from `npcLocations.ts`, and
-co-op filtering (`answers.coop`). Both the Now strip and Quests read the one `allLines()` graph;
+co-op filtering (`answers.coop`). Both the Gideon strip and Quests read the one `allLines()` graph;
 `buildHunt` turns a kit into `{ have, missing, pins, unresolved }`; `beatPin` resolves a plan beat to
 an existing pin for **Show**. `searchSync` remains the last resort.
 
@@ -106,7 +106,7 @@ boss drops, guides, dialogue, Gideon's answers) into a link that opens its Codex
 ## Paths
 
 - PS5: Reckoning interview + paste; `src/lib/ocr.ts` runs real on-device Tesseract.
-- PC: `npm run map` SSE, or drop `ER0000.sl2` — `src/lib/save.ts` is a real read-only in-browser parser.
+- PC: the engine is served by the app at `/engine`; `npm run map` is only the live save reader / player dot, or drop `ER0000.sl2` — `src/lib/save.ts` is a real read-only in-browser parser.
 - `canonicalFactId` still only fires when names match.
 
 ## Refresh data
@@ -149,6 +149,6 @@ External research is allowed without restriction. Facts, locations-in-prose, bui
 
 ```
 cd artifacts/all-knowing
-npm run dev
-npm run map
+npm run dev     # workspace + the live map engine at /engine
+# npm run map   # optional: PC live save reader / player dot only
 ```

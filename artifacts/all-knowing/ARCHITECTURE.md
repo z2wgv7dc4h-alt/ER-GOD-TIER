@@ -23,9 +23,8 @@ name-derived `grace:{slug}` stub with no catalog fact, no pin and no implication
 
 ## Shell
 
-Desktop: `280px Now strip | stage` — Gideon on the left, the current room on the right, no identity
-rail on the first screen. Phone (<700px): exactly three tabs **Map / Now / Kit** (Now is Gideon as
-the full stage). At every width the identity rail is the off-canvas **Tarnished sheet** (opened from
+Desktop: `280px Gideon strip | stage` — Gideon on the left, the current room on the right, no identity
+rail on the first screen. Phone (<700px): exactly three tabs **Map / Gideon / Kit** (Gideon is the full stage). At every width the identity rail is the off-canvas **Tarnished sheet** (opened from
 the name button): profiles, packet, save drop, recents, the full character card, and the five room
 links. Reckon / Quests / Codex are links in that sheet, not tabs (Task 83). The Codex opens only from
 the sheet link or a `/` search hit (Task 86).
@@ -67,9 +66,9 @@ third pin system is introduced (Task 69).
 only powers the Clark attack rating, so the Build preview is a labelled estimate, never a second
 formula (Task 71).
 
-A pure `gideonHeader(character)` (`src/lib/gideonHeader.ts`) feeds the Now strip / sticky goal · beat ·
+A pure `gideonHeader(character)` (`src/lib/gideonHeader.ts`) feeds the Gideon strip / sticky goal · beat ·
 gate bar, reusing `planRoute` / `idleSuggestions` / `approachingGates` — the router and the act are
-unchanged (Task 72). The Now strip itself is the compact Task 84 panel: current beat, one gate,
+unchanged (Task 72). The Gideon strip itself is the compact Task 84 panel: current beat, one gate,
 **Show** only when `src/lib/beatPins.ts` resolves an existing pin, **Done** through the lockout
 confirm, and an "N open · M locked" line into the Quests archive.
 

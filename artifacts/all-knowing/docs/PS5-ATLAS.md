@@ -2,6 +2,11 @@
 
 The PC atlas is EldenRingMap. The PS5 atlas is a reconstructed map. They share slugs, not a save file.
 
+> **2026-09-23:** the PS5-only Atlas label ("PS5 atlas · warp list + pins, not a save") and the
+> `ps5` gate that forced the static plates were removed. The app now serves the live engine to every
+> platform, and the reconstructed plates are only a fallback when the embed fails. This file remains
+> the description of that reconstruction.
+
 ## How a pin gets a state
 
 ```

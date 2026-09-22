@@ -8,20 +8,20 @@ Local-first Elden Ring workspace. One character. Five rooms. Gideon.
 
 Base + Shadow of the Erdtree + Tarnished Pack. No server. No accounts. Saves and shots stay on the box.
 
-The atlas is [egormagurin/EldenRingMap](https://github.com/egormagurin/EldenRingMap) rewired into this shell when you have extracted tiles from *your* install. Without that, the plates still work.
+The atlas is [egormagurin/EldenRingMap](https://github.com/egormagurin/EldenRingMap) absorbed into this app: our Vite server serves the live tiled map at `/engine`, so it works on the phone too. If the embed fails, static plates are the fallback.
 
 ---
 
 ## Features
 
-**Play shell** — desktop is a 280px Now strip beside the stage; a phone gets three tabs, Map / Now / Kit. The identity rail is a sheet behind your name, and the old lean-back toggle is gone.  
+**Play shell** — desktop is a 280px Gideon strip beside the stage; a phone gets three tabs, Map / Gideon / Kit. The identity rail is a sheet behind your name, and the old lean-back toggle is gone.  
 **Reckoning** — interview, warp-list paste, on-device Tesseract, inference with undo.  
-**Atlas** — plates or live engine, leftover / gate / hunt pins, phone job chips. Plates also carry our grounded EldenRingMap-pack pins (dungeons, merchants, night bosses, collectibles). Fails closed: if the engine is down or the embed fails it shows the plate and a banner, never a blank iframe. The live engine has marker **search**, per-category toggles (all/none) and hide-found/labels/icons; our NPC placements sit under a dedicated **NPCs** category that defaults off.  
+**Atlas** — plates or live engine, leftover / gate / hunt pins, phone job chips. Plates also carry our grounded EldenRingMap-pack pins (dungeons, merchants, night bosses, collectibles). Fails closed: if the embed fails it shows the plate and a banner, never a blank iframe. The live engine has marker **search**, per-category toggles (all/none) and hide-found/labels/icons; our NPC placements sit under a dedicated **NPCs** category that defaults off.  
 **Build lab** — Clark AR, soft caps, a one-AR first paint with the active hunt (missing pieces ordered by the kit's route) and the OP/PvP list, AR detail, matchup and `akb1.` codes behind one `Kits…` drawer. Show on map targets the first pinnable missing piece.  
 **Goods paste** — paste an item list; one confident catalog/loot hit per line marks, anything else stays unknown (no OCR).  
 **Quests** — the same `allLines()` graph Gideon plans, incl. the remaining companion lines; confirm before a lockout. Now's “N open · M locked” line opens this archive.  
 **Codex** — guide, chests, merchants, achievement-shaped sets, SotE meters — plus the data pass: **full game text** with verbatim **dialogue** search + per-speaker cards, **weapon requirements/scaling/attack**, **EldenRingMap locations**, the **ER Checklist** item lists, **Medusa's 100% route** steps, **NPC placements**, and **boss drops** (163 bosses, base + SotE). Opened from the Tarnished sheet or a `/` search hit, never a tab.  
-**Gideon** — router, Now strip (current beat · one gate · Show/Done), co-op toggle, idle chips, command palette. Quotes **verbatim dialogue** for a named speaker, answers **Medusa route** steps, and falls back to **placed-NPC maps**. Optional local LLM behind an env key.  
+**Gideon** — router, Gideon strip (current beat · one gate · Show/Done), co-op toggle, idle chips, command palette. Quotes **verbatim dialogue** for a named speaker, answers **Medusa route** steps, and falls back to **placed-NPC maps**. Optional local LLM behind an env key.  
 **Companions** — where-is-it locator for eight NPCs, region “what did I miss here”, a Stormveil checklist, and a co-op mode that drops Mimic / Torrent advice.  
 **Vault** — profiles, packet copy/paste/QR, PWA offline shell.  
 **Alias plane** — every warp-list grace canonicalises to a slug: authored where one exists, else a name-derived stub (no invented pin).
@@ -34,17 +34,17 @@ Live status and task history: `HANDOFF-CLAUDE.md`. Data inventory: `DATA.md`. Ke
 
 ```bash
 npm install    # once
-npm start      # map engine (:8099) + workspace (:5173)
+npm run dev    # workspace + the live map engine at /engine (no second process)
 ```
 
-Open the Vite URL. If the engine is not set up, Atlas uses static plates and says so.
+Open the Vite URL — the tiled map is served by the app at `/engine`. If the embed fails, Atlas shows the static plates and says so.
 
 ```bash
 npm run map:setup   # one-time: extract tiles + markers from your local install
 npm run map:merge   # fold our NPCs + pack markers into the engine's feed
 ```
 
-`npm run map` and `npm run dev` still work as two terminals.  
+`npm run map` is now only for the PC live save reader / player dot — the map needs no second process.  
 `npm start:live` / `npm run map:live` is optional process-memory read for a player dot. Off by default. Read the section below before enabling it.
 
 Install from the browser menu when you want it on a phone. Fonts are self-hosted; the shell caches.
@@ -68,13 +68,13 @@ If you do not know why you want it, leave it off.
 
 ## Rooms
 
-The three play tabs are **Map / Now / Kit**. Everything else opens from the Tarnished sheet (or the
+The three play tabs are **Map / Gideon / Kit**. Everything else opens from the Tarnished sheet (or the
 `1–5` keys / search).
 
 | Room | Job |
 |---|---|
 | Map (Atlas) | Where to walk, what locks, what is still on the ground |
-| Now (Gideon) | The current beat, one gate, Show / Done — ask it |
+| Gideon | The current beat, one gate, Show / Done — ask it |
 | Kit (Build lab) | Whether the numbers are real |
 | Reckoning | How this Tarnished entered the world (sheet link) |
 | Quests | Which line you are on, and what a tick would kill (sheet link) |

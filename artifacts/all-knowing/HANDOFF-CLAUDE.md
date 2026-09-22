@@ -6,6 +6,26 @@ This file is the briefing. Code contracts are also in `HANDOFF.md`. Data invento
 
 ---
 
+## 0. Latest (2026-09-23)
+
+- **Engine served by the app.** `vite.config.ts`'s `all-knowing-map-engine` plugin serves the live
+  tiled map at `/engine/**` (tiles, icons, and the `/api/{markers,state,events,saves}` the front-end
+  calls). `npm run dev` alone gives the live map — same-origin, phone included. `MAP_ENGINE_BASE` is
+  `/engine` in dev. The Node engine (`npm run map`) is now only for the PC live save reader / player dot.
+- **Atlas is platform-agnostic.** The `ps5` gate that forced static plates is gone, and the PS5-only
+  copy is removed. The engine is offered everywhere and fails closed to the plate only if the embed errors.
+- **Phone yields the map to the engine.** When the engine is live we hide our top chip bar and world
+  chips, so the engine's own world switch / Filters / Tools / zoom are reachable; the bottom-right
+  "Filters & details" sheet stays for our pin list + Found/Unknown/Not-there.
+- **Phone tab renamed "Now" → "Gideon".** The `App.shell.guard(s)` tests were relaxed to match.
+- **`hunts.json` moved to `src/data/hunts.json`.** It was under `public/`, which Vite cannot import
+  (it returns a URL string, so `canonicalHunts.find` threw at module load and took down the whole
+  Gideon/Now module graph). Importers, `scripts/gen-aliases.mjs`, and docs updated.
+- **Known open:** the mobile Atlas still has several independent floating controls that can collide;
+  verify on-device and consolidate.
+
+---
+
 ## 1. Product (what Wyatt asked for)
 
 A single tool that beats wiki tabs + MapGenie + spreadsheet trackers.
@@ -21,7 +41,7 @@ A single tool that beats wiki tabs + MapGenie + spreadsheet trackers.
 - Base + SotE + Tarnished Pack. Not Nightreign in v1.
 
 **Tone / UI**
-- Dark ER: gold on soot. Desktop is a 280px Now strip beside the stage; a phone gets Map / Now / Kit.
+- Dark ER: gold on soot. Desktop is a 280px Gideon strip beside the stage; a phone gets Map / Gideon / Kit.
 - The identity rail is the Tarnished sheet behind the name (Task 83; Sit mode is gone).
 - Gideon is Gideon Ofnir, not a generic chatbot.
 
@@ -39,7 +59,7 @@ A single tool that beats wiki tabs + MapGenie + spreadsheet trackers.
 Repo: `artifacts/all-knowing`
 
 ```
-Desktop: Now strip 280px │ Stage. Phone tabs: Map / Now / Kit.
+Desktop: Gideon strip 280px │ Stage. Phone tabs: Map / Gideon / Kit.
 Sheet links: Reckoning, Atlas, Build lab, Quest graph, Codex (Codex also via a '/' search hit)
 ```
 
@@ -52,7 +72,7 @@ Sheet links: Reckoning, Atlas, Build lab, Quest graph, Codex (Codex also via a '
 - `src/lib/gideon.ts` + `Gideon.tsx` — `askGideon` → `GideonAct`
 - `src/lib/search.ts` — `searchSync` (command bar, Gideon log, Reckon extra, fallback)
 - `src/lib/aliases.ts` — Paramdex 418 warps + name link to seed slugs
-- `src/lib/mapEngine.ts` — EldenRingMap SSE (`/er-map` in dev)
+- `src/lib/mapEngine.ts` — EldenRingMap SSE (`/engine` in dev, served by our Vite server)
 - `src/lib/coords.ts` — loads guide pins + boss pins
 - `src/lib/openData.ts` / `guide.ts` — async dumps for Codex
 - `src/lib/gatePins.ts` — binds approaching gates' locks onto the Atlas plate (existing frames only)
@@ -66,7 +86,7 @@ Sheet links: Reckoning, Atlas, Build lab, Quest graph, Codex (Codex also via a '
 `App.tsx` is now just the play-shell chrome (~400 lines); every room is its own lazy chunk.
 
 **Vendor**
-`vendor/elden-ring-map` — egormagurin/EldenRingMap. `npm start` / `npm run map`. Tiles/markers from a **local game install**, not shipped.
+`vendor/elden-ring-map` — egormagurin/EldenRingMap, served by our Vite server at `/engine`. Tiles/markers come from a **local game install** (not shipped); `npm run map` still runs the engine alone for the PC live save reader / player dot.
 
 ---
 
@@ -815,8 +835,8 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 
 - **Sit is gone**: `sitMode` / `setSitMode`, `SitToggle`, `FirstSit`, `.app.sit`, the `S` hotkey,
   and the Help row were all removed (`(?i)\bsit\b` now has zero `src/` hits).
-- Two layouts: **<700px** → three tabs exactly **Map / Now / Kit** (Now = Gideon full stage), rail
-  is an off-canvas sheet behind the name. **≥700px** → `280px Now strip | stage`, no third Gideon
+- Two layouts: **<700px** → three tabs exactly **Map / Gideon / Kit** (Now = Gideon full stage), rail
+  is an off-canvas sheet behind the name. **≥700px** → `280px Gideon strip | stage`, no third Gideon
   column, no identity rail. The `@media (max-width:1100px)` horizontal-rail layout is deleted.
 - Packet / sl2 drop / Recents / profiles / full CharacterCard / the five room buttons all live in
   the Tarnished sheet; Reckon / Quests / Codex are links there (with the `1–5` keys and search),
@@ -824,7 +844,7 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 
 **Task 84 — Now is not the quest wall** (landed after 83):
 
-- The Now strip shows only: current beat (goal · beat), one gate or nothing, **Show** only when
+- The Gideon strip shows only: current beat (goal · beat), one gate or nothing, **Show** only when
   `beatPin` finds a pin, **Done** via the existing lockout confirm, and one line
   "N open · M locked" that opens the Quests archive. The blitz / endings / storylines chip wall
   was removed. `src/Gideon.now.test.tsx`.
@@ -840,7 +860,7 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 
 - No Codex tab; it opens from the Tarnished sheet's room links or a `/` search hit (`CommandHits`
   sets `hit.module`). The stage now mounts rooms only when `!mobileNow`, so the Codex (and its
-  FanAPI / gathering grids) can never mount behind Map / Now / Kit. `Codex.tsx` is not deleted;
+  FanAPI / gathering grids) can never mount behind Map / Gideon / Kit. `Codex.tsx` is not deleted;
   `searchSync('elleh')` still hits `grace:elleh`. `src/Codex.is.search.test.ts`.
 
 **Task 82 — Atlas fails closed** (landed after 86):
@@ -854,7 +874,7 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 
 **Task 87 — docs match the shell** (landed after 86):
 
-- Root + inner README, the Help overlay and the shortcut catalog now describe Map / Now / Kit, the
+- Root + inner README, the Help overlay and the shortcut catalog now describe Map / Gideon / Kit, the
   Tarnished sheet, Codex-as-search and the `Kits…` drawer; the old Sit feature copy is gone
   (`Sit mode` = 0 hits across both READMEs + Help). The snowfield cover is kept and no doc claims
   dungeon interiors.
@@ -863,7 +883,7 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 
 - `src/App.shell.guards.test.ts` reads production source only and pins: no Sit APIs
   (`sitMode`/`setSitMode`/`SitToggle`/`FirstSit`/`sheet-sit`/`topbar-sit`/`first-sit`) in
-  App/state/QoL/shortcuts/vault/CSS; tabs exactly Map / Now / Kit; no `sit` class on the root;
+  App/state/QoL/shortcuts/vault/CSS; tabs exactly Map / Gideon / Kit; no `sit` class on the root;
   Packet/Recents/ProfileSwitcher/CharacterCard/SaveDrop only inside the closed sheet; sheet closed
   by default. If a leftover ever appears, delete it — do not weaken the test.
 
@@ -904,7 +924,7 @@ From Wyatt, keep on the roadmap:
 - Rememberance shop (Enia) as a table.
 - ✅ Soft caps already marked on the stat card. (Task 44 — real per-stat dot tiers in `Build.tsx`.)
 - Lean-back UI for the living room. (Task 83 removed Sit mode; the two play-shell layouts — the
-  Now strip on desktop and the Map / Now / Kit tabs on a phone — are the current lean-back frame.)
+  Gideon strip on desktop and the Map / Gideon / Kit tabs on a phone — are the current lean-back frame.)
 - Profiles per Tarnished, packet to a friend or another device.
 
 ---
@@ -937,8 +957,8 @@ From Wyatt, keep on the roadmap:
 ```
 cd artifacts/all-knowing
 npm install
-npm start            # map engine (:8099) + Vite PWA together — Task 56
-# two terminals still fine:  npm run map  |  npm run dev
+npm run dev          # workspace + the live map engine at /engine - no second process
+# npm run map is only the PC live save reader / player dot
 # npm start:live / npm run map:live  → optional live-memory, prints the EAC warning first
 ```
 

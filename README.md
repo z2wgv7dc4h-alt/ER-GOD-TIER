@@ -23,7 +23,7 @@ Gideon answers from **this** character: what is next, what locks if you keep wal
 ## Features
 
 ### Play shell
-The product is three surfaces: **Map / Now / Kit**. A phone shows them as bottom tabs; desktop is a 280px **Now** strip beside the stage, with no identity column. Your name opens the **Tarnished sheet** — profiles, packet, save drop, recents, the full character card and the five room links. Reckon / Quests / Codex are links in that sheet, not tabs.
+The product is three surfaces: **Map / Gideon / Kit**. A phone shows them as bottom tabs; desktop is a 280px **Gideon** strip beside the stage, with no identity column. Your name opens the **Tarnished sheet** — profiles, packet, save drop, recents, the full character card and the five room links. Reckon / Quests / Codex are links in that sheet, not tabs.
 
 ### One character
 Interview, PS5 screenshots (on-device OCR), warp-list paste, PC `.sl2` drop, or a live map-engine save. Profiles in the Tarnished sheet. Packet file + QR to move a run between boxes. Nothing is posted anywhere.
@@ -32,7 +32,7 @@ Interview, PS5 screenshots (on-device OCR), warp-list paste, PC `.sl2` drop, or 
 Answer the basics. Starting class, DLC, goal. Paste a Site of Grace list. Drop a menu shot. Low-confidence OCR stays unknown. Inference chains close the world (Fingerslayer → Nokron, Great Rune → its shardbearer) with undo.
 
 ### Atlas
-Static plates when you are on a phone or the engine is down. Full EldenRingMap embed when you have run extract on a PC with the game installed. It fails closed: if `:8099` is down or the embed fails, you get the plate and a banner — never a silent blank iframe. Leftover pins, missable-gate layer, hunt-list pins for a selected kit. Plates also carry our own grounded pins from the EldenRingMap pack (dungeons, merchants, night bosses, collectible positions); the pack coords are in the engine frame, so they line up with both maps. On a phone: Missing only / leftovers / locks sit on the map; pin kinds hide under **layers**. The live engine has a marker **search** plus per-category toggles (with all / none) and options (hide found · labels · icons); our NPC placements appear there under a dedicated **NPCs** category that defaults off.
+The app serves the live EldenRingMap at `/engine`, so the tiled map works on the phone and PC alike (no second process). It fails closed: if the embed fails, you get the static plate and a banner — never a silent blank iframe. Leftover pins, missable-gate layer, hunt-list pins for a selected kit. Plates also carry our own grounded pins from the EldenRingMap pack (dungeons, merchants, night bosses, collectible positions); the pack coords are in the engine frame, so they line up with both maps. On a phone: Missing only / leftovers / locks sit on the map; pin kinds hide under **layers**. The live engine has a marker **search** plus per-category toggles (with all / none) and options (hide found · labels · icons); our NPC placements appear there under a dedicated **NPCs** category that defaults off.
 
 ### Kit (Build lab)
 First paint is stats, **one AR**, and the active hunt — or “Pick a kit…”. Attack rating is the vendored 1.17 regulation math (Clark); soft-cap marks sit on the stat card. The OP/PvP chips, the full AR detail, the NpcParam matchup, the side-by-side weapon compare and the shareable `akb1.` build codes all live behind one closed **Kits…** drawer. A hunt names the pieces you still lack, ordered along the kit's route, and pins the ones that already have a grace; Show on map targets the first pinnable one. Scadutree blessing is counted, not faked into AR.
@@ -41,18 +41,18 @@ First paint is stats, **one AR**, and the active hunt — or “Pick a kit…”
 Paste a list of item names (in the Tarnished sheet). A line is marked only when it is one confident catalog/loot hit; anything else stays unknown. No OCR, no invented ids.
 
 ### Quests
-One graph. Quests and Gideon tick the same `factId`s. Lockout confirm before a tick that would kill a line you started. The Now strip’s “N open · M locked” line opens the archive. Eight lockable spines in the planner (Ranni, Millicent, Fia, Dung Eater, Tanith, Leda, Sellen, Ymir) plus gates for Forge, Maliketh, Sealing Tree, frenzy, Seluvis, Volcano, Millicent’s fork, Varré — and the companion pass (Alexander, Patches, Nepheli, Roderika & Hewg, Boc, Hyetta, Irina, Diallos, Igon) on the same graph.
+One graph. Quests and Gideon tick the same `factId`s. Lockout confirm before a tick that would kill a line you started. The Gideon strip’s “N open · M locked” line opens the archive. Eight lockable spines in the planner (Ranni, Millicent, Fia, Dung Eater, Tanith, Leda, Sellen, Ymir) plus gates for Forge, Maliketh, Sealing Tree, frenzy, Seluvis, Volcano, Millicent’s fork, Varré — and the companion pass (Alexander, Patches, Nepheli, Roderika & Hewg, Boc, Hyetta, Irina, Diallos, Igon) on the same graph.
 
 ### Codex
 The warehouse: guide items, chests, merchants, cookbooks, bell bearings, whetblades, and the SotE fragment / revered-ash meters (count only). It is not a tab — open it from the Tarnished sheet or a `/` search hit. Gathering nodes are listed as unverified model codes and are not dumped on the player map.
 
 The data pass added whole new searchable sets here: the **full game text** (36 FMG tables, 34k strings) with a **verbatim dialogue** search and per-speaker cards; **weapon requirements/scaling/base attack** from the regulation table; **EldenRingMap locations** (dungeons/merchants/collectibles); the **ER Checklist** item lists (154 talismans, 129 incantations, …); **Medusa's 100% route** steps; **NPC placements** (where the 95 talking NPCs stand, from the map files); and **boss drops** (163 bosses, 161 with drops, base + Shadow of the Erdtree — the DLC gap the older files had). Lines are quoted as-is, never paraphrased.
 
-### Now (Gideon)
-The Now strip shows the current beat, one gate or nothing, **Show** (only when an existing pin resolves) and **Done** (through the lockout confirm), plus the open · locked line into the Quests archive. The router is deterministic first: “what next”, “if I keep going”, “wear Rivers”, “where is Blaidd”, “what did I miss here”, “I’m done”. It also quotes **verbatim in-game dialogue** for a named speaker (only real, attributed lines), answers **Medusa route** steps (“medusa route for X”), and falls back to **placed-NPC maps** for NPCs outside the authored locator. Idle suggestion chips, a co-op toggle that drops Mimic / Torrent advice, and a command palette (`/` or Ctrl+K) with live results and arrow keys. Optional Muse / env-key LLM only after the router misses — and only if you configured it locally.
+### Gideon
+The Gideon strip shows the current beat, one gate or nothing, **Show** (only when an existing pin resolves) and **Done** (through the lockout confirm), plus the open · locked line into the Quests archive. The router is deterministic first: “what next”, “if I keep going”, “wear Rivers”, “where is Blaidd”, “what did I miss here”, “I’m done”. It also quotes **verbatim in-game dialogue** for a named speaker (only real, attributed lines), answers **Medusa route** steps (“medusa route for X”), and falls back to **placed-NPC maps** for NPCs outside the authored locator. Idle suggestion chips, a co-op toggle that drops Mimic / Torrent advice, and a command palette (`/` or Ctrl+K) with live results and arrow keys. Optional Muse / env-key LLM only after the router misses — and only if you configured it locally.
 
 ### Phone / PWA
-Install from the browser, self-hosted fonts, offline shell. Map engine is optional. The live-memory player-dot is opt-in and off by default.
+Install from the browser, self-hosted fonts, offline shell. The map engine is built in (served at `/engine`). The live-memory player-dot is opt-in and off by default.
 
 ---
 
@@ -61,10 +61,10 @@ Install from the browser, self-hosted fonts, offline shell. Map engine is option
 ```bash
 cd artifacts/all-knowing
 npm install
-npm start          # map engine :8099 + Vite together
+npm run dev        # workspace + the live map engine at /engine (no second process)
 ```
 
-Open the Vite URL. Atlas embeds `/?embed=1` when the engine is up; otherwise you get the plates and a banner that says so.
+Open the Vite URL. Atlas embeds the app-served engine at `?embed=1`; if the embed fails you get the plates and a banner that says so.
 
 ```bash
 # first time on a PC that has the game
@@ -72,7 +72,7 @@ npm run map:setup   # extract tiles + markers from your local install
 npm run map:merge   # fold our NPCs + pack markers into the engine's feed
 ```
 
-Two terminals still work: `npm run map` and `npm run dev`.  
+`npm run map` is now only for the PC live save reader / player dot; the map needs no second process.  
 `npm start:live` / `npm run map:live` reads process memory for a player dot. Read the live-memory section in `artifacts/all-knowing/README.md` before you touch that.
 
 ---
