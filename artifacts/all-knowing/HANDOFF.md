@@ -84,6 +84,13 @@ JSON, router-first. Pinned to contributor 1.3; `reasoning_effort: 'minimal'` + a
 turns are sent as history. Ground with `planRoute`, `stillAvailable`, `searchSync`. No invented ids;
 sentences naming an ungrounded id are stripped.
 
+Harness (`src/lib/gideonAgent.ts`, `src/lib/gideonTools.ts`): the model is given our deterministic
+functions as **tools** — search, here, level_check, boss, guide, upgrade, dialogue — runs them on real
+data and answers from the results (bounded 4-turn loop, every id real/hyperlinkable). Output is
+**schema-constrained** (`response_format: json_schema`, strict `GideonAct`). Optional built-in
+`web_search` behind `VITE_GIDEON_WEB_SEARCH=1`. Evals: `src/lib/gideon.eval.test.ts` (router
+fixtures) + `gideonTools.test.ts`.
+
 Interlinking: `src/lib/interlink.ts` + `src/WikiText.tsx` turn any known entity mention (build text,
 boss drops, guides, dialogue, Gideon's answers) into a link that opens its Codex/Quests/Atlas view;
 `relatedFor` supplies the acquisition/drops/quest edges.

@@ -11,6 +11,8 @@ export type FextBoss = {
   locations: string[]
   drops: string[]
   hp: string
+  /** Page body sections: fight guide/strategy, combat info, lore. */
+  sections?: { heading: string; text: string }[]
   url: string
 }
 export type BossDrops = { source: string; bosses: FextBoss[] }

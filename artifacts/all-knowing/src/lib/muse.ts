@@ -156,8 +156,7 @@ function requestBodies(messages: ChatMessage[], opts: GideonLlmOptions): Attempt
   ]
 }
 
-/**
- * One JSON-mode completion. Tries `POST {base}/chat/completions`; on a 404 it
+/** One JSON-mode completion. Tries `POST {base}/chat/completions`; on a 404 it
  * retries `POST {base}/responses`. Anything else non-OK (or an empty body) throws
  * so the caller stays on the router.
  */
@@ -197,4 +196,82 @@ export async function callGideonLlm(
     }
   }
   throw lastError ?? new Error('Gideon LLM request failed')
+}
+
+// --- Agent transport: tool calling + multi-turn ---------------------------
+
+export type AgentMessage = {
+  role: 'system' | 'user' | 'assistant' | 'tool'
+  content: string | null
+  tool_calls?: { id: string; type: 'function'; function: { name: string; arguments: string } }[]
+  tool_call_id?: string
+}
+
+export type AgentTool =
+  | { type: 'function'; function: { name: string; description: string; parameters: Record<string, unknown> } }
+  | { type: 'web_search' }
+
+export type ToolCall = { id: string; name: string; arguments: string }
+
+/**
+ * One chat turn that may return `tool_calls`. Schema-constrained to the act when
+ * no tools are in play; with tools, the model either calls a tool or emits the
+ * act JSON. External keys cannot carry reasoning across turns on Chat
+ * Completions, so we keep turns cheap (`reasoning_effort: minimal`).
+ */
+export async function callGideonChat(
+  messages: AgentMessage[],
+  tools: AgentTool[] = [],
+  opts: GideonLlmOptions = {},
+): Promise<{ content: string; toolCalls: ToolCall[] }> {
+  const key = gideonKey()
+  if (!key) throw new Error('VITE_GIDEON_API_KEY is not set')
+  const base = gideonBaseUrl()
+  const body: Record<string, unknown> = {
+    model: gideonModel(),
+    messages,
+    reasoning_effort: opts.reasoningEffort ?? DEFAULT_REASONING_EFFORT,
+    prompt_cache_key: CACHE_KEY,
+    temperature: opts.temperature ?? 0.3,
+    max_tokens: opts.maxTokens ?? DEFAULT_MAX_TOKENS,
+  }
+  if (tools.length) {
+    body.tools = tools
+    body.tool_choice = 'auto'
+    // With tools in play the model may emit either the act JSON or a tool call;
+    // constrain only the final answer via the schema when no tool is chosen.
+    body.parallel_tool_calls = false
+  } else {
+    body.response_format = ACT_SCHEMA
+  }
+
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), opts.timeoutMs ?? DEFAULT_TIMEOUT_MS)
+  try {
+    const res = await fetch(`${base}/chat/completions`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
+      signal: controller.signal,
+      body: JSON.stringify(body),
+    })
+    if (!res.ok) throw new Error(`Gideon LLM HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`)
+    const data = (await res.json()) as {
+      choices?: {
+        message?: {
+          content?: unknown
+          tool_calls?: { id: string; function: { name: string; arguments: string } }[]
+        }
+      }[]
+    }
+    const msg = data.choices?.[0]?.message
+    const content = typeof msg?.content === 'string' ? msg.content : ''
+    const toolCalls: ToolCall[] = (msg?.tool_calls ?? []).map((t) => ({
+      id: t.id,
+      name: t.function.name,
+      arguments: t.function.arguments,
+    }))
+    return { content, toolCalls }
+  } finally {
+    clearTimeout(timeout)
+  }
 }

@@ -34,6 +34,7 @@ import {
 } from './enemy'
 import { factState } from '../state'
 import { callGideonLlm, hasGideonKey, type ChatMessage } from './muse'
+import { askGideonAgent } from './gideonAgent'
 import { buildGrounding, gideonMessages, validateGideonAct } from './gideonLlm'
 import { buildHunt } from './buildHunt'
 import { isDialogueAsk, quoteFor } from './dialogueQuote'
@@ -528,7 +529,7 @@ export function askGideonRouter(
   // Weapon upgrade / "what should I use" advice from the AR engine at this
   // character's stats, kept ON-ARCHETYPE with the kit they picked
   // (`answers.buildKit`): a Dex/Arc player gets Dex/Arc weapons, not max raw AR.
-  if (weapons && /\b(upgrade|reinforce|somber|smithing|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(q)) {
+  if (weapons && /\b(upgrade|reinforce|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(q)) {
     const builds = [...opBuilds, ...pvpBuilds]
     const kitId = typeof character.answers.buildKit === 'string' ? character.answers.buildKit : ''
     const kit = builds.find((b) => b.id === kitId)
@@ -1218,7 +1219,7 @@ export function isFastLookup(
   if (guides && matchGuides(question, guides).length) return true
 
   // Weapon upgrade / early-weapon advice is deterministic from the AR engine.
-  if (weapons && /\b(upgrade|reinforce|somber|smithing|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(q)) return true
+  if (weapons && /\b(upgrade|reinforce|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(q)) return true
 
   // To-do list + level/zone advice are deterministic.
   if (/\b(come back|go back|my (todo|list|watchlist)|what(?:'| i)?s on my (todo|list)|remember to|don'?t forget)\b/.test(q)) return true
@@ -1275,7 +1276,7 @@ export async function askGideon(
   const wantsPlacements = /\b(where|find|locate)\b/.test(ql)
   const wantsMedusa = /\b(medusa|walkthrough|route)\b/.test(ql)
   const wantsGuides = /\b(how|guide|upgrade|smithing|somber|bell bearing|talisman|incantation|sorcer|damage type|stats?|buff)\b/.test(ql)
-  const wantsWeapons = /\b(upgrade|reinforce|somber|smithing|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(ql)
+  const wantsWeapons = /\b(upgrade|reinforce|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(ql)
   const wantsLevels = /\b(what level|recommended level|am i (ready|overlevel|underlevel)|overlevell?ed|underlevell?ed|outlevell?ed|before i (go|leave|move)|i(?:'| a)m here)\b/.test(ql)
 
   // Load every optional context source in parallel — they are independent
@@ -1307,6 +1308,15 @@ export async function askGideon(
 
   try {
     const grounding = buildGrounding(question, character, memory)
+    // Tool-calling harness first: Muse can call our deterministic functions and
+    // answer from real data. If the harness is unavailable, fall back to a plain
+    // completion, then the router.
+    try {
+      const agentAct = await askGideonAgent(question, character, memory, history)
+      if (agentAct) return agentAct
+    } catch (agentErr) {
+      console.warn('[gideon] tool harness unavailable; plain completion.', agentErr)
+    }
     const raw = await callGideonLlm(gideonMessages(question, grounding, history))
     const { act, rejected } = validateGideonAct(raw, grounding)
     if (!act) {
