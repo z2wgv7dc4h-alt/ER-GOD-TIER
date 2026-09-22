@@ -163,7 +163,7 @@ shields, items, talismans, spells, ashes, spirits, bosses, creatures, locations,
 classes); refresh with `node scripts/ingest-fanapi.mjs` (deterministic, name-sorted). The
 `checklists/` files below are the name lists.
 
-`public/sourced/checklists/hunts.json` is the single canonical field-hunt dataset (BuLEEto):
+`src/data/hunts.json` is the single canonical field-hunt dataset (BuLEEto):
 Codex fetches it, `src/knowledge/completion.ts` derives `fieldHunts` from it, and
 `src/lib/sl2/facts.ts` reads its flags directly. There is no separate `hunt-flags.json` copy
 (deleted in Task 37 — it could drift). See `docs/research/hunt-data-cleanup.md`.

@@ -142,7 +142,7 @@ const kindOf = (id) => {
 const namesJson = read('public/sourced/open/names.json')
 const checklistsGraces = read('public/sourced/checklists/graces.json')
 const bossXyz = read('public/sourced/open/boss-xyz.json')
-const hunts = read('public/sourced/checklists/hunts.json')
+const hunts = read('src/data/hunts.json')
 const npcCombat = read('public/sourced/npc-combat.json')
 
 const paramNames = (file) => {

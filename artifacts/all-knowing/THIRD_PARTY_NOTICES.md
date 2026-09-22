@@ -228,7 +228,7 @@ SOFTWARE.
   - `src/data/grace-flags.json` — grace discovery flag ids, derived by matching our
     `public/sourced/checklists/graces.json` names to the reference grace table (412 of 418).
   - field-boss kill flags are read directly from our own
-    `public/sourced/checklists/hunts.json` (BuLEEto checklist); the former
+    `src/data/hunts.json` (BuLEEto checklist); the former
     `src/data/hunt-flags.json` projection was removed in Task 37 so it cannot drift.
 
 ## Local-install FMG / marker extraction (Task 27)

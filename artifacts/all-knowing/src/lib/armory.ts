@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import huntsJson from '../data/hunts.json'
 
 export type ArmoryWeapon = {
   name: string
@@ -30,18 +31,11 @@ export type HuntRow = {
 
 let weaponsCache: ArmoryWeapon[] | null = null
 let bossesCache: ArmoryBoss[] | null = null
-let huntsCache: HuntRow[] | null = null
 
-export function useHunts() {
-  const [hunts, setHunts] = useState<HuntRow[]>(huntsCache || [])
-  useEffect(() => {
-    if (huntsCache) return
-    void fetch('/sourced/checklists/hunts.json').then((r) => r.json()).then((rows: HuntRow[]) => {
-      huntsCache = rows
-      setHunts(rows)
-    })
-  }, [])
-  return hunts
+/** The field-hunt dump is bundled from `src/data/hunts.json` (it cannot be
+ *  imported out of `public/`), so it is available synchronously. */
+export function useHunts(): HuntRow[] {
+  return huntsJson as HuntRow[]
 }
 
 export function useArmory() {

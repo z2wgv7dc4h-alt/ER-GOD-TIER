@@ -1,7 +1,7 @@
 /** Rules taken from XArckX “Location And Field's Boss Completion Check” (Nexus 9974).
  *  The zip is a game patch (regulation.bin + map gfx). We keep the meaning, not the binaries.
  */
-import huntsJson from '../../public/sourced/checklists/hunts.json'
+import huntsJson from '../data/hunts.json'
 
 export type CompleteHow = 'chest' | 'final-boss' | 'named-boss' | 'skip'
 
@@ -39,8 +39,9 @@ type CanonicalHunt = {
 }
 
 /**
- * The canonical field-hunt dataset is `public/sourced/checklists/hunts.json` — the
- * same file Codex fetches at runtime and the save parser reads flags from. There is
+ * The canonical field-hunt dataset is `src/data/hunts.json` — the same file the
+ * app bundles now (it used to live under `public/`, which Vite cannot import) and
+ * the save parser reads flags from. There is
  * no second, independently-authored hunt table: `fieldHunts` below is only the
  * curated alias layer Gideon matches on, and every id/name/region/campaign on it is
  * derived from this dump (see `docs/research/hunt-data-cleanup.md`).

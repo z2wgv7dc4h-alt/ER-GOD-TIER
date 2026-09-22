@@ -11,9 +11,9 @@
 import bstJson from '../../data/event-flag-bst.json'
 import bossRowsJson from '../../data/hosted-bosses.json'
 import graceFlagsJson from '../../data/grace-flags.json'
-// The canonical field-hunt dump (same file Codex fetches and completion.ts derives from).
-// There is no separate `hunt-flags.json` copy to drift out of sync.
-import huntsJson from '../../../public/sourced/checklists/hunts.json'
+// The canonical field-hunt dump (same file completion.ts derives from). Bundled
+// from src/data so Vite can import it; there is no separate copy to drift.
+import huntsJson from '../../data/hunts.json'
 import { canonicalFactId } from '../aliases'
 import type { ParsedSlot } from './parse'
 

@@ -12,7 +12,7 @@ import { fieldHunts } from './completion'
  * test fails instead of both sides moving together.
  */
 const hunts = JSON.parse(
-  readFileSync(new URL('../../public/sourced/checklists/hunts.json', import.meta.url), 'utf8'),
+  readFileSync(new URL('../../src/data/hunts.json', import.meta.url), 'utf8'),
 ) as { id: string; name: string; place: string; region: string; flag: number; campaign: string }[]
 
 describe('fieldHunts is derived from the canonical hunts.json dump', () => {

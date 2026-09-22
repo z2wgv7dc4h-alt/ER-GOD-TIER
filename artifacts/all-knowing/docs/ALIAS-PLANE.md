@@ -53,7 +53,7 @@ install itself, so it is fast and repeatable:
 | `public/sourced/open/paramdex/*.txt` | `soulsmods/Paramdex` `ER/Names` param row names | `bash scripts/ingest-open.sh` |
 | `public/sourced/checklists/graces.json` | `BonfireWarpParam` (418 rows; identical to `src/data/hosted-graces.json`) | Task 06 ingest |
 | `public/sourced/open/boss-xyz.json` | boss flags / XYZ (215 rows; identical to `src/data/hosted-bosses.json`) | Task 06 ingest |
-| `public/sourced/checklists/hunts.json` | field-boss checklist + event flags | FanAPI / BuLEEto ingest |
+| `src/data/hunts.json` | field-boss checklist + event flags | FanAPI / BuLEEto ingest |
 | `public/sourced/npc-combat.json` | `NpcParam` from the local `regulation.bin` | Task 17 (erdb + soulstruct) |
 
 So the chain is: **local install → (erdb / paramdex / Text Explorer dumps) → `gen-aliases.mjs`
