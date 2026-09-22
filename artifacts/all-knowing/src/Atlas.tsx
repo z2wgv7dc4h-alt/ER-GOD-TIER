@@ -117,7 +117,7 @@ export function AtlasWorkspace() {
     })
     const fromWeb = coords
       .filter((c) => c.world === world)
-      .filter((c) => c.kind === 'grace' || w.layers[(c.kind as MapMarker['kind'])] !== false)
+      .filter((c) => w.layers[(c.kind as MapMarker['kind'])] !== false)
       .map((c) => ({
         id: c.id,
         name: c.name,
@@ -132,7 +132,6 @@ export function AtlasWorkspace() {
     const extraWeb = fromWeb.filter((c) => !seen.has(c.name.toLowerCase()))
     // The engine's own markers overlap the web-coord pins, so only add pins whose
     // names are not already present.
-    // already plot, so only add its markers whose names are not already present.
     const known = new Set([
       ...seen,
       ...mapped.map((m) => m.name.toLowerCase()),
@@ -165,7 +164,7 @@ export function AtlasWorkspace() {
       if (!w.showGates) return false
     } else if (m.leftover) {
       if (!w.showLeftovers) return false
-    } else if (m.kind !== 'grace' && !w.layers[m.kind]) {
+    } else if (!w.layers[m.kind]) {
       return false
     }
     if (q && !`${m.name} ${m.region}`.toLowerCase().includes(q)) return false
