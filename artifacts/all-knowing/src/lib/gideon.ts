@@ -36,6 +36,7 @@ import { buildHunt } from './buildHunt'
 import { isDialogueAsk, quoteFor } from './dialogueQuote'
 import { loadDialogueOwners, type DialogueOwners } from './dialogueOwners'
 import { loadGameTextTable } from './gameText'
+import { loadNpcPlacements, type NpcPlacement } from './npcPlacements'
 import type { Character, ModuleId } from '../types'
 
 export type GideonAct = {
@@ -498,6 +499,7 @@ export function askGideonRouter(
   memory: GideonMemory = {},
   combat: BossCombat[] = cachedBossCombat(),
   dialogue?: GideonDialogue,
+  placements?: NpcPlacement[],
 ): GideonAct {
   const q = question.toLowerCase().trim()
   if (!q) return { say: 'Name an ending, or ask what to do next.' }
@@ -1002,6 +1004,21 @@ export function askGideonRouter(
         navigateNow: true,
       }
     }
+    // Not in the authored stage table: fall back to the placed-NPC dataset
+    // (map MSBs), which covers every NPC the game places, by map.
+    if (placements) {
+      const named = [...new Set(
+        placements.filter((p) => p.dialogue && q.includes(p.name.toLowerCase())).map((p) => p.name),
+      )].sort((a, b) => b.length - a.length)
+      if (named.length) {
+        const name = named[0]
+        const maps = [...new Set(placements.filter((p) => p.name === name).map((p) => p.map))].sort()
+        return {
+          say: `${name} is placed in ${maps.length} map${maps.length === 1 ? '' : 's'}: ${maps.join(', ')}.`,
+          module: 'codex',
+        }
+      }
+    }
   }
 
   // The generated alias plane (Task 23) indexes every fact category by engine id
@@ -1066,6 +1083,7 @@ export function isFastLookup(
   question: string,
   memory: GideonMemory = {},
   combat: BossCombat[] = cachedBossCombat(),
+  placements?: NpcPlacement[],
 ): boolean {
   const q = question.toLowerCase().trim()
   if (!q) return true
@@ -1097,6 +1115,8 @@ export function isFastLookup(
 
   // NPC locations come from an authored table, never the model.
   if (/\b(where|find|locate)\b/.test(q) && matchNpc(q)) return true
+  // ...or from the placed-NPC dataset when the name is not authored.
+  if (/\b(where|find|locate)\b/.test(q) && placements?.some((p) => p.dialogue && q.includes(p.name.toLowerCase()))) return true
 
   // A verbatim-dialogue ask is answered from the game's own attributed lines.
   if (isDialogueAsk(q)) return true
@@ -1156,8 +1176,12 @@ export async function askGideon(
     ])
     if (owners && talkmsg) dialogue = { owners, talkmsg }
   }
-  const router = askGideonRouter(question, character, memory, combat, dialogue)
-  if (isFastLookup(question, memory, combat ?? cachedBossCombat())) return router
+  let placements: NpcPlacement[] | undefined
+  if (/\b(where|find|locate)\b/i.test(question)) {
+    placements = await loadNpcPlacements().then((d) => d.placements).catch(() => undefined)
+  }
+  const router = askGideonRouter(question, character, memory, combat, dialogue, placements)
+  if (isFastLookup(question, memory, combat ?? cachedBossCombat(), placements)) return router
 
   if (!hasGideonKey()) {
     if (!warnedNoKey) {

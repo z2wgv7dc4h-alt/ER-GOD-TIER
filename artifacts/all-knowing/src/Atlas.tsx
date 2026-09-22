@@ -12,6 +12,7 @@ import {
 import { Thread } from './Thread'
 import { factState, useWorkspace, type FactState } from './state'
 import { useCoords } from './lib/coords'
+import { useEldenringMapPins } from './lib/eldenringMapPins'
 import { layerOrder } from './lib/nav'
 import { resolveSelection } from './lib/atlasSelection'
 import { leftoverPins } from './lib/leftoverPins'
@@ -87,6 +88,7 @@ export function AtlasWorkspace() {
   const [sideOpen, setSideOpen] = useState(false)
   const [layersOpen, setLayersOpen] = useState(false)
   const coords = useCoords()
+  const ermPins = useEldenringMapPins(world)
 
   const gracePins: MapMarker[] = useMemo(
     () =>
@@ -127,8 +129,8 @@ export function AtlasWorkspace() {
       }))
     const seen = new Set(gracePins.map((g) => g.name.toLowerCase()))
     const extraWeb = fromWeb.filter((c) => !seen.has(c.name.toLowerCase()))
-    return [...gracePins, ...mapped, ...extraWeb]
-  }, [gracePins, world, coords, w.layers])
+    return [...gracePins, ...mapped, ...extraWeb, ...ermPins]
+  }, [gracePins, world, coords, w.layers, ermPins])
 
   const leftoverList = useMemo(
     () => leftoverPins(w.character, coords, { world }),
