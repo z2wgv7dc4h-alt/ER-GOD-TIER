@@ -1023,7 +1023,7 @@ export function askGideonRouter(
     // (map MSBs), which covers every NPC the game places, by map.
     if (placements) {
       const named = [...new Set(
-        placements.filter((p) => p.dialogue && q.includes(p.name.toLowerCase())).map((p) => p.name),
+        placements.filter((p) => q.includes(p.name.toLowerCase())).map((p) => p.name),
       )].sort((a, b) => b.length - a.length)
       if (named.length) {
         const name = named[0]
@@ -1132,7 +1132,7 @@ export function isFastLookup(
   // NPC locations come from an authored table, never the model.
   if (/\b(where|find|locate)\b/.test(q) && matchNpc(q)) return true
   // ...or from the placed-NPC dataset when the name is not authored.
-  if (/\b(where|find|locate)\b/.test(q) && placements?.some((p) => p.dialogue && q.includes(p.name.toLowerCase()))) return true
+  if (/\b(where|find|locate)\b/.test(q) && placements?.some((p) => q.includes(p.name.toLowerCase()))) return true
 
   // A Medusa walkthrough step is a deterministic answer.
   if (medusaSteps && /\b(medusa|walkthrough|route)\b/.test(q) && findMedusaStep(question, medusaSteps).length) return true

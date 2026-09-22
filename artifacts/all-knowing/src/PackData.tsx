@@ -139,7 +139,7 @@ export function NpcPlacementSection({ query, preloaded }: { query: string; prelo
       <div className="codex-grid">
         {[...byName.entries()].map(([name, list]) => (
           <article className="card" key={name}>
-            <div className="kicker">{list.length} placement{list.length === 1 ? '' : 's'} · {list[0].dialogue ? 'has dialogue' : 'no dialogue'}</div>
+            <div className="kicker">{list.length} placement{list.length === 1 ? '' : 's'} · map MSB</div>
             <h3>{name}</h3>
             <p className="note">{[...new Set(list.map((p) => p.map))].sort().join(', ')}</p>
           </article>

@@ -1,14 +1,16 @@
-﻿"""Every placed NPC (and named enemy) and where it stands, from the map MSBs.
+﻿"""Every talking NPC and where it stands, from the map MSBs.
 
-The MSB PARTS list holds one entry per placed entity, with an NPCParamID naming
-it and a world position. This walks every map the install has and emits:
+The MSB PARTS list holds one entry per placed entity. This walks every map and
+keeps only the NPCs that actually have dialogue (those in
+`open/dialogue-owners.json`) — enemy spawns are excluded, since tens of
+thousands of respawning mob positions are noise for a "where is X" tool (the
+enemy/combat set already lives in `open/msb-enemies.json`).
 
     public/sourced/npc-placements.json
-    { "source", "placements": [ {npc, name, map, x, y, z, dialogue: bool} ] }
+    { "source", "placements": [ {npc, name, map, x, y, z} ] }
 
-`dialogue` is true when the NPC has attributed lines (open/dialogue-owners.json),
-so callers can pick out talkers. Positions are the part's local position
-(MSBE `PARTS_PARAM_ST` + 0x20), kept raw â€” no projection is applied here.
+Positions are the part's local position (MSBE `PARTS_PARAM_ST` + 0x20), kept raw
+— no projection is applied here.
 
     python scripts/extract-npc-placements.py [--game-dir "...\\ELDEN RING\\Game"]
 
@@ -116,7 +118,7 @@ def main():
             continue
         for off, _n in m.entries("PARTS_PARAM_ST"):
             npc = m.i32(off + PART_NPC_PARAM_ID)
-            if npc not in names:
+            if npc not in names or str(npc) not in talkers:
                 continue
             x, y, z = m.vec3(off + PART_POSITION)
             key = (npc, mid, round(x, 1), round(y, 1), round(z, 1))
@@ -130,7 +132,6 @@ def main():
                 "x": round(x, 2),
                 "y": round(y, 2),
                 "z": round(z, 2),
-                "dialogue": str(npc) in talkers,
             })
     dvd.close()
 
@@ -141,7 +142,7 @@ def main():
     with open(args.out, "w", encoding="utf-8") as f:
         json.dump(doc, f, ensure_ascii=False, separators=(",", ":"))
     print(f"wrote {args.out}")
-    print(f"  placements: {len(placements):,}  distinct npcs: {len({p['npc'] for p in placements}):,}  talkers: {len({p['npc'] for p in placements if p['dialogue']}):,}")
+    print(f"  placements: {len(placements):,}  distinct talker npcs: {len({p['npc'] for p in placements}):,}")
 
 
 if __name__ == "__main__":

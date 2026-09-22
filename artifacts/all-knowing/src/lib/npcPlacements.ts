@@ -1,7 +1,8 @@
 /**
- * Every placed NPC/enemy and where it stands, from the map MSBs
- * (`scripts/extract-npc-placements.py`). Positions are the part's raw local
- * position; `dialogue` marks the NPCs that also have attributed lines.
+ * Where each talking NPC stands, from the map MSBs
+ * (`scripts/extract-npc-placements.py`). Enemy spawns are excluded — only the
+ * 95 NPCs with dialogue are kept (1,370 placements). Positions are the part's
+ * raw local position.
  */
 export type NpcPlacement = {
   npc: number
@@ -10,7 +11,6 @@ export type NpcPlacement = {
   x: number
   y: number
   z: number
-  dialogue: boolean
 }
 export type NpcPlacements = { source: string; placements: NpcPlacement[] }
 

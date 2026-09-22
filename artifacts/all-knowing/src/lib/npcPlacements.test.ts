@@ -8,9 +8,10 @@ const doc = JSON.parse(
 const rows = doc.placements
 
 describe('npc placements', () => {
-  it('has many placed entities and all 95 talkers', () => {
-    expect(rows.length).toBeGreaterThan(20000)
-    expect(new Set(rows.filter((r) => r.dialogue).map((r) => r.npc)).size).toBe(95)
+  it('keeps the placed talkers (not enemy spawns)', () => {
+    expect(rows.length).toBeGreaterThan(1000)
+    expect(rows.length).toBeLessThan(3000)
+    expect(new Set(rows.map((r) => r.npc)).size).toBe(95)
   })
 
   it('matches by name and summarises maps', () => {
