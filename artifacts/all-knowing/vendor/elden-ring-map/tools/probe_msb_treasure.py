@@ -11,6 +11,7 @@ from collections import Counter, defaultdict
 
 sys.stdout.reconfigure(encoding="utf-8")
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "scripts"))
 
 from erlib import msb as msblib, param, dcx, oodle
 from erlib.dvdbnd import DvdBnd

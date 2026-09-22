@@ -1,4 +1,4 @@
-"""Attribute verbatim dialogue lines to the NPC that owns them.
+﻿"""Attribute verbatim dialogue lines to the NPC that owns them.
 
 The game's text bundle gives `TalkMsg` as an id->line map but no speaker;
 `TalkParam` records only `msgId`/`voiceId`. The speaker is found the way the
@@ -29,7 +29,7 @@ import struct
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TOOLS = os.path.join(ROOT, "vendor", "elden-ring-map", "tools")
+TOOLS = os.path.join(ROOT, "scripts")
 sys.path.insert(0, TOOLS)
 
 from erlib import bnd4, dcx, msb, oodle, param  # noqa: E402

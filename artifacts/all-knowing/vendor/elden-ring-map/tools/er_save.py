@@ -335,6 +335,7 @@ if __name__ == "__main__":
     import sys
 
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "scripts"))
     from erlib.gamepath import find_save
 
     save = sys.argv[1] if len(sys.argv) > 1 else find_save()

@@ -1,4 +1,4 @@
-"""Refresh the item-name Paramdex dumps from a local Elden Ring install.
+﻿"""Refresh the item-name Paramdex dumps from a local Elden Ring install.
 
 `soulsmods/Paramdex` ER/Names is an upstream name dump. The copy vendored here is
 post-Shadow-of-the-Erdtree but predates the Tarnished Pack: it has Milady and
@@ -30,7 +30,7 @@ import os
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TOOLS = os.path.join(ROOT, "vendor", "elden-ring-map", "tools")
+TOOLS = os.path.join(ROOT, "scripts")
 sys.path.insert(0, TOOLS)
 
 from erlib import param  # noqa: E402

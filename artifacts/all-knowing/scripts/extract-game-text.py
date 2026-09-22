@@ -1,4 +1,4 @@
-"""Regenerate public/sourced/open/text/ from a local Elden Ring install.
+﻿"""Regenerate public/sourced/open/text/ from a local Elden Ring install.
 
 This is the *full text* dump beside names.json: every FMG string table the game
 ships in English, not just item names. That includes the verbatim NPC dialogue
@@ -22,7 +22,7 @@ import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TOOLS = os.path.join(ROOT, "vendor", "elden-ring-map", "tools")
+TOOLS = os.path.join(ROOT, "scripts")
 sys.path.insert(0, TOOLS)
 
 from erlib import fmg, oodle  # noqa: E402

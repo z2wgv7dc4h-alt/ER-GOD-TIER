@@ -28,6 +28,7 @@ reconfigure = getattr(sys.stdout, "reconfigure", None)
 if reconfigure:
     reconfigure(encoding="utf-8")
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "scripts"))
 
 from erlib import param, paramdef, fmg, oodle, dcx
 import erlib.modfiles as modfiles

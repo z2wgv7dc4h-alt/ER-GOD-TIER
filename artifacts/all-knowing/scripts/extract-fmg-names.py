@@ -1,4 +1,4 @@
-"""Regenerate public/sourced/open/names.json from a local Elden Ring install.
+﻿"""Regenerate public/sourced/open/names.json from a local Elden Ring install.
 
 The FMG name dump is the app's item/NPC/place name index (Codex search + the
 generated alias plane). The version shipped in the repo's initial commit was a
@@ -21,7 +21,7 @@ import os
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TOOLS = os.path.join(ROOT, "vendor", "elden-ring-map", "tools")
+TOOLS = os.path.join(ROOT, "scripts")
 sys.path.insert(0, TOOLS)
 
 from erlib import fmg, oodle  # noqa: E402

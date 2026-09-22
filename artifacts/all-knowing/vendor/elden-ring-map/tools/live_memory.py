@@ -1,3 +1,4 @@
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "scripts"))
 """Poll the running game for the player's live position.
 
 Read-only. The process is opened with PROCESS_VM_READ only, so this cannot

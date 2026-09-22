@@ -1,4 +1,4 @@
-"""Every placed NPC (and named enemy) and where it stands, from the map MSBs.
+﻿"""Every placed NPC (and named enemy) and where it stands, from the map MSBs.
 
 The MSB PARTS list holds one entry per placed entity, with an NPCParamID naming
 it and a world position. This walks every map the install has and emits:
@@ -8,7 +8,7 @@ it and a world position. This walks every map the install has and emits:
 
 `dialogue` is true when the NPC has attributed lines (open/dialogue-owners.json),
 so callers can pick out talkers. Positions are the part's local position
-(MSBE `PARTS_PARAM_ST` + 0x20), kept raw — no projection is applied here.
+(MSBE `PARTS_PARAM_ST` + 0x20), kept raw â€” no projection is applied here.
 
     python scripts/extract-npc-placements.py [--game-dir "...\\ELDEN RING\\Game"]
 
@@ -21,7 +21,7 @@ import struct
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TOOLS = os.path.join(ROOT, "vendor", "elden-ring-map", "tools")
+TOOLS = os.path.join(ROOT, "scripts")
 sys.path.insert(0, TOOLS)
 
 from erlib import dcx, msb, oodle  # noqa: E402
