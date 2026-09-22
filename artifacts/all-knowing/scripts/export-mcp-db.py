@@ -105,6 +105,26 @@ def main():
             recipes.append({"id": f"recipe:{page_id}", "name": title or "", "materials": mats, "url": url or ""})
     recipes.sort(key=lambda r: r["name"].lower())
 
+    # Secrets: sections that describe an illusory/hidden wall and what is behind
+    # it. Small, high-signal list (the wiki scatters these across item/area pages).
+    walls = []
+    for sid, page, heading, markdown, url in cur.execute(
+        """select s.id, p.title, s.heading, s.markdown, p.url
+           from sections s join pages p on p.id = s.page_id
+           where lower(s.markdown) like '%illusory wall%' or lower(s.markdown) like '%hidden wall%'"""
+    ):
+        text = (markdown or "").strip()
+        if len(text) < 20:
+            continue
+        walls.append({
+            "id": f"wall:{sid}",
+            "area": page or "",
+            "heading": heading or "",
+            "text": text[:400],
+            "url": url or "",
+        })
+    walls.sort(key=lambda w: w["area"].lower())
+
     # Full wiki text: every section, trimmed. The prose layer for "answer
     # anything" beyond the structured tables (~4.8 MB of text).
     titles = dict(cur.execute("select id, title from pages"))
@@ -131,12 +151,15 @@ def main():
         json.dump({"source": SOURCE, "recipes": recipes}, f, ensure_ascii=False, separators=(",", ":"))
     with open(os.path.join(OUT_DIR, "wiki-sections.json"), "w", encoding="utf-8") as f:
         json.dump({"source": SOURCE, "sections": wiki}, f, ensure_ascii=False, separators=(",", ":"))
+    with open(os.path.join(OUT_DIR, "secrets.json"), "w", encoding="utf-8") as f:
+        json.dump({"source": SOURCE, "walls": walls}, f, ensure_ascii=False, separators=(",", ":"))
 
     miss = sum(1 for r in acq if r["missable"])
     print(f"wrote acquisition.json  rows: {len(acq)}  missable: {miss}")
     print(f"wrote npc-quests.json   npcs: {len(quests)}  steps: {sum(len(q['steps']) for q in quests)}")
     print(f"wrote recipes.json      recipes: {len(recipes)}")
     print(f"wrote wiki-sections.json sections: {len(wiki)}")
+    print(f"wrote secrets.json      walls: {len(walls)}")
 
 
 if __name__ == "__main__":

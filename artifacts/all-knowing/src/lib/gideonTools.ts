@@ -13,6 +13,7 @@ import { loadAcquisition, matchAcquisition } from './acquisition'
 import { findQuest, loadNpcQuests } from './npcQuests'
 import { loadRecipes, matchRecipes } from './recipes'
 import { loadWikiText, matchWiki } from './wikiText'
+import { loadSecrets, matchSecrets } from './secrets'
 import { loadGameTextTable } from './gameText'
 import { quoteFor } from './dialogueQuote'
 import { opBuilds } from '../knowledge/builds'
@@ -98,6 +99,14 @@ export const GIDEON_TOOLS: ToolDef[] = [
       name: 'find_item',
       description: 'Where to find a named item: nearest Site of Grace, how it is obtained (drop/chest/merchant/ground/quest), and whether it is missable.',
       parameters: { type: 'object', properties: { name: str('item name') }, required: ['name'], additionalProperties: false },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'secrets',
+      description: 'Illusory / hidden walls by area, and what is behind them.',
+      parameters: { type: 'object', properties: { q: str('optional area or text') }, required: [], additionalProperties: false },
     },
   },
   {
@@ -200,6 +209,11 @@ export async function runGideonTool(name: string, args: Record<string, unknown>,
           ? { method: a.method, where: a.location.slice(0, 300), near: a.near, missable: a.missable, prereqs: a.prereqs }
           : null,
       }
+    }
+    case 'secrets': {
+      const doc = await loadSecrets().catch(() => null)
+      const hits = doc ? matchSecrets(q, doc.walls, 8) : []
+      return hits.map((w) => ({ area: w.area, heading: w.heading, text: w.text }))
     }
     case 'wiki': {
       const doc = await loadWikiText().catch(() => null)
