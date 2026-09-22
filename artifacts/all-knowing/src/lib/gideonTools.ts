@@ -7,6 +7,7 @@ import { guideExcerpts, loadGuides, matchGuides } from './guides'
 import { loadWeapons } from './ar'
 import { dominantAttributes, earlyWeaponRanking, weaponAdvice } from './upgradeAdvice'
 import { loadDialogueOwners } from './dialogueOwners'
+import { loadEngineMarkers, matchEngineItems } from './engineMarkers'
 import { loadGameTextTable } from './gameText'
 import { quoteFor } from './dialogueQuote'
 import { opBuilds } from '../knowledge/builds'
@@ -81,6 +82,14 @@ export const GIDEON_TOOLS: ToolDef[] = [
   {
     type: 'function',
     function: {
+      name: 'find_item',
+      description: 'Where a named item/pickup is: its nearest Site of Grace and region, from the engine map data.',
+      parameters: { type: 'object', properties: { name: str('item name') }, required: ['name'], additionalProperties: false },
+    },
+  },
+  {
+    type: 'function',
+    function: {
       name: 'dialogue',
       description: 'Verbatim in-game dialogue for a named NPC (only lines that are attributed).',
       parameters: { type: 'object', properties: { speaker: str('NPC name') }, required: ['speaker'], additionalProperties: false },
@@ -127,6 +136,11 @@ export async function runGideonTool(name: string, args: Record<string, unknown>,
       const adv = weapon ? weaponAdvice(weapons, weapon, ctx.character.stats) : null
       if (adv) return { weapon: adv.name, arNow: adv.arNow, arMax: adv.arMax, primary: adv.primary, kit: kit?.name ?? null, prefer }
       return { kit: kit?.name ?? null, prefer, best: earlyWeaponRanking(weapons, ctx.character.stats, 6, prefer) }
+    }
+    case 'find_item': {
+      const doc = await loadEngineMarkers().catch(() => null)
+      const hits = doc ? matchEngineItems(String(args.name ?? ''), doc.items, 3) : []
+      return hits.map((h) => ({ name: h.name, near: h.near, region: h.map, cat: h.cat }))
     }
     case 'dialogue': {
       const [owners, talkmsg] = await Promise.all([
