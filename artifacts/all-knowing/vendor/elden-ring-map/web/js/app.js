@@ -20,6 +20,10 @@ const CATS = {
   region:    { color: '#9aa0a8', r: 5 },
   fragment:  { color: '#c58bea', r: 5 },
   landmark:  { color: '#8fa3b8', r: 4 },
+  // --- All-Knowing additions (from our own extraction) ---
+  npc:       { color: '#7ad0a0', r: 5, icon: 'npc.png' },
+  merchant:  { color: '#e0a35a', r: 4, icon: 'npc.png' },
+  dungeon:   { color: '#8fa3b8', r: 5, icon: 'interactible.png' },
   // --- equipment ---
   armaments:    { color: '#d4805a', r: 4, icon: 'weapon.png' },
   armour:       { color: '#a08f76', r: 4, icon: 'armor.png' },
@@ -84,7 +88,7 @@ const CATS = {
 
 // High-volume categories that bury the map when they are all on at once. They
 // start hidden and can be switched on from the sidebar.
-const OFF_BY_DEFAULT = new Set(['misc', 'consumables', 'crafting_materials', 'ammo']);
+const OFF_BY_DEFAULT = new Set(['misc', 'consumables', 'crafting_materials', 'ammo', 'npc']);
 const FOUND_COLOR = '#6fcf7a';
 
 const $ = (id) => document.getElementById(id);

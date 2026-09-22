@@ -11,6 +11,10 @@ export type NpcPlacement = {
   x: number
   y: number
   z: number
+  /** Master-image pixel from the engine affine; percent = px / 10496 * 100. */
+  px?: number
+  py?: number
+  world?: 'overworld' | 'underground' | 'shadow'
 }
 export type NpcPlacements = { source: string; placements: NpcPlacement[] }
 

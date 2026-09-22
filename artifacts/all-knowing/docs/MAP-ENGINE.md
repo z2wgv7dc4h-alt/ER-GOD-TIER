@@ -101,6 +101,7 @@ Python 3.9, and on Linux an Oodle shim against `oo2core_6_win64.dll`.
 
 ```
 npm run map:setup                        # extract tiles + markers from your install
+npm run map:merge                        # fold our NPCs + pack markers into the engine feed
 npm start                                # from All-Knowing root: engine + Vite together
 # or just the engine:  npm run map       (npm run dev runs Vite separately)
 ```
