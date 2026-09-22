@@ -36,9 +36,9 @@ so Found/Unknown/Not-there and Thread act on the entity shown, engine or plate, 
 
 Full game text: `open/text/` (44 FMG tables, 45,169 strings) incl. verbatim `TalkMsg` dialogue,
 dumped by `scripts/extract-game-text.py`; `src/lib/gameText.ts` loads lazily, Codex dialogue search in
-`src/Dialogue.tsx`. Speaker attribution is partial: `open/dialogue-owners.json` (1,950/9,818 lines,
-95 named speakers) joins ESD `TalkID` -> MSB PARTS `TalkID` -> `NPCParamID` -> name; cutscene/menu
-lines and unplaced NPCs are unattributed. No speaker is invented.
+`src/Dialogue.tsx`. Speaker attribution: `open/dialogue-owners.json` joins ESD `TalkID` -> MSB PARTS
+`TalkID` -> `NPCParamID` -> name, naming 95 speakers / 1,952 lines. Ceiling is inherent — ESDs reference
+only 2,129 of the 9,818 TalkMsg lines; the rest are menu/cutscene/UI, not attributed. No speaker invented.
 
 Weapon numeric params: already in `regulation-vanilla-v1.17.json` (3,296 rows: requirements, attack,
 scaling) and decoded by `src/lib/ar.ts` for AR; `src/lib/weaponStats.ts` + `src/WeaponStats.tsx`
