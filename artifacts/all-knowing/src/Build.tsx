@@ -28,13 +28,17 @@ import {
 } from './lib/enemy'
 import type { Character, Stats } from './types'
 
-function estimateDefense(character: Character) {
+/**
+ * Task 71: this used to invent a poise fudge (a class-based constant) and an
+ * endurance-based equip load, and show them beside the real Clark attack rating,
+ * so they read like regulation data. The in-repo regulation extract only computes
+ * attack rating, so the preview is now a labelled estimate with no numbers.
+ */
+export function estimateDefense(character: Character) {
   const weapon = character.loadout.find((s) => s.kind === 'armament')
-  if (!weapon) return { poise: 0, load: 0, label: 'No armament' }
+  if (!weapon) return { label: 'No armament' }
   const upgrade = weapon.upgrade ?? 0
-  const poise = 28 + (character.startingClass === 'heavy-knight' ? 49 : 8)
-  const load = 48 + character.stats.endurance * 0.8
-  return { poise, load, label: `${weapon.name} +${upgrade} ${weapon.affinity ?? ''}`.trim() }
+  return { label: `${weapon.name} +${upgrade} ${weapon.affinity ?? ''}`.trim() }
 }
 
 export function BuildWorkspace() {
@@ -466,16 +470,11 @@ export function BuildWorkspace() {
             <Related id={target.factId} />
           </>
         )}
-        <div className="meters" style={{ marginTop: 18 }}>
-          <div className="meter">
-            <label><span>Poise (sketch)</span><span>{preview.poise}</span></label>
-            <div className="bar"><span style={{ width: `${Math.min(100, preview.poise)}%` }} /></div>
-          </div>
-          <div className="meter">
-            <label><span>Equip load budget</span><span>{preview.load.toFixed(1)}</span></label>
-            <div className="bar"><span style={{ width: `${Math.min(100, preview.load)}%` }} /></div>
-          </div>
-        </div>
+        <p className="note" style={{ marginTop: 18 }}>
+          Preview: {preview.label}. Poise and equip load are estimates only — the in-repo regulation
+          extract has no player poise or equip-load formula, so the attack rating above is the only
+          number drawn from real game data.
+        </p>
         <p className="note" style={{ marginTop: 18 }}>
           Next boss still standing:{' '}
           {markers.find((m) => m.kind === 'boss' && !isCollected(character, m))?.name ?? 'None in seed data.'}

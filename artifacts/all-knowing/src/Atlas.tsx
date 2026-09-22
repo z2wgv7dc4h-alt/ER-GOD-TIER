@@ -44,6 +44,7 @@ export function AtlasWorkspace() {
     w.character.answers.dlc === 'sote' ? 'shadow' : 'overworld',
   )
   const [sideOpen, setSideOpen] = useState(false)
+  const [layersOpen, setLayersOpen] = useState(false)
   const coords = useCoords()
 
   const gracePins: MapMarker[] = useMemo(
@@ -228,6 +229,60 @@ export function AtlasWorkspace() {
           </svg>
           </div>
         )}
+        {/* Task 69: the phone Atlas surface. `.topbar .toggles` is hidden under
+            700px, so these are the only place the three job controls render on a
+            phone; the seven pin kinds sit behind one "layers" overflow. Desktop
+            keeps the topbar toggles and never shows this bar. */}
+        <div className="atlas-jobs" role="group" aria-label="Map job filters">
+          <button
+            type="button"
+            className={w.missingOnly ? 'chip on' : 'chip'}
+            aria-pressed={w.missingOnly}
+            onClick={() => w.setMissingOnly(!w.missingOnly)}
+          >
+            Missing only
+          </button>
+          <button
+            type="button"
+            className={w.showLeftovers ? 'chip on' : 'chip'}
+            aria-pressed={w.showLeftovers}
+            onClick={() => w.toggleLeftovers()}
+          >
+            leftovers
+          </button>
+          <button
+            type="button"
+            className={w.showGates ? 'chip on' : 'chip'}
+            aria-pressed={w.showGates}
+            onClick={() => w.toggleGates()}
+          >
+            locks
+          </button>
+          <button
+            type="button"
+            className={layersOpen ? 'chip on' : 'chip'}
+            aria-expanded={layersOpen}
+            aria-controls="atlas-layers"
+            onClick={() => setLayersOpen((v) => !v)}
+          >
+            layers
+          </button>
+        </div>
+        {layersOpen && (
+          <div className="atlas-layers" id="atlas-layers" role="group" aria-label="Map pin layers">
+            {layerOrder.map((id) => (
+              <button
+                key={id}
+                type="button"
+                className={w.layers[id] ? 'chip on' : 'chip'}
+                aria-pressed={w.layers[id]}
+                onClick={() => w.toggleLayer(id)}
+              >
+                {id}
+              </button>
+            ))}
+          </div>
+        )}
         <button
           type="button"
           className="atlas-toggle"
@@ -238,22 +293,6 @@ export function AtlasWorkspace() {
         </button>
       </div>
       <aside className="side">
-        <div className="side-controls">
-          <div className="kicker">Map controls</div>
-          <div className="opts" style={{ marginTop: 8 }}>
-            <button className={w.missingOnly ? 'chip on' : 'chip'} onClick={() => w.setMissingOnly(!w.missingOnly)}>
-              Missing only
-            </button>
-            <button className={w.showGates ? 'chip on' : 'chip'} onClick={() => w.toggleGates()}>
-              locks if you continue
-            </button>
-            {layerOrder.map((id) => (
-              <button key={id} className={w.layers[id] ? 'chip on' : 'chip'} onClick={() => w.toggleLayer(id)}>
-                {id}
-              </button>
-            ))}
-          </div>
-        </div>
         <div className="kicker">
           {ps5 ? 'PS5 atlas · warp list + pins, not a save' : banner.label}
         </div>

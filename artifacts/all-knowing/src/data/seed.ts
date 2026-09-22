@@ -1,4 +1,4 @@
-import type { Character, CodexEntry, MapMarker, Questline } from '../types'
+import type { Character, CodexEntry, MapMarker } from '../types'
 import { REGULATION_STAMP } from '../lib/regulation'
 
 export const emptyStats = {
@@ -88,66 +88,6 @@ export const markers: MapMarker[] = [
   { id: 'ranni-rise', name: 'Ranni the Witch', kind: 'npc', region: 'Liurnia', campaign: 'base', x: 16, y: 34 },
   { id: 'alexander-gael', name: 'Iron Fist Alexander', kind: 'npc', region: 'Gael Tunnel', campaign: 'base', x: 48, y: 62 },
   { id: 'scadu-keep', name: 'Shadow Keep', kind: 'dungeon', region: 'Scadu Altus', campaign: 'sote', x: 73, y: 28 },
-]
-
-export const quests: Questline[] = [
-  {
-    id: 'ranni',
-    npc: 'Ranni the Witch',
-    campaign: 'base',
-    ending: true,
-    summary: 'Age of Stars. Interlocks with Blaidd, Iji, Seluvis, and the Fingerslayer Blade.',
-    steps: [
-      { id: 'quest:ranni:elleh', text: 'Meet Ranni at the Church of Elleh after claiming Torrent.', location: 'Church of Elleh' },
-      { id: 'quest:ranni:service', text: 'Speak with Ranni at Ranni’s Rise and enter her service.', location: 'Three Sisters' },
-      { id: 'quest:ranni:towers', text: 'Talk to Blaidd, Iji, and Seluvis in the rise towers.', location: 'Three Sisters' },
-      { id: 'quest:ranni:nokron', text: 'Find the Nokron entrance after Radahn. Retrieve the Fingerslayer Blade.', location: 'Nokron', lockout: 'Giving the blade to Seluvis instead of Ranni bricks her line.' },
-      { id: 'quest:ranni:statue', text: 'Give Ranni the Fingerslayer Blade. Follow her to the Divine Tower of Liurnia.', location: 'Liurnia' },
-      { id: 'quest:ranni:ring', text: 'Defeat Astel and reach the Moonlight Altar. Place the Dark Moon Ring.', location: 'Cathedral of Manus Celes' },
-    ],
-  },
-  {
-    id: 'alexander',
-    npc: 'Iron Fist Alexander',
-    campaign: 'base',
-    summary: 'Warrior jar pilgrimage. Missable if the ground is never cracked in Limgrave.',
-    steps: [
-      { id: 'alexander-1', text: 'Free Alexander from the pit south of Stormhill (hit the ground).', location: 'Stormhill', lockout: 'Leaving Limgrave without freeing him skips this beat; he can still appear later.' },
-      { id: 'alexander-2', text: 'Help him in Gael Tunnel, then find him at Redmane Castle for the festival.', location: 'Caelid' },
-      { id: 'alexander-3', text: 'Speak after Radahn. Next: Mt. Gelmir lava shore, then Farum Azula.', location: 'Mt. Gelmir' },
-    ],
-  },
-  {
-    id: 'boc',
-    npc: 'Boc the Seamster',
-    campaign: 'base',
-    summary: 'Sewing kit and a late-game identity crisis. Kindness is a mechanic.',
-    steps: [
-      { id: 'boc-1', text: 'Find the tree-bush calling for help in the grove south of Agheel Lake.', location: 'Limgrave' },
-      { id: 'quest:boc:needle', text: 'Give him a larval tear or the gold sewing needle when he doubts himself.', location: 'Altus / Leyndell', lockout: 'Telling him he is “ugly” without a larval tear can end the line.' },
-    ],
-  },
-  {
-    id: 'leda',
-    npc: 'Needle Knight Leda',
-    campaign: 'sote',
-    ending: true,
-    summary: 'Shadow Keep politics. Who you side with changes the Enir-Ilim assault.',
-    steps: [
-      { id: 'leda-1', text: 'Meet Leda at the Gravesite Plain cross.', location: 'Gravesite Plain' },
-      { id: 'leda-2', text: 'Progress Freyja, Hornsent, Ansbach, and Thiollier before the Keep burns.', location: 'Shadow Keep', lockout: 'Crossing the final Sealing Tree locks several invitations.' },
-    ],
-  },
-  {
-    id: 'leontiel',
-    npc: 'Knight Leontiel',
-    campaign: 'tarnished-pack',
-    summary: 'Tarnished Pack invader. Appears in the north of Radahn’s arena after the festival.',
-    steps: [
-      { id: 'leontiel-1', text: 'Defeat Starscourge Radahn, then return to the northern lip of the arena.', location: 'Redmane Desert' },
-      { id: 'leontiel-2', text: 'Defeat Leontiel for Leontiel’s Greatsword and the matador set.', location: 'Wailing Dunes' },
-    ],
-  },
 ]
 
 export const codex: CodexEntry[] = [

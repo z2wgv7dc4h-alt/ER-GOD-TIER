@@ -650,7 +650,7 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
   deliberately **not** ingested — AR stays on the in-repo regulation source. Base-game only
   (FanAPI predates SotE).
 
-**Task 68 — rest of the FanAPI categories** (landed after 67):
+**Task 67b — rest of the FanAPI categories** (landed after 67):
 
 - Extended `scripts/ingest-fanapi.mjs` to pull every remaining category: `items.json` (462),
   `locations.json` (177), `creatures.json` (115), `bosses.json` (106 — region/location/HP/drops),
@@ -660,6 +660,54 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 - `src/lib/fanapiData.ts` + `Codex.tsx` now cover all 14 sets through one generic `RefSection`
   renderer; `Open` codex search matches Items, Locations, Bosses, Field enemies, NPCs, Ammunition,
   Classes, Weapons and Shields.
+
+**Task 68 — Quests renders the one graph** (landed after 67b):
+
+- The bug: `Quests.tsx` rendered `data/seed.ts`'s `quests[]` while Gideon / `planRoute` /
+  `lockoutWarnings` use `knowledge/storylines.ts` `allLines()`, so ticking one graph never moved the
+  other. `QuestWorkspace` now lists and ticks `allLines()` only.
+- Done state is the character's known facts on a beat's `factId` (`isStepDone`), not seed
+  `completedQuestSteps` ids. Tick / untick run `applyFacts` / `clearFact` on that fact id;
+  `LockoutPrompt` + `lockoutWarnings` are keyed to the fact id; `selectedMarkerId` opens the line
+  whose step `factId` matches; the current beat comes from `planRoute`. `stepFact()` /
+  `currentStepId()` are exported for the golden-fixture test.
+- Deleted the seed `quests` array (Quests was its only consumer) and the now-unused `Questline`
+  import. `planRoute` and the line steps are untouched. Covered by `src/Quests.test.ts`: the Task 53
+  fixture puts Ranni on the Fingerslayer hand-in (`item:fingerslayer`, not `quest:ranni:elleh`), and
+  ticking writes the catalog fact with no `alexander-1` written.
+
+**Task 69 — phone Atlas layer chips** (landed after 68):
+
+- The bug: `@media (max-width: 700px)` hid `.topbar .toggles`, so Missing only / leftovers / locks
+  and the seven pin kinds were unreachable on a phone. `AtlasWorkspace` now renders a `.atlas-jobs`
+  chip bar over the map under 700px — the three job chips always visible, the seven kinds
+  (grace / boss / item / npc / fragment / spirit-ash / dungeon) collapsed into one `layers` overflow
+  (`#atlas-layers`). The duplicated `.side-controls` block in the map side panel was removed, so
+  there is one Atlas control surface per viewport. Desktop keeps the topbar toggles; the engine
+  iframe's own `?embed=1` controls are untouched; no third pin system; all chips ≥ 38px. Covered by
+  `src/Atlas.test.tsx`, which renders the workspace and pins the three job controls in the tree.
+  See `docs/MAP-ENGINE.md`.
+
+**Task 70 — loot table grounding** (landed after 69):
+
+- `loot:golden-vow` no longer carries `grace:ergtree-grazing`: the id is a misspelling of the game's
+  "Erdtree-Gazing Hill" and is not this row's location, so the grace field was dropped rather than
+  point at an invented slug. The old `loot:poleblade` row named two weapons ("Loretta's War Sickle /
+  Ensis"); it was split into `loot:rellanas-twin-blades` and `loot:lorettas-war-sickle`, both English
+  names checked against `open/names.json` (nothing else referenced the old id).
+- `buildHunt` over all 44 OP + PvP builds: 82 distinct `need[]` ids, all resolve; 0 unresolved
+  (unchanged — Task 65/66 had already closed them). `src/knowledge/loot.test.ts` pins no typo grace
+  slug, every loot grace slug existing in graces / catalog / aliases, no two-weapon name, and three
+  formerly-unresolved kit ids resolving with their names in `names.json`.
+
+**Task 71 — Build preview no longer fakes defense** (landed after 70):
+
+- `estimateDefense()` in `Build.tsx` used to invent poise (a class-based constant) and equip load
+  (`48 + endurance`) and render them beside the real Clark attack rating, so they read like
+  regulation data. It now returns only the armament label; the two meters were replaced by an
+  explicit "estimates only" note. No new formula, no second AR engine (the in-repo regulation extract
+  computes attack rating only). `src/Build.preview.test.ts` asserts the function returns no numeric
+  `poise`/`load` and that the old constants are gone from `Build.tsx`.
 
 ---
 

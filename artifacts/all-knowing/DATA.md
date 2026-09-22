@@ -222,6 +222,18 @@ See `docs/REVIEW.md`.
 - Reckon exposes a read's freshly inferred extras as an "Also marked" list with per-row undo.
   Low-confidence OCR still produces zero facts; fog on a map shot is unknown, never false.
 
+## Loot table grounding (Task 70)
+
+- `loot:golden-vow`'s `grace` field was removed: `grace:ergtree-grazing` is a misspelling of the
+  game's "Erdtree-Gazing Hill", and every `grace` on a loot row must already exist in `graces.ts`,
+  `catalog.ts` or the alias plane. The one remaining stray row, `loot:poleblade`, named two weapons
+  ("Loretta's War Sickle / Ensis"); it is now two rows (`loot:rellanas-twin-blades`,
+  `loot:lorettas-war-sickle`), each an English name present in `open/names.json` (nothing else
+  referenced the old id).
+- `buildHunt` resolves every `need[]` id across the 44 OP + PvP builds (82 distinct ids, 0
+  unresolved). `src/knowledge/loot.test.ts` guards the no-typo-grace, single-weapon-name and
+  names.json-grounding invariants.
+
 ## Achievement sets + conditional merchant stock (Task 29)
 
 - `src/lib/achievements.ts` gives the guide catalog's `cookbook` (106), `bell-bearing` (65) and

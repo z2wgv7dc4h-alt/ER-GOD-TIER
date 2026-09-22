@@ -185,7 +185,8 @@ The Build lab sets stats, level and loadout from the OP/PvP kits. Picking a kit 
 catalog and the generated alias plane, splits them into have/missing, and pins the missing pieces
 that already have a loot row on the existing leftover/coords frames — no third pin system. "Show on
 map" adds the piece to the watchlist, "Mark" ticks it. Clicking a kit only sets stats and loadout;
-it never marks the gear collected by itself.
+it never marks the gear collected by itself. Attack rating is the only number taken from regulation:
+the preview does not fabricate poise or equip load (Task 71).
 
 ## Codex reference data
 

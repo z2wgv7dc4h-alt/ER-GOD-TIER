@@ -979,7 +979,11 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
 .sheet-backdrop { display: none; }
 .ribbon-toggle { display: none; }
 .atlas-toggle { display: none; }
-.side-controls { display: none; }
+/* Phone Atlas job surface (Task 69): the three job chips stay on the map while
+   the seven pin kinds collapse into one "layers" overflow. Desktop is untouched
+   — the topbar `.toggles` is the control surface there and this bar is hidden. */
+.atlas-jobs { display: none; }
+.atlas-layers { display: none; }
 .sheet-sit { display: none; }
 /* `contents` keeps the wrapper invisible on desktop: the children stay
    direct flex items of their parent, so desktop spacing is untouched. */
@@ -1224,7 +1228,37 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
     overflow: auto;
   }
   .map-stage.side-open .side { transform: translateY(0); }
-  .side-controls { display: block; margin-bottom: 10px; }
+
+  /* ── Phone Atlas job chips ──────────────────────────────────────────
+     The three job controls are always on the map; the seven pin kinds sit in
+     the "layers" overflow so one tap opens the full layer list. This is the
+     only Atlas control surface under 700px — the topbar toggles are hidden. */
+  .atlas-jobs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 6;
+  }
+  .atlas-jobs .chip { min-height: 38px; }
+  .atlas-layers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    position: absolute;
+    top: 58px;
+    left: 10px;
+    right: 10px;
+    z-index: 7;
+    padding: 8px;
+    background: rgba(20, 17, 12, 0.96);
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+  }
+  .atlas-layers .chip { min-height: 38px; }
 
   /* ── Gideon as a full-height overlay tab ─────────────────────────── */
   .guide { display: none; }

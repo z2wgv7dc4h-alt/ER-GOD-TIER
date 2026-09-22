@@ -1,57 +1,65 @@
 import { useState } from 'react'
-import { quests } from './data/seed'
+import { isStepDone, planRoute, type PlanStep } from './knowledge/endings'
+import { allLines, type Line } from './knowledge/storylines'
 import { LockoutPrompt } from './LockoutPrompt'
 import { Related } from './Related'
 import { Thread } from './Thread'
+import { applyFacts, clearFact } from './lib/infer'
 import { lockoutWarnings, type LockWarning } from './lib/lockWarnings'
-import { useWorkspace } from './state'
+import { factState, useWorkspace } from './state'
+import type { Character } from './types'
+
+/**
+ * The Quest graph renders `allLines()` — the same one graph Gideon, `planRoute`
+ * and `lockoutWarnings` use. There is no second quest list: a beat's done state
+ * is the character's known facts on the beat's `factId`, and ticking a beat runs
+ * `applyFacts` / `clearFact` on that fact id (never a seed step id).
+ */
+
+/** The catalog fact a beat reads and writes. `factIds` is the fallback marker. */
+export function stepFact(step: PlanStep): string | null {
+  return step.factId ?? step.factIds?.[0] ?? null
+}
+
+/** The current beat for a line, from the same planner Gideon uses. */
+export function currentStepId(character: Character, line: Line): string | null {
+  return planRoute(character, line).current?.id ?? null
+}
 
 export function QuestWorkspace() {
   const { character, setCharacter, query, selectedMarkerId, setSelectedMarkerId } = useWorkspace()
-  const [activeId, setActiveId] = useState(quests[0]?.id)
-  const [pendingLock, setPendingLock] = useState<{ id: string; warnings: LockWarning[] } | null>(null)
-  // A link from elsewhere (item/boss/Atlas) selects a step id; land on its line.
-  const linkedLine = selectedMarkerId
-    ? quests.find((q) => q.steps.some((s) => s.id === selectedMarkerId))
-    : undefined
-  const active = linkedLine ?? quests.find((q) => q.id === activeId) ?? quests[0]
-  const filtered = quests.filter((q) => `${q.npc} ${q.summary}`.toLowerCase().includes(query.trim().toLowerCase()))
-  const linkedStep = linkedLine && linkedLine.id === active.id ? selectedMarkerId : null
+  const [activeId, setActiveId] = useState(allLines[0]?.id)
+  const [pendingLock, setPendingLock] = useState<{ factId: string; warnings: LockWarning[] } | null>(null)
 
-  function commitStep(id: string) {
-    const has = character.completedQuestSteps.includes(id)
-    setCharacter({
-      ...character,
-      completedQuestSteps: has
-        ? character.completedQuestSteps.filter((s) => s !== id)
-        : [...character.completedQuestSteps, id],
-    })
+  // A link from elsewhere (item/boss/Atlas) selects a step's fact id; land on its line.
+  const linkedLine = selectedMarkerId
+    ? allLines.find((l) => l.steps.some((s) => stepFact(s) === selectedMarkerId))
+    : undefined
+  const active = linkedLine ?? allLines.find((l) => l.id === activeId) ?? allLines[0]
+  const q = query.trim().toLowerCase()
+  const filtered = allLines.filter((l) => `${l.name} ${l.aliases.join(' ')}`.toLowerCase().includes(q))
+  const linkedStep = linkedLine && linkedLine.id === active?.id ? selectedMarkerId : null
+  const currentId = active ? currentStepId(character, active) : null
+
+  function commit(factId: string) {
+    setCharacter(applyFacts(character, [factId], 'answer', `quests: ${active?.name ?? factId}`))
   }
 
-  function toggleStep(id: string) {
+  function toggle(step: PlanStep) {
+    const factId = stepFact(step)
+    if (!factId) return
     // Un-ticking never locks anything.
-    if (character.completedQuestSteps.includes(id)) {
-      commitStep(id)
+    if (isStepDone(character, step) || factState(character, factId) === 'true') {
+      setCharacter(clearFact(character, factId))
       return
     }
-    // Real DAG lockouts first (reuses planRoute); then the seed step's own prose
-    // warning, only when that line is actually in play for this character.
-    const warnings = lockoutWarnings(character, id)
-    const step = active.steps.find((s) => s.id === id)
-    if (step?.lockout && !warnings.some((w) => w.lineId === active.id)) {
-      warnings.push({
-        lineId: active.id,
-        lineName: active.npc,
-        steps: [{ id: step.id, do: step.text }],
-        note: step.lockout,
-        started: active.steps.some((s) => character.completedQuestSteps.includes(s.id)),
-      })
-    }
+    // Real DAG lockouts first; the confirm modal is keyed to the fact id.
+    const warnings = lockoutWarnings(character, factId)
     if (warnings.length) {
-      setPendingLock({ id, warnings })
+      setPendingLock({ factId, warnings })
       return
     }
-    commitStep(id)
+    commit(factId)
   }
 
   function pickLine(id: string) {
@@ -59,47 +67,67 @@ export function QuestWorkspace() {
     setActiveId(id)
   }
 
+  if (!active) return null
+
   return (
     <div className="split">
       <section className="panel">
         <div className="kicker">Lines that can break</div>
         <div className="quest-list" style={{ marginTop: 14 }}>
-          {filtered.map((q) => {
-            const done = q.steps.filter((s) => character.completedQuestSteps.includes(s.id)).length
+          {filtered.map((l) => {
+            const done = l.steps.filter((s) => isStepDone(character, s)).length
             return (
-              <button key={q.id} className={q.id === active.id ? 'quest active' : 'quest'} onClick={() => pickLine(q.id)}>
+              <button
+                key={l.id}
+                className={l.id === active.id ? 'quest active' : 'quest'}
+                onClick={() => pickLine(l.id)}
+              >
                 <header>
-                  <strong>{q.npc}</strong>
-                  <span className="note">{done}/{q.steps.length}</span>
+                  <strong>{l.name}</strong>
+                  <span className="note">{done}/{l.steps.length}</span>
                 </header>
-                <div className="note" style={{ marginTop: 6 }}>{q.campaign}{q.ending ? ' · ending' : ''}</div>
+                <div className="note" style={{ marginTop: 6 }}>{l.kind}</div>
               </button>
             )
           })}
         </div>
       </section>
       <section className="panel">
-        <div className="kicker">{active.campaign}</div>
-        <h3 style={{ fontFamily: 'var(--font-display)', margin: '6px 0 8px' }}>{active.npc}</h3>
-        <p className="note">{active.summary}</p>
+        <div className="kicker">{active.kind}</div>
+        <h3 style={{ fontFamily: 'var(--font-display)', margin: '6px 0 8px' }}>{active.name}</h3>
         {selectedMarkerId && !linkedStep && <Thread id={selectedMarkerId} />}
         <ul className="steps">
-          {active.steps.map((step) => (
-            <li key={step.id} className={step.id === linkedStep ? 'step-linked' : undefined}>
-              <input
-                type="checkbox"
-                checked={character.completedQuestSteps.includes(step.id)}
-                onChange={() => toggleStep(step.id)}
-              />
-              <div>
-                <div>{step.text}</div>
-                {step.location && <div className="note">{step.location}</div>}
-                {step.lockout && <div className="warn">{step.lockout}</div>}
-                <button type="button" className="chip" onClick={() => setSelectedMarkerId(step.id)}>Thread</button>
-                <Related id={step.id} />
-              </div>
-            </li>
-          ))}
+          {active.steps.map((step) => {
+            const factId = stepFact(step)
+            return (
+              <li
+                key={step.id}
+                className={factId === linkedStep || step.id === currentId ? 'step-linked' : undefined}
+              >
+                <input
+                  type="checkbox"
+                  checked={isStepDone(character, step)}
+                  disabled={!factId}
+                  onChange={() => toggle(step)}
+                />
+                <div>
+                  <div>
+                    {step.do}
+                    {step.id === currentId ? ' · now' : ''}
+                  </div>
+                  <div className="note">{step.detail}</div>
+                  {step.obtain && <div className="note">Reward: {step.obtain}</div>}
+                  {step.lockout && <div className="warn">{step.lockout}</div>}
+                  {factId && (
+                    <button type="button" className="chip" onClick={() => setSelectedMarkerId(factId)}>
+                      Thread
+                    </button>
+                  )}
+                  <Related id={factId ?? step.id} />
+                </div>
+              </li>
+            )
+          })}
         </ul>
       </section>
       {pendingLock && (
@@ -107,9 +135,9 @@ export function QuestWorkspace() {
           warnings={pendingLock.warnings}
           onCancel={() => setPendingLock(null)}
           onConfirm={() => {
-            const id = pendingLock.id
+            const factId = pendingLock.factId
             setPendingLock(null)
-            commitStep(id)
+            commit(factId)
           }}
         />
       )}

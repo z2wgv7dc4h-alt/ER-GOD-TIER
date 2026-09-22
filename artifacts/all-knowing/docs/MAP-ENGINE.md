@@ -147,3 +147,21 @@ git clone https://github.com/egormagurin/EldenRingMap.git /tmp/ERMap
 
 Do not overwrite `data/eventflag_bst.txt` with an empty file.
 Do not commit generated `web/tiles`.
+
+## Phone Atlas controls (Task 69)
+
+The desktop Atlas puts its filters in the topbar `.toggles` (Missing only / leftovers / locks /
+the seven pin kinds). On a phone that whole bar is `display: none`, which left the three job
+controls unreachable. Under `@media (max-width: 700px)` the Atlas now renders its own
+`.atlas-jobs` chip bar over the map:
+
+- **Visible on the map:** Missing only, leftovers, locks.
+- **One overflow:** a `layers` chip toggles `#atlas-layers`, holding grace / boss / item / npc /
+  fragment / spirit-ash / dungeon. This is the only Atlas layer UI under 700px; the old duplicated
+  `.side-controls` block in the map side panel was removed (`src/index.css`, `src/Atlas.tsx`).
+- Desktop keeps the topbar toggles unchanged; `.atlas-jobs` / `.atlas-layers` are hidden there.
+- All chips are ≥ 38px. The engine iframe's own `?embed=1` controls (Task 59) are untouched, and no
+  new pin system is introduced.
+
+`src/Atlas.test.tsx` renders the workspace and asserts the three job controls stay in the tree, so a
+future JS-side hide (not just a CSS query) fails the suite.

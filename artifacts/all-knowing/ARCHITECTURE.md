@@ -51,6 +51,18 @@ palette debounces `searchSync`. Before any step is ticked (Quests.tsx or Gideon 
 done”), `src/lib/lockWarnings.ts` confirms via `LockoutPrompt` when `planRoute` would foreclose a
 line the character started — no second DAG walker.
 
+`QuestWorkspace` renders `allLines()` — the same graph as Gideon and `planRoute` — and ticks a beat
+by writing its `factId` (`applyFacts` / `clearFact`). There is no second quest list.
+
+Under 700px the Atlas renders its own `.atlas-jobs` chip bar — Missing only / leftovers / locks
+always visible, the seven pin kinds behind one `layers` overflow (`#atlas-layers`). The topbar
+toggles are the desktop surface; the engine iframe's own `?embed=1` controls are untouched, and no
+third pin system is introduced (Task 69).
+
+`estimateDefense()` in `Build.tsx` reports no poise or equip load: the in-repo regulation extract
+only powers the Clark attack rating, so the Build preview is a labelled estimate, never a second
+formula (Task 71).
+
 ## Persistence
 
 `all-knowing.vault.v1` — profiles + UI (room, sit, selected pin).
