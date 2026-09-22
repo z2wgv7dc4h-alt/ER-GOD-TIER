@@ -1,4 +1,5 @@
 import { byId, facts } from '../knowledge/catalog'
+import { inferChains } from '../knowledge/inferChains'
 import type { Character, Evidence, EvidenceClaim, EvidenceSource, StartingClass } from '../types'
 import { canonicalFactId } from './aliases'
 import { resolveClaim, type ConflictOptions } from './conflict'
@@ -62,17 +63,56 @@ export function reconcileFacts(character: Character, factIds: string[], opts: Co
   return { ...character, defeatedBosses, discoveredGraces, collectedItems, completedQuestSteps, deniedFacts }
 }
 
-export function closeWorld(ids: string[]) {
+/** Canonicalised set of every fact a character currently knows. */
+export function knownFactIds(character: Character): Set<string> {
+  return new Set(
+    [
+      ...character.defeatedBosses,
+      ...character.discoveredGraces,
+      ...character.collectedItems,
+      ...character.completedQuestSteps,
+    ].map((id) => canonicalFactId(id)),
+  )
+}
+
+/**
+ * Walk `catalog.implies` **and** the Task 54 inference chains from a set of ids.
+ *
+ * `knownFacts` is the character's current facts (canonicalised). It is only used
+ * to evaluate compound chains — a chain with `allOf` fires only when every listed
+ * fact is known, and `unless` blocks it. Passing it does not put those facts into
+ * the returned closure; only newly-derived ids are added, so `applyFacts` still
+ * records them as `inference`. Omitting it keeps the original single-argument
+ * behaviour for callers that only need the catalog graph.
+ */
+export function closeWorld(ids: string[], knownFacts?: Iterable<string>) {
   const out = new Set(ids)
+  const known = new Set<string>([...(knownFacts ?? []), ...ids])
   const queue = [...ids]
   while (queue.length) {
     const id = queue.pop()!
     const node = byId.get(id)
-    if (!node) continue
-    for (const next of node.implies) {
-      if (!out.has(next)) {
-        out.add(next)
-        queue.push(next)
+    if (node) {
+      for (const next of node.implies) {
+        if (!out.has(next)) {
+          out.add(next)
+          known.add(next)
+          queue.push(next)
+        }
+      }
+    }
+    // Task 54: extra authored chains, applied through the same closer. Each
+    // derived id is labelled `inference` by `applyFacts`, so a deny/save still wins.
+    for (const chain of inferChains) {
+      if (canonicalFactId(chain.whenFact) !== id) continue
+      if (chain.allOf?.some((x) => !known.has(canonicalFactId(x)))) continue
+      if (chain.unless?.some((x) => known.has(canonicalFactId(x)))) continue
+      for (const next of chain.implies) {
+        if (!out.has(next) && !known.has(next)) {
+          out.add(next)
+          known.add(next)
+          queue.push(next)
+        }
       }
     }
   }
@@ -93,7 +133,9 @@ export function applyFacts(
   opts: ConflictOptions = {},
 ): Character {
   const canonical = incoming.map((id) => canonicalFactId(id))
-  const closed = closeWorld(canonical)
+  // Pass the character's existing facts so compound inference chains (the two
+  // Haligtree medallion halves) can fire. They are not added to `closed`.
+  const closed = closeWorld(canonical, knownFactIds(character))
   const next = { ...character, source: character.source === 'save' ? character.source : 'reckon' as const }
   const evidence = [...character.evidence]
   const directConf = confidence ?? 0.94

@@ -51,8 +51,9 @@ install itself, so it is fast and repeatable:
 |---|---|---|
 | `public/sourced/open/names.json` | EN FMG text (Text Explorer) | `bash scripts/ingest-open.sh` |
 | `public/sourced/open/paramdex/*.txt` | `soulsmods/Paramdex` `ER/Names` param row names | `bash scripts/ingest-open.sh` |
-| `src/data/hosted-graces.json` | `BonfireWarpParam` | Task 06 ingest |
-| `src/data/hosted-bosses.json` | boss flags / `boss-xyz.json` | Task 06 ingest |
+| `public/sourced/checklists/graces.json` | `BonfireWarpParam` (418 rows; identical to `src/data/hosted-graces.json`) | Task 06 ingest |
+| `public/sourced/open/boss-xyz.json` | boss flags / XYZ (215 rows; identical to `src/data/hosted-bosses.json`) | Task 06 ingest |
+| `public/sourced/checklists/hunts.json` | field-boss checklist + event flags | FanAPI / BuLEEto ingest |
 | `public/sourced/npc-combat.json` | `NpcParam` from the local `regulation.bin` | Task 17 (erdb + soulstruct) |
 
 So the chain is: **local install → (erdb / paramdex / Text Explorer dumps) → `gen-aliases.mjs`
@@ -94,6 +95,35 @@ authored otherwise), so name/alias lookup exists for every category. The two fac
 authored-only in a game-backed category are `boss:leontiel` (a Tarnished Pack mod boss with no
 vanilla `NpcParam` row, the same limitation Task 17 documented) and `grace:deeproot` (the
 catalog grace name differs from the warp-list name).
+
+## Task 55 completeness pass
+
+The generator was finished in Task 55: it now also reads `checklists/hunts.json`
+(kind `hunt`) and maps every `BonfireWarpParam` row to an authored **catalog**
+grace when no `graces.ts` warp seed exists (so e.g. `grace:120208` →
+`grace:night-sacred-ground`). Item matching prefers a strict, parenthetical-
+preserving name match, so `goods:8175` / `goods:8176` resolve to
+`item:haligtree-medallion-left` / `-right` rather than the bare both-halves fact.
+The row sort is a plain code-unit comparison, so a second run is byte-identical.
+
+Current output: **856 rows** (188 KB), sources `hosted-bosses` 271, `hunts` 154,
+`paramdex-npc` 116, `names` 102, `npc-combat` 83, `authored` 72,
+`hosted-graces` 58. Engine-backed by catalog prefix: grace 25/25, boss 87/88,
+item 84/86, invader 22/24, quest 0/57 (authored), region 0/10 (authored).
+
+### Honest unmatched report (not silently dropped)
+
+| Source | With a slug | Unmatched |
+|---|---|---|
+| Warps (`checklists/graces.json`, 418) | 58 | **360** |
+| Hosted bosses (`open/boss-xyz.json`, 215) | 136 | **79** |
+
+Unmatched warps are graces with neither an authored `graces.ts` seed nor a catalog
+grace fact of the same name; unmatched bosses are NpcParam rows the catalog has no
+boss fact for. They still appear in the engine's own data — this plane simply has
+no slug to map them onto, and inventing one (or a coordinate) is out of scope. The
+regenerate command prints the counts and, with `ALIAS_UNMATCHED=1`, the full name
+list.
 
 ## Why this is committed
 

@@ -110,11 +110,20 @@ See `docs/REVIEW.md`.
 
 - `public/sourced/aliases.json` + `src/data/aliases.json` — one generated table mapping engine
   row id (`grace:100000`, `bossflag:510010`, `npc:21300014`, `goods:8175`, …) → catalog slug →
-  FMG name → aliases, across grace/boss/invader/item/quest/region. The two files are identical;
-  the `public/` copy is the artifact of record, the `src/data/` copy is the synchronously
-  imported one (`canonicalFactId` / `searchSync`). Regenerate with `node scripts/gen-aliases.mjs`
-  from the game-derived dumps above; see `docs/ALIAS-PLANE.md`. Committed because it is
-  name/id-only derived data, not shipped game art.
+  FMG name → aliases, across grace/boss/invader/hunt/item/quest/region. The two files are
+  identical; the `public/` copy is the artifact of record, the `src/data/` copy is the
+  synchronously imported one (`canonicalFactId` / `searchSync`). Regenerate with
+  `node scripts/gen-aliases.mjs` from the game-derived dumps above; see `docs/ALIAS-PLANE.md`.
+  Committed because it is name/id-only derived data, not shipped game art.
+- **Task 55 completeness pass:** 856 rows / 188 KB. The generator now also reads
+  `checklists/hunts.json` (kind `hunt`) and maps every `BonfireWarpParam` row to an authored
+  **catalog** grace when no `graces.ts` seed exists (`grace:120208` → `grace:night-sacred-ground`).
+  Strict parenthetical-preserving matching makes `goods:8175/8176` resolve to
+  `item:haligtree-medallion-left/-right`. Run twice = byte-identical. Engine-backed by catalog
+  prefix: grace 25/25, boss 87/88, item 84/86, invader 22/24. **Unmatched, reported not dropped:
+  360/418 warps and 79/215 bosses have no slug** (they have no authored catalog fact to map onto;
+  no slug or coordinate is invented). `searchSync("church of elleh")` / `("elleh")` both hit
+  `grace:elleh`; 10k lot ids are not put in `searchSync`.
 
 ## Checklists
 
@@ -144,7 +153,7 @@ Codex fetches it, `src/knowledge/completion.ts` derives `fieldHunts` from it, an
 
 ## Authored (small, keep)
 
-`src/knowledge/{catalog,endings,storylines,loot,builds,collectibles,completion,gates,missables}.ts`
+`src/knowledge/{catalog,endings,storylines,loot,builds,collectibles,completion,gates,inferChains,missables}.ts`
 
 ## Cosmetic display (not combat)
 
@@ -168,6 +177,25 @@ See `docs/REVIEW.md`.
   Seedbed Curse, Drawing-Room Key, Iris of Grace, Iris of Occultation, `boss:metyr`); catalog row
   count 226 → 286. These are quest state, not extracted `regulation.bin` flags — no event flag id
   is invented. `src/knowledge/storylines.test.ts` carries the Task 53 golden fixture.
+
+## Inference chains (Task 54)
+
+- `src/knowledge/inferChains.ts` — an authored `{ whenFact, implies, allOf?, unless?, confidence,
+  why }` table expressing the honest implications a named read may draw ("you hold X, so Y is
+  already true"). Applied **through** `closeWorld`/`applyFacts` (not a second closer): every
+  derived id is recorded as `source: 'inference'`, so a save flag or an explicit deny still wins
+  (Task 24). Simple edges already in `catalog.implies` are mirrored here so Gideon can say
+  "inferred X because you have Y".
+- Seeds: Fingerslayer → Ranni Nokron beat; each Great Rune → its own boss only; Black Knifeprint →
+  Rogier's beat; Pureblood Medal → Varré cloth; Mimic Tear Ashes → Mimic Tear; Black Whetblade →
+  Night's Sacred Ground; Twinned set → `quest:fia:dagger`; the two Haligtree medallion halves →
+  the whole only when **both** are known (`allOf`).
+- The three item rows that had no catalog fact were added from `open/names.json`
+  (`item:mimic-tear-ashes`, `item:haligtree-medallion-left`, `item:haligtree-medallion-right`);
+  `item:black-whetblade` and `item:twinned-armor` were corrected so they no longer imply
+  `boss:radahn` / `quest:d:brother`.
+- Reckon exposes a read's freshly inferred extras as an "Also marked" list with per-row undo.
+  Low-confidence OCR still produces zero facts; fog on a map shot is unknown, never false.
 
 ## Achievement sets + conditional merchant stock (Task 29)
 

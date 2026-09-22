@@ -14,8 +14,9 @@
  */
 import { matchMany } from '../knowledge/catalog'
 import type { Character } from '../types'
-import { matchAllWarps } from './aliases'
-import { applyFacts } from './infer'
+import { canonicalFactId, matchAllWarps } from './aliases'
+import { applyFacts, knownFactIds } from './infer'
+import { labelOf } from './links'
 import { searchSync } from './search'
 
 export type OcrRead = {
@@ -53,6 +54,12 @@ export type OcrOutcome = {
   lines: OcrLineResult[]
   /** Human-readable, honest explanation of what happened. */
   message: string
+  /**
+   * Facts that became true purely by implication (catalog `implies` or a Task 54
+   * inference chain), not by a direct name match. Surfaced so the player can undo
+   * an over-eager inference without touching the names they actually sent.
+   */
+  alsoMarked: OcrMatch[]
 }
 
 function clamp01(n: number) {
@@ -128,6 +135,7 @@ export function applyOcrRead(
       matches: [],
       lines: [],
       message: 'No text was recognized in that image.',
+      alsoMarked: [],
     }
   }
 
@@ -140,6 +148,7 @@ export function applyOcrRead(
       matches: [],
       lines: [],
       message: `Text read at ${pct(confidence)} confidence — too low to trust. Facts stay unknown.`,
+      alsoMarked: [],
     }
   }
 
@@ -154,10 +163,19 @@ export function applyOcrRead(
       matches: [],
       lines,
       message: 'Read the text, but no known names matched. Nothing was inferred.',
+      alsoMarked: [],
     }
   }
 
   const next = applyFacts(character, matches.map((m) => m.id), 'screenshot', detail, confidence)
+  // Everything that is now true but was neither true before nor a direct match is
+  // an inferred extra. This is the "also marked" list the UI lets the player undo.
+  const before = knownFactIds(character)
+  const after = knownFactIds(next)
+  const direct = new Set(matches.map((m) => canonicalFactId(m.id)))
+  const alsoMarked: OcrMatch[] = [...after]
+    .filter((id) => !before.has(id) && !direct.has(id))
+    .map((id) => ({ id, name: labelOf(id) }))
   const hitLines = lines.filter((l) => l.matches.length).length
   const lineNote = lines.length > 1 ? ` across ${hitLines}/${lines.length} lines` : ''
   return {
@@ -168,6 +186,7 @@ export function applyOcrRead(
     matches,
     lines,
     message: `Matched ${matches.length} name${matches.length === 1 ? '' : 's'}${lineNote}: ${matches.map((m) => m.name).join(' · ')}`,
+    alsoMarked,
   }
 }
 

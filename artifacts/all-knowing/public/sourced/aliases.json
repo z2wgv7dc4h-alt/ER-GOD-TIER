@@ -953,13 +953,15 @@
  },
  {
   "engineId": "bossflag:11050800",
-  "slug": "boss:godfrey-golden",
+  "slug": "boss:godfrey",
   "kind": "boss",
   "fmgName": "Godfrey, First Elden Lord",
   "aliases": [
+   "godfrey",
    "godfrey first elden lord",
-   "godfrey shade",
-   "golden godfrey"
+   "godfrey first elden lord hoarah loux",
+   "hoarah loux",
+   "hoarah loux warrior"
   ],
   "source": "hosted-bosses"
  },
@@ -1353,6 +1355,18 @@
   "aliases": [
    "messmer",
    "messmer the impaler"
+  ],
+  "source": "hosted-bosses"
+ },
+ {
+  "engineId": "bossflag:25000800",
+  "slug": "boss:metyr",
+  "kind": "boss",
+  "fmgName": "Metyr, Mother of Fingers",
+  "aliases": [
+   "metyr",
+   "metyr mother of fingers",
+   "mother of fingers"
   ],
   "source": "hosted-bosses"
  },
@@ -1806,13 +1820,15 @@
  },
  {
   "engineId": "bossflag:510070",
-  "slug": "boss:godfrey-golden",
+  "slug": "boss:godfrey",
   "kind": "boss",
   "fmgName": "Godfrey, First Elden Lord",
   "aliases": [
+   "godfrey",
    "godfrey first elden lord",
-   "godfrey shade",
-   "golden godfrey"
+   "godfrey first elden lord hoarah loux",
+   "hoarah loux",
+   "hoarah loux warrior"
   ],
   "source": "hosted-bosses"
  },
@@ -2084,6 +2100,18 @@
   "aliases": [
    "messmer",
    "messmer the impaler"
+  ],
+  "source": "hosted-bosses"
+ },
+ {
+  "engineId": "bossflag:510550",
+  "slug": "boss:metyr",
+  "kind": "boss",
+  "fmgName": "Metyr, Mother of Fingers",
+  "aliases": [
+   "metyr",
+   "metyr mother of fingers",
+   "mother of fingers"
   ],
   "source": "hosted-bosses"
  },
@@ -2956,6 +2984,895 @@
    "full grown fallingstar beast"
   ],
   "source": "hosted-bosses"
+ },
+ {
+  "engineId": "hunt:ancestor-spirit",
+  "slug": "boss:ancestor-spirit",
+  "kind": "boss",
+  "fmgName": "Ancestor Spirit",
+  "aliases": [
+   "ancestor spirit",
+   "ancestral spirit"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:ancient-dragon-lansseax",
+  "slug": "boss:lansseax",
+  "kind": "boss",
+  "fmgName": "Ancient Dragon Lansseax",
+  "aliases": [
+   "ancient dragon lansseax",
+   "lansseax"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:ancient-hero-of-zamor",
+  "slug": "boss:ancient-hero-zamor",
+  "kind": "boss",
+  "fmgName": "Ancient Hero of Zamor",
+  "aliases": [
+   "ancient hero of zamor",
+   "zamor"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:astel-naturalborn-of-the-void",
+  "slug": "boss:astel",
+  "kind": "boss",
+  "fmgName": "Astel, Naturalborn of the Void",
+  "aliases": [
+   "astel",
+   "astel naturalborn of the void"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:bayle-the-dread",
+  "slug": "boss:bayle",
+  "kind": "boss",
+  "fmgName": "Bayle the Dread",
+  "aliases": [
+   "bayle",
+   "bayle the dread"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:bell-bearing-hunter",
+  "slug": "boss:bell-bearing-hunter",
+  "kind": "boss",
+  "fmgName": "Bell Bearing Hunter",
+  "aliases": [
+   "bell bearing hunter"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:black-blade-kindred",
+  "slug": "boss:black-blade-kindred",
+  "kind": "boss",
+  "fmgName": "Black Blade Kindred",
+  "aliases": [
+   "black blade kindred"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:black-knife-assassin",
+  "slug": "boss:black-knife-assassin",
+  "kind": "boss",
+  "fmgName": "Black Knife Assassin",
+  "aliases": [
+   "black knife assassin",
+   "black knife assassins"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:bloodhound-knight",
+  "slug": "boss:darriwil",
+  "kind": "boss",
+  "fmgName": "Bloodhound Knight",
+  "aliases": [
+   "bloodhound knight",
+   "bloodhound knight darriwil",
+   "darriwil"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:bloodhound-knight-darriwil",
+  "slug": "boss:darriwil",
+  "kind": "boss",
+  "fmgName": "Bloodhound Knight Darriwil",
+  "aliases": [
+   "bloodhound knight",
+   "bloodhound knight darriwil",
+   "darriwil"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:borealis-the-freezing-fog",
+  "slug": "boss:borealis",
+  "kind": "boss",
+  "fmgName": "Borealis the Freezing Fog",
+  "aliases": [
+   "borealis",
+   "borealis the freezing fog"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:cemetery-shade",
+  "slug": "boss:cemetery-shade",
+  "kind": "boss",
+  "fmgName": "Cemetery Shade",
+  "aliases": [
+   "cemetary shade",
+   "cemetery shade"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:cleanrot-knight",
+  "slug": "boss:cleanrot-knight",
+  "kind": "boss",
+  "fmgName": "Cleanrot Knight",
+  "aliases": [
+   "cleanrot knight",
+   "cleanrot knights"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:commander-niall",
+  "slug": "boss:commander-niall",
+  "kind": "boss",
+  "fmgName": "Commander Niall",
+  "aliases": [
+   "commander niall",
+   "niall"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:commander-o-neil",
+  "slug": "boss:commander-oneil",
+  "kind": "boss",
+  "fmgName": "Commander O'Neil",
+  "aliases": [
+   "commander o neil",
+   "o neil",
+   "oneil"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:crucible-knight-siluria",
+  "slug": "boss:siluria",
+  "kind": "boss",
+  "fmgName": "Crucible Knight Siluria",
+  "aliases": [
+   "crucible knight siluria",
+   "siluria"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:crystalian-ringblade",
+  "slug": "boss:crystalian-duo",
+  "kind": "boss",
+  "fmgName": "Crystalian (Ringblade)",
+  "aliases": [
+   "crystalian",
+   "crystalian duo"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:death-rite-bird",
+  "slug": "boss:death-rite-bird",
+  "kind": "boss",
+  "fmgName": "Death Rite Bird",
+  "aliases": [
+   "death rite",
+   "death rite bird"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:deathbird",
+  "slug": "boss:deathbird",
+  "kind": "boss",
+  "fmgName": "Deathbird",
+  "aliases": [
+   "deathbird"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:decaying-ekzykes",
+  "slug": "boss:ekzykes",
+  "kind": "boss",
+  "fmgName": "Decaying Ekzykes",
+  "aliases": [
+   "decaying ekzykes",
+   "ekzykes"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:divine-beast-dancing-lion",
+  "slug": "boss:divine-beast",
+  "kind": "boss",
+  "fmgName": "Divine Beast Dancing Lion",
+  "aliases": [
+   "dancing lion",
+   "divine beast dancing lion"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:dragonkin-soldier",
+  "slug": "boss:dragonkin-soldier",
+  "kind": "boss",
+  "fmgName": "Dragonkin Soldier",
+  "aliases": [
+   "dragonkin",
+   "dragonkin soldier"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:dragonkin-soldier-of-nokstella",
+  "slug": "boss:dragonkin-nokstella",
+  "kind": "boss",
+  "fmgName": "Dragonkin Soldier of Nokstella",
+  "aliases": [
+   "dragonkin nokstella",
+   "dragonkin soldier of nokstella"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:dragonlord-placidusax",
+  "slug": "boss:placidusax",
+  "kind": "boss",
+  "fmgName": "Dragonlord Placidusax",
+  "aliases": [
+   "dragonlord",
+   "dragonlord placidusax",
+   "placidusax"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:elemer-of-the-briar",
+  "slug": "boss:elemer",
+  "kind": "boss",
+  "fmgName": "Elemer of the Briar",
+  "aliases": [
+   "briar",
+   "elemer",
+   "elemer of the briar"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:erdtree-avatar",
+  "slug": "boss:erdtree-avatar",
+  "kind": "boss",
+  "fmgName": "Erdtree Avatar",
+  "aliases": [
+   "erdtree avatar",
+   "erdtree avatars"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:erdtree-burial-watchdog",
+  "slug": "boss:erdtree-burial-watchdog",
+  "kind": "boss",
+  "fmgName": "Erdtree Burial Watchdog",
+  "aliases": [
+   "burial watchdog",
+   "erdtree burial watchdog"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:fallingstar-beast",
+  "slug": "boss:fallingstar-beast",
+  "kind": "boss",
+  "fmgName": "Fallingstar Beast",
+  "aliases": [
+   "fallingstar",
+   "fallingstar beast"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:fire-giant",
+  "slug": "boss:fire-giant",
+  "kind": "boss",
+  "fmgName": "Fire Giant",
+  "aliases": [
+   "fire giant"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:flying-dragon-agheel",
+  "slug": "boss:agheel",
+  "kind": "boss",
+  "fmgName": "Flying Dragon Agheel",
+  "aliases": [
+   "agheel",
+   "flying dragon agheel"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:full-grown-fallingstar-beast",
+  "slug": "boss:full-grown-fallingstar",
+  "kind": "boss",
+  "fmgName": "Full-Grown Fallingstar Beast",
+  "aliases": [
+   "full grown fallingstar",
+   "full grown fallingstar beast"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:glintstone-dragon-adula",
+  "slug": "boss:adula",
+  "kind": "boss",
+  "fmgName": "Glintstone Dragon Adula",
+  "aliases": [
+   "adula",
+   "glintstone dragon adula"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:godefroy-the-grafted",
+  "slug": "boss:godefroy",
+  "kind": "boss",
+  "fmgName": "Godefroy the Grafted",
+  "aliases": [
+   "godefroy",
+   "godefroy the grafted"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:godfrey-first-elden-lord",
+  "slug": "boss:godfrey",
+  "kind": "boss",
+  "fmgName": "Godfrey, First Elden Lord",
+  "aliases": [
+   "godfrey",
+   "godfrey first elden lord",
+   "godfrey first elden lord hoarah loux",
+   "hoarah loux",
+   "hoarah loux warrior"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:godrick-the-grafted",
+  "slug": "boss:godrick",
+  "kind": "boss",
+  "fmgName": "Godrick the Grafted",
+  "aliases": [
+   "godrick",
+   "godrick the grafted"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:godskin-apostle",
+  "slug": "boss:godskin-apostle",
+  "kind": "boss",
+  "fmgName": "Godskin Apostle",
+  "aliases": [
+   "godskin apostle"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:godskin-duo",
+  "slug": "boss:godskin-duo",
+  "kind": "boss",
+  "fmgName": "Godskin Duo",
+  "aliases": [
+   "godskin duo"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:godskin-noble",
+  "slug": "boss:godskin-noble",
+  "kind": "boss",
+  "fmgName": "Godskin Noble",
+  "aliases": [
+   "godskin noble"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:grafted-scion",
+  "slug": "boss:grafted-scion",
+  "kind": "boss",
+  "fmgName": "Grafted Scion",
+  "aliases": [
+   "grafted scion",
+   "grafted scions"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:grave-warden-duelist",
+  "slug": "boss:grave-warden-duelist",
+  "kind": "boss",
+  "fmgName": "Grave Warden Duelist",
+  "aliases": [
+   "grave warden",
+   "grave warden duelist"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:great-wyrm-theodorix",
+  "slug": "boss:theodorix",
+  "kind": "boss",
+  "fmgName": "Great Wyrm Theodorix",
+  "aliases": [
+   "great wyrm theodorix",
+   "theodorix"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:guardian-golem",
+  "slug": "boss:guardian-golem",
+  "kind": "boss",
+  "fmgName": "Guardian Golem",
+  "aliases": [
+   "guardian golem"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:leonine-misbegotten",
+  "slug": "boss:leonine-misbegotten",
+  "kind": "boss",
+  "fmgName": "Leonine Misbegotten",
+  "aliases": [
+   "leonine",
+   "leonine misbegotten"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:lichdragon-fortissax",
+  "slug": "boss:fortissax",
+  "kind": "boss",
+  "fmgName": "Lichdragon Fortissax",
+  "aliases": [
+   "fortissax",
+   "lichdragon",
+   "lichdragon fortissax"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:loretta-knight-of-the-haligtree",
+  "slug": "boss:loretta-haligtree",
+  "kind": "boss",
+  "fmgName": "Loretta, Knight of the Haligtree",
+  "aliases": [
+   "loretta haligtree",
+   "loretta knight of the haligtree"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:mad-pumpkin-head",
+  "slug": "boss:mad-pumpkin-head",
+  "kind": "boss",
+  "fmgName": "Mad Pumpkin Head",
+  "aliases": [
+   "mad pumpkin",
+   "mad pumpkin head"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:magma-wyrm",
+  "slug": "boss:magma-wyrm",
+  "kind": "boss",
+  "fmgName": "Magma Wyrm",
+  "aliases": [
+   "magma wyrm"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:magma-wyrm-makar",
+  "slug": "boss:magma-wyrm-makar",
+  "kind": "boss",
+  "fmgName": "Magma Wyrm Makar",
+  "aliases": [
+   "magma wyrm makar",
+   "makar"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:maliketh-the-black-blade",
+  "slug": "boss:maliketh",
+  "kind": "boss",
+  "fmgName": "Maliketh, the Black Blade",
+  "aliases": [
+   "beast clergyman",
+   "gurranq",
+   "maliketh",
+   "maliketh the black blade"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:margit-the-fell-omen",
+  "slug": "boss:margit",
+  "kind": "boss",
+  "fmgName": "Margit, the Fell Omen",
+  "aliases": [
+   "fell omen",
+   "margit",
+   "margit the fell omen"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:metyr-mother-of-fingers",
+  "slug": "boss:metyr",
+  "kind": "boss",
+  "fmgName": "Metyr, Mother of Fingers",
+  "aliases": [
+   "metyr",
+   "metyr mother of fingers",
+   "mother of fingers"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:midra-lord-of-frenzied-flame",
+  "slug": "boss:midra",
+  "kind": "boss",
+  "fmgName": "Midra, Lord of Frenzied Flame",
+  "aliases": [
+   "midra",
+   "midra lord of frenzied flame"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:mimic-tear",
+  "slug": "boss:mimic-tear",
+  "kind": "boss",
+  "fmgName": "Mimic Tear",
+  "aliases": [
+   "mimic tear"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:mohg-lord-of-blood",
+  "slug": "boss:mohg",
+  "kind": "boss",
+  "fmgName": "Mohg, Lord of Blood",
+  "aliases": [
+   "lord of blood",
+   "mohg",
+   "mohg lord of blood"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:mohg-the-omen",
+  "slug": "boss:mohg-omen",
+  "kind": "boss",
+  "fmgName": "Mohg, the Omen",
+  "aliases": [
+   "mohg the omen",
+   "omen mohg"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:morgott-the-omen-king",
+  "slug": "boss:morgott",
+  "kind": "boss",
+  "fmgName": "Morgott, the Omen King",
+  "aliases": [
+   "morgott",
+   "morgott the omen king",
+   "omen king"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:night-s-cavalry",
+  "slug": "boss:nights-cavalry",
+  "kind": "boss",
+  "fmgName": "Night's Cavalry",
+  "aliases": [
+   "night cavalry",
+   "nights cavalry"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:omenkiller",
+  "slug": "boss:omenkiller",
+  "kind": "boss",
+  "fmgName": "Omenkiller",
+  "aliases": [
+   "omenkiller",
+   "omenkillers"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:onyx-lord",
+  "slug": "boss:onyx-lord",
+  "kind": "boss",
+  "fmgName": "Onyx Lord",
+  "aliases": [
+   "onyx lord"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:perfumer-tricia-misbegotten-warrior",
+  "slug": "boss:perfumer-tricia",
+  "kind": "boss",
+  "fmgName": "Perfumer Tricia & Misbegotten Warrior",
+  "aliases": [
+   "perfumer tricia",
+   "perfumer tricia misbegotten warrior"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:promised-consort-radahn-radahn-consort-of-miquella",
+  "slug": "boss:consort",
+  "kind": "boss",
+  "fmgName": "Promised Consort Radahn & Radahn, Consort of Miquella",
+  "aliases": [
+   "consort radahn",
+   "promised consort",
+   "promised consort radahn radahn consort of miquella",
+   "radahn consort of miquella"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:putrid-avatar",
+  "slug": "boss:putrid-avatar",
+  "kind": "boss",
+  "fmgName": "Putrid Avatar",
+  "aliases": [
+   "putrid avatar"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:radagon-of-the-golden-order-elden-beast",
+  "slug": "boss:radagon",
+  "kind": "boss",
+  "fmgName": "Radagon of the Golden Order & Elden Beast",
+  "aliases": [
+   "elden beast",
+   "elden lord",
+   "radagon",
+   "radagon of the golden order elden beast"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:red-wolf-of-radagon",
+  "slug": "boss:red-wolf",
+  "kind": "boss",
+  "fmgName": "Red Wolf of Radagon",
+  "aliases": [
+   "red wolf",
+   "red wolf of radagon"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:red-wolf-of-the-champion",
+  "slug": "boss:red-wolf-champion",
+  "kind": "boss",
+  "fmgName": "Red Wolf of the Champion",
+  "aliases": [
+   "red wolf champion",
+   "red wolf of the champion"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:regal-ancestor-spirit",
+  "slug": "boss:regal-ancestor",
+  "kind": "boss",
+  "fmgName": "Regal Ancestor Spirit",
+  "aliases": [
+   "ancestor spirit regal",
+   "regal ancestor",
+   "regal ancestor spirit"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:rellana-twin-moon-knight",
+  "slug": "boss:rennala-sote",
+  "kind": "boss",
+  "fmgName": "Rellana, Twin Moon Knight",
+  "aliases": [
+   "rellana",
+   "rellana twin moon knight"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:rennala-queen-of-the-full-moon",
+  "slug": "boss:rennala",
+  "kind": "boss",
+  "fmgName": "Rennala, Queen of the Full Moon",
+  "aliases": [
+   "rennala",
+   "rennala queen of the full moon"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:royal-knight-loretta",
+  "slug": "boss:royal-knight-loretta",
+  "kind": "boss",
+  "fmgName": "Royal Knight Loretta",
+  "aliases": [
+   "loretta caria",
+   "royal knight loretta",
+   "royal loretta"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:runebear",
+  "slug": "boss:runebear",
+  "kind": "boss",
+  "fmgName": "Runebear",
+  "aliases": [
+   "runebear"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:sir-gideon-ofnir-the-all-knowing",
+  "slug": "boss:gideon",
+  "kind": "boss",
+  "fmgName": "Sir Gideon Ofnir, the All-Knowing",
+  "aliases": [
+   "gideon",
+   "ofnir",
+   "sir gideon ofnir the all knowing"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:spiritcaller-snail",
+  "slug": "boss:spiritcaller-snail",
+  "kind": "boss",
+  "fmgName": "Spiritcaller Snail",
+  "aliases": [
+   "spiritcaller",
+   "spiritcaller snail"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:starscourge-radahn",
+  "slug": "boss:radahn",
+  "kind": "boss",
+  "fmgName": "Starscourge Radahn",
+  "aliases": [
+   "general radahn",
+   "radahn",
+   "starscourge radahn"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:stonedigger-troll",
+  "slug": "boss:stonedigger-troll",
+  "kind": "boss",
+  "fmgName": "Stonedigger Troll",
+  "aliases": [
+   "stonedigger",
+   "stonedigger troll"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:stray-mimic-tear",
+  "slug": "boss:stray-mimic-tear",
+  "kind": "boss",
+  "fmgName": "Stray Mimic Tear",
+  "aliases": [
+   "stray mimic",
+   "stray mimic tear"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:tibia-mariner",
+  "slug": "boss:tibia-mariner",
+  "kind": "boss",
+  "fmgName": "Tibia Mariner",
+  "aliases": [
+   "tibia mariner",
+   "tibia mariners"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:tree-sentinel",
+  "slug": "boss:tree-sentinel",
+  "kind": "boss",
+  "fmgName": "Tree Sentinel",
+  "aliases": [
+   "tree sentinel",
+   "tree sentinels"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:tree-sentinel-x2",
+  "slug": "boss:tree-sentinel",
+  "kind": "boss",
+  "fmgName": "Tree Sentinel(x2)",
+  "aliases": [
+   "tree sentinel",
+   "tree sentinels"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:ulcerated-tree-spirit",
+  "slug": "boss:ulcerated-tree-spirit",
+  "kind": "boss",
+  "fmgName": "Ulcerated Tree Spirit",
+  "aliases": [
+   "ulcerated spirit",
+   "ulcerated tree spirit"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:wormface",
+  "slug": "boss:wormface",
+  "kind": "boss",
+  "fmgName": "Wormface",
+  "aliases": [
+   "wormface"
+  ],
+  "source": "hunts"
  },
  {
   "engineId": "npc:20300000",
@@ -3963,17 +4880,6 @@
  },
  {
   "engineId": "npc:46700065",
-  "slug": "boss:ancestor-spirit",
-  "kind": "boss",
-  "fmgName": "Ancestor Spirit (Regal)",
-  "aliases": [
-   "ancestor spirit",
-   "ancestral spirit"
-  ],
-  "source": "paramdex-npc"
- },
- {
-  "engineId": "npc:46700065",
   "slug": "boss:regal-ancestor",
   "kind": "boss",
   "fmgName": "Ancestor Spirit (Regal)",
@@ -3984,6 +4890,17 @@
    "regal ancestor spirit"
   ],
   "source": "npc-combat"
+ },
+ {
+  "engineId": "npc:46700100",
+  "slug": "boss:ancestor-spirit",
+  "kind": "boss",
+  "fmgName": "Ancestor Spirit",
+  "aliases": [
+   "ancestor spirit",
+   "ancestral spirit"
+  ],
+  "source": "paramdex-npc"
  },
  {
   "engineId": "npc:46800000",
@@ -4126,24 +5043,22 @@
   "source": "npc-combat"
  },
  {
-  "engineId": "npc:47210000",
-  "slug": "boss:godfrey",
+  "engineId": "npc:47200100",
+  "slug": "boss:godfrey-golden",
   "kind": "boss",
-  "fmgName": "Hoarah Loux (Unscaled)",
+  "fmgName": "Godfrey- First Elden Lord (Unscaled)",
   "aliases": [
-   "godfrey",
    "godfrey first elden lord",
-   "godfrey first elden lord hoarah loux",
-   "hoarah loux",
-   "hoarah loux warrior"
+   "godfrey shade",
+   "golden godfrey"
   ],
   "source": "paramdex-npc"
  },
  {
-  "engineId": "npc:47210070",
+  "engineId": "npc:47210000",
   "slug": "boss:godfrey",
   "kind": "boss",
-  "fmgName": "Hoarah Loux",
+  "fmgName": "Hoarah Loux (Unscaled)",
   "aliases": [
    "godfrey",
    "godfrey first elden lord",
@@ -4538,6 +5453,30 @@
   "source": "paramdex-npc"
  },
  {
+  "engineId": "npc:52000000",
+  "slug": "boss:metyr",
+  "kind": "boss",
+  "fmgName": "Metyr, Mother of Fingers",
+  "aliases": [
+   "metyr",
+   "metyr mother of fingers",
+   "mother of fingers"
+  ],
+  "source": "paramdex-npc"
+ },
+ {
+  "engineId": "npc:52000001",
+  "slug": "boss:metyr",
+  "kind": "boss",
+  "fmgName": "Metyr, Mother of Fingers",
+  "aliases": [
+   "metyr",
+   "metyr mother of fingers",
+   "mother of fingers"
+  ],
+  "source": "paramdex-npc"
+ },
+ {
   "engineId": "npc:52100000",
   "slug": "boss:divine-beast",
   "kind": "boss",
@@ -4784,6 +5723,17 @@
   "source": "hosted-graces"
  },
  {
+  "engineId": "grace:120208",
+  "slug": "grace:night-sacred-ground",
+  "kind": "grace",
+  "fmgName": "Night's Sacred Ground",
+  "aliases": [
+   "night sacred ground",
+   "nights sacred ground"
+  ],
+  "source": "hosted-graces"
+ },
+ {
   "engineId": "grace:120302",
   "slug": "grace:deeproot",
   "kind": "grace",
@@ -4795,6 +5745,18 @@
   "source": "hosted-graces"
  },
  {
+  "engineId": "grace:120303",
+  "slug": "grace:deeproot",
+  "kind": "grace",
+  "fmgName": "Deeproot Depths",
+  "aliases": [
+   "deeproot",
+   "deeproot depths",
+   "prince of deaths throne"
+  ],
+  "source": "hosted-graces"
+ },
+ {
   "engineId": "grace:120701",
   "slug": "grace:nokron",
   "kind": "grace",
@@ -4802,6 +5764,17 @@
   "aliases": [
    "nokron",
    "nokron eternal city"
+  ],
+  "source": "hosted-graces"
+ },
+ {
+  "engineId": "grace:130002",
+  "slug": "grace:farum-balcony",
+  "kind": "grace",
+  "fmgName": "Dragon Temple Altar",
+  "aliases": [
+   "dragon temple altar",
+   "farum altar"
   ],
   "source": "hosted-graces"
  },
@@ -4888,6 +5861,16 @@
   "aliases": [
    "main gate plaza",
    "shadow keep plaza"
+  ],
+  "source": "hosted-graces"
+ },
+ {
+  "engineId": "grace:341000",
+  "slug": "grace:limgrave-tower",
+  "kind": "grace",
+  "fmgName": "Limgrave Tower Bridge",
+  "aliases": [
+   "limgrave tower bridge"
   ],
   "source": "hosted-graces"
  },
@@ -5136,6 +6119,17 @@
   "source": "hosted-graces"
  },
  {
+  "engineId": "grace:63455200",
+  "slug": "grace:capital-outskirts",
+  "kind": "grace",
+  "fmgName": "Capital Rampart",
+  "aliases": [
+   "capital rampart",
+   "outer wall battleground"
+  ],
+  "source": "hosted-graces"
+ },
+ {
   "engineId": "grace:64464000",
   "slug": "grace:smoldering",
   "kind": "grace",
@@ -5199,6 +6193,16 @@
   "source": "hosted-graces"
  },
  {
+  "engineId": "grace:65525400",
+  "slug": "grace:beside-forge",
+  "kind": "grace",
+  "fmgName": "Giant's Gravepost",
+  "aliases": [
+   "giant gravepost"
+  ],
+  "source": "hosted-graces"
+ },
+ {
   "engineId": "grace:65545300",
   "slug": "grace:forge-giants",
   "kind": "grace",
@@ -5242,25 +6246,745 @@
   "source": "hosted-graces"
  },
  {
-  "engineId": "grace:beside-forge",
-  "slug": "grace:beside-forge",
-  "kind": "grace",
-  "fmgName": "Giant’s Gravepost",
+  "engineId": "hunt:abductor-virgin-swinging-sickle-abductor-virgin-wheel",
+  "slug": "hunt:abductor-virgin-swinging-sickle-abductor-virgin-wheel",
+  "kind": "hunt",
+  "fmgName": "Abductor Virgin (Swinging Sickle) & Abductor Virgin (Wheel)",
   "aliases": [
-   "giant gravepost"
+   "abductor virgin abductor virgin"
   ],
-  "source": "authored"
+  "source": "hunts"
  },
  {
-  "engineId": "grace:capital-outskirts",
-  "slug": "grace:capital-outskirts",
-  "kind": "grace",
-  "fmgName": "Capital Rampart",
+  "engineId": "hunt:adan-thief-of-fire",
+  "slug": "hunt:adan-thief-of-fire",
+  "kind": "hunt",
+  "fmgName": "Adan, Thief of Fire",
   "aliases": [
-   "capital rampart",
-   "outer wall battleground"
+   "adan thief of fire"
   ],
-  "source": "authored"
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:alecto-black-knife-ringleader",
+  "slug": "hunt:alecto-black-knife-ringleader",
+  "kind": "hunt",
+  "fmgName": "Alecto, Black Knife Ringleader",
+  "aliases": [
+   "alecto black knife ringleader"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:ancient-dragon-man",
+  "slug": "hunt:ancient-dragon-man",
+  "kind": "hunt",
+  "fmgName": "Ancient Dragon-Man",
+  "aliases": [
+   "ancient dragon man"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:ancient-dragon-senessax",
+  "slug": "hunt:ancient-dragon-senessax",
+  "kind": "hunt",
+  "fmgName": "Ancient Dragon Senessax",
+  "aliases": [
+   "ancient dragon senessax"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:astel-stars-of-darkness",
+  "slug": "hunt:astel-stars-of-darkness",
+  "kind": "hunt",
+  "fmgName": "Astel, Stars of Darkness",
+  "aliases": [
+   "astel stars of darkness"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:battlemage-hugues",
+  "slug": "hunt:battlemage-hugues",
+  "kind": "hunt",
+  "fmgName": "Battlemage Hugues",
+  "aliases": [
+   "battlemage hugues"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:beastman-of-farum-azula",
+  "slug": "hunt:beastman-of-farum-azula",
+  "kind": "hunt",
+  "fmgName": "Beastman of Farum Azula",
+  "aliases": [
+   "beastman of farum azula"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:beastman-of-farum-azula-cleaver-beastman-of-farum-azula-throwing-knife",
+  "slug": "hunt:beastman-of-farum-azula-cleaver-beastman-of-farum-azula-throwing-knife",
+  "kind": "hunt",
+  "fmgName": "Beastman of Farum Azula (Cleaver) & Beastman of Farum Azula (Throwing Knife)",
+  "aliases": [
+   "beastman of farum azula beastman of farum azula"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:black-knight-edredd",
+  "slug": "hunt:black-knight-edredd",
+  "kind": "hunt",
+  "fmgName": "Black Knight Edredd",
+  "aliases": [
+   "black knight edredd"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:black-knight-garrew",
+  "slug": "hunt:black-knight-garrew",
+  "kind": "hunt",
+  "fmgName": "Black Knight Garrew",
+  "aliases": [
+   "black knight garrew"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:blackgaol-knight",
+  "slug": "hunt:blackgaol-knight",
+  "kind": "hunt",
+  "fmgName": "Blackgaol Knight",
+  "aliases": [
+   "blackgaol knight"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:bols-carian-knight",
+  "slug": "hunt:bols-carian-knight",
+  "kind": "hunt",
+  "fmgName": "Bols, Carian Knight",
+  "aliases": [
+   "bols carian knight"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:chief-bloodfiend",
+  "slug": "hunt:chief-bloodfiend",
+  "kind": "hunt",
+  "fmgName": "Chief Bloodfiend",
+  "aliases": [
+   "chief bloodfiend"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:cleanrot-knight-spear-cleanrot-knight-sickle",
+  "slug": "hunt:cleanrot-knight-spear-cleanrot-knight-sickle",
+  "kind": "hunt",
+  "fmgName": "Cleanrot Knight (Spear) & Cleanrot Knight (Sickle)",
+  "aliases": [
+   "cleanrot knight cleanrot knight"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:commander-gaius",
+  "slug": "hunt:commander-gaius",
+  "kind": "hunt",
+  "fmgName": "Commander Gaius",
+  "aliases": [
+   "commander gaius"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:count-ymir-mother-of-fingers",
+  "slug": "hunt:count-ymir-mother-of-fingers",
+  "kind": "hunt",
+  "fmgName": "Count Ymir, Mother of Fingers",
+  "aliases": [
+   "count ymir mother of fingers"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:crucible-knight",
+  "slug": "hunt:crucible-knight",
+  "kind": "hunt",
+  "fmgName": "Crucible Knight",
+  "aliases": [
+   "crucible knight"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:crucible-knight-crucible-knight-ordovis",
+  "slug": "hunt:crucible-knight-crucible-knight-ordovis",
+  "kind": "hunt",
+  "fmgName": "Crucible Knight & Crucible Knight Ordovis",
+  "aliases": [
+   "crucible knight crucible knight ordovis"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:crucible-knight-misbegotten-warrior",
+  "slug": "hunt:crucible-knight-misbegotten-warrior",
+  "kind": "hunt",
+  "fmgName": "Crucible Knight & Misbegotten Warrior",
+  "aliases": [
+   "crucible knight misbegotten warrior"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:crystalian-spear-crystalian-ringblade",
+  "slug": "hunt:crystalian-spear-crystalian-ringblade",
+  "kind": "hunt",
+  "fmgName": "Crystalian (Spear) & Crystalian (Ringblade)",
+  "aliases": [
+   "crystalian crystalian"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:crystalian-staff-crystalian-spear",
+  "slug": "hunt:crystalian-staff-crystalian-spear",
+  "kind": "hunt",
+  "fmgName": "Crystalian (Staff) & Crystalian (Spear)",
+  "aliases": [
+   "crystalian crystalian"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:curseblade-labirith",
+  "slug": "hunt:curseblade-labirith",
+  "kind": "hunt",
+  "fmgName": "Curseblade Labirith",
+  "aliases": [
+   "curseblade labirith"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:dancer-of-ranah",
+  "slug": "hunt:dancer-of-ranah",
+  "kind": "hunt",
+  "fmgName": "Dancer of Ranah",
+  "aliases": [
+   "dancer of ranah"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:death-knight",
+  "slug": "hunt:death-knight",
+  "kind": "hunt",
+  "fmgName": "Death Knight",
+  "aliases": [
+   "death knight"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:demi-human-chief-x2",
+  "slug": "hunt:demi-human-chief-x2",
+  "kind": "hunt",
+  "fmgName": "Demi-Human Chief(x2)",
+  "aliases": [
+   "demi human chief"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:demi-human-queen-gilika",
+  "slug": "hunt:demi-human-queen-gilika",
+  "kind": "hunt",
+  "fmgName": "Demi-Human Queen Gilika",
+  "aliases": [
+   "demi human queen gilika"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:demi-human-queen-maggie",
+  "slug": "hunt:demi-human-queen-maggie",
+  "kind": "hunt",
+  "fmgName": "Demi-Human Queen Maggie",
+  "aliases": [
+   "demi human queen maggie"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:demi-human-queen-margot",
+  "slug": "hunt:demi-human-queen-margot",
+  "kind": "hunt",
+  "fmgName": "Demi-Human Queen Margot",
+  "aliases": [
+   "demi human queen margot"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:demi-human-queen-marigga",
+  "slug": "hunt:demi-human-queen-marigga",
+  "kind": "hunt",
+  "fmgName": "Demi-Human Queen Marigga",
+  "aliases": [
+   "demi human queen marigga"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:demi-human-swordmaster-onze",
+  "slug": "hunt:demi-human-swordmaster-onze",
+  "kind": "hunt",
+  "fmgName": "Demi-Human Swordmaster Onze",
+  "aliases": [
+   "demi human swordmaster onze"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:draconic-tree-sentinel",
+  "slug": "hunt:draconic-tree-sentinel",
+  "kind": "hunt",
+  "fmgName": "Draconic Tree Sentinel",
+  "aliases": [
+   "draconic tree sentinel"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:dryleaf-dane",
+  "slug": "hunt:dryleaf-dane",
+  "kind": "hunt",
+  "fmgName": "Dryleaf Dane",
+  "aliases": [
+   "dryleaf dane"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:erdtree-burial-watchdog-sword-erdtree-burial-watchdog-scepter",
+  "slug": "hunt:erdtree-burial-watchdog-sword-erdtree-burial-watchdog-scepter",
+  "kind": "hunt",
+  "fmgName": "Erdtree Burial Watchdog (Sword) & Erdtree Burial Watchdog (Scepter)",
+  "aliases": [
+   "erdtree burial watchdog erdtree burial watchdog"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:esgar-priest-of-blood",
+  "slug": "hunt:esgar-priest-of-blood",
+  "kind": "hunt",
+  "fmgName": "Esgar, Priest of Blood",
+  "aliases": [
+   "esgar priest of blood"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:fell-twin-x2",
+  "slug": "hunt:fell-twin-x2",
+  "kind": "hunt",
+  "fmgName": "Fell Twin(x2)",
+  "aliases": [
+   "fell twin"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:fia-s-champion-sorcerer-rogier-lionel-the-lionhearted",
+  "slug": "hunt:fia-s-champion-sorcerer-rogier-lionel-the-lionhearted",
+  "kind": "hunt",
+  "fmgName": "Fia's Champion & Sorcerer Rogier & Lionel the Lionhearted",
+  "aliases": [
+   "fia champion sorcerer rogier lionel the lionhearted"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:flying-dragon-greyll",
+  "slug": "hunt:flying-dragon-greyll",
+  "kind": "hunt",
+  "fmgName": "Flying Dragon Greyll",
+  "aliases": [
+   "flying dragon greyll"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:frenzied-duelist",
+  "slug": "hunt:frenzied-duelist",
+  "kind": "hunt",
+  "fmgName": "Frenzied Duelist",
+  "aliases": [
+   "frenzied duelist"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:ghostflame-dragon",
+  "slug": "hunt:ghostflame-dragon",
+  "kind": "hunt",
+  "fmgName": "Ghostflame Dragon",
+  "aliases": [
+   "ghostflame dragon"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:glintstone-dragon-smarag",
+  "slug": "hunt:glintstone-dragon-smarag",
+  "kind": "hunt",
+  "fmgName": "Glintstone Dragon Smarag",
+  "aliases": [
+   "glintstone dragon smarag"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:god-devouring-serpent-rykard-lord-of-blasphemy",
+  "slug": "hunt:god-devouring-serpent-rykard-lord-of-blasphemy",
+  "kind": "hunt",
+  "fmgName": "God-Devouring Serpent & Rykard, Lord of Blasphemy",
+  "aliases": [
+   "god devouring serpent rykard lord of blasphemy"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:godskin-apostle-godskin-noble-spiritcaller-snail",
+  "slug": "hunt:godskin-apostle-godskin-noble-spiritcaller-snail",
+  "kind": "hunt",
+  "fmgName": "Godskin Apostle & Godskin Noble & Spiritcaller Snail",
+  "aliases": [
+   "godskin apostle godskin noble spiritcaller snail"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:golden-hippopotamus",
+  "slug": "hunt:golden-hippopotamus",
+  "kind": "hunt",
+  "fmgName": "Golden Hippopotamus",
+  "aliases": [
+   "golden hippopotamus"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:jagged-peak-drake",
+  "slug": "hunt:jagged-peak-drake",
+  "kind": "hunt",
+  "fmgName": "Jagged Peak Drake",
+  "aliases": [
+   "jagged peak drake"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:jori-elder-inquisitor",
+  "slug": "hunt:jori-elder-inquisitor",
+  "kind": "hunt",
+  "fmgName": "Jori, Elder Inquisitor",
+  "aliases": [
+   "jori elder inquisitor"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:kindred-of-rot-x2",
+  "slug": "hunt:kindred-of-rot-x2",
+  "kind": "hunt",
+  "fmgName": "Kindred of Rot(x2)",
+  "aliases": [
+   "kindred of rot"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:lamenter",
+  "slug": "hunt:lamenter",
+  "kind": "hunt",
+  "fmgName": "Lamenter",
+  "aliases": [
+   "lamenter"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:mad-pumpkin-head-hammer-mad-pumpkin-head-flail",
+  "slug": "hunt:mad-pumpkin-head-hammer-mad-pumpkin-head-flail",
+  "kind": "hunt",
+  "fmgName": "Mad Pumpkin Head (Hammer) & Mad Pumpkin Head (Flail)",
+  "aliases": [
+   "mad pumpkin head mad pumpkin head"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:malenia-blade-of-miquella-malenia-goddess-of-rot",
+  "slug": "hunt:malenia-blade-of-miquella-malenia-goddess-of-rot",
+  "kind": "hunt",
+  "fmgName": "Malenia, Blade of Miquella & Malenia, Goddess of Rot",
+  "aliases": [
+   "malenia blade of miquella malenia goddess of rot"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:messmer-the-impaler-base-serpent-messmer",
+  "slug": "hunt:messmer-the-impaler-base-serpent-messmer",
+  "kind": "hunt",
+  "fmgName": "Messmer the Impaler & Base Serpent Messmer",
+  "aliases": [
+   "messmer the impaler base serpent messmer"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:miranda-the-blighted-bloom",
+  "slug": "hunt:miranda-the-blighted-bloom",
+  "kind": "hunt",
+  "fmgName": "Miranda the Blighted Bloom",
+  "aliases": [
+   "miranda the blighted bloom"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:misbegotten-crusader",
+  "slug": "hunt:misbegotten-crusader",
+  "kind": "hunt",
+  "fmgName": "Misbegotten Crusader",
+  "aliases": [
+   "misbegotten crusader"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:necromancer-garris",
+  "slug": "hunt:necromancer-garris",
+  "kind": "hunt",
+  "fmgName": "Necromancer Garris",
+  "aliases": [
+   "necromancer garris"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:night-s-cavalry-glaive-night-s-cavalry-flail",
+  "slug": "hunt:night-s-cavalry-glaive-night-s-cavalry-flail",
+  "kind": "hunt",
+  "fmgName": "Night's Cavalry (Glaive) & Night's Cavalry (Flail)",
+  "aliases": [
+   "night cavalry night cavalry"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:nox-monk-nox-swordstress",
+  "slug": "hunt:nox-monk-nox-swordstress",
+  "kind": "hunt",
+  "fmgName": "Nox Monk & Nox Swordstress",
+  "aliases": [
+   "nox monk nox swordstress"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:omenkiller-miranda-the-blighted-bloom",
+  "slug": "hunt:omenkiller-miranda-the-blighted-bloom",
+  "kind": "hunt",
+  "fmgName": "Omenkiller & Miranda the Blighted Bloom",
+  "aliases": [
+   "omenkiller miranda the blighted bloom"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:patches",
+  "slug": "hunt:patches",
+  "kind": "hunt",
+  "fmgName": "Patches",
+  "aliases": [
+   "patches"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:putrescent-knight",
+  "slug": "hunt:putrescent-knight",
+  "kind": "hunt",
+  "fmgName": "Putrescent Knight",
+  "aliases": [
+   "putrescent knight"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:putrid-crystalian-ringblade-putrid-crystalian-spear-putrid-crystalian-staff",
+  "slug": "hunt:putrid-crystalian-ringblade-putrid-crystalian-spear-putrid-crystalian-staff",
+  "kind": "hunt",
+  "fmgName": "Putrid Crystalian (Ringblade) & Putrid Crystalian (Spear) & Putrid Crystalian (Staff)",
+  "aliases": [
+   "putrid crystalian putrid crystalian putrid crystalian"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:putrid-grave-warden-duelist",
+  "slug": "hunt:putrid-grave-warden-duelist",
+  "kind": "hunt",
+  "fmgName": "Putrid Grave Warden Duelist",
+  "aliases": [
+   "putrid grave warden duelist"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:putrid-tree-spirit",
+  "slug": "hunt:putrid-tree-spirit",
+  "kind": "hunt",
+  "fmgName": "Putrid Tree Spirit",
+  "aliases": [
+   "putrid tree spirit"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:rakshasa",
+  "slug": "hunt:rakshasa",
+  "kind": "hunt",
+  "fmgName": "Rakshasa",
+  "aliases": [
+   "rakshasa"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:ralva-the-great-red-bear",
+  "slug": "hunt:ralva-the-great-red-bear",
+  "kind": "hunt",
+  "fmgName": "Ralva the Great Red Bear",
+  "aliases": [
+   "ralva the great red bear"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:red-bear",
+  "slug": "hunt:red-bear",
+  "kind": "hunt",
+  "fmgName": "Red Bear",
+  "aliases": [
+   "red bear"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:romina-saint-of-the-bud",
+  "slug": "hunt:romina-saint-of-the-bud",
+  "kind": "hunt",
+  "fmgName": "Romina, Saint of the Bud",
+  "aliases": [
+   "romina saint of the bud"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:roundtable-knight-vyke",
+  "slug": "hunt:roundtable-knight-vyke",
+  "kind": "hunt",
+  "fmgName": "Roundtable Knight Vyke",
+  "aliases": [
+   "roundtable knight vyke"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:royal-revenant",
+  "slug": "hunt:royal-revenant",
+  "kind": "hunt",
+  "fmgName": "Royal Revenant",
+  "aliases": [
+   "royal revenant"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:rugalea-the-great-red-bear",
+  "slug": "hunt:rugalea-the-great-red-bear",
+  "kind": "hunt",
+  "fmgName": "Rugalea the Great Red Bear",
+  "aliases": [
+   "rugalea the great red bear"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:scadutree-avatar",
+  "slug": "hunt:scadutree-avatar",
+  "kind": "hunt",
+  "fmgName": "Scadutree Avatar",
+  "aliases": [
+   "scadutree avatar"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:scaly-misbegotten",
+  "slug": "hunt:scaly-misbegotten",
+  "kind": "hunt",
+  "fmgName": "Scaly Misbegotten",
+  "aliases": [
+   "scaly misbegotten"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:soldier-of-godrick",
+  "slug": "hunt:soldier-of-godrick",
+  "kind": "hunt",
+  "fmgName": "Soldier of Godrick",
+  "aliases": [
+   "soldier of godrick"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:valiant-gargoyle-valiant-gargoyle-twinblade",
+  "slug": "hunt:valiant-gargoyle-valiant-gargoyle-twinblade",
+  "kind": "hunt",
+  "fmgName": "Valiant Gargoyle & Valiant Gargoyle (Twinblade)",
+  "aliases": [
+   "valiant gargoyle valiant gargoyle"
+  ],
+  "source": "hunts"
+ },
+ {
+  "engineId": "hunt:sanguine-noble",
+  "slug": "invader:sanguine-noble",
+  "kind": "invader",
+  "fmgName": "Sanguine Noble",
+  "aliases": [
+   "sanguine noble",
+   "sanguine noble invader"
+  ],
+  "source": "hunts"
  },
  {
   "engineId": "invader:great-horned-targoth",
@@ -5791,6 +7515,27 @@
   "source": "names"
  },
  {
+  "engineId": "accessories:1250",
+  "slug": "item:millicent-prosthesis",
+  "kind": "item",
+  "fmgName": "Millicent's Prosthesis",
+  "aliases": [
+   "millicent prosthesis"
+  ],
+  "source": "names"
+ },
+ {
+  "engineId": "accessories:2081",
+  "slug": "item:rotten-winged-sword-insignia",
+  "kind": "item",
+  "fmgName": "Rotten Winged Sword Insignia",
+  "aliases": [
+   "rotten winged insignia",
+   "rotten winged sword insignia"
+  ],
+  "source": "names"
+ },
+ {
   "engineId": "accessories:3050",
   "slug": "item:flock-canvas-talisman",
   "kind": "item",
@@ -5798,6 +7543,17 @@
   "aliases": [
    "flock canvas",
    "flock canvas talisman"
+  ],
+  "source": "names"
+ },
+ {
+  "engineId": "accessories:5020",
+  "slug": "item:blessed-dew-talisman",
+  "kind": "item",
+  "fmgName": "Blessed Dew Talisman",
+  "aliases": [
+   "blessed dew",
+   "blessed dew talisman"
   ],
   "source": "names"
  },
@@ -5885,6 +7641,63 @@
   "aliases": [
    "malenia great rune",
    "malenia rune"
+  ],
+  "source": "names"
+ },
+ {
+  "engineId": "goods:2002120",
+  "slug": "item:iris-of-grace",
+  "kind": "item",
+  "fmgName": "Iris of Grace",
+  "aliases": [
+   "iris of grace"
+  ],
+  "source": "names"
+ },
+ {
+  "engineId": "goods:2002130",
+  "slug": "item:iris-of-occultation",
+  "kind": "item",
+  "fmgName": "Iris of Occultation",
+  "aliases": [
+   "iris of occultation"
+  ],
+  "source": "names"
+ },
+ {
+  "engineId": "goods:2010000",
+  "slug": "item:shadow-realm-blessing",
+  "kind": "item",
+  "fmgName": "Scadutree Fragment",
+  "aliases": [
+   "scadu fragment",
+   "scadu tree",
+   "scadutree",
+   "scadutree fragment",
+   "skadu",
+   "skadutree"
+  ],
+  "source": "names"
+ },
+ {
+  "engineId": "goods:2010100",
+  "slug": "item:revered-ash",
+  "kind": "item",
+  "fmgName": "Revered Spirit Ash",
+  "aliases": [
+   "revered ash",
+   "revered spirit ash"
+  ],
+  "source": "names"
+ },
+ {
+  "engineId": "goods:207000",
+  "slug": "item:mimic-tear-ashes",
+  "kind": "item",
+  "fmgName": "Mimic Tear Ashes",
+  "aliases": [
+   "mimic ash",
+   "mimic tear ashes"
   ],
   "source": "names"
  },
@@ -6184,6 +7997,16 @@
   "source": "names"
  },
  {
+  "engineId": "goods:8134",
+  "slug": "item:drawing-room-key",
+  "kind": "item",
+  "fmgName": "Drawing-Room Key",
+  "aliases": [
+   "drawing room key"
+  ],
+  "source": "names"
+ },
+ {
   "engineId": "goods:8136",
   "slug": "item:ryas-necklace",
   "kind": "item",
@@ -6373,25 +8196,23 @@
  },
  {
   "engineId": "goods:8175",
-  "slug": "item:haligtree-secret-medallion",
+  "slug": "item:haligtree-medallion-left",
   "kind": "item",
   "fmgName": "Haligtree Secret Medallion (Left)",
   "aliases": [
-   "haligtree medallion",
-   "haligtree secret medallion",
-   "secret medallion"
+   "haligtree medallion left",
+   "haligtree secret medallion"
   ],
   "source": "names"
  },
  {
   "engineId": "goods:8176",
-  "slug": "item:haligtree-secret-medallion",
+  "slug": "item:haligtree-medallion-right",
   "kind": "item",
   "fmgName": "Haligtree Secret Medallion (Right)",
   "aliases": [
-   "haligtree medallion",
-   "haligtree secret medallion",
-   "secret medallion"
+   "haligtree medallion right",
+   "haligtree secret medallion"
   ],
   "source": "names"
  },
@@ -6447,6 +8268,17 @@
   "aliases": [
    "cursemark",
    "cursemark of death"
+  ],
+  "source": "names"
+ },
+ {
+  "engineId": "goods:8193",
+  "slug": "item:seedbed-curse",
+  "kind": "item",
+  "fmgName": "Seedbed Curse",
+  "aliases": [
+   "seedbed",
+   "seedbed curse"
   ],
   "source": "names"
  },
@@ -6577,6 +8409,26 @@
   "source": "names"
  },
  {
+  "engineId": "goods:8972",
+  "slug": "item:sanctified-whetblade",
+  "kind": "item",
+  "fmgName": "Sanctified Whetblade",
+  "aliases": [
+   "sanctified whetblade"
+  ],
+  "source": "names"
+ },
+ {
+  "engineId": "goods:8974",
+  "slug": "item:black-whetblade",
+  "kind": "item",
+  "fmgName": "Black Whetblade",
+  "aliases": [
+   "black whetblade"
+  ],
+  "source": "names"
+ },
+ {
   "engineId": "goods:8975",
   "slug": "item:rotted-wing",
   "kind": "item",
@@ -6622,47 +8474,14 @@
   "source": "names"
  },
  {
-  "engineId": "item:golden-order-flail",
-  "slug": "item:golden-order-flail",
+  "engineId": "item:haligtree-secret-medallion",
+  "slug": "item:haligtree-secret-medallion",
   "kind": "item",
-  "fmgName": "Golden Order Flail",
+  "fmgName": "Haligtree Secret Medallion",
   "aliases": [
-   "golden order flail",
-   "order flail"
-  ],
-  "source": "authored"
- },
- {
-  "engineId": "item:hefty-scimitar",
-  "slug": "item:hefty-scimitar",
-  "kind": "item",
-  "fmgName": "Hefty Scimitar",
-  "aliases": [
-   "heavy knight sword",
-   "hefty scimitar"
-  ],
-  "source": "authored"
- },
- {
-  "engineId": "item:idus-sword",
-  "slug": "item:idus-sword",
-  "kind": "item",
-  "fmgName": "Idus Sword",
-  "aliases": [
-   "idus",
-   "idus sword"
-  ],
-  "source": "authored"
- },
- {
-  "engineId": "item:leontiel-greatsword",
-  "slug": "item:leontiel-greatsword",
-  "kind": "item",
-  "fmgName": "Leontiel's Greatsword",
-  "aliases": [
-   "leontiel greatsword",
-   "leontiel sword",
-   "matador sword"
+   "haligtree medallion",
+   "haligtree secret medallion",
+   "secret medallion"
   ],
   "source": "authored"
  },
@@ -6674,43 +8493,6 @@
   "aliases": [
    "rennala great rune",
    "rennala rune"
-  ],
-  "source": "authored"
- },
- {
-  "engineId": "item:revered-ash",
-  "slug": "item:revered-ash",
-  "kind": "item",
-  "fmgName": "Revered Spirit Ash",
-  "aliases": [
-   "revered ash",
-   "revered spirit ash"
-  ],
-  "source": "authored"
- },
- {
-  "engineId": "item:reverse-bladed",
-  "slug": "item:reverse-bladed",
-  "kind": "item",
-  "fmgName": "Reverse-Bladed Sword",
-  "aliases": [
-   "backhand blade tarnished",
-   "reverse bladed sword"
-  ],
-  "source": "authored"
- },
- {
-  "engineId": "item:shadow-realm-blessing",
-  "slug": "item:shadow-realm-blessing",
-  "kind": "item",
-  "fmgName": "Scadutree Fragment",
-  "aliases": [
-   "scadu fragment",
-   "scadu tree",
-   "scadutree",
-   "scadutree fragment",
-   "skadu",
-   "skadutree"
   ],
   "source": "authored"
  },
@@ -6771,6 +8553,28 @@
   "source": "names"
  },
  {
+  "engineId": "weapon:13510000",
+  "slug": "item:golden-order-flail",
+  "kind": "item",
+  "fmgName": "Golden Order Flail",
+  "aliases": [
+   "golden order flail",
+   "order flail"
+  ],
+  "source": "names"
+ },
+ {
+  "engineId": "weapon:16090000",
+  "slug": "item:bolt-of-gransax",
+  "kind": "item",
+  "fmgName": "Bolt of Gransax",
+  "aliases": [
+   "bolt of gransax",
+   "gransax"
+  ],
+  "source": "names"
+ },
+ {
   "engineId": "weapon:3160000",
   "slug": "item:sword-of-milos",
   "kind": "item",
@@ -6778,6 +8582,51 @@
   "aliases": [
    "milos",
    "sword of milos"
+  ],
+  "source": "names"
+ },
+ {
+  "engineId": "weapon:3560000",
+  "slug": "item:leontiel-greatsword",
+  "kind": "item",
+  "fmgName": "Leontiel's Greatsword",
+  "aliases": [
+   "leontiel greatsword",
+   "leontiel sword",
+   "matador sword"
+  ],
+  "source": "names"
+ },
+ {
+  "engineId": "weapon:64530000",
+  "slug": "item:reverse-bladed",
+  "kind": "item",
+  "fmgName": "Reverse-Bladed Sword",
+  "aliases": [
+   "backhand blade tarnished",
+   "reverse bladed sword"
+  ],
+  "source": "names"
+ },
+ {
+  "engineId": "weapon:67530000",
+  "slug": "item:idus-sword",
+  "kind": "item",
+  "fmgName": "Idus Sword",
+  "aliases": [
+   "idus",
+   "idus sword"
+  ],
+  "source": "names"
+ },
+ {
+  "engineId": "weapon:8530000",
+  "slug": "item:hefty-scimitar",
+  "kind": "item",
+  "fmgName": "Hefty Scimitar",
+  "aliases": [
+   "heavy knight sword",
+   "hefty scimitar"
   ],
   "source": "names"
  },
@@ -6792,6 +8641,16 @@
   "source": "names"
  },
  {
+  "engineId": "quest:ansbach:met",
+  "slug": "quest:ansbach:met",
+  "kind": "quest",
+  "fmgName": "Ansbach — freed in the Shadow Keep",
+  "aliases": [
+   "ansbach freed in the shadow keep"
+  ],
+  "source": "authored"
+ },
+ {
   "engineId": "quest:boc:needle",
   "slug": "quest:boc:needle",
   "kind": "quest",
@@ -6799,6 +8658,248 @@
   "aliases": [
    "boc",
    "boc gold sewing needle given"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:d:brother",
+  "slug": "quest:d:brother",
+  "kind": "quest",
+  "fmgName": "D's brother met in Deeproot",
+  "aliases": [
+   "d brother met in deeproot"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:dungeater:freed",
+  "slug": "quest:dungeater:freed",
+  "kind": "quest",
+  "fmgName": "Dung Eater — cell opened in the Shunning-Grounds",
+  "aliases": [
+   "dung eater cell opened in the shunning grounds"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:dungeater:invasion",
+  "slug": "quest:dungeater:invasion",
+  "kind": "quest",
+  "fmgName": "Dung Eater — defeated at the Leyndell moat",
+  "aliases": [
+   "dung eater defeated at the leyndell moat"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:dungeater:met",
+  "slug": "quest:dungeater:met",
+  "kind": "quest",
+  "fmgName": "Dung Eater — met at the Roundtable",
+  "aliases": [
+   "dung eater met at the roundtable"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:dungeater:potioned",
+  "slug": "quest:dungeater:potioned",
+  "kind": "quest",
+  "fmgName": "Dung Eater — made a Seluvis puppet",
+  "aliases": [
+   "dung eater made a seluvis puppet"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:erdtree-burned",
+  "slug": "quest:erdtree-burned",
+  "kind": "quest",
+  "fmgName": "The Erdtree burned at the Forge of the Giants",
+  "aliases": [
+   "burned the erdtree",
+   "erdtree burned at the forge of the giants",
+   "the erdtree burned at the forge of the giants"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:fia:concluded",
+  "slug": "quest:fia:concluded",
+  "kind": "quest",
+  "fmgName": "Fia — Death-Prince line concluded",
+  "aliases": [
+   "fia death prince line concluded"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:fia:cursemark",
+  "slug": "quest:fia:cursemark",
+  "kind": "quest",
+  "fmgName": "Fia — Cursemark of Death given",
+  "aliases": [
+   "fia cursemark of death given"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:fia:dagger",
+  "slug": "quest:fia:dagger",
+  "kind": "quest",
+  "fmgName": "Fia — Weathered Dagger decided",
+  "aliases": [
+   "fia weathered dagger decided"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:fia:met",
+  "slug": "quest:fia:met",
+  "kind": "quest",
+  "fmgName": "Fia — held at the Roundtable",
+  "aliases": [
+   "fia held at the roundtable"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:freyja:met",
+  "slug": "quest:freyja:met",
+  "kind": "quest",
+  "fmgName": "Freyja — met at the Three-Path Cross",
+  "aliases": [
+   "freyja met at the three path cross"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:hornsent:met",
+  "slug": "quest:hornsent:met",
+  "kind": "quest",
+  "fmgName": "Hornsent — met at the Three-Path Cross",
+  "aliases": [
+   "hornsent met at the three path cross"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:jolan:met",
+  "slug": "quest:jolan:met",
+  "kind": "quest",
+  "fmgName": "Jolan, Swordhand of Night — met",
+  "aliases": [
+   "jolan swordhand of night met"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:leda:concluded",
+  "slug": "quest:leda:concluded",
+  "kind": "quest",
+  "fmgName": "Leda — Enir-Ilim alliance resolved",
+  "aliases": [
+   "leda enir ilim alliance resolved"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:leda:highroad",
+  "slug": "quest:leda:highroad",
+  "kind": "quest",
+  "fmgName": "Leda — met at the Highroad Cross",
+  "aliases": [
+   "leda met at the highroad cross"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:leda:invitations",
+  "slug": "quest:leda:invitations",
+  "kind": "quest",
+  "fmgName": "Leda — Shadow Keep invitations cleared",
+  "aliases": [
+   "leda shadow keep invitations cleared"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:leda:invitations-locked",
+  "slug": "quest:leda:invitations-locked",
+  "kind": "quest",
+  "fmgName": "Leda — invitation window closed at the Sealing Tree",
+  "aliases": [
+   "leda invitation window closed at the sealing tree"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:leda:met",
+  "slug": "quest:leda:met",
+  "kind": "quest",
+  "fmgName": "Leda — met at the Three-Path Cross",
+  "aliases": [
+   "leda met at the three path cross"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:millicent-killed",
+  "slug": "quest:millicent-killed",
+  "kind": "quest",
+  "fmgName": "Millicent is dead this run",
+  "aliases": [
+   "millicent is dead this run"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:millicent:aid",
+  "slug": "quest:millicent:aid",
+  "kind": "quest",
+  "fmgName": "Millicent — aided at Elphael (gold sign)",
+  "aliases": [
+   "millicent aided at elphael"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:millicent:altus",
+  "slug": "quest:millicent:altus",
+  "kind": "quest",
+  "fmgName": "Millicent — met at Erdtree-Gazing Hill",
+  "aliases": [
+   "millicent met at erdtree gazing hill"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:millicent:betrayed",
+  "slug": "quest:millicent:betrayed",
+  "kind": "quest",
+  "fmgName": "Millicent — challenged at Elphael (red sign)",
+  "aliases": [
+   "millicent challenged at elphael"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:millicent:cured",
+  "slug": "quest:millicent:cured",
+  "kind": "quest",
+  "fmgName": "Millicent — cured at the Church of the Plague",
+  "aliases": [
+   "millicent cured at the church of the plague"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:millicent:godskin",
+  "slug": "quest:millicent:godskin",
+  "kind": "quest",
+  "fmgName": "Millicent — aided at Dominula",
+  "aliases": [
+   "millicent aided at dominula"
   ],
   "source": "authored"
  },
@@ -6814,12 +8915,62 @@
   "source": "authored"
  },
  {
+  "engineId": "quest:millicent:prosthesis",
+  "slug": "quest:millicent:prosthesis",
+  "kind": "quest",
+  "fmgName": "Millicent — Valkyrie’s Prosthesis given",
+  "aliases": [
+   "millicent valkyrie prosthesis given"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:ranni:blaidd",
+  "slug": "quest:ranni:blaidd",
+  "kind": "quest",
+  "fmgName": "Ranni — Blaidd met",
+  "aliases": [
+   "ranni blaidd met"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:ranni:blaidd-fate",
+  "slug": "quest:ranni:blaidd-fate",
+  "kind": "quest",
+  "fmgName": "Ranni — Blaidd's fate at the Rise",
+  "aliases": [
+   "ranni blaidd fate at the rise"
+  ],
+  "source": "authored"
+ },
+ {
   "engineId": "quest:ranni:festival",
   "slug": "quest:ranni:festival",
   "kind": "quest",
   "fmgName": "Ranni — Radahn festival opened Nokron",
   "aliases": [
    "ranni radahn festival opened nokron"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:ranni:iji",
+  "slug": "quest:ranni:iji",
+  "kind": "quest",
+  "fmgName": "Ranni — Iji counselled",
+  "aliases": [
+   "ranni iji counselled"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:ranni:iji-fate",
+  "slug": "quest:ranni:iji-fate",
+  "kind": "quest",
+  "fmgName": "Ranni — Iji's last counsel",
+  "aliases": [
+   "ranni iji last counsel"
   ],
   "source": "authored"
  },
@@ -6873,6 +9024,196 @@
   "aliases": [
    "rya",
    "rya serpent amnion"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:rya:concluded",
+  "slug": "quest:rya:concluded",
+  "kind": "quest",
+  "fmgName": "Rya — aftermath chosen",
+  "aliases": [
+   "rya aftermath chosen"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:rya:manor",
+  "slug": "quest:rya:manor",
+  "kind": "quest",
+  "fmgName": "Rya — joined Volcano Manor",
+  "aliases": [
+   "rya joined volcano manor"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:rya:necklace",
+  "slug": "quest:rya:necklace",
+  "kind": "quest",
+  "fmgName": "Rya — necklace recovered",
+  "aliases": [
+   "rya necklace recovered"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:sellen:azur",
+  "slug": "quest:sellen:azur",
+  "kind": "quest",
+  "fmgName": "Sellen — Azur found",
+  "aliases": [
+   "sellen azur found"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:sellen:freed",
+  "slug": "quest:sellen:freed",
+  "kind": "quest",
+  "fmgName": "Sellen — freed from the Waypoint Ruins",
+  "aliases": [
+   "sellen freed from the waypoint ruins"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:sellen:jerren",
+  "slug": "quest:sellen:jerren",
+  "kind": "quest",
+  "fmgName": "Sellen — Witch-Hunter Jerren met",
+  "aliases": [
+   "sellen witch hunter jerren met"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:sellen:jerren-side",
+  "slug": "quest:sellen:jerren-side",
+  "kind": "quest",
+  "fmgName": "Sellen — sided with Jerren",
+  "aliases": [
+   "sellen sided with jerren"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:sellen:lusat",
+  "slug": "quest:sellen:lusat",
+  "kind": "quest",
+  "fmgName": "Sellen — Lusat found",
+  "aliases": [
+   "sellen lusat found"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:sellen:primers",
+  "slug": "quest:sellen:primers",
+  "kind": "quest",
+  "fmgName": "Sellen — both primeval sorcerers reported",
+  "aliases": [
+   "sellen both primeval sorcerers reported"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:sellen:side",
+  "slug": "quest:sellen:side",
+  "kind": "quest",
+  "fmgName": "Sellen — sided with her against Jerren",
+  "aliases": [
+   "sellen sided with her against jerren"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:seluvis-blade",
+  "slug": "quest:seluvis-blade",
+  "kind": "quest",
+  "fmgName": "Seluvis has the Fingerslayer Blade",
+  "aliases": [
+   "seluvis has the fingerslayer blade"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:tanith:concluded",
+  "slug": "quest:tanith:concluded",
+  "kind": "quest",
+  "fmgName": "Tanith — final request heard",
+  "aliases": [
+   "tanith final request heard"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:tanith:contracts",
+  "slug": "quest:tanith:contracts",
+  "kind": "quest",
+  "fmgName": "Tanith — first contract taken",
+  "aliases": [
+   "tanith first contract taken"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:tanith:targets",
+  "slug": "quest:tanith:targets",
+  "kind": "quest",
+  "fmgName": "Tanith — named contracts complete",
+  "aliases": [
+   "tanith named contracts complete"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:thiollier:met",
+  "slug": "quest:thiollier:met",
+  "kind": "quest",
+  "fmgName": "Thiollier — met at the Three-Path Cross",
+  "aliases": [
+   "thiollier met at the three path cross"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:ymir:concluded",
+  "slug": "quest:ymir:concluded",
+  "kind": "quest",
+  "fmgName": "Ymir — Iris choice made",
+  "aliases": [
+   "ymir iris choice made"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:ymir:dheo",
+  "slug": "quest:ymir:dheo",
+  "kind": "quest",
+  "fmgName": "Ymir — bell rung at the Finger Ruins of Dheo",
+  "aliases": [
+   "ymir bell rung at the finger ruins of dheo"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:ymir:met",
+  "slug": "quest:ymir:met",
+  "kind": "quest",
+  "fmgName": "Ymir — met at the Cathedral of Manus Metyr",
+  "aliases": [
+   "ymir met at the cathedral of manus metyr"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:ymir:rhia",
+  "slug": "quest:ymir:rhia",
+  "kind": "quest",
+  "fmgName": "Ymir — bell rung at the Finger Ruins of Rhia",
+  "aliases": [
+   "ymir bell rung at the finger ruins of rhia"
   ],
   "source": "authored"
  },

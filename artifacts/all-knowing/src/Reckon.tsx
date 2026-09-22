@@ -2,7 +2,7 @@ import { useMemo, useRef, useState } from 'react'
 import { interview } from './knowledge/catalog'
 import { aliasStatus } from './lib/aliases'
 import { applyOcrRead, hintForShot, matchBulkLines, readImage, type OcrLineResult, type OcrOutcome } from './lib/ocr'
-import { applyAnswers, summarize } from './lib/infer'
+import { applyAnswers, clearFact, summarize } from './lib/infer'
 import { labelOf } from './lib/links'
 import { NextMoves, Thread } from './Thread'
 import { useWorkspace } from './state'
@@ -104,6 +104,14 @@ export function ReckonWorkspace() {
       if (result.matches[0]) setSelectedMarkerId(result.matches[0].id)
     }
     setBlob('')
+  }
+
+  /** Undo inferred extras from the last read without touching the names actually sent. */
+  function undoInferred(ids: string[]) {
+    let next = character
+    for (const id of ids) next = clearFact(next, id)
+    setCharacter(next)
+    setOutcome((prev) => (prev ? { ...prev, alsoMarked: prev.alsoMarked.filter((a) => !ids.includes(a.id)) } : prev))
   }
 
   const nextQuestion = useMemo(() => {
@@ -253,6 +261,23 @@ export function ReckonWorkspace() {
               </details>
             )}
             <LineResults lines={outcome.lines} />
+            {outcome.alsoMarked.length > 0 && (
+              <div style={{ marginTop: 8 }}>
+                <p className="note" style={{ margin: 0 }}>
+                  Also marked by inference ({outcome.alsoMarked.length}):
+                </p>
+                <ul className="list">
+                  {outcome.alsoMarked.map((a) => (
+                    <li key={a.id}>
+                      <span>{a.name}</span>
+                      <button type="button" className="chip" onClick={() => undoInferred([a.id])}>
+                        undo
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         )}
 

@@ -27,14 +27,18 @@ describe('generated alias plane', () => {
     expect(canonicalFactId('grace:100000')).toBe('grace:godrick-grace')
     expect(canonicalFactId('bossflag:510010')).toBe('boss:godrick')
     expect(canonicalFactId('npc:21300014')).toBe('boss:margit')
-    expect(canonicalFactId('goods:8175')).toBe('item:haligtree-secret-medallion')
+    // The halves are distinct catalog items; the bare "… Medallion" whole is
+    // granted by the compound inference chain once both are held (Task 54/55).
+    expect(canonicalFactId('goods:8175')).toBe('item:haligtree-medallion-left')
+    expect(canonicalFactId('goods:8176')).toBe('item:haligtree-medallion-right')
     expect(canonicalFactId('npc:523430000')).toBe('invader:nerijus')
     // Quests have no engine param row; the authored id round-trips unchanged.
     expect(canonicalFactId('quest:ranni:festival')).toBe('quest:ranni:festival')
   })
 
   it('resolves an item and a quest by their extracted / authored names', () => {
-    expect(canonicalFactId('whatever', 'Haligtree Secret Medallion (Left)')).toBe('item:haligtree-secret-medallion')
+    expect(canonicalFactId('whatever', 'Haligtree Secret Medallion (Left)')).toBe('item:haligtree-medallion-left')
+    expect(canonicalFactId('whatever', 'Haligtree Secret Medallion (Right)')).toBe('item:haligtree-medallion-right')
     expect(canonicalFactId('whatever', 'Ranni — Radahn festival opened Nokron')).toBe('quest:ranni:festival')
   })
 

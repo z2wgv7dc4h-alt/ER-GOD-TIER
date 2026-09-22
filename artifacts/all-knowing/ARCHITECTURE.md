@@ -12,6 +12,13 @@ Vault / packet         ─┘
 
 Fact language: `kind:slug`. State: `true | false | unknown`.
 
+Evidence → facts runs through `applyFacts` / `denyFacts` / `closeWorld` (`src/lib/infer.ts`).
+`closeWorld` walks `catalog.implies` **and** the authored `inferChains` table, so a named read
+(OCR hit, warp paste, typed item) can imply downstream facts. Derived facts are always
+`source: 'inference'`; Task 24 conflict rules keep a save flag or an explicit deny winning.
+Engine ids (`grace:{row}`, `bossflag:{n}`) canonicalise to authored slugs via the generated
+alias plane (`scripts/gen-aliases.mjs` → `aliases.json`; see `docs/ALIAS-PLANE.md`).
+
 ## Shell
 
 ```

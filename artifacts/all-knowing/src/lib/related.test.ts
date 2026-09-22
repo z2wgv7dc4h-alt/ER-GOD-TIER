@@ -89,7 +89,9 @@ describe('relatedFor — honesty and routing', () => {
   })
 
   it('surfaces the Task 23 engine row for a game-backed fact', () => {
-    const r = relatedFor('item:haligtree-secret-medallion')
+    // Task 54/55: the engine row is the Left half; the bare "… Medallion" whole is
+    // the authored both-halves fact and has no engine row of its own.
+    const r = relatedFor('item:haligtree-medallion-left')
     expect(r.engineRow?.engineId).toBe('goods:8175')
   })
 

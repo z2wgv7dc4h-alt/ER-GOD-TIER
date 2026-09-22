@@ -46,7 +46,7 @@ Rooms: Reckoning, Atlas, Build lab, Quest graph, Codex
 **Kernel**
 - `src/types.ts` — Character, facts, shots, modules
 - `src/state.tsx` — workspace + vault persist (`all-knowing.vault.v1`)
-- `src/lib/infer.ts` — apply/deny/clear, `closeWorld`, **`prefixKind`** for dump ids
+- `src/lib/infer.ts` — apply/deny/clear, `closeWorld` (catalog `implies` + Task 54 chains), `knownFactIds`, **`prefixKind`** for dump ids
 - `src/lib/merge.ts` — union characters
 - `src/lib/vault.ts` / `packet.ts` — profiles + export file
 - `src/lib/gideon.ts` + `Gideon.tsx` — `askGideon` → `GideonAct`
@@ -55,11 +55,12 @@ Rooms: Reckoning, Atlas, Build lab, Quest graph, Codex
 - `src/lib/mapEngine.ts` — EldenRingMap SSE (`/er-map` in dev)
 - `src/lib/coords.ts` — loads guide pins + boss pins
 - `src/lib/openData.ts` / `guide.ts` — async dumps for Codex
-- `src/lib/ocr.ts` — **real Tesseract.js OCR** (worker, local-first; low-confidence stays unknown)
+- `src/lib/gatePins.ts` — binds approaching gates' locks onto the Atlas plate (existing frames only)
+- `src/lib/ocr.ts` — **real Tesseract.js OCR** (worker, local-first; low-confidence stays unknown; inferred extras returned as `alsoMarked`)
 - `src/lib/save.ts` — **not a real .sl2 parser**
 
 **Knowledge (authored, small)**
-`src/knowledge/{catalog,endings,storylines,loot,builds,graces,collectibles,completion,gates,medusa,missables,merchants,bossPins,awesome}.ts`
+`src/knowledge/{catalog,endings,storylines,loot,builds,graces,collectibles,completion,gates,inferChains,medusa,missables,merchants,bossPins,awesome}.ts`
 
 **Shell**
 `App.tsx` is a god file (~27k). Split rooms when you touch UI.
@@ -171,7 +172,7 @@ Shell: always `setModule(act.module)`. Pin if `navigateNow` or module is map.
 Seed catalog + warps + loot + shops + boss pins + missables. Cap ~16. Do not put 10k lots in here.
 
 ### applyFacts
-Close seed `implies`. Store on lists by catalog kind **or** prefix: `grace|point` → graces; `boss|hunt|bossflag|area` → bosses; `quest|line` → quests; else items.
+Close seed `implies` **and** the `inferChains` table (`closeWorld(ids, knownFacts?)`), all as `source: 'inference'`. Store on lists by catalog kind **or** prefix: `grace|point` → graces; `boss|hunt|bossflag|area` → bosses; `quest|line` → quests; else items.
 
 ### Two map frames
 1. er-guide lat/lng → `coords.json` percent  
@@ -387,6 +388,36 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 - Golden-fixture test: Radahn dead + Ranni's service + Rogier's knifeprint ⇒
   `planRoute(ranni)` nexts the Fingerslayer hand-in (not "meet Ranni"); `planRoute(millicent)`
   nexts Gowry's Unalloyed needle; Gideon with goal `ranni` names Fingerslayer and offers Show it.
+
+**Task 54 — screenshot / paste inference chains** (landed after 53; `inferChains.test.ts` added):
+
+- New `src/knowledge/inferChains.ts`: an authored `{ whenFact, implies, allOf?, unless?, confidence,
+  why }` table so a named read (OCR hit, warp paste, typed item) closes the world through real
+  implications. Applied **through** `closeWorld`/`applyFacts` — not a second closer — so every
+  derived id is `source: 'inference'` and Task 24 conflicts still let a save flag or explicit deny win.
+- Chains: Fingerslayer → Ranni Nokron beat; the Great Runes → their own boss only; knifeprint →
+  Rogier's beat; Pureblood Medal → Varré cloth; Mimic Tear Ashes → Mimic Tear; Black Whetblade →
+  Night's Sacred Ground; Twinned set → Fia's dagger; Haligtree medallion halves → the whole only
+  when **both** are held (compound `allOf`).
+- Reckon: a batch read now surfaces its inferred extras as an "Also marked" list with per-row undo.
+  Low-confidence OCR still makes zero facts. Three real item rows added (`mimic-tear-ashes`,
+  `haligtree-medallion-left/-right`) from `open/names.json`.
+- **Hotfix before 55:** `item:black-whetblade` no longer implies `boss:radahn` (chains to the
+  dump-verified `grace:night-sacred-ground`); `item:twinned-armor` no longer implies
+  `quest:d:brother` (chains to `quest:fia:dagger`). Test asserts zero such rows.
+
+**Task 55 — finished alias plane** (landed after 54):
+
+- `node scripts/gen-aliases.mjs` now runs under Node 24 (the one required specifier was made
+  explicit in `catalog.ts`) and is deterministic — a second run is byte-identical. It reads only
+  in-repo dumps: `checklists/graces.json`, `open/boss-xyz.json`, `checklists/hunts.json`,
+  `open/names.json`, paramdex, `npc-combat`.
+- Adds `hunt` rows and maps warps to authored **catalog** graces when no `graces.ts` seed exists
+  (`grace:120208` → `grace:night-sacred-ground`); strict parenthetical-preserving item matching
+  makes `goods:8175/8176` resolve to the medallion **halves**. 856 rows, 188 KB, both copies identical.
+- Engine-backed by catalog prefix: grace 25/25, boss 87/88, item 84/86, invader 22/24. Honest
+  unmatched counts: 360/418 warps and 79/215 bosses have no slug and are reported, never dropped.
+  `searchSync("church of elleh")` / `("elleh")` both hit `grace:elleh`.
 
 ---
 

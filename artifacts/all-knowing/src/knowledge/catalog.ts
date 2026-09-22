@@ -1,5 +1,5 @@
 import type { Campaign } from '../types'
-import { REGULATION_STAMP } from '../lib/regulation'
+import { REGULATION_STAMP } from '../lib/regulation.ts'
 
 /**
  * The regulation line every catalog fact is keyed to. Kept in sync with
@@ -60,6 +60,10 @@ export const facts: Fact[] = [
   { id: 'grace:haligtree-town', kind: 'grace', name: 'Haligtree Town Plaza', aliases: [], region: 'Haligtree', campaign: 'base', implies: ['region:haligtree'] },
   { id: 'grace:drainage', kind: 'grace', name: 'Drainage Channel', aliases: ['elphael drainage'], region: 'Elphael', campaign: 'base', implies: ['region:haligtree'] },
   { id: 'grace:deeproot', kind: 'grace', name: 'Deeproot Depths', aliases: ['deeproot', 'prince of deaths throne'], region: 'Deeproot Depths', campaign: 'base', implies: ['boss:radahn'] },
+  // Task 54 hotfix: the dump-verified Nokron beat the Black Whetblade actually proves.
+  // Name from public/sourced/checklists/graces.json (grace:120208) and open/names.json.
+  // No authored warp x/y, so it is not added to `graces.ts` (no invented coordinates).
+  { id: 'grace:night-sacred-ground', kind: 'grace', name: "Night's Sacred Ground", aliases: ['night sacred ground', 'nights sacred ground'], region: 'Nokron', campaign: 'base', implies: [] },
   { id: 'grace:gravesite', kind: 'grace', name: 'Gravesite Plain', aliases: ['scorched ruins', 'three-path cross'], region: 'Gravesite Plain', campaign: 'sote', implies: ['region:shadow'] },
   { id: 'grace:belurat', kind: 'grace', name: 'Belurat, Tower Settlement', aliases: ['belurat'], region: 'Belurat', campaign: 'sote', implies: ['region:shadow'] },
   { id: 'grace:shadow-keep', kind: 'grace', name: 'Main Gate Plaza', aliases: ['shadow keep plaza'], region: 'Shadow Keep', campaign: 'sote', implies: ['region:shadow'] },
@@ -288,7 +292,7 @@ export const facts: Fact[] = [
   { id: 'item:stars-of-ruin', kind: 'item', name: 'Stars of Ruin', aliases: ['stars ruin'], region: 'Raya Lucaria', campaign: 'base', implies: ['quest:sellen:side'] },
   { id: 'item:nagakiba', kind: 'item', name: 'Nagakiba', aliases: [], region: 'Liurnia', campaign: 'base', implies: ['quest:yura:nagakiba'] },
   { id: 'item:flock-canvas-talisman', kind: 'item', name: "Flock's Canvas Talisman", aliases: ['flock canvas'], region: 'Caelid', campaign: 'base', implies: ['quest:gowry:concluded'] },
-  { id: 'item:twinned-armor', kind: 'item', name: 'Twinned Armor', aliases: ['twinned set'], region: 'Deeproot Depths', campaign: 'base', implies: ['quest:d:brother'] },
+  { id: 'item:twinned-armor', kind: 'item', name: 'Twinned Armor', aliases: ['twinned set'], region: 'Deeproot Depths', campaign: 'base', implies: [] },
   { id: 'item:thops-barrier', kind: 'item', name: "Thops's Barrier", aliases: ['thops barrier'], region: 'Raya Lucaria', campaign: 'base', implies: ['quest:thops:barrier'] },
 
   // Missable items the Task 52 gate overlay names (source: public/sourced/guide/missables.json,
@@ -297,7 +301,7 @@ export const facts: Fact[] = [
   { id: 'item:bolt-of-gransax', kind: 'item', name: 'Bolt of Gransax', aliases: ['gransax'], region: 'Leyndell', campaign: 'base', implies: ['region:leyndell'] },
   { id: 'item:sanctified-whetblade', kind: 'item', name: 'Sanctified Whetblade', aliases: ['sanctified whetblade'], region: 'Leyndell', campaign: 'base', implies: ['region:leyndell'] },
   { id: 'item:blessed-dew-talisman', kind: 'item', name: 'Blessed Dew Talisman', aliases: ['blessed dew'], region: 'Leyndell', campaign: 'base', implies: ['region:leyndell'] },
-  { id: 'item:black-whetblade', kind: 'item', name: 'Black Whetblade', aliases: ['black whetblade'], region: 'Nokron', campaign: 'base', implies: ['boss:radahn'] },
+  { id: 'item:black-whetblade', kind: 'item', name: 'Black Whetblade', aliases: ['black whetblade'], region: 'Nokron', campaign: 'base', implies: [] },
   { id: 'item:rotten-winged-sword-insignia', kind: 'item', name: 'Rotten Winged Sword Insignia', aliases: ['rotten winged insignia'], region: 'Elphael', campaign: 'base', implies: ['grace:drainage'] },
   { id: 'item:millicent-prosthesis', kind: 'item', name: "Millicent's Prosthesis", aliases: ['millicent prosthesis'], region: 'Elphael', campaign: 'base', implies: ['grace:drainage'] },
 
@@ -377,6 +381,15 @@ export const facts: Fact[] = [
   { id: 'item:iris-of-grace', kind: 'item', name: 'Iris of Grace', aliases: [], region: 'Gravesite Plain', campaign: 'sote', implies: [] },
   { id: 'item:iris-of-occultation', kind: 'item', name: 'Iris of Occultation', aliases: [], region: 'Gravesite Plain', campaign: 'sote', implies: [] },
   { id: 'boss:metyr', kind: 'boss', name: 'Metyr, Mother of Fingers', aliases: ['metyr', 'mother of fingers'], region: 'Gravesite Plain', campaign: 'sote', implies: [] },
+
+  // Task 54: the two named items the inference chains need that had no catalog row.
+  // Real goods from public/sourced/open/names.json ("Mimic Tear Ashes", "Haligtree
+  // Secret Medallion (Left)"/"(Right)"). `implies: []` on both halves on purpose —
+  // the Haligtree gate is a compound chain (see src/knowledge/inferChains.ts), so a
+  // lone half must never close the world on its own.
+  { id: 'item:mimic-tear-ashes', kind: 'item', name: 'Mimic Tear Ashes', aliases: ['mimic tear ashes', 'mimic ash'], region: 'Nokron', campaign: 'base', implies: [] },
+  { id: 'item:haligtree-medallion-left', kind: 'item', name: 'Haligtree Secret Medallion (Left)', aliases: ['haligtree medallion left'], region: 'Mountaintops', campaign: 'base', implies: [] },
+  { id: 'item:haligtree-medallion-right', kind: 'item', name: 'Haligtree Secret Medallion (Right)', aliases: ['haligtree medallion right'], region: 'Liurnia', campaign: 'base', implies: [] },
 ]
 
 export const byId = new Map(facts.map((f) => [f.id, f]))
