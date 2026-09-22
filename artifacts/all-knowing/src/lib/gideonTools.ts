@@ -6,6 +6,7 @@ import { loadBossDrops, matchBossDrops } from './bosses'
 import { guideExcerpts, loadGuides, matchGuides } from './guides'
 import { loadWeapons } from './ar'
 import { dominantAttributes, earlyWeaponRanking, weaponAdvice } from './upgradeAdvice'
+import { loadBossCombat, loadEnemyCombat } from './enemy'
 import { loadDialogueOwners } from './dialogueOwners'
 import { loadEngineMarkers, matchEngineItems } from './engineMarkers'
 import { loadGameTextTable } from './gameText'
@@ -82,6 +83,14 @@ export const GIDEON_TOOLS: ToolDef[] = [
   {
     type: 'function',
     function: {
+      name: 'enemy',
+      description: 'Combat profile for a boss or enemy: HP, poise, damage-negation (weak/strong), status resistances.',
+      parameters: { type: 'object', properties: { name: str('boss/enemy name') }, required: ['name'], additionalProperties: false },
+    },
+  },
+  {
+    type: 'function',
+    function: {
       name: 'find_item',
       description: 'Where a named item/pickup is: its nearest Site of Grace and region, from the engine map data.',
       parameters: { type: 'object', properties: { name: str('item name') }, required: ['name'], additionalProperties: false },
@@ -136,6 +145,18 @@ export async function runGideonTool(name: string, args: Record<string, unknown>,
       const adv = weapon ? weaponAdvice(weapons, weapon, ctx.character.stats) : null
       if (adv) return { weapon: adv.name, arNow: adv.arNow, arMax: adv.arMax, primary: adv.primary, kit: kit?.name ?? null, prefer }
       return { kit: kit?.name ?? null, prefer, best: earlyWeaponRanking(weapons, ctx.character.stats, 6, prefer) }
+    }
+    case 'enemy': {
+      const [bosses, enemies] = await Promise.all([
+        loadBossCombat().catch(() => []),
+        loadEnemyCombat().catch(() => []),
+      ])
+      const q = String(args.name ?? '').toLowerCase()
+      const hit = [...bosses, ...enemies].find((x) => x.name.toLowerCase().includes(q))
+      if (!hit) return { error: 'no enemy by that name' }
+      const neg = hit.negation ?? {}
+      const weakest = Object.entries(neg).sort((a, b) => a[1] - b[1])[0]
+      return { name: hit.name, baseHp: hit.baseHp, poise: hit.poise, negation: neg, resist: hit.resist, weakest: weakest ? weakest[0] : null }
     }
     case 'find_item': {
       const doc = await loadEngineMarkers().catch(() => null)
