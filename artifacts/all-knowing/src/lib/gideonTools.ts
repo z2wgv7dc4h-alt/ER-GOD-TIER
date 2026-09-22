@@ -12,6 +12,7 @@ import { loadEngineMarkers, matchEngineItems } from './engineMarkers'
 import { loadAcquisition, matchAcquisition } from './acquisition'
 import { findQuest, loadNpcQuests } from './npcQuests'
 import { loadRecipes, matchRecipes } from './recipes'
+import { loadWikiText, matchWiki } from './wikiText'
 import { loadGameTextTable } from './gameText'
 import { quoteFor } from './dialogueQuote'
 import { opBuilds } from '../knowledge/builds'
@@ -97,6 +98,14 @@ export const GIDEON_TOOLS: ToolDef[] = [
       name: 'find_item',
       description: 'Where to find a named item: nearest Site of Grace, how it is obtained (drop/chest/merchant/ground/quest), and whether it is missable.',
       parameters: { type: 'object', properties: { name: str('item name') }, required: ['name'], additionalProperties: false },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'wiki',
+      description: 'Search the full Elden Ring wiki text for anything else — a mechanic, an enemy, a location, a boss detail, a term.',
+      parameters: { type: 'object', properties: { q: str('what to look up') }, required: ['q'], additionalProperties: false },
     },
   },
   {
@@ -191,6 +200,11 @@ export async function runGideonTool(name: string, args: Record<string, unknown>,
           ? { method: a.method, where: a.location.slice(0, 300), near: a.near, missable: a.missable, prereqs: a.prereqs }
           : null,
       }
+    }
+    case 'wiki': {
+      const doc = await loadWikiText().catch(() => null)
+      const hits = doc ? matchWiki(q, doc.sections, 3) : []
+      return hits.map((h) => ({ page: h.page, heading: h.heading, text: h.text.slice(0, 600) }))
     }
     case 'recipe': {
       const doc = await loadRecipes().catch(() => null)

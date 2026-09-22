@@ -105,6 +105,23 @@ def main():
             recipes.append({"id": f"recipe:{page_id}", "name": title or "", "materials": mats, "url": url or ""})
     recipes.sort(key=lambda r: r["name"].lower())
 
+    # Full wiki text: every section, trimmed. The prose layer for "answer
+    # anything" beyond the structured tables (~4.8 MB of text).
+    titles = dict(cur.execute("select id, title from pages"))
+    wiki = []
+    for sid, page_id, ord_, heading, markdown in cur.execute(
+        "select id, page_id, ord, heading, markdown from sections order by page_id, ord"
+    ):
+        text = (markdown or "").strip()
+        if len(text) < 40:
+            continue
+        wiki.append({
+            "id": sid,
+            "page": titles.get(page_id, ""),
+            "heading": heading or "",
+            "text": text[:4000],
+        })
+
     os.makedirs(OUT_DIR, exist_ok=True)
     with open(os.path.join(OUT_DIR, "acquisition.json"), "w", encoding="utf-8") as f:
         json.dump({"source": SOURCE, "rows": acq}, f, ensure_ascii=False, separators=(",", ":"))
@@ -112,11 +129,14 @@ def main():
         json.dump({"source": SOURCE, "quests": quests}, f, ensure_ascii=False, separators=(",", ":"))
     with open(os.path.join(OUT_DIR, "recipes.json"), "w", encoding="utf-8") as f:
         json.dump({"source": SOURCE, "recipes": recipes}, f, ensure_ascii=False, separators=(",", ":"))
+    with open(os.path.join(OUT_DIR, "wiki-sections.json"), "w", encoding="utf-8") as f:
+        json.dump({"source": SOURCE, "sections": wiki}, f, ensure_ascii=False, separators=(",", ":"))
 
     miss = sum(1 for r in acq if r["missable"])
     print(f"wrote acquisition.json  rows: {len(acq)}  missable: {miss}")
     print(f"wrote npc-quests.json   npcs: {len(quests)}  steps: {sum(len(q['steps']) for q in quests)}")
     print(f"wrote recipes.json      recipes: {len(recipes)}")
+    print(f"wrote wiki-sections.json sections: {len(wiki)}")
 
 
 if __name__ == "__main__":
