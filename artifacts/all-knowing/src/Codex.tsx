@@ -20,7 +20,7 @@ import { npcDisplayCards } from './knowledge/npc-display'
 import { iconFor } from './lib/sourcePack'
 import { fanImage } from './lib/fanImage'
 import { Related } from './Related'
-import { DialogueHits } from './Dialogue'
+import { DialogueHits, DialogueBySpeaker } from './Dialogue'
 import { DungeonChecklist } from './Dungeon'
 import { useWorkspace } from './state'
 import { matchGatheringNodes, useGatheringNodes } from './lib/gatheringNodes'
@@ -212,6 +212,7 @@ export function CodexWorkspace() {
           </div>
         </>
       )}
+      <DialogueBySpeaker query={query} />
       <DialogueHits query={query} />
       {(guideHits.items.length > 0 || guideHits.legs.length > 0) && (
         <>

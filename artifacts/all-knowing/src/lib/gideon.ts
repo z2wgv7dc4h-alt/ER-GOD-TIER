@@ -33,6 +33,9 @@ import { factState } from '../state'
 import { callGideonLlm, hasGideonKey } from './muse'
 import { buildGrounding, gideonMessages, validateGideonAct } from './gideonLlm'
 import { buildHunt } from './buildHunt'
+import { isDialogueAsk, quoteFor } from './dialogueQuote'
+import { loadDialogueOwners, type DialogueOwners } from './dialogueOwners'
+import { loadGameTextTable } from './gameText'
 import type { Character, ModuleId } from '../types'
 
 export type GideonAct = {
@@ -487,14 +490,27 @@ function approachingGateLine(character: Character): string {
  * answers lookups (a named ending, a warp, a build, still-available, "I'm
  * stuck") without a network round-trip.
  */
+export type GideonDialogue = { owners: DialogueOwners; talkmsg: Record<string, string> }
+
 export function askGideonRouter(
   question: string,
   character: Character,
   memory: GideonMemory = {},
   combat: BossCombat[] = cachedBossCombat(),
+  dialogue?: GideonDialogue,
 ): GideonAct {
   const q = question.toLowerCase().trim()
   if (!q) return { say: 'Name an ending, or ask what to do next.' }
+
+  // Verbatim game dialogue for a named speaker, when the line is attributed.
+  // Real text only; if the speaker has no attributed lines this falls through.
+  if (dialogue && isDialogueAsk(q)) {
+    const quote = quoteFor(question, dialogue.owners, dialogue.talkmsg)
+    if (quote) {
+      const body = quote.lines.map((l) => `“${l.text}”`).join('\n')
+      return { say: `${quote.speaker}:\n${body}\n— verbatim in-game dialogue.`, module: 'codex' }
+    }
+  }
 
   const affirm = /^(y|yes|yeah|ok|okay|sure|do it|show( me)?|give (me )?(the )?(steps|instructions)|navigate|take me)\b/.test(q)
     || /\b(show (it|me) on the map|give instructions|take me there)\b/.test(q)
@@ -1082,6 +1098,9 @@ export function isFastLookup(
   // NPC locations come from an authored table, never the model.
   if (/\b(where|find|locate)\b/.test(q) && matchNpc(q)) return true
 
+  // A verbatim-dialogue ask is answered from the game's own attributed lines.
+  if (isDialogueAsk(q)) return true
+
   // A conjunction or conditional means the question crosses concepts: reason.
   if (REASONING_MARKER.test(q)) return false
 
@@ -1129,7 +1148,15 @@ export async function askGideon(
     /\b(stuck|wipe|cannot|can't beat|help with)\b/.test(question.toLowerCase()) ||
     parseComparison(question.toLowerCase()) !== undefined
   const combat = wantsCombat ? await loadBossCombat().catch(() => []) : undefined
-  const router = askGideonRouter(question, character, memory, combat)
+  let dialogue: GideonDialogue | undefined
+  if (isDialogueAsk(question)) {
+    const [owners, talkmsg] = await Promise.all([
+      loadDialogueOwners().catch(() => null),
+      loadGameTextTable('TalkMsg').catch(() => null),
+    ])
+    if (owners && talkmsg) dialogue = { owners, talkmsg }
+  }
+  const router = askGideonRouter(question, character, memory, combat, dialogue)
   if (isFastLookup(question, memory, combat ?? cachedBossCombat())) return router
 
   if (!hasGideonKey()) {

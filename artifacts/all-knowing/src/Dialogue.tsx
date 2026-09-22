@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { DIALOGUE_TABLES, loadGameTextTable, searchGameText } from './lib/gameText'
-import { loadDialogueOwners, speakerLabel, type DialogueOwners } from './lib/dialogueOwners'
+import { linesBySpeaker, loadDialogueOwners, speakerLabel, type DialogueOwners } from './lib/dialogueOwners'
 
 type Tables = Record<string, Record<string, string>>
 
@@ -71,6 +71,67 @@ export function DialogueHits({
           )
         })}
       </div>
+    </>
+  )
+}
+
+/**
+ * All attributed lines for a named speaker, shown together. Only speakers the
+ * ESD-derived owners table can name appear here; the rest of the corpus still
+ * works through `DialogueHits`, just without an owner.
+ */
+export function DialogueBySpeaker({
+  query,
+  preloadedText,
+  owners,
+  perSpeaker = 8,
+}: {
+  query: string
+  preloadedText?: Record<string, string>
+  owners?: DialogueOwners
+  perSpeaker?: number
+}) {
+  const [text, setText] = useState<Record<string, string> | null>(preloadedText ?? null)
+  const [own, setOwn] = useState<DialogueOwners | null>(owners ?? null)
+  const q = query.trim().toLowerCase()
+
+  useEffect(() => {
+    if (q.length < 3 || text) return
+    let cancelled = false
+    void loadGameTextTable('TalkMsg')
+      .then((rows) => { if (!cancelled) setText(rows) })
+      .catch(() => { /* no corpus: nothing to show */ })
+    if (!own) {
+      void loadDialogueOwners()
+        .then((o) => { if (!cancelled) setOwn(o) })
+        .catch(() => { /* unattributed: nothing to show */ })
+    }
+    return () => {
+      cancelled = true
+    }
+  }, [q, text, own])
+
+  const rows = preloadedText ?? text
+  const o = owners ?? own
+  if (q.length < 3 || !rows || !o) return null
+
+  const groups = [...linesBySpeaker(o).entries()].filter(([name]) => name.toLowerCase().includes(q))
+  if (groups.length === 0) return null
+
+  return (
+    <>
+      <h3 className="codex-head">Dialogue by speaker · game text</h3>
+      {groups.map(([name, ids]) => (
+        <article className="card" key={name}>
+          <div className="kicker">Speaker · attributed from the ESD talk script</div>
+          <h3>{name}</h3>
+          <ul className="list">
+            {ids.filter((id) => rows[id]).slice(0, perSpeaker).map((id) => (
+              <li key={id}><span>{rows[id]}</span></li>
+            ))}
+          </ul>
+        </article>
+      ))}
     </>
   )
 }

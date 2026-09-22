@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
-import { DialogueHits } from './Dialogue'
+import { DialogueBySpeaker, DialogueHits } from './Dialogue'
 import type { DialogueOwners } from './lib/dialogueOwners'
 
 const tables = {
@@ -41,5 +41,23 @@ describe('DialogueHits', () => {
 
   it('stays out of the way for short queries', () => {
     expect(renderToStaticMarkup(<DialogueHits query="ma" preloaded={tables} owners={owners} />)).toBe('')
+  })
+})
+
+describe('DialogueBySpeaker', () => {
+  it('groups a named speaker\'s attributed lines', () => {
+    const html = renderToStaticMarkup(
+      <DialogueBySpeaker query="margit" preloadedText={tables.TalkMsg} owners={owners} />,
+    )
+    expect(html).toContain('Dialogue by speaker · game text')
+    expect(html).toContain('Margit')
+    expect(html).toContain('Foul tarnished, in search of the Elden Ring.')
+  })
+
+  it('renders nothing for an unmatched speaker', () => {
+    const html = renderToStaticMarkup(
+      <DialogueBySpeaker query="boc" preloadedText={tables.TalkMsg} owners={owners} />,
+    )
+    expect(html).toBe('')
   })
 })
