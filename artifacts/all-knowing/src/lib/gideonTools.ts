@@ -9,6 +9,8 @@ import { dominantAttributes, earlyWeaponRanking, weaponAdvice } from './upgradeA
 import { loadBossCombat, loadEnemyCombat } from './enemy'
 import { loadDialogueOwners } from './dialogueOwners'
 import { loadEngineMarkers, matchEngineItems } from './engineMarkers'
+import { loadAcquisition, matchAcquisition } from './acquisition'
+import { findQuest, loadNpcQuests } from './npcQuests'
 import { loadGameTextTable } from './gameText'
 import { quoteFor } from './dialogueQuote'
 import { opBuilds } from '../knowledge/builds'
@@ -92,8 +94,16 @@ export const GIDEON_TOOLS: ToolDef[] = [
     type: 'function',
     function: {
       name: 'find_item',
-      description: 'Where a named item/pickup is: its nearest Site of Grace and region, from the engine map data.',
+      description: 'Where to find a named item: nearest Site of Grace, how it is obtained (drop/chest/merchant/ground/quest), and whether it is missable.',
       parameters: { type: 'object', properties: { name: str('item name') }, required: ['name'], additionalProperties: false },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'quest_steps',
+      description: 'Step-by-step walkthrough for a named NPC quest (ordered locations + actions, and which step breaks it).',
+      parameters: { type: 'object', properties: { npc: str('NPC name') }, required: ['npc'], additionalProperties: false },
     },
   },
   {
@@ -159,9 +169,26 @@ export async function runGideonTool(name: string, args: Record<string, unknown>,
       return { name: hit.name, baseHp: hit.baseHp, poise: hit.poise, negation: neg, resist: hit.resist, weakest: weakest ? weakest[0] : null }
     }
     case 'find_item': {
-      const doc = await loadEngineMarkers().catch(() => null)
-      const hits = doc ? matchEngineItems(String(args.name ?? ''), doc.items, 3) : []
-      return hits.map((h) => ({ name: h.name, near: h.near, region: h.map, cat: h.cat }))
+      const name = String(args.name ?? '')
+      const [doc, acq] = await Promise.all([
+        loadEngineMarkers().catch(() => null),
+        loadAcquisition().catch(() => null),
+      ])
+      const items = doc ? matchEngineItems(name, doc.items, 3) : []
+      const a = acq ? matchAcquisition(name, acq.rows, 1)[0] : null
+      return {
+        items: items.map((h) => ({ name: h.name, near: h.near, region: h.map })),
+        acquisition: a
+          ? { method: a.method, where: a.location.slice(0, 300), near: a.near, missable: a.missable, prereqs: a.prereqs }
+          : null,
+      }
+    }
+    case 'quest_steps': {
+      const doc = await loadNpcQuests().catch(() => null)
+      const hit = doc ? findQuest(String(args.npc ?? ''), doc.quests) : undefined
+      return hit
+        ? { npc: hit.npc, steps: hit.steps.slice(0, 12).map((s) => ({ order: s.order, location: s.location, action: s.action.slice(0, 220), breaks: s.breaks })) }
+        : { error: 'no quest by that npc' }
     }
     case 'dialogue': {
       const [owners, talkmsg] = await Promise.all([
