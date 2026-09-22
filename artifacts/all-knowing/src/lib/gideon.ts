@@ -30,7 +30,7 @@ import {
   type BossCombat,
 } from './enemy'
 import { factState } from '../state'
-import { callGideonLlm, hasGideonKey } from './muse'
+import { callGideonLlm, hasGideonKey, type ChatMessage } from './muse'
 import { buildGrounding, gideonMessages, validateGideonAct } from './gideonLlm'
 import { buildHunt } from './buildHunt'
 import { isDialogueAsk, quoteFor } from './dialogueQuote'
@@ -1236,38 +1236,31 @@ export async function askGideon(
   question: string,
   character: Character,
   memory: GideonMemory = {},
+  history: ChatMessage[] = [],
 ): Promise<GideonAct> {
-  // The "stuck" handler needs the real NpcParam table, which is loaded async by
-  // the UI. Warm it here so a first-ask still gets specific resists, and let the
-  // router fall back to generic advice if the fetch fails.
+  const ql = question.toLowerCase()
   const wantsCombat =
-    /\b(stuck|wipe|cannot|can't beat|help with)\b/.test(question.toLowerCase()) ||
-    parseComparison(question.toLowerCase()) !== undefined
-  const combat = wantsCombat ? await loadBossCombat().catch(() => []) : undefined
-  let dialogue: GideonDialogue | undefined
-  if (isDialogueAsk(question)) {
-    const [owners, talkmsg] = await Promise.all([
-      loadDialogueOwners().catch(() => null),
-      loadGameTextTable('TalkMsg').catch(() => null),
-    ])
-    if (owners && talkmsg) dialogue = { owners, talkmsg }
-  }
-  let placements: NpcPlacement[] | undefined
-  if (/\b(where|find|locate)\b/i.test(question)) {
-    placements = await loadNpcPlacements().then((d) => d.placements).catch(() => undefined)
-  }
-  let medusaSteps: MedusaQuest[] | undefined
-  if (/\b(medusa|walkthrough|route)\b/i.test(question)) {
-    medusaSteps = await loadMedusaRoute().then((d) => medusaQuests(d)).catch(() => undefined)
-  }
-  let guides: GuideExcerpt[] | undefined
-  if (/\b(how|guide|upgrade|smithing|somber|bell bearing|talisman|incantation|sorcer|damage type|stats?|buff)\b/i.test(question)) {
-    guides = await loadGuides().then((d) => guideExcerpts(d)).catch(() => undefined)
-  }
-  let weapons: Weapon[] | undefined
-  if (/\b(upgrade|reinforce|somber|smithing|best weapons?|early weapons?|strong weapons?|good weapons?)\b/i.test(question)) {
-    weapons = await loadWeapons().catch(() => undefined)
-  }
+    /\b(stuck|wipe|cannot|can't beat|help with)\b/.test(ql) || parseComparison(ql) !== undefined
+  const wantsDialogue = isDialogueAsk(question)
+  const wantsPlacements = /\b(where|find|locate)\b/.test(ql)
+  const wantsMedusa = /\b(medusa|walkthrough|route)\b/.test(ql)
+  const wantsGuides = /\b(how|guide|upgrade|smithing|somber|bell bearing|talisman|incantation|sorcer|damage type|stats?|buff)\b/.test(ql)
+  const wantsWeapons = /\b(upgrade|reinforce|somber|smithing|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(ql)
+
+  // Load every optional context source in parallel — they are independent
+  // fetches, and serialising them added seconds before the answer (or before
+  // the LLM call) on a cold cache.
+  const [combat, dialogue, placements, medusaSteps, guides, weapons] = await Promise.all([
+    wantsCombat ? loadBossCombat().catch(() => [] as BossCombat[]) : Promise.resolve(undefined),
+    wantsDialogue
+      ? Promise.all([loadDialogueOwners().catch(() => null), loadGameTextTable('TalkMsg').catch(() => null)])
+          .then(([owners, talkmsg]) => (owners && talkmsg ? { owners, talkmsg } : undefined))
+      : Promise.resolve(undefined),
+    wantsPlacements ? loadNpcPlacements().then((d) => d.placements).catch(() => undefined) : Promise.resolve(undefined),
+    wantsMedusa ? loadMedusaRoute().then((d) => medusaQuests(d)).catch(() => undefined) : Promise.resolve(undefined),
+    wantsGuides ? loadGuides().then((d) => guideExcerpts(d)).catch(() => undefined) : Promise.resolve(undefined),
+    wantsWeapons ? loadWeapons().catch(() => undefined) : Promise.resolve(undefined),
+  ])
   const router = askGideonRouter(question, character, memory, combat, dialogue, placements, medusaSteps, guides, weapons)
   if (isFastLookup(question, memory, combat ?? cachedBossCombat(), placements, medusaSteps, guides, weapons)) return router
 
@@ -1281,7 +1274,7 @@ export async function askGideon(
 
   try {
     const grounding = buildGrounding(question, character, memory)
-    const raw = await callGideonLlm(gideonMessages(question, grounding))
+    const raw = await callGideonLlm(gideonMessages(question, grounding, history))
     const { act, rejected } = validateGideonAct(raw, grounding)
     if (!act) {
       console.warn('[gideon] Muse response rejected (invented or invalid ids); using the router.', rejected)

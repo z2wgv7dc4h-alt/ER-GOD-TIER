@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { WikiText } from './WikiText'
 import {
   erclItems,
   ermLocations,
@@ -105,8 +106,8 @@ export function MedusaSection({ query, preloaded }: { query: string; preloaded?:
           <article className="card" key={r.id}>
             <div className="kicker">{r.actName} · {r.chapterName} · {r.type}</div>
             <h3>{r.title}</h3>
-            <p className="note">{r.summary}</p>
-            {r.directions && <p className="note">{r.directions}</p>}
+            <p className="note"><WikiText text={r.summary} /></p>
+            {r.directions && <p className="note"><WikiText text={r.directions} /></p>}
           </article>
         ))}
       </div>
@@ -176,7 +177,7 @@ export function BossDropsSection({ query, preloaded }: { query: string; preloade
           <article className="card" key={b.name}>
             <div className="kicker">{b.locations.join(' / ') || 'boss'}{b.hp ? ` · ${b.hp} HP` : ''}</div>
             <h3>{b.name}</h3>
-            <p className="note">{b.drops.length ? b.drops.join(' · ') : 'no drops listed'}</p>
+            <p className="note"><WikiText text={b.drops.length ? b.drops.join(' · ') : 'no drops listed'} /></p>
           </article>
         ))}
       </div>
@@ -207,7 +208,7 @@ export function GuidesSection({ query, preloaded }: { query: string; preloaded?:
         {hits.map((g, i) => (
           <article className="card" key={g.page + ':' + g.heading + ':' + i}>
             <div className="kicker">{g.page} · {g.heading}</div>
-            <p className="note">{g.text.slice(0, 600)}</p>
+            <p className="note"><WikiText text={g.text.slice(0, 600)} /></p>
           </article>
         ))}
       </div>
@@ -238,7 +239,7 @@ export function MetaBuildsSection({ query, preloaded }: { query: string; preload
         {hits.map((g, i) => (
           <article className="card" key={g.page + ':' + g.heading + ':' + i}>
             <div className="kicker">{g.page} · {g.heading}</div>
-            <p className="note">{g.text.slice(0, 600)}</p>
+            <p className="note"><WikiText text={g.text.slice(0, 600)} /></p>
           </article>
         ))}
       </div>

@@ -116,9 +116,17 @@ Return json only, exactly this shape:
 
 Set navigateNow true only when you also set factId or module. Omit (null) every optional field you do not need.`
 
-export function gideonMessages(question: string, g: Grounding): ChatMessage[] {
+/**
+ * The system prompt, the prior turns of the session, and the current grounding
+ * pack. Passing `history` keeps one open conversation with the model so follow-ups
+ * ("and after that?", "why not the other one?") have the earlier answer in context
+ * — the router still answers deterministically first, so this only affects the
+ * optional LLM path.
+ */
+export function gideonMessages(question: string, g: Grounding, history: ChatMessage[] = []): ChatMessage[] {
   return [
     { role: 'system', content: SYSTEM_PROMPT },
+    ...history.slice(-8),
     { role: 'user', content: `Grounding pack (json):\n${g.text}\n\nTarnished's question: ${question}` },
   ]
 }

@@ -1,7 +1,17 @@
 import { renderToStaticMarkup } from 'react-dom/server'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { DialogueBySpeaker, DialogueHits } from './Dialogue'
 import type { DialogueOwners } from './lib/dialogueOwners'
+
+// WikiText (used for the line body) reads the workspace to navigate on click;
+// give it a minimal fake so these render as static markup.
+vi.mock('./state', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('./state')>()
+  return {
+    ...actual,
+    useWorkspace: () => ({ setSelectedMarkerId: () => {}, setModule: () => {} }),
+  }
+})
 
 const tables = {
   TalkMsg: {

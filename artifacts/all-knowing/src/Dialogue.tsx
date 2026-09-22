@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { DIALOGUE_TABLES, loadGameTextTable, searchGameText } from './lib/gameText'
 import { linesBySpeaker, loadDialogueOwners, speakerLabel, type DialogueOwners } from './lib/dialogueOwners'
+import { WikiText } from './WikiText'
 
 type Tables = Record<string, Record<string, string>>
 
@@ -66,7 +67,7 @@ export function DialogueHits({
           return (
             <article className="card" key={`${h.table}:${h.id}`}>
               <div className="kicker">{speaker ? `${speaker} · ` : ''}{h.table} · {h.id}</div>
-              <p>{h.text}</p>
+              <p><WikiText text={h.text} /></p>
             </article>
           )
         })}

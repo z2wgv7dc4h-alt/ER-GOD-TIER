@@ -15,7 +15,8 @@ import { gideonHeader } from './lib/gideonHeader'
 import { lockoutWarningsFor, type LockWarning } from './lib/lockWarnings'
 import { LockoutPrompt } from './LockoutPrompt'
 import { packStatus } from './lib/sourcePack'
-import { hasGideonKey } from './lib/muse'
+import { hasGideonKey, type ChatMessage } from './lib/muse'
+import { WikiText } from './WikiText'
 import { useWorkspace } from './state'
 
 export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
@@ -57,7 +58,12 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
 
   async function run(text: string) {
     setBusy(true)
-    const act = await askGideon(text, w.character, memory).finally(() => setBusy(false))
+    // Keep one open session: prior turns go to the model so follow-ups have
+    // context. The router still answers deterministically first.
+    const history: ChatMessage[] = log
+      .slice(1)
+      .map((r) => ({ role: r.role === 'you' ? 'user' : 'assistant', content: r.text }))
+    const act = await askGideon(text, w.character, memory, history).finally(() => setBusy(false))
     const nextMem: GideonMemory = {
       goalId: act.goal ?? memory.goalId,
       lastFact: act.factId ?? memory.lastFact,
@@ -256,7 +262,7 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
         {log.map((row, i) => (
           <p key={i} className={row.role === 'gideon' ? 'note' : ''}>
             <strong>{row.role === 'gideon' ? 'Gideon' : 'You'} · </strong>
-            {row.text}
+            <WikiText text={row.text} />
           </p>
         ))}
       </div>

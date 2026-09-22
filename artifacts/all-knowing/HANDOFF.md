@@ -79,8 +79,14 @@ co-op filtering (`answers.coop`). Both the Now strip and Quests read the one `al
 an existing pin for **Show**. `searchSync` remains the last resort.
 
 Optional LLM: Meta Muse Spark 1.3 Contributor (`src/lib/muse.ts`, `VITE_GIDEON_API_KEY`), same Act
-JSON, router-first. Ground with `planRoute`, `stillAvailable`, `searchSync`. No invented ids;
+JSON, router-first. Pinned to contributor 1.3; `reasoning_effort: 'minimal'` + a stable
+`prompt_cache_key` keep it fast (Meta docs: none→400, max is Standard-only). One open session — prior
+turns are sent as history. Ground with `planRoute`, `stillAvailable`, `searchSync`. No invented ids;
 sentences naming an ungrounded id are stripped.
+
+Interlinking: `src/lib/interlink.ts` + `src/WikiText.tsx` turn any known entity mention (build text,
+boss drops, guides, dialogue, Gideon's answers) into a link that opens its Codex/Quests/Atlas view;
+`relatedFor` supplies the acquisition/drops/quest edges.
 
 ## Paths
 

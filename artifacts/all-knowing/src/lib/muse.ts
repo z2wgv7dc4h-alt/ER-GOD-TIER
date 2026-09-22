@@ -1,14 +1,23 @@
-export type ChatMessage = { role: 'system' | 'user'; content: string }
+export type ChatMessage = { role: 'system' | 'user' | 'assistant'; content: string }
 
 /** Hard-coded provider defaults. Both are overridable by env; the key never is. */
 export const DEFAULT_GIDEON_BASE_URL = 'https://api.meta.ai/v1'
 export const DEFAULT_GIDEON_MODEL = 'muse-spark-1.3-contributor'
-// Murmur is a *reasoning* model: a plain turn spends several hundred reasoning
-// tokens before the answer, so the old 8s budget both aborted mid-think and left
-// too little room for content. 60s covers the observed 7-45s range.
-const DEFAULT_TIMEOUT_MS = 60000
-// Room for reasoning + the JSON act. 700 was too small and returned null content.
-const DEFAULT_MAX_TOKENS = 2500
+/**
+ * Meta's docs: `reasoning_effort` ∈ minimal|low|medium|high|xhigh (none → HTTP
+ * 400; max is Standard-tier only). Our asks are direct-answer JSON acts, so the
+ * shortest pass is the right one — measured ~4x fewer reasoning tokens and the
+ * lowest latency. Chat Completions cannot carry reasoning across turns for
+ * external keys, so there is nothing to be gained by thinking harder per turn.
+ */
+const DEFAULT_REASONING_EFFORT = 'minimal'
+// Reasoning tokens count against max_tokens too; with minimal effort the JSON
+// act fits comfortably in this.
+const DEFAULT_MAX_TOKENS = 1200
+// Stable prefix cache key (system prompt + history), per the prompt-caching guide.
+const CACHE_KEY = 'all-knowing-gideon'
+// minimal reasoning keeps a turn fast; 45s still covers a slow backend.
+const DEFAULT_TIMEOUT_MS = 45000
 
 /**
  * Optional Gideon LLM: **Meta Muse Spark 1.3 Contributor**.
@@ -47,14 +56,15 @@ export function gideonBaseUrl(): string {
 }
 
 export function gideonModel(): string {
-  const env = import.meta.env.VITE_GIDEON_MODEL
-  return typeof env === 'string' && env.trim() ? env.trim() : DEFAULT_GIDEON_MODEL
+  // Contributor 1.3 only (the key is scoped to it); no env override.
+  return DEFAULT_GIDEON_MODEL
 }
 
 export type GideonLlmOptions = {
   timeoutMs?: number
   maxTokens?: number
   temperature?: number
+  reasoningEffort?: 'minimal' | 'low' | 'medium' | 'high' | 'xhigh'
 }
 
 /** Pull the assistant text out of either provider response shape. */
@@ -91,17 +101,23 @@ function requestBodies(messages: ChatMessage[], opts: GideonLlmOptions): Attempt
         model,
         messages,
         response_format: { type: 'json_object' },
-        // Verified against api.meta.ai: accepted, and keeps the reasoning budget
-        // (and so latency) down. The `/responses` body rejects `reasoning_effort`
-        // and uses the nested `reasoning` shape instead.
-        reasoning_effort: 'low',
+        // minimal: the shortest pass (docs: use the lowest level that works).
+        reasoning_effort: opts.reasoningEffort ?? DEFAULT_REASONING_EFFORT,
+        // Stable cache key: system prompt + history reuse the cached prefix.
+        prompt_cache_key: CACHE_KEY,
         temperature: opts.temperature ?? 0.3,
         max_tokens: opts.maxTokens ?? DEFAULT_MAX_TOKENS,
       },
     },
     {
       path: '/responses',
-      body: { model, input: messages, reasoning: { effort: 'low' }, max_output_tokens: opts.maxTokens ?? DEFAULT_MAX_TOKENS },
+      body: {
+        model,
+        input: messages,
+        reasoning: { effort: opts.reasoningEffort ?? DEFAULT_REASONING_EFFORT },
+        prompt_cache_key: CACHE_KEY,
+        max_output_tokens: opts.maxTokens ?? DEFAULT_MAX_TOKENS,
+      },
     },
   ]
 }

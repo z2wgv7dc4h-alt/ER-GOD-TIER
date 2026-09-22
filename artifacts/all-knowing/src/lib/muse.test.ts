@@ -34,7 +34,7 @@ describe('gideon muse config', () => {
     expect(hasGideonKey()).toBe(true)
   })
 
-  it('defaults to Meta Muse and allows env overrides', () => {
+  it('pins the contributor 1.3 model and honors a base-url override', () => {
     vi.stubEnv('VITE_GIDEON_BASE_URL', '')
     vi.stubEnv('VITE_GIDEON_MODEL', '')
     expect(gideonBaseUrl()).toBe('/gideon-llm/v1') // dev goes through the Vite proxy
@@ -73,9 +73,10 @@ describe('callGideonLlm', () => {
     expect((init.headers as Record<string, string>).authorization).toBe('Bearer test-key')
     const body = JSON.parse(init.body as string)
     expect(body.messages).toEqual(messages)
-    // Reasoning model: low effort + room for reasoning + the JSON act.
-    expect(body.reasoning_effort).toBe('low')
-    expect(body.max_tokens).toBeGreaterThanOrEqual(1500)
+    // Reasoning model: shortest pass + room for the JSON act + cache affinity.
+    expect(body.reasoning_effort).toBe('minimal')
+    expect(body.max_tokens).toBeGreaterThanOrEqual(1000)
+    expect(body.prompt_cache_key).toBe('all-knowing-gideon')
   })
 
   it('falls back to POST /responses when /chat/completions 404s (Meta input body)', async () => {
@@ -96,8 +97,8 @@ describe('callGideonLlm', () => {
     const body = JSON.parse(init.body as string)
     expect(body.input).toEqual(messages)
     expect(body.messages).toBeUndefined()
-    expect(body.reasoning).toEqual({ effort: 'low' })
-    expect(body.max_output_tokens).toBeGreaterThanOrEqual(1500)
+    expect(body.reasoning).toEqual({ effort: 'minimal' })
+    expect(body.max_output_tokens).toBeGreaterThanOrEqual(1000)
   })
 
   it('throws (so the router takes over) on other HTTP errors', async () => {

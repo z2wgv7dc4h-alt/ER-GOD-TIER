@@ -1249,3 +1249,16 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   }
   .app.now-open .workspace { display: none; }
 }
+
+
+/* Interlinked prose: a known entity mention inside text. */
+.wikilink {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--gold, #c9a227);
+  border-bottom: 1px dotted currentColor;
+  cursor: pointer;
+}
+.wikilink:hover { color: #ffe08a; }
