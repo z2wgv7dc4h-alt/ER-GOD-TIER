@@ -10,6 +10,11 @@ import {
   type ErmLocation,
 } from './lib/packs'
 import { loadMedusaRoute, matchMedusa, medusaQuests, type MedusaQuest } from './lib/medusaRoute'
+import {
+  loadNpcPlacements,
+  matchNpcPlacements,
+  type NpcPlacement,
+} from './lib/npcPlacements'
 
 /** Map locations (graces/dungeons/merchants) from the EldenRingMap pack. */
 export function EldenringMapSection({ query, preloaded }: { query: string; preloaded?: ErmLocation[] }) {
@@ -99,6 +104,44 @@ export function MedusaSection({ query, preloaded }: { query: string; preloaded?:
             <h3>{r.title}</h3>
             <p className="note">{r.summary}</p>
             {r.directions && <p className="note">{r.directions}</p>}
+          </article>
+        ))}
+      </div>
+    </>
+  )
+}
+
+/** Placed NPCs/enemies from the map MSBs, with map count. */
+export function NpcPlacementSection({ query, preloaded }: { query: string; preloaded?: NpcPlacement[] }) {
+  const [rows, setRows] = useState<NpcPlacement[] | null>(preloaded ?? null)
+  const q = query.trim()
+  useEffect(() => {
+    if (q.length < 3 || rows) return
+    let cancelled = false
+    void loadNpcPlacements()
+      .then((doc) => { if (!cancelled) setRows(doc.placements) })
+      .catch(() => { /* dataset absent: section stays hidden */ })
+    return () => { cancelled = true }
+  }, [q, rows])
+  const data = preloaded ?? rows
+  if (q.length < 3 || !data) return null
+  const hits = matchNpcPlacements(q, data)
+  if (hits.length === 0) return null
+  const byName = new Map<string, NpcPlacement[]>()
+  for (const h of hits) {
+    const list = byName.get(h.name) ?? []
+    list.push(h)
+    byName.set(h.name, list)
+  }
+  return (
+    <>
+      <h3 className="codex-head">NPC placements · from the map files</h3>
+      <div className="codex-grid">
+        {[...byName.entries()].map(([name, list]) => (
+          <article className="card" key={name}>
+            <div className="kicker">{list.length} placement{list.length === 1 ? '' : 's'} · {list[0].dialogue ? 'has dialogue' : 'no dialogue'}</div>
+            <h3>{name}</h3>
+            <p className="note">{[...new Set(list.map((p) => p.map))].sort().join(', ')}</p>
           </article>
         ))}
       </div>
