@@ -1,40 +1,87 @@
 # ER GOD TIER
 
-A local-first Elden Ring companion — one shared character state driving an interactive atlas, a
-real attack-rating build lab with an OP/PvP kit hunt, a quest/ending planner with real lockout
-edges, a save-file reader, on-device OCR for PS5 players, and Gideon: a router that answers "where
-is X," "what should I do now," and "I've done X, what now" from real game data, with an optional LLM
-layer (Meta Muse Spark 1.3 Contributor) behind it when a key is configured. The Codex is searchable
-against structured FanAPI reference data (armor poise, talisman effects, spell costs, boss HP/drops).
+<p align="center">
+  <img src="artifacts/all-knowing/public/art/all-knowing-cover.jpg" alt="All-Knowing — tarnished facing a hollow-helm beast in the snow, Haligtree burning on the horizon" width="100%">
+</p>
 
-Base game + Shadow of the Erdtree + Tarnished Pack. No accounts, no server, no uploads — save
-files and screenshots are parsed entirely in the browser.
+**All-Knowing** is a local-first Elden Ring companion for a mid-run Tarnished. One character. One atlas. One planner. Base game, Shadow of the Erdtree, Tarnished Pack.
 
-## The app
+No account. No upload. Saves and screenshots never leave the machine.
 
-The actual product lives at **[`artifacts/all-knowing/`](artifacts/all-knowing/)**. Its own
-`HANDOFF-CLAUDE.md` is the live source of truth for what's built, what's still open, and how the
-pieces fit together — start there, not here. `ARCHITECTURE.md`, `DATA.md`, and `docs/` in that
-same directory cover the fact-graph contracts, the data inventory, and per-feature notes.
+The app lives in [`artifacts/all-knowing/`](artifacts/all-knowing/). That folder’s `HANDOFF-CLAUDE.md` is the live engineering brief. This page is the product.
+
+---
+
+## Why it exists
+
+Wiki tabs, a map site, a spreadsheet, and a chat that does not know what you have already burned. This repo is the attempt to put that on one desk — and on a phone next to the TV.
+
+Gideon answers from **this** character: what is next, what locks if you keep walking, where the kit pieces are, what the warp list actually said.
+
+---
+
+## Features
+
+### One character
+Interview, PS5 screenshots (on-device OCR), warp-list paste, PC `.sl2` drop, or a live map-engine save. Profiles in the rail. Packet file + QR to move a run between boxes. Nothing is posted anywhere.
+
+### Reckoning
+Sit the run down. Starting class, DLC, goal. Paste a Site of Grace list. Drop a menu shot. Low-confidence OCR stays unknown. Inference chains close the world (Fingerslayer → Nokron, Great Rune → its shardbearer) with undo.
+
+### Atlas
+Static plates when you are on a phone or the engine is down. Full EldenRingMap embed when you have run extract on a PC with the game installed. Leftover pins, missable-gate layer, hunt-list pins for a selected kit. On a phone: Missing only / leftovers / locks sit on the map; pin kinds hide under **layers**.
+
+### Build lab
+Attack rating from vendored 1.17 regulation (Clark). Soft-cap marks on the stat card. Side-by-side weapon compare, including effective damage into a real NpcParam target. OP and PvP chips apply a spread. Hunt list names the pieces you still lack and pins the ones that have a grace. Shareable `akb1.` build codes (stats + kit only — not your progress). Scadutree blessing is counted, not faked into AR.
+
+### Quest graph
+One graph. Quests and Gideon tick the same `factId`s. Lockout confirm before a tick that would kill a line you started. Eight lockable spines in the planner (Ranni, Millicent, Fia, Dung Eater, Tanith, Leda, Sellen, Ymir) plus gates for Forge, Maliketh, Sealing Tree, frenzy, Seluvis, Volcano, Millicent’s fork, Varré.
+
+### Codex
+Guide items, chests, merchants, cookbooks, bell bearings, whetblades, SotE fragment / revered-ash meters (count only). Gathering nodes listed as unverified model codes — they are not dumped on the player map.
+
+### Gideon
+Deterministic router first: “what next”, “if I keep going”, “wear Rivers”, “I’m done”. Idle suggestion chips. Command palette (`/` or Ctrl+K) with live results and arrow keys. Optional Muse / env-key LLM only after the router misses — and only if you configured it locally.
+
+### Sit / phone
+Bottom tabs, Tarnished sheet, PWA install, self-hosted fonts, offline shell. Map engine is optional. Live-memory player-dot is opt-in and off by default.
+
+---
+
+## Run
 
 ```bash
 cd artifacts/all-knowing
 npm install
-npm run dev        # http://localhost:5173
+npm start          # map engine :8099 + Vite together
 ```
 
-The live map (Atlas room) needs a real Elden Ring install and a separate engine process:
+Open the Vite URL. Atlas embeds `/?embed=1` when the engine is up; otherwise you get the plates and a banner that says so.
 
 ```bash
-npm run map:setup  # one-time: extract tiles + markers from your local install
-npm run map        # starts the live-sync map server on :8099
+# first time on a PC that has the game
+cd vendor/elden-ring-map
+# Windows: Setup.bat
+# Linux:   ./setup-linux.sh
 ```
+
+Two terminals still work: `npm run map` and `npm run dev`.  
+`npm start:live` / `npm run map:live` reads process memory for a player dot. Read the live-memory section in `artifacts/all-knowing/README.md` before you touch that.
+
+---
 
 ## This repo
 
-`docs/tasks/` holds the task-brief series this project was built through — each one a
-self-contained spec for a coding agent (DeepSeek via `opencode`, or a Haiku subagent for smaller,
-well-scoped work), reviewed and merged one at a time with independent verification
-(`tsc`/`lint`/`test`/`build`, not just the agent's own say-so) before landing on `master`.
-`PROJECT_BRIEF.md` has the project's earlier planning history and licensing policy; treat
-`artifacts/all-knowing`'s own docs as current where the two disagree.
+| Path | What it is |
+|---|---|
+| `artifacts/all-knowing/` | The product |
+| `artifacts/all-knowing/HANDOFF-CLAUDE.md` | What is built, what is still open |
+| `artifacts/all-knowing/DATA.md` | Every dump on disk |
+| `artifacts/all-knowing/ARCHITECTURE.md` | Kernel contracts |
+| `docs/tasks/` | Agent briefs this tree was built through |
+
+Nightreign is out of scope. The app does not edit saves, ship FromSoftware archives, or invent attack rating.
+
+---
+
+*All things conjoined.*

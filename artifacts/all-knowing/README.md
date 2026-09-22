@@ -1,34 +1,39 @@
 # All-Knowing
 
-Local-first Elden Ring workspace. One character. Five rooms: Reckon, Atlas, Build lab, Quests, Codex.
+<p align="center">
+  <img src="public/art/all-knowing-cover.jpg" alt="All-Knowing — tarnished facing a hollow-helm beast in the snow, Haligtree burning on the horizon" width="100%">
+</p>
 
-The atlas is not a sketch waiting to be replaced later. It is
-**[egormagurin/EldenRingMap](https://github.com/egormagurin/EldenRingMap)**
-rewired into this shell: tiles and markers generated from *your* game install,
-save watched on disk, progress pushed over SSE.
+Local-first Elden Ring workspace. One character. Five rooms. Gideon.
+
+Base + Shadow of the Erdtree + Tarnished Pack. No server. No accounts. Saves and shots stay on the box.
+
+The atlas is [egormagurin/EldenRingMap](https://github.com/egormagurin/EldenRingMap) rewired into this shell when you have extracted tiles from *your* install. Without that, the plates still work.
+
+---
+
+## Features
+
+**Reckoning** — interview, warp-list paste, on-device Tesseract, inference with undo.  
+**Atlas** — plates or live engine, leftover / gate / hunt pins, phone job chips.  
+**Build lab** — Clark AR, soft caps, compare, OP/PvP hunt list, `akb1.` codes.  
+**Quests** — the same `allLines()` graph Gideon plans; confirm before a lockout.  
+**Codex** — guide, chests, merchants, achievement-shaped sets, SotE meters.  
+**Gideon** — router, idle chips, command palette. Optional local LLM behind an env key.  
+**Vault** — profiles, packet copy/paste/QR, PWA offline shell.
+
+Live status and task history: `HANDOFF-CLAUDE.md`. Data inventory: `DATA.md`. Kernel: `ARCHITECTURE.md`.
+
+---
 
 ## What you run
 
-One command starts both the local map engine and the workspace. Nothing leaves
-your machine.
-
 ```bash
 npm install    # once
-npm start      # map engine (:8099) + workspace (:5173), together
+npm start      # map engine (:8099) + workspace (:5173)
 ```
 
-Open the Vite URL printed in the terminal. The Atlas embeds the live map
-(`/?embed=1`); stats, found flags and marker lists flow into Build lab and Quests
-through the one `Character` object.
-
-If the map engine is not set up (or is simply not running), the workspace still
-works: the Atlas falls back to the static plates and the banner says so. That is
-expected — especially on a phone. The interface — shell, styles and the fonts
-(which are self-hosted) — is cached on first load, so you can install it from the
-browser menu (“Install” / “Add to Home Screen”) and reopen it with no connection.
-
-One-time, and again after a game patch, generate tiles and markers from a PC that
-has Elden Ring installed:
+Open the Vite URL. If the engine is not set up, Atlas uses static plates and says so.
 
 ```bash
 cd vendor/elden-ring-map
@@ -36,180 +41,39 @@ cd vendor/elden-ring-map
 # Linux:   ./setup-linux.sh
 ```
 
-Prefer two terminals? `npm run map` and `npm run dev` still work individually
-(`map:live` is the live-memory variant of the engine).
+`npm run map` and `npm run dev` still work as two terminals.  
+`npm start:live` / `npm run map:live` is optional process-memory read for a player dot. Off by default. Read the section below before enabling it.
 
-`npm start:live` / `npm run map:live` is an **optional** add-on that reads the
-running game's memory for a live player dot. It is **off by default** and carries
-real anti-cheat risk — read [Live memory mode](#live-memory-mode--read-this-before-you-enable-it)
-below before you use it.
+Install from the browser menu when you want it on a phone. Fonts are self-hosted; the shell caches.
+
+---
 
 ## Live memory mode — read this before you enable it
 
-The default `npm run map` never touches the game process. It reads
-`ER0000.sl2` and watches it for changes; that is the whole mechanism. Nothing
-in it is visible to anti-cheat.
+Default `npm start` / `npm run map` never touches the game process. It can watch `ER0000.sl2`. That path is not visible to anti-cheat as process injection.
 
-`npm run map:live` is a **separate, opt-in flag** (`--live-memory`) that
-additionally reads the running game's process memory for a real-time player
-dot. Because it is not part of the default map and is not started unless you
-pass the flag, a normal install stays on the save-file path.
+`npm run map:live` is a **separate flag** (`--live-memory`). It opens `eldenring.exe` with **`PROCESS_VM_READ` only** for a map-screen player dot.
 
-### What it actually does
+- Read only. No write, no DLL, no overlay, no input.
+- Needs admin because the game runs elevated.
+- Signatures move on patch; it fails closed and the save path still works.
+- Localhost only.
 
-- The server spawns `vendor/elden-ring-map/tools/live_memory.py`, which opens
-  `eldenring.exe` with **`PROCESS_VM_READ` only** and samples the player's
-  map-screen location (and world position for height) about 20 times a second.
-- On Windows it reads through `ReadProcessMemory`; on Linux it reads the
-  running Proton process's `/proc` entries.
-- It finds the game's structures by scanning for byte-signature patterns
-  (`CSMenuManImp`, `WorldChrMan`, …) rather than fixed offsets, so a game patch
-  usually breaks it rather than making it read the wrong thing.
-- It needs administrator rights, because Elden Ring itself runs elevated.
-- It is strictly additive: if Python is missing, the game is closed, you are
-  not an admin, or a patch moves the signatures, it logs once and the map
-  keeps working from the save file alone.
+If you do not know why you want it, leave it off.
 
-### What it does not do
+---
 
-- It **never writes** to game memory — read access only.
-- It never injects a DLL, never draws an overlay, never sends input, and never
-  calls into the game.
-- It never touches `ER0000.sl2`; the save path is a separate, read-only reader.
-- It makes no network calls. Samples go from Python to the local Node server
-  to your browser over localhost only.
+## Rooms
 
-### The anti-cheat risk
+| Room | Job |
+|---|---|
+| Reckoning | How this Tarnished entered the world |
+| Atlas | Where to walk, what locks, what is still on the ground |
+| Build lab | Whether the numbers are real |
+| Quests | Which line you are on, and what a tick would kill |
+| Codex | The warehouse |
+| Gideon | Ask it |
 
-Elden Ring ships **EasyAntiCheat (EAC)**, a kernel-level anti-cheat service
-launched by `start_protected_game.exe` for online play. EAC is deliberately
-not able to tell an honest read from a malicious one: any process that attaches
-to the game and reads its memory looks the same to it, so memory-reading tools
-of every kind — FPS unlockers, autosplitters, speedrun timers, this reader —
-carry a ban risk when they run alongside EAC. Enabling live mode while
-protected online play is running can put your account at risk.
+---
 
-> **Offline only.** Run `npm run map:live` only when EAC is not running — an
-> offline session, or a modded setup where you launch the game without
-> `start_protected_game.exe`. For normal play, use `npm run map`; progress
-> still updates on every save. If you don't understand the tradeoff, don't
-> enable it.
-
-## Why this map, not MapGenie
-
-| | Hosted wiki maps | EldenRingMap |
-|---|---|---|
-| Art | someone else's tiles | `71_maptile.tpfbhd` from your install |
-| Markers | hand-placed | MSB + ItemLotParam + BonfireWarpParam |
-| Progress | checkboxes | event flags in the save |
-| Live position | no | optional read-only process attach |
-| Legal | grey | generated files stay on your disk |
-
-We do not ship tiles or `markers.json`. Those are FromSoftware’s art and must
-be extracted locally. The vendor copy is code + paramdefs + the flag block table.
-
-## How the rewire works
-
-```
-game install ──extract_tiles / build_markers──► vendor/.../data + web/tiles
-ER0000.sl2  ──SaveReader + fs.watchFile──────► /api/state  /api/events
-                                                    │
-                          Vite /er-map proxy        │
-                                                    ▼
-                     All-Knowing  Character  ◄── EngineBridge
-                           │
-              Atlas iframe    Build lab    Quest graph
-```
-
-Contracts live in `src/lib/mapEngine.ts`. The engine snapshot’s `found[]`
-ids (`grace:…`, `boss:…`, item categories) become
-`discoveredGraces` / `defeatedBosses` / `collectedItems`. Eight stats come
-from the same slot walk EldenRingMap already does.
-
-Patches we made in the vendor tree (keep these if you pull upstream):
-
-- CORS on `/api/*` so the workspace can read the engine cross-origin
-- `?embed=1` hides EldenRingMap’s own sidebar
-- `OPTIONS` preflight
-
-Details: `docs/MAP-ENGINE.md` and their own `vendor/elden-ring-map/docs/HOW-IT-WORKS.md`.
-
-## Scope
-
-v1 worlds: base game + Shadow of the Erdtree + Tarnished Pack.
-Nightreign is a later campaign tab.
-
-Landed on top of the map engine: real attack-rating math ported from Thomas Clark's
-calculator and run on this repo's vendored 1.17 regulation data; a traversable
-quest/ending DAG with real lockout edges; a build-hunt checklist that pins the missing
-pieces of an OP/PvP kit; and a Codex backed by structured reference data (below).
-
-## Gideon and the optional LLM
-
-Gideon's planner is a deterministic router (`src/lib/gideon.ts`) that returns a
-`GideonAct`. When `VITE_GIDEON_API_KEY` is set, open-ended questions are answered
-by the optional **Meta Muse Spark 1.3 Contributor** model instead; lookups (a
-named ending, a warp, a build, "what is still available") stay on the router for
-speed and cost. Both paths return the same act shape, so the UI does not change.
-
-Set the key in `.env.local` (gitignored). `.env.example` lists every variable:
-
-```bash
-VITE_GIDEON_API_KEY=
-VITE_GIDEON_BASE_URL=https://api.meta.ai/v1
-VITE_GIDEON_MODEL=muse-spark-1.3-contributor
-```
-
-In dev the request goes through the Vite proxy (`/gideon-llm` → `https://api.meta.ai`)
-so the browser is not blocked by CORS; an explicit `VITE_GIDEON_BASE_URL` bypasses
-the proxy. The client tries `POST {base}/chat/completions` first and falls back to
-`POST {base}/responses` on a 404.
-
-The model only sees a grounding pack built from this repo's own structured data
-(`stillAvailable`, `planRoute`, `searchSync`, a bounded catalog slice). Every
-`factId` / `buildId` / `goal` it returns is validated against that pack before it
-is used, and any sentence naming an id outside the catalog/aliases is stripped; an
-invented id rejects the turn and falls back to the router. With no key configured
-the app behaves exactly as before — router only, with one informational log line.
-
-**Client-side key tradeoff.** This is a local-first PWA with no backend, so the
-browser calls the provider directly and the key is present in client code at
-runtime. That is accepted because the app runs on its owner's machine and is not a
-public multi-tenant service. If the distribution model ever changes, move the call
-behind a server proxy and stop shipping the key to the client.
-
-## Build lab and kit hunt
-
-The Build lab sets stats, level and loadout from the OP/PvP kits. Picking a kit also shows its
-**hunt list**: `src/lib/buildHunt.ts` resolves each `need[]` id and kit slot through `loot.ts`, the
-catalog and the generated alias plane, splits them into have/missing, and pins the missing pieces
-that already have a loot row on the existing leftover/coords frames — no third pin system. "Show on
-map" adds the piece to the watchlist, "Mark" ticks it. Clicking a kit only sets stats and loadout;
-it never marks the gear collected by itself. Attack rating is the only number taken from regulation:
-the preview does not fabricate poise or equip load (Task 71).
-
-## Codex reference data
-
-Codex search also matches structured reference data pulled from the FanAPI
-(`public/sourced/open/fanapi/*.json`, refreshed by `node scripts/ingest-fanapi.mjs`): armor poise
-and negation, talisman effects, spell cost/slots/requirements, Ash of War skill, spirit-ash FP/HP,
-boss HP/drops, item effects, class stats, NPC locations and more. Only structured fields are
-stored — no article bodies or images, and weapon/shield attack numbers are deliberately omitted so
-attack rating stays on the in-repo regulation data. Base-game only; the FanAPI predates Shadow of
-the Erdtree.
-
-## Sources
-
-Facts, locations-in-prose, build ideas and one-line citations may come from anywhere — in-repo
-dumps, your run, Fextralife, wiki.gg, YouTube, Discord, patch notes. Param numbers, AR, soft caps,
-item names-as-ids and pin coordinates come only from the in-repo regulation / `names.json` /
-`coords.json` / `loot.ts` / catalog, and lat/lng, event flags and lockouts are never invented. Full
-policy: `HANDOFF-CLAUDE.md` §4.
-
-## Rules
-
-- Save is read-only. No editor in this product.
-- Live memory is opt-in, read-only, and offline-only. Default `npm run map`
-  never opens the game process; `npm run map:live` must not run alongside EAC.
-- Do not commit `web/tiles`, `data/markers.json`, `data/items.json`.
-- Non-commercial fan project. FromSoftware / Bandai Namco own the work.
+*All things conjoined.*
