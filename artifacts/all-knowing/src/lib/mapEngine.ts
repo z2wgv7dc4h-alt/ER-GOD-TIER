@@ -3,10 +3,11 @@ import { emptyStats } from '../data/seed'
 import { canonicalFactId } from './aliases'
 import { REGULATION_STAMP } from './regulation'
 
-/** Dev: Vite proxies /er-map → :8099. Prod: talk to the map server directly. */
+/** Dev: our own Vite server serves the engine at /engine (no separate process).
+ *  Prod: a locally-run engine, or the same static route on the host. */
 export const MAP_ENGINE_BASE =
   import.meta.env.VITE_MAP_ENGINE ??
-  (import.meta.env.DEV ? '/er-map' : 'http://127.0.0.1:8099')
+  (import.meta.env.DEV ? '/engine' : 'http://127.0.0.1:8099')
 
 export type EngineMarker = {
   id: string

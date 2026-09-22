@@ -111,6 +111,18 @@ and they already solved it.
 
 ## All-Knowing additions to the engine
 
+**The engine now runs inside our own dev/preview server** — no second process, no
+`npm run map`. The tiled map is static (`web/` + `web/tiles/` + a markers JSON), so
+`vite.config.ts`'s `all-knowing-map-engine` plugin serves `/engine/**` and answers the
+`/api/{markers,state,events,saves}` the engine's frontend calls (markers from the
+generated `data/*.json`; state/saves empty). `MAP_ENGINE_BASE` is `/engine` in dev, so the
+Atlas iframe and the marker bridge are same-origin. `npm run dev` alone shows the live
+tiled map — on the phone too, because the PC serves it over the LAN.
+
+Only the **live save reader and live player dot** need the Node engine (`node
+server/index.js`, `npm run map`) — those are PC-only and are *not* required for the map.
+The browser already parses `.sl2` itself (`src/lib/save.ts`).
+
 The engine is absorbed as a plain runtime dependency here: `erlib` lives under `scripts/erlib/`
 (our extractors import it; the engine tools carry a one-line path shim), the upstream repo shell
 (README/`Setup.bat`/docs/`package.json`) is gone, and `server/package.json` marks the runtime CJS so

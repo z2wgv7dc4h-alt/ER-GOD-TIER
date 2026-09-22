@@ -82,6 +82,7 @@ describe('service worker cache strategy', () => {
     expect(pwaOptions.workbox?.navigateFallback).toBe('/index.html')
     const deny = pwaOptions.workbox?.navigateFallbackDenylist ?? []
     expect(deny.some((re) => re instanceof RegExp && re.test('/sourced/guide/catalog.json'))).toBe(true)
+    expect(deny.some((re) => re instanceof RegExp && re.test('/engine/api/events'))).toBe(true)
     expect(deny.some((re) => re instanceof RegExp && re.test('/er-map/api/events'))).toBe(true)
   })
 
@@ -153,8 +154,10 @@ describe('service worker cache strategy', () => {
 
   it('never caches the live map engine (offline detection must see real failures)', () => {
     expect(ENGINE_URL_PATTERN.test('http://127.0.0.1:8099/api/state')).toBe(true)
+    expect(ENGINE_URL_PATTERN.test('http://localhost:5174/engine/api/state')).toBe(true)
     expect(ENGINE_URL_PATTERN.test('http://localhost:5173/er-map/api/events')).toBe(true)
     expect(ruleFor('http://127.0.0.1:8099/api/state')?.handler).toBe('NetworkOnly')
+    expect(ruleFor('http://localhost:5174/engine/api/events')?.handler).toBe('NetworkOnly')
     expect(ruleFor('http://localhost:5173/er-map/api/events')?.handler).toBe('NetworkOnly')
   })
 })

@@ -14,7 +14,7 @@
  *   packs) is cached lazily at runtime: JSON stale-while-revalidate, media
  *   cache-first. This avoids forcing the full ~32 MB data plane (and the ~63 MB
  *   map tile pyramid the engine serves) onto a phone on first load.
- * - The EldenRingMap engine (`/er-map/*` in dev, `127.0.0.1:8099` in prod) is
+ * - The EldenRingMap engine (`/engine/*` in dev, `127.0.0.1:8099` in prod) is
  *   deliberately NetworkOnly. Live save sync needs the engine, and Task 06's
  *   offline detection must keep seeing real failures instead of a cached response.
  * - Fonts are self-hosted under `/fonts/*.woff2` (Task 58) and precached by the
@@ -27,7 +27,7 @@ export const SOURCED_DATA_CACHE = 'ak-sourced-data'
 export const SOURCED_MEDIA_CACHE = 'ak-sourced-media'
 
 /** The map engine must never be served from a cache. Matches dev proxy + prod base. */
-export const ENGINE_URL_PATTERN = /(\/er-map\/)|(127\.0\.0\.1:8099)/
+export const ENGINE_URL_PATTERN = /(\/engine\/)|(\/er-map\/)|(127\.0\.0\.1:8099)/
 
 /** Small JSON precached on install so first-load-offline still shows real data. */
 export const PRECACHE_DATA = [
@@ -56,7 +56,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
     // cached lazily. Never sweep the whole data plane into the precache manifest.
     globIgnores: ['**/sourced/**'],
     navigateFallback: '/index.html',
-    navigateFallbackDenylist: [/^\/er-map\//, /^\/sourced\//, /^\/api\//],
+    navigateFallbackDenylist: [/^\/engine\//, /^\/er-map\//, /^\/sourced\//, /^\/api\//],
     cleanupOutdatedCaches: true,
     runtimeCaching: [
       {
