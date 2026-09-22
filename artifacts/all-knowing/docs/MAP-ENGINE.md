@@ -85,7 +85,8 @@ Python 3.9, and on Linux an Oodle shim against `oo2core_6_win64.dll`.
 ```
 vendor/elden-ring-map/Setup.bat          # Windows
 vendor/elden-ring-map/setup-linux.sh     # Proton
-npm run map                              # from All-Knowing root
+npm start                                # from All-Knowing root: engine + Vite together
+# or just the engine:  npm run map       (npm run dev runs Vite separately)
 ```
 
 After a game patch, run setup again. Cache invalidation is their problem

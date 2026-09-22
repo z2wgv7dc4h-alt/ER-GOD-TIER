@@ -66,7 +66,7 @@ Rooms: Reckoning, Atlas, Build lab, Quest graph, Codex
 `App.tsx` is a god file (~27k). Split rooms when you touch UI.
 
 **Vendor**
-`vendor/elden-ring-map` — egormagurin/EldenRingMap. `npm run map`. Tiles/markers from a **local game install**, not shipped.
+`vendor/elden-ring-map` — egormagurin/EldenRingMap. `npm start` / `npm run map`. Tiles/markers from a **local game install**, not shipped.
 
 ---
 
@@ -419,6 +419,29 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
   unmatched counts: 360/418 warps and 79/215 bosses have no slug and are reported, never dropped.
   `searchSync("church of elleh")` / `("elleh")` both hit `grace:elleh`.
 
+**Task 56 — one-command start + honest engine banner** (landed after 55):
+
+- `package.json` gains `start` (`node scripts/dev-stack.mjs`: map engine + Vite together,
+  cross-platform, no process-manager dep) and `start:live` (same + `--live-memory`, printing the
+  existing EAC warning to the terminal first). The supervisor keeps Vite alive on the static plates
+  if the engine is not set up or stops.
+- `engineBanner()` / `engineChipLabel()` in `src/lib/mapEngine.ts`: **connected** / **offline —
+  using static plates** / **live-memory on only when the API reports `state.live.enabled`**.
+  Surfaced in the Atlas side panel and as a compact rail chip. Offline copy never says "error";
+  live memory stays off by default.
+
+**Task 58 — self-hosted fonts + real-phone PWA offline** (landed after 56):
+
+- Cinzel + Source Sans 3 (both OFL) are self-hosted: 6 woff2 under `public/fonts/` (latin +
+  latin-ext; both families are variable, so one file per family/style/subset), declared with
+  `@font-face { font-display: swap }` in `src/index.css`. The `<link>`/`preconnect` to Google
+  Fonts are gone from `index.html`; no cross-origin font request at runtime. OFL notice in
+  `THIRD_PARTY_NOTICES.md`.
+- Service worker: the cross-origin Google Fonts runtime rules were removed; woff2 is precached by
+  the existing output glob (precache 61 → 67 entries) while `**/sourced/**` stays runtime-only.
+- The Help sheet gained an "Install / available offline" note. Verified with `vite preview` + a
+  node fetch (headless), not a physical phone.
+
 ---
 
 ## 7. Product ideas still valid (not built)
@@ -470,8 +493,9 @@ From Wyatt, keep on the roadmap:
 ```
 cd artifacts/all-knowing
 npm install
-npm run dev          # Vite PWA
-npm run map          # EldenRingMap :8099
+npm start            # map engine (:8099) + Vite PWA together — Task 56
+# two terminals still fine:  npm run map  |  npm run dev
+# npm start:live / npm run map:live  → optional live-memory, prints the EAC warning first
 ```
 
 Wyatt is in Perth, PS5-primary, wants this to feel inevitable for a mid-run Tarnished holding a phone next to the TV. Optimize for that, then PC niceties.

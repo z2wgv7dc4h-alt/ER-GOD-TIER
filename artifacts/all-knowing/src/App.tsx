@@ -2,6 +2,8 @@ import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { demoCharacter } from './data/seed'
 import {
   characterFromEngine,
+  engineBanner,
+  engineChipLabel,
   fetchEngineMarkers,
   shownEngineCharacter,
   subscribeEngine,
@@ -60,6 +62,18 @@ function EngineBridge() {
   return null
 }
 
+/** Compact rail chip: engine live / connecting / plates, plus live-memory when the API says so. */
+function EngineChip() {
+  const { engineStatus, engineState } = useWorkspace()
+  const banner = engineBanner(engineStatus, engineState)
+  return (
+    <div className="opts" style={{ margin: '6px 0' }} title={banner.detail}>
+      <span className={banner.tone === 'ok' ? 'chip on' : 'chip'}>map: {engineChipLabel(engineStatus)}</span>
+      {banner.liveMemory && <span className="warn chip">live-memory on</span>}
+    </div>
+  )
+}
+
 function AppShell() {
   const w = useWorkspace()
   useHotkeys()
@@ -97,6 +111,7 @@ function AppShell() {
           </div>
         </div>
         <ProfileSwitcher />
+        <EngineChip />
         <nav className="nav">
           {modules.map((m) => (
             <button key={m.id} className={w.module === m.id ? 'active' : ''} onClick={() => openRoom(m.id)}>

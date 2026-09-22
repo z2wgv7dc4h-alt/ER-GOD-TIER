@@ -155,6 +155,15 @@ Codex fetches it, `src/knowledge/completion.ts` derives `fieldHunts` from it, an
 
 `src/knowledge/{catalog,endings,storylines,loot,builds,collectibles,completion,gates,inferChains,missables}.ts`
 
+## Self-hosted fonts (Task 58)
+
+`public/fonts/*.woff2` — 6 files (~173 KB): Cinzel and Source Sans 3, both SIL OFL 1.1, latin +
+latin-ext subsets. Both families ship as variable fonts, so one file per family/style/subset
+(`cinzel-normal-latin`, `source-sans-3-normal-latin`, `source-sans-3-italic-latin-ext`, …) serves
+the weights declared in `src/index.css` (`@font-face`, `font-display: swap`). No runtime request to
+Google; the service worker precaches the woff2 via `globPatterns`. Attribution in
+`THIRD_PARTY_NOTICES.md`.
+
 ## Cosmetic display (not combat)
 
 - `src/knowledge/npc-display.ts` — player-model NPC level/stat allocation from the EanNewton

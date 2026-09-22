@@ -17,15 +17,14 @@
  * - The EldenRingMap engine (`/er-map/*` in dev, `127.0.0.1:8099` in prod) is
  *   deliberately NetworkOnly. Live save sync needs the engine, and Task 06's
  *   offline detection must keep seeing real failures instead of a cached response.
- * - Google Fonts are runtime-cached so the display serif survives offline.
+ * - Fonts are self-hosted under `/fonts/*.woff2` (Task 58) and precached by the
+ *   output glob, so there is no cross-origin font request to cache at runtime.
  */
 
 import type { VitePWAOptions } from 'vite-plugin-pwa'
 
 export const SOURCED_DATA_CACHE = 'ak-sourced-data'
 export const SOURCED_MEDIA_CACHE = 'ak-sourced-media'
-export const FONTS_STYLES_CACHE = 'ak-fonts-styles'
-export const FONTS_WEBFONTS_CACHE = 'ak-fonts-webfonts'
 
 /** The map engine must never be served from a cache. Matches dev proxy + prod base. */
 export const ENGINE_URL_PATTERN = /(\/er-map\/)|(127\.0\.0\.1:8099)/
@@ -80,24 +79,6 @@ export const pwaOptions: Partial<VitePWAOptions> = {
           cacheName: SOURCED_MEDIA_CACHE,
           cacheableResponse: { statuses: [0, 200] },
           expiration: { maxEntries: 300, maxAgeSeconds: 60 * 60 * 24 * 90 },
-        },
-      },
-      {
-        urlPattern: /^https:\/\/fonts\.googleapis\.com\//,
-        handler: 'StaleWhileRevalidate',
-        options: {
-          cacheName: FONTS_STYLES_CACHE,
-          cacheableResponse: { statuses: [0, 200] },
-          expiration: { maxEntries: 10 },
-        },
-      },
-      {
-        urlPattern: /^https:\/\/fonts\.gstatic\.com\//,
-        handler: 'CacheFirst',
-        options: {
-          cacheName: FONTS_WEBFONTS_CACHE,
-          cacheableResponse: { statuses: [0, 200] },
-          expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 365 },
         },
       },
     ],

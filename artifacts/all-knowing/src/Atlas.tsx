@@ -5,6 +5,7 @@ import { applyFacts, clearFact, denyFacts } from './lib/infer'
 import { mapIcons } from './lib/sourcePack'
 import {
   MAP_ENGINE_BASE,
+  engineBanner,
   markerKind,
   markerName,
 } from './lib/mapEngine'
@@ -38,6 +39,7 @@ export function AtlasWorkspace() {
   const w = useWorkspace()
   const ps5 = w.character.platform === 'ps5' || w.character.platform === 'both'
   const engineLive = !ps5 && (w.engineStatus === 'live' || w.engineMarkers.length > 0)
+  const banner = engineBanner(w.engineStatus, w.engineState)
   const [world, setWorld] = useState<AtlasWorld>(
     w.character.answers.dlc === 'sote' ? 'shadow' : 'overworld',
   )
@@ -253,13 +255,7 @@ export function AtlasWorkspace() {
           </div>
         </div>
         <div className="kicker">
-          {ps5
-            ? 'PS5 atlas · warp list + pins, not a save'
-            : engineLive
-              ? `egormagurin engine · ${w.engineMarkers.length || w.engineState?.markerCount || 0} markers`
-              : w.engineStatus === 'connecting'
-                ? 'Waiting for map engine on :8099'
-                : 'PC atlas · engine offline'}
+          {ps5 ? 'PS5 atlas · warp list + pins, not a save' : banner.label}
         </div>
 
         <div className="legend-pins">
@@ -310,11 +306,11 @@ export function AtlasWorkspace() {
         </div>
         <p className="note">{worldMeta?.hint}</p>
 
-        {!ps5 && !engineLive && (
+        {!ps5 && (
           <p className="note">
-            {w.engineStatus === 'connecting'
-              ? 'Map engine is not answering on :8099 yet. This is the seed atlas until it does.'
-              : 'Map engine offline — showing the seed atlas. Start it with npm run map against a local game install.'}
+            {banner.detail}
+            {engineLive && ` · ${w.engineMarkers.length || w.engineState?.markerCount || 0} markers`}
+            {banner.liveMemory && ' · live-memory on (read-only, offline only)'}
           </p>
         )}
 

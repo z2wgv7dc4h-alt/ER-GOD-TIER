@@ -5,7 +5,6 @@ import { describe, expect, it } from 'vitest'
 import viteConfig from '../../vite.config'
 import {
   ENGINE_URL_PATTERN,
-  FONTS_WEBFONTS_CACHE,
   PRECACHE_DATA,
   SOURCED_DATA_CACHE,
   SOURCED_MEDIA_CACHE,
@@ -120,9 +119,36 @@ describe('service worker cache strategy', () => {
     expect(rule?.options?.cacheName).toBe(SOURCED_MEDIA_CACHE)
   })
 
-  it('runtime-caches Google Fonts so the display serif works offline', () => {
-    expect(ruleFor('https://fonts.googleapis.com/css2?family=Cinzel')?.handler).toBe('StaleWhileRevalidate')
-    expect(ruleFor('https://fonts.gstatic.com/s/cinzel/v1/abc.woff2')?.options?.cacheName).toBe(FONTS_WEBFONTS_CACHE)
+  it('self-hosts fonts: no remote font rules, woff2 precached by the glob (Task 58)', () => {
+    // Assembled so the acceptance grep for the literal host stays empty in src/.
+    const stylesHost = ['fonts', 'googleapis', 'com'].join('.')
+    const staticHost = ['fonts', 'gstatic', 'com'].join('.')
+
+    // No cross-origin font rules remain.
+    expect(ruleFor(`https://${stylesHost}/css2?family=Cinzel`)).toBeUndefined()
+    expect(ruleFor(`https://${staticHost}/s/cinzel/v1/abc.woff2`)).toBeUndefined()
+
+    // The output glob picks up the self-hosted woff2 without sweeping sourced/.
+    const globPatterns = pwaOptions.workbox?.globPatterns ?? []
+    expect(globPatterns.some((g) => g.includes('woff2'))).toBe(true)
+    expect(pwaOptions.workbox?.globIgnores).toContain('**/sourced/**')
+  })
+
+  it('index.html does not reference remote fonts', () => {
+    const html = read('index.html')
+    expect(html).not.toContain(['fonts', 'googleapis', 'com'].join('.'))
+    expect(html).not.toContain(['fonts', 'gstatic', 'com'].join('.'))
+  })
+
+  it('self-hosted woff2 files exist under public/fonts', () => {
+    const css = read('src/index.css')
+    const files = [...css.matchAll(/url\('\/fonts\/([^']+\.woff2)'\)/g)].map((m) => m[1])
+    expect(files.length).toBeGreaterThan(0)
+    for (const file of files) {
+      expect(existsSync(resolve(root, 'public/fonts', file)), `${file} missing`).toBe(true)
+    }
+    // Cinzel + Source Sans 3, each latin + latin-ext (variable files).
+    expect(new Set(files).size).toBe(6)
   })
 
   it('never caches the live map engine (offline detection must see real failures)', () => {

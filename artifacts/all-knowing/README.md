@@ -9,29 +9,39 @@ save watched on disk, progress pushed over SSE.
 
 ## What you run
 
-Two processes on your machine. Nothing is uploaded.
+One command starts both the local map engine and the workspace. Nothing leaves
+your machine.
 
 ```bash
-# 1. once per game patch, from a PC that has Elden Ring installed
+npm install    # once
+npm start      # map engine (:8099) + workspace (:5173), together
+```
+
+Open the Vite URL printed in the terminal. The Atlas embeds the live map
+(`/?embed=1`); stats, found flags and marker lists flow into Build lab and Quests
+through the one `Character` object.
+
+If the map engine is not set up (or is simply not running), the workspace still
+works: the Atlas falls back to the static plates and the banner says so. That is
+expected — especially on a phone. The interface — shell, styles and the fonts
+(which are self-hosted) — is cached on first load, so you can install it from the
+browser menu (“Install” / “Add to Home Screen”) and reopen it with no connection.
+
+One-time, and again after a game patch, generate tiles and markers from a PC that
+has Elden Ring installed:
+
+```bash
 cd vendor/elden-ring-map
 # Windows: Setup.bat
 # Linux:   ./setup-linux.sh
-
-# 2. map engine (watches ER0000.sl2, serves tiles + /api/*)
-npm run map          # from this repo root → http://127.0.0.1:8099
-
-# 3. workspace
-npm install
-npm run dev          # Vite on :5173, proxies /er-map → :8099
 ```
 
-Open the Vite URL. The Atlas pane embeds the live map (`/?embed=1`). Stats,
-found flags, and marker lists flow into Build lab and Quests through one
-`Character` object.
+Prefer two terminals? `npm run map` and `npm run dev` still work individually
+(`map:live` is the live-memory variant of the engine).
 
-`npm run map:live` is an **optional** add-on that reads the running game's
-memory for a live player dot. It is **off by default** and carries real
-anti-cheat risk — read [Live memory mode](#live-memory-mode--read-this-before-you-enable-it)
+`npm start:live` / `npm run map:live` is an **optional** add-on that reads the
+running game's memory for a live player dot. It is **off by default** and carries
+real anti-cheat risk — read [Live memory mode](#live-memory-mode--read-this-before-you-enable-it)
 below before you use it.
 
 ## Live memory mode — read this before you enable it

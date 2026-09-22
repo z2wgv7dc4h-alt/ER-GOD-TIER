@@ -95,6 +95,12 @@ export function HelpSheet({ onClose }: { onClose: () => void }) {
           Everything here is live — if it is listed, it works. Nothing is uploaded; your
           character never leaves this device.
         </p>
+        <p className="note" style={{ marginTop: 8 }}>
+          Install / available offline: use your browser's “Install” or “Add to Home
+          Screen”, and the app keeps working with no connection — the shell, fonts and
+          the small critical data set are cached on first load. The live map still needs
+          the local engine; without it the atlas just draws the static plates.
+        </p>
       </div>
     </div>
   )

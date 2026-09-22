@@ -47,6 +47,10 @@ Packet `*.all-knowing.json` — character only, no shots.
 See `src/lib/hosted.ts`. Cached under `public/sourced/checklists/`.
 Maps under `public/sourced/maps/`. Refresh with raw GitHub / fanapi; do not scrape MapGenie tiles.
 
+Fonts (Cinzel + Source Sans 3, both OFL) are self-hosted under `public/fonts/` and declared with
+`@font-face` in `src/index.css`; the service-worker precache includes them, so the interface works
+offline with no cross-origin font request. Dev startup is `npm start` (map engine + Vite together).
+
 ## Refused
 
 Uploads, save edits, bundling FromSoftware archives, inventing AR, Nightreign in v1.

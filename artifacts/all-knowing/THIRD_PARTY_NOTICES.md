@@ -248,3 +248,16 @@ SOFTWARE.
   files) stay the upstream `soulsmods/Paramdex` ER/Names dump — post-SotE, pre-Tarnished-Pack. Its
   names are DSMapStudio-resolved, not an FMG row-id join, so it is not regenerated here.
 
+## Cinzel + Source Sans 3 — self-hosted webfonts (Task 58)
+
+- **Sources:** Google Fonts — Cinzel (Natanael Gama / NDISCOVER) and Source Sans 3 (Paul D. Hunt /
+  Adobe), https://fonts.google.com.
+- **License:** SIL Open Font License 1.1 (OFL-1.1). Only OFL families are shipped.
+- **Used by:** `public/fonts/*.woff2`, declared via `@font-face` in `src/index.css`.
+- **What was taken:** six woff2 files (latin + latin-ext) covering Cinzel 400/600/700 and Source
+  Sans 3 400/500/600 plus italic 400. Both families are variable fonts, so one file per
+  family/style/subset serves the weight range.
+- **What was changed:** subset selection only — the woff2 are used verbatim and Google's
+  `unicode-range` is preserved. There is no request to Google at runtime; the files are
+  precached by the service worker (Task 58).
+

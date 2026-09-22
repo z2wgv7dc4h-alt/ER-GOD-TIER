@@ -4,6 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "node scripts/dev-stack.mjs",
+    "start:live": "node scripts/dev-stack.mjs --live-memory",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",

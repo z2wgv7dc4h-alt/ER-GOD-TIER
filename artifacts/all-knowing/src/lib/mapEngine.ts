@@ -48,6 +48,53 @@ export type EngineState = {
 
 export type EngineStatus = 'offline' | 'connecting' | 'live'
 
+/**
+ * Honest, non-alarming copy for the engine state. Offline is the normal state on a
+ * phone (the Atlas draws the static plates), so it is never worded as an error.
+ * Live-memory is only surfaced when the API actually reports it enabled.
+ */
+export type EngineBanner = {
+  tone: 'ok' | 'idle'
+  label: string
+  detail: string
+  liveMemory: boolean
+}
+
+export function engineBanner(status: EngineStatus, state: EngineState | null): EngineBanner {
+  const liveMemory = state?.live?.enabled === true
+  if (status === 'live') {
+    return {
+      tone: 'ok',
+      label: 'Map engine · connected',
+      detail: liveMemory
+        ? 'reading ER0000.sl2 and the live player position (read-only, offline only)'
+        : 'reading ER0000.sl2 and serving the live map',
+      liveMemory,
+    }
+  }
+  if (status === 'connecting') {
+    return {
+      tone: 'idle',
+      label: 'Map engine · connecting',
+      detail: 'looking for the local map server',
+      liveMemory,
+    }
+  }
+  return {
+    tone: 'idle',
+    label: 'Offline — using static plates',
+    detail: 'start the engine with npm start for the live map; on a phone the plates are expected',
+    liveMemory,
+  }
+}
+
+/** Compact rail text for the same state. */
+export function engineChipLabel(status: EngineStatus): string {
+  if (status === 'live') return 'engine live'
+  if (status === 'connecting') return 'engine…'
+  return 'plates'
+}
+
 export function markerName(m: EngineMarker) {
   return m.names?.en || m.name || m.id
 }
