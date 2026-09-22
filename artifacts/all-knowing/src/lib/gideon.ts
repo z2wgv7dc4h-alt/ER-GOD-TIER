@@ -37,6 +37,7 @@ import { isDialogueAsk, quoteFor } from './dialogueQuote'
 import { loadDialogueOwners, type DialogueOwners } from './dialogueOwners'
 import { loadGameTextTable } from './gameText'
 import { loadNpcPlacements, type NpcPlacement } from './npcPlacements'
+import { loadMedusaRoute, findMedusaStep, medusaQuests, type MedusaQuest } from './medusaRoute'
 import type { Character, ModuleId } from '../types'
 
 export type GideonAct = {
@@ -500,6 +501,7 @@ export function askGideonRouter(
   combat: BossCombat[] = cachedBossCombat(),
   dialogue?: GideonDialogue,
   placements?: NpcPlacement[],
+  medusaSteps?: MedusaQuest[],
 ): GideonAct {
   const q = question.toLowerCase().trim()
   if (!q) return { say: 'Name an ending, or ask what to do next.' }
@@ -905,6 +907,19 @@ export function askGideonRouter(
     }
   }
 
+  // Medusa route steps: a specific step (title/summary/directions) for a
+  // "route/walkthrough/medusa" question, before the coarse 100% progress answer.
+  if (medusaSteps && /\b(medusa|walkthrough|route)\b/.test(q)) {
+    const hits = findMedusaStep(question, medusaSteps, 1)
+    if (hits.length) {
+      const s = hits[0]
+      return {
+        say: `${s.actName} · ${s.chapterName} — ${s.title}${s.type ? ` (${s.type})` : ''}.\n${s.summary}${s.directions ? `\n${s.directions}` : ''}`,
+        module: 'codex',
+      }
+    }
+  }
+
   if (/\b100\s*%|\b(completionist|everything in|full clear|medusa)\b/.test(q)) {
     const done = summarize(character)
     const pct = done.catalog ? Math.round((done.known / done.catalog) * 100) : 0
@@ -1084,6 +1099,7 @@ export function isFastLookup(
   memory: GideonMemory = {},
   combat: BossCombat[] = cachedBossCombat(),
   placements?: NpcPlacement[],
+  medusaSteps?: MedusaQuest[],
 ): boolean {
   const q = question.toLowerCase().trim()
   if (!q) return true
@@ -1117,6 +1133,9 @@ export function isFastLookup(
   if (/\b(where|find|locate)\b/.test(q) && matchNpc(q)) return true
   // ...or from the placed-NPC dataset when the name is not authored.
   if (/\b(where|find|locate)\b/.test(q) && placements?.some((p) => p.dialogue && q.includes(p.name.toLowerCase()))) return true
+
+  // A Medusa walkthrough step is a deterministic answer.
+  if (medusaSteps && /\b(medusa|walkthrough|route)\b/.test(q) && findMedusaStep(question, medusaSteps).length) return true
 
   // A verbatim-dialogue ask is answered from the game's own attributed lines.
   if (isDialogueAsk(q)) return true
@@ -1180,8 +1199,12 @@ export async function askGideon(
   if (/\b(where|find|locate)\b/i.test(question)) {
     placements = await loadNpcPlacements().then((d) => d.placements).catch(() => undefined)
   }
-  const router = askGideonRouter(question, character, memory, combat, dialogue, placements)
-  if (isFastLookup(question, memory, combat ?? cachedBossCombat(), placements)) return router
+  let medusaSteps: MedusaQuest[] | undefined
+  if (/\b(medusa|walkthrough|route)\b/i.test(question)) {
+    medusaSteps = await loadMedusaRoute().then((d) => medusaQuests(d)).catch(() => undefined)
+  }
+  const router = askGideonRouter(question, character, memory, combat, dialogue, placements, medusaSteps)
+  if (isFastLookup(question, memory, combat ?? cachedBossCombat(), placements, medusaSteps)) return router
 
   if (!hasGideonKey()) {
     if (!warnedNoKey) {

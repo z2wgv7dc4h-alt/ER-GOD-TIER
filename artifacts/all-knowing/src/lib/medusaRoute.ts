@@ -82,3 +82,36 @@ export function matchMedusa(query: string, rows: MedusaQuest[], limit = 12): Med
     .filter((r) => (r.title + ' ' + r.summary + ' ' + r.directions + ' ' + r.chapterName).toLowerCase().includes(q))
     .slice(0, limit)
 }
+
+const STOP = new Set([
+  'medusa', 'route', 'walkthrough', 'step', 'steps', 'guide', 'full', '100', 'for', 'the', 'and',
+  'what', 'where', 'how', 'does', 'does', 'do', 'i', 'to', 'a', 'an', 'of', 'in', 'on', 'next',
+  'after', 'before', 'is', 'are', 'get', 'go', 'about', 'tell', 'me', 'say', 'says',
+])
+
+/**
+ * Find the walkthrough step a free-text question is about, by scoring the
+ * significant query words against each step's title (weighted) and body. Used
+ * for "medusa route for X" / "where do I go for X" style asks.
+ */
+export function findMedusaStep(text: string, rows: MedusaQuest[], limit = 3): MedusaQuest[] {
+  const words = text
+    .toLowerCase()
+    .split(/[^a-z0-9']+/)
+    .filter((w) => w.length >= 3 && !STOP.has(w))
+  if (words.length === 0) return []
+  const scored = rows
+    .map((s) => {
+      const title = s.title.toLowerCase()
+      const body = (s.title + ' ' + s.summary + ' ' + s.directions + ' ' + s.chapterName).toLowerCase()
+      let score = 0
+      for (const w of words) {
+        if (title.includes(w)) score += 2
+        else if (body.includes(w)) score += 1
+      }
+      return { s, score }
+    })
+    .filter((x) => x.score > 0)
+    .sort((a, b) => b.score - a.score)
+  return scored.slice(0, limit).map((x) => x.s)
+}
