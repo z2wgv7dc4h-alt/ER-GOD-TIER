@@ -1271,3 +1271,10 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
 }
 /* Roomier tap target for chips on touch. */
 .chip { min-height: 34px; }
+
+
+/* Fixed shell: inner panes scroll, the window itself never does (no bounce on touch). */
+body { overflow: hidden; overscroll-behavior: none; }
+.app { height: 100dvh; }
+.stage, .map-stage, .atlas { overscroll-behavior: contain; }
+.side, .guide, .codex-wrap, .panel, .split, .rail { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
