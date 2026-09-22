@@ -182,6 +182,21 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
               <button type="button" className="chip" onClick={doneNow}>Done</button>
             )}
           </div>
+          {header.factId && (
+            <>
+              <button
+                type="button"
+                className="chip"
+                onClick={() => {
+                  w.setSelectedMarkerId(header.factId!)
+                  w.setModule(targetModule(header.factId!))
+                }}
+              >
+                Open {labelOf(header.factId)}
+              </button>
+              <Related id={header.factId} />
+            </>
+          )}
         </div>
       ) : (
         <p className="note">No beat yet. Ask what is still available.</p>
