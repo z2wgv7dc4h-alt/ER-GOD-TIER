@@ -35,6 +35,16 @@ Did not take:
 | `POST /api/check` | manual override (local user-state.json) |
 | `GET /?embed=1` | map canvas without their sidebar |
 
+`?embed=1` hides `#sidebar` entirely, which also hides every control that used to live inside it
+— the world/master switcher (Underground, Realm of Shadow, etc.) and the ~50 marker-category
+filter checkboxes both turned out to be silently unreachable this way, not broken. Both got a
+floating, embed-mode-only copy (`#embed-layer-buttons`, `#embed-categories`) added directly to
+`web/js/app.js`/`index.html`/`css/app.css`, generalizing the functions that used to populate one
+sidebar element by id (`buildLayerButtons()`, `buildCategories()`) to populate every element
+sharing a class instead. Task 43 (`docs/tasks/43-embed-mode-control-audit.md`) is queued to check
+the rest of `#sidebar` for the same pattern (search box, options checkboxes, save picker) rather
+than waiting for the next one to get reported.
+
 Marker ids are stable enough to key Character fields: `grace:{row}`, `boss:{row}`.
 
 Character snapshot fields we map:

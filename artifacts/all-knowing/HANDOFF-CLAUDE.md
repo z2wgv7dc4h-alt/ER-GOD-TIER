@@ -315,6 +315,35 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 - **UX/mobile**: Task 26 shipped real mobile-first layout (bottom tab bar, map 73-77% of screen at <700px). Task 30 surfaced multi-profile switching in the rail. Task 31 made every real shortcut/gesture discoverable in-app. Task 32 added packet diff surfacing + command palette source grouping. Task 33 bound leftovers/watchlist to a toggleable Atlas layer.
 - **Infrastructure**: Task 28 added installable offline PWA (service worker + lazy runtime cache). Task 34 added DLC-aware interview starts + per-line bulk warp-list matching. Task 35 resolved plan steps against acceptable dump ids (fixes 5 stalling questline beats). Task 37 consolidated field-hunt data into one canonical source (fixes 3-dialect id drift). Task 38 documented live-memory / EAC caution accurately. Task 39 added real cross-linking index between items, bosses, quests, locations.
 
+**Task 41 + direct fixes** (landed after the Task 21–40 batch, same review standard):
+
+- Task 41 ingested gathering nodes (`public/sourced/open/gathering-nodes.json`, ~21.8k real AEG
+  placements) into `src/lib/gatheringNodes.ts`, surfaced in the Codex. Its own world-classification
+  heuristic was wrong (guessed area 60 was "Ashen Capital" — actually the base-game overworld,
+  65% of all nodes mislabeled) and was corrected by Claude before merge, cross-checked against
+  this repo's own established `m60`/`m61` world-tile grid architecture; no area is claimed
+  "ashen" without real evidence.
+- Fixed a latent CI-breaking bug in `regulation.test.ts`: a runtime `if (existsSync(...))` around
+  an `it()` call left the suite with zero registered tests on any fresh checkout (which never has
+  the gitignored, game-derived marker file) — switched to `it.skipIf()`.
+- Fixed two real mobile bugs in `vendor/elden-ring-map`, both the same root cause repeated: a
+  real control existed and worked, but lived inside `#sidebar`, which `?embed=1` (the mode
+  All-Knowing's Atlas always uses) hides entirely. (1) Pinch-to-zoom zoomed the whole page — the
+  canvas had no touch/pinch handling at all; added real two-finger pinch alongside the existing
+  pointer-based pan. (2) The world-switcher (Underground/Realm of Shadow/etc.) and the ~50
+  category filter checkboxes were both unreachable — added floating embed-mode-only copies of
+  both, generalizing `buildLayerButtons()`/`buildCategories()` to populate every matching element
+  instead of one sidebar id. **Task 43 is queued to systematically audit the rest of the sidebar
+  for the same pattern** rather than fixing the next instance reactively.
+- Extended the Gideon router (`src/lib/gideon.ts`): "what should I do now" now matches the
+  existing "what next" handling (it fell through to the generic catch-all before). "I've done X" /
+  "I killed X" is now parsed as a completion report — the router resolves X, answers "what next"
+  as if it were already applied, and returns `markDone` so `Gideon.tsx` actually persists the fact
+  via `applyFacts`; previously this was silently ignored and the router could tell a player to go
+  kill something they'd just said they killed. Unresolvable reports get a real clarifying
+  question. Code-split the five rooms + Gideon via `React.lazy()` (main bundle 914KB → ~512KB).
+- Wrote up 10 more task briefs (`docs/tasks/42-51`) for the next DeepSeek batch, not yet run.
+
 - Catalog fact count: 89 → 226 (Task 18, closing gaps a diff against the EanNewton tracker
   found — see `docs/research/eannewton-catalog-diff.md`). Added a new `invader:` fact-id prefix
   (mapped to the `boss` bucket in `prefixKind`, a documented decision, not an oversight).
