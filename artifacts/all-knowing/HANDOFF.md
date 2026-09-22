@@ -40,6 +40,10 @@ dumped by `scripts/extract-game-text.py`; `src/lib/gameText.ts` loads lazily, Co
 157 families, 56 named) maps `TalkMsg` ids via the ESD talk scripts + `TalkParam.msgId`; unnamed
 families show as `npc <prefix>`, cutscene/menu lines are unattributed. No speaker is invented.
 
+Weapon numeric params: already in `regulation-vanilla-v1.17.json` (3,296 rows: requirements, attack,
+scaling) and decoded by `src/lib/ar.ts` for AR; `src/lib/weaponStats.ts` + `src/WeaponStats.tsx`
+surface requirements/scaling/base attack in the Codex (previously only FanAPI weight/category).
+
 ## Gideon
 
 `src/lib/gideon.ts` + `src/Gideon.tsx`.
