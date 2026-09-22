@@ -95,8 +95,26 @@ mutually exclusive render paths, and the shared detail panel (name, Found/Unknow
 resolves to exactly one entity in the **active** view via `src/lib/atlasSelection.ts`: an explicit id
 resolves in whichever pin set owns it; with no id the default is the engine's first marker when live,
 else the first shown plate pin. So the mark chips can never silently target a pin that is not on
-screen. No LOT/world-XYZ set is drawn on the plate — that detail is the live engine's job
-(`src/lib/coords.ts`).
+screen. World-XYZ LOTs stay off the plate (`src/lib/coords.ts`), but grounded points that already have
+a frame are drawn: the EldenRingMap pack markers (`src/lib/eldenringMapPins.ts`, `px/10496*100`) and the
+projected NPC placements (`sourced/npc-placements.json`).
+
+## Data plane (local packs, game text, dialogue, placements)
+
+- **Game text** — `open/text/` (36 FMG tables) from the install's message bundles; `src/lib/gameText.ts`
+  lazy-loads a table. Verbatim dialogue search (`src/Dialogue.tsx`) and speaker labels.
+- **Dialogue owners** — `open/dialogue-owners.json`: ESD `TalkID` -> MSB PARTS `TalkID` ->
+  `NPCParamID` -> `NpcName`, i.e. the game's own resolve, no invented speaker (`src/lib/dialogueOwners.ts`,
+  quoting in `src/lib/dialogueQuote.ts`).
+- **Local packs** — `open/eldenringmap.json`, `open/ercl-items.json`, `open/medusa-route.json`
+  (Nexus packs, ingested by `scripts/ingest-packs.py`; `src/lib/packs.ts`, `src/lib/medusaRoute.ts`,
+  Codex in `src/PackData.tsx`).
+- **NPC placements** — `sourced/npc-placements.json`, projected to the engine pixel frame with the
+  engine affine + `legacy-conv.json` (`scripts/extract-npc-placements.py`, `src/lib/npcPlacements.ts`).
+- **Interactive engine** — absorbed as a plain runtime dependency. `erlib` lives in `scripts/erlib/`
+  (`scripts/extract-*.py` use it; the engine tools shim the path); `npm run map:merge`
+  (`scripts/merge-engine-markers.py`) folds our markers into the engine's generated `data/markers.json`
+  under dedicated categories (we added `npc`/`merchant`/`dungeon` to `CATS`, `npc` off by default).
 
 ## Persistence
 

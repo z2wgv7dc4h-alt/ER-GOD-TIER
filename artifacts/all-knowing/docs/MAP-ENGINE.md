@@ -109,6 +109,19 @@ npm start                                # from All-Knowing root: engine + Vite 
 After a game patch, run setup again. Cache invalidation is their problem
 and they already solved it.
 
+## All-Knowing additions to the engine
+
+The engine is absorbed as a plain runtime dependency here: `erlib` lives under `scripts/erlib/`
+(our extractors import it; the engine tools carry a one-line path shim), the upstream repo shell
+(README/`Setup.bat`/docs/`package.json`) is gone, and `server/package.json` marks the runtime CJS so
+Node does not treat `require`-style server files as ESM.
+
+`npm run map:merge` (`scripts/merge-engine-markers.py`) appends our markers to the engine's generated
+`data/markers.json`: projected NPC placements plus the EldenRingMap-pack dungeons/merchants/night
+bosses/collectibles. They render under dedicated sidebar categories we added to `CATS`
+(`npc`, `merchant`, `dungeon`), so each is filterable and `npc` is **off by default**. Re-run the
+merge after any `build_markers.py` regeneration (`data/markers.json` is generated/gitignored).
+
 ## Safety
 
 Normal mode (`npm run map`, no flag): the server reads `ER0000.sl2` and watches

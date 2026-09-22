@@ -14,7 +14,7 @@ The descriptions are Fextralife/Valnet's, not yours and not the game's, and
 Valnet's robots.txt prohibits automated retrieval of their content without
 written permission. This script therefore:
 
-  * runs only when you run it - it is not part of Setup.bat,
+  * runs only when you run it - it is not part of the map setup (npm run map:setup),
   * fetches four static files, once, and caches them,
   * writes to data/tips.json, which is gitignored like every other generated
     file here.

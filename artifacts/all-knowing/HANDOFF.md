@@ -44,6 +44,29 @@ Weapon numeric params: already in `regulation-vanilla-v1.17.json` (3,296 rows: r
 scaling) and decoded by `src/lib/ar.ts` for AR; `src/lib/weaponStats.ts` + `src/WeaponStats.tsx`
 surface requirements/scaling/base attack in the Codex (previously only FanAPI weight/category).
 
+## Data pass — added local packs, dialogue, NPC placements, engine merge
+
+- **Game text** `open/text/` (36 FMG tables, 34,053 strings) — `scripts/extract-game-text.py`;
+  `src/lib/gameText.ts` loader; verbatim dialogue search `src/Dialogue.tsx`.
+- **Dialogue owners** `open/dialogue-owners.json` (95 speakers / 1,952 lines) — ESD `TalkID` -> MSB
+  PARTS `TalkID` -> `NPCParamID` -> name (`scripts/extract-dialogue-owners.py`). Gideon quotes real
+  lines (`src/lib/dialogueQuote.ts`); `findMedusaStep` answers route steps.
+- **Local packs** `open/eldenringmap.json` (350 graces, 64 dungeons, 19 merchants, 21 night bosses,
+  collectibles), `open/ercl-items.json` (154 talismans, 129 incantations, …), `open/medusa-route.json`
+  (9 acts / 367 steps) — `scripts/ingest-packs.py`; loaders `src/lib/packs.ts`, `src/lib/medusaRoute.ts`;
+  Codex sections in `src/PackData.tsx`.
+- **NPC placements** `sourced/npc-placements.json` (1,370 placements, 95 talkers) — projected to the
+  engine pixel frame with the engine affine + `legacy-conv.json` (`scripts/extract-npc-placements.py`);
+  `src/lib/npcPlacements.ts`; Gideon "where is X" fallback.
+- **Boss drops** `open/bosses-fextralife.json` (163 bosses, 161 with drops, base + SotE) scraped from
+  Fextralife (`scripts/scrape-fextralife-bosses.mjs`); `src/lib/bosses.ts`, Codex section. Fills the
+  DLC gap the FanAPI/checklist boss files had.
+- **Engine** is absorbed: `erlib` lives under `scripts/erlib/` (engine tools shim the path); the
+  upstream repo shell was stripped; `vendor/elden-ring-map/server/package.json` marks the runtime CJS.
+  `npm run map:merge` (`scripts/merge-engine-markers.py`) folds our NPCs + pack markers into the
+  engine's generated `data/markers.json`, under dedicated categories (`npc` default-off) so the map is
+  filterable; it also has marker **search**.
+
 ## Gideon
 
 `src/lib/gideon.ts` + `src/Gideon.tsx`.
@@ -71,20 +94,27 @@ sentences naming an ungrounded id are stripped.
 bash scripts/ingest-open.sh
 python3 scripts/slim-lots.py
 node scripts/ingest-fanapi.mjs
+python scripts/extract-fmg-names.py
+python scripts/extract-game-text.py
+python scripts/extract-dialogue-owners.py
+python scripts/extract-npc-placements.py
+python scripts/ingest-packs.py
+python scripts/merge-engine-markers.py
 ```
 
-er-guide, FanAPI, Paramdex Names, Goblins `data/`.
+er-guide, FanAPI, Paramdex Names, Goblins `data/`, the local install's own text/ESD/MSB, the user's
+Nexus packs, and the engine's generated `markers.json`.
 
 Inventory: `DATA.md`.
 
 ## Next (in order)
 
-Live list is `HANDOFF-CLAUDE.md` §6–§8. As of Task 86 the open threads are:
+Live list is `HANDOFF-CLAUDE.md` §6–§8. As of this data pass the open threads are:
 
-1. One projection for lots on the plate (Task 09 Part C), or keep them off.
-2. Dungeon interiors (bosses are XYZ-only today).
-3. `canonicalFactId` audit across every fact category (bosses improved, the rest not).
-4. Real 100% spine checklist + detours from real `NpcParam` data.
+1. Dungeon interiors (bosses are XYZ-only today).
+2. `canonicalFactId` audit across every fact category (bosses improved, the rest not).
+3. Real 100% spine checklist + detours from real `NpcParam` data.
+4. Dialogue attribution ceiling (2,129 ESD-referenced lines of 9,818) — cutscene/menu lines are out.
 
 ## Refuse
 

@@ -285,3 +285,27 @@ SOFTWARE.
   prove both packet and handoff modes round-trip without a camera or `BarcodeDetector`. It is a
   devDependency and is **not** part of the app bundle.
 
+## Data pass — local packs, Fextralife, and the absorbed engine
+
+Taken under the permissive sources policy (`HANDOFF-CLAUDE.md` §4). Nothing here ships game art or
+article HTML; only structured fields/text, each row keeping its source.
+
+- **EldenRingMap Nexus V1.2** (egormagurin) — `DATA/*_en.json` marker positions (graces, dungeons,
+  merchants, night bosses, collectibles). Used by `scripts/ingest-packs.py`; output
+  `public/sourced/open/eldenringmap.json`. Positions are data; no images are copied.
+- **ER Checklist** (Nexus 9953) — `mods/ercl/items.json` categorised item ids/names →
+  `public/sourced/open/ercl-items.json`.
+- **Elden Medusa** (Nexus 10286) — the 100% walkthrough text (`data/en/act*/`), text only →
+  `public/sourced/open/medusa-route.json`.
+- **Fextralife Elden Ring Wiki** (https://eldenring.wiki.fextralife.com) — boss pages scraped for
+  per-location runes, remembrance/item drops and HP by `scripts/scrape-fextralife-bosses.mjs` →
+  `public/sourced/open/bosses-fextralife.json`. Only the derived fields are stored; each row keeps
+  its page URL, and no wiki HTML is shipped.
+- **EldenRingMap engine** (egormagurin, MIT) — absorbed into `vendor/elden-ring-map/` as a **local
+  runtime dependency** (its `server`/`web`/`tools`/`data`; generated tiles excluded). `erlib` now
+  lives in `scripts/erlib/`. The engine and its tiles are never shipped in the built app; they run
+  from the user's own install.
+- **Game text / dialogue / NPC placements** are extracted from the user's own licensed install
+  (`menu`/`item` message bundles, ESD talk scripts, map MSBs) by the `scripts/extract-*.py`
+  extractors; only strings/ids/positions, no game binaries.
+
