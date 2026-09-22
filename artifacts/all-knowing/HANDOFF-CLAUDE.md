@@ -458,6 +458,22 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
 - Verified with a headless-Edge `--dump-dom` against the running map server at `?embed=1` (DOM
   after JS ran), not a physical device. Full table in `docs/MAP-ENGINE.md`.
 
+**Task 60 — Scadutree + Revered Ash meters** (landed after 59; supersedes Task 46):
+
+- `src/lib/blessings.ts` gives the two DLC blessings an N/total meter like the Task 29 cookbook
+  sets, surfaced in the Codex: `Scadutree Blessing Lv — (Y/50 fragments)` and
+  `Revered Spirit Ash Blessing Lv — (Y/25 ashes)`, with the real remaining guide rows and Mark
+  buttons.
+- Totals are the guide catalog's own row counts (`public/sourced/guide/catalog.json` categories
+  `scadutree-fragment` = 50, `revered-spirit-ash` = 25), cited in the module. The partial
+  `collectibles.ts` `frag:*` map-pin list is deliberately **not** used, so a mid-run never shows a
+  false 100%.
+- The per-level threshold table is **not in-repo** and not in a permitted source already listed in
+  `DATA.md` / `awesome.ts`, so this is **count-only**: level prints `—` with a note; no thresholds
+  invented.
+- Build lab: the AR math is unchanged and ignores blessing, so a SotE run now shows the honest
+  one-liner "AR is base-game; Scadutree Blessing not applied."
+
 ---
 
 ## 7. Product ideas still valid (not built)
@@ -471,7 +487,8 @@ From Wyatt, keep on the roadmap:
 - Bonfire list screenshot populates discovered graces.
 - Item screenshot ⇒ “you have done X” (Fingerslayer → Nokron opened, etc.).
 - Field hunt completion (9974 rules: cave = last boss, ruins = chest).
-- Scadutree fragments + Revered ashes as first-class SotE meters.
+- ✅ Scadutree fragments + Revered ashes as first-class SotE meters. (Task 60 — Codex meters; level
+  is count-only because the threshold table is not in-repo.)
 - Cookbook / bell bearing / whetblade / crystal tear sets (achievement-shaped).
 - Merchant “who sells X after I give Y scroll.”
 - Rememberance shop (Enia) as a table.

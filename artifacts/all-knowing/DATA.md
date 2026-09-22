@@ -81,6 +81,16 @@ All under `public/sourced/` unless noted.
 
 Coords from the same project: `open/coords.json` (~2k pins).
 
+### Blessing meters (Task 60)
+
+`guide/catalog.json` carries the authoritative per-pickup lists for the two Shadow of the Erdtree
+blessings — category `scadutree-fragment` (**50** rows) and `revered-spirit-ash` (**25** rows).
+`src/lib/blessings.ts` turns those into the Codex meters. The authored `collectibles.ts` `frag:*`
+entries are a partial map-pin layer (fewer pins, some worth x2/x5) and are not used for the totals,
+so a part-collected run cannot show a false 100%. The **per-level threshold table is not in this
+repo** (nor in any source already listed in `DATA.md` / `awesome.ts`), so the meters are count-only
+and print `Lv —` rather than an invented level.
+
 ER Checklist (Nexus 9953, `sote-1.16`) — the pack's `mods/ercl/items.json` is a plain
 nine-category completion list (hex ids + names). Its spell/talisman/ash/cookbook/whetblade
 rows are already covered by the guide catalog; the gap-fill merge added the missing

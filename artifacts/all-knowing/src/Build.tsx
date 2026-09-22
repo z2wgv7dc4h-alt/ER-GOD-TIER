@@ -6,6 +6,7 @@ import { isCollected, useWorkspace } from './state'
 import { attackRatingForSlot, loadWeapons } from './lib/ar'
 import type { AttackRating, Weapon } from './lib/ar'
 import { REGULATION_STAMP } from './lib/regulation'
+import { isSoteRun } from './lib/blessings'
 import { Related } from './Related'
 import {
   bestDamageType,
@@ -205,6 +206,11 @@ export function BuildWorkspace() {
               {r.weaponName}: below requirement for {r.ineffectiveAttributes.join(', ')} — damage is penalised, not scaled.
             </p>
           ) : null,
+        )}
+        {isSoteRun(character) && (
+          <p className="note" style={{ marginTop: 8 }}>
+            AR is base-game; Scadutree Blessing not applied.
+          </p>
         )}
         <div className="kicker" style={{ marginTop: 20 }}>Matchup · NpcParam absorb</div>
         {combatError && (

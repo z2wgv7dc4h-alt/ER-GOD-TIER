@@ -12,6 +12,7 @@ import { buildChestFacts, matchChests, useGraceRegions } from './lib/chestFacts'
 import { matchCoords, useCoords } from './lib/coords'
 import { matchGuide, useGuide } from './lib/guide'
 import { achievementProgress } from './lib/achievements'
+import { blessingLine, blessingProgress } from './lib/blessings'
 import { conditionalUnlocks, stockForVendor } from './knowledge/merchantConditions'
 import { flaskUpgrades, mapFragments, scadutreeFragments } from './knowledge/collectibles'
 import { techTips } from './knowledge/tech'
@@ -49,6 +50,10 @@ export function CodexWorkspace() {
   const gatheringHits = q.length >= 3 ? matchGatheringNodes(q, gatheringNodes) : []
   const achievements = useMemo(
     () => achievementProgress(guide.items, character.collectedItems),
+    [guide.items, character.collectedItems],
+  )
+  const blessings = useMemo(
+    () => blessingProgress(guide.items, character.collectedItems),
     [guide.items, character.collectedItems],
   )
   const conditionalHits = useMemo(() => {
@@ -240,6 +245,57 @@ export function CodexWorkspace() {
           </article>
         ))}
       </div>
+      <h3 className="codex-head">
+        Blessing meters · {blessings.map(blessingLine).join(' · ')}
+      </h3>
+      {blessings.map((p) => {
+        const left = p.remaining.filter((r) => !q || `${r.name} ${r.how}`.toLowerCase().includes(q))
+        if (q && left.length === 0) return null
+        const open = expanded[p.id]
+        const shown = open ? left : left.slice(0, 12)
+        const pct = p.total ? Math.round((p.done / p.total) * 100) : 0
+        return (
+          <div key={p.id}>
+            <div className="meter" style={{ padding: '0 20px', maxWidth: 460 }}>
+              <label>
+                <span>{blessingLine(p)}</span>
+                <span>{pct}%</span>
+              </label>
+              <div className="bar"><span style={{ width: `${pct}%` }} /></div>
+              <p className="note" style={{ marginTop: 6 }}>
+                {p.note} {p.incomplete ? `List incomplete in-repo (${p.listCount}/${p.total} rows).` : ''}{' '}
+                {p.levelNote}
+              </p>
+            </div>
+            <div className="codex-grid">
+              {shown.map((r) => (
+                <article className="card" key={r.id}>
+                  <div className="kicker">{p.name}{r.dlc ? ' · DLC' : ''}</div>
+                  <h3>{r.name}</h3>
+                  <p className="note">{r.how}</p>
+                  <button
+                    type="button"
+                    className="chip"
+                    onClick={() => setCharacter(applyFacts(character, [r.id], 'answer', `${p.name} meter`))}
+                  >
+                    Mark
+                  </button>
+                </article>
+              ))}
+            </div>
+            {left.length > 12 && (
+              <button
+                type="button"
+                className="chip"
+                style={{ margin: '0 20px' }}
+                onClick={() => setExpanded((cur) => ({ ...cur, [p.id]: !open }))}
+              >
+                {open ? 'Show fewer' : `Show all ${left.length} left`}
+              </button>
+            )}
+          </div>
+        )
+      })}
       <h3 className="codex-head">
         Achievement sets ·{' '}
         {achievements.map((p) => `${p.name} ${p.done}/${p.total}`).join(' · ')}
