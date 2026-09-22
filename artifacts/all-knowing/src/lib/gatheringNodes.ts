@@ -8,6 +8,12 @@
  * human-readable `region` comes from the nearest named point in the existing
  * `grace-xyz.json` world-position index, the same way `chestFacts.ts` labels
  * chests.
+ *
+ * NOT MAP-COMPLETE until an item field exists (Task 62). These are placement
+ * records, not item locations: they are never drawn as Atlas pins and Gideon
+ * never answers "where is X" from this dump. The Codex may list them, labelled
+ * as unverified placement / model code only. Do not invent material names for
+ * AEG codes, and do not delete the dump.
  */
 import { useEffect, useState } from 'react'
 import type { AtlasWorld } from '../knowledge/graces'

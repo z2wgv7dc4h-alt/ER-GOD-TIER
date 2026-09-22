@@ -510,6 +510,25 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
   **devDependency** used only in `packetQr.test.ts` to decode both modes (no BarcodeDetector; the
   decoder is not in the app bundle).
 
+**Task 62 — gathering nodes stay off the player map** (landed after 63):
+
+- Confirmed Atlas and Gideon never consumed `open/gathering-nodes.json`; only the Codex lists them,
+  now labelled "unverified placement, model code only" (the "Show on map" affordance was removed).
+  `src/lib/gatheringNodes.ts` header states they are NOT MAP-COMPLETE until an item field exists.
+- `src/lib/gatheringNodes.guard.test.ts` pins it: Atlas and every pin layer
+  (`leftoverPins`/`gatePins`/`coords`/`mapEngine`/`graces`/`bossPins`) plus `gideon.ts`/`Gideon.tsx`/
+  `search.ts` never reference the dump; only the Codex may list it. No AEG names invented; dump kept.
+
+**Task 44 — real soft-cap markers on the Build stat card** (landed after 62):
+
+- One table in `src/lib/softCaps.ts` (QoL.tsx re-exports `softCapMark`, so `App.tsx` is unchanged):
+  Vigor/Mind 40/60, Endurance 30/50 (community HP/FP/stamina), and Str/Dex/Int/Fai/Arc 20/60/80 read
+  from the game's own scaling-curve stages in the vendored 1.17 regulation data (Task 10's Clark
+  source). The old `55` second cap was corrected to `60`; the alternate graph's `50` is documented
+  in the comment.
+- `Build.tsx` shows per-stat dot tiers inline (filled as reached, both/three tiers — not a
+  capped/not boolean). `softCaps.test.ts` covers Vigor, Mind, Endurance and all five offensive stats.
+
 ---
 
 ## 7. Product ideas still valid (not built)

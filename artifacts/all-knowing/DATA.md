@@ -109,7 +109,7 @@ See `docs/REVIEW.md`.
 | `open/boss-xyz.json` / `boss-pins.json` | 215 named bosses; 109 projected |
 | `open/enemies.json` | 520 EN names |
 | `open/msb-enemies.json` | 8.8k placed enemies — joined to `enemy-combat.json` for placement counts/maps |
-| `open/gathering-nodes.json` | 21.8k AEG gathering-node placements (Goblins dump); model code only, no item/material field — `src/lib/gatheringNodes.ts` labels them honestly as generic placements, world resolved only for the two confirmed grids (area 60 → overworld, 61 → shadow), everything else buckets as `underground` unverified |
+| `open/gathering-nodes.json` | 21.8k AEG gathering-node placements (Goblins dump); model code only, no item/material field — `src/lib/gatheringNodes.ts` labels them honestly as generic placements, world resolved only for the two confirmed grids (area 60 → overworld, 61 → shadow), everything else buckets as `underground` unverified. **Task 62:** never drawn as Atlas pins and never answered by Gideon; Codex-only, labelled "unverified placement, model code only", guarded by `gatheringNodes.guard.test.ts` |
 | `open/grace-xyz.json` | grace world positions + region names; nearest-region label for chest facts |
 | `open/graces` via checklists/graces.json | 418 warps |
 | `open/paramdex/` | Names txt dump; equipment files topped up from install (Tarnished Pack rows); `NpcParam.txt` still upstream (post-SotE) |

@@ -501,6 +501,18 @@ button { cursor: pointer; }
   padding: 4px 0 0;
 }
 .stat input:focus { outline: none; }
+.stat-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+/* Inline soft-cap tiers: one dot per breakpoint, filled once reached. */
+.soft-cap { display: inline-flex; gap: 3px; }
+.soft-cap i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--line);
+  display: inline-block;
+}
+.soft-cap.hit i.on { background: var(--gold); box-shadow: 0 0 6px rgba(201, 162, 39, 0.5); }
+.soft-cap i.on { background: var(--gold-dim); }
 
 .gear { display: flex; flex-direction: column; gap: 8px; }
 .gear-row {

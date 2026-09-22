@@ -7,6 +7,7 @@ import { attackRatingForSlot, loadWeapons } from './lib/ar'
 import type { AttackRating, Weapon } from './lib/ar'
 import { REGULATION_STAMP } from './lib/regulation'
 import { isSoteRun } from './lib/blessings'
+import { SOFT_CAPS, softCapLabel } from './lib/softCaps'
 import { Related } from './Related'
 import {
   bestDamageType,
@@ -87,20 +88,40 @@ export function BuildWorkspace() {
         <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>Stats drive every other pane</h3>
         <p className="note">Change a number here and the atlas / quest advice still talk about the same person. Attack rating is the real formula from Thomas Clark’s calculator, run on this project’s vendored vanilla 1.17 regulation data (see THIRD_PARTY_NOTICES.md).</p>
         <div className="stat-grid">
-          {(Object.keys(character.stats) as (keyof Stats)[]).map((key) => (
-            <div className="stat" key={key}>
-              <label htmlFor={key}>{key}</label>
-              <input
-                id={key}
-                type="number"
-                min={1}
-                max={99}
-                value={character.stats[key]}
-                onChange={(e) => patchStat(key, Number(e.target.value))}
-              />
-            </div>
-          ))}
+          {(Object.keys(character.stats) as (keyof Stats)[]).map((key) => {
+            const value = character.stats[key]
+            const label = softCapLabel(key, value)
+            return (
+              <div className="stat" key={key}>
+                <div className="stat-head">
+                  <label htmlFor={key}>{key}</label>
+                  <span
+                    className={label ? 'soft-cap hit' : 'soft-cap'}
+                    title={label ? `Soft cap reached: ${label}` : 'Below the first soft cap'}
+                  >
+                    {SOFT_CAPS[key].map((cap) => (
+                      <i key={cap} className={value >= cap ? 'on' : ''} aria-hidden />
+                    ))}
+                  </span>
+                </div>
+                <input
+                  id={key}
+                  type="number"
+                  min={1}
+                  max={99}
+                  value={value}
+                  onChange={(e) => patchStat(key, Number(e.target.value))}
+                />
+              </div>
+            )
+          })}
         </div>
+        <p className="note" style={{ marginTop: -8 }}>
+          Dots are the real soft-cap tiers (filled when reached). Offensive-stat
+          breakpoints are the game's own scaling-curve stages in this project's vendored
+          1.17 regulation data (Thomas Clark); Vigor/Mind/Endurance use the community
+          HP/FP/stamina breakpoints. See <code>src/lib/softCaps.ts</code>.
+        </p>
         <div className="kicker" style={{ marginTop: 18 }}>OP kits</div>
         <div className="opts">
           {opBuilds.map((b) => (

@@ -193,9 +193,14 @@ export function CodexWorkspace() {
       )}
       {gatheringHits.length > 0 && (
         <>
-          <h3 className="codex-head">Gathering nodes · {gatheringNodes.length} placements (AEG assets, nameless)</h3>
+          <h3 className="codex-head">
+            Gathering nodes · {gatheringNodes.length} placements — unverified placement, model code only
+          </h3>
           <p className="note" style={{ padding: '0 20px' }}>
-            Locations of gathering-node assets (bushes, rocks, pots, etc.). The model code is generic (e.g. AEG099_821); see the map to know what's actually there. Search by region, map, or model.
+            Placement records for gathering-node assets (bushes, rocks, pots, etc.). The model code is
+            generic (e.g. AEG099_821) and the dump carries no item field, so this is not a material
+            location — it is not drawn on the Atlas and Gideon will not answer “where is X” from it.
+            Search by region, map, or model.
           </p>
           <div className="codex-grid">
             {gatheringHits.slice(0, 20).map((n) => (
@@ -205,9 +210,6 @@ export function CodexWorkspace() {
                 <p className="note">
                   {n.map} · x {n.x.toFixed(1)}, y {n.y.toFixed(1)}, z {n.z.toFixed(1)}
                 </p>
-                <button type="button" className="chip" onClick={() => { setSelectedMarkerId(n.id); setModule('map') }}>
-                  Show on map
-                </button>
               </article>
             ))}
           </div>

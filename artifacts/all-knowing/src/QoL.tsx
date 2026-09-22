@@ -429,22 +429,9 @@ export function SitToggle() {
   )
 }
 
-const SOFT: Record<string, number[]> = {
-  vigor: [40, 60],
-  mind: [40, 60],
-  endurance: [30, 50],
-  strength: [20, 55, 80],
-  dexterity: [20, 55, 80],
-  intelligence: [20, 55, 80],
-  faith: [20, 55, 80],
-  arcane: [20, 55, 80],
-}
-
-export function softCapMark(stat: keyof typeof SOFT, value: number) {
-  const caps = SOFT[stat]
-  const hit = caps.filter((c) => value >= c).length
-  return hit ? `${'·'.repeat(hit)}` : ''
-}
+// One soft-cap table lives in `src/lib/softCaps.ts`; re-exported here so the
+// existing `App.tsx` import keeps working (no duplicate table — Task 44).
+export { softCapMark } from './lib/softCaps'
 
 export function useClipboardShots() {
   const { character, setCharacter, setModule } = useWorkspace()
