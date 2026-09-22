@@ -88,6 +88,10 @@ export function AtlasWorkspace() {
   )
   const [sideOpen, setSideOpen] = useState(false)
   const [layersOpen, setLayersOpen] = useState(false)
+  // The overworld plate is a multi-MB image; drawing pins before it decodes
+  // makes them look scattered over nothing. Hold the pin layer until it's ready.
+  const [artReady, setArtReady] = useState(false)
+  useEffect(() => { setArtReady(false) }, [world])
   const coords = useCoords()
   const enginePins = useEnginePins(world, !engineLive)
 
@@ -240,8 +244,15 @@ export function AtlasWorkspace() {
         ) : (
           <div className="atlas-plate">
             {plate && (
-              <img className="atlas-art" src={plate} alt="" />
+              <img
+                className="atlas-art"
+                src={plate}
+                alt=""
+                onLoad={() => setArtReady(true)}
+                onError={() => setArtReady(true)}
+              />
             )}
+            {plate && !artReady && <p className="note atlas-loading">Loading map…</p>}
           <svg viewBox={plate ? `0 0 ${vw} ${vh}` : '0 0 100 80'} preserveAspectRatio="xMidYMid meet">
             <text x={8 * k} y={8 * k} fill="#8a7018" fontSize={3 * k} fontFamily="Cinzel">
               {worldMeta?.label}
@@ -252,7 +263,7 @@ export function AtlasWorkspace() {
             <path d="M66,52 C70,44 78,36 86,34 C92,40 90,52 84,58 C76,62 68,58 66,52 Z" fill="none" stroke="#2a3a4a" strokeWidth="0.3" />
               </>
             )}
-            {singles.map((m) => {
+            {(!plate || artReady) && singles.map((m) => {
               const st = factState(w.character, m.id)
               const p = at(m)
               return (
@@ -298,7 +309,7 @@ export function AtlasWorkspace() {
                 </g>
               )
             })}
-            {clusters.map((c, i) => {
+            {(!plate || artReady) && clusters.map((c, i) => {
               const p = plate ? { x: (c.x / 100) * vw, y: (c.y / 100) * vh } : { x: c.x, y: c.y }
               return (
                 <g key={`cluster:${i}`} className="pin cluster" onClick={() => w.setSelectedMarkerId(c.first.id)}>

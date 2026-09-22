@@ -1278,3 +1278,5 @@ body { overflow: hidden; overscroll-behavior: none; }
 .app { height: 100dvh; }
 .stage, .map-stage, .atlas { overscroll-behavior: contain; }
 .side, .guide, .codex-wrap, .panel, .split, .rail { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+
+.atlas-loading { position: absolute; inset: 50% 0 auto; text-align: center; }
