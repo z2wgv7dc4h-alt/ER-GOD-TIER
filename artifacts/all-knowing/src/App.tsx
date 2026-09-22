@@ -239,7 +239,7 @@ function AppShell() {
         </button>
         <button type="button" className={tab === 'now' ? 'active' : ''} onClick={openNow}>
           <img src={art.guide} alt="" />
-          <span>Now</span>
+          <span>Gideon</span>
         </button>
         <button type="button" className={tab === 'kit' ? 'active' : ''} onClick={() => openRoom('build')}>
           <img src={art.room.build} alt="" />

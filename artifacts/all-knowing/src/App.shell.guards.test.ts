@@ -37,11 +37,11 @@ describe('shell guards (Task 88)', () => {
     for (const [name, source] of files) expect(source, name).not.toMatch(SIT)
   })
 
-  it('has exactly the Map / Now / Kit tabs, no sixth', () => {
+  it('has exactly the Map / Gideon / Kit tabs, no sixth', () => {
     const tabbar = between(app, 'aria-label="Play"', '</nav>')
     const labels = [...tabbar.matchAll(/<span>([^<]+)<\/span>/g)].map((m) => m[1])
-    expect(labels).toEqual(['Map', 'Now', 'Kit'])
-    expect(tabbar).not.toMatch(/Codex|Reckon|Quests|Build lab|Gideon/)
+    expect(labels).toEqual(['Map', 'Gideon', 'Kit'])
+    expect(tabbar).not.toMatch(/Codex|Reckon|Quests|Build lab/)
   })
 
   it('never puts the sit class on the desktop root', () => {

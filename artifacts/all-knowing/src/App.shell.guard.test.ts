@@ -22,10 +22,10 @@ describe('Task 83 play shell', () => {
     }
   })
 
-  it('shows exactly the Map / Now / Kit tabs', () => {
+  it('shows exactly the Map / Gideon / Kit tabs', () => {
     const tabbar = sliceFrom(app, 'aria-label="Play"', '</nav>')
-    for (const label of ['Map', 'Now', 'Kit']) expect(tabbar).toContain(`<span>${label}</span>`)
-    for (const extra of ['Gideon', 'Reckon', 'Build', 'Quests', 'Codex']) {
+    for (const label of ['Map', 'Gideon', 'Kit']) expect(tabbar).toContain(`<span>${label}</span>`)
+    for (const extra of ['Reckon', 'Build', 'Quests', 'Codex']) {
       expect(tabbar).not.toContain(`<span>${extra}</span>`)
     }
   })

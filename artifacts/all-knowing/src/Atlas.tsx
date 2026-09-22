@@ -336,7 +336,7 @@ export function AtlasWorkspace() {
             700px, so these are the only place the three job controls render on a
             phone; the seven pin kinds hide behind one "layers" overflow. Desktop
             keeps the topbar toggles and never shows this bar. */}
-        <div className="atlas-jobs" role="group" aria-label="Map job filters">
+        {!engineLive && (<><div className="atlas-jobs" role="group" aria-label="Map job filters">
           <button
             type="button"
             className={w.missingOnly ? 'chip on' : 'chip'}
@@ -345,22 +345,29 @@ export function AtlasWorkspace() {
           >
             Missing only
           </button>
-          <button
-            type="button"
-            className={w.showLeftovers ? 'chip on' : 'chip'}
-            aria-pressed={w.showLeftovers}
-            onClick={() => w.toggleLeftovers()}
-          >
-            leftovers
-          </button>
-          <button
-            type="button"
-            className={w.showGates ? 'chip on' : 'chip'}
-            aria-pressed={w.showGates}
-            onClick={() => w.toggleGates()}
-          >
-            locks
-          </button>
+          {/* leftovers / locks only draw plate overlays — the engine has its own
+              pin set, so they are dead controls while it is live. Hiding them
+              also stops the chip bar wrapping and covering the map header. */}
+          {!engineLive && (
+            <>
+              <button
+                type="button"
+                className={w.showLeftovers ? 'chip on' : 'chip'}
+                aria-pressed={w.showLeftovers}
+                onClick={() => w.toggleLeftovers()}
+              >
+                leftovers
+              </button>
+              <button
+                type="button"
+                className={w.showGates ? 'chip on' : 'chip'}
+                aria-pressed={w.showGates}
+                onClick={() => w.toggleGates()}
+              >
+                locks
+              </button>
+            </>
+          )}
           <button
             type="button"
             className={layersOpen ? 'chip on' : 'chip'}
@@ -386,6 +393,7 @@ export function AtlasWorkspace() {
             ))}
           </div>
         )}
+        </>)}
         <button
           type="button"
           className="atlas-toggle"
@@ -437,13 +445,15 @@ export function AtlasWorkspace() {
             </span>
           )}
         </div>
-        <div className="opts" style={{ margin: '10px 0' }}>
-          {worlds.map((wr) => (
-            <button key={wr.id} type="button" className={world === wr.id ? 'chip on' : 'chip'} onClick={() => setWorld(wr.id)}>
-              {wr.label}
-            </button>
-          ))}
-        </div>
+        {!engineLive && (
+          <div className="opts" style={{ margin: '10px 0' }}>
+            {worlds.map((wr) => (
+              <button key={wr.id} type="button" className={world === wr.id ? 'chip on' : 'chip'} onClick={() => setWorld(wr.id)}>
+                {wr.label}
+              </button>
+            ))}
+          </div>
+        )}
         <p className="note">{worldMeta?.hint}</p>
 
         <p className="note">
