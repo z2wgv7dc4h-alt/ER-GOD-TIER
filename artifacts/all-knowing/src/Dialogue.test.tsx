@@ -14,9 +14,7 @@ const tables = {
 
 const owners: DialogueOwners = {
   note: 'test',
-  npcRows: { '2130': 21300000 },
   npcs: { '2130': 'Margit' },
-  unresolvedPrefixes: [],
   byLine: { '21300100': ['2130'] },
 }
 

@@ -4,9 +4,7 @@ import type { DialogueOwners } from './dialogueOwners'
 
 const owners: DialogueOwners = {
   note: '',
-  npcRows: { '2130': 21300000 },
   npcs: { '2130': 'Margit' },
-  unresolvedPrefixes: [],
   byLine: { '21300100': ['2130'], '21300101': ['2130'], '999': ['2130'] },
 }
 const talkmsg = {

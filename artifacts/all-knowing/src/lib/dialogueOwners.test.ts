@@ -3,9 +3,7 @@ import { linesBySpeaker, speakerLabel, type DialogueOwners } from './dialogueOwn
 
 const owners: DialogueOwners = {
   note: '',
-  npcRows: { '2130': 21300000, '1010': 10100000 },
   npcs: { '2130': 'Margit' },
-  unresolvedPrefixes: ['1010'],
   byLine: {
     '21300100': ['2130'],
     '10100001': ['1010'],

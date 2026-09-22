@@ -1,21 +1,21 @@
 """Attribute verbatim dialogue lines to the NPC that owns them.
 
-The game's text bundle gives `TalkMsg` as an id->line map, but the speaker is
-not in the text data: `TalkParam` records only `msgId`/`voiceId`, no speaker.
-The owner lives in the ESD talk scripts under `/script/talk/<mapId>/`, whose
-entries are named per-NPC and whose bytecode references TalkParam ids.
+The game's text bundle gives `TalkMsg` as an id->line map but no speaker;
+`TalkParam` records only `msgId`/`voiceId`. The speaker is found the way the
+game itself finds it:
 
-Chain (all from the local install, nothing invented):
+    ESD talk script  /script/talk/<map>/t<talkId>.esd
+    MSB PARTS entry  TalkID == <talkId>   ->   NPCParamID
+    NpcParam row id  ->  NpcName (the speaker)
 
-    ESD entry name  t<NNNN><mapdigits>.esd   -> NPC prefix NNNN
-    ESD bytecode                             -> TalkParam ids it references
-    TalkParam.msgId                          -> TalkMsg text id
-    TalkMsg[id]                              -> the verbatim line
+PARTS field offsets (MSBE, verified against real maps: e.g. m60_44_34_00
+c2010_9000 has NPCParamID 20100000 @ +0x2a8 and TalkID 216006000 @ +0x2b0, and
+20100000 is Blaidd): NPCParamID @ +0x2a8, TalkID @ +0x2b0. A candidate is only
+kept when its NPCParamID is a real NpcParam row, so an object part whose bytes
+coincidentally look like a pair cannot become a speaker.
 
-The `t<NNNN>` prefix matches the first four digits of the NPC's NpcParam row id
-(e.g. t2130... -> NpcParam 2130xxxx, whose name comes from the Paramdex
-NpcParam.txt already in the repo). Only ids that are real TalkParam rows are
-kept, so a coincidental integer cannot become a speaker.
+An ESD's lines are the TalkParam ids its bytecode references (every byte offset;
+they are not 4-byte aligned). Only ids that are real TalkParam rows are kept.
 
     python scripts/extract-dialogue-owners.py [--game-dir "...\\ELDEN RING\\Game"]
 
@@ -32,7 +32,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TOOLS = os.path.join(ROOT, "vendor", "elden-ring-map", "tools")
 sys.path.insert(0, TOOLS)
 
-from erlib import bnd4, dcx, oodle, param  # noqa: E402
+from erlib import bnd4, dcx, msb, oodle, param  # noqa: E402
 from erlib.dvdbnd import DvdBnd  # noqa: E402
 from erlib.gamepath import require_game_dir  # noqa: E402
 
@@ -44,54 +44,39 @@ NPCCOMBAT = os.path.join(ROOT, "public", "sourced", "npc-combat.json")
 ENEMYCOMBAT = os.path.join(ROOT, "public", "sourced", "enemy-combat.json")
 OUT = os.path.join(ROOT, "public", "sourced", "open", "dialogue-owners.json")
 
-# t<4 digits> then map digits, e.g. ...\t213006000.esd -> "2130"
-ESD_NAME = re.compile(r"[\\/]t(\d{4})\d*\.esd$", re.IGNORECASE)
+# The ESD filename ends with t<talkId>.esd; the number is the MSB TalkID.
+ESD_NAME = re.compile(r"[\\/]t(\d+)\.esd$", re.IGNORECASE)
+
+# MSBE part field offsets (see module docstring).
+PART_NPC_PARAM_ID = 0x2A8
+PART_TALK_ID = 0x2B0
 
 
-def map_ids():
-    """Every map id the install has a talk bundle for, most-specific first.
-
-    `map-list.txt` lists the maptile maps (m10..), but the overworld/DLC talk
-    hubs are keyed by msb ids (m60_00_00_00, m61_00_00_00, ...) that only appear
-    in the placed-enemy dump, so both sources are unioned.
-    """
+def msb_map_ids():
     ids = set()
-    with open(MAPLIST, encoding="utf-8") as f:
-        for line in f:
-            name = line.split("\t")[0].strip()
-            if name:
-                ids.add(name)
-    try:
-        with open(MSBENEMIES, encoding="utf-8") as f:
-            rows = json.load(f)
-        for r in rows if isinstance(rows, list) else rows.get("enemies", []):
-            m = r.get("map") or r.get("mapId")
-            if m:
-                ids.add(m)
-    except (OSError, ValueError):
-        pass
-    # The talk hub for an area is `<area>_00_00_00` (m60_00_00_00 overworld,
-    # m61_00_00_00 DLC, ...), which neither source lists directly. Derive it
-    # from every area prefix seen, and keep the two famous hubs regardless.
-    for mid in list(ids):
-        ids.add(f"{mid.split('_')[0]}_00_00_00")
-    ids.update({"m60_00_00_00", "m61_00_00_00"})
+    for source in (MAPLIST, None):
+        try:
+            if source:
+                with open(source, encoding="utf-8") as f:
+                    for line in f:
+                        name = line.split("\t")[0].strip()
+                        if name:
+                            ids.add(name)
+            else:
+                with open(MSBENEMIES, encoding="utf-8") as f:
+                    rows = json.load(f)
+                for r in (rows if isinstance(rows, list) else rows.get("enemies", [])):
+                    m = r.get("map") or r.get("mapId")
+                    if m:
+                        ids.add(m)
+        except (OSError, ValueError):
+            pass
     return sorted(ids)
 
 
-def npc_names_by_prefix():
-    """{4-digit NpcParam prefix: (shortestRow, name)}.
-
-    The ESD filename only carries the 4-digit NpcParam family, and a family can
-    hold several rows (Margit + Morgott, or a base + a "(Capital Outskirts)"
-    variant). The lowest row id is the base name; the full set is kept so a
-    caller can see the ambiguity instead of trusting one arbitrary label.
-
-    Names come from the Paramdex NpcParam.txt dump (the canonical speaker
-    names), then any row the dump is missing is filled from the extracted
-    npc-combat/enemy-combat rows, which carry `npcRow` + `name`.
-    """
-    rows = {}  # row id -> name
+def npc_names():
+    """{npcParamRowId: name} from Paramdex + the extracted combat rows."""
+    rows = {}
 
     def add(row, name):
         name = (name or "").strip()
@@ -111,47 +96,44 @@ def npc_names_by_prefix():
                     add(r.get("npcRow"), r.get("name"))
         except (OSError, ValueError):
             pass
-
-    by_prefix = {}
-    for row, name in rows.items():
-        by_prefix.setdefault(str(row)[:4], []).append((row, name))
-    return {p: (min(items)[0], min(items)[1]) for p, items in by_prefix.items()}
+    return rows
 
 
-def talk_msg_map(path):
-    with open(path, encoding="utf-8") as f:
-        return {int(k): v for k, v in json.load(f).items()}
-
-
-def load_talk_param(game_dir):
-    """{talkId: (msgId, reactionId, returnPos)} from TalkParam.
-
-    TalkParam row layout (Paramdex TALK_PARAM_ST, 96 B): a 4-byte header, then
-    msgId@4, voiceId@8, spEffectId0@12, motionId0@16, spEffectId1@20,
-    motionId1@24, returnPos@28, reactionId@32. An ESD references only the entry
-    talk id, so the rest of a line's conversation is reached by walking
-    returnPos/reactionId within the same NPC's script.
-    """
+def talk_param(game_dir):
+    """{talkId: msgId} from TalkParam (msgId is a s32 at row offset +4)."""
     tp = param.load_params(os.path.join(game_dir, "regulation.bin")).get("TalkParam")
     out = {}
     if tp is not None:
         for r in tp.rows:
-            if len(r.data) >= 36:
+            if len(r.data) >= 8:
                 msg = struct.unpack_from("<i", r.data, 4)[0]
-                ret = struct.unpack_from("<i", r.data, 28)[0]
-                react = struct.unpack_from("<i", r.data, 32)[0]
                 if msg >= 0:
-                    out[r.id] = (msg, react, ret)
+                    out[r.id] = msg
     return out
 
 
-def scan_esd(data, talk_ids):
-    """TalkParam ids appearing anywhere in the ESD bytecode.
+def talk_to_npc(dvd, od, map_ids, npc_ids):
+    """{TalkID: NPCParamID} from every MSB PARTS entry with a real NPCParamID."""
+    out = {}
+    maps_scanned = 0
+    for map_id in map_ids:
+        path = f"/map/mapstudio/{map_id}.msb.dcx"
+        if not dvd.has(path):
+            continue
+        try:
+            m = msb.load(dcx.decompress(dvd.read(path), oodle=od))
+        except Exception:
+            continue
+        maps_scanned += 1
+        for off, _name in m.entries("PARTS_PARAM_ST"):
+            npc = m.i32(off + PART_NPC_PARAM_ID)
+            talk = m.i32(off + PART_TALK_ID)
+            if talk > 0 and npc in npc_ids:
+                out.setdefault(talk, npc)
+    return out, maps_scanned
 
-    Ids are not reliably 4-byte aligned in the compiled stream, so every offset
-    is checked. A 4-byte window only counts when it is a real TalkParam row, and
-    the id space is sparse, so random windows do not produce speakers.
-    """
+
+def scan_esd(data, talk_ids):
     hits = set()
     for off in range(0, len(data) - 4):
         v = struct.unpack_from("<i", data, off)[0]
@@ -160,20 +142,8 @@ def scan_esd(data, talk_ids):
     return hits
 
 
-def expand(entries, talk_to_msg):
-    """Reachable talk ids from the ESD's entry ids via reactionId/returnPos."""
-    seen = set()
-    stack = list(entries)
-    while stack:
-        tid = stack.pop()
-        if tid in seen or tid not in talk_to_msg:
-            continue
-        seen.add(tid)
-        _, react, ret = talk_to_msg[tid]
-        for nxt in (react, ret):
-            if nxt >= 0 and nxt not in seen:
-                stack.append(nxt)
-    return seen
+# TalkMsg rows that are engine placeholders, not spoken lines.
+DUMMY_TEXT = "(dummyText)"
 
 
 def main():
@@ -187,21 +157,27 @@ def main():
     dvd = DvdBnd(game_dir, cache_dir=os.path.join(ROOT, ".scratch", "cache"), verbose=False)
     od = oodle.make_helper(game_dir)
 
-    talk_to_msg = load_talk_param(game_dir)
+    talk_to_msg = talk_param(game_dir)
     talk_ids = set(talk_to_msg)
-    talkmsg = talk_msg_map(TALKMSG)
-    prefix_names = npc_names_by_prefix()
-    print(f"TalkParam rows with msgId: {len(talk_to_msg)}  TalkMsg lines: {len(talkmsg)}  NpcParam prefixes: {len(prefix_names)}")
+    talkmsg = {int(k): v for k, v in json.load(open(TALKMSG, encoding="utf-8")).items()}
+    names = npc_names()
+    print(f"TalkParam rows: {len(talk_to_msg)}  TalkMsg lines: {len(talkmsg)}  NpcParam names: {len(names)}")
 
-    by_line = {}                 # msgId -> set of npc prefixes
-    prefixes_seen = set()
-    bundles = 0
+    by_talk, maps_scanned = talk_to_npc(dvd, od, msb_map_ids(), set(names))
+    print(f"MSBs scanned: {maps_scanned}  TalkID->NPCParamID: {len(by_talk)}")
+
+    by_line = {}            # msgId -> set of npc id strings
+    owners = set()
     esds = 0
-    for mid in map_ids():
+    # ESD bundles are keyed by map id and by the area hub (`<area>_00_00_00`).
+    bundle_ids = set(msb_map_ids())
+    for mid in list(bundle_ids):
+        bundle_ids.add(f"{mid.split('_')[0]}_00_00_00")
+    bundle_ids.update({"m60_00_00_00", "m61_00_00_00"})
+    for mid in sorted(bundle_ids):
         path = f"/script/talk/{mid}.talkesdbnd.dcx"
         if not dvd.has(path):
             continue
-        bundles += 1
         try:
             inner = dcx.decompress(dvd.read(path), oodle=od)
             b = bnd4.BND4(inner)
@@ -212,33 +188,33 @@ def main():
             m = ESD_NAME.search(e.name)
             if not m:
                 continue
+            talk_id = int(m.group(1))
+            npc = by_talk.get(talk_id)
+            if npc is None:
+                continue
             esds += 1
-            prefix = m.group(1)
-            for tid in expand(scan_esd(b.read(e), talk_ids), talk_to_msg):
-                msg = talk_to_msg[tid][0]
-                if msg in talkmsg:
-                    by_line.setdefault(msg, set()).add(prefix)
-                    prefixes_seen.add(prefix)
+            for tid in scan_esd(b.read(e), talk_ids):
+                msg = talk_to_msg[tid]
+                if msg in talkmsg and talkmsg[msg].strip() != DUMMY_TEXT:
+                    by_line.setdefault(msg, set()).add(str(npc))
+                    owners.add(npc)
     dvd.close()
 
-    npcs = {p: prefix_names[p][1] for p in sorted(prefixes_seen) if p in prefix_names}
-    npc_rows = {p: prefix_names[p][0] for p in sorted(prefixes_seen) if p in prefix_names}
-    unresolved = sorted(p for p in prefixes_seen if p not in prefix_names)
-    print(f"bundles: {bundles}  esd entries: {esds}  owners: {len(by_line)} lines  prefixes: {len(prefixes_seen)} ({len(npcs)} named, {len(unresolved)} unknown)")
+    npcs = {str(npc): names[npc] for npc in sorted(owners) if npc in names}
+    named_lines = sum(1 for v in by_line.values() if any(p in npcs for p in v))
+    print(f"ESDs attributed: {esds}  speakers: {len(npcs)}  lines: {len(by_line)} ({named_lines} named)")
 
     doc = {
-        "note": "Line -> NPC owner, derived from ESD talk scripts; see scripts/extract-dialogue-owners.py",
-        "npcRows": npc_rows,
+        "note": "Line -> NPC owner via ESD TalkID -> MSB PARTS TalkID -> NPCParamID (see scripts/extract-dialogue-owners.py)",
         "npcs": npcs,
-        "unresolvedPrefixes": unresolved,
         "byLine": {str(k): sorted(v) for k, v in sorted(by_line.items())},
     }
     with open(args.out, "w", encoding="utf-8") as f:
         json.dump(doc, f, ensure_ascii=False, separators=(",", ":"))
 
-    named = {p: n for p, n in npcs.items() if n}
-    print("sample owners:", list(named.items())[:12])
+    print("sample speakers:", list(npcs.items())[:10])
     print(f"wrote {args.out}")
+
 
 if __name__ == "__main__":
     main()
