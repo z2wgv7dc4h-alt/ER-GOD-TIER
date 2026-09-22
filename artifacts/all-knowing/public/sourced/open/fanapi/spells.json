@@ -1,0 +1,2020 @@
+[
+  {
+    "name": "Adula's Moonblade",
+    "type": "Sorcery",
+    "cost": 26,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 32,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Sweeping slash followed by cold blade projectile"
+  },
+  {
+    "name": "Agheel's Flame",
+    "type": "Incantation",
+    "cost": 36,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 23,
+      "Arcane": 15
+    },
+    "effect": "Spews flame breath of Agheel from above"
+  },
+  {
+    "name": "Ambush Shard",
+    "type": "Sorcery",
+    "cost": 16,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 23,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Strikes from behind with projectile fired from distance"
+  },
+  {
+    "name": "Ancient Death Rancor",
+    "type": "Sorcery",
+    "cost": 24,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 34,
+      "Faith": 24,
+      "Arcane": 0
+    },
+    "effect": "Summons horde of vengeful spirits that chase down foes"
+  },
+  {
+    "name": "Ancient Dragons' Lightning Spear",
+    "type": "Incantation",
+    "cost": 32,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Stabs with red lightning spear from above"
+  },
+  {
+    "name": "Ancient Dragons' Lightning Strike",
+    "type": "Incantation",
+    "cost": 27,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 26,
+      "Arcane": 0
+    },
+    "effect": "Summons red lightning that spreads from impact"
+  },
+  {
+    "name": "Aspect Of The Crucible: Breath",
+    "type": "Incantation",
+    "cost": 28,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 27,
+      "Arcane": 0
+    },
+    "effect": "Creates throat pouch to spew fire while walking"
+  },
+  {
+    "name": "Aspects Of The Crucible: Horns",
+    "type": "Incantation",
+    "cost": 30,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 27,
+      "Arcane": 0
+    },
+    "effect": "creates shoulder horn to gore foes from a low stance."
+  },
+  {
+    "name": "Aspects Of The Crucible: Tail",
+    "type": "Incantation",
+    "cost": 32,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 27,
+      "Arcane": 0
+    },
+    "effect": "Creates supple tail to sweep area before caster"
+  },
+  {
+    "name": "Barrier Of Gold",
+    "type": "Incantation",
+    "cost": 30,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 24,
+      "Arcane": 0
+    },
+    "effect": "Greatly increases magic damage negation for self & allies"
+  },
+  {
+    "name": "Beast Claw",
+    "type": "Incantation",
+    "cost": 10,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 8,
+      "Arcane": 0
+    },
+    "effect": "Creates claws that tear through the land."
+  },
+  {
+    "name": "Bestial Constitution",
+    "type": "Incantation",
+    "cost": 10,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 9,
+      "Arcane": 0
+    },
+    "effect": "Alleviates blood loss and frost buildup"
+  },
+  {
+    "name": "Bestial Sling",
+    "type": "Incantation",
+    "cost": 7,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 10,
+      "Arcane": 0
+    },
+    "effect": "Swiftly flings numerous sharp rock shards"
+  },
+  {
+    "name": "Bestial Vitality",
+    "type": "Incantation",
+    "cost": 18,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 12,
+      "Arcane": 0
+    },
+    "effect": "Heals HP over a period of time"
+  },
+  {
+    "name": "Black Blade",
+    "type": "Incantation",
+    "cost": 26,
+    "slots": 2,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 46,
+      "Arcane": 0
+    },
+    "effect": "Black blade spinning slash that emits wave of light."
+  },
+  {
+    "name": "Black Flame",
+    "type": "Incantation",
+    "cost": 15,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 20,
+      "Arcane": 0
+    },
+    "effect": "Throws a ball of raging black fire"
+  },
+  {
+    "name": "Black Flame Blade",
+    "type": "Incantation",
+    "cost": 15,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 17,
+      "Arcane": 0
+    },
+    "effect": "Enchants right-hand armament with black flame"
+  },
+  {
+    "name": "Black Flame Ritual",
+    "type": "Incantation",
+    "cost": 24,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 42,
+      "Arcane": 0
+    },
+    "effect": "Summons circle of black flame pillars around caster."
+  },
+  {
+    "name": "Black Flame's Protection",
+    "type": "Incantation",
+    "cost": 30,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 30,
+      "Arcane": 0
+    },
+    "effect": "Increases phyiscal damage negation"
+  },
+  {
+    "name": "Blessing Of The Erdtree",
+    "type": "Incantation",
+    "cost": 60,
+    "slots": 2,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 38,
+      "Arcane": 0
+    },
+    "effect": "Grants greater blessing to self and nearby allies"
+  },
+  {
+    "name": "Blessing's Boon",
+    "type": "Incantation",
+    "cost": 23,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 24,
+      "Arcane": 0
+    },
+    "effect": "Grants blessing to self and nearby allies"
+  },
+  {
+    "name": "Bloodboon",
+    "type": "Incantation",
+    "cost": 15,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 14,
+      "Arcane": 17
+    },
+    "effect": "Scatters bloodflame before caster to set area aflame."
+  },
+  {
+    "name": "Bloodflame Blade",
+    "type": "Incantation",
+    "cost": 20,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 12,
+      "Arcane": 10
+    },
+    "effect": "Enchants right-hand armament with bloodflame"
+  },
+  {
+    "name": "Bloodflame Talons",
+    "type": "Incantation",
+    "cost": 18,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 13,
+      "Arcane": 15
+    },
+    "effect": "Creates bloodflame lacerations that then explode"
+  },
+  {
+    "name": "Borealis's Mist",
+    "type": "Incantation",
+    "cost": 48,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 23,
+      "Arcane": 15
+    },
+    "effect": "Spews icy breath of Borealis from above"
+  },
+  {
+    "name": "Briars Of Punishment",
+    "type": "Sorcery",
+    "cost": 13,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 21,
+      "Arcane": 0
+    },
+    "effect": "Wounds caster to unleash trail of bloodthrorns"
+  },
+  {
+    "name": "Briars Of Sin",
+    "type": "Sorcery",
+    "cost": 9,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 24,
+      "Arcane": 0
+    },
+    "effect": "Summons thorns from a whorl of your own blood."
+  },
+  {
+    "name": "Burn O Flame!",
+    "type": "Incantation",
+    "cost": 30,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 27,
+      "Arcane": 0
+    },
+    "effect": "Raises a series of flame pillars around caster"
+  },
+  {
+    "name": "Cannon Of Haima",
+    "type": "Sorcery",
+    "cost": 45,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 25,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Lobs an explosive magic projectile in an arc"
+  },
+  {
+    "name": "Carian Greatsword",
+    "type": "Sorcery",
+    "cost": 16,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 24,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Performs sweeping slash using magical greatsword"
+  },
+  {
+    "name": "Carian Phalanx",
+    "type": "Sorcery",
+    "cost": 26,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 34,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Forms a defensive arch of numerous magic glintblades"
+  },
+  {
+    "name": "Carian Piercer",
+    "type": "Sorcery",
+    "cost": 23,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 27,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Impales foes with magical greatsword"
+  },
+  {
+    "name": "Carian Retaliation",
+    "type": "Sorcery",
+    "cost": 8,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 17,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Dispels enemy spells and retaliates with glintblades"
+  },
+  {
+    "name": "Carian Slicer",
+    "type": "Sorcery",
+    "cost": 4,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 14,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Performs swift sweeping slash using magical sword"
+  },
+  {
+    "name": "Collapsing Stars",
+    "type": "Sorcery",
+    "cost": 18,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 36,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Pulls foes toward caster with gravity projectile volley"
+  },
+  {
+    "name": "Comet",
+    "type": "Sorcery",
+    "cost": 38,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 52,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Fires a great magic comet"
+  },
+  {
+    "name": "Comet Azur",
+    "type": "Sorcery",
+    "cost": 40,
+    "slots": 3,
+    "requires": {
+      "Intelligence": 60,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Fires a tremendous comet within a starry torrent"
+  },
+  {
+    "name": "Crystal Barrage",
+    "type": "Sorcery",
+    "cost": 14,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 23,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Fires a volley of glintstone crystal shards"
+  },
+  {
+    "name": "Crystal Burst",
+    "type": "Sorcery",
+    "cost": 14,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 18,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Fires a burst of glintstone crystal shards"
+  },
+  {
+    "name": "Crystal Release",
+    "type": "Sorcery",
+    "cost": 38,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 41,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Scours area with violent rain of crystal shards"
+  },
+  {
+    "name": "Crystal Torrent",
+    "type": "Sorcery",
+    "cost": 24,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 47,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Creates crystal mass that fires stream of crystal shards"
+  },
+  {
+    "name": "Cure Poison",
+    "type": "Incantation",
+    "cost": 7,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 10,
+      "Arcane": 0
+    },
+    "effect": "Cures Poison ailment and reduces poison build-up."
+  },
+  {
+    "name": "Darkness",
+    "type": "Incantation",
+    "cost": 26,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 18,
+      "Arcane": 0
+    },
+    "effect": "Creates area of darkness that conceals caster"
+  },
+  {
+    "name": "Death Lightning",
+    "type": "Incantation",
+    "cost": 46,
+    "slots": 2,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 47,
+      "Arcane": 0
+    },
+    "effect": "Strikes surroundings with storm of death lightning"
+  },
+  {
+    "name": "Discus Of Light",
+    "type": "Incantation",
+    "cost": 11,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 13,
+      "Faith": 13,
+      "Arcane": 0
+    },
+    "effect": "Fires ring of light before the caster"
+  },
+  {
+    "name": "Divine Fortification",
+    "type": "Incantation",
+    "cost": 20,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 10,
+      "Arcane": 0
+    },
+    "effect": "Increases holy damage negation."
+  },
+  {
+    "name": "Dragonbolt Blessing",
+    "type": "Incantation",
+    "cost": 20,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 21,
+      "Arcane": 0
+    },
+    "effect": "Bolsters caster's body with lightning"
+  },
+  {
+    "name": "Dragonclaw",
+    "type": "Incantation",
+    "cost": 42,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 17,
+      "Arcane": 13
+    },
+    "effect": "Channels dragon to rend foes with dragon claws"
+  },
+  {
+    "name": "Dragonfire",
+    "type": "Incantation",
+    "cost": 28,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 15,
+      "Arcane": 12
+    },
+    "effect": "Channels dragon to spew flame breath"
+  },
+  {
+    "name": "Dragonice",
+    "type": "Incantation",
+    "cost": 36,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 15,
+      "Arcane": 12
+    },
+    "effect": "Channels dragon to spew icy breath"
+  },
+  {
+    "name": "Dragonmaw",
+    "type": "Incantation",
+    "cost": 62,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 24,
+      "Arcane": 16
+    },
+    "effect": "Channels dragon to bite foes before caster"
+  },
+  {
+    "name": "Ekzyke's Decay",
+    "type": "Incantation",
+    "cost": 48,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 23,
+      "Arcane": 15
+    },
+    "effect": "Spews scarlet rot breath of Ekzykes from above."
+  },
+  {
+    "name": "Ekzykes's Decay",
+    "type": "Incantation",
+    "cost": 48,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 23,
+      "Arcane": 15
+    },
+    "effect": "Spews scarlet rot breath of Ekzykes from above"
+  },
+  {
+    "name": "Elden Stars",
+    "type": "Incantation",
+    "cost": 47,
+    "slots": 2,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 50,
+      "Arcane": 0
+    },
+    "effect": "Creates a steam of golden shooting stars that assail the area."
+  },
+  {
+    "name": "Electrify Armament",
+    "type": "Incantation",
+    "cost": 21,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 15,
+      "Arcane": 0
+    },
+    "effect": "Enchants right-hand armament with lightning damage"
+  },
+  {
+    "name": "Erdtree Heal",
+    "type": "Incantation",
+    "cost": 65,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 42,
+      "Arcane": 0
+    },
+    "effect": "Vastly heals HP for self and nearby allies"
+  },
+  {
+    "name": "Eternal Darkness",
+    "type": "Sorcery",
+    "cost": 25,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 35,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Creates a dark space that draws in spells"
+  },
+  {
+    "name": "Explosive Ghostflame",
+    "type": "Sorcery",
+    "cost": 36,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 42,
+      "Faith": 30,
+      "Arcane": 0
+    },
+    "effect": "Causes ghostflame explosion that burns wide area"
+  },
+  {
+    "name": "Ezykes's Decay",
+    "type": "Incantation",
+    "cost": 48,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 23,
+      "Arcane": 15
+    },
+    "effect": "???"
+  },
+  {
+    "name": "Fia's Mist",
+    "type": "Sorcery",
+    "cost": 25,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 23,
+      "Faith": 18,
+      "Arcane": 0
+    },
+    "effect": "Release a mist of death before caster"
+  },
+  {
+    "name": "Fire's Deadly Sin",
+    "type": "Incantation",
+    "cost": 26,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 19,
+      "Arcane": 0
+    },
+    "effect": "Sets area and self ablaze with raging flames"
+  },
+  {
+    "name": "Flame Fortification",
+    "type": "Incantation",
+    "cost": 20,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 10,
+      "Arcane": 0
+    },
+    "effect": "Increases fire damage negation."
+  },
+  {
+    "name": "Flame Of The Fell God",
+    "type": "Incantation",
+    "cost": 20,
+    "slots": 2,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 41,
+      "Arcane": 0
+    },
+    "effect": "Summons raging fireball that explodes and sets the area ablaze"
+  },
+  {
+    "name": "Flame, Fall Upon Them",
+    "type": "Incantation",
+    "cost": 24,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 28,
+      "Arcane": 0
+    },
+    "effect": "Hurls several balls of fire at once"
+  },
+  {
+    "name": "Flame, Protect Me",
+    "type": "Incantation",
+    "cost": 30,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 24,
+      "Arcane": 0
+    },
+    "effect": "Greatly increases fire damage negation"
+  },
+  {
+    "name": "Fortissax's Lightning Spear",
+    "type": "Incantation",
+    "cost": 64,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 46,
+      "Arcane": 0
+    },
+    "effect": "Stabs from above with two red lightning spears in tandem"
+  },
+  {
+    "name": "Founding Rain Of Stars",
+    "type": "Sorcery",
+    "cost": 46,
+    "slots": 2,
+    "requires": {
+      "Intelligence": 52,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Releases a downpour of star rain for a while"
+  },
+  {
+    "name": "Freezing Mist",
+    "type": "Sorcery",
+    "cost": 20,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 21,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Releases cold mist before caster"
+  },
+  {
+    "name": "Frenzied Burst",
+    "type": "Incantation",
+    "cost": 24,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 22,
+      "Arcane": 0
+    },
+    "effect": "Emits concentrated blast of yellow flame of frenzy from eyes"
+  },
+  {
+    "name": "Frozen Armament",
+    "type": "Sorcery",
+    "cost": 20,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 15,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Enchants right-hand armament with frost"
+  },
+  {
+    "name": "Frozen Lightning Spear",
+    "type": "Incantation",
+    "cost": 36,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 34,
+      "Arcane": 0
+    },
+    "effect": "Stabs with ice lightning spear from above"
+  },
+  {
+    "name": "Gavel Of Haima",
+    "type": "Sorcery",
+    "cost": 37,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 25,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Attacks using a magic greathammer"
+  },
+  {
+    "name": "Gelmir's Fury",
+    "type": "Sorcery",
+    "cost": 27,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 28,
+      "Faith": 15,
+      "Arcane": 0
+    },
+    "effect": "Covers area with surge of magma from the earth"
+  },
+  {
+    "name": "Giantsflame Take Thee",
+    "type": "Incantation",
+    "cost": 32,
+    "slots": 2,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 30,
+      "Arcane": 0
+    },
+    "effect": "Hurls massive ball of raging fire"
+  },
+  {
+    "name": "Glintblade Phalanx",
+    "type": "Sorcery",
+    "cost": 20,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 22,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Forms a defensive arch of magic glintblades"
+  },
+  {
+    "name": "Glintstone Arc",
+    "type": "Sorcery",
+    "cost": 10,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 13,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Fires a horizontally-widening magic arc"
+  },
+  {
+    "name": "Glintstone Breath",
+    "type": "Incantation",
+    "cost": 36,
+    "slots": 1,
+    "requires": {},
+    "effect": "Channels dragon to spew icy breath."
+  },
+  {
+    "name": "Glintstone Cometshard",
+    "type": "Sorcery",
+    "cost": 25,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 36,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Fires a magic comet with a trailing tail"
+  },
+  {
+    "name": "Glintstone Icecrag",
+    "type": "Sorcery",
+    "cost": 12,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 15,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Fires mass of cold magic from glintstone"
+  },
+  {
+    "name": "Glintstone Pebble",
+    "type": "Sorcery",
+    "cost": 7,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 10,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Fires magic projectiles from glintstone"
+  },
+  {
+    "name": "Glintstone Stars",
+    "type": "Sorcery",
+    "cost": 14,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 12,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Fires three shooting stars that pursue foes"
+  },
+  {
+    "name": "Golden Lightning Fortification",
+    "type": "Incantation",
+    "cost": 30,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 24,
+      "Arcane": 0
+    },
+    "effect": "Greatly increases lightning resistance for self and allies"
+  },
+  {
+    "name": "Golden Vow (spell)",
+    "type": "Incantation",
+    "cost": 47,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 25,
+      "Arcane": 0
+    },
+    "effect": "Increases attack and defense for self and allies"
+  },
+  {
+    "name": "Gravity Well",
+    "type": "Sorcery",
+    "cost": 12,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 17,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Pulls foes toward caster with gravity projectile"
+  },
+  {
+    "name": "Great Glintstone Shard",
+    "type": "Sorcery",
+    "cost": 12,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 16,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Fires larger magic projectiles from glintstone"
+  },
+  {
+    "name": "Great Heal",
+    "type": "Incantation",
+    "cost": 45,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 15,
+      "Arcane": 0
+    },
+    "effect": "Greatly Heals HP for self and nearby allies"
+  },
+  {
+    "name": "Great Oracular Bubble",
+    "type": "Sorcery",
+    "cost": 16,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 25,
+      "Faith": 0,
+      "Arcane": 18
+    },
+    "effect": "Launches a large magic bubble"
+  },
+  {
+    "name": "Greatblade Phalanx",
+    "type": "Sorcery",
+    "cost": 43,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 29,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Forms a defensive arch of larger magic glintblades"
+  },
+  {
+    "name": "Greyoll's Roar",
+    "type": "Incantation",
+    "cost": 75,
+    "slots": 2,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 28,
+      "Arcane": 17
+    },
+    "effect": "Emits the roar of Elder Dragon Greyoll."
+  },
+  {
+    "name": "Gurrang's Beast Claw",
+    "type": "Incantation",
+    "cost": 21,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 15,
+      "Arcane": 0
+    },
+    "effect": "Creates beast claws to rend surroundings with shockwaves"
+  },
+  {
+    "name": "Heal",
+    "type": "Incantation",
+    "cost": 32,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 12,
+      "Arcane": 0
+    },
+    "effect": "Heals HP for you and nearby allies."
+  },
+  {
+    "name": "Honed Bolt",
+    "type": "Incantation",
+    "cost": 12,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 24,
+      "Arcane": 0
+    },
+    "effect": "Strikes foe with lightning bolt from above"
+  },
+  {
+    "name": "Howl Of Shabriri",
+    "type": "Incantation",
+    "cost": 21,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 33,
+      "Arcane": 0
+    },
+    "effect": "Shrieks, building up madness in nearby foes"
+  },
+  {
+    "name": "Immutable Shield",
+    "type": "Incantation",
+    "cost": 15,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 19,
+      "Faith": 19,
+      "Arcane": 0
+    },
+    "effect": "Increases left-hand shield's affinity/ailment resistance"
+  },
+  {
+    "name": "Inescapable Frenzy",
+    "type": "Incantation",
+    "cost": 32,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 21,
+      "Arcane": 0
+    },
+    "effect": "Latches onto foes to spread madness"
+  },
+  {
+    "name": "Lansseax's Glaive",
+    "type": "Incantation",
+    "cost": 35,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 40,
+      "Arcane": 0
+    },
+    "effect": "Sweeps from above with red lightning glaive."
+  },
+  {
+    "name": "Law Of Causality",
+    "type": "Incantation",
+    "cost": 22,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Retaliates upon receiving a number of blows"
+  },
+  {
+    "name": "Law Of Regression",
+    "type": "Incantation",
+    "cost": 55,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 37,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Heals all ailments and dispels all special effects"
+  },
+  {
+    "name": "Lightning Fortification",
+    "type": "Incantation",
+    "cost": 20,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 10,
+      "Arcane": 0
+    },
+    "effect": "Increass lighting damage negation"
+  },
+  {
+    "name": "Lightning Spear",
+    "type": "Incantation",
+    "cost": 14,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 17,
+      "Arcane": 0
+    },
+    "effect": "Hurls lightning spear before caster"
+  },
+  {
+    "name": "Lightning Strike",
+    "type": "Incantation",
+    "cost": 17,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 28,
+      "Arcane": 0
+    },
+    "effect": "Summons lightning bolt that spreads from impact."
+  },
+  {
+    "name": "Litany Of Proper Death",
+    "type": "Incantation",
+    "cost": 17,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 17,
+      "Faith": 17,
+      "Arcane": 0
+    },
+    "effect": "Creates image of Order to deal holy damage"
+  },
+  {
+    "name": "Lord's Aid",
+    "type": "Incantation",
+    "cost": 9,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 12,
+      "Arcane": 0
+    },
+    "effect": "Alleviates poison / blood loss / sleep buildup for self / allies"
+  },
+  {
+    "name": "Lord's Divine Fortification",
+    "type": "Incantation",
+    "cost": 30,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 27,
+      "Arcane": 0
+    },
+    "effect": "Greatly increases holy damage negation incl. allies"
+  },
+  {
+    "name": "Lord's Heal",
+    "type": "Incantation",
+    "cost": 42,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 20,
+      "Arcane": 0
+    },
+    "effect": "Massively heals HP for self and nearby allies"
+  },
+  {
+    "name": "Loretta's Greatbow",
+    "type": "Sorcery",
+    "cost": 32,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 26,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Fires great arrow from a magic greatbow"
+  },
+  {
+    "name": "Loretta's Mastery",
+    "type": "Sorcery",
+    "cost": 50,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 46,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Fires four great arrow from a magic greatbow at once"
+  },
+  {
+    "name": "Lucidity",
+    "type": "Sorcery",
+    "cost": 10,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 17,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Alleviates buildup of sleep and madness"
+  },
+  {
+    "name": "Magic Downpour",
+    "type": "Sorcery",
+    "cost": 25,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 15,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Summon a magic mass that sprays projectiles over area"
+  },
+  {
+    "name": "Magic Fortification",
+    "type": "Incantation",
+    "cost": 20,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 10,
+      "Arcane": 0
+    },
+    "effect": "Increases magic damage negation"
+  },
+  {
+    "name": "Magic Glintblade",
+    "type": "Sorcery",
+    "cost": 12,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 14
+    },
+    "effect": "Creates sigil that forms a projectile glintblade after delay"
+  },
+  {
+    "name": "Magma Breath",
+    "type": "Incantation",
+    "cost": 30,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 14,
+      "Arcane": 10
+    },
+    "effect": "Channels wyrm to spew magma breath"
+  },
+  {
+    "name": "Magma Shot",
+    "type": "Sorcery",
+    "cost": 24,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 19,
+      "Faith": 10,
+      "Arcane": 0
+    },
+    "effect": "Fire lump of magma that explodes on contact"
+  },
+  {
+    "name": "Meteorite",
+    "type": "Sorcery",
+    "cost": 30,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 30,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Calls small meteors down from the sky."
+  },
+  {
+    "name": "Meteorite Of Astel",
+    "type": "Sorcery",
+    "cost": 60,
+    "slots": 2,
+    "requires": {
+      "Intelligence": 55,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Calls a hail of small meteorites from the void."
+  },
+  {
+    "name": "Night Comet",
+    "type": "Sorcery",
+    "cost": 32,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 38,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Fires semi-invisible magic comet"
+  },
+  {
+    "name": "Night Maiden's Mist",
+    "type": "Sorcery",
+    "cost": 20,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 14,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Releases life-sapping silver mist before caster"
+  },
+  {
+    "name": "Night Shard",
+    "type": "Sorcery",
+    "cost": 7,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 18,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Swiftly fires a semi-invisible"
+  },
+  {
+    "name": "Noble Presence",
+    "type": "Incantation",
+    "cost": 20,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 26,
+      "Arcane": 0
+    },
+    "effect": "Thrust out belly with gusto to unelash repelling shockwave"
+  },
+  {
+    "name": "O, Flame!",
+    "type": "Incantation",
+    "cost": 12,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 16,
+      "Arcane": 0
+    },
+    "effect": "Momentarily sparks roaring flame from hand"
+  },
+  {
+    "name": "Oracle Bubble",
+    "type": "Sorcery",
+    "cost": 12,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 10,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Launches several bubbles of magic."
+  },
+  {
+    "name": "Oracle Bubbles",
+    "type": "Sorcery",
+    "cost": 12,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 19,
+      "Faith": 0,
+      "Arcane": 15
+    },
+    "effect": "Launches several small magic bubbles."
+  },
+  {
+    "name": "Order Healing",
+    "type": "Incantation",
+    "cost": 15,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Alleviates death blight buildup"
+  },
+  {
+    "name": "Order's Blade",
+    "type": "Incantation",
+    "cost": 22,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 13,
+      "Faith": 13,
+      "Arcane": 0
+    },
+    "effect": "Enchanted right-hand armament with holy damage"
+  },
+  {
+    "name": "Pest Threads",
+    "type": "Incantation",
+    "cost": 19,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 11,
+      "Arcane": 0
+    },
+    "effect": "Launches countless sticky threads before caster"
+  },
+  {
+    "name": "Placidusax's Ruin",
+    "type": "Incantation",
+    "cost": 80,
+    "slots": 3,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 36,
+      "Arcane": 0
+    },
+    "effect": "Spews golden breath of Dragonlord Placidusax"
+  },
+  {
+    "name": "Poison Armament",
+    "type": "Incantation",
+    "cost": 15,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 10,
+      "Arcane": 0
+    },
+    "effect": ""
+  },
+  {
+    "name": "Poison Mist",
+    "type": "Incantation",
+    "cost": 18,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 12,
+      "Arcane": 0
+    },
+    "effect": "Releases poison mist before caster."
+  },
+  {
+    "name": "Protection Of The Erdtree",
+    "type": "Incantation",
+    "cost": 30,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 35,
+      "Arcane": 0
+    },
+    "effect": "Increases affinity damage negation for self & allies"
+  },
+  {
+    "name": "Radagon's Rings Of Light",
+    "type": "Incantation",
+    "cost": 29,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 31,
+      "Faith": 31,
+      "Arcane": 0
+    },
+    "effect": "Creates golden ring of light to attack wide area"
+  },
+  {
+    "name": "Rancorcall",
+    "type": "Sorcery",
+    "cost": 14,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 16,
+      "Faith": 14,
+      "Arcane": 0
+    },
+    "effect": "Summons vengeful spirits that chase down foes"
+  },
+  {
+    "name": "Ranni's Dark Moon",
+    "type": "Sorcery",
+    "cost": 62,
+    "slots": 2,
+    "requires": {
+      "Intelligence": 68,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Incarnate a cold, dark moon and launch it at foes."
+  },
+  {
+    "name": "Rejection",
+    "type": "Incantation",
+    "cost": 9,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 12,
+      "Arcane": 0
+    },
+    "effect": "Produces a shockwave that pushes away foes."
+  },
+  {
+    "name": "Rennala's Full Moon",
+    "type": "Sorcery",
+    "cost": 55,
+    "slots": 2,
+    "requires": {
+      "Intelligence": 70,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Incarnate a full moon and launch it at foes"
+  },
+  {
+    "name": "Rock Blaster",
+    "type": "Sorcery",
+    "cost": 30,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 21,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Thurst staff into ground to emit a massive shockwave"
+  },
+  {
+    "name": "Rock Sling",
+    "type": "Sorcery",
+    "cost": 18,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 18,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Summons rocks from the earth and sends its flying"
+  },
+  {
+    "name": "Roiling Magma",
+    "type": "Sorcery",
+    "cost": 32,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 21,
+      "Faith": 12,
+      "Arcane": 0
+    },
+    "effect": "Fires lump of magma that explodes after delay"
+  },
+  {
+    "name": "Rotten Breath",
+    "type": "Incantation",
+    "cost": 36,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 15,
+      "Arcane": 12
+    },
+    "effect": "Channels dragon to spew scarlet rot breath"
+  },
+  {
+    "name": "Rykard's Rancor",
+    "type": "Sorcery",
+    "cost": 35,
+    "slots": 2,
+    "requires": {
+      "Intelligence": 40,
+      "Faith": 18,
+      "Arcane": 0
+    },
+    "effect": "Releases searing spirits that repeatedly explode after delay"
+  },
+  {
+    "name": "Scarlet Aeonia",
+    "type": "Incantation",
+    "cost": 56,
+    "slots": 3,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 35,
+      "Arcane": 0
+    },
+    "effect": "Creates a giant flower that explodes with scarlet rot."
+  },
+  {
+    "name": "Scholar's Armament",
+    "type": "Sorcery",
+    "cost": 25,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 12,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Enchants right-hand armament with magic damage"
+  },
+  {
+    "name": "Scholar's Shield",
+    "type": "Sorcery",
+    "cost": 30,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 12,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Enhances left-handed shield damage negation"
+  },
+  {
+    "name": "Scouring Black Flame",
+    "type": "Incantation",
+    "cost": 27,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 28,
+      "Arcane": 0
+    },
+    "effect": "Sweeps area before caster with black flame"
+  },
+  {
+    "name": "Shadow Bait",
+    "type": "Incantation",
+    "cost": 15,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 13,
+      "Arcane": 0
+    },
+    "effect": "Creates shadow that lures the aggression of foes of human build"
+  },
+  {
+    "name": "Shard Spiral",
+    "type": "Sorcery",
+    "cost": 16,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 27,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Fire twin spiraling projectiles"
+  },
+  {
+    "name": "Shatter Earth",
+    "type": "Sorcery",
+    "cost": 12,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 15,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Thrust staff into ground to emit a shockwave"
+  },
+  {
+    "name": "Shattering Crystal",
+    "type": "Sorcery",
+    "cost": 32,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 38,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Creates crystal mass that shatters in forward burst"
+  },
+  {
+    "name": "Smarag's Glintstone Breath",
+    "type": "Incantation",
+    "cost": 36,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 23,
+      "Arcane": 15
+    },
+    "effect": "Spews magic breath of Glintstone Dragon Smarag from above"
+  },
+  {
+    "name": "Star Shower",
+    "type": "Sorcery",
+    "cost": 36,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 24,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Fires six shooting stars that pursue foes"
+  },
+  {
+    "name": "Starlight",
+    "type": "Sorcery",
+    "cost": 12,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 15,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Creates star light to illuminate surroundings"
+  },
+  {
+    "name": "Stars Of Ruin",
+    "type": "Sorcery",
+    "cost": 50,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 43,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Fire twelve dark shooting stars that pursue foes"
+  },
+  {
+    "name": "Stone Of Gurranq",
+    "type": "Incantation",
+    "cost": 15,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 13,
+      "Arcane": 0
+    },
+    "effect": "Hurls a boulder before the caster"
+  },
+  {
+    "name": "Surge, O Flame!",
+    "type": "Incantation",
+    "cost": 1,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 9,
+      "Arcane": 0
+    },
+    "effect": "Incinerates area before caster with stream of fire"
+  },
+  {
+    "name": "Swarm Of Flies",
+    "type": "Incantation",
+    "cost": 14,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 11,
+      "Arcane": 16
+    },
+    "effect": "Releases a swarm of bloodflies before the caster"
+  },
+  {
+    "name": "Swift Glintstone Shard",
+    "type": "Sorcery",
+    "cost": 5,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 12,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Swiftly fires magic projectiles from glintstone"
+  },
+  {
+    "name": "Terra Magicus",
+    "type": "Sorcery",
+    "cost": 20,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 20,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Raises the magic strength of those within the sigil"
+  },
+  {
+    "name": "The Flame Of Frenzy",
+    "type": "Incantation",
+    "cost": 16,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 16,
+      "Arcane": 0
+    },
+    "effect": "Emits burst of yellow flame of frenzy from eyes"
+  },
+  {
+    "name": "Theodorix's Magma",
+    "type": "Incantation",
+    "cost": 45,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 21,
+      "Arcane": 14
+    },
+    "effect": "Spews magma breath of Theodorix from above"
+  },
+  {
+    "name": "Thops's Barrier",
+    "type": "Sorcery",
+    "cost": 7,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 18,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Erect a magic forcefield to deflect spells"
+  },
+  {
+    "name": "Tibia's Summons",
+    "type": "Sorcery",
+    "cost": 20,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 28,
+      "Faith": 20,
+      "Arcane": 0
+    },
+    "effect": "Summons Those Who Live in Death"
+  },
+  {
+    "name": "Triple Rings Of Light",
+    "type": "Incantation",
+    "cost": 23,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 23,
+      "Faith": 23,
+      "Arcane": 0
+    },
+    "effect": "Fire three rings of light before the caster"
+  },
+  {
+    "name": "Unendurable Frenzy",
+    "type": "Incantation",
+    "cost": 42,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 31,
+      "Arcane": 0
+    },
+    "effect": "Emits violent burst of yellow flame of frenzy from eyes."
+  },
+  {
+    "name": "Unseen Blade",
+    "type": "Sorcery",
+    "cost": 18,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 12,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Makes right-hand armament completely invisible"
+  },
+  {
+    "name": "Unseen Form",
+    "type": "Sorcery",
+    "cost": 20,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 16,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Makes the caster semi-invisible"
+  },
+  {
+    "name": "Urgent Heal",
+    "type": "Incantation",
+    "cost": 16,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 8,
+      "Arcane": 0
+    },
+    "effect": "Heals a small amount of HP."
+  },
+  {
+    "name": "Vyke's Dragonbolt",
+    "type": "Incantation",
+    "cost": 27,
+    "slots": 1,
+    "requires": {},
+    "effect": "Enchants right-hand armament with lightning damage"
+  },
+  {
+    "name": "Whirl, O Flame!",
+    "type": "Incantation",
+    "cost": 21,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 13,
+      "Arcane": 0
+    },
+    "effect": "Sweeps area before caster with stream of fire"
+  },
+  {
+    "name": "Wrath Of Gold",
+    "type": "Incantation",
+    "cost": 40,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 0,
+      "Faith": 32,
+      "Arcane": 0
+    },
+    "effect": "Produces golden shockwave that knocks back foes"
+  },
+  {
+    "name": "Zamor Ice Storm",
+    "type": "Sorcery",
+    "cost": 22,
+    "slots": 1,
+    "requires": {
+      "Intelligence": 36,
+      "Faith": 0,
+      "Arcane": 0
+    },
+    "effect": "Thrust staff into ground to create freezing tornado."
+  }
+]

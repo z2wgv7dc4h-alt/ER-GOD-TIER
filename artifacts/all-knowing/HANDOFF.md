@@ -49,6 +49,7 @@ sentences naming an ungrounded id are stripped.
 ```
 bash scripts/ingest-open.sh
 python3 scripts/slim-lots.py
+node scripts/ingest-fanapi.mjs
 ```
 
 er-guide, FanAPI, Paramdex Names, Goblins `data/`.

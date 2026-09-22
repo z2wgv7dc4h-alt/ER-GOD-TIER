@@ -1,0 +1,710 @@
+[
+  {
+    "name": "Abandoned Cave",
+    "region": "Caelid"
+  },
+  {
+    "name": "Academy Crystal Cave",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Academy Gate Town",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Aeonia Swamp",
+    "region": "Caelid"
+  },
+  {
+    "name": "Ailing Village",
+    "region": "Weeping Peninsula"
+  },
+  {
+    "name": "Ainsel River Well",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Altus Tunnel",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Altus Tunnel",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Apostate Derelict",
+    "region": "Mountaintops of the Giants"
+  },
+  {
+    "name": "Artist's Shack",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Bellum Church",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Bellum Highway",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Bestial Sanctum",
+    "region": "Caelid"
+  },
+  {
+    "name": "Black Knife Catacombs",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Boilprawn Shack",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Bridge Of Sacrifice",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Bridge Of Sacrifice",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Caelem Ruins",
+    "region": "Caelid"
+  },
+  {
+    "name": "Caelid Catacombs",
+    "region": "Caelid"
+  },
+  {
+    "name": "Caelid Waypoint Ruins",
+    "region": "Caelid"
+  },
+  {
+    "name": "Callu Baptismal Church",
+    "region": "Weeping Peninsula"
+  },
+  {
+    "name": "Capital Outskirts",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Caria Manor",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Carian Study Hall",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Castle Morne",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Castle Sol",
+    "region": "Mountaintops of the Giants"
+  },
+  {
+    "name": "Cathedral Of Dragon Communion (caelid)",
+    "region": "Caelid"
+  },
+  {
+    "name": "Cathedral Of Manus Celes",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Chapel Of Anticipation",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Chelona's Rise",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Church Of Dragon Communion",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Church Of Elleh",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Church Of Inhibition",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Church Of Irith",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Church Of Pilgrimage",
+    "region": "Weeping Peninsula"
+  },
+  {
+    "name": "Church Of Repose",
+    "region": "Mountaintops of the Giants"
+  },
+  {
+    "name": "Church Of The Plague",
+    "region": "Caelid"
+  },
+  {
+    "name": "Church Of Vows",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Coastal Cave",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Consecrated Snowfield Catacombs",
+    "region": "Mountaintops of the Giants"
+  },
+  {
+    "name": "Converted Fringe Tower",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Converted Tower",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Corpse-stench Shack",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Craftsman's Shack",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Cuckoo's Evergaol",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Deathtouched Catacombs",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Deep Ainsel Well",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Deep Siofra Well",
+    "region": "Dragonbarrow"
+  },
+  {
+    "name": "Demi-human Forest Ruins",
+    "region": "Weeping Peninsula"
+  },
+  {
+    "name": "Divine Tower Of Caelid",
+    "region": "Caelid"
+  },
+  {
+    "name": "Divine Tower Of Limgrave",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Divine Tower Of Liurnia",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Dominula, Windmill Village",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Dragon-burnt Ruins",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Dragonbarrow Cave",
+    "region": "Dragonbarrow"
+  },
+  {
+    "name": "Earthbore Cave",
+    "region": "Limgrave"
+  },
+  {
+    "name": "East Windmill Pasture",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Forest Lookout Tower",
+    "region": "Weeping Peninsula"
+  },
+  {
+    "name": "Forge Of The Giants",
+    "region": "Mountaintops of the Giants"
+  },
+  {
+    "name": "Forlorn Hound Evergaol",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Forsaken Ruins",
+    "region": "Caelid"
+  },
+  {
+    "name": "Fort Faroth",
+    "region": "Dragonbarrow"
+  },
+  {
+    "name": "Fort Gael",
+    "region": "Caelid"
+  },
+  {
+    "name": "Fort Haight",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Fort Laiedd",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Fourth Church Of Marika",
+    "region": "Weeping Peninsula"
+  },
+  {
+    "name": "Frenzied Flame Village",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Fringefolk Hero's Grave",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Gael Tunnel",
+    "region": "Caelid"
+  },
+  {
+    "name": "Gaol Cave",
+    "region": "Caelid"
+  },
+  {
+    "name": "Gatefront Ruins",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Gelmir Hero's Grave",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Giant-conquering Hero's Grave",
+    "region": "Mountaintops of the Giants"
+  },
+  {
+    "name": "Golden Lineage Evergaol",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Gowry's Shack",
+    "region": "Caelid"
+  },
+  {
+    "name": "Grand Lift Of Dectus",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Grand Lift Of Rold",
+    "region": "Mountaintops of the Giants"
+  },
+  {
+    "name": "Groveside Cave",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Guardians' Garrison",
+    "region": "Mountaintops of the Giants"
+  },
+  {
+    "name": "Heretical Rise",
+    "region": "Mountaintops of the Giants"
+  },
+  {
+    "name": "Hermit Merchant's Shack",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Hermit Village",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Hermit's Shack",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Hidden Path To The Haligtree",
+    "region": "Mountaintops of the Giants"
+  },
+  {
+    "name": "Highroad Cave",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Highway Lookout Tower",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Impaler's Catacombs",
+    "region": "Weeping Peninsula"
+  },
+  {
+    "name": "Isolated Merchant's Shack",
+    "region": "Weeping Peninsula"
+  },
+  {
+    "name": "Isolated Merchant's Shack (dragonbarrow)",
+    "region": "Dragonbarrow"
+  },
+  {
+    "name": "Jarburg",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Kingsrealm Ruins",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Lakeside Crystal Cave",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Laskyar Ruins",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Lenne's Rise",
+    "region": "Dragonbarrow"
+  },
+  {
+    "name": "Leyndell, Royal Capital",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Limgrave Tunnels",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Lunar Estate Ruins",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Lux Ruins",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Malefactor's Evergaol",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Minor Erdtree (caelid)",
+    "region": "Caelid"
+  },
+  {
+    "name": "Minor Erdtree (liurnia Southwest)",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Minor Erdtree (mistwood)",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Minor Erdtree (weeping Peninsula)",
+    "region": "Weeping Peninsula"
+  },
+  {
+    "name": "Minor Erdtree Catacombs",
+    "region": "Caelid"
+  },
+  {
+    "name": "Minor Erdtree Church",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Mistwood",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Mistwood Ruins",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Moonfolk Ruins",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Morne Tunnel",
+    "region": "Weeping Peninsula"
+  },
+  {
+    "name": "Murkwater Catacombs",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Murkwater Cave",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Old Altus Tunnel",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Ordina, Liturgical Town",
+    "region": "Mountaintops of the Giants"
+  },
+  {
+    "name": "Oridys's Rise",
+    "region": "Weeping Peninsula"
+  },
+  {
+    "name": "Perfumer's Ruins",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Purified Ruins",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Ranni's Rise",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Raya Lucaria Crystal Tunnel",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Redmane Castle",
+    "region": "Caelid"
+  },
+  {
+    "name": "Renna's Rise",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Revenger's Shack",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Ringleader's Evergaol",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Road's End Catacombs",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Rose Church",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Royal Grave Evergaol",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Ruin-strewn Precipice",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Sage's Cave",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Sealed Tunnel",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Second Church Of Marika",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Seethewater Cave",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Sellia Crystal Tunnel",
+    "region": "Caelid"
+  },
+  {
+    "name": "Sellia Evergaol",
+    "region": "Dragonbarrow"
+  },
+  {
+    "name": "Sellia Gateway",
+    "region": "Caelid"
+  },
+  {
+    "name": "Sellia, Town Of Sorcery",
+    "region": "Caelid"
+  },
+  {
+    "name": "Seluvis's Rise",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Shack Of The Lofty",
+    "region": "Mountaintops of the Giants"
+  },
+  {
+    "name": "Shack Of The Rotting",
+    "region": "Caelid"
+  },
+  {
+    "name": "Siofra River Well",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Slumbering Wolf's Shack",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Smoldering Church",
+    "region": "Caelid"
+  },
+  {
+    "name": "Smoldering Church",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Spiritcaller's Cave",
+    "region": "Mountaintops of the Giants"
+  },
+  {
+    "name": "Stargazer's Ruins",
+    "region": "Mountaintops of the Giants"
+  },
+  {
+    "name": "Stillwater Cave",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Stormcaller Church",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Stormfoot Catacombs",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Stormgate",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Stormhill",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Stormhill Evergaol",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Stormhill Shack",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Stranded Graveyard",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Street Of Sages Ruins",
+    "region": "Caelid"
+  },
+  {
+    "name": "Summonwater Village",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Temple Quarter",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Testu's Rise",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "The Four Belfries",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "The Shaded Castle",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Third Church Of Marika",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Tombsward Catacombs",
+    "region": "Weeping Peninsula"
+  },
+  {
+    "name": "Tombsward Cave",
+    "region": "Weeping Peninsula"
+  },
+  {
+    "name": "Tombsward Ruins",
+    "region": "Weeping Peninsula"
+  },
+  {
+    "name": "Tower Of Return",
+    "region": "Weeping Peninsula"
+  },
+  {
+    "name": "Unsightly Catacombs",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Village Of The Albinaurics",
+    "region": "Liurnia of the Lakes"
+  },
+  {
+    "name": "Volcano Cave",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "War-dead Catacombs",
+    "region": "Caelid"
+  },
+  {
+    "name": "Warmaster's Shack",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Waypoint Ruins",
+    "region": "Limgrave"
+  },
+  {
+    "name": "Weeping Evergaol",
+    "region": "Weeping Peninsula"
+  },
+  {
+    "name": "Witchbane Ruins",
+    "region": "Weeping Peninsula"
+  },
+  {
+    "name": "Woodfolk Ruins",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Writheblood Ruins",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Wyndham Catacombs",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Wyndham Ruins",
+    "region": "Altus Pleateau"
+  },
+  {
+    "name": "Yelough Anix Ruins",
+    "region": "Mountaintops of the Giants"
+  },
+  {
+    "name": "Yelough Anix Tunnel",
+    "region": "Mountaintops of the Giants"
+  },
+  {
+    "name": "Zamor Ruins",
+    "region": "Mountaintops of the Giants"
+  }
+]

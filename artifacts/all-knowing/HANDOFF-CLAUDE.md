@@ -107,6 +107,9 @@ Rooms: Reckoning, Atlas, Build lab, Quest graph, Codex
 ### FanAPI / checklists
 `checklists/{weapons,armors,ashes,spirits,items,ammos,shields,classes,creatures,bosses,locations,sorceries,incantations,talismans,npcs,graces,hunts}.json`
 
+- `open/fanapi/*.json` — **Task 67/68** structured FanAPI fields (armor poise/negation, talisman
+  effects, spell cost/requires, Ash of War skill, spirit FP/HP, boss HP/drops, item effects, class
+  stats, …); refreshed by `node scripts/ingest-fanapi.mjs`.
 - `graces.json` — 418 BonfireWarpParam
 - `hunts.json` — ~207 field bosses + event flags (BuLEEto)
 
@@ -120,6 +123,7 @@ Rooms: Reckoning, Atlas, Build lab, Quest graph, Codex
 ```
 bash scripts/ingest-open.sh
 python3 scripts/slim-lots.py
+node scripts/ingest-fanapi.mjs
 ```
 Clones: er-guide, eldenring-api, Paramdex ER/Names, ERR-MapForGoblins-DLL data.
 
@@ -476,9 +480,9 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
   `scadutree-fragment` = 50, `revered-spirit-ash` = 25), cited in the module. The partial
   `collectibles.ts` `frag:*` map-pin list is deliberately **not** used, so a mid-run never shows a
   false 100%.
-- The per-level threshold table is **not in-repo** and not in a permitted source already listed in
-  `DATA.md` / `awesome.ts`, so this is **count-only**: level prints `—` with a note; no thresholds
-  invented.
+- Blessing **level** now comes from the cited per-level tables (Scadutree Fragment + Revered Spirit
+  Ash Fextralife pages, patch 1.12.2 / 1.12): `blessings.ts` stores the cumulative counts
+  (`thresholds`) and `levelFromCount` picks the highest level met. No wiki HTML is committed.
 - Build lab: the AR math is unchanged and ignores blessing, so a SotE run now shows the honest
   one-liner "AR is base-game; Scadutree Blessing not applied."
 
@@ -617,6 +621,46 @@ re-verified by Claude before merge — see `git log` for the full trail). Marker
   come only from in-repo regulation / names.json / coords / loot / catalog, and no lat/lng, event
   flags, or lockouts are invented.
 
+**Task 66 — gap pass: kit rows, exact locations, blessing levels** (landed after the policy patch):
+
+- `src/lib/buildHunt.ts` `norm()` now drops apostrophes/quotes instead of turning them into spaces,
+  so `Lion’s Claw` matches the `lions claw` alias. Every kit and need id in the library now resolves
+  — `buildLibrary.test.ts` asserts `hunt.unresolved` is empty for all 28 OP + 16 PvP builds.
+- 20 new `loot.ts` rows for the kit items Task 64 left unresolved (Lusat's, Staff of Loss, Carian
+  Regal Scepter, Azur's, Dragon King's Cragblade, Fire/Lightning Scorpion Charm, Curved Sword
+  Talisman, Greyoll's Roar, Rotten Breath, Faithful's Canvas, Warhawk's Talon, Cane Sword, Pulley
+  Crossbow, Radagon's Soreseal, Okina Mask, Swift Glintstone Shard, Stargazer Heirloom, Bull-Goat
+  Armor, Dagger). Each English name verified in `public/sourced/open/names.json`.
+- Exact locations for the 5 rows that had said `region: 'various'` (Giant-Crusher, Dragon Communion
+  Seal, Axe / Greatshield / Spear Talisman), read off the Fextralife pages — only the fact is stored,
+  no page HTML committed.
+- `src/lib/blessings.ts`: cited per-level thresholds for Scadutree (0–50) and Revered Spirit Ash
+  (0–25) plus `levelFromCount`, so `blessingLine` prints a real level instead of `Lv —`.
+
+**Task 67 — FanAPI structured reference data** (landed after 66):
+
+- `scripts/ingest-fanapi.mjs` pulls the FanAPI JSON (the source already named in §4 and
+  `awesome.ts`) into `public/sourced/open/fanapi/`: `armors.json` (568 — poise, negation,
+  resistance, weight), `talismans.json` (87 effects), `spells.json` (169 sorceries + incantations
+  with cost/slots/requires/effect), `ashes.json` (90 Ashes of War skill/affinity), `spirits.json`
+  (64 spirit ashes FP/HP/effect). Name-sorted so a re-run is byte-identical; only structured fields
+  are committed — no article bodies or images.
+- `src/lib/fanapiData.ts` loads them lazily and matches by name; the Codex gained Talismans /
+  Spells / Ashes of War / Armor reference sections. Weapon and shield attack numbers are
+  deliberately **not** ingested — AR stays on the in-repo regulation source. Base-game only
+  (FanAPI predates SotE).
+
+**Task 68 — rest of the FanAPI categories** (landed after 67):
+
+- Extended `scripts/ingest-fanapi.mjs` to pull every remaining category: `items.json` (462),
+  `locations.json` (177), `creatures.json` (115), `bosses.json` (106 — region/location/HP/drops),
+  `npcs.json` (55 — location/role), `ammos.json` (53), `classes.json` (14 — level/stats),
+  `weapons.json` (307) + `shields.json` (69 — **category/weight only**; attack/defence numbers are
+  deliberately dropped so nothing here competes with the in-repo regulation AR source).
+- `src/lib/fanapiData.ts` + `Codex.tsx` now cover all 14 sets through one generic `RefSection`
+  renderer; `Open` codex search matches Items, Locations, Bosses, Field enemies, NPCs, Ammunition,
+  Classes, Weapons and Shields.
+
 ---
 
 ## 7. Product ideas still valid (not built)
@@ -630,8 +674,8 @@ From Wyatt, keep on the roadmap:
 - Bonfire list screenshot populates discovered graces.
 - Item screenshot ⇒ “you have done X” (Fingerslayer → Nokron opened, etc.).
 - Field hunt completion (9974 rules: cave = last boss, ruins = chest).
-- ✅ Scadutree fragments + Revered ashes as first-class SotE meters. (Task 60 — Codex meters; level
-  is count-only because the threshold table is not in-repo.)
+- ✅ Scadutree fragments + Revered ashes as first-class SotE meters. (Task 60 — Codex meters; Task 66
+  added the cited per-level thresholds so the level is real, not count-only.)
 - Cookbook / bell bearing / whetblade / crystal tear sets (achievement-shaped).
 - Merchant “who sells X after I give Y scroll.”
 - Rememberance shop (Enia) as a table.

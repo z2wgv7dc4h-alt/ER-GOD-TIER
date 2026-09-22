@@ -85,12 +85,12 @@ describe('buildHunt', () => {
     expect(hunt.pins.map((p) => p.id)).toContain('loot:rivers')
   })
 
-  it('lists unresolved ids instead of dropping them', () => {
-    // `lusat` (Lusat's Glintstone Staff) has an English name but no loot/catalog row yet,
-    // so it is reported rather than silently dropped.
-    const azur = allBuilds.find((b) => b.id === 'build:azur')!
-    const hunt = buildHunt(character, azur)
-    expect(hunt.unresolved.map((u) => u.id)).toContain('lusat')
+  it('resolves kit items whose names contain apostrophes (Lion\u2019s, Lusat\u2019s)', () => {
+    for (const id of ['build:azur', 'build:greatsword-lions-claw']) {
+      const build = allBuilds.find((b) => b.id === id)!
+      const hunt = buildHunt(character, build)
+      expect(hunt.unresolved.filter((u) => u.source === 'kit'), id).toEqual([])
+    }
   })
 
   it('works for every build without throwing and loses no kit/need token', () => {

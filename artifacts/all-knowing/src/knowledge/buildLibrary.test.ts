@@ -63,6 +63,13 @@ describe('Task 65 build library', () => {
     }
   })
 
+  it('resolves every kit and need id in the library (nothing dropped)', () => {
+    for (const build of allBuilds) {
+      const hunt = buildHunt(character, build)
+      expect(hunt.unresolved, build.id).toEqual([])
+    }
+  })
+
   it('new builds carry an original one-sentence why, a source, and a patch flag', () => {
     const flags = ['still-strong', 'nerfed-but-works', 'sote', 'pre-1.08-dead']
     for (const id of NEW_BUILD_IDS) {

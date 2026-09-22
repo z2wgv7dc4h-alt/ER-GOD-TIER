@@ -15,10 +15,10 @@ import type { Character } from '../types'
  * each cover 1/2/5 fragments, so counting them would show a smaller N/N and
  * claim 100% before the run is actually complete.
  *
- * Blessing *level* needs the per-level fragment thresholds. No such table exists
- * in-repo, nor in a permitted source already listed in `DATA.md` / `awesome.ts`,
- * so this is count-only: `level` stays `undefined` and the UI prints "Lv —" with
- * a note rather than inventing thresholds.
+ * Blessing *level* uses the per-level fragment/ash thresholds published on the
+ * Fextralife Scadutree Fragment and Revered Spirit Ash pages (patch 1.12.2 /
+ * 1.12). Only the cumulative count needed per level is stored here; no wiki HTML
+ * is committed. See `source` on each set.
  */
 export type BlessingSetId = 'scadutree' | 'revered-ash'
 
@@ -31,9 +31,15 @@ export type BlessingSetMeta = {
   unit: string
   /** Category row count as of Task 60; asserted against the catalog by tests. */
   total: number
+  /**
+   * Cumulative count needed to reach each level: `thresholds[n]` is the total
+   * required for blessing level `n`, so `thresholds[0] === 0` and the last entry
+   * equals `total`.
+   */
+  thresholds: number[]
+  /** Where the threshold table came from. */
+  source: string
   note: string
-  /** Why no level can be shown. Honest, not a placeholder threshold. */
-  levelNote: string
 }
 
 export const blessingSets: BlessingSetMeta[] = [
@@ -43,8 +49,9 @@ export const blessingSets: BlessingSetMeta[] = [
     category: 'scadutree-fragment',
     unit: 'fragments',
     total: 50,
+    thresholds: [0, 1, 3, 5, 7, 9, 11, 13, 15, 17, 20, 23, 26, 29, 32, 35, 38, 41, 44, 47, 50],
+    source: 'Fextralife, Scadutree Fragment — Shadow Realm Blessing table (patch 1.12.2).',
     note: 'Each Scadutree Fragment raises the blessing — attack and damage negation in the Realm of Shadow.',
-    levelNote: 'Blessing level thresholds are not in this repo, so only the count is shown.',
   },
   {
     id: 'revered-ash',
@@ -52,10 +59,21 @@ export const blessingSets: BlessingSetMeta[] = [
     category: 'revered-spirit-ash',
     unit: 'ashes',
     total: 25,
+    thresholds: [0, 1, 2, 3, 5, 7, 10, 13, 16, 20, 25],
+    source: 'Fextralife, Revered Spirit Ash — Shadow Realm Blessing table (patch 1.12).',
     note: 'Each Revered Spirit Ash raises the blessing for your summoned spirits.',
-    levelNote: 'Blessing level thresholds are not in this repo, so only the count is shown.',
   },
 ]
+
+/** Highest blessing level whose cumulative threshold is met by `done`. */
+export function levelFromCount(done: number, thresholds: number[]): number {
+  let level = 0
+  for (let i = 1; i < thresholds.length; i += 1) {
+    if (done >= thresholds[i]) level = i
+    else break
+  }
+  return level
+}
 
 export type BlessingProgress = BlessingSetMeta & {
   done: number
@@ -63,8 +81,8 @@ export type BlessingProgress = BlessingSetMeta & {
   listCount: number
   /** True when the in-repo list has fewer rows than the known total. */
   incomplete: boolean
-  /** Undefined until a cited level-threshold table exists (see `levelNote`). */
-  level: number | undefined
+  /** Blessing level for the current count, from the cited threshold table. */
+  level: number
   remaining: GuideItem[]
 }
 
@@ -78,24 +96,24 @@ export function blessingProgress(items: GuideItem[], collected: string[]): Bless
   return blessingSets.map((set) => {
     const rows = items.filter((i) => i.category === set.category)
     const remaining = rows.filter((r) => !have.has(r.id))
+    const done = rows.length - remaining.length
     return {
       ...set,
-      done: rows.length - remaining.length,
+      done,
       listCount: rows.length,
       incomplete: rows.length < set.total,
-      level: undefined,
+      level: levelFromCount(done, set.thresholds),
       remaining,
     }
   })
 }
 
 /**
- * "Scadutree Blessing Lv — (12/50 fragments)". The level is `—` unless a cited
- * table is added; the count is always real.
+ * "Scadutree Blessing Lv 2 (5/50 fragments)". The level is the highest threshold
+ * the count has met; the count is the real collected total.
  */
 export function blessingLine(p: BlessingProgress): string {
-  const lv = p.level === undefined ? '—' : String(p.level)
-  return `${p.name} Lv ${lv} (${p.done}/${p.total} ${p.unit})`
+  return `${p.name} Lv ${p.level} (${p.done}/${p.total} ${p.unit})`
 }
 
 /** True when this run has Realm of Shadow access (so the AR caveat applies). */

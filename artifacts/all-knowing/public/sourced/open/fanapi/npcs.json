@@ -1,0 +1,277 @@
+[
+  {
+    "name": "Albus",
+    "location": "Village of the Albinaurics, Liurnia of the Lakes",
+    "role": "Gives Key Item"
+  },
+  {
+    "name": "Blackguard Big Boggart",
+    "location": "Boilprawn Shack",
+    "role": "Blackguard"
+  },
+  {
+    "name": "Blaidd",
+    "location": "Mistwood Ruins",
+    "role": "Wolfman"
+  },
+  {
+    "name": "Bloodhunter Raz",
+    "location": "Seaside Ruins, Stormhill , Stormveil Castle",
+    "role": "Companion"
+  },
+  {
+    "name": "Bloody Finger Hunter Yura",
+    "location": "Limgrave: near Seaside Ruins",
+    "role": "Bloody Finger Hunter Guide"
+  },
+  {
+    "name": "Boc The Seamster",
+    "location": "Limgrave",
+    "role": "Garments Adjuster"
+  },
+  {
+    "name": "Brother Corhyn",
+    "location": "Roundtable Hold",
+    "role": "Holy Practitioner"
+  },
+  {
+    "name": "D, Hunter Of The Dead",
+    "location": "Roundtable Hold",
+    "role": "Undead Hunter"
+  },
+  {
+    "name": "Dung Eater",
+    "location": "Roundtable Hold",
+    "role": "Tarnished"
+  },
+  {
+    "name": "Edgar",
+    "location": "Castle Morne, Weeping Peninsula",
+    "role": "Role goes here."
+  },
+  {
+    "name": "Enia",
+    "location": "Roundtable Hold",
+    "role": "Finger Reader"
+  },
+  {
+    "name": "Ensha Of The Royal Remains",
+    "location": "Roundtable Hold",
+    "role": "Lore"
+  },
+  {
+    "name": "Fia",
+    "location": "Roundtable Hold",
+    "role": "Deathbed Companion"
+  },
+  {
+    "name": "Frustrated Spirit",
+    "location": "Northernmost part of Limgrave",
+    "role": "Benevolent"
+  },
+  {
+    "name": "Frustrated Spirit",
+    "location": "Northernmost part of Limgrave",
+    "role": "Benevolent"
+  },
+  {
+    "name": "Gatekeeper Gostoc",
+    "location": "Stormveil Castle Entrance",
+    "role": "Castle Gatekeeper"
+  },
+  {
+    "name": "Gideon Ofnir",
+    "location": "Roundtable Hold",
+    "role": "Lore"
+  },
+  {
+    "name": "Goldmask",
+    "location": "Altus Plateau, ",
+    "role": "Unknown"
+  },
+  {
+    "name": "Gowry",
+    "location": "Gowry's Shack, Caelid",
+    "role": "Elder Sage"
+  },
+  {
+    "name": "Gurranq, Beast Clergyman",
+    "location": "Bestial Sanctum, Caelid",
+    "role": "Special Trader"
+  },
+  {
+    "name": "Hyetta",
+    "location": "Various Locations",
+    "role": "Finger Maiden"
+  },
+  {
+    "name": "Imprisoned Merchant",
+    "location": "Mohgwyn Dynasty Mausoleum",
+    "role": " General Goods Shop"
+  },
+  {
+    "name": "Irina",
+    "location": "Bridge of Sacrifice, Weeping Peninsula",
+    "role": "Citizen in need of help."
+  },
+  {
+    "name": "Iron Fist Alexander",
+    "location": "Kevin Howarth",
+    "role": ""
+  },
+  {
+    "name": "Kenneth Haight",
+    "location": "Limgrave",
+    "role": "Next Rightful Ruler of Limgrave"
+  },
+  {
+    "name": "Knight Bernahl",
+    "location": "Warmaster's Shack, Volcano Manor",
+    "role": "Ash of War Merchant"
+  },
+  {
+    "name": "Knight Diallos",
+    "location": "Roundtable Hold",
+    "role": "Noble"
+  },
+  {
+    "name": "Latenna",
+    "location": "Liurnia of the Lakes, Slumbering Wolf's Shack",
+    "role": "Quest NPC"
+  },
+  {
+    "name": "Melina",
+    "location": "The beginning of the Tarnished's journey.",
+    "role": "Maiden"
+  },
+  {
+    "name": "Merchant Kalé",
+    "location": "Limgrave, Church of Elleh",
+    "role": " General Goods Shop"
+  },
+  {
+    "name": "Millicent",
+    "location": "Church of the Plague",
+    "role": "NPC"
+  },
+  {
+    "name": "Miriel, Pastor Of Vows",
+    "location": "Church of Vows",
+    "role": "Steward of the Church of Vows"
+  },
+  {
+    "name": "Nepheli Loux",
+    "location": "Stormveil Castle",
+    "role": "Companion"
+  },
+  {
+    "name": "Palm Reader",
+    "location": "Multiple Locations",
+    "role": "Palm Reader"
+  },
+  {
+    "name": "Patches",
+    "location": "Murkwater Cave",
+    "role": "x2 Golden Rune (1), Grovel for Mercy"
+  },
+  {
+    "name": "Pidia, Carian Servant",
+    "location": "Caria Manor",
+    "role": "Merchant"
+  },
+  {
+    "name": "Preceptor Seluvis",
+    "location": "Seluvis's Rise, Three Sisters",
+    "role": "Preceptor of Sorcerous Arts (Quest NPC)"
+  },
+  {
+    "name": "Primeval Sorcerer Azur",
+    "location": "Hermit Village, Mt. Gelmir",
+    "role": "Unknown"
+  },
+  {
+    "name": "Queen Marika",
+    "location": "???",
+    "role": "Ruler of The Lands Between"
+  },
+  {
+    "name": "Ranni The Witch",
+    "location": "Ranni's Rise, Three Sisters",
+    "role": " "
+  },
+  {
+    "name": "Renna",
+    "location": "Limgrave",
+    "role": "The Storyteller"
+  },
+  {
+    "name": "Roderika",
+    "location": "Stormhill Shack, Roundtable Hold",
+    "role": "Spirit-Tuner"
+  },
+  {
+    "name": "Rya",
+    "location": "Volcano Manor",
+    "role": "Scout"
+  },
+  {
+    "name": "Shabriri",
+    "location": "Mountaintops of the Giants",
+    "role": "???"
+  },
+  {
+    "name": "Smithing Master Hewg",
+    "location": "Roundtable Hold",
+    "role": "Blacksmith"
+  },
+  {
+    "name": "Sorcerer Rogier",
+    "location": "Stormveil Castle",
+    "role": "Merchant"
+  },
+  {
+    "name": "Sorceress Sellen",
+    "location": "Limgrave, Waypoint Ruins",
+    "role": "Sorceries Shop"
+  },
+  {
+    "name": "Tanith",
+    "location": "Volcano Manor",
+    "role": "Head of Volcano Manor"
+  },
+  {
+    "name": "The Great-jar",
+    "location": "Caelid",
+    "role": "NPC"
+  },
+  {
+    "name": "Thops",
+    "location": "Church of Irith in Liurnia of the Lakes",
+    "role": "Sorcery Student"
+  },
+  {
+    "name": "Three Fingers",
+    "location": "Cathedral of, the Forsaken",
+    "role": "???"
+  },
+  {
+    "name": "Twin Maiden Husks",
+    "location": "Roundtable Hold",
+    "role": "Merchant"
+  },
+  {
+    "name": "War Counselor Iji",
+    "location": "Kingsrealm Ruins, Western Liurnia of the Lakes",
+    "role": "Blacksmith & Quest NPC"
+  },
+  {
+    "name": "White-faced Varré",
+    "location": "Various Locations",
+    "role": "Player Guidance"
+  },
+  {
+    "name": "Witch-hunter Jerren",
+    "location": "Redmane Castle plaza Church",
+    "role": "Witch-Hunter"
+  }
+]

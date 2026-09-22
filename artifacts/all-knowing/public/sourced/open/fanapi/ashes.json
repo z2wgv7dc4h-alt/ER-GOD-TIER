@@ -1,0 +1,452 @@
+[
+  {
+    "name": "Ashes Of War: Golden Vow",
+    "affinity": "Sacred",
+    "skill": "Golden Vow"
+  },
+  {
+    "name": "Assassin's Gambit",
+    "affinity": "Occult",
+    "skill": "Assassin's Gambit"
+  },
+  {
+    "name": "Barbaric Roar",
+    "affinity": "Heavy",
+    "skill": "Barbaric Roar"
+  },
+  {
+    "name": "Barrage",
+    "affinity": "Standard",
+    "skill": "Barrage"
+  },
+  {
+    "name": "Barricade Shield",
+    "affinity": "Standard",
+    "skill": "Barricade Shield"
+  },
+  {
+    "name": "Beast's Roar",
+    "affinity": "Keen",
+    "skill": "Beast's Roar"
+  },
+  {
+    "name": "Black Flame Tornado",
+    "affinity": "Flame Art",
+    "skill": "Black Flame Tornado"
+  },
+  {
+    "name": "Blood Blade",
+    "affinity": "Blood",
+    "skill": "Blood Blade"
+  },
+  {
+    "name": "Blood Tax",
+    "affinity": "Blood",
+    "skill": "Blood Tax"
+  },
+  {
+    "name": "Bloodhound's Step",
+    "affinity": "Keen",
+    "skill": "Bloodhound's Step"
+  },
+  {
+    "name": "Bloody Slash",
+    "affinity": "Blood",
+    "skill": "Bloody Slash"
+  },
+  {
+    "name": "Braggart's Roar",
+    "affinity": "Heavy",
+    "skill": "Braggart's Roar"
+  },
+  {
+    "name": "Carian Grandeur",
+    "affinity": "Magic",
+    "skill": "Carian Grandeur"
+  },
+  {
+    "name": "Carian Greatsword",
+    "affinity": "Magic",
+    "skill": "Carian Greatsword"
+  },
+  {
+    "name": "Carian Retaliation",
+    "affinity": "Magic",
+    "skill": "Carian Retaliation"
+  },
+  {
+    "name": "Charge Forth",
+    "affinity": "Quality",
+    "skill": "Charge Forth"
+  },
+  {
+    "name": "Chilling Mist",
+    "affinity": "Cold",
+    "skill": "Chilling Mist"
+  },
+  {
+    "name": "Cragblade",
+    "affinity": "Heavy",
+    "skill": "Cragblade"
+  },
+  {
+    "name": "Determination",
+    "affinity": "Quality",
+    "skill": "Determination"
+  },
+  {
+    "name": "Double Slash",
+    "affinity": "Keen",
+    "skill": "Double Slash"
+  },
+  {
+    "name": "Earthshaker",
+    "affinity": "Heavy",
+    "skill": "Earthshaker"
+  },
+  {
+    "name": "Enchanted Shot",
+    "affinity": "Standard",
+    "skill": "Enchanted Shot"
+  },
+  {
+    "name": "Endure",
+    "affinity": "Heavy",
+    "skill": "Endure"
+  },
+  {
+    "name": "Eruption",
+    "affinity": "Fire",
+    "skill": "Eruption"
+  },
+  {
+    "name": "Flame Of The Redmanes",
+    "affinity": "Fire",
+    "skill": "Flame of the Redmanes"
+  },
+  {
+    "name": "Flaming Strike",
+    "affinity": "Fire",
+    "skill": "Flaming Strike"
+  },
+  {
+    "name": "Giant Hunt",
+    "affinity": "Quality",
+    "skill": "Giant Hunt"
+  },
+  {
+    "name": "Glintblade Phalanx",
+    "affinity": "Magic",
+    "skill": "Glintblade Phalanx"
+  },
+  {
+    "name": "Glintstone Pebble",
+    "affinity": "Magic",
+    "skill": "Glintstone Pebble Skill"
+  },
+  {
+    "name": "Golden Land",
+    "affinity": "Sacred",
+    "skill": "Golden Land"
+  },
+  {
+    "name": "Golden Parry",
+    "affinity": "Sacred",
+    "skill": "Golden Parry"
+  },
+  {
+    "name": "Golden Slam",
+    "affinity": "Sacred",
+    "skill": "Golden Slam"
+  },
+  {
+    "name": "Gravitas",
+    "affinity": "Magic",
+    "skill": "Gravitas"
+  },
+  {
+    "name": "Ground Slam",
+    "affinity": "Heavy",
+    "skill": "Ground Slam"
+  },
+  {
+    "name": "Hoarah Loux's Earthshaker",
+    "affinity": "Heavy",
+    "skill": "Hoarah Loux's Earthshaker"
+  },
+  {
+    "name": "Hoarfrost Stomp",
+    "affinity": "Cold",
+    "skill": "Hoarfrost Stomp"
+  },
+  {
+    "name": "Holy Ground",
+    "affinity": "Sacred",
+    "skill": "Holy Ground"
+  },
+  {
+    "name": "Ice Spear",
+    "affinity": "Cold",
+    "skill": "Ice Spear"
+  },
+  {
+    "name": "Impaling Thrust",
+    "affinity": "Keen",
+    "skill": "Impaling Thrust"
+  },
+  {
+    "name": "Kick",
+    "affinity": "Heavy",
+    "skill": "Kick"
+  },
+  {
+    "name": "Lifesteal Fist",
+    "affinity": "Occult",
+    "skill": "Lifesteal Fist"
+  },
+  {
+    "name": "Lightning Ram",
+    "affinity": "Lightning",
+    "skill": "Lightning Ram"
+  },
+  {
+    "name": "Lightning Slash",
+    "affinity": "Lightning",
+    "skill": "Lightning Slash"
+  },
+  {
+    "name": "Lion's Claw",
+    "affinity": "Heavy",
+    "skill": "Lion's Claw"
+  },
+  {
+    "name": "Loretta's Slash",
+    "affinity": "Magic",
+    "skill": "Loretta's Slash"
+  },
+  {
+    "name": "Lost Ashes Of War",
+    "affinity": "None",
+    "skill": "Ashes of War"
+  },
+  {
+    "name": "Mighty Shot",
+    "affinity": "Standard",
+    "skill": "Mighty Shot"
+  },
+  {
+    "name": "No Skill",
+    "affinity": "Standard",
+    "skill": ""
+  },
+  {
+    "name": "Parry",
+    "affinity": "Standard",
+    "skill": "Parry Skill"
+  },
+  {
+    "name": "Phantom Slash",
+    "affinity": "Quality",
+    "skill": "Phantom Slash"
+  },
+  {
+    "name": "Piercing Fang",
+    "affinity": "Keen",
+    "skill": "Piercing Fang"
+  },
+  {
+    "name": "Poison Moth Flight",
+    "affinity": "Poison",
+    "skill": "Poison Moth Flight"
+  },
+  {
+    "name": "Poisonous Mist",
+    "affinity": "Poison",
+    "skill": "Poisonous Mist"
+  },
+  {
+    "name": "Prayerful Strike",
+    "affinity": "Sacred",
+    "skill": "Prayerful Strike"
+  },
+  {
+    "name": "Prelate's Charge",
+    "affinity": "Flame",
+    "skill": "Prelate's Charge"
+  },
+  {
+    "name": "Quickstep",
+    "affinity": "Keen",
+    "skill": "Quickstep"
+  },
+  {
+    "name": "Rain Of Arrows",
+    "affinity": "Standard",
+    "skill": "Rain of Arrows"
+  },
+  {
+    "name": "Raptor Of The Mists",
+    "affinity": "Keen",
+    "skill": "Raptor of the Mists"
+  },
+  {
+    "name": "Repeating Thrust",
+    "affinity": "Keen",
+    "skill": "Repeating Thrust"
+  },
+  {
+    "name": "Royal Knight's Resolve",
+    "affinity": "Quality",
+    "skill": "Royal Knight's Resolve"
+  },
+  {
+    "name": "Sacred Blade",
+    "affinity": "Sacred",
+    "skill": "Sacred Blade"
+  },
+  {
+    "name": "Sacred Order",
+    "affinity": "Sacred",
+    "skill": "Sacred Order"
+  },
+  {
+    "name": "Sacred Ring Of Light",
+    "affinity": "Sacred",
+    "skill": "Sacred Ring of Light"
+  },
+  {
+    "name": "Seppuku",
+    "affinity": "Blood",
+    "skill": "Seppuku"
+  },
+  {
+    "name": "Shield Bash",
+    "affinity": "Standard",
+    "skill": "Shield Bash"
+  },
+  {
+    "name": "Shield Crash",
+    "affinity": "Standard",
+    "skill": "Shield Crash"
+  },
+  {
+    "name": "Spectral Lance",
+    "affinity": "Occult",
+    "skill": "Spectral Lance"
+  },
+  {
+    "name": "Spinning Slash",
+    "affinity": "Keen",
+    "skill": "Spinning Slash"
+  },
+  {
+    "name": "Spinning Strikes",
+    "affinity": "Quality",
+    "skill": "Spinning Strikes"
+  },
+  {
+    "name": "Spinning Weapon",
+    "affinity": "Magic",
+    "skill": "Spinning Weapon"
+  },
+  {
+    "name": "Square Off",
+    "affinity": "Quality",
+    "skill": "Square Off"
+  },
+  {
+    "name": "Stamp (sweep)",
+    "affinity": "Heavy",
+    "skill": "Stamp (Sweep)"
+  },
+  {
+    "name": "Stamp (upward Cut)",
+    "affinity": "Heavy",
+    "skill": "Stamp (Upward Cut)"
+  },
+  {
+    "name": "Storm Assault",
+    "affinity": "Quality",
+    "skill": "Storm Assault"
+  },
+  {
+    "name": "Storm Blade",
+    "affinity": "Quality",
+    "skill": "Storm Blade"
+  },
+  {
+    "name": "Storm Stomp",
+    "affinity": "Quality",
+    "skill": "Storm Stomp"
+  },
+  {
+    "name": "Storm Wall",
+    "affinity": "Standard",
+    "skill": "Storm Wall"
+  },
+  {
+    "name": "Stormcaller",
+    "affinity": "Quality",
+    "skill": "Stormcaller"
+  },
+  {
+    "name": "Sword Dance",
+    "affinity": "Keen",
+    "skill": "Sword Dance"
+  },
+  {
+    "name": "Thops's Barrier",
+    "affinity": "Magic",
+    "skill": "Thops's Barrier"
+  },
+  {
+    "name": "Through And Through",
+    "affinity": "Standard",
+    "skill": "Through and Through"
+  },
+  {
+    "name": "Thunderbolt",
+    "affinity": "Lightning",
+    "skill": "Thunderbolt"
+  },
+  {
+    "name": "Troll's Roar",
+    "affinity": "Heavy",
+    "skill": "Troll's Roar"
+  },
+  {
+    "name": "Unsheathe",
+    "affinity": "Keen",
+    "skill": "Unsheathe"
+  },
+  {
+    "name": "Vacuum Slice",
+    "affinity": "Quality",
+    "skill": "Vacuum Slice"
+  },
+  {
+    "name": "Vow Of The Indomitable",
+    "affinity": "Sacred",
+    "skill": "Vow of the Indomitable"
+  },
+  {
+    "name": "War Cry",
+    "affinity": "Heavy",
+    "skill": "War Cry"
+  },
+  {
+    "name": "Waves Of Darkness",
+    "affinity": "Magic",
+    "skill": "Waves of Darkness"
+  },
+  {
+    "name": "White Shadow's Lure",
+    "affinity": "Occult",
+    "skill": "White Shadow's Lure"
+  },
+  {
+    "name": "Wild Strikes",
+    "affinity": "Heavy",
+    "skill": "Wild Strikes"
+  }
+]

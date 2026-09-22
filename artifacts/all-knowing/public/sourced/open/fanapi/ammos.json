@@ -1,0 +1,267 @@
+[
+  {
+    "name": "Arrow",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Ballista Bolt",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Black-key Bolt",
+    "type": "Pierce",
+    "passive": "Causes scarlet rot buildup (60)"
+  },
+  {
+    "name": "Bloodbone Arrow",
+    "type": "Pierce",
+    "passive": "Causes blood loss build up (55)"
+  },
+  {
+    "name": "Bloodbone Arrow Fletched",
+    "type": "Pierce",
+    "passive": "Causes blood loss build up (55)"
+  },
+  {
+    "name": "Bloodbone Bolt",
+    "type": "Pierce",
+    "passive": "Causes blood loss buildup (50)"
+  },
+  {
+    "name": "Bolt",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Bone Arrow",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Bone Arrow Fletched",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Bone Ballista Bolt",
+    "type": "Pierce",
+    "passive": "- "
+  },
+  {
+    "name": "Bone Bolt",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Burred Bolt",
+    "type": "Pierce",
+    "passive": "Causes blood loss buildup (65)"
+  },
+  {
+    "name": "Dwelling Arrow",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Explosive Bolt",
+    "type": "Pierce",
+    "passive": "None"
+  },
+  {
+    "name": "Explosive Greatbolt",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Fire Arrow",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Firebone Arrow",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Firebone Arrow Fletched",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Firebone Bolt",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Flaming Bolt",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Golden Arrow",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Golden Bolt",
+    "type": "",
+    "passive": "-"
+  },
+  {
+    "name": "Golden Great Arrow",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Golem's Great Arrow",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Great Arrow",
+    "type": "",
+    "passive": "-"
+  },
+  {
+    "name": "Haligbone Arrow",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Haligbone Arrow Fletched",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Haligbone Bolt",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Lightning Greabolt",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Lightning Greabolt",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Lightningbone Arrow",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Lightningbone Arrow Fletched",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Lightningbone Bolt",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Lordsworn's Bolt",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Magicbone Arrow",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Magicbone Arrow Fletched",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Magicbone Bolt",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Meteor Bolt",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Perfumer's Bolt",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Poisonbone Arrow",
+    "type": "Pierce",
+    "passive": "Confers Poison status ailment"
+  },
+  {
+    "name": "Poisonbone Arrow Fletched",
+    "type": "Pierce",
+    "passive": "Confers Poison status ailment"
+  },
+  {
+    "name": "Poisonbone Bolt",
+    "type": "Pierce",
+    "passive": "Causes poison buildup (66)"
+  },
+  {
+    "name": "Radahn's Spear",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Rainbow Stone Arrow",
+    "type": "",
+    "passive": "-"
+  },
+  {
+    "name": "Rotbone Arrow",
+    "type": "Pierce",
+    "passive": "Causes scarlet rot buildup (50)"
+  },
+  {
+    "name": "Rotbone Arrow Fletched",
+    "type": "Pierce",
+    "passive": "Causes scarlet rot buildup (50)"
+  },
+  {
+    "name": "Rotbone Bolt",
+    "type": "Pierce",
+    "passive": "Causes scarlet rot buildup (55)"
+  },
+  {
+    "name": "Serpent Arrow",
+    "type": "",
+    "passive": "Causes heavy poison buildup (78)"
+  },
+  {
+    "name": "Shattershard Arrow",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Shattershard Arrow Fletched",
+    "type": "Pierce",
+    "passive": "-"
+  },
+  {
+    "name": "Sleepbone Arrow",
+    "type": "Pierce",
+    "passive": "Confers Sleep status ailment"
+  },
+  {
+    "name": "Sleepbone Arrow Fletched",
+    "type": "Pierce",
+    "passive": "Confers Sleep status ailment"
+  },
+  {
+    "name": "Spiritflame Arrow",
+    "type": "Pierce",
+    "passive": "Causes frost build up (65)"
+  }
+]

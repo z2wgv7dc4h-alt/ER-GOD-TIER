@@ -22,6 +22,41 @@ import { fanImage } from './lib/fanImage'
 import { Related } from './Related'
 import { useWorkspace } from './state'
 import { matchGatheringNodes, useGatheringNodes } from './lib/gatheringNodes'
+import {
+  matchAmmos,
+  matchArmors,
+  matchAshes,
+  matchBosses,
+  matchClasses,
+  matchCreatures,
+  matchEquipment,
+  matchItems,
+  matchLocations,
+  matchNpcs,
+  matchSpells,
+  matchTalismans,
+  useFanapiData,
+} from './lib/fanapiData'
+
+type RefRow = { key: string; kicker: string; name: string; note: string }
+
+function RefSection({ title, count, rows }: { title: string; count: number; rows: RefRow[] }) {
+  if (rows.length === 0) return null
+  return (
+    <>
+      <h3 className="codex-head">{title} · {count} in reference</h3>
+      <div className="codex-grid">
+        {rows.map((r) => (
+          <article className="card" key={r.key}>
+            <div className="kicker">{r.kicker}</div>
+            <h3>{r.name}</h3>
+            {r.note && <p className="note">{r.note}</p>}
+          </article>
+        ))}
+      </div>
+    </>
+  )
+}
 
 function CodexThumb({ name, aliases }: { name: string; aliases?: string[] }) {
   const src = fanImage(name, aliases)
@@ -38,6 +73,7 @@ export function CodexWorkspace() {
   const guide = useGuide()
   const regions = useGraceRegions()
   const gatheringNodes = useGatheringNodes()
+  const fan = useFanapiData()
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
   const q = query.trim().toLowerCase()
   const selectedFact = selectedMarkerId ? byId.get(selectedMarkerId) : undefined
@@ -48,6 +84,65 @@ export function CodexWorkspace() {
   const chests = useMemo(() => buildChestFacts(open.lots, regions), [open.lots, regions])
   const chestHits = q.length >= 3 ? matchChests(q, chests) : []
   const gatheringHits = q.length >= 3 ? matchGatheringNodes(q, gatheringNodes) : []
+  const talismanHits = q.length >= 3 ? matchTalismans(q, fan.talismans) : []
+  const spellHits = q.length >= 3 ? matchSpells(q, fan.spells) : []
+  const ashHits = q.length >= 3 ? matchAshes(q, fan.ashes) : []
+  const armorHits = q.length >= 3 ? matchArmors(q, fan.armors) : []
+  const itemHits = q.length >= 3 ? matchItems(q, fan.items) : []
+  const locationHits = q.length >= 3 ? matchLocations(q, fan.locations) : []
+  const bossHits = q.length >= 3 ? matchBosses(q, fan.bosses) : []
+  const creatureHits = q.length >= 3 ? matchCreatures(q, fan.creatures) : []
+  const npcHits = q.length >= 3 ? matchNpcs(q, fan.npcs) : []
+  const ammoHits = q.length >= 3 ? matchAmmos(q, fan.ammos) : []
+  const classHits = q.length >= 3 ? matchClasses(q, fan.classes) : []
+  const weaponHits = q.length >= 3 ? matchEquipment(q, fan.weapons) : []
+  const shieldHits = q.length >= 3 ? matchEquipment(q, fan.shields) : []
+  const referenceSections: { title: string; count: number; rows: RefRow[] }[] = [
+    { title: 'Talismans', count: fan.talismans.length, rows: talismanHits.map((t) => ({ key: t.name, kicker: 'Talisman', name: t.name, note: t.effect })) },
+    {
+      title: 'Spells',
+      count: fan.spells.length,
+      rows: spellHits.map((s) => ({
+        key: `${s.type}:${s.name}`,
+        kicker: `${s.type} · ${s.cost} FP · ${s.slots} slot${s.slots === 1 ? '' : 's'}`,
+        name: s.name,
+        note: `Requires ${Object.entries(s.requires).filter(([, v]) => v).map(([k, v]) => `${k} ${v}`).join(', ') || 'none'}. ${s.effect}`,
+      })),
+    },
+    { title: 'Ashes of War', count: fan.ashes.length, rows: ashHits.map((a) => ({ key: a.name, kicker: a.affinity || 'Ash of War', name: a.name, note: a.skill ? `Skill: ${a.skill}` : '' })) },
+    {
+      title: 'Armor',
+      count: fan.armors.length,
+      rows: armorHits.map((a) => ({
+        key: a.name,
+        kicker: `${a.category} · poise ${a.poise} · ${a.weight} wt`,
+        name: a.name,
+        note: `Negation ${Object.entries(a.dmgNegation).map(([k, v]) => `${k} ${v}`).join(' · ')}`,
+      })),
+    },
+    { title: 'Items', count: fan.items.length, rows: itemHits.map((i) => ({ key: i.name, kicker: i.type || 'Item', name: i.name, note: i.effect })) },
+    { title: 'Locations', count: fan.locations.length, rows: locationHits.map((l) => ({ key: l.name, kicker: l.region || 'Location', name: l.name, note: '' })) },
+    {
+      title: 'Bosses',
+      count: fan.bosses.length,
+      rows: bossHits.map((b) => ({ key: b.name, kicker: `${b.region || 'Boss'}${b.hp ? ` · ${b.hp} HP` : ''}`, name: b.name, note: b.drops.join(' · ') })),
+    },
+    { title: 'Field enemies', count: fan.creatures.length, rows: creatureHits.map((c) => ({ key: c.name, kicker: c.location || 'Enemy', name: c.name, note: c.drops.join(' · ') })) },
+    { title: 'NPCs', count: fan.npcs.length, rows: npcHits.map((n) => ({ key: n.name, kicker: (n.role ?? '').trim() || 'NPC', name: n.name, note: n.location })) },
+    { title: 'Ammunition', count: fan.ammos.length, rows: ammoHits.map((a) => ({ key: a.name, kicker: a.type || 'Ammo', name: a.name, note: a.passive })) },
+    {
+      title: 'Classes',
+      count: fan.classes.length,
+      rows: classHits.map((c) => ({
+        key: c.name,
+        kicker: `Level ${c.level}`,
+        name: c.name,
+        note: Object.entries(c.stats).filter(([k]) => k !== 'level').map(([k, v]) => `${k} ${v}`).join(' · '),
+      })),
+    },
+    { title: 'Weapons · weight', count: fan.weapons.length, rows: weaponHits.map((w) => ({ key: w.name, kicker: `${w.category} · ${w.weight} wt`, name: w.name, note: '' })) },
+    { title: 'Shields · weight', count: fan.shields.length, rows: shieldHits.map((s) => ({ key: s.name, kicker: `${s.category} · ${s.weight} wt`, name: s.name, note: '' })) },
+  ]
   const achievements = useMemo(
     () => achievementProgress(guide.items, character.collectedItems),
     [guide.items, character.collectedItems],
@@ -215,6 +310,9 @@ export function CodexWorkspace() {
           </div>
         </>
       )}
+      {referenceSections.map((s) => (
+        <RefSection key={s.title} title={s.title} count={s.count} rows={s.rows} />
+      ))}
       <h3 className="codex-head">Tips &amp; tech · {techTips.length}</h3>
       <p className="note" style={{ padding: '0 20px' }}>
         Real, structured tech — jump attacks, stance breaks, buff stacking, spirit ashes, items and
@@ -265,8 +363,12 @@ export function CodexWorkspace() {
               </label>
               <div className="bar"><span style={{ width: `${pct}%` }} /></div>
               <p className="note" style={{ marginTop: 6 }}>
-                {p.note} {p.incomplete ? `List incomplete in-repo (${p.listCount}/${p.total} rows).` : ''}{' '}
-                {p.levelNote}
+                {p.note}{' '}
+                {p.level < p.thresholds.length - 1
+                  ? `Next level at ${p.thresholds[p.level + 1]} ${p.unit}.`
+                  : 'Max level.'}{' '}
+                {p.incomplete ? `List incomplete in-repo (${p.listCount}/${p.total} rows). ` : ''}
+                Source: {p.source}
               </p>
             </div>
             <div className="codex-grid">

@@ -115,6 +115,7 @@ See `docs/REVIEW.md`.
 | `open/paramdex/` | Names txt dump; equipment files topped up from install (Tarnished Pack rows); `NpcParam.txt` still upstream (post-SotE) |
 | `src/knowledge/merchants.ts` | 106 vendors full stock |
 | `src/knowledge/bossPins.ts` | sync pin list for Gideon |
+| `open/fanapi/*.json` | **Task 67/68** structured FanAPI reference (all 14 categories): `armors.json` (568 — poise, negation, resistance, weight), `talismans.json` (87 — effect), `spells.json` (169 — sorcery+incantation cost/slots/requires/effect), `ashes.json` (90 — skill/affinity), `spirits.json` (64 — FP/HP/effect), `items.json` (462 — type/effect), `locations.json` (177 — region), `creatures.json` (115 — location/drops), `bosses.json` (106 — region/location/HP/drops), `npcs.json` (55 — location/role), `ammos.json` (53 — type/passive), `classes.json` (14 — level/stats), `weapons.json` (307) + `shields.json` (69 — category/weight only). Produced by `scripts/ingest-fanapi.mjs` (deterministic, name-sorted); loaded by `src/lib/fanapiData.ts`, surfaced in the Codex. Structured fields only — no article bodies/images, and **no attack/defence numbers** (AR stays on the in-repo regulation data). Base-game only; FanAPI predates SotE. |
 
 ## Alias plane (generated)
 
@@ -138,6 +139,11 @@ See `docs/REVIEW.md`.
 ## Checklists
 
 FanAPI JSON (weapons, armors, spells, …) + `hunts.json` (207 flags) + `graces.json`.
+
+`public/sourced/open/fanapi/*.json` is the Task 67/68 structured FanAPI reference (armors, weapons,
+shields, items, talismans, spells, ashes, spirits, bosses, creatures, locations, npcs, ammos,
+classes); refresh with `node scripts/ingest-fanapi.mjs` (deterministic, name-sorted). The
+`checklists/` files below are the name lists.
 
 `public/sourced/checklists/hunts.json` is the single canonical field-hunt dataset (BuLEEto):
 Codex fetches it, `src/knowledge/completion.ts` derives `fieldHunts` from it, and

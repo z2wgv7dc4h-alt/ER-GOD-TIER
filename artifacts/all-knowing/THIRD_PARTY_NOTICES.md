@@ -12,8 +12,8 @@ lists the source, license, what was taken, and what was changed, per the project
   https://github.com/deliton/eldenring-api
 - **License:** the API's code and JSON are MIT. The image files are FromSoftware game art
   rehosted by the FanAPI; they are cached here for a personal, offline, non-commercial project.
-- **Used by:** `public/sourced/images/`, `src/data/image-index.json`, `src/lib/fanImage.ts`, the
-  Codex room.
+- **Used by:** `public/sourced/images/`, `src/data/image-index.json`, `src/lib/fanImage.ts`,
+  `public/sourced/open/fanapi/`, `src/lib/fanapiData.ts`, the Codex room.
 - **What was taken:** 2,244 images (weapons, armors, talismans, sorceries, incantations, items,
   ashes, spirits, ammos, shields, classes, creatures, npcs, bosses, locations). The checklist
   dumps already in-repo carried the FanAPI `image` URL per row; the boss and location routes were
@@ -21,6 +21,12 @@ lists the source, license, what was taken, and what was changed, per the project
   `scripts/ingest-images.py`.
 - **What was changed:** downscaled to 160 px and re-encoded as WebP; filenames normalised to the
   row id. No image content was otherwise altered.
+- **Structured data (Tasks 67/68):** `public/sourced/open/fanapi/*.json` holds 14 slimmed
+  categories (armors 568, weapons 307, shields 69, items 462, talismans 87, spells 169, ashes 90,
+  spirits 64, bosses 106, creatures 115, locations 177, npcs 55, ammos 53, classes 14). Only
+  structured fields were imported — no article/description bodies, no images, and no
+  attack/defence numbers (AR stays on the in-repo regulation data). Pulled by
+  `scripts/ingest-fanapi.mjs` (deterministic, name-sorted).
 - **Coverage:** base game only. The FanAPI predates Shadow of the Erdtree, so SotE / Tarnished
   Pack entries have no picture. A handful of base-game rows the FanAPI lacks are reported as
   misses rather than substituted.

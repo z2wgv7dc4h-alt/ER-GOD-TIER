@@ -1,0 +1,347 @@
+[
+  {
+    "name": "Albinauric Shield",
+    "category": "Medium Shield",
+    "weight": 4.5
+  },
+  {
+    "name": "Ant's Skull Plate",
+    "category": "Greatshield",
+    "weight": 13.5
+  },
+  {
+    "name": "Banished Knight's Shield",
+    "category": "Medium Shield",
+    "weight": 6
+  },
+  {
+    "name": "Beast Crest Heater Shield",
+    "category": "Medium Shield",
+    "weight": 3.5
+  },
+  {
+    "name": "Beastman's Jar-shield",
+    "category": "Small Shield",
+    "weight": 5
+  },
+  {
+    "name": "Black Leather Shield",
+    "category": "Medium Shield",
+    "weight": 3
+  },
+  {
+    "name": "Blue Crest Heater Shield",
+    "category": "Medium Shield",
+    "weight": 3.5
+  },
+  {
+    "name": "Blue-gold Kite Shield",
+    "category": "Medium Shield",
+    "weight": 5
+  },
+  {
+    "name": "Blue-white Wooden Shield",
+    "category": "Small Shield",
+    "weight": 2
+  },
+  {
+    "name": "Brass Shield",
+    "category": "Medium Shield",
+    "weight": 7
+  },
+  {
+    "name": "Briar Greatshield",
+    "category": "Greatshield",
+    "weight": 9.5
+  },
+  {
+    "name": "Buckler",
+    "category": "Small Shield",
+    "weight": 1.5
+  },
+  {
+    "name": "Candletree Wooden Shield",
+    "category": "Medium Shield",
+    "weight": 3.5
+  },
+  {
+    "name": "Carian Knight's Shield",
+    "category": "Medium Shield",
+    "weight": 4.5
+  },
+  {
+    "name": "Coil Shield",
+    "category": "Small Shield",
+    "weight": 1.5
+  },
+  {
+    "name": "Crossed-tree Towershield",
+    "category": "Greatshield",
+    "weight": 16
+  },
+  {
+    "name": "Crucible Hornshield",
+    "category": "Greatshield",
+    "weight": 11.5
+  },
+  {
+    "name": "Cuckoo Greatshield",
+    "category": "",
+    "weight": 15
+  },
+  {
+    "name": "Distinguished Greatshield",
+    "category": "Greatshield",
+    "weight": 17
+  },
+  {
+    "name": "Dragon Towershield",
+    "category": "Greatshield",
+    "weight": 17.5
+  },
+  {
+    "name": "Dragonclaw Shield",
+    "category": "Greatshield",
+    "weight": 13.5
+  },
+  {
+    "name": "Eclipse Crest Greatshield",
+    "category": "Greatshield",
+    "weight": 15
+  },
+  {
+    "name": "Eclipse Crest Heater Shield",
+    "category": "Medium Shield",
+    "weight": 3.5
+  },
+  {
+    "name": "Erdtree Greatshield",
+    "category": "Greatshield",
+    "weight": 13.5
+  },
+  {
+    "name": "Fingerprint Stone Shield",
+    "category": "Greatshield",
+    "weight": 29
+  },
+  {
+    "name": "Flame Crest Wooden Shield",
+    "category": "Medium Shield",
+    "weight": 3.5
+  },
+  {
+    "name": "Gilded Greatshield",
+    "category": "Greatshield",
+    "weight": 17.5
+  },
+  {
+    "name": "Gilded Iron Shield",
+    "category": "Small Shield",
+    "weight": 3
+  },
+  {
+    "name": "Golden Beast Crest Shield",
+    "category": "Greatshield",
+    "weight": 12.5
+  },
+  {
+    "name": "Golden Greatshield",
+    "category": "Greatshield",
+    "weight": 17
+  },
+  {
+    "name": "Great Turtle Shell",
+    "category": "Medium Shield",
+    "weight": 5.5
+  },
+  {
+    "name": "Haligtree Crest Greatshield",
+    "category": "Greatshield",
+    "weight": 18.5
+  },
+  {
+    "name": "Hawk Crest Wooden Shield",
+    "category": "Medium Shield",
+    "weight": 3.5
+  },
+  {
+    "name": "Heater Shield",
+    "category": "Medium Shield",
+    "weight": 3.5
+  },
+  {
+    "name": "Horse Crest Wooden Shield",
+    "category": "Medium Shield",
+    "weight": 3.5
+  },
+  {
+    "name": "Ice Crest Shield",
+    "category": "Small Shield",
+    "weight": 3
+  },
+  {
+    "name": "Icon Shield",
+    "category": "Greatshield",
+    "weight": 11.5
+  },
+  {
+    "name": "Inverted Hawk Heater Shield",
+    "category": "Medium Shield",
+    "weight": 3.5
+  },
+  {
+    "name": "Inverted Hawk Towershield",
+    "category": "Greatshield",
+    "weight": 16
+  },
+  {
+    "name": "Iron Roundshield",
+    "category": "Small Shield",
+    "weight": 3
+  },
+  {
+    "name": "Jellyfish Shield",
+    "category": "Greatshield",
+    "weight": 8
+  },
+  {
+    "name": "Kite Shield",
+    "category": "Medium Shield",
+    "weight": 4.5
+  },
+  {
+    "name": "Large Leather Shield",
+    "category": "Medium Shield",
+    "weight": 3
+  },
+  {
+    "name": "Lordsworn's Shield",
+    "category": "Greatshield",
+    "weight": 10
+  },
+  {
+    "name": "Man-serpent's Shield",
+    "category": "Small Shield",
+    "weight": 2
+  },
+  {
+    "name": "Manor Towershield",
+    "category": "Greatshield",
+    "weight": 16
+  },
+  {
+    "name": "Marred Leather Shield",
+    "category": "Medium Shield",
+    "weight": 3
+  },
+  {
+    "name": "Marred Wooden Shield",
+    "category": "Medium Shield",
+    "weight": 4
+  },
+  {
+    "name": "One-eyed Shield",
+    "category": "Greatshield",
+    "weight": 20.5
+  },
+  {
+    "name": "Perfumer's Shield",
+    "category": "Small Shield",
+    "weight": 1.5
+  },
+  {
+    "name": "Pillory Shield",
+    "category": "Small Shield",
+    "weight": 3.5
+  },
+  {
+    "name": "Red Crest Heater Shield",
+    "category": "Medium Shield",
+    "weight": 3.5
+  },
+  {
+    "name": "Red Thorn Roundshield",
+    "category": "Small Shield",
+    "weight": 1.5
+  },
+  {
+    "name": "Redmane Greatshield",
+    "category": "Greatshield",
+    "weight": 14
+  },
+  {
+    "name": "Rickety Shield",
+    "category": "Small Shield",
+    "weight": 1
+  },
+  {
+    "name": "Rift Shield",
+    "category": "Small Shield",
+    "weight": 2
+  },
+  {
+    "name": "Riveted Wooden Shield",
+    "category": "Small Shield",
+    "weight": 2
+  },
+  {
+    "name": "Round Shield",
+    "category": "Medium Shield",
+    "weight": 4
+  },
+  {
+    "name": "Scorpion Kite Shield",
+    "category": "Medium Shield",
+    "weight": 4.5
+  },
+  {
+    "name": "Scripture Wooden Shield",
+    "category": "Small Shield",
+    "weight": 1.5
+  },
+  {
+    "name": "Shield Of The Guilty",
+    "category": "Small Shield",
+    "weight": 2
+  },
+  {
+    "name": "Silver Mirrorshield",
+    "category": "Medium Shield",
+    "weight": 3.5
+  },
+  {
+    "name": "Smoldering Shield",
+    "category": "Small Shields",
+    "weight": 3
+  },
+  {
+    "name": "Spiked Palisade Shield",
+    "category": "Greatshield",
+    "weight": 11.5
+  },
+  {
+    "name": "Spiralhorn Shield",
+    "category": "Small Shield",
+    "weight": 2
+  },
+  {
+    "name": "Sun Realm Shield",
+    "category": "Medium Shield",
+    "weight": 3.5
+  },
+  {
+    "name": "Twinbird Kite Shield",
+    "category": "Medium Shield",
+    "weight": 4.5
+  },
+  {
+    "name": "Visage Shield",
+    "category": "Greatshield",
+    "weight": 24
+  },
+  {
+    "name": "Wooden Greatshield",
+    "category": "Greatshield",
+    "weight": 8
+  }
+]

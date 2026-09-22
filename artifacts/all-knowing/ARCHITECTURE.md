@@ -65,6 +65,12 @@ loadout only, for pasting into chat. They are not the packet and carry no run pr
 See `src/lib/hosted.ts`. Cached under `public/sourced/checklists/`.
 Maps under `public/sourced/maps/`. Refresh with raw GitHub / fanapi, or scrape any other source you like. Full sources policy in `HANDOFF-CLAUDE.md` §4.
 
+Reference data under `public/sourced/open/fanapi/` (Task 67/68): structured FanAPI fields — armor
+poise/negation, talisman effects, spell cost/requirements, Ash of War skill, boss HP/drops, item
+effects, class stats — refreshed by `node scripts/ingest-fanapi.mjs`, loaded by
+`src/lib/fanapiData.ts` and surfaced in the Codex. Structured fields only; AR numbers stay on the
+in-repo regulation source.
+
 Fonts (Cinzel + Source Sans 3, both OFL) are self-hosted under `public/fonts/` and declared with
 `@font-face` in `src/index.css`; the service-worker precache includes them, so the interface works
 offline with no cross-origin font request. Dev startup is `npm start` (map engine + Vite together).

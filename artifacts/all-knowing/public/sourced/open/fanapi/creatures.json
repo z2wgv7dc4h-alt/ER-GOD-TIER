@@ -1,0 +1,955 @@
+[
+  {
+    "name": "Abnormal Stone Cluster",
+    "location": "Evergaol Structures",
+    "drops": [
+      "Ruin Fragments",
+      "",
+      "39 Runes"
+    ]
+  },
+  {
+    "name": "Albinauric",
+    "location": "Liurnia of the Lakes",
+    "drops": [
+      "???"
+    ]
+  },
+  {
+    "name": "Albinauric Wolfback Archer",
+    "location": "Ordina Liturgical Town",
+    "drops": [
+      "Albinauric Bloodclot ",
+      "St. Trina's Arrow ",
+      "Blue Silver Mail Armor"
+    ]
+  },
+  {
+    "name": "Anastasia, Tarnished-eater",
+    "location": "Smoldering Church, Limgrave",
+    "drops": [
+      "Furlcalling Finger Remedy",
+      "Sacred Scorpion Charm",
+      "",
+      "Furlcalling Finger Remedy",
+      "Butchering Knife"
+    ]
+  },
+  {
+    "name": "Arcane Sphere Of Faces",
+    "location": "Witchbane Ruins",
+    "drops": [
+      "None"
+    ]
+  },
+  {
+    "name": "Azula Beastman",
+    "location": "Crumbling Farum Azula",
+    "drops": [
+      "Sanctuary Stone"
+    ]
+  },
+  {
+    "name": "Baleful Shadow",
+    "location": "Ainsel River Main",
+    "drops": [
+      "8561 Runes"
+    ]
+  },
+  {
+    "name": "Banished Knight",
+    "location": "Stormveil Castle",
+    "drops": [
+      "400 Runes",
+      "Banished Knight's Greatsword",
+      "Banished Knight Set",
+      "Banished Knight's Shield",
+      "Banished Knight's Halberd"
+    ]
+  },
+  {
+    "name": "Basilisk",
+    "location": "Ainsel River, Lake of Rot",
+    "drops": [
+      "611 Runes"
+    ]
+  },
+  {
+    "name": "Black Knight",
+    "location": "Limgrave, south-east of the telescope, patrolling on a bridge ",
+    "drops": [
+      "935 Runes"
+    ]
+  },
+  {
+    "name": "Blackflame Monk",
+    "location": "Divine Tower of Caelid",
+    "drops": [
+      "1,764 Runes",
+      "Blackflame Monk Armor"
+    ]
+  },
+  {
+    "name": "Bladed Talon Eagle",
+    "location": "Stormveil Castle",
+    "drops": [
+      "98 Runes",
+      "Warhawk's Talon",
+      "Flight Pinion"
+    ]
+  },
+  {
+    "name": "Bloody Finger Nerijus",
+    "location": "Invades on the ravine leading north-east from Agheel Lake, toward Murkwater Catacombs",
+    "drops": [
+      "316 Runes",
+      "Furcalling Finger Remedy",
+      "Reduvia"
+    ]
+  },
+  {
+    "name": "Bloody Finger Okina",
+    "location": "Flame Peak, Mountaintops of the Giants",
+    "drops": [
+      "734 Runes",
+      "Furlcalling Finger Remedy",
+      "Rivers of Blood",
+      "Okina Mask"
+    ]
+  },
+  {
+    "name": "Boar",
+    "location": "in Forests of Limgrave and Stormhill",
+    "drops": [
+      "Thin Animal Bones",
+      "Lump of Flesh"
+    ]
+  },
+  {
+    "name": "Burning Slug",
+    "location": "Liurnia of The Lakes",
+    "drops": [
+      "Smoldering Butterfly"
+    ]
+  },
+  {
+    "name": "Castle Guard",
+    "location": "Stormveil Castle",
+    "drops": [
+      "114 Runes",
+      "Exile Set",
+      "Torchpole",
+      "Stormhawk Feather",
+      "Soldier's Crossbow"
+    ]
+  },
+  {
+    "name": "Chanting Winged Dame",
+    "location": "Ruin-Strewn Precipice, Liurnia of The Lakes, Fort Faroth",
+    "drops": [
+      "Golden Rune [5]"
+    ]
+  },
+  {
+    "name": "Clayman",
+    "location": "Siofra River, Ainsel River",
+    "drops": [
+      "120 Runes"
+    ]
+  },
+  {
+    "name": "Commoner",
+    "location": "Stormveil Castle",
+    "drops": [
+      "67 Runes",
+      "Commoner's Garb",
+      "Commoner's Shoes"
+    ]
+  },
+  {
+    "name": "Construct",
+    "location": "Sealed Tunnel",
+    "drops": [
+      "-"
+    ]
+  },
+  {
+    "name": "Crab",
+    "location": "Roaming the beaches of Western Limgrave.",
+    "drops": [
+      "Crab Eggs",
+      "Strip of White Flesh"
+    ]
+  },
+  {
+    "name": "Deer",
+    "location": "West Limgrave, South West Liurnia of The Lakes",
+    "drops": [
+      "Thin Animal Bones",
+      "Sliver of Meat",
+      "Beast Liver",
+      "6 Runes"
+    ]
+  },
+  {
+    "name": "Demi-human",
+    "location": "Caves and beaches of Limgrave, such as Dissenter's Cave.",
+    "drops": [
+      "42 Runes",
+      "Rainbow Stone",
+      "Rickety Shield",
+      "Falchion",
+      "String",
+      "Glowstone",
+      "",
+      "Rainbow Stone"
+    ]
+  },
+  {
+    "name": "Direwolf",
+    "location": "Caria Manor, Liurnia of the Lakes",
+    "drops": [
+      "371 Runes"
+    ]
+  },
+  {
+    "name": "Dog",
+    "location": "in Dragon-Burnt Ruins",
+    "drops": [
+      "Thin Animal Bones",
+      "Lump of Flesh",
+      "52 Runes"
+    ]
+  },
+  {
+    "name": "Eagle",
+    "location": "Limgrave / Stormhill",
+    "drops": [
+      "Flight Pinion",
+      "Slumbering Egg"
+    ]
+  },
+  {
+    "name": "Edgar The Revenger",
+    "location": "Revenger's Shack, Liurnia of the Lakes",
+    "drops": [
+      "316 Runes",
+      "Furlcalling Finger Remedy",
+      "Shabriri Grape",
+      "Banished Knight's Halberd (+8)",
+      "Raw Meat Dumpling x 5"
+    ]
+  },
+  {
+    "name": "Farum Azula Dragon",
+    "location": "Crumbling Farum Azula",
+    "drops": [
+      "Ancient Dragon Smithing Stone",
+      "",
+      "32,400 Runes"
+    ]
+  },
+  {
+    "name": "Fire Monk",
+    "location": "East Liurnia of The Lakes",
+    "drops": [
+      "Fire Monk Hood",
+      "Fire Monk Armor",
+      "Fire Monk Gauntlets",
+      "Fire Monk Greaves",
+      "Monk's Flamemace",
+      "Smouldering Butterfly",
+      "Fire Blossom"
+    ]
+  },
+  {
+    "name": "Flame Guardian",
+    "location": "Guardians' Garrison",
+    "drops": [
+      "2,415 Runes"
+    ]
+  },
+  {
+    "name": "Giant Bat",
+    "location": "Near the cliffs on Western Limgrave.",
+    "drops": [
+      "Gold Firefly"
+    ]
+  },
+  {
+    "name": "Giant Crab",
+    "location": "in the watery areas of Agheel Lake and the beaches of Western Limgrave",
+    "drops": [
+      "318 Runes",
+      "Crab Eggs",
+      "Strip of White Flesh"
+    ]
+  },
+  {
+    "name": "Giant Dragonfly",
+    "location": "Agheel Lake, Limgrave",
+    "drops": [
+      "Great Dragonfly Head",
+      "5 Runes"
+    ]
+  },
+  {
+    "name": "Giant Land Octopus",
+    "location": "Commonly found in watery areas",
+    "drops": [
+      "Land Octopus Ovary",
+      "Strip of White Flesh",
+      "187~336 Runes"
+    ]
+  },
+  {
+    "name": "Giant Lobster",
+    "location": "Liurnia of the Lakes",
+    "drops": [
+      "Strip of White Flesh",
+      "",
+      "Crab Eggs"
+    ]
+  },
+  {
+    "name": "Giant Poison Flower",
+    "location": "within Post Town Remains in Limgrave.",
+    "drops": [
+      "256 Runes"
+    ]
+  },
+  {
+    "name": "Giant Rat",
+    "location": "Limgrave, Weeping Peninsula, Altus Plateau",
+    "drops": [
+      "Golden Rune [3]",
+      "Giant Rat Ashes"
+    ]
+  },
+  {
+    "name": "Glintstone Sorcerer",
+    "location": "Raya Lucaria Academy",
+    "drops": [
+      "???"
+    ]
+  },
+  {
+    "name": "Gnoll",
+    "location": "Crumbling Farum Azola",
+    "drops": [
+      "Sanctuary Stone"
+    ]
+  },
+  {
+    "name": "Godrick Knight",
+    "location": "Limgrave",
+    "drops": [
+      "260 Runes"
+    ]
+  },
+  {
+    "name": "Godrick Soldier",
+    "location": "Gatefront Ruins, Castle Morne, Stormgate, Roaming the Limgrave landscape",
+    "drops": [
+      "64 - 77 Runes"
+    ]
+  },
+  {
+    "name": "Gold Dragon Cult Knight",
+    "location": "Liurnia of The Lakes",
+    "drops": [
+      "Dragon Cult Prayerbook",
+      "",
+      "Leyndell Knight Set",
+      ""
+    ]
+  },
+  {
+    "name": "Golem",
+    "location": "West ruins of Stormhill., Castle Morne Entrance, Ainsel River Well, Leyndell, Royal Capital",
+    "drops": [
+      "3x Smithing Stone Shard",
+      "844~1039 Runes"
+    ]
+  },
+  {
+    "name": "Great Horned Tragoth",
+    "location": "Ruin-Strewn Precipice",
+    "drops": [
+      "158 Runes",
+      "Furlcalling Finger Remedy",
+      "Rune Arc",
+      "Bull-Goat Helm",
+      "Bull-Goat Armor",
+      "Bull-Goat Gauntlets",
+      "Bull-Goat Greaves"
+    ]
+  },
+  {
+    "name": "Guillemot",
+    "location": "Roaming the beaches of Western Limgrave.",
+    "drops": [
+      "Flight Pinion",
+      "Four-Toed Fowl Foot",
+      "6 Runes"
+    ]
+  },
+  {
+    "name": "Highwayman",
+    "location": "Murkwater Cave",
+    "drops": [
+      "Bolt",
+      "Smoldering Butterfly",
+      "Highwayman Hood"
+    ]
+  },
+  {
+    "name": "Imp",
+    "location": "Within dungeons and catacombs",
+    "drops": [
+      "Forked Hatchet",
+      "40~67 Runes"
+    ]
+  },
+  {
+    "name": "Imp",
+    "location": "Within dungeons and catacombs",
+    "drops": [
+      "Forked Hatchet",
+      "40~67 Runes"
+    ]
+  },
+  {
+    "name": "Imp Miner",
+    "location": "Ruin-Strewn Precipice",
+    "drops": [
+      "None"
+    ]
+  },
+  {
+    "name": "Inquisitor Ghiza",
+    "location": "Volcano Manor",
+    "drops": [
+      "316 Runes",
+      "Furlcalling Finger Remedy",
+      "Ghiza's Wheel"
+    ]
+  },
+  {
+    "name": "Invisible Warrior",
+    "location": "Ordina Liturgical Town",
+    "drops": [
+      "Ghost Glovewort (9)"
+    ]
+  },
+  {
+    "name": "Juno Hoslow, Knight Of Blood",
+    "location": "Mountaintops of the Giants",
+    "drops": [
+      "158 Runes",
+      "Rune Arc",
+      "Furlcalling Finger Remedy",
+      "Hoslow's Petal Whip",
+      "Hoslow's Helm",
+      "Hoslow's Armor",
+      "Hoslow's Gauntlets",
+      "Hoslow's Greaves"
+    ]
+  },
+  {
+    "name": "Kaiden Sellsword",
+    "location": "Throughout Limgrave and Stormhill",
+    "drops": [
+      "282 Runes ",
+      "Dismounter",
+      "",
+      "Frozen Raisin",
+      "Kaiden Helm",
+      "Kaiden Armor",
+      "Kaiden Gauntlets",
+      "Kaiden Trousers"
+    ]
+  },
+  {
+    "name": "Knight Of Zamor",
+    "location": "Zamor Ruins",
+    "drops": [
+      "5,039 Runes"
+    ]
+  },
+  {
+    "name": "Land Octopus",
+    "location": "In the watery areas of Agheel Lake and the beaches of Western Limgrave",
+    "drops": [
+      "12~13 Runes",
+      "Sometimes: Land Octopus Ovary"
+    ]
+  },
+  {
+    "name": "Land Squirt",
+    "location": "Dragon-Burnt Ruins, Shores of Limgrave",
+    "drops": [
+      "13 Runes"
+    ]
+  },
+  {
+    "name": "Lesser Burial Watchdog",
+    "location": "Giant-Conquering Hero's Grave",
+    "drops": [
+      "3,712 Runes"
+    ]
+  },
+  {
+    "name": "Lesser Pumpkin Head",
+    "location": "Castle Morne, Raya Lucaria Academy, Limgrave",
+    "drops": [
+      "Pumpkin Helm",
+      "Sanctuary Stone",
+      "273~293 Runes"
+    ]
+  },
+  {
+    "name": "Lesser Red Wolf Of Radagon",
+    "location": "Liurnia of The Lakes",
+    "drops": [
+      "4158 Runes"
+    ]
+  },
+  {
+    "name": "Lesser Runebear",
+    "location": "Eastern Limgrave, Weeping Peninsula",
+    "drops": [
+      "Hefty Beast Bone",
+      "16 Runes"
+    ]
+  },
+  {
+    "name": "Lesser Runebear",
+    "location": "Eastern Limgrave, Weeping Peninsula",
+    "drops": [
+      "Hefty Beast Bone",
+      "16 Runes"
+    ]
+  },
+  {
+    "name": "Lesser Spider Hand",
+    "location": "Caria Manor, Liurnia of the Lakes, Mountaintops of the Giants",
+    "drops": [
+      "???"
+    ]
+  },
+  {
+    "name": "Lesser Ulcerated Tree Spirit",
+    "location": "Stormveil Castle",
+    "drops": [
+      "Runes",
+      "Golden Seed"
+    ]
+  },
+  {
+    "name": "Lesser Wormface",
+    "location": "Crumbling Farum Azula",
+    "drops": [
+      "Gold-Tinged Excrement"
+    ]
+  },
+  {
+    "name": "Living Jar",
+    "location": "Multiple Locations",
+    "drops": [
+      "Living Jar Shard"
+    ]
+  },
+  {
+    "name": "Mad Tongue Alberich",
+    "location": "Roundtable Hall",
+    "drops": [
+      "Taunter's Tongue"
+    ]
+  },
+  {
+    "name": "Maleigh Marais, Shaded Castle Castellan",
+    "location": "Fields west of The Shaded Castle",
+    "drops": [
+      "4,800 Runes",
+      "Antspur Rapier",
+      "Marais Mask",
+      "Marais Robe"
+    ]
+  },
+  {
+    "name": "Maneuverable Flamethrower",
+    "location": "Liurnia of The Lakes",
+    "drops": [
+      "None"
+    ]
+  },
+  {
+    "name": "Marionette Gargoyle",
+    "location": "Raya Lucaria Academy",
+    "drops": [
+      "Runes"
+    ]
+  },
+  {
+    "name": "Marionette Soldier",
+    "location": "Raya Lucaria Academy, Academy Gate Town, Raya Lucaria Crystal Tunnel, Witchbane Ruins",
+    "drops": [
+      "Marionette Soldier Helm"
+    ]
+  },
+  {
+    "name": "Miner",
+    "location": "Limgrave Tunnels, Sellia Crystal Tunnel, Ruin-Strewn Precipice",
+    "drops": [
+      "92 Runes",
+      "Explosive Stone",
+      "Smithing Stone [1]"
+    ]
+  },
+  {
+    "name": "Misbegotten",
+    "location": "Castle Morne, Weeping Peninsula, Mt. Gelmir",
+    "drops": [
+      "Iron Cleaver",
+      "Old Fang",
+      "59 Runes"
+    ]
+  },
+  {
+    "name": "Moongrum Carian Knight",
+    "location": "Raya Lucaria Academy",
+    "drops": [
+      "3000 Runes",
+      "Carian Knight's Shield"
+    ]
+  },
+  {
+    "name": "Mounted Knight",
+    "location": "North-east region of Limgrave, North of Liurnia of the Lakes",
+    "drops": [
+      "Ash of War: Golden Vow"
+    ]
+  },
+  {
+    "name": "Mounted Northern Mercenary",
+    "location": "Limgrave",
+    "drops": [
+      "282 Runes",
+      "Dismounter",
+      "Kaiden Helm",
+      "Kaiden Armor",
+      "Kaiden Gauntlets",
+      "Kaiden Trousers"
+    ]
+  },
+  {
+    "name": "Noble Sorcerer",
+    "location": "Various",
+    "drops": [
+      "Glintstone Staff"
+    ]
+  },
+  {
+    "name": "Old Knight Istvan",
+    "location": "Stormhill",
+    "drops": [
+      "84 Runes",
+      "Rune Arc",
+      "Furlcalling Finger Remedy",
+      "Scaled Helm",
+      "Scaled Armor",
+      "Scaled Gauntlets",
+      "Scaled Greaves"
+    ]
+  },
+  {
+    "name": "Omen",
+    "location": "Stormveil Castle",
+    "drops": [
+      "Runes",
+      "Omen Cleaver"
+    ]
+  },
+  {
+    "name": "Owl",
+    "location": "perched on cliffs around Limgrave and Stormhill",
+    "drops": [
+      "Moon Egg"
+    ]
+  },
+  {
+    "name": "Pendulum Statue",
+    "location": "Raya Lucaria Academy",
+    "drops": [
+      "Runes"
+    ]
+  },
+  {
+    "name": "Perfumer",
+    "location": "Leyndell Royal Capital",
+    "drops": [
+      "563 Runes"
+    ]
+  },
+  {
+    "name": "Perfumer",
+    "location": "Leyndell Royal Capital",
+    "drops": [
+      "563 Runes"
+    ]
+  },
+  {
+    "name": "Poison Flower",
+    "location": "within Waypoint Ruins in Limgrave.",
+    "drops": [
+      "14 Runes",
+      "Poisonbloom"
+    ]
+  },
+  {
+    "name": "Prawn Miner",
+    "location": "Sellia Crystal Tunnel, Caelid Waypoint Ruins",
+    "drops": [
+      "612 Runes"
+    ]
+  },
+  {
+    "name": "Preceptor Miriam",
+    "location": "Carian Study Hall",
+    "drops": [
+      "Magic Downpour",
+      "Lucidity"
+    ]
+  },
+  {
+    "name": "Pumpkin Head",
+    "location": "Castle Morne, Weeping Peninsula",
+    "drops": [
+      "291 Runes",
+      "Pumpkin Helm",
+      "Sanctuary Stone"
+    ]
+  },
+  {
+    "name": "Rabbitgaroo",
+    "location": "Limgrave, South West Liurnia of the Lakes, ",
+    "drops": [
+      "Thin Animal Bones",
+      "Sliver of Meat"
+    ]
+  },
+  {
+    "name": "Rat",
+    "location": "Limgrave Tunnels, Ailing Village, Tombsward Cave",
+    "drops": [
+      "Pauper's Rune",
+      "Rune Arc",
+      "Golden Rune (1)",
+      "13 Runes"
+    ]
+  },
+  {
+    "name": "Raya Lucaria Sorcerer",
+    "location": "Raya Lucaria Academy",
+    "drops": [
+      "Academy Glintstone Staff",
+      "Raya Lucarian Robe",
+      "Sorcerer Manchettes",
+      "Sorcerer Leggings"
+    ]
+  },
+  {
+    "name": "Raya Lucarian Warden",
+    "location": "Raya Lucaria Academy",
+    "drops": [
+      "None"
+    ]
+  },
+  {
+    "name": "Recusant Henricus",
+    "location": "East of Stormhill Shack",
+    "drops": [
+      "Furlcalling Finger Remedy, Hammer Talisman"
+    ]
+  },
+  {
+    "name": "Revenant",
+    "location": "Liurnia of the Lakes",
+    "drops": [
+      "4,103 Runes",
+      "Ghost Glovewort (2)",
+      "Rowa Fruit"
+    ]
+  },
+  {
+    "name": "Rileigh The Idle",
+    "location": "Altus Plateau",
+    "drops": [
+      "84 Runes",
+      "Rune Arc",
+      "Furlcalling Finger Remedy",
+      "Crepus's Vial",
+      "Black-Key Bolt x20"
+    ]
+  },
+  {
+    "name": "Rotten Stray",
+    "location": "Limgrave Tunnels",
+    "drops": [
+      "Thin Beast Bones",
+      "52~55 Runes"
+    ]
+  },
+  {
+    "name": "Servant Of Rot",
+    "location": "Stillwater Cave, Caelid Waypoint Ruins",
+    "drops": [
+      "Toxic Mushroom"
+    ]
+  },
+  {
+    "name": "Sheep",
+    "location": "in the pastures of Limgrave and Stormhill",
+    "drops": [
+      "Thin Beast Bones",
+      "Sliver of Meat",
+      "Beast Liver",
+      "6 Runes"
+    ]
+  },
+  {
+    "name": "Skeletal Slime",
+    "location": "in the watery areas of Agheel Lake and the beaches of Western Limgrave",
+    "drops": [
+      "Glass Shard",
+      "16~18 Runes"
+    ]
+  },
+  {
+    "name": "Skeleton",
+    "location": "In the beaches and dungeons of Limgrave, and in the cemetery area of Stormhill",
+    "drops": [
+      "35 Runes"
+    ]
+  },
+  {
+    "name": "Skeleton Mage",
+    "location": "Liurnia of the Lakes",
+    "drops": [
+      "108 Runes"
+    ]
+  },
+  {
+    "name": "Slender Wayfarer",
+    "location": "Seaside Ruins",
+    "drops": [
+      "311 Runes",
+      "Ash of War: Gravitas"
+    ]
+  },
+  {
+    "name": "Soldier",
+    "location": "Stormveil Castle, Stormhill, Main Limgrave, Weeping Peninsula",
+    "drops": [
+      "33~64 Runes",
+      "Lordsworn's Straight Sword",
+      "Dagger"
+    ]
+  },
+  {
+    "name": "Sorcerer Miner",
+    "location": "Altus Tunnel",
+    "drops": [
+      "Runes",
+      "Digger's Staff"
+    ]
+  },
+  {
+    "name": "Spider Hand",
+    "location": "Caria Manor, Liurnia of the Lakes, Mountaintops of the Giants",
+    "drops": [
+      "Somber Smithing Stone (2), Somber Smithing Stone (7)"
+    ]
+  },
+  {
+    "name": "Spirit Jellyfish",
+    "location": "Cemetery, west of Stormhill",
+    "drops": [
+      "16 Runes"
+    ]
+  },
+  {
+    "name": "Swordstress",
+    "location": "Night's Sacred Ground",
+    "drops": [
+      "635 Runes",
+      "Nox Swordstress Armor"
+    ]
+  },
+  {
+    "name": "Teardrop Scarab",
+    "location": "",
+    "drops": []
+  },
+  {
+    "name": "Troll",
+    "location": "Along the road north of the Collapsed bridge",
+    "drops": [
+      "≈1000 Runes",
+      "Smithing Stone Shard"
+    ]
+  },
+  {
+    "name": "Troll Knight",
+    "location": "Caria Manor, Liurnia of the Lakes",
+    "drops": [
+      "???"
+    ]
+  },
+  {
+    "name": "Turtle",
+    "location": "West Limgrave",
+    "drops": [
+      "Turtle Neck Meat",
+      "5 Runes"
+    ]
+  },
+  {
+    "name": "Twinsage Sorcerer",
+    "location": "Raya Lucaria Academy",
+    "drops": [
+      "???"
+    ]
+  },
+  {
+    "name": "Undead Soldier",
+    "location": "Fringefolk Hero's Grave, Dragon-Burnt Ruins",
+    "drops": [
+      "19 Runes"
+    ]
+  },
+  {
+    "name": "Wild Mouflon",
+    "location": "Stormhill",
+    "drops": [
+      "None"
+    ]
+  },
+  {
+    "name": "Wolf",
+    "location": "Limgrave, Groveside Cave",
+    "drops": [
+      "Thin Animal Bones",
+      "Lump of Flesh",
+      "66 Runes"
+    ]
+  },
+  {
+    "name": "Wraith Caller",
+    "location": "Liurnia of the Lakes",
+    "drops": [
+      "Grave Violet"
+    ]
+  }
+]

@@ -1,0 +1,2312 @@
+[
+  {
+    "name": "Academy Glintstone Key",
+    "type": "Key Item",
+    "effect": "Key to open the academy's two sealed gates"
+  },
+  {
+    "name": "Academy Scroll",
+    "type": "Key Item",
+    "effect": "Give to a learned sorcerer to acquire new sorceries"
+  },
+  {
+    "name": "Aeonian Butterfly",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Albinauric Bloodclot",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Altus Bloom",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Ancestral Infant's Head",
+    "type": "",
+    "effect": "Uses FP to spray spirit vapor"
+  },
+  {
+    "name": "Ancient Dragon Apostle's Cookbook [1]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Ancient Dragon Apostle's Cookbook [2]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Ancient Dragon Apostle's Cookbook [3]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Ancient Dragon Apostle's Cookbook [4]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Ancient Dragon Prayerbook",
+    "type": "Key Item",
+    "effect": "Give to a learned cleric to acquire new incantations"
+  },
+  {
+    "name": "Ancient Dragon Smithing Stone",
+    "type": "Misc",
+    "effect": "Reinforce armamanets to +25"
+  },
+  {
+    "name": "Armorer's Cookbook [1]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Armorer's Cookbook [2]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Armorer's Cookbook [3]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Armorer's Cookbook [4]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Armorer's Cookbook [5]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Armorer's Cookbook [6]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Armorer's Cookbook [7]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Arteria Leaf",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Assassin's Prayerbook",
+    "type": "Key Item",
+    "effect": "Give to a learned cleric to acquire new incantations"
+  },
+  {
+    "name": "Baldachin's Blessing",
+    "type": "- ",
+    "effect": "Uses FP to temporarilty boost poise"
+  },
+  {
+    "name": "Beast Blood",
+    "type": "-",
+    "effect": "Material used for crafting materials"
+  },
+  {
+    "name": "Beast Eye",
+    "type": "Key Item",
+    "effect": "Said to tremble when close to Deathroot"
+  },
+  {
+    "name": "Beast Liver",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Beastlure Pot",
+    "type": "-",
+    "effect": "Uses FP. Lures beasts only."
+  },
+  {
+    "name": "Bewitching Branch",
+    "type": "-",
+    "effect": "Uses FP to charm pierced enemy"
+  },
+  {
+    "name": "Black Knifeprint",
+    "type": "Key Item",
+    "effect": "Mark of the Night of the Black Knives ritual"
+  },
+  {
+    "name": "Black Whetblade",
+    "type": "Key Item",
+    "effect": "Grants choice of affinity upgrade to weapon"
+  },
+  {
+    "name": "Blasphemous Claw",
+    "type": "-",
+    "effect": "Deflects the power of the Black Blade"
+  },
+  {
+    "name": "Blood Grease",
+    "type": "-",
+    "effect": "Coats armament, inflicting blood loss"
+  },
+  {
+    "name": "Blood-tainted Excrement",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Bloodboil Aromatic",
+    "type": "-",
+    "effect": "Uses FP to enter a temporary state of fervor."
+  },
+  {
+    "name": "Bloodrose",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Bloody Finger",
+    "type": "Reusable",
+    "effect": "Attempts invasion of other player's world."
+  },
+  {
+    "name": "Blue Cipher Ring",
+    "type": "Reusable",
+    "effect": "Enables the wearer to answer calls for rescue"
+  },
+  {
+    "name": "Boiled Prawn",
+    "type": "- ",
+    "effect": "Boosts physical damage negation for a time"
+  },
+  {
+    "name": "Bone Dart",
+    "type": "Str B",
+    "effect": "Throw at enemies to inflict damage"
+  },
+  {
+    "name": "Budding Cave Moss",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Budding Horn",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Carian Inverted Statue",
+    "type": "Key Item",
+    "effect": "Key revealing the hidden form of Carian Study Hall"
+  },
+  {
+    "name": "Cave Moss",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Celestial Dew",
+    "type": "-",
+    "effect": "Carry out Absolution at the Church of Vows"
+  },
+  {
+    "name": "Cerulean Crystal Tear",
+    "type": "Crystal Tear",
+    "effect": "Restores half of total FP in mixed physick."
+  },
+  {
+    "name": "Cerulean Hidden Tear",
+    "type": "Crystal Tear",
+    "effect": " Eliminates all FP consumption in mixed physick"
+  },
+  {
+    "name": "Chrysalids' Memento",
+    "type": "Key Item",
+    "effect": "Broach wrapped in red velvet"
+  },
+  {
+    "name": "Chrysalids' Memento",
+    "type": "Key Item",
+    "effect": "Broach wrapped in red velvet"
+  },
+  {
+    "name": "Clarifying Boluses",
+    "type": "-",
+    "effect": "Alleviates madness buildup"
+  },
+  {
+    "name": "Clarifying Cured Meat",
+    "type": "-",
+    "effect": "Temporarily boosts focus"
+  },
+  {
+    "name": "Clarifying White Cured Meat",
+    "type": "-",
+    "effect": "Temporarily boosts focus"
+  },
+  {
+    "name": "Conspectus Scroll",
+    "type": "Key Item",
+    "effect": "Give to Sorceress Sellen to unlock Glintstone Cometshard and Star Shower"
+  },
+  {
+    "name": "Crab Eggs",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Cracked Crystal",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Cracked Pot",
+    "type": "Misc",
+    "effect": "Container required for crafting cracked pot items"
+  },
+  {
+    "name": "Crafting Kit",
+    "type": "Key Item",
+    "effect": "Enables the practice of item Crafting"
+  },
+  {
+    "name": "Crimson Bubbletear",
+    "type": "Crystal Tear",
+    "effect": "Restores HP when near death in mixed physick."
+  },
+  {
+    "name": "Crimson Crystal Tear",
+    "type": "Crystal Tear",
+    "effect": "Restores half of total HP in mixed physick"
+  },
+  {
+    "name": "Crimsonburst Crystal Tear",
+    "type": "Crystal Tear",
+    "effect": "Steadily restores HP for a time in mixed physick"
+  },
+  {
+    "name": "Crimsonspill Crystal Tear",
+    "type": "Crystal Tear",
+    "effect": "Temporarily boosts max HP in mixed physick"
+  },
+  {
+    "name": "Crimsonwhorl Bubbletear",
+    "type": "Crystal Tear",
+    "effect": "Converts damage received into HP in mixed physick."
+  },
+  {
+    "name": "Crystal Bud",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Crystal Cave Moss",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Crystal Dart",
+    "type": "Str D Dex C",
+    "effect": "Uses FP. Throw to inflict magic damage."
+  },
+  {
+    "name": "Cuckoo Glintstone",
+    "type": "Int B",
+    "effect": "Uses FP to produce a magic bolt"
+  },
+  {
+    "name": "Cursed-blood Pot",
+    "type": "-",
+    "effect": "Throw to douse enemy with accursed blood."
+  },
+  {
+    "name": "Cursemark Of Death",
+    "type": "Key Item",
+    "effect": "Cursemark carved into Lunar Princess Ranni's discarded flesh"
+  },
+  {
+    "name": "Dappled Cured Meat",
+    "type": "-",
+    "effect": "Temporarily boosts Immunity, Robustness, and Focus"
+  },
+  {
+    "name": "Dappled White Cured Meat",
+    "type": "-",
+    "effect": "Temporarily boosts immunity, robustness, and focus"
+  },
+  {
+    "name": "Dark Moon Ring",
+    "type": "Key Item",
+    "effect": "Ring of Lunar Princess Ranni's cold oath"
+  },
+  {
+    "name": "Deathroot",
+    "type": "Key Item",
+    "effect": "Beast Clergyman seeks and devours these"
+  },
+  {
+    "name": "Dectus Medallion (left)",
+    "type": "Key Item",
+    "effect": "Join medallions to operate Grand Lift of Dectus"
+  },
+  {
+    "name": "Dectus Medallion (right)",
+    "type": "Key Item",
+    "effect": "Join medallions to operate Grand Lift of Dectus"
+  },
+  {
+    "name": "Deserter's Cookbook [1]",
+    "type": "Expands crafting repertoire",
+    "effect": ""
+  },
+  {
+    "name": "Deserter's Cookbook [2]",
+    "type": "Expands crafting repertoire",
+    "effect": ""
+  },
+  {
+    "name": "Dewkissed Herba",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Dexterity-knot Crystal Tear",
+    "type": "Crystal Tear",
+    "effect": "Temporarily boosts dexterity in mixed physick"
+  },
+  {
+    "name": "Discarded Palace Key",
+    "type": "Key Item",
+    "effect": "Key to treasure chest for Carian Princesses"
+  },
+  {
+    "name": "Dragon Cult Prayerbook",
+    "type": "Key Item",
+    "effect": "Give to a learned cleric to acquire new incantations"
+  },
+  {
+    "name": "Dragon Heart",
+    "type": "- ",
+    "effect": "Gain power of the dragon at the Dragon Communion altar."
+  },
+  {
+    "name": "Dragon Heart",
+    "type": "- ",
+    "effect": "Gain power of the dragon at the Dragon Communion altar."
+  },
+  {
+    "name": "Dragonwound Grease",
+    "type": "-",
+    "effect": "Coats armament, granting special dragon attacks"
+  },
+  {
+    "name": "Drawing-room Key",
+    "type": "Key Item",
+    "effect": "Key to the Volcano Manor drawing room"
+  },
+  {
+    "name": "Drawstring Blood Grease",
+    "type": "-",
+    "effect": "Quickly coats armament, inflicting blood loss"
+  },
+  {
+    "name": "Drawstring Fire Grease",
+    "type": "- ",
+    "effect": "Quickly coats weapon, inflicting  Fire Damage"
+  },
+  {
+    "name": "Drawstring Holy Grease",
+    "type": "- ",
+    "effect": "Quickly coats armament, inflicting holy damage"
+  },
+  {
+    "name": "Drawstring Lightning Grease",
+    "type": "- ",
+    "effect": "Quickly coats armament, inflicting lightning damage."
+  },
+  {
+    "name": "Drawstring Magic Grease",
+    "type": "- ",
+    "effect": "Quickly coats armament, inflicting magic damage"
+  },
+  {
+    "name": "Drawstring Rot Grease",
+    "type": "-  ",
+    "effect": "Quickly coats armament, inflicting scarlet rot, but with a brief effect, owing to its small size."
+  },
+  {
+    "name": "Duelist's Furled Finger",
+    "type": "Reusable",
+    "effect": "Creates competitive multiplayer summon sign."
+  },
+  {
+    "name": "Elden Remembrance",
+    "type": "- ",
+    "effect": "Take the power of its namesake via Finger Reader"
+  },
+  {
+    "name": "Erdleaf Flower",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Exalted Flesh",
+    "type": "-",
+    "effect": "Temporarily boosts physical attack"
+  },
+  {
+    "name": "Explosive Stone",
+    "type": "Str A Dex C",
+    "effect": "Explodes when thrown, inflicting Fire Damage"
+  },
+  {
+    "name": "Explosive Stone Clump",
+    "type": "-",
+    "effect": "Explodes when thrown together, inflicting fire damage"
+  },
+  {
+    "name": "Eye Of Yelough",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Faded Erdleaf Flower",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Faith-knot Crystal Tear",
+    "type": "Crystal Tear",
+    "effect": "Temporarily boosts faith in mixed physick"
+  },
+  {
+    "name": "Fan Daggers",
+    "type": "Str B Dex S",
+    "effect": "Thrown fanned-out knives at enemies to inflict damage"
+  },
+  {
+    "name": "Festering Bloody Finger",
+    "type": "Consumable",
+    "effect": "Attempts invasion of other player's world"
+  },
+  {
+    "name": "Fetid Pot",
+    "type": "-",
+    "effect": "Throw at enemies to cause deadly buildup of poison."
+  },
+  {
+    "name": "Fevor's Cookbook [1]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Fevor's Cookbook [2]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Fevor's Cookbook [3]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Finger Severer",
+    "type": "Consumable",
+    "effect": "Sends another, or oneself, home."
+  },
+  {
+    "name": "Fingerprint Grape",
+    "type": "Key Item",
+    "effect": "Eyeball of the knight Vyke, inflamed yellow"
+  },
+  {
+    "name": "Fingerslayer Blade",
+    "type": "Key Item",
+    "effect": "Hidden treasure of the Eternal City of Nokron"
+  },
+  {
+    "name": "Fire Blossom",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Fire Grease",
+    "type": "- ",
+    "effect": "Coats weapon, inflicting Fire Damage"
+  },
+  {
+    "name": "Fire Monks' Prayerbook",
+    "type": "Key Item",
+    "effect": "Give to a learned cleric to acquire new incantations"
+  },
+  {
+    "name": "Fire Pot",
+    "type": "Str A Dex C",
+    "effect": "Throw at enemies to inflict Fire Damage"
+  },
+  {
+    "name": "Fireproof Dried Liver",
+    "type": "- ",
+    "effect": "Boosts  Fire Damage Negation for a short time."
+  },
+  {
+    "name": "Flame-shrouding Cracked Tear",
+    "type": "Crystal Tear",
+    "effect": "Temporarily boosts the power of one's fire attacks."
+  },
+  {
+    "name": "Flask Of Cerulean Tears",
+    "type": "-",
+    "effect": "Restores FP"
+  },
+  {
+    "name": "Flask Of Crimson Tears",
+    "type": "-",
+    "effect": "Restores HP"
+  },
+  {
+    "name": "Flask Of Wondrous Physick",
+    "type": "-",
+    "effect": "Bestows various special effects"
+  },
+  {
+    "name": "Flight Pinion",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Formic Rock",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Four-toed Fowl Foot",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Freezing Grease",
+    "type": "-",
+    "effect": "Coats armament, inflicting frost"
+  },
+  {
+    "name": "Freezing Pot",
+    "type": "-",
+    "effect": "Throw at enemies to cause buildup of frost."
+  },
+  {
+    "name": "Frenzied Cookbook",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Frenzied's Cookbook [1]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Frenzyflame Stone",
+    "type": "-",
+    "effect": "Uses FP to continuously heal chaos followers"
+  },
+  {
+    "name": "Frozen Raisin",
+    "type": "- ",
+    "effect": "On horseback, feed to Torrent to vastly restore HP"
+  },
+  {
+    "name": "Fulgurbloom",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Furlcalling Finger Remedy",
+    "type": "Consumable",
+    "effect": "Reveals co-op and hostile summoning signs"
+  },
+  {
+    "name": "Furlcalling Finger Remedy",
+    "type": "Consumable",
+    "effect": "Reveals co-op and hostile summoning signs"
+  },
+  {
+    "name": "Furled Finger's Trick-mirror",
+    "type": "0.7",
+    "effect": "Take on appearance of a Host of Fingers"
+  },
+  {
+    "name": "Furled Finger's Trick-mirror",
+    "type": "0.7",
+    "effect": "Take on appearance of a Host of Fingers"
+  },
+  {
+    "name": "Ghost Glovewort [1]",
+    "type": "Misc",
+    "effect": "Strengthens renowned ashes to +1."
+  },
+  {
+    "name": "Ghost Glovewort [2]",
+    "type": "Misc",
+    "effect": "Strengthen renowned ashes to +2"
+  },
+  {
+    "name": "Ghost Glovewort [3]",
+    "type": "Misc",
+    "effect": "Strengthen renowned ashes to +3"
+  },
+  {
+    "name": "Ghost Glovewort [4]",
+    "type": "Misc",
+    "effect": "Strengthen renowned ashes to +4"
+  },
+  {
+    "name": "Ghost Glovewort [5]",
+    "type": "Misc",
+    "effect": "Strengthen renowned ashes to +5"
+  },
+  {
+    "name": "Ghost Glovewort [6]",
+    "type": "Misc",
+    "effect": "Strengthens renowned ashes to +6"
+  },
+  {
+    "name": "Ghost Glovewort [7]",
+    "type": "Misc",
+    "effect": "Strengthens renowned ashes to +7"
+  },
+  {
+    "name": "Ghost Glovewort [8]",
+    "type": "Misc",
+    "effect": "Stengthened renowed ashes to +8"
+  },
+  {
+    "name": "Ghost Glovewort [9]",
+    "type": "Misc",
+    "effect": "Stengthened renowed ashes to +9"
+  },
+  {
+    "name": "Giantsflame Fire Pot",
+    "type": "Fai S",
+    "effect": "Uses FP. Throw at enemies to inflict heavy fire damage."
+  },
+  {
+    "name": "Glass Shard",
+    "type": "-",
+    "effect": "Shard of filthy glass. Worthless rubbish"
+  },
+  {
+    "name": "Glintstone Craftsman's Cookbook (7)",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire."
+  },
+  {
+    "name": "Glintstone Craftsman's Cookbook [1]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Glintstone Craftsman's Cookbook [2]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Glintstone Craftsman's Cookbook [3]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Glintstone Craftsman's Cookbook [4]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Glintstone Craftsman's Cookbook [5]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Glintstone Craftsman's Cookbook [6]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Glintstone Craftsman's Cookbook [8]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire."
+  },
+  {
+    "name": "Glintstone Firefly",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Glintstone Scrap",
+    "type": "-",
+    "effect": "Break gem, using FP to produce a magic bolt."
+  },
+  {
+    "name": "Glintstone Scrap",
+    "type": "-",
+    "effect": "Break gem, using FP to produce a magic bolt."
+  },
+  {
+    "name": "Glintstone Whetblade",
+    "type": "Key Item",
+    "effect": "Grants choice of affinity upgrade to weapon"
+  },
+  {
+    "name": "Glowstone",
+    "type": "- ",
+    "effect": "Emits a faint light from the location it is placed"
+  },
+  {
+    "name": "Gold Firefly",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Gold Sewing Needle",
+    "type": "Key Item",
+    "effect": "Special sewing needle for demigod attire"
+  },
+  {
+    "name": "Gold-pickled Fowl Foot",
+    "type": "-",
+    "effect": "Boosts rune acquisition for a time (30%)"
+  },
+  {
+    "name": "Gold-tinged Excrement",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Golden Centipede",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Golden Dung",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Golden Rowa",
+    "type": "-",
+    "effect": "Material used for craftign items"
+  },
+  {
+    "name": "Golden Rune (11)",
+    "type": "-",
+    "effect": "Use to gain many runes"
+  },
+  {
+    "name": "Golden Rune [10]",
+    "type": "-",
+    "effect": "Use to gain a great many runes"
+  },
+  {
+    "name": "Golden Rune [13]",
+    "type": "-",
+    "effect": "Use to gain a great many runes"
+  },
+  {
+    "name": "Golden Rune [1]",
+    "type": "-",
+    "effect": "Use to gain a small number of runes"
+  },
+  {
+    "name": "Golden Rune [2]",
+    "type": "Misc",
+    "effect": "Use to gain a small number of runes (400)"
+  },
+  {
+    "name": "Golden Rune [3]",
+    "type": "-",
+    "effect": "Use to gain runes"
+  },
+  {
+    "name": "Golden Rune [4]",
+    "type": "-",
+    "effect": "Use to gain runes"
+  },
+  {
+    "name": "Golden Rune [5]",
+    "type": "Misc",
+    "effect": "Use to gain runes (1600)"
+  },
+  {
+    "name": "Golden Rune [6]",
+    "type": "-",
+    "effect": "Use to gain many runes"
+  },
+  {
+    "name": "Golden Rune [7]",
+    "type": "-",
+    "effect": "Use to gain many runes"
+  },
+  {
+    "name": "Golden Rune [8]",
+    "type": "-",
+    "effect": "Use to gain many runes"
+  },
+  {
+    "name": "Golden Rune [9]",
+    "type": "-",
+    "effect": "Use to gain many runes"
+  },
+  {
+    "name": "Golden Seed",
+    "type": "- ",
+    "effect": "Increases Sacred Flask's number of uses"
+  },
+  {
+    "name": "Golden Sunflower",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Golden Tailoring Tools",
+    "type": "Key Item",
+    "effect": "Allows demigod garb alteration at sites of grace"
+  },
+  {
+    "name": "Grace Mimic",
+    "type": "-",
+    "effect": "Light shows the path, but without order"
+  },
+  {
+    "name": "Grave Glovewort [1]",
+    "type": "Misc",
+    "effect": "Strengthen ashes to +1."
+  },
+  {
+    "name": "Grave Glovewort [2]",
+    "type": "Misc",
+    "effect": "Strengthen ashes to +2."
+  },
+  {
+    "name": "Grave Glovewort [3]",
+    "type": "Misc",
+    "effect": "Strengthen ashes to +3"
+  },
+  {
+    "name": "Grave Glovewort [4]",
+    "type": "Misc",
+    "effect": "Strengthens ashes to +4"
+  },
+  {
+    "name": "Grave Glovewort [5]",
+    "type": "Misc",
+    "effect": "Strengthens ashes to +5"
+  },
+  {
+    "name": "Grave Glovewort [6]",
+    "type": "Misc",
+    "effect": "Strengthens ashes to +6"
+  },
+  {
+    "name": "Grave Glovewort [7]",
+    "type": "Misc",
+    "effect": "Strengthens ashes to +7"
+  },
+  {
+    "name": "Grave Glovewort [8]",
+    "type": "Misc",
+    "effect": "Strengthens ashes to +8"
+  },
+  {
+    "name": "Grave Glovewort [9]",
+    "type": "Misc",
+    "effect": "Strengthens ashes to +9"
+  },
+  {
+    "name": "Grave Violet",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Gravel Stone",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Gravity Stone Chunk",
+    "type": "Str C Int B",
+    "effect": "Uses FP to cause a gravitational explosion"
+  },
+  {
+    "name": "Gravity Stone Fan",
+    "type": "Str C Int B",
+    "effect": "Uses FP to emit fan-shaped gravitational shockwave"
+  },
+  {
+    "name": "Great Dragonfly Head",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Great Ghost Glovewort",
+    "type": "Misc",
+    "effect": "Strengthens renowned ashes to +10"
+  },
+  {
+    "name": "Great Grave Glovewort",
+    "type": "Misc",
+    "effect": "Strengthens ashes to +10"
+  },
+  {
+    "name": "Greenburst Crystal Tear",
+    "type": "Crystal Tear",
+    "effect": "Temporarily boosts stamina recovery speed in mixed physick."
+  },
+  {
+    "name": "Greenspill Crystal Tear",
+    "type": "Crystal Tear",
+    "effect": "Temporarily boosts stamina in mixed physick"
+  },
+  {
+    "name": "Haligtree Secret Medallion (left)",
+    "type": "Key Item",
+    "effect": "Join medallions to operate Grand Lift of Rold"
+  },
+  {
+    "name": "Haligtree Secret Medallion (right)",
+    "type": "Key Item",
+    "effect": "Join medallions to operate Grand Lift of Rold"
+  },
+  {
+    "name": "Hefty Beast Bone",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Herba",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Hero's Rune [1]",
+    "type": "-",
+    "effect": "Use to gain an abundance of runes."
+  },
+  {
+    "name": "Hero's Rune [5]",
+    "type": "-",
+    "effect": "Use to gain an abundance of runes."
+  },
+  {
+    "name": "Hidden Plumage",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Holy Water Pot",
+    "type": "- ",
+    "effect": "Uses FP. Throw at enemies to inflict holy damage"
+  },
+  {
+    "name": "Holy-shrouding Cracked Tear",
+    "type": "Crystal Tears",
+    "effect": "Temporarily boosts holy attacks in mixed physick"
+  },
+  {
+    "name": "Holyproof Dried Liver",
+    "type": "-",
+    "effect": "Temporarily boosts holy damage negation"
+  },
+  {
+    "name": "Host's Trick-mirror",
+    "type": "0.7",
+    "effect": "Take on appearance of a cooperator"
+  },
+  {
+    "name": "Hosts' Trick-mirror",
+    "type": "Key Item",
+    "effect": "Take on appearance of a cooperator"
+  },
+  {
+    "name": "Human Bone Shard",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Imbued Sword Key",
+    "type": "Key Item",
+    "effect": "Unseals sending gate, but disappears upon use"
+  },
+  {
+    "name": "Immunizing Cured Meat",
+    "type": "-",
+    "effect": "Temporarily boosts Immunity"
+  },
+  {
+    "name": "Immunizing White Cured Meat",
+    "type": "-",
+    "effect": "Temporarily boosts immunity"
+  },
+  {
+    "name": "Intelligence-knot Crystal Tear",
+    "type": "Crystal Tear",
+    "effect": "Temporarily boosts intelligence in mixed physick."
+  },
+  {
+    "name": "Invigorating Cured Meat",
+    "type": "-",
+    "effect": "Temporarily boosts Robustness"
+  },
+  {
+    "name": "Invigorating White Cured Meat",
+    "type": "-",
+    "effect": "Temporarily boosts Robustness"
+  },
+  {
+    "name": "Irina's Letter",
+    "type": "Key Item",
+    "effect": "Letter addressed to the commander of Castle Morne"
+  },
+  {
+    "name": "Irina's Letter",
+    "type": "Key Item",
+    "effect": "Letter addressed to the commander of Castle Morne"
+  },
+  {
+    "name": "Iron Whetblade",
+    "type": "Key Item",
+    "effect": "Grants choice of affinity upgrade to weapon"
+  },
+  {
+    "name": "Kukri",
+    "type": "Str A Dex S ",
+    "effect": "Throw at enemies to inflict damage and build up onset of blood loss"
+  },
+  {
+    "name": "Land Octopus Ovary",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Lands Between Rune",
+    "type": "-",
+    "effect": "Use to gain many runes"
+  },
+  {
+    "name": "Lantern",
+    "type": "Key Item",
+    "effect": "Attach to waist to illuminate surroundings"
+  },
+  {
+    "name": "Large Glintstone Scrap",
+    "type": "- ",
+    "effect": "Break gem and use FP to produce many magic bolts"
+  },
+  {
+    "name": "Larval Tear",
+    "type": "Key Item",
+    "effect": "Material needed by Rennala to grant rebirth"
+  },
+  {
+    "name": "Leaden Hardtear",
+    "type": "Crystal Tear",
+    "effect": "Temporarily boosts poise in mixed physick"
+  },
+  {
+    "name": "Lightning Grease",
+    "type": "- ",
+    "effect": "Coats armament, inflicting lightning damage"
+  },
+  {
+    "name": "Lightning-shrouding Cracked Tear",
+    "type": "Crystal Tears",
+    "effect": "Temporarily boosts lightning attacks in mixed physick"
+  },
+  {
+    "name": "Lightningproof Dried Liver",
+    "type": "- ",
+    "effect": "Temporarily boosts lightning damage negation"
+  },
+  {
+    "name": "Living Jar Shard",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Lord's Rune",
+    "type": "- ",
+    "effect": "Use to gain an enormous abundance of runes"
+  },
+  {
+    "name": "Lost Ashes Of War",
+    "type": "None",
+    "effect": ""
+  },
+  {
+    "name": "Lump Of Flesh",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Magic Grease",
+    "type": "- ",
+    "effect": "Coats armament, inflicting magic damage"
+  },
+  {
+    "name": "Magic-shrouding Cracked Tear",
+    "type": "Crystal Tear",
+    "effect": "Temporarily boosts magic attacks in mixed physick"
+  },
+  {
+    "name": "Map (ainsel River)",
+    "type": "Key Item",
+    "effect": "Map of Ainsel River and environs"
+  },
+  {
+    "name": "Map (altus Plateau)",
+    "type": "Key Item",
+    "effect": "Reveals  Altus Plateau on your map"
+  },
+  {
+    "name": "Map (caelid)",
+    "type": "Key Item",
+    "effect": "Reveals the region of Caelid on the map."
+  },
+  {
+    "name": "Map (consecrated Snowfield)",
+    "type": "Key Item",
+    "effect": "Map of Consecrated Snowfield and environs."
+  },
+  {
+    "name": "Map (deeproot Depths)",
+    "type": "Key Item",
+    "effect": "Revels Deeproot Depths and environs on your map"
+  },
+  {
+    "name": "Map (dragonbarrow)",
+    "type": "Key Item",
+    "effect": "Reveals the region of Dragonbarrow on the map."
+  },
+  {
+    "name": "Map (lake Of Rot)",
+    "type": "Key Item",
+    "effect": "Map of Lake of Rot and environs."
+  },
+  {
+    "name": "Map (leyndell, Royal Capital)",
+    "type": "Key Item",
+    "effect": "Reveals the region of Leyndell on the map."
+  },
+  {
+    "name": "Map (limgrave, East)",
+    "type": "Key Item",
+    "effect": "Map of Limgrave's eastern region"
+  },
+  {
+    "name": "Map (limgrave, West)",
+    "type": "Key Item",
+    "effect": "Map of Limgrave's western region."
+  },
+  {
+    "name": "Map (liurnia, East)",
+    "type": "Key Item",
+    "effect": "Map of Liurnia's eastern region"
+  },
+  {
+    "name": "Map (liurnia, North)",
+    "type": "Key Item",
+    "effect": "Map of Liurnia's northern region"
+  },
+  {
+    "name": "Map (liurnia, West)",
+    "type": "Key Item",
+    "effect": "Reveals the western portion of Liurnia on your map."
+  },
+  {
+    "name": "Map (mountaintops Of The Giants, East)",
+    "type": "Key Item",
+    "effect": "Map of Eastern Mountaintops of the Giants."
+  },
+  {
+    "name": "Map (mountaintops Of The Giants, West)",
+    "type": "Key Item",
+    "effect": "Map of Western Mountaintops of the Giants."
+  },
+  {
+    "name": "Map (mt. Gelmir)",
+    "type": "Key Item",
+    "effect": "Map of Mt. Gelmir region"
+  },
+  {
+    "name": "Map (siofra River)",
+    "type": "Key Item",
+    "effect": "Reveals the region of Siofra River on the map."
+  },
+  {
+    "name": "Map (weeping Peninsula)",
+    "type": "Key Item",
+    "effect": "Map of Weeping peninsula"
+  },
+  {
+    "name": "Map (weeping Peninsula)",
+    "type": "Key Item",
+    "effect": "Map of Weeping peninsula"
+  },
+  {
+    "name": "Margit's Shackle",
+    "type": "n/a",
+    "effect": "Binds Margit and Morgott two times per battle"
+  },
+  {
+    "name": "Melted Mushroom",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Memory Of Grace",
+    "type": "Reusable",
+    "effect": "Lose all runes, return to last site of lost grace."
+  },
+  {
+    "name": "Memory Of Grace",
+    "type": "Reusable",
+    "effect": "Lose all runes, return to last site of lost grace."
+  },
+  {
+    "name": "Memory Stone",
+    "type": "Key Item",
+    "effect": "Increases memory slots"
+  },
+  {
+    "name": "Memory Stone",
+    "type": "Key Item",
+    "effect": "Increases memory slots"
+  },
+  {
+    "name": "Mimic's Veil",
+    "type": "-",
+    "effect": "Uses FP to mimic nearby objects."
+  },
+  {
+    "name": "Miniature Ranni",
+    "type": "Key Item",
+    "effect": "Doll resembling Ranni the Witch"
+  },
+  {
+    "name": "Miquella's Lily",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Mirage Riddle",
+    "type": "Key Item",
+    "effect": "Simple map taken from an imp statue."
+  },
+  {
+    "name": "Miranda Powder",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Missionary's Cookbook [1]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Missionary's Cookbook [3]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Missionary's Cookbook [4]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Missionary's Cookbook [5]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Missionary's Cookbook [7]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Mohg's Shackle",
+    "type": "- ",
+    "effect": "Briefly binds Mogh, once imprisoned, to earth"
+  },
+  {
+    "name": "Moon Egg",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Mushroom",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Nascent Butterfly",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Neutralizing Boluses",
+    "type": "- ",
+    "effect": "Alleviates poison buildup and cures poison"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook (12)",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook (19)",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [10]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [11]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [13]",
+    "type": "Misc",
+    "effect": "Expands crafting repertiore"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [14]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [15]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [16]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [17]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [18]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [1]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [20]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [21]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [22]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [23]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [24]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [2]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [3]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [4]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [5]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [6]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [7]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [8]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Nomadic Warrior's Cookbook [9]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Note (flask Of Wondrous Physick)",
+    "type": "Key Item",
+    "effect": "Note imparting knowledge in brief"
+  },
+  {
+    "name": "Note (land Squirts)",
+    "type": "Key Item",
+    "effect": "Note imparting knowledge in brief"
+  },
+  {
+    "name": "Note (stonedigger Trolls)",
+    "type": "Key Item",
+    "effect": "Note imparting knowledge in brief"
+  },
+  {
+    "name": "Note (waypoint Ruins)",
+    "type": "Key Item",
+    "effect": "Note imparting knowledge in brief"
+  },
+  {
+    "name": "Note: Demi-human Mobs",
+    "type": "Info Item",
+    "effect": "Note imparting knowledge in brief."
+  },
+  {
+    "name": "Numen'srune",
+    "type": "-",
+    "effect": "Use to gain a multitude of runes"
+  },
+  {
+    "name": "Oil Pot",
+    "type": "-",
+    "effect": "Throw at enemies to soak them in oil."
+  },
+  {
+    "name": "Old Fang",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Omen Bairn",
+    "type": "- ",
+    "effect": "Uses FP to unleash wraiths that chase down foes"
+  },
+  {
+    "name": "Opaline Bubbletear",
+    "type": "Crystal Tear",
+    "effect": "Significantly negates damage in mixed physick"
+  },
+  {
+    "name": "Opaline Hardtear",
+    "type": "Crystal Tear",
+    "effect": "Temporarily boosts all damage negations in physick"
+  },
+  {
+    "name": "Pauper's Rune",
+    "type": "-",
+    "effect": "Use to gain a few runes"
+  },
+  {
+    "name": "Perfume Bottle",
+    "type": "Key Item",
+    "effect": "Container required for crafting perfume items"
+  },
+  {
+    "name": "Perfumer's Cookbook [1]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Perfumer's Cookbook [2]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Perfumer's Cookbook [3]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Perfumer's Cookbook [4]",
+    "type": "Misc",
+    "effect": "Expands crafting repertoire"
+  },
+  {
+    "name": "Pickled Turtle Neck",
+    "type": "-",
+    "effect": "Temporarily boosts Stamina recovery"
+  },
+  {
+    "name": "Poison Grease",
+    "type": "-",
+    "effect": "Coats armament, inflicting poison"
+  },
+  {
+    "name": "Poison Pot",
+    "type": "-",
+    "effect": "Throw at enemies to cause buildup of poison."
+  },
+  {
+    "name": "Poison Spraymist",
+    "type": "- ",
+    "effect": "Uses FP to release poison mist from the mouth."
+  },
+  {
+    "name": "Poisonbloom",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Poisonbone Dart",
+    "type": "Str D Dex C",
+    "effect": "Throw at enemies to inflict damage and build up poison"
+  },
+  {
+    "name": "Poisoned Stone",
+    "type": "-",
+    "effect": "Throw at enemies to cause buildup of poison"
+  },
+  {
+    "name": "Poisoned Stone Clump",
+    "type": "-",
+    "effect": "Throw together to cause buildup of poison"
+  },
+  {
+    "name": "Prattling Pate \"apologies\"",
+    "type": "-",
+    "effect": "Emits a voice that says \"Apologies\""
+  },
+  {
+    "name": "Prattling Pate \"apologies\"",
+    "type": "-",
+    "effect": "Emits a voice that says \"Apologies\""
+  },
+  {
+    "name": "Prattling Pate \"hello\"",
+    "type": "Key Item",
+    "effect": "Emits a voice that says \"Hello\""
+  },
+  {
+    "name": "Prattling Pate \"please Help\"",
+    "type": "-",
+    "effect": "Emits a voice that says \"Please help\""
+  },
+  {
+    "name": "Prattling Pate \"thank You\"",
+    "type": "Key Item",
+    "effect": "Emits a voice that says \"Thank you\""
+  },
+  {
+    "name": "Prattling Pate \"wonderful\"",
+    "type": "-",
+    "effect": "Emits a voice that says \"Wonderful\""
+  },
+  {
+    "name": "Prattling Pate \"you're Beautiful\"",
+    "type": "-",
+    "effect": "Emits a voice that says \"You're beautiful\""
+  },
+  {
+    "name": "Preserving Boluses",
+    "type": "-",
+    "effect": "Alleviates scarlet rot buildup and cures rot"
+  },
+  {
+    "name": "Purifying Crystal Tear",
+    "type": "Crystal Tear",
+    "effect": "Purifies the Lord of Blood's curse in a mixed physick"
+  },
+  {
+    "name": "Radiant Baldachin's Blessing",
+    "type": "-",
+    "effect": "Uses FP to temporarily raise poise"
+  },
+  {
+    "name": "Rainbow Stone",
+    "type": "- ",
+    "effect": "Shines with colored light when placed, serving as a guide"
+  },
+  {
+    "name": "Rancor Pot",
+    "type": "-",
+    "effect": "Uses FP. Throw to summon vengeful spirits."
+  },
+  {
+    "name": "Raw Meat Dumpling",
+    "type": "-",
+    "effect": "Restores HP but causes poison buildup"
+  },
+  {
+    "name": "Recusant Finger",
+    "type": "Consumable",
+    "effect": "Attempts invasion of other player's world"
+  },
+  {
+    "name": "Regal Omen Bairn",
+    "type": "Int B Fai B",
+    "effect": "Uses FP to unleash many wraiths that chase that foes"
+  },
+  {
+    "name": "Rejuvenating Boluses",
+    "type": "-",
+    "effect": "Alleviates death blight buildup"
+  },
+  {
+    "name": "Remembrance Of Hoarah Loux",
+    "type": "- ",
+    "effect": "Take the power of its namesake via Finger Reader"
+  },
+  {
+    "name": "Remembrance Of The Black Blade",
+    "type": "- ",
+    "effect": "Take the power of its namesake via Finger Reader"
+  },
+  {
+    "name": "Remembrance Of The Black Blade",
+    "type": "-",
+    "effect": "Take the power of its namesake Via Finger Reader"
+  },
+  {
+    "name": "Remembrance Of The Blasphemous",
+    "type": "- ",
+    "effect": "Take the power of its namesake via Finger Reader"
+  },
+  {
+    "name": "Remembrance Of The Dragonlord",
+    "type": "- ",
+    "effect": "Take the power of its namesake via Finger Reader"
+  },
+  {
+    "name": "Remembrance Of The Fire Giant",
+    "type": "- ",
+    "effect": "Take the power of its namesake via Finger Reader"
+  },
+  {
+    "name": "Remembrance Of The Full Moon Queen",
+    "type": "-",
+    "effect": "Take the power of its namesake via Finger Reader"
+  },
+  {
+    "name": "Remembrance Of The Grafted",
+    "type": "- ",
+    "effect": "Take the power of its namesake via Finger Reader"
+  },
+  {
+    "name": "Remembrance Of The Lichdragon",
+    "type": "- ",
+    "effect": "Take the power of its namesake via Finger Reader"
+  },
+  {
+    "name": "Remembrance Of The Naturalborn",
+    "type": "- ",
+    "effect": "Take the power of its namesake via Finger Reader"
+  },
+  {
+    "name": "Remembrance Of The Omen King",
+    "type": "-",
+    "effect": "Take the power of its namesake via Finger Reader"
+  },
+  {
+    "name": "Remembrance Of The Regal Ancestor",
+    "type": "-",
+    "effect": "Take the power of its namesake via Finger Reader"
+  },
+  {
+    "name": "Remembrance Of The Rot Goddess",
+    "type": "- ",
+    "effect": "Take the power of its namesake via Finger Reader"
+  },
+  {
+    "name": "Remembrance Of The Starscourge",
+    "type": "-",
+    "effect": "Take the power of its namesake via Finger Reader"
+  },
+  {
+    "name": "Rimed Crystal Bud",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Rimed Rowa",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Ritual Pot",
+    "type": "Key Item",
+    "effect": "Container required for crafting ritual pot items"
+  },
+  {
+    "name": "Rold Medallion",
+    "type": "Key Item",
+    "effect": "Operates Grand Lift of Rold"
+  },
+  {
+    "name": "Root Resin",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Roped Fetid Pot",
+    "type": "-",
+    "effect": "Throw behind to cause buildup of deadly poison"
+  },
+  {
+    "name": "Roped Fire Pot",
+    "type": "Str A Dex C",
+    "effect": "Throw behind to inflict fire damage."
+  },
+  {
+    "name": "Roped Holy Water Pot",
+    "type": "- ",
+    "effect": "Uses FP. Throw behind to inflict holy damage"
+  },
+  {
+    "name": "Roped Oil Pot",
+    "type": "-",
+    "effect": "Throw behind to douse enemies in oil"
+  },
+  {
+    "name": "Roped Poison Pot",
+    "type": "-",
+    "effect": "Throw behind to cause buildup of poison"
+  },
+  {
+    "name": "Rot Grease",
+    "type": "-",
+    "effect": "Coats armament, inflicting scarlet rot"
+  },
+  {
+    "name": "Rot Pot",
+    "type": "-",
+    "effect": "Throw at enemies to cause buildup of scarlet rot."
+  },
+  {
+    "name": "Rowa Fruit",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Rowa Raisin",
+    "type": "- ",
+    "effect": "On horseback, feed to spectral steed to restore HP"
+  },
+  {
+    "name": "Royal House Scroll",
+    "type": "Key Item",
+    "effect": "Give to a learned sorcerer to acquire new sorceries"
+  },
+  {
+    "name": "Ruin Fragment",
+    "type": "Str A Dex C",
+    "effect": "Material used for crafting items."
+  },
+  {
+    "name": "Rune Arc",
+    "type": "- ",
+    "effect": "Grants the blessing of an equipped rune upon use"
+  },
+  {
+    "name": "Ruptured Crystal Tear",
+    "type": "Crystal Tear",
+    "effect": "Causes concoction to explode in mixed physick"
+  },
+  {
+    "name": "Rusty Key",
+    "type": "Key Item",
+    "effect": "Opens a locked door in Stormveil Castle"
+  },
+  {
+    "name": "Sacramental Bud",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Sacred Order Pot",
+    "type": "Fai S",
+    "effect": "Uses FP. Throw at enemies to inflict heavy holy damage."
+  },
+  {
+    "name": "Sacred Tear",
+    "type": "-",
+    "effect": "Improves Sacred Flask's potency"
+  },
+  {
+    "name": "Sancrified Whetblade",
+    "type": "Key Item",
+    "effect": "Grants choice of affinity upgrade to weapon."
+  },
+  {
+    "name": "Sanctuary Stone",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Scriptstone",
+    "type": "- ",
+    "effect": "Reveals more messages from other worlds"
+  },
+  {
+    "name": "Seedbed Curse",
+    "type": "Key Item",
+    "effect": "Curse grown on a body defiled by a Dung Eater"
+  },
+  {
+    "name": "Seluvis's Introduction",
+    "type": "Key Item",
+    "effect": "Letter of introduction addressed to Sellen"
+  },
+  {
+    "name": "Seluvis's Potion",
+    "type": "Key Item",
+    "effect": "Small flask received from Preceptor Seluvis"
+  },
+  {
+    "name": "Sewer-gaol Key",
+    "type": "Key Item",
+    "effect": "Unlocks sewer-gaol door beneath Leyndell"
+  },
+  {
+    "name": "Sewing Needle",
+    "type": "Key Item",
+    "effect": "Boc the demi-human's prized sewing needle"
+  },
+  {
+    "name": "Shabriri Grape",
+    "type": "Key Item",
+    "effect": "Yellow, oozing eyeball of the infirm"
+  },
+  {
+    "name": "Shield Grease",
+    "type": "-",
+    "effect": "Boosts guarding ability and all damage negation."
+  },
+  {
+    "name": "Silver Firefly",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Silver Tear Husk",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Silver-pickled Fowl Foot",
+    "type": "-",
+    "effect": "Temporarily boosts item discovery (+50)"
+  },
+  {
+    "name": "Sleep Pot",
+    "type": "-",
+    "effect": "Emits a Soporific purple haze"
+  },
+  {
+    "name": "Sliver Of Meat",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Slumbering Egg",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Small Golden Effigy",
+    "type": "Reusable",
+    "effect": "Send co-operative sign to summoning pool"
+  },
+  {
+    "name": "Small Red Effigy",
+    "type": "Reusable",
+    "effect": "Sends competitive sign to summoning pool"
+  },
+  {
+    "name": "Smithing Stone [1]",
+    "type": "Misc",
+    "effect": "Reinforce armaments up to +3."
+  },
+  {
+    "name": "Smithing Stone [2]",
+    "type": "Misc",
+    "effect": "Reinforce armaments up to +6."
+  },
+  {
+    "name": "Smithing Stone [3]",
+    "type": "Misc",
+    "effect": "Reinforce armaments up to +9."
+  },
+  {
+    "name": "Smithing Stone [4]",
+    "type": "Misc",
+    "effect": "Reinforce armaments up to +12."
+  },
+  {
+    "name": "Smithing Stone [5]",
+    "type": "Misc",
+    "effect": "Reinforce armaments up to +15."
+  },
+  {
+    "name": "Smithing Stone [6]",
+    "type": "Misc",
+    "effect": "Reinforce armaments up to +18."
+  },
+  {
+    "name": "Smithing Stone [7]",
+    "type": "Misc",
+    "effect": "Reinforce armaments up to +21."
+  },
+  {
+    "name": "Smithing Stone [8]",
+    "type": "Misc",
+    "effect": "Reinforce armaments up to +24."
+  },
+  {
+    "name": "Smoldering Butterfly",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Soap",
+    "type": "-",
+    "effect": "Removes filth and accumulations on the body"
+  },
+  {
+    "name": "Soft Cotton",
+    "type": "-",
+    "effect": "Temporarily reduces fall damage and sound"
+  },
+  {
+    "name": "Somber Ancient Dragon Smithing Stone",
+    "type": "Misc",
+    "effect": "Reinforce special armaments to +10"
+  },
+  {
+    "name": "Somber Smithing Stone [1]",
+    "type": "Misc",
+    "effect": "Reinforce special armaments to +1."
+  },
+  {
+    "name": "Somber Smithing Stone [2]",
+    "type": "Misc",
+    "effect": "Reinforce special armaments to +2."
+  },
+  {
+    "name": "Somber Smithing Stone [3]",
+    "type": "Misc",
+    "effect": "Reinforce special armaments to +3."
+  },
+  {
+    "name": "Somber Smithing Stone [4]",
+    "type": "Misc",
+    "effect": "Reinforce special armaments to +4."
+  },
+  {
+    "name": "Somber Smithing Stone [5]",
+    "type": "Misc",
+    "effect": "Reinforce special armaments to +5."
+  },
+  {
+    "name": "Somber Smithing Stone [6]",
+    "type": "Misc",
+    "effect": "Reinforce special armaments to +6."
+  },
+  {
+    "name": "Somber Smithing Stone [7]",
+    "type": "Misc",
+    "effect": "Reinforce special armaments to +7."
+  },
+  {
+    "name": "Somber Smithing Stone [8]",
+    "type": "Misc",
+    "effect": "Reinforce special armaments to +8."
+  },
+  {
+    "name": "Somber Smithing Stone [9]",
+    "type": "Misc",
+    "effect": "Reinforce special armaments to +9."
+  },
+  {
+    "name": "Soporific Grease",
+    "type": "-",
+    "effect": "Coats armament, inflicting sleep"
+  },
+  {
+    "name": "Spark Aromatic",
+    "type": "Str D Dex S ",
+    "effect": "Uses FP to broadly scatter sparks in a wide arc straight ahead"
+  },
+  {
+    "name": "Speckled Hardtear",
+    "type": "Crystal Tear",
+    "effect": "Boosts resistance and heals status in mixed physick."
+  },
+  {
+    "name": "Spectral Steed Whistle",
+    "type": "Key Item",
+    "effect": "Summon and ride spectral steed Torrent."
+  },
+  {
+    "name": "Spellproof Dried Liver",
+    "type": "- ",
+    "effect": "Temporarily boosts magic damage negation"
+  },
+  {
+    "name": "Spiked Cracked Tear",
+    "type": "Crystal Tear",
+    "effect": "Enhances charged attacks for a time in mixed physick"
+  },
+  {
+    "name": "Spirit Calling Bell",
+    "type": "Key Item",
+    "effect": "Bell that summons various spirits from ashen items"
+  },
+  {
+    "name": "Spirit Calling Bell",
+    "type": "Key Item",
+    "effect": "Bell that summons various spirits from ashen items"
+  },
+  {
+    "name": "Stanching Boluses",
+    "type": "-",
+    "effect": "Alleviates impending blood loss"
+  },
+  {
+    "name": "Starlight Shards",
+    "type": "-",
+    "effect": "Use to gradually recover FP"
+  },
+  {
+    "name": "Stimulating Boluses",
+    "type": "-",
+    "effect": "Alleviates buildup of sleep"
+  },
+  {
+    "name": "Stonebarb Cracked Tear",
+    "type": "Crystal Tear",
+    "effect": "Make attacks more likely to break enemy stances in a mixed physick"
+  },
+  {
+    "name": "Stonesword Key",
+    "type": "Key Item",
+    "effect": "Use to break one imp statue seal"
+  },
+  {
+    "name": "Stormhawk Feather",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Strength-knot Crystal Tear",
+    "type": "Crystal Tear",
+    "effect": "Temporarily boosts strength in mixed physick"
+  },
+  {
+    "name": "String",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Strip Of White Flesh",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Tailoring Tools",
+    "type": "Key Item",
+    "effect": "Enables armor adjustment at sites of grace"
+  },
+  {
+    "name": "Tailoring Tools",
+    "type": "Key Item",
+    "effect": "Enables armor adjustment at sites of grace"
+  },
+  {
+    "name": "Talisman Pouch",
+    "type": "Key Item",
+    "effect": "Increases Talisman equip slots."
+  },
+  {
+    "name": "Tarnished Golden Sunflower",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Tarnished's Furled Finger",
+    "type": "Reusable",
+    "effect": "Creates cooperative multiplayer summon sign."
+  },
+  {
+    "name": "Tarnished's Wizened Finger",
+    "type": "Reusable",
+    "effect": "Used to write messages."
+  },
+  {
+    "name": "Taunter's Tongue",
+    "type": "Reusable",
+    "effect": "Lures in invanders."
+  },
+  {
+    "name": "Telescope",
+    "type": "Key Item",
+    "effect": "Allows viewer to see faraway things"
+  },
+  {
+    "name": "Thawfrost Boluses",
+    "type": "-",
+    "effect": "Alleviates buildup of frost"
+  },
+  {
+    "name": "The Stormhawk King",
+    "type": "Key Item",
+    "effect": "Ashes of a hawk which heeds no summons."
+  },
+  {
+    "name": "Thin Beast Bones",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Thorny Cracked Tear",
+    "type": "Crystal Tear",
+    "effect": "Makes consecutive attacks grow stronger in mixed physick."
+  },
+  {
+    "name": "Throwing Dagger",
+    "type": "Str B Dex A",
+    "effect": "Throw at enemies to inflict damage"
+  },
+  {
+    "name": "Torch",
+    "type": "Guard Phy 21 Mag 15 Fire 25 Ligt 15 Holy 15 Boost 19",
+    "effect": "Phy 54 Mag 0 Fire 97 Ligt 0 Holy 0 Crit 100"
+  },
+  {
+    "name": "Toxic Mushroom",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Trina's Lily",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Turtle Neck Meat",
+    "type": "Misc",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Twiggy Cracked Tear",
+    "type": "Crystal Tear",
+    "effect": "Briefly stop rune loss on death in mixed physick"
+  },
+  {
+    "name": "Two Fingers Prayerbook",
+    "type": "Key Item",
+    "effect": "Give to a learned cleric to acquire new incantations"
+  },
+  {
+    "name": "Unalloyed Gold Needle",
+    "type": "Key Item",
+    "effect": "Snapped intricate needle of unalloyed gold"
+  },
+  {
+    "name": "Uplifting Aromatic",
+    "type": "- ",
+    "effect": "Boosts ally attack power and reduces incoming damage once."
+  },
+  {
+    "name": "Valkyrie's Prosthesis",
+    "type": "Key Item",
+    "effect": "Golden prosthesis used by the one-armed Valkyrie"
+  },
+  {
+    "name": "Volcanic Stone",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  },
+  {
+    "name": "Warming Stone",
+    "type": "- ",
+    "effect": "Uses FP to continuously heal nearby allies"
+  },
+  {
+    "name": "Weathered Dagger",
+    "type": "Key Item",
+    "effect": "Dagger received from Fia, Deathbed Companion"
+  },
+  {
+    "name": "Whetstone Knife",
+    "type": "Key Item",
+    "effect": "Can add new battle arts and affinities to weapons"
+  },
+  {
+    "name": "Whetstone Knife",
+    "type": "Key Item",
+    "effect": "Can add new battle arts and affinities to weapons"
+  },
+  {
+    "name": "White Cipher Ring",
+    "type": "Reusable",
+    "effect": "When invaded, request the aid of a hunter."
+  },
+  {
+    "name": "Windy Crystal Tear",
+    "type": "Crystal Tear",
+    "effect": "Enhances dodge rolls for a time in mixed physick"
+  },
+  {
+    "name": "Winged Crystal Tear",
+    "type": "Crystal Tears",
+    "effect": "Temporarily reduces equip load in mixed physick"
+  },
+  {
+    "name": "Wraith Calling Bell",
+    "type": "-",
+    "effect": "Uses FP to ring bell and calls prowling wraiths"
+  },
+  {
+    "name": "Wraith Calling Bell",
+    "type": "-",
+    "effect": "Uses FP to ring bell and calls prowling wraiths"
+  },
+  {
+    "name": "Yellow Ember",
+    "type": "-",
+    "effect": "Material used for crafting items"
+  }
+]

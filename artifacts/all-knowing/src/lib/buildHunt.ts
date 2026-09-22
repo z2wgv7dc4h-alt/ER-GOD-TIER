@@ -86,7 +86,9 @@ export type BuildHunt = {
   unresolved: HuntUnresolved[]
 }
 
-const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9+]+/g, ' ').trim()
+// Apostrophes/quotes are dropped, not spaced: "Lion's Claw" must normalize to
+// "lions claw" so it matches an alias like `lions claw`.
+const norm = (s: string) => s.toLowerCase().replace(/['’`]/g, '').replace(/[^a-z0-9+]+/g, ' ').trim()
 
 const lootById = new Map<string, Loot>(loot.map((l) => [l.id, l]))
 const lootByNorm = new Map<string, Loot>()
