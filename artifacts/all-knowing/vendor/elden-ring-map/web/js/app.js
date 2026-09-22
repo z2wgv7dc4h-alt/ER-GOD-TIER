@@ -935,31 +935,41 @@ function switchMaster(id) {
 }
 
 function buildCategories() {
-  const wrap = $('category-list');
-  wrap.innerHTML = '';
-  for (const key of Object.keys(CATS)) {
-    const row = document.createElement('div');
-    row.className = 'cat' + (state.enabled.has(key) ? '' : ' off');
-    row.dataset.cat = key;
-    // 50-odd item categories is too many to tell apart by colour alone, so a
-    // category that has an icon shows it in place of the swatch.
-    const icon = CATS[key].icon;
-    // Not loading="lazy": these are ~50 small PNGs off the local server, and a
-    // lazy swatch stays blank whenever the sidebar is scrolled or collapsed.
-    const swatch = icon
-      ? `<img class="swatch icon" src="icons/categories/${icon}" alt="">`
-      : `<span class="swatch" style="background:${CATS[key].color}"></span>`;
-    row.innerHTML = `
-      ${swatch}
-      <span class="label">${escapeHtml(catLabel(key))}<span class="minibar"><i style="width:0%"></i></span></span>
-      <span class="count">0/0</span>`;
-    row.onclick = () => {
-      if (state.enabled.has(key)) state.enabled.delete(key); else state.enabled.add(key);
-      row.classList.toggle('off', !state.enabled.has(key));
-      savePrefs();
-      map.requestDraw();
-    };
-    wrap.appendChild(row);
+  // Populates every ".category-list" element - the embed-mode floating panel
+  // (#embed-category-list) is a second copy for when ?embed=1 hides the
+  // sidebar's own #category-list entirely, same reasoning as
+  // buildLayerButtons(). Clicking a row in either copy toggles the one
+  // shared `state.enabled` Set, so both copies (and the map draw) stay in
+  // sync regardless of which one the click came from.
+  const wraps = document.querySelectorAll('.category-list');
+  for (const wrap of wraps) {
+    wrap.innerHTML = '';
+    for (const key of Object.keys(CATS)) {
+      const row = document.createElement('div');
+      row.className = 'cat' + (state.enabled.has(key) ? '' : ' off');
+      row.dataset.cat = key;
+      // 50-odd item categories is too many to tell apart by colour alone, so
+      // a category that has an icon shows it in place of the swatch.
+      const icon = CATS[key].icon;
+      // Not loading="lazy": these are ~50 small PNGs off the local server,
+      // and a lazy swatch stays blank whenever the sidebar is scrolled or
+      // collapsed.
+      const swatch = icon
+        ? `<img class="swatch icon" src="icons/categories/${icon}" alt="">`
+        : `<span class="swatch" style="background:${CATS[key].color}"></span>`;
+      row.innerHTML = `
+        ${swatch}
+        <span class="label">${escapeHtml(catLabel(key))}<span class="minibar"><i style="width:0%"></i></span></span>
+        <span class="count">0/0</span>`;
+      row.onclick = () => {
+        if (state.enabled.has(key)) state.enabled.delete(key); else state.enabled.add(key);
+        document.querySelectorAll(`.cat[data-cat="${key}"]`).forEach((r) =>
+          r.classList.toggle('off', !state.enabled.has(key)));
+        savePrefs();
+        map.requestDraw();
+      };
+      wrap.appendChild(row);
+    }
   }
 }
 
@@ -1099,6 +1109,18 @@ function wireUi() {
   $('sb-collapse').onclick = () => { app.classList.add('sb-collapsed'); savePrefs(); };
   $('sb-expand').onclick = () => { app.classList.remove('sb-collapsed'); savePrefs(); };
 
+  // All-Knowing: the embed-mode floating filters panel (see buildCategories())
+  // starts collapsed - it runs ~50 rows, so it should not cover the map by
+  // default, only when the player actually wants to change a filter.
+  const catToggle = $('embed-cat-toggle');
+  const catPanel = $('embed-categories');
+  if (catToggle && catPanel) {
+    catToggle.onclick = () => {
+      const open = catPanel.classList.toggle('open');
+      catToggle.setAttribute('aria-expanded', String(open));
+    };
+  }
+
   $('zoom-in').onclick = () => map.zoomBy(1.6);
   $('zoom-out').onclick = () => map.zoomBy(1 / 1.6);
   $('zoom-fit').onclick = () => map.fit();
@@ -1116,15 +1138,18 @@ function wireUi() {
     gi.onchange = (e) => { state.showIcons = e.target.checked; savePrefs(); map.requestDraw(); };
   }
 
-  $('toggle-all').onclick = () => {
+  const toggleAll = () => {
     if (state.enabled.size) state.enabled.clear();
     else Object.keys(CATS).forEach((k) => state.enabled.add(k));   // all, incl. misc
     document.querySelectorAll('.cat').forEach((r) =>
       r.classList.toggle('off', !state.enabled.has(r.dataset.cat)));
-    $('toggle-all').textContent = state.enabled.size ? t('panel.selectNone') : t('panel.selectAll');
+    document.querySelectorAll('.toggle-all-btn').forEach((b) => {
+      b.textContent = state.enabled.size ? t('panel.selectNone') : t('panel.selectAll');
+    });
     savePrefs();
     map.requestDraw();
   };
+  document.querySelectorAll('.toggle-all-btn').forEach((b) => { b.onclick = toggleAll; });
 
   const search = $('search');
   const results = $('search-results');

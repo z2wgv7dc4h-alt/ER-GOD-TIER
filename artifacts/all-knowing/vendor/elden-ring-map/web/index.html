@@ -80,10 +80,10 @@
         <button type="button" class="panel-title-txt" data-collapse>
           <span data-i18n="panel.categories">Categories</span><span class="chev">▾</span>
         </button>
-        <button type="button" id="toggle-all" class="mini" data-i18n="panel.selectNone">none</button>
+        <button type="button" id="toggle-all" class="mini toggle-all-btn" data-i18n="panel.selectNone">none</button>
       </div>
       <div class="panel-body" id="category-body">
-        <div id="category-list"></div>
+        <div id="category-list" class="category-list"></div>
       </div>
     </section>
 
@@ -120,6 +120,17 @@
          Realm of Shadow/etc from the embedded map at all. buildLayerButtons()
          populates every ".layer-buttons" element, this one included. -->
     <div id="embed-layer-buttons" class="layer-buttons embed-layer-buttons"></div>
+
+    <!-- All-Knowing: same problem, for the sidebar's category (grace/boss/
+         item/...) filter checkboxes - the only way to hide a marker type is
+         through #category-list, also hidden in embed mode. A collapsed-by-
+         default toggle + panel, since the real list runs ~50 rows.
+         buildCategories() populates every ".category-list" element. -->
+    <button type="button" id="embed-cat-toggle" class="embed-cat-toggle" aria-expanded="false">Filters</button>
+    <div id="embed-categories" class="embed-categories">
+      <button type="button" id="embed-toggle-all" class="mini toggle-all-btn" data-i18n="panel.selectNone">none</button>
+      <div id="embed-category-list" class="category-list"></div>
+    </div>
 
     <div id="zoom-controls">
       <button type="button" id="zoom-in" data-i18n-title="zoom.in" title="Zoom in">+</button>
