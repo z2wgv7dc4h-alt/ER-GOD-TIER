@@ -104,6 +104,7 @@ See `docs/REVIEW.md`.
 | File | What |
 |---|---|
 | `open/names.json` | 8.8k EN FMG names (base + SotE + Tarnished Pack; `scripts/extract-fmg-names.py`) |
+| `open/text/` | **Full game text** (44 tables, 45,169 strings) dumped from the install's `menu`/`item` (+ `*_dlc02`) message bundles by `scripts/extract-game-text.py` — one JSON per table + `manifest.json`. Includes the verbatim NPC dialogue `TalkMsg` (9,818 lines, base + DLC merged), the talk-condition tables `EventTextForTalk`/`GR_Dialogues`, and every weapon/goods/armor/talisman/NPC/place name + lore caption. Loaded lazily by `src/lib/gameText.ts`; the Codex surfaces a verbatim dialogue search (`src/Dialogue.tsx`). Lines are **not** attributed to a named speaker: the game's `TalkParam` carries only `msgId`/`voiceId`, and the NPC↔line map lives in the ESD talk scripts (not yet extracted), so no speaker is invented. |
 | `open/shops.json` | 1261 shop rows |
 | `open/world-lots.json` | 10k lots + XYZ; `src/lib/chestFacts.ts` groups the 4018 treasure rows into 3401 chest/pickup facts |
 | `open/boss-xyz.json` / `boss-pins.json` | 215 named bosses; 109 projected |

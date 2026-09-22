@@ -20,6 +20,7 @@ import { npcDisplayCards } from './knowledge/npc-display'
 import { iconFor } from './lib/sourcePack'
 import { fanImage } from './lib/fanImage'
 import { Related } from './Related'
+import { DialogueHits } from './Dialogue'
 import { DungeonChecklist } from './Dungeon'
 import { useWorkspace } from './state'
 import { matchGatheringNodes, useGatheringNodes } from './lib/gatheringNodes'
@@ -211,6 +212,7 @@ export function CodexWorkspace() {
           </div>
         </>
       )}
+      <DialogueHits query={query} />
       {(guideHits.items.length > 0 || guideHits.legs.length > 0) && (
         <>
           <h3 className="codex-head">Guide · {guide.items.length} items · {guide.legs.length} legs</h3>

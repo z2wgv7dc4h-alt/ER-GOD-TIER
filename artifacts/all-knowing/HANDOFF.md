@@ -30,10 +30,14 @@ in that sheet, not tabs; the Codex also opens from a `/` search hit. The old lea
 2. Goblins XYZ + `m60`/`m61` tiles × 256 → `boss-pins.json`
 
 Do not average them. Pickup XYZ lives in `world-lots.json` (10,011 rows) and is not on the JPG except the 109 boss pins.
-
 One projection per view (Task 09 Part C): the engine iframe and the static plate never render at
 once, and the detail panel resolves its target in the active view only (`src/lib/atlasSelection.ts`) —
 so Found/Unknown/Not-there and Thread act on the entity shown, engine or plate, never a hidden pin.
+
+Full game text: `open/text/` (44 FMG tables, 45,169 strings) incl. verbatim `TalkMsg` dialogue,
+dumped by `scripts/extract-game-text.py`; `src/lib/gameText.ts` loads lazily, Codex dialogue search in
+`src/Dialogue.tsx`. No speaker attribution yet — `TalkParam` is `msgId`/`voiceId` only; the NPC↔line
+map is in the ESD talk scripts, not extracted.
 
 ## Gideon
 
