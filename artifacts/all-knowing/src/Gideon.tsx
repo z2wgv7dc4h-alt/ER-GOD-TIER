@@ -288,6 +288,14 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
         <button type="button" className="chip" onClick={() => run('Where are the illusory walls here?')}>Secrets</button>
         <button type="button" className="chip" onClick={() => run('What are good early weapons?')}>Upgrade advice</button>
         <button type="button" className="chip" onClick={() => run('What is on my list?')}>My list</button>
+        <button
+          type="button"
+          className="chip"
+          title="Clear the conversation"
+          onClick={() => setLog((rows) => rows.slice(0, 1))}
+        >
+          Clear
+        </button>
       </div>
 
       {offer && (

@@ -70,7 +70,7 @@ function CodexThumb({ name, aliases }: { name: string; aliases?: string[] }) {
 }
 
 export function CodexWorkspace() {
-  const { query, setSelectedMarkerId, setModule, character, setCharacter, selectedMarkerId } = useWorkspace()
+  const { query, setQuery, setSelectedMarkerId, setModule, character, setCharacter, selectedMarkerId } = useWorkspace()
   const { weapons, bosses } = useArmory()
   const hunts = useHunts()
   const open = useOpenData()
@@ -184,6 +184,20 @@ export function CodexWorkspace() {
   )
   return (
     <div className="codex-wrap">
+      {q.length < 2 && !selectedMarkerId && (
+        <section className="codex-empty">
+          <h3 className="codex-head">Search everything</h3>
+          <p className="note">
+            Facts, items, weapons, bosses + drops, dialogue, NPC quests, recipes, secrets, guides,
+            the map, and the wiki. Type in the bar above — or try one:
+          </p>
+          <div className="opts">
+            {['Margit', 'Rivers of Blood', 'Fire Pot', 'illusory wall', 'Larval Tear', 'Sellen', 'Scadutree'].map((s) => (
+              <button key={s} type="button" className="chip" onClick={() => setQuery(s)}>{s}</button>
+            ))}
+          </div>
+        </section>
+      )}
       {selectedMarkerId && (
         <article className="card codex-detail">
           <div className="kicker">
