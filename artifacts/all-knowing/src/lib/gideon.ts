@@ -39,6 +39,8 @@ import { loadGameTextTable } from './gameText'
 import { loadNpcPlacements, type NpcPlacement } from './npcPlacements'
 import { loadMedusaRoute, findMedusaStep, medusaQuests, type MedusaQuest } from './medusaRoute'
 import { guideExcerpts, loadGuides, matchGuides, type GuideExcerpt } from './guides'
+import { loadWeapons, type Weapon } from './ar'
+import { earlyWeaponRanking, weaponAdvice, dominantAttributes } from './upgradeAdvice'
 import type { Character, ModuleId } from '../types'
 
 export type GideonAct = {
@@ -504,6 +506,7 @@ export function askGideonRouter(
   placements?: NpcPlacement[],
   medusaSteps?: MedusaQuest[],
   guides?: GuideExcerpt[],
+  weapons?: Weapon[],
 ): GideonAct {
   const q = question.toLowerCase().trim()
   if (!q) return { say: 'Name an ending, or ask what to do next.' }
@@ -515,6 +518,41 @@ export function askGideonRouter(
     if (quote) {
       const body = quote.lines.map((l) => `“${l.text}”`).join('\n')
       return { say: `${quote.speaker}:\n${body}\n— verbatim in-game dialogue.`, module: 'codex' }
+    }
+  }
+
+  // Weapon upgrade / "what should I use" advice from the AR engine at this
+  // character's stats, kept ON-ARCHETYPE with the kit they picked
+  // (`answers.buildKit`): a Dex/Arc player gets Dex/Arc weapons, not max raw AR.
+  if (weapons && /\b(upgrade|reinforce|somber|smithing|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(q)) {
+    const builds = [...opBuilds, ...pvpBuilds]
+    const kitId = typeof character.answers.buildKit === 'string' ? character.answers.buildKit : ''
+    const kit = builds.find((b) => b.id === kitId)
+    const prefer = dominantAttributes(kit ? kit.stats : character.stats)
+    const AL: Record<string, string> = { str: 'Str', dex: 'Dex', int: 'Int', fai: 'Fai', arc: 'Arc' }
+    const label = (list: string[]) => list.map((a) => AL[a] ?? a).join('/')
+    const adv = weaponAdvice(weapons, question, character.stats)
+    if (adv) {
+      const gain = adv.arMax > adv.arNow ? ` Upgrading to +${adv.upgradeMax} reaches ${adv.arMax}.` : ''
+      const scal = adv.scaling.map((s) => `${s.attr} ${s.from.toFixed(2)}->${s.to.toFixed(2)}`).join(', ')
+      const warn = adv.meets ? '' : ` You don't meet ${adv.insufficient.join('/')} yet.`
+      const fit = kit
+        ? adv.primary && prefer.includes(adv.primary)
+          ? ` On your ${kit.name} kit.`
+          : ` Off-build for ${kit.name} (it scales ${adv.primary ?? '?'}; your kit is ${label(prefer)}).`
+        : ''
+      return {
+        say: `${adv.name}: AR ${adv.arNow} (two-handed ${adv.twoHandedArNow}).${gain} Scaling ${scal || 'none'}.${warn}${fit}`,
+        module: 'build',
+      }
+    }
+    const top = earlyWeaponRanking(weapons, character.stats, 6, prefer)
+    if (top.length) {
+      const who = kit ? `Along your ${kit.name} kit (${label(prefer)})` : `At your stats (${label(prefer) || 'any'})`
+      return {
+        say: `${who}, best weapons you can wield: ${top.map((t) => `${t.name} ${t.ar}`).join(' · ')}. Name one for upgrade advice.`,
+        module: 'build',
+      }
     }
   }
 
@@ -1112,6 +1150,7 @@ export function isFastLookup(
   placements?: NpcPlacement[],
   medusaSteps?: MedusaQuest[],
   guides?: GuideExcerpt[],
+  weapons?: Weapon[],
 ): boolean {
   const q = question.toLowerCase().trim()
   if (!q) return true
@@ -1151,6 +1190,9 @@ export function isFastLookup(
 
   // A matched Fextralife guide excerpt is a deterministic answer.
   if (guides && matchGuides(question, guides).length) return true
+
+  // Weapon upgrade / early-weapon advice is deterministic from the AR engine.
+  if (weapons && /\b(upgrade|reinforce|somber|smithing|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(q)) return true
 
   // A verbatim-dialogue ask is answered from the game's own attributed lines.
   if (isDialogueAsk(q)) return true
@@ -1222,8 +1264,12 @@ export async function askGideon(
   if (/\b(how|guide|upgrade|smithing|somber|bell bearing|talisman|incantation|sorcer|damage type|stats?|buff)\b/i.test(question)) {
     guides = await loadGuides().then((d) => guideExcerpts(d)).catch(() => undefined)
   }
-  const router = askGideonRouter(question, character, memory, combat, dialogue, placements, medusaSteps, guides)
-  if (isFastLookup(question, memory, combat ?? cachedBossCombat(), placements, medusaSteps, guides)) return router
+  let weapons: Weapon[] | undefined
+  if (/\b(upgrade|reinforce|somber|smithing|best weapons?|early weapons?|strong weapons?|good weapons?)\b/i.test(question)) {
+    weapons = await loadWeapons().catch(() => undefined)
+  }
+  const router = askGideonRouter(question, character, memory, combat, dialogue, placements, medusaSteps, guides, weapons)
+  if (isFastLookup(question, memory, combat ?? cachedBossCombat(), placements, medusaSteps, guides, weapons)) return router
 
   if (!hasGideonKey()) {
     if (!warnedNoKey) {

@@ -30,6 +30,13 @@ describe('factsFromText', () => {
   it('returns nothing for text that matches no catalog entry', () => {
     expect(factsFromText('qzxw vbnm plok')).toHaveLength(0)
   })
+
+  it('matches general inventory items from the open name index', () => {
+    // Names that live in names.json (not the small authored catalog) must still
+    // resolve, so an inventory screenshot marks real items the player holds.
+    const matches = factsFromText('Larval Tear\nFurlcalling Finger Remedy')
+    expect(matches.length).toBeGreaterThanOrEqual(1)
+  })
 })
 
 describe('matchBulkLines', () => {
