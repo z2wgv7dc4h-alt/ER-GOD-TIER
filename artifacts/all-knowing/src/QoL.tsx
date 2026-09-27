@@ -2,6 +2,10 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { matchMany } from './knowledge/catalog'
 import { groupHits, searchSync, type SearchHit } from './lib/search'
 import { flattenHits, moveActive, resolvePaletteKey } from './lib/palette'
+import { classify, type OmniboxCommand, type OmniboxTarget } from './lib/omnibox'
+import { EntityLink } from './EntityLink'
+import { WikiText } from './WikiText'
+import type { GideonAct } from './lib/gideon'
 import { matchWarp, nextGraces, warpGraces } from './knowledge/graces'
 import { applyFacts, denyFacts } from './lib/infer'
 import { labelOf, moduleFor } from './lib/links'
@@ -292,47 +296,92 @@ function useDebounced<T>(value: T, delay: number): T {
 /** Minimum typed length before the palette searches. `searchSync` itself floors at 2. */
 export const LIVE_SEARCH_MIN = 2
 
-export function CommandHits() {
+type PaletteRow =
+  | { kind: 'log'; verb: string; targets: OmniboxTarget[]; factIds: string[] }
+  | { kind: 'command'; command: OmniboxCommand }
+  | { kind: 'entity'; hit: SearchHit }
+
+/**
+ * Task 99 — the omnibox results. The classifier decides the shape, then the rows
+ * render grouped as Do (log/command) · Things (entity search) · Ask (Gideon).
+ * Questions get a deterministic router answer inline (loaded lazily so the
+ * shell bundle does not pull in all of Gideon), with a Continue in Gideon link.
+ */
+export function CommandHits({ onLog }: { onLog?: (ids: string[]) => void } = {}) {
   const w = useWorkspace()
   const debounced = useDebounced(w.query, 175)
-  const q = debounced.trim().toLowerCase()
-  // Live, debounced, and only from `searchSync`/`groupHits` — no new matcher.
+  const q = debounced.trim()
+  const result = useMemo(() => classify(q), [q])
+  // Live entity hits, debounced, from the existing `searchSync`/`groupHits`.
   const sections = useMemo(() => (q.length >= LIVE_SEARCH_MIN ? groupHits(searchSync(q)) : []), [q])
-  const flat = useMemo(() => flattenHits(sections), [sections])
+  const rows = useMemo<PaletteRow[]>(() => {
+    const out: PaletteRow[] = []
+    if (result.kind === 'log') out.push({ kind: 'log', verb: result.verb, targets: result.targets, factIds: result.factIds })
+    if (result.kind === 'command') out.push({ kind: 'command', command: result.command })
+    for (const hit of flattenHits(sections)) out.push({ kind: 'entity', hit })
+    return out
+  }, [result, sections])
+
+  const question = result.kind === 'question' ? result.text : ''
+  const [answer, setAnswer] = useState<GideonAct | null>(null)
+  const [asking, setAsking] = useState(false)
   const [active, setActive] = useState(0)
   const listRef = useRef<HTMLDivElement>(null)
+
+  // A question gets the deterministic router answer inline, on the pause.
+  useEffect(() => {
+    if (!question) {
+      setAnswer(null)
+      setAsking(false)
+      return
+    }
+    let cancelled = false
+    setAsking(true)
+    void import('./lib/gideon')
+      .then(({ askGideonRouter }) => {
+        if (cancelled) return
+        setAnswer(askGideonRouter(question, w.character))
+        setAsking(false)
+      })
+      .catch(() => { if (!cancelled) setAsking(false) })
+    return () => { cancelled = true }
+  }, [question, w.character])
 
   // New query → start at the top; a shrunken list clamps the stale index.
   useEffect(() => setActive(0), [q])
   useEffect(() => {
-    setActive((i) => (flat.length ? Math.min(Math.max(i, 0), flat.length - 1) : 0))
-  }, [flat])
+    setActive((i) => (rows.length ? Math.min(Math.max(i, 0), rows.length - 1) : 0))
+  }, [rows])
 
   /** The one select action, shared by click and Enter (no duplicate handler). */
-  function choose(hit: SearchHit | undefined) {
-    if (!hit) return
-    // Task 97: a real entity hit opens the universal panel overlay; the
-    // merchant/missable rows are not entities and keep their navigation.
-    if (hit.source === 'seed' || hit.source === 'warp' || hit.source === 'boss' || hit.source === 'loot' || hit.source === 'alias') {
-      w.openEntity(hit.id)
-    } else {
-      w.setSelectedMarkerId(hit.id)
-      w.setModule(hit.module)
+  function choose(row: PaletteRow | undefined) {
+    if (!row) return
+    if (row.kind === 'log') {
+      onLog?.(row.factIds)
+      w.setQuery('')
+      return
     }
+    if (row.kind === 'command') {
+      w.setQuery('')
+      w.go(row.command.section, row.command.sub ?? undefined)
+      return
+    }
+    // Task 97: a real entity hit opens the universal panel overlay.
+    w.openEntity(row.hit.id)
     w.setQuery('')
   }
 
   useEffect(() => {
-    if (!flat.length) return
+    if (!rows.length) return
     function onKey(e: KeyboardEvent) {
       const input = document.getElementById('command-search')
       const inputFocused = input != null && document.activeElement === input
-      const key = resolvePaletteKey(e, { inputFocused, resultsOpen: flat.length > 0 })
+      const key = resolvePaletteKey(e, { inputFocused, resultsOpen: rows.length > 0 })
       if (!key) return
       e.preventDefault()
-      if (key === 'next') setActive((i) => moveActive(i, 1, flat.length))
-      else if (key === 'prev') setActive((i) => moveActive(i, -1, flat.length))
-      else if (key === 'select') choose(flat[active])
+      if (key === 'next') setActive((i) => moveActive(i, 1, rows.length))
+      else if (key === 'prev') setActive((i) => moveActive(i, -1, rows.length))
+      else if (key === 'select') choose(rows[active])
       else if (key === 'close') {
         w.setQuery('')
         if (input instanceof HTMLElement) input.blur()
@@ -340,41 +389,102 @@ export function CommandHits() {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [flat, active, w])
+  }, [rows, active, w, onLog])
 
   // Keep the highlighted row in view as it moves.
   useEffect(() => {
     listRef.current?.querySelector('.palette-active')?.scrollIntoView({ block: 'nearest' })
-  }, [active, flat])
+  }, [active, rows])
 
-  if (!sections.length) return null
-  let index = -1
+  if (!rows.length && !question) return null
+
+  function keyOf(row: PaletteRow): string {
+    if (row.kind === 'entity') return `e:${row.hit.id}`
+    if (row.kind === 'command') return `c:${row.command.id}`
+    return 'do:log'
+  }
+  const activeKey = rows[active] ? keyOf(rows[active]) : ''
+
+  function renderRow(row: PaletteRow) {
+    const isActive = keyOf(row) === activeKey
+    const cls = isActive ? 'quest palette-active' : 'quest'
+    if (row.kind === 'entity') {
+      return (
+        <EntityLink key={`e:${row.hit.id}`} id={row.hit.id} className={cls}>
+          <header>
+            <strong>{row.hit.name}</strong>
+            <span className="note">{row.hit.source}</span>
+          </header>
+          <div className="note">{row.hit.detail}</div>
+        </EntityLink>
+      )
+    }
+    if (row.kind === 'command') {
+      return (
+        <button
+          key={`c:${row.command.id}`}
+          type="button"
+          className={cls}
+          aria-current={isActive ? 'true' : undefined}
+          onClick={() => choose(row)}
+        >
+          <header>
+            <strong>Go to {row.command.label}</strong>
+            <span className="note">command</span>
+          </header>
+        </button>
+      )
+    }
+    return (
+      <div key="do:log" className={cls}>
+        <header>
+          <strong>Log {row.verb}</strong>
+          <span className="note">quick log</span>
+        </header>
+        <div className="note command-linkrow">
+          {row.targets.map((t, i) => (
+            <span key={t.id}>{i > 0 ? ', ' : null}<EntityLink id={t.id} /></span>
+          ))}
+        </div>
+        <button type="button" className="chip on" onClick={() => choose(row)}>Log</button>
+      </div>
+    )
+  }
+
+  const doCount = rows.filter((r) => r.kind !== 'entity').length
   return (
     <div className="command-hits" ref={listRef}>
+      {doCount > 0 && (
+        <section className="command-group command-do">
+          <div className="kicker">Do · {doCount}</div>
+          {rows.filter((r) => r.kind !== 'entity').map(renderRow)}
+        </section>
+      )}
       {sections.map((section) => (
         <section className="command-group" key={section.group}>
           <div className="kicker">{section.group} · {section.hits.length}</div>
-          {section.hits.map((f) => {
-            index += 1
-            const isActive = index === active
-            return (
-              <button
-                key={f.source + f.id}
-                type="button"
-                className={isActive ? 'quest palette-active' : 'quest'}
-                aria-current={isActive ? 'true' : undefined}
-                onClick={() => choose(f)}
-              >
-                <header>
-                  <strong>{f.name}</strong>
-                  <span className="note">{f.source}</span>
-                </header>
-                <div className="note">{f.detail}</div>
-              </button>
-            )
-          })}
+          {section.hits.map((hit) => renderRow({ kind: 'entity', hit }))}
         </section>
       ))}
+      {question && (
+        <section className="command-group command-ask">
+          <div className="kicker">Ask · Gideon</div>
+          <div className="command-answer">
+            {asking ? <span className="note">Thinking…</span> : answer ? <WikiText text={answer.say} /> : null}
+          </div>
+          <button
+            type="button"
+            className="chip"
+            onClick={() => {
+              w.setCharacter({ ...w.character, answers: { ...w.character.answers, gideonAsk: question } })
+              w.setQuery('')
+              w.go('gideon')
+            }}
+          >
+            Continue in Gideon
+          </button>
+        </section>
+      )}
     </div>
   )
 }

@@ -19,6 +19,7 @@ import { matchAllWarps, matchGeneratedAliases } from './aliases'
 import { COOP_LINE, coopAvoids, isCoop } from './coop'
 import { searchSync } from './search'
 import { labelOf, moduleFor, nextMoves } from './links'
+import { DONE_REPORT } from './omnibox'
 import { regionLeftovers } from './regionLeftovers'
 import { beforeYouGo } from './beforeYouGo'
 import { loadRegionLevels, type RegionLevel } from './regionLevels'
@@ -371,16 +372,6 @@ function isComparable(question: string, combat: BossCombat[]): boolean {
   }
   return false
 }
-
-/**
- * "I've done X" / "I killed X" — a completion report, not a question.
- * `beat` alone is deliberately excluded unless it has a completion auxiliary
- * ('ve/have) or `just` in front: "beat" is its own past tense in English, so
- * a bare "I beat" is indistinguishable from "how do I beat X" / "I [will]
- * beat X". "beaten", "killed", "defeated", "finished", "cleared", and "done"
- * are unambiguous past tense on their own.
- */
-const DONE_REPORT = /\b(i(?:'ve| have) (?:done|beat(?:en)?|killed|defeated|finished|cleared)|i (?:beaten|killed|defeated|finished|cleared|done)\b|just (?:beat(?:en)?|killed|defeated|finished|cleared))\b/
 
 /**
  * "If I keep walking, what do I lock?" — the Task 52 gate prompts. Kept narrow:

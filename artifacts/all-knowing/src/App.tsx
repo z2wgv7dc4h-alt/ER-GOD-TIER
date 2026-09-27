@@ -7,6 +7,7 @@ import {
 } from './lib/mapEngine'
 import { mergeCharacter } from './lib/merge'
 import { CommandHits, useClipboardShots, useHotkeys } from './QoL'
+import { QuickLog } from './QuickLog'
 import { FirstVisitHint } from './Help'
 import { EntityOverlay } from './library/EntityOverlay'
 import { Header } from './shell/Header'
@@ -95,6 +96,17 @@ function AppShell() {
   useHotkeys()
   useClipboardShots()
   const [searchOpen, setSearchOpen] = useState(false)
+  const [logOpen, setLogOpen] = useState(false)
+  const [logSeed, setLogSeed] = useState<string[]>([])
+
+  // Task 99: the workspace may expose `currentArea`; read it defensively so the
+  // quick log still builds when the field is absent.
+  const currentArea = (w as unknown as { currentArea?: string | null }).currentArea ?? null
+
+  function openLog(seed: string[] = []) {
+    setLogSeed(seed)
+    setLogOpen(true)
+  }
 
   // Phone search opens the command palette full-width.
   useEffect(() => {
@@ -117,13 +129,14 @@ function AppShell() {
         onToggleSearch={() => setSearchOpen((v) => !v)}
         dockOpen={w.dockOpen}
         onToggleDock={w.toggleDock}
+        onOpenLog={() => openLog()}
       />
       <div className="shell-body">
         <main className="workspace">
           <FirstVisitHint />
           <SubTabs />
           {w.section === 'journey' && w.sub === 'map' && <MapControls />}
-          <CommandHits />
+          <CommandHits onLog={(ids) => openLog(ids)} />
           <div className="stage">
             <Suspense fallback={null}>
               <ShellContent />
@@ -140,6 +153,13 @@ function AppShell() {
       </div>
       <TabBar />
       <EntityOverlay />
+      <QuickLog
+        open={logOpen}
+        seed={logSeed}
+        currentArea={currentArea}
+        onOpen={() => openLog()}
+        onClose={() => setLogOpen(false)}
+      />
     </div>
   )
 }
