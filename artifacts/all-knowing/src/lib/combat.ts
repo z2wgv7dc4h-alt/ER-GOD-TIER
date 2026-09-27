@@ -34,6 +34,7 @@ import {
   type Weapon,
 } from './ar'
 import {
+  bestDamageType,
   cachedBossCombat,
   cachedEnemyCombat,
   damageTypeToAttackPower,
@@ -117,10 +118,8 @@ function requirementOf(stats: Stats, weapon: Weapon): { meets: boolean; requirem
   return { meets: missing.length === 0, requirement: missing.length ? `needs ${missing.join(', ')}` : '' }
 }
 
-/** The damage type the target takes the most from (lowest negation). */
-export function bestDamageTypeFor(target: CombatStats): DamageType {
-  return DAMAGE_TYPES.reduce((best, type) => (target.negation[type] < target.negation[best] ? type : best), DAMAGE_TYPES[0])
-}
+/** The damage type the target takes the most from (lowest negation). One source of truth: `enemy.ts`. */
+export const bestDamageTypeFor = bestDamageType
 
 /** Types the target is weak to (negative negation), most weak first. */
 export function weakDamageTypes(target: CombatStats): DamageType[] {
