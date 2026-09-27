@@ -18,6 +18,7 @@ export function TabBar() {
         <button
           key={t.id}
           type="button"
+          data-tour={t.id}
           className={section === t.id ? 'active' : ''}
           aria-current={section === t.id ? 'page' : undefined}
           onClick={() => go(t.id)}

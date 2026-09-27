@@ -10,6 +10,7 @@ export function SectionTabs() {
         <button
           key={s.id}
           type="button"
+          data-tour={s.id}
           className={section === s.id ? 'active' : ''}
           aria-current={section === s.id ? 'page' : undefined}
           onClick={() => go(s.id)}

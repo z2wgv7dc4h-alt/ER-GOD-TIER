@@ -2,7 +2,7 @@ import { emptyCharacter } from '../data/seed'
 import type { Character, ModuleId, Section, Sub } from '../types'
 import type { CurrentArea } from './areaContext'
 import { fromPacket, toPacket, type Packet } from './packet'
-import { defaultSub, moduleToLocation } from './sections'
+import { moduleToLocation, normalizeLocation } from './sections'
 
 export type VaultUi = {
   /** Legacy room id. Still written so an older build keeps working, but the
@@ -27,7 +27,8 @@ export type VaultUi = {
  */
 export function uiLocation(ui: VaultUi): { section: Section; sub: Sub | null } {
   if (ui.section) {
-    return { section: ui.section, sub: ui.sub === undefined ? defaultSub(ui.section) : ui.sub }
+    // Task 117: an old `kit` / `reference` location resolves to Builds / Guides.
+    return normalizeLocation(ui.section, ui.sub)
   }
   return moduleToLocation(ui.module)
 }

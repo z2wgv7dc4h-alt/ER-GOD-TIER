@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Help } from '../Help'
 import { useWorkspace } from '../state'
+import { startTour } from '../tour/tourStore'
 import { AreaChip } from './AreaChip'
 import { SectionTabs } from './SectionTabs'
 
@@ -93,6 +94,7 @@ export function Header({
       </button>
       <button
         type="button"
+        data-tour="log"
         className="chip on quicklog-open desktop-only"
         aria-label="Quick log"
         title="Quick log — mark a boss, grace, or item done"
@@ -138,6 +140,14 @@ export function Header({
               onClick={() => { w.setHelpOpen(true); setMenuOpen(false) }}
             >
               Help
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              className="chip"
+              onClick={() => { startTour(); setMenuOpen(false) }}
+            >
+              Replay tour
             </button>
           </div>
         )}

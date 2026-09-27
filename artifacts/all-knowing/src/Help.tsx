@@ -105,11 +105,12 @@ export function HelpSheet({ onClose }: { onClose: () => void }) {
         <p className="note">
           <strong>Four sections.</strong> <strong>Tarnished</strong> (overview / update / profiles),{' '}
           <strong>Journey</strong> (now / map / quests), <strong>Library</strong> (search / builds /
-          kit) and <strong>Gideon</strong>. Pick them in the header or with <kbd>1</kbd>–<kbd>4</kbd>;
+          PvP / guides) and <strong>Gideon</strong>. Pick them in the header or with <kbd>1</kbd>–<kbd>4</kbd>;
           a phone gets a four-tab bar. The old identity rail is gone — profiles, saves, recents and the
           packet live under Tarnished. Gideon is its own section, or a dock on a wide desktop
-          (<kbd>g</kbd>). The Codex is Library → Search (also a <kbd>/</kbd> hit), and the Build library
-          (OP/PvP chips, AR detail, matchup, build codes, compare) is Library → Kit.
+          (<kbd>g</kbd>). The Codex is Library → Search (also a <kbd>/</kbd> hit); the builder
+          (planner, OP kits, AR detail, matchup, build codes, weapon compare) is Library → Builds, and
+          PvP builds, matchups and tech are Library → PvP.
         </p>
         <p className="note">
           <strong>Keyboard.</strong> <kbd>1</kbd>–<kbd>4</kbd> switch sections, <kbd>/</kbd> focuses

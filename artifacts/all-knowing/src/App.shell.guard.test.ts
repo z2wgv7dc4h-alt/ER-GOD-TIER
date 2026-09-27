@@ -30,8 +30,10 @@ describe('Task 91 four-section shell', () => {
       '<AtlasWorkspace />',
       '<QuestWorkspace />',
       '<BuildWorkspace />',
-      '<KitWorkspace />',
+      '<BuildKits />',
+      '<PvpWorkspace />',
       '<CodexWorkspace />',
+      '<Guides />',
       '<Gideon />',
     ]) {
       expect(app, part).toContain(part)

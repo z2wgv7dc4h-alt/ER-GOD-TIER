@@ -48,17 +48,22 @@ export function estimateDefense(character: Character) {
 }
 
 /**
- * The Build lab (Task 91): `library/builds` is the character build — stats, soft
- * caps, respec, active hunt and attack rating. `library/kit` is the library that
- * used to hide behind the Build `Kits…` drawer — OP / PvP kits, matchups, build
- * codes, AR detail, weapon compare and the tech tips. Same logic, two views.
+ * The Build lab (Task 91; split further by Task 117): `library/builds` is the
+ * character build — stats, soft caps, respec, active hunt and attack rating — and
+ * now also owns the OP PvE kits, the damage calculator and the weapon compare.
+ * `library/pvp` is the PvP surface: builds, matchups and tech. `BuildKits` is the
+ * former Kit library minus the PvP groups, folded into Builds.
  */
 export function BuildWorkspace() {
   return <BuildRoom view="builds" />
 }
 
-export function KitWorkspace() {
-  return <BuildRoom view="kit" />
+export function BuildKits() {
+  return <BuildRoom view="kits" />
+}
+
+export function PvpWorkspace() {
+  return <BuildRoom view="pvp" />
 }
 
 /**
@@ -98,7 +103,7 @@ function KitGroup({
   )
 }
 
-function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
+function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
   const { character, setCharacter, setModule, setSelectedMarkerId, showLeftovers, toggleLeftovers, go } = useWorkspace()
   const coords = useCoords()
   const preview = estimateDefense(character)
@@ -159,15 +164,24 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
     setCharacter({ ...character, stats, level: levelFromStats(stats) })
   }
 
-  if (view === 'kit') {
+  if (view === 'kits' || view === 'pvp') {
+    const pvpView = view === 'pvp'
     return (
       <div className="split">
         <section className="panel">
-          <div className="kicker">Kit library</div>
+          <div className="kicker">{pvpView ? 'PvP · patch 1.17' : 'PvE kit library'}</div>
           <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>
-            OP kits · PvP · Weapon compare · Tech &amp; cheese
+            {pvpView
+              ? 'Invade & duel builds · Matchups · Tech'
+              : 'OP kits · Weapon compare · Damage calculator'}
           </h3>
+          <p className="note">
+            {pvpView
+              ? 'Invasion and duel builds, matchup counters and PvP tech.'
+              : 'Plan your character, find stronger gear, and browse OP PvE kits.'}
+          </p>
 
+          {!pvpView && (
           <KitGroup title="OP kits" count={opBuilds.length} defaultOpen>
             <div className="opts">
               {opBuilds.map((b) => (
@@ -185,8 +199,11 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
               Kits set stats and a shopping list. They do not invent AR. Locations are in the Codex and Gideon.
             </p>
           </KitGroup>
+          )}
 
-          <KitGroup title="PvP · patch 1.17" count={pvpBuilds.length}>
+          {pvpView && (
+          <>
+          <KitGroup title="PvP builds" count={pvpBuilds.length}>
             <p className="note">
               PvP is its own game: poise, stance and invade-vs-host asymmetry matter more than raw damage,
               and skills/status are scaled separately against players. Kits below are target spreads, not
@@ -238,7 +255,11 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
               ))}
             </ul>
           </KitGroup>
+          </>
+          )}
 
+          {!pvpView && (
+          <>
           <KitGroup title="Damage calculator">
             {/* Task 107 §10: the Task 105 engine — pick a weapon, upgrade and
                 affinity, then a boss or field enemy, and read the per-type
@@ -397,6 +418,8 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
               <p className="note" style={{ marginTop: 8 }}>Loading weapon data…</p>
             )}
           </KitGroup>
+          </>
+          )}
         </section>
       </div>
     )
@@ -534,8 +557,8 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
             </>
           )}
           <p className="note" style={{ marginTop: 10 }}>
-            The full OP and PvP lists live in{' '}
-            <button type="button" className="chip" onClick={() => go('library', 'kit')}>Library → Kit</button>.
+            The OP PvE kits, weapon compare and damage calculator are below; the PvP lists live in{' '}
+            <button type="button" className="chip" onClick={() => go('library', 'pvp')}>Library → PvP</button>.
           </p>
         </div>
       </section>
@@ -585,8 +608,8 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
           number drawn from real game data.
         </p>
         <p className="note" style={{ marginTop: 18 }}>
-          Everything else — the OP and PvP lists, the full AR detail, the matchup, build codes and the
-          weapon compare — lives in <strong>Library → Kit</strong>.
+          The OP kits, full AR detail, matchup, build codes and weapon compare are below on this
+          page; PvP builds and tech live in <strong>Library → PvP</strong>.
         </p>
       </section>
     </div>

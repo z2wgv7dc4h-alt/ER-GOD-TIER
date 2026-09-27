@@ -37,8 +37,18 @@ describe('shell location model (Task 91)', () => {
     expect(locationToModule('journey', 'map')).toBe('map')
     expect(locationToModule('journey', 'quests')).toBe('quests')
     expect(locationToModule('library', 'builds')).toBe('build')
+    expect(locationToModule('library', 'pvp')).toBe('build')
     expect(locationToModule('library', 'kit')).toBe('build')
     expect(locationToModule('library', 'search')).toBe('codex')
+  })
+
+  it('redirects the old Library Kit / Reference hashes to Builds / Guides', () => {
+    expect(hashToLocation('#/library/kit')).toEqual({ section: 'library', sub: 'builds' })
+    expect(hashToLocation('#/library/reference')).toEqual({ section: 'library', sub: 'guides' })
+    // The new model never emits the retired hashes.
+    expect(locationToHash('library', 'builds')).toBe('#/library/builds')
+    expect(locationToHash('library', 'pvp')).toBe('#/library/pvp')
+    expect(locationToHash('library', 'guides')).toBe('#/library/guides')
   })
 })
 
