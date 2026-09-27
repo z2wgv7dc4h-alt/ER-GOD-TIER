@@ -1275,6 +1275,13 @@ function wireUi() {
 
 function connect() {
   const es = new EventSource('api/events');
+  // Close explicitly when the embed is torn down (navigating away from the map)
+  // so the browser does not log the in-flight SSE request as aborted.
+  window.addEventListener('pagehide', () => { try { es.close(); } catch (e) { /* already closed */ } });
+  window.addEventListener('beforeunload', () => { try { es.close(); } catch (e) { /* already closed */ } });
+  // The host app removes this iframe when the player leaves the map; it calls
+  // this synchronously first so the stream closes cleanly instead of aborting.
+  window.closeEvents = () => { try { es.close(); } catch (e) { /* already closed */ } };
   es.addEventListener('open', () => setLive(true));
   es.addEventListener('error', () => setLive(false));
   es.addEventListener('state', (ev) => {

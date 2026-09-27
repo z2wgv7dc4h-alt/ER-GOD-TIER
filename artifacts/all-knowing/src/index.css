@@ -285,13 +285,18 @@ button { cursor: pointer; }
 .subtabs button.active { color: var(--gold); border-color: var(--gold-dim); }
 .map-controls { flex: none; padding: 8px 16px 0; }
 
+/* Task 103 §10: the dock is a flex column. The header (face + notes +
+   suggestions + quick chips) and the input stay fixed; `.gideon-log` is the one
+   scroller. Nothing is absolutely positioned over the log any more. */
 .guide {
   flex: none;
   width: 340px;
+  display: flex;
+  flex-direction: column;
   border-left: 1px solid var(--line);
   background: linear-gradient(180deg, #120f0a 0%, #0b0906 100%);
   padding: 16px 14px;
-  overflow: auto;
+  overflow: hidden;
   min-width: 0;
 }
 
@@ -367,7 +372,7 @@ button { cursor: pointer; }
 }
 .char-card .label {
   color: var(--gold-dim);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   line-height: 1.5;
@@ -424,7 +429,7 @@ button { cursor: pointer; }
   border: 1px solid var(--line);
   color: var(--muted);
   padding: 5px 8px;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -480,7 +485,7 @@ button { cursor: pointer; }
 .pin { cursor: pointer; }
 .pin text {
   font-family: var(--font-body);
-  font-size: 10px;
+  font-size: 11px;
   fill: var(--ink);
   paint-order: stroke;
   stroke: #0b0906;
@@ -500,7 +505,7 @@ button { cursor: pointer; }
 }
 .kicker {
   color: var(--gold);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -563,7 +568,7 @@ button { cursor: pointer; }
 .stat label {
   display: block;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -746,7 +751,7 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
 .related-group { margin-top: 10px; }
 .related-label {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -976,7 +981,15 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
 }
 .legend-pins { display: flex; gap: 10px; align-items: center; margin: 8px 0 12px; }
 .legend-pins img { width: 28px; height: 28px; object-fit: cover; border-radius: 50%; border: 1px solid var(--line); }
-.gideon { padding: 0; }
+.gideon {
+  padding: 0;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+/* Header pieces and the input never shrink; only the log scrolls. */
+.gideon > :not(.gideon-log) { flex: 0 0 auto; }
 .gideon-now {
   border: 1px solid var(--line);
   padding: 12px;
@@ -1021,12 +1034,13 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   cursor: pointer;
 }
 .gideon-suggest-x:hover { color: var(--ink); }
-.gideon-log { max-height: 180px; overflow: auto; margin: 8px 0; white-space: pre-wrap; }
+/* The only scrolling region in the dock (Task 103 §10). */
+.gideon-log { flex: 1 1 auto; min-height: 0; overflow: auto; margin: 8px 0; white-space: pre-wrap; }
 .gideon-log p { font-size: 13px; line-height: 1.4; margin: 0 0 8px; }
 .stat-edit { padding: 0 4px 12px; }
 /* Task 93: compact 4x2 grid, only when the editor is opened. */
 .stat-edit .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
-.stat-edit .stats label { display: flex; flex-direction: column; gap: 4px; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.stat-edit .stats label { display: flex; flex-direction: column; gap: 4px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 .stat-edit input {
   width: 100%;
   min-width: 0;
@@ -1173,17 +1187,21 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   .kicker,
   .char-card .label,
   .stat label,
-  .gear-row em { font-size: 11px; letter-spacing: 0.1em; }
+  .stat-edit .stats label,
+  .related-label,
+  .gear-row em,
+  .gear-slot-label,
+  .help-groups li em { font-size: 12px; letter-spacing: 0.1em; }
   .list li { font-size: 14px; }
   .codex-head { font-size: 14px; }
   .steps li { font-size: 15px; }
   .card h3 { font-size: 17px; }
   .search { min-height: 44px; font-size: 15px; }
 
-  /* ── Touch targets ───────────────────────────────────────────────── */
+  /* ── Touch targets: every control is at least 40×40 CSS px ─────────── */
   .chip,
   .ghost {
-    min-height: 38px;
+    min-height: 40px;
     padding: 8px 12px;
     font-size: 12px;
     letter-spacing: 0.06em;
@@ -1191,6 +1209,50 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   .quest { padding: 14px; }
   .pickup-row .chip,
   .gideon .chip { min-height: 42px; }
+  .subtabs button { min-height: 40px; padding: 8px 12px; }
+  .ribbon-toggle { min-height: 40px; }
+  .atlas-jobs .chip,
+  .atlas-layers .chip { min-height: 40px; }
+  .gear-item { min-height: 40px; }
+  .lib-rail-item,
+  .lib-card,
+  .lib-tile { min-height: 40px; }
+  /* Form controls are targets too. */
+  input:not([type="hidden"]),
+  select,
+  textarea { min-height: 40px; }
+  input[type="checkbox"] { width: 40px; height: 40px; }
+  .help-hint-x,
+  .gideon-suggest-x,
+  .lib-pin-x { min-width: 40px; min-height: 40px; }
+  .quicklog-chip button { min-width: 40px; min-height: 40px; }
+  .area-chip { min-height: 40px; }
+  .setup-dot { width: 40px; height: 40px; min-height: 40px; border: 0; background: transparent; position: relative; }
+  .setup-dot::after {
+    content: ''; position: absolute; inset: 0; margin: auto;
+    width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--line);
+  }
+  .setup-dot.done::after { background: var(--gold, #c9a227); opacity: 0.5; }
+  .setup-dot.on::after { background: var(--gold, #c9a227); box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.25); }
+  .tabbar button { font-size: 12px; }
+  .pin text { font-size: 12px; }
+  /* Heading links are controls, not prose: give them a full 40px target. */
+  h1 .entity-link,
+  h2 .entity-link,
+  h3 .entity-link,
+  h4 .entity-link { min-height: 40px; display: inline-flex; align-items: center; }
+  /* Inline prose links stay text-sized but get a real 8px vertical hit area. */
+  .entity-link,
+  .wikilink { position: relative; }
+  .entity-link::after,
+  .wikilink::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -8px;
+    bottom: -8px;
+  }
 
   /* ── Header: one row — brand · title · search · area · char · ⋯ ──── */
   .shell-header {
@@ -1248,7 +1310,7 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
     background: transparent;
     border: 0;
     color: var(--muted);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     padding: 6px 2px;
@@ -1277,7 +1339,7 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    min-height: 38px;
+    min-height: 40px;
     padding: 6px 12px;
     background: var(--bg-raised);
     border: 1px solid var(--line);
@@ -1409,8 +1471,8 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
 }
-/* Roomier tap target for chips on touch. */
-.chip { min-height: 34px; }
+/* Roomier tap target for chips on touch (Task 103 §8: at least 40px). */
+.chip { min-height: 40px; }
 
 
 /* Fixed shell: inner panes scroll, the window itself never does (no bounce on touch). */
@@ -1685,4 +1747,31 @@ body { overflow: hidden; overscroll-behavior: none; }
 
 @media (max-width: 700px) {
   .skeleton-grid { grid-template-columns: 1fr; }
+}
+
+/* Task 103 §8 — last word on phone touch targets. These classes are declared
+   after the main phone block above, so the floor is re-asserted here. */
+@media (max-width: 700px) {
+  .chip { min-width: 40px; }
+  .area-chip { min-height: 40px; }
+  .setup-dot {
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
+    border: 0;
+    background: transparent;
+    position: relative;
+  }
+  .setup-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+  }
+  .setup-dot.done::after { background: var(--gold, #c9a227); opacity: 0.5; }
+  .setup-dot.on::after { background: var(--gold, #c9a227); box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.25); }
 }

@@ -50,11 +50,19 @@ type RefRow = { key: string; kicker: string; name: string; note: string; combat?
 
 function RefSection({ title, count, rows }: { title: string; count: number; rows: RefRow[] }) {
   if (rows.length === 0) return null
+  // Reference rows are keyed by name; a scraped duplicate would collide, so
+  // keep the first occurrence of each key.
+  const seen = new Set<string>()
+  const unique = rows.filter((r) => {
+    if (seen.has(r.key)) return false
+    seen.add(r.key)
+    return true
+  })
   return (
     <>
       <h3 className="codex-head">{title} · {count} in reference</h3>
       <div className="codex-grid">
-        {rows.map((r) => (
+        {unique.map((r) => (
           <article className="card" key={r.key}>
             <div className="kicker">{r.kicker}</div>
             <h3>{r.name}</h3>

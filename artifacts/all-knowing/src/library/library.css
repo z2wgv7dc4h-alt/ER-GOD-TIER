@@ -258,7 +258,7 @@
 }
 
 .lib-card-type {
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--muted);
@@ -639,7 +639,7 @@
   color: var(--muted);
   font-weight: normal;
   text-transform: uppercase;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.06em;
 }
 
@@ -729,6 +729,30 @@
   .lib-tray {
     max-height: 56%;
   }
+
+  /* Task 103 §8/§9: touch targets and a 12px phone type floor. */
+  .lib-rail-count,
+  .lib-rail-mono,
+  .lib-chipgroup-label,
+  .lib-resultbar,
+  .lib-card-type,
+  .lib-card-stats,
+  .lib-card-mono,
+  .lib-compare-table th,
+  .lib-owned-badge,
+  .lib-scaling-chip,
+  .lib-attack-chip,
+  .lib-stat dt,
+  .lib-stat dd,
+  .lib-compare-label {
+    font-size: 12px;
+  }
+  .lib-rail-item,
+  .lib-card,
+  .lib-tile { min-height: 40px; }
+  .lib-panel-close,
+  .lib-pin-x { min-width: 40px; min-height: 40px; }
+  .lib-panel-tabs button { min-height: 40px; }
 }
 
 /* --- loading skeleton (Task 103 §2) -------------------------------------- */

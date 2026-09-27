@@ -74,6 +74,9 @@ export function searchSync(query: string): SearchHit[] {
   const seen = new Set<string>()
 
   function add(hit: SearchHit) {
+    // Keep the same id from different sources (a curated catalog hit and an
+    // alias row are usefully distinct); the palette keys rows by source:id so
+    // they never collide.
     const key = `${hit.source}:${hit.id}`
     if (seen.has(key)) return
     seen.add(key)
@@ -91,7 +94,7 @@ export function searchSync(query: string): SearchHit[] {
   }
   for (const s of findSellers(q).slice(0, 4)) {
     add({
-      id: `shop:${s.vendor}`,
+      id: `shop:${s.vendor}:${s.item}`,
       name: s.item,
       detail: s.condition ? `buy · ${s.vendor} · after: ${s.condition}` : `buy · ${s.vendor}`,
       source: 'shop',

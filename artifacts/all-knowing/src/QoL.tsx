@@ -405,7 +405,9 @@ export function CommandHits({ onLog }: { onLog?: (ids: string[]) => void } = {})
   if (!rows.length && !question) return null
 
   function keyOf(row: PaletteRow): string {
-    if (row.kind === 'entity') return `e:${row.hit.id}`
+    // The same entity can arrive from two sources (the curated catalog and the
+    // boss-pin data), so the source keeps the row key unique even if the id is not.
+    if (row.kind === 'entity') return `e:${row.hit.source}:${row.hit.id}`
     if (row.kind === 'command') return `c:${row.command.id}`
     return 'do:log'
   }
@@ -416,7 +418,7 @@ export function CommandHits({ onLog }: { onLog?: (ids: string[]) => void } = {})
     const cls = isActive ? 'quest palette-active' : 'quest'
     if (row.kind === 'entity') {
       return (
-        <EntityLink key={`e:${row.hit.id}`} id={row.hit.id} className={cls}>
+        <EntityLink key={`e:${row.hit.source}:${row.hit.id}`} id={row.hit.id} className={cls}>
           <header>
             <strong>{row.hit.name}</strong>
             <span className="note">{row.hit.source}</span>

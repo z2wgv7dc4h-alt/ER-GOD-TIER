@@ -41,7 +41,7 @@ export function Related({ id, title = 'Related' }: { id: string; title?: string 
               const known = factState(character, link.factId) === 'true'
               return (
                 <button
-                  key={`${group.key}:${link.factId}`}
+                  key={`${group.key}:${link.id}`}
                   type="button"
                   className={known ? 'chip on' : 'chip'}
                   title={link.note || `Open in ${link.module}`}

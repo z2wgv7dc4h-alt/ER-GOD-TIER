@@ -35,7 +35,14 @@ export function EngineItemSection({ query, preloaded }: { query: string; preload
   }, [q, rows])
   const data = preloaded ?? rows
   if (q.length < 3 || !data) return null
-  const hits = matchEngineItems(q, data)
+  // The engine dump can repeat an id across maps; keep one row per id so the
+  // React key is unique (and the list is not literal duplicates).
+  const seenIds = new Set<string>()
+  const hits = matchEngineItems(q, data).filter((r) => {
+    if (seenIds.has(r.id)) return false
+    seenIds.add(r.id)
+    return true
+  })
   if (hits.length === 0) return null
   return (
     <>
@@ -170,7 +177,15 @@ export function BossDropsSection({ query, preloaded, browse = false }: { query: 
   }, [show, rows])
   const data = preloaded ?? rows
   if (!show || !data) return null
-  const hits = browse ? data.slice(0, 12) : matchBossDrops(q, data)
+  const matched = browse ? data.slice(0, 12) : matchBossDrops(q, data)
+  // A boss can have more than one scraped row; collapse them so the name key
+  // stays unique instead of rendering the same card twice.
+  const seenNames = new Set<string>()
+  const hits = matched.filter((b) => {
+    if (seenNames.has(b.name)) return false
+    seenNames.add(b.name)
+    return true
+  })
   if (hits.length === 0) return null
   return (
     <>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { markers } from './data/seed'
 import { warpGraces, worlds, type AtlasWorld } from './knowledge/graces'
 import { applyFacts, clearFact, denyFacts } from './lib/infer'
@@ -20,6 +20,16 @@ import { clusterMarkers } from './lib/cluster'
 import { leftoverPins } from './lib/leftoverPins'
 import { approachingGateList, gatePins, unresolvedGateLocks } from './lib/gatePins'
 import type { MapMarker } from './types'
+
+/** The engine dump and the curated pins can name the same id; keep one. */
+function dedupeById<T extends { id: string }>(rows: T[]): T[] {
+  const seen = new Set<string>()
+  return rows.filter((r) => {
+    if (seen.has(r.id)) return false
+    seen.add(r.id)
+    return true
+  })
+}
 
 function pinColor(kind: MapMarker['kind']) {
   switch (kind) {
@@ -46,13 +56,29 @@ function stateFill(state: FactState, kind: MapMarker['kind']) {
  */
 function EngineEmbed({ onFail }: { onFail: () => void }) {
   const [loaded, setLoaded] = useState(false)
+  const frameRef = useRef<HTMLIFrameElement>(null)
   useEffect(() => {
     if (loaded) return
     const t = window.setTimeout(onFail, 8000)
     return () => window.clearTimeout(t)
   }, [loaded, onFail])
+  // Task 103 §7: the engine opens its own EventSource. Closing it synchronously
+  // before React removes the iframe stops the `/engine/api/events` request from
+  // being logged as aborted when the player leaves the map.
+  useEffect(() => {
+    const frame = frameRef.current
+    return () => {
+      try {
+        const win = frame?.contentWindow as { closeEvents?: () => void } | null
+        win?.closeEvents?.()
+      } catch {
+        /* cross-origin or already gone: nothing to close */
+      }
+    }
+  }, [])
   return (
     <iframe
+      ref={frameRef}
       title="Elden Ring live map"
       className="engine-frame"
       src={`${MAP_ENGINE_BASE}/?embed=1`}
@@ -158,7 +184,7 @@ export function AtlasWorkspace() {
   const approaching = useMemo(() => approachingGateList(w.character), [w.character])
 
   const allPins = useMemo(
-    () => [...seedPins, ...leftoverList, ...gateList],
+    () => dedupeById([...seedPins, ...leftoverList, ...gateList]),
     [seedPins, leftoverList, gateList],
   )
 
@@ -176,14 +202,16 @@ export function AtlasWorkspace() {
     return true
   })
 
-  const engineList = w.engineMarkers.filter((m) => {
-    const kind = markerKind(m.id, m.category)
-    if (!w.layers[kind]) return false
-    const name = markerName(m).toLowerCase()
-    if (q && !`${name} ${m.category ?? ''} ${m.id}`.includes(q)) return false
-    if (w.missingOnly && factState(w.character, m.id) === 'true') return false
-    return true
-  })
+  const engineList = dedupeById(
+    w.engineMarkers.filter((m) => {
+      const kind = markerKind(m.id, m.category)
+      if (!w.layers[kind]) return false
+      const name = markerName(m).toLowerCase()
+      if (q && !`${name} ${m.category ?? ''} ${m.id}`.includes(q)) return false
+      if (w.missingOnly && factState(w.character, m.id) === 'true') return false
+      return true
+    }),
+  )
 
   // Task 09 Part C — the single selection projection, shared by the engine-iframe
   // and static-plate paths. See lib/atlasSelection.ts for the rule.

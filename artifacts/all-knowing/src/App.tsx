@@ -55,8 +55,13 @@ function EngineBridge() {
       },
       w.setEngineStatus,
     )
+    // Close the stream before a full navigation/reload so the browser does not
+    // record the in-flight `/engine/api/events` request as aborted.
+    const closeOnHide = () => stop()
+    window.addEventListener('pagehide', closeOnHide)
     return () => {
       cancelled = true
+      window.removeEventListener('pagehide', closeOnHide)
       stop()
     }
     // Subscribe once for the life of the shell.

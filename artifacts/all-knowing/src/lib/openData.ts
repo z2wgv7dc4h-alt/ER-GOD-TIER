@@ -73,7 +73,14 @@ export function matchOpen(text: string, names: OpenName[], areas: OpenArea[], sh
       hits.push({ id: row.id, name: row.name, detail: `${row.region} · ${row.note}` })
     }
   }
-  return hits
+  // The open dumps repeat a handful of engine ids across maps; keep one row per
+  // id so the rendered `key={e.id}` is unique.
+  const seen = new Set<string>()
+  return hits.filter((h) => {
+    if (seen.has(h.id)) return false
+    seen.add(h.id)
+    return true
+  })
 }
 
 export function useOpenData() {

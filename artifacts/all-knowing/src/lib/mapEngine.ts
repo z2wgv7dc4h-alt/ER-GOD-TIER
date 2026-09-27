@@ -168,11 +168,26 @@ export async function fetchEngineMarkers(): Promise<EngineMarker[]> {
 
 export function subscribeEngine(onState: (s: EngineState) => void, onStatus: (s: EngineStatus) => void) {
   onStatus('connecting')
-  const es = new EventSource(`${MAP_ENGINE_BASE}/api/events`)
-  es.addEventListener('state', (ev) => {
-    onStatus('live')
-    onState(JSON.parse((ev as MessageEvent).data))
-  })
-  es.onerror = () => onStatus('offline')
-  return () => es.close()
+  let closed = false
+  let es: EventSource | null = null
+  // Defer opening the stream by one task. React StrictMode runs every effect
+  // twice in development; opening synchronously meant the throwaway first mount
+  // closed an EventSource still connecting, which the browser logged as an
+  // aborted `/engine/api/events` request. Deferring never opens it at all.
+  const timer = setTimeout(() => {
+    if (closed) return
+    es = new EventSource(`${MAP_ENGINE_BASE}/api/events`)
+    es.addEventListener('state', (ev) => {
+      onStatus('live')
+      onState(JSON.parse((ev as MessageEvent).data))
+    })
+    es.onerror = () => onStatus('offline')
+  }, 0)
+  return () => {
+    closed = true
+    clearTimeout(timer)
+    // Explicit close on unmount so the in-flight request is not aborted.
+    es?.close()
+    es = null
+  }
 }

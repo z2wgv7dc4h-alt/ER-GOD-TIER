@@ -82,12 +82,54 @@ function auditPage() {
     }
   }
 
+  /**
+   * The rect actually showing on screen: intersect the element with every
+   * clipping ancestor. Content scrolled out of an `overflow:auto` pane (the
+   * Gideon log, the library rail) keeps its layout rect otherwise and produced
+   * false "overlap"/"covered" hits, so clip it away here.
+   */
+  function shownRect(el) {
+    const r = el.getBoundingClientRect()
+    let left = r.left
+    let top = r.top
+    let right = r.right
+    let bottom = r.bottom
+    let node = el.parentElement
+    let guard = 0
+    while (node && guard++ < 60) {
+      const cs = style(node)
+      if (cs) {
+        const clipX = cs.overflowX !== 'visible'
+        const clipY = cs.overflowY !== 'visible'
+        if (clipX || clipY) {
+          const nr = node.getBoundingClientRect()
+          if (clipX) {
+            left = Math.max(left, nr.left)
+            right = Math.min(right, nr.right)
+          }
+          if (clipY) {
+            top = Math.max(top, nr.top)
+            bottom = Math.min(bottom, nr.bottom)
+          }
+        }
+      }
+      node = node.parentElement
+    }
+    return { left, top, right, bottom, width: Math.max(0, right - left), height: Math.max(0, bottom - top) }
+  }
+
+  /** The element's own layout box, independent of any clipping ancestor. */
+  function rect(el) {
+    const r = el.getBoundingClientRect()
+    return { left: r.left, top: r.top, right: r.right, bottom: r.bottom, width: r.width, height: r.height }
+  }
+
   function isVisible(el) {
     const cs = style(el)
     if (!cs) return false
     if (cs.display === 'none' || cs.visibility === 'hidden' || cs.visibility === 'collapse') return false
     if (parseFloat(cs.opacity || '1') === 0) return false
-    const r = el.getBoundingClientRect()
+    const r = shownRect(el)
     if (r.width < 0.5 || r.height < 0.5) return false
     return true
   }
@@ -122,28 +164,33 @@ function auditPage() {
     return raw.replace(/\s+/g, ' ').trim().slice(0, 80)
   }
 
-  function rect(el) {
-    const r = el.getBoundingClientRect()
-    return { left: r.left, top: r.top, right: r.right, bottom: r.bottom, width: r.width, height: r.height }
-  }
-
   function overlapArea(a, b) {
     const x = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left))
     const y = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top))
     return x * y
   }
 
+  /**
+   * Task 103 §12: the section's own scroll container, i.e. the element that
+   * actually has `overflow-y: auto|scroll` and the largest `scrollHeight` —
+   * never `body`/`html` (the shell is fixed-height and the window does not
+   * scroll). Shared by the length metric and `scrollMain`.
+   */
   function mainScroller() {
-    const sels = ['.workspace', '.shell-body', '.stage', 'main', 'body', 'html']
+    const sels = [
+      '.workspace', '.shell-body', '.stage', 'main', '.split', '.side',
+      '.panel', '.me-overview', '.me-update', '.me-profiles', '.now-page',
+      '.gideon-page', '.me-setup', '.me-gear', '.codex-wrap', '.lib-results',
+      '.lib-panel-body', '.lib-rail', '.gear-picker-box', '.quicklog-sheet',
+    ]
     let best = null
     let score = -1
     for (const sel of sels) {
       for (const el of document.querySelectorAll(sel)) {
         const cs = style(el)
         if (!cs) continue
-        const scrollable = cs.overflowY === 'auto' || cs.overflowY === 'scroll' || sel === 'body' || sel === 'html'
-        if (!scrollable) continue
-        const s = el.scrollHeight - el.clientHeight
+        if (cs.overflowY !== 'auto' && cs.overflowY !== 'scroll') continue
+        const s = el.scrollHeight
         if (s > score) {
           score = s
           best = el
@@ -161,6 +208,7 @@ function auditPage() {
     covered: 0,
     dead: 0,
     tinyText: 0,
+    blank: 0,
     interactive: 0,
   }
   const items = { overlap: [], tapSize: [], offscreen: [], covered: [], dead: [], tinyText: [] }
@@ -169,10 +217,41 @@ function auditPage() {
     if (items[kind] && items[kind].length < MAX) items[kind].push(obj)
   }
 
+  // ---- overlays -----------------------------------------------------------
+  // When a dialog/menu/popover is open it owns the screen: the content behind
+  // it is intentionally covered, so only audit the overlay's own controls.
+  const OVERLAY_SELECTOR =
+    '.entity-overlay, .quicklog-overlay, .area-picker, .header-more-menu, ' +
+    '.help-overlay, .gear-picker, .lockout-overlay, .qr-overlay, .lib-detail'
+  const overlays = Array.prototype.slice.call(document.querySelectorAll(OVERLAY_SELECTOR)).filter((el) => {
+    if (!isVisible(el)) return false
+    // `.lib-detail` is a normal column on desktop but a fixed sheet on phone.
+    if (el.matches('.lib-detail') && style(el)?.position !== 'fixed') return false
+    return true
+  })
+  const scope = overlays.length ? overlays[overlays.length - 1] : null
+  const root = scope || document
+
+  // Floating action buttons and modal scrims are deliberate overlays, never
+  // "content that overlaps" — exclude them from the interactive scan.
+  const EXEMPT = '.quicklog-fab, .quicklog-toast, .entity-overlay-scrim, .glance-exit'
+  const isExempt = (el) => !!el.closest(EXEMPT)
+
   // ---- collect visible interactive elements -------------------------------
-  const els = Array.prototype.slice.call(document.querySelectorAll(INTERACTIVE)).filter(isVisible)
-  const boxes = els.map((el) => ({ el, r: rect(el), sel: cssPath(el), text: textOf(el) }))
+  const rawEls = Array.prototype.slice.call(root.querySelectorAll(INTERACTIVE))
+  if (scope && scope.matches(INTERACTIVE)) rawEls.push(scope)
+  const els = rawEls.filter((el) => !isExempt(el) && isVisible(el))
+  const boxes = els.map((el) => ({ el, r: shownRect(el), full: rect(el), sel: cssPath(el), text: textOf(el) }))
   counts.interactive = boxes.length
+
+  // An inline prose link (a wikilink in an answer, an entity name mid-sentence)
+  // may stay text-sized; it only gets the 8px pseudo-element hit padding.
+  const INLINE_LINK = '.entity-link, .wikilink'
+  function isInlineProseLink(el) {
+    if (!el.matches(INLINE_LINK)) return false
+    if (el.closest('h1, h2, h3, h4, h5, h6')) return false
+    return true
+  }
 
   // ---- overlap ------------------------------------------------------------
   for (let i = 0; i < boxes.length; i++) {
@@ -190,8 +269,9 @@ function auditPage() {
   const phone = window.innerWidth <= 500
   if (phone) {
     for (const b of boxes) {
-      if (b.r.width < 40 || b.r.height < 40) {
-        bump('tapSize', { sel: b.sel, text: b.text, w: Math.round(b.r.width), h: Math.round(b.r.height) })
+      if (isInlineProseLink(b.el)) continue
+      if (b.full.width < 40 || b.full.height < 40) {
+        bump('tapSize', { sel: b.sel, text: b.text, w: Math.round(b.full.width), h: Math.round(b.full.height) })
       }
     }
   }
@@ -215,6 +295,7 @@ function auditPage() {
     const hit = document.elementFromPoint(cx, cy)
     if (!hit) continue
     if (hit === b.el || b.el.contains(hit)) continue
+    if (isExempt(hit)) continue
     bump('covered', { sel: b.sel, text: b.text, by: cssPath(hit), byText: textOf(hit) })
   }
 
@@ -235,7 +316,7 @@ function auditPage() {
   }
 
   // ---- tiny text ----------------------------------------------------------
-  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
+  const walker = document.createTreeWalker(scope || document.body, NodeFilter.SHOW_TEXT)
   let visited = 0
   let node
   while ((node = walker.nextNode()) && visited++ < 20000) {
@@ -247,7 +328,7 @@ function auditPage() {
     if (!cs || cs.display === 'none' || cs.visibility === 'hidden') continue
     const size = parseFloat(cs.fontSize)
     if (!Number.isFinite(size) || size >= 11) continue
-    const r = parent.getBoundingClientRect()
+    const r = shownRect(parent)
     if (r.width < 0.5 || r.height < 0.5) continue
     bump('tinyText', { sel: cssPath(parent), text: t.slice(0, 80), px: Math.round(size * 10) / 10 })
   }
@@ -309,6 +390,24 @@ async function runScenario(browser, runCfg) {
   const sleep = (ms) => page.waitForTimeout(ms)
   const steps = []
 
+  // Task 103 §11: a section is "ready" once its skeleton is gone, the app root
+  // is present and the main region has real text. Capped at 10s; if it never
+  // arrives the step is flagged blank.
+  async function contentReady() {
+    return page
+      .waitForFunction(
+        () => {
+          if (!document.querySelector('.app')) return false
+          if (document.querySelector('.section-skeleton, .dock-skeleton, .lib-skel, .skel-bar')) return false
+          const main = document.querySelector('.workspace') || document.querySelector('main') || document.body
+          return ((main && main.innerText) || '').trim().length > 50
+        },
+        { timeout: 10000 },
+      )
+      .then(() => true)
+      .catch(() => false)
+  }
+
   async function step(label, action) {
     buffers.console.length = 0
     buffers.requests.length = 0
@@ -318,6 +417,8 @@ async function runScenario(browser, runCfg) {
     } catch (err) {
       notes.push(`action error: ${err?.message || err}`)
     }
+    const blank = !(await contentReady())
+    if (blank) notes.push('blank section — no real content within 10s')
     await sleep(150)
     const index = steps.length + 1
     const file = `${String(index).padStart(2, '0')}-${slug(label)}.png`
@@ -336,11 +437,12 @@ async function runScenario(browser, runCfg) {
       notes.push(`audit failed: ${err?.message || err}`)
       audit = {
         error: String(err?.message || err),
-        counts: { overlap: 0, tapSize: 0, offscreen: 0, hScroll: 0, covered: 0, dead: 0, tinyText: 0, interactive: 0 },
+        counts: { overlap: 0, tapSize: 0, offscreen: 0, hScroll: 0, covered: 0, dead: 0, tinyText: 0, blank: 0, interactive: 0 },
         pageLength: { screens: 0, flagged: false, selector: '', scrollHeight: 0, clientHeight: 0 },
         items: { overlap: [], tapSize: [], offscreen: [], covered: [], dead: [], tinyText: [] },
       }
     }
+    if (audit && audit.counts) audit.counts.blank = blank ? 1 : 0
     steps.push({
       index,
       label,
@@ -460,15 +562,19 @@ async function runScenario(browser, runCfg) {
 
   async function scrollMain(frac) {
     await page.evaluate((f) => {
-      const sels = ['.workspace', '.shell-body', '.stage', 'main', 'body', 'html']
+      const sels = [
+        '.workspace', '.shell-body', '.stage', 'main', '.split', '.side',
+        '.panel', '.me-overview', '.me-update', '.me-profiles', '.now-page',
+        '.gideon-page', '.me-setup', '.me-gear', '.codex-wrap', '.lib-results',
+        '.lib-panel-body', '.lib-rail', '.gear-picker-box', '.quicklog-sheet',
+      ]
       let best = null
       let score = -1
       for (const sel of sels) {
         for (const el of document.querySelectorAll(sel)) {
           const cs = getComputedStyle(el)
-          const ok = cs.overflowY === 'auto' || cs.overflowY === 'scroll' || sel === 'body' || sel === 'html'
-          if (!ok) continue
-          const s = el.scrollHeight - el.clientHeight
+          if (cs.overflowY !== 'auto' && cs.overflowY !== 'scroll') continue
+          const s = el.scrollHeight
           if (s > score) {
             score = s
             best = el
@@ -476,7 +582,7 @@ async function runScenario(browser, runCfg) {
         }
       }
       const el = best || document.scrollingElement
-      el.scrollTop = (el.scrollHeight - el.clientHeight) * f
+      if (el) el.scrollTop = (el.scrollHeight - el.clientHeight) * f
     }, frac)
     await sleep(250)
   }
@@ -682,7 +788,37 @@ async function runScenario(browser, runCfg) {
       await nav('library', 'Library', 'reference', 'Reference', notes)
     })
 
-    // --- Step 10: Gideon --------------------------------------------------
+    // --- Step 11: Journey > Area ------------------------------------------
+    await step('journey-area', async (notes) => {
+      await nav('journey', 'Journey', 'area', 'Area', notes)
+    })
+
+    // --- Step 12: Quick-log sheet, log Margit -----------------------------
+    await step('quicklog-log-margit', async (notes) => {
+      await clickLocator(page.locator('.quicklog-fab:visible, .quicklog-open:visible').first(), notes, 'quick-log opener')
+      await page.waitForSelector('.quicklog-sheet', { timeout: 6000 }).catch(() => notes.push('quick-log sheet not shown'))
+      await page.locator('.quicklog-input').fill('Margit').catch(() => notes.push('quick-log input not found'))
+      await sleep(400)
+      await clickLocator(page.locator('.quicklog-row input[type="checkbox"]').first(), notes, 'first quick-log row')
+      await clickLocator(page.locator('.quicklog-sheet button').filter({ hasText: /^\s*Log\s*$/ }), notes, 'quick-log commit')
+      await sleep(400)
+    })
+
+    // --- Step 13: Area picker ---------------------------------------------
+    await step('area-picker', async (notes) => {
+      await clickLocator(page.locator('.area-chip'), notes, 'area chip')
+      await sleep(400)
+    })
+
+    // --- Step 14: Tarnished > Setup (step 1) and Gear ---------------------
+    await step('tarnished-setup', async (notes) => {
+      await nav('me', 'Tarnished', 'setup', 'Setup', notes)
+    })
+    await step('tarnished-gear', async (notes) => {
+      await nav('me', 'Tarnished', 'gear', 'Gear', notes)
+    })
+
+    // --- Step 15: Gideon --------------------------------------------------
     await step('gideon-where-is-moonveil', async (notes) => {
       await nav('gideon', 'Gideon', null, null, notes)
       await askGideon('where is moonveil', 8000, notes)
@@ -719,6 +855,7 @@ function stepCounts(s) {
     covered: c.covered || 0,
     dead: c.dead || 0,
     tinyText: c.tinyText || 0,
+    blank: c.blank || 0,
     console: (s.consoleErrors || []).length,
     net: (s.networkFailures || []).length,
     screens: s.audit?.pageLength?.screens ?? 0,
@@ -766,6 +903,7 @@ function buildReport(runs, meta) {
         c.covered,
         c.dead,
         c.tinyText,
+        c.blank,
         c.console,
         c.net,
         screens,
@@ -773,7 +911,7 @@ function buildReport(runs, meta) {
     })
     lines.push(
       mdTable(
-        ['Step', 'Screenshot', 'Overlap', 'Tap<40', 'Off-screen', 'H-Scroll', 'Covered', 'Dead', 'Tiny<11', 'Console', 'Net', 'Screens'],
+        ['Step', 'Screenshot', 'Overlap', 'Tap<40', 'Off-screen', 'H-Scroll', 'Covered', 'Dead', 'Tiny<11', 'Blank', 'Console', 'Net', 'Screens'],
         rows,
       ),
     )
