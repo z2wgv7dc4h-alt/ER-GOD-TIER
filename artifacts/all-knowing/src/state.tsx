@@ -3,6 +3,7 @@ import { markers } from './data/seed'
 import { areaLabel, engineAreaSignal, resolveCurrentArea, type AreaSignal } from './lib/areaContext'
 import type { EngineMarker, EngineState, EngineStatus } from './lib/mapEngine'
 import { buildEntityHash, parseEntityHash } from './lib/entityHash'
+import { recordResultPin } from './map/resultPins'
 import { gideonHeader } from './lib/gideonHeader'
 import { pushRecent, recentAfterProfileSwitch } from './lib/recent'
 import {
@@ -60,6 +61,12 @@ type Workspace = {
   toggleLeftovers: () => void
   showGates: boolean
   toggleGates: () => void
+  /** Task 111 §3: keep the map centred on the current area / live dot. */
+  follow: boolean
+  toggleFollow: () => void
+  /** Task 111 §4: show the not-done density layer. */
+  showHeat: boolean
+  toggleHeat: () => void
   missingOnly: boolean
   setMissingOnly: (v: boolean) => void
   query: string
@@ -165,6 +172,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [layers, setLayers] = useState(defaultLayers)
   const [showLeftovers, setShowLeftovers] = useState(false)
   const [showGates, setShowGates] = useState(false)
+  const [follow, setFollow] = useState(false)
+  const [showHeat, setShowHeat] = useState(false)
   const [missingOnly, setMissingOnly] = useState(bootProfile.ui.missingOnly)
   const [query, setQuery] = useState('')
   const [engineStatus, setEngineStatus] = useState<EngineStatus>('offline')
@@ -273,6 +282,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   /** Open the universal entity panel as an overlay from any section. */
   function openEntity(id: string) {
     setEntityId(id)
+    // Task 111 §1: every opened entity leaves a temporary result pin, so an
+    // answer with a location is one tap from the Atlas (resolved there).
+    recordResultPin({ factId: id })
     setRecentFacts((r) => pushRecent(r, id))
     if (typeof window === 'undefined') return
     const next = buildEntityHash(locationToHash(section, sub), id)
@@ -340,6 +352,10 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       toggleLeftovers: () => setShowLeftovers((v) => !v),
       showGates,
       toggleGates: () => setShowGates((v) => !v),
+      follow,
+      toggleFollow: () => setFollow((v) => !v),
+      showHeat,
+      toggleHeat: () => setShowHeat((v) => !v),
       missingOnly,
       setMissingOnly,
       query,
@@ -374,7 +390,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [module, section, sub, character, selectedMarkerId, entityId, currentArea, layers, showLeftovers, showGates, missingOnly, query, engineStatus, engineState, engineMarkers, history, helpOpen, dockOpen, glance, resume, recentFacts, vault],
+    [module, section, sub, character, selectedMarkerId, entityId, currentArea, layers, showLeftovers, showGates, follow, showHeat, missingOnly, query, engineStatus, engineState, engineMarkers, history, helpOpen, dockOpen, glance, resume, recentFacts, vault],
   )
 
   return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>

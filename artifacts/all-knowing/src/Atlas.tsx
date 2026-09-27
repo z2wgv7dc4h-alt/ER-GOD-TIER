@@ -1,4 +1,12 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MouseEvent as ReactMouseEvent,
+  type PointerEvent as ReactPointerEvent,
+} from 'react'
 import { markers } from './data/seed'
 import { warpGraces, worlds, type AtlasWorld } from './knowledge/graces'
 import { applyFacts, clearFact, denyFacts } from './lib/infer'
@@ -19,6 +27,11 @@ import { resolveSelection } from './lib/atlasSelection'
 import { clusterMarkers } from './lib/cluster'
 import { leftoverPins } from './lib/leftoverPins'
 import { approachingGateList, gatePins, unresolvedGateLocks } from './lib/gatePins'
+import { resultMarkers, useResultPins } from './map/resultPins'
+import { addNote, noteMarkers, notesForWorld, readNotes, removeNote } from './map/notes'
+import { heatCells, heatRadius } from './map/heat'
+import { focusViewBox, followFocus, graceFocus } from './map/follow'
+import { MapNotesPanel, NoteEditor } from './map/MapNotes'
 import type { MapMarker } from './types'
 
 /** The engine dump and the curated pins can name the same id; keep one. */
@@ -54,7 +67,7 @@ function stateFill(state: FactState, kind: MapMarker['kind']) {
  * (or errors), we do not leave a silent blank canvas — the caller swaps in the
  * static plate and a different banner.
  */
-function EngineEmbed({ onFail }: { onFail: () => void }) {
+function EngineEmbed({ onFail, follow = false }: { onFail: () => void; follow?: boolean }) {
   const [loaded, setLoaded] = useState(false)
   const frameRef = useRef<HTMLIFrameElement>(null)
   useEffect(() => {
@@ -76,6 +89,12 @@ function EngineEmbed({ onFail }: { onFail: () => void }) {
       }
     }
   }, [])
+  // Task 111 §3: follow mode on PC is the engine's own live-dot follow; the host
+  // just toggles it (see the postMessage bridge in vendor/elden-ring-map/web).
+  useEffect(() => {
+    if (!loaded) return
+    frameRef.current?.contentWindow?.postMessage({ type: 'all-knowing:follow', on: follow }, '*')
+  }, [loaded, follow])
   return (
     <iframe
       ref={frameRef}
@@ -120,6 +139,14 @@ export function AtlasWorkspace() {
   useEffect(() => { setArtReady(false) }, [world])
   const coords = useCoords()
   const enginePins = useEnginePins(world, !engineLive)
+  // Task 111 §1/§2: session result pins and vault-backed custom notes.
+  const results = useResultPins()
+  const notes = readNotes(w.character)
+  const worldNotes = notesForWorld(notes, world)
+  const [noteDraft, setNoteDraft] = useState<{ x: number; y: number } | null>(null)
+  const [notesOpen, setNotesOpen] = useState(false)
+  const svgRef = useRef<SVGSVGElement>(null)
+  const longPress = useRef<{ timer: number; x: number; y: number; moved: boolean } | null>(null)
 
   const gracePins: MapMarker[] = useMemo(
     () =>
@@ -213,6 +240,13 @@ export function AtlasWorkspace() {
     }),
   )
 
+  // Task 111 §1: grounded result pins for the viewed world, always drawn on top.
+  const resultList = useMemo(() => resultMarkers(results, coords, world), [results, coords, world])
+  const resultIds = useMemo(() => new Set(resultList.map((m) => m.id)), [resultList])
+  // Task 111 §2: notes on this world, as plate pins.
+  const noteList = useMemo(() => noteMarkers(notes, world), [notes, world])
+  const canDropHere = Boolean(w.currentArea?.factId && graceFocus(w.currentArea.factId))
+
   // Task 09 Part C — the single selection projection, shared by the engine-iframe
   // and static-plate paths. See lib/atlasSelection.ts for the rule.
   const {
@@ -222,12 +256,15 @@ export function AtlasWorkspace() {
   } = resolveSelection({
     selectedQ: w.selectedMarkerId,
     engineLive,
-    platePins: allPins,
+    // Result and note pins are not part of the filtered seed layers, but the
+    // shared detail panel must be able to name one when it is clicked.
+    platePins: [...allPins, ...resultList, ...noteList],
     shown,
     enginePins: w.engineMarkers,
     engineList,
   })
   const selectedState = selectedId ? factState(w.character, selectedId) : 'unknown'
+  const isNoteSelected = Boolean(selectedId?.startsWith('note-'))
 
   const counts = {
     found: seedPins.filter((m) => factState(w.character, m.id) === 'true').length,
@@ -254,6 +291,92 @@ export function AtlasWorkspace() {
     return out
   }, [allPins])
 
+  // ── Task 111 overlays ────────────────────────────────────────────────
+  // §4: undone density per region.
+  const heat = useMemo(
+    () => (w.showHeat ? heatCells(allPins, (id) => factState(w.character, id) === 'true') : []),
+    [w.showHeat, allPins, w.character],
+  )
+  // §3: follow the live dot / current area; else centre a chosen result pin.
+  const focusPin = w.selectedMarkerId
+    ? resultList.find((m) => m.id === w.selectedMarkerId) ?? noteList.find((m) => m.id === w.selectedMarkerId)
+    : undefined
+  const followPoint = w.follow ? followFocus({ currentArea: w.currentArea, engine: w.engineState }) : null
+  const focus = !engineLive
+    ? followPoint ?? (focusPin ? { x: focusPin.x, y: focusPin.y, world } : null)
+    : null
+  const focusHere = focus && focus.world === world
+  const viewBox = plate
+    ? focusHere
+      ? focusViewBox(focus!, vw, vh)
+      : `0 0 ${vw} ${vh}`
+    : '0 0 100 80'
+
+  function openNote(x: number, y: number) {
+    setNoteDraft({ x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) })
+  }
+
+  /** Client point -> plate percent, through the SVG's own viewBox transform. */
+  function pointToPercent(clientX: number, clientY: number): { x: number; y: number } | null {
+    const svg = svgRef.current
+    if (!svg || typeof svg.createSVGPoint !== 'function') return null
+    const ctm = svg.getScreenCTM()
+    if (!ctm) return null
+    const pt = svg.createSVGPoint()
+    pt.x = clientX
+    pt.y = clientY
+    const u = pt.matrixTransform(ctm.inverse())
+    return { x: (u.x / vw) * 100, y: (u.y / vh) * 100 }
+  }
+
+  function onMapPointerDown(e: ReactPointerEvent<SVGSVGElement>) {
+    if (e.pointerType !== 'touch') return
+    const start = { timer: 0, x: e.clientX, y: e.clientY, moved: false }
+    start.timer = window.setTimeout(() => {
+      if (start.moved) return
+      const p = pointToPercent(start.x, start.y)
+      if (p) openNote(p.x, p.y)
+    }, 550)
+    longPress.current = start
+  }
+
+  function onMapPointerMove(e: ReactPointerEvent<SVGSVGElement>) {
+    const lp = longPress.current
+    if (!lp) return
+    if (Math.hypot(e.clientX - lp.x, e.clientY - lp.y) > 12) {
+      lp.moved = true
+      window.clearTimeout(lp.timer)
+      longPress.current = null
+    }
+  }
+
+  function endLongPress() {
+    const lp = longPress.current
+    if (lp) {
+      window.clearTimeout(lp.timer)
+      longPress.current = null
+    }
+  }
+
+  function onMapContextMenu(e: ReactMouseEvent<SVGSVGElement>) {
+    e.preventDefault()
+    const p = pointToPercent(e.clientX, e.clientY)
+    if (p) openNote(p.x, p.y)
+  }
+
+  function saveNote(text: string, entityId?: string) {
+    if (!noteDraft) return
+    w.setCharacter(addNote(w.character, { text, x: noteDraft.x, y: noteDraft.y, world, entityId }))
+    setNoteDraft(null)
+  }
+
+  const dropNoteHere = () => {
+    const g = w.currentArea?.factId ? graceFocus(w.currentArea.factId) : null
+    if (!g) return
+    setWorld(g.world)
+    openNote(g.x, g.y)
+  }
+
   function mark(state: FactState) {
     if (!selectedId) return
     if (state === 'true') w.setCharacter(applyFacts(w.character, [selectedId], 'answer', 'atlas pin'))
@@ -268,20 +391,33 @@ export function AtlasWorkspace() {
             plate. The engine's pins are drawn inside its own iframe, so the
             two pin sets never share a view. */}
         {engineLive ? (
-          <EngineEmbed onFail={failEmbed} />
+          <EngineEmbed onFail={failEmbed} follow={w.follow} />
         ) : (
           <div className="atlas-plate">
+            {plate && !artReady && <p className="note atlas-loading">Loading map…</p>}
+          <svg
+            ref={svgRef}
+            viewBox={viewBox}
+            preserveAspectRatio="xMidYMid meet"
+            className={focusHere ? 'atlas-focus' : undefined}
+            onContextMenu={onMapContextMenu}
+            onPointerDown={onMapPointerDown}
+            onPointerMove={onMapPointerMove}
+            onPointerUp={endLongPress}
+            onPointerLeave={endLongPress}
+          >
             {plate && (
-              <img
-                className="atlas-art"
-                src={plate}
-                alt=""
+              <image
+                className="atlas-art-img"
+                href={plate}
+                x={0}
+                y={0}
+                width={vw}
+                height={vh}
                 onLoad={() => setArtReady(true)}
                 onError={() => setArtReady(true)}
               />
             )}
-            {plate && !artReady && <p className="note atlas-loading">Loading map…</p>}
-          <svg viewBox={plate ? `0 0 ${vw} ${vh}` : '0 0 100 80'} preserveAspectRatio="xMidYMid meet">
             <text x={8 * k} y={8 * k} fill="#8a7018" fontSize={3 * k} fontFamily="Cinzel">
               {worldMeta?.label}
             </text>
@@ -291,7 +427,18 @@ export function AtlasWorkspace() {
             <path d="M66,52 C70,44 78,36 86,34 C92,40 90,52 84,58 C76,62 68,58 66,52 Z" fill="none" stroke="#2a3a4a" strokeWidth="0.3" />
               </>
             )}
+            {(!plate || artReady) && heat.map((c) => {
+              const p = { x: (c.x / 100) * vw, y: (c.y / 100) * vh }
+              const r = heatRadius(c.count) * k
+              return (
+                <g key={`heat:${c.region}`} className="heat">
+                  <circle cx={p.x} cy={p.y} r={r} fill="#c45c3e" fillOpacity={0.16} stroke="#c45c3e" strokeOpacity={0.55} strokeWidth={0.3 * k} />
+                  <text x={p.x} y={p.y + 0.9 * k} textAnchor="middle" fill="#f0d9c0" fontSize={2.4 * k}>{c.count}</text>
+                </g>
+              )
+            })}
             {(!plate || artReady) && singles.map((m) => {
+              if (resultIds.has(m.id)) return null
               const st = factState(w.character, m.id)
               const p = at(m)
               return (
@@ -338,6 +485,7 @@ export function AtlasWorkspace() {
               )
             })}
             {(!plate || artReady) && clusters.map((c, i) => {
+              if (resultIds.has(c.first.id)) return null
               const p = plate ? { x: (c.x / 100) * vw, y: (c.y / 100) * vh } : { x: c.x, y: c.y }
               return (
                 <g key={`cluster:${i}`} className="pin cluster" onClick={() => w.setSelectedMarkerId(c.first.id)}>
@@ -348,8 +496,40 @@ export function AtlasWorkspace() {
                 </g>
               )
             })}
+            {/* Task 111 §2 — custom note pins (teal), above the seed layers. */}
+            {(!plate || artReady) && noteList.map((m) => {
+              const p = at(m)
+              return (
+                <g key={`note:${m.id}`} className="pin note-pin" onClick={() => w.setSelectedMarkerId(m.id)}>
+                  <rect x={p.x - 1.5 * k} y={p.y - 1.5 * k} width={3 * k} height={3 * k} rx={0.5 * k} fill="#12211e" stroke="#9ad0c2" strokeWidth={0.32 * k} />
+                  <text x={p.x + 2.2 * k} y={p.y + 0.8 * k}>{m.name}</text>
+                </g>
+              )
+            })}
+            {/* Task 111 §1 — result pins, always on top and pulsing. */}
+            {(!plate || artReady) && resultList.map((m) => {
+              const st = factState(w.character, m.id)
+              const p = at(m)
+              return (
+                <g key={`result:${m.id}`} className="pin result" onClick={() => w.setSelectedMarkerId(m.id)}>
+                  <circle className="pin-pulse" cx={p.x} cy={p.y} r={3 * k} fill="none" stroke="#e4c36a" strokeWidth={0.4 * k} />
+                  <circle cx={p.x} cy={p.y} r={1.7 * k} fill={stateFill(st, m.kind)} stroke="#ffe9a8" strokeWidth={0.35 * k} />
+                  <text x={p.x + 2.2 * k} y={p.y + 0.8 * k}>{m.name}</text>
+                </g>
+              )
+            })}
           </svg>
           </div>
+        )}
+        {/* Task 111 §2 — the drop-note sheet, opened by long-press / right-click. */}
+        {noteDraft && (
+          <NoteEditor
+            x={noteDraft.x}
+            y={noteDraft.y}
+            world={world}
+            onSave={saveNote}
+            onCancel={() => setNoteDraft(null)}
+          />
         )}
         {/* Task 82: the engine never fails silently — a visible banner says why
             the static plate is showing, and it differs for a down engine vs a
@@ -402,6 +582,31 @@ export function AtlasWorkspace() {
                 onClick={() => w.toggleGates()}
               >
                 locks
+              </button>
+              {/* Task 111 §3/§4 — follow the current area, and the undone heat. */}
+              <button
+                type="button"
+                className={w.follow ? 'chip on' : 'chip'}
+                aria-pressed={!!w.follow}
+                onClick={() => w.toggleFollow()}
+              >
+                follow
+              </button>
+              <button
+                type="button"
+                className={w.showHeat ? 'chip on' : 'chip'}
+                aria-pressed={!!w.showHeat}
+                onClick={() => w.toggleHeat()}
+              >
+                heat
+              </button>
+              <button
+                type="button"
+                className={notesOpen ? 'chip on' : 'chip'}
+                aria-pressed={notesOpen}
+                onClick={() => setNotesOpen((v) => !v)}
+              >
+                notes{worldNotes.length ? ` ${worldNotes.length}` : ''}
               </button>
             </>
           )}
@@ -493,6 +698,20 @@ export function AtlasWorkspace() {
         )}
         <p className="note">{worldMeta?.hint}</p>
 
+        {/* Task 111 §2 — Journey › Map › Notes. */}
+        {!engineLive && (
+          <MapNotesPanel
+            notes={worldNotes}
+            onShow={(n) => {
+              w.setSelectedMarkerId(n.id)
+              setSideOpen(false)
+            }}
+            onDelete={(id) => w.setCharacter(removeNote(w.character, id))}
+            onAddHere={dropNoteHere}
+            canAddHere={canDropHere}
+          />
+        )}
+
         <p className="note">
           {banner.detail}
           {engineLive && ` · ${w.engineMarkers.length || w.engineState?.markerCount || 0} markers`}
@@ -542,7 +761,7 @@ export function AtlasWorkspace() {
           “not discovered” — it is unknown until the name is on the warp list.
         </p>
 
-        <h3>{selectedId ? <EntityLink id={selectedId}>{selectedName}</EntityLink> : selectedName}</h3>
+        <h3>{selectedId && !isNoteSelected ? <EntityLink id={selectedId}>{selectedName}</EntityLink> : selectedName}</h3>
         {selected && (
           <p className="note">
             {selected.leftover ? 'leftover · ' : ''}{selected.kind} · {selected.region} · {selectedState}
@@ -550,13 +769,37 @@ export function AtlasWorkspace() {
         )}
         {selected?.note && <p className="note">{selected.note}</p>}
 
-        <div className="opts">
-          <button type="button" className={selectedState === 'true' ? 'chip on' : 'chip'} onClick={() => mark('true')}>Found</button>
-          <button type="button" className={selectedState === 'unknown' ? 'chip on' : 'chip'} onClick={() => mark('unknown')}>Unknown</button>
-          <button type="button" className={selectedState === 'false' ? 'chip on' : 'chip'} onClick={() => mark('false')}>Not there</button>
-        </div>
+        {isNoteSelected ? (
+          <div className="opts">
+            <button type="button" className="chip" onClick={() => { w.setCharacter(removeNote(w.character, selectedId!)); w.setSelectedMarkerId(null) }}>
+              Delete note
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="opts">
+              <button type="button" className={selectedState === 'true' ? 'chip on' : 'chip'} onClick={() => mark('true')}>Found</button>
+              <button type="button" className={selectedState === 'unknown' ? 'chip on' : 'chip'} onClick={() => mark('unknown')}>Unknown</button>
+              <button type="button" className={selectedState === 'false' ? 'chip on' : 'chip'} onClick={() => mark('false')}>Not there</button>
+            </div>
 
-        {selectedId && <Thread id={selectedId} />}
+            {selectedId && <Thread id={selectedId} />}
+          </>
+        )}
+
+        {resultList.length > 0 && (
+          <div className="atlas-results">
+            <div className="kicker">Recent results</div>
+            <ul className="list">
+              {resultList.map((m) => (
+                <li key={m.id} onClick={() => { w.setSelectedMarkerId(m.id); setSideOpen(false) }}>
+                  <span>{m.name}</span>
+                  <span className="dim">{m.kind}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <ul className="list">
           {(engineLive ? engineList.slice(0, 80) : shown).map((m) => {
