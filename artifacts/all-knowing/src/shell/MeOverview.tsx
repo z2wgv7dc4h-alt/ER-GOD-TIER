@@ -10,6 +10,7 @@ import { EntityLink } from '../EntityLink'
 import { setupSteps, weakestStep } from '../lib/setupWizard'
 import { sourceLabel } from '../lib/sourceLabel'
 import { Recents, StatEdit, softCapMark } from '../QoL'
+import { Journal } from '../settings/JournalPanel'
 import { factState, useWorkspace } from '../state'
 import { AreaPrompt } from './AreaPrompt'
 import { WorldRibbon } from './WorldRibbon'
@@ -203,6 +204,7 @@ export function MeOverview() {
         </div>
       </section>
       <MissingDrilldown />
+      <Journal />
       <Recents />
     </div>
   )

@@ -21,6 +21,7 @@ import { MeSetup } from './shell/MeSetup'
 import { SectionSkeleton, DockSkeleton } from './shell/Skeletons'
 import { SubTabs } from './shell/SubTabs'
 import { TabBar } from './shell/TabBar'
+import { SettingsEffects } from './settings/SettingsEffects'
 import { WorkspaceProvider, useWorkspace } from './state'
 
 // Each room is a separate chunk, loaded only when its section/sub is opened.
@@ -155,6 +156,7 @@ function AppShell() {
   return (
     <div className={className}>
       <EngineBridge />
+      <SettingsEffects />
       <Header
         searchOpen={searchOpen}
         onToggleSearch={() => setSearchOpen((v) => !v)}

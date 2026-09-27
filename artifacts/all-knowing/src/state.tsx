@@ -33,6 +33,8 @@ import {
   type Vault,
 } from './lib/vault'
 import type { Character, FactState, MapMarker, ModuleId, Section, Sub } from './types'
+import { haptic } from './settings/haptics'
+import { getSettings } from './settings/store'
 
 type LayerId = MapMarker['kind']
 
@@ -152,8 +154,21 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   // Task 100 §1: a real "welcome back" lands on Journey › Now unless the URL
   // already names a location (a deep link or a reload of another view wins).
   const hasHash = typeof window !== 'undefined' && hashToLocation(window.location.hash) != null
-  const bootSection: Section = resumeAtBoot && !hasHash ? 'journey' : start.section
-  const bootSub: Sub | null = resumeAtBoot && !hasHash ? 'now' : start.sub
+  // Task 112 §1: a brand-new Tarnished lands where the settings say. An existing
+  // Tarnished with a remembered location (or a deep link / resume) always wins.
+  const firstRun =
+    bootProfile.character.source === 'empty' &&
+    bootProfile.character.defeatedBosses.length === 0 &&
+    bootProfile.character.discoveredGraces.length === 0 &&
+    bootProfile.character.collectedItems.length === 0 &&
+    bootProfile.character.completedQuestSteps.length === 0
+  const landing = resumeAtBoot && !hasHash
+    ? { section: 'journey' as Section, sub: 'now' as Sub | null }
+    : !hasHash && firstRun
+      ? { section: getSettings().landing, sub: defaultSub(getSettings().landing) }
+      : { section: start.section, sub: start.sub }
+  const bootSection: Section = landing.section
+  const bootSub: Sub | null = landing.sub
 
   const [module, setModuleState] = useState<ModuleId>(locationToModule(bootSection, bootSub))
   const [section, setSection] = useState<Section>(bootSection)
@@ -213,6 +228,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   function commitCharacter(next: Character) {
     setHistory((h) => [...h.slice(-19), character])
     setCharacter(next)
+    // Task 112 §5: a short tick on log / mark / apply when haptics are on.
+    haptic()
   }
 
   function undo() {
