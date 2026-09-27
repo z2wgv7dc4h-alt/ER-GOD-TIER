@@ -9,6 +9,7 @@ import { dungeons as dungeonIndex, dungeonBosses } from './dungeons'
 import { opBuilds } from '../knowledge/builds'
 import { merchants } from '../knowledge/merchants'
 import { npcLocations } from '../knowledge/npcLocations'
+import { mechanics } from '../knowledge/mechanics'
 import type { Character } from '../types'
 import { canonicalFactId } from './aliases'
 import { linkIndex, linkify } from './interlink'
@@ -421,11 +422,18 @@ function buildIndex(): Index {
     addEntity({ id: `npc:${n.npc}`, kind: 'npc', name: n.name, summary: n.note || `Found at ${n.graceId}` }, n.aliases)
   }
 
-  // --- synthetic mechanics -------------------------------------------------
+  // --- synthetic damage types ----------------------------------------------
   for (const type of Object.keys(DAMAGE_LABELS)) {
     addEntity({ id: `damage:${type}`, kind: 'mechanic', name: damageLabel(type), summary: 'Damage type' })
   }
-  addEntity({ id: 'mechanic:upgrades', kind: 'mechanic', name: 'Upgrades & smithing', summary: 'Weapon upgrade materials and smithing mechanics' })
+
+  // --- mechanics glossary (Task 106) ---------------------------------------
+  // Each authored card is a real entity so any mention of "poise" or "Rune Arc"
+  // links to its reference page. Authored catalog entities are added first, so a
+  // mechanic name or alias can never shadow a real item/boss/grace.
+  for (const m of mechanics) {
+    addEntity({ id: m.id, kind: 'mechanic', name: m.title, summary: m.body }, m.aliases)
+  }
 
   // --- async supplements ---------------------------------------------------
   const resolve = (name: string, prefix = 'item'): string =>
@@ -604,6 +612,15 @@ function buildIndex(): Index {
   for (const [id, entity] of entities) {
     if (isUpgradeMaterial(entity.name)) {
       push('mechanic:upgrades', { rel: 'upgradeMaterial', to: id, label: entity.name, source: 'loot' })
+    }
+  }
+
+  // mechanics: authored related links (Task 106)
+  for (const m of mechanics) {
+    for (const rel of m.related) {
+      const to = canon(rel)
+      if (to === m.id) continue
+      push(m.id, { rel: 'relatedLore', to, label: nameOf(to), source: 'mechanics' })
     }
   }
 
