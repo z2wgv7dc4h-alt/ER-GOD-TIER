@@ -9,6 +9,7 @@ import { useLibraryCatalog } from './catalog'
 import { CompareTray } from './CompareTray'
 import { EntityPanel } from './EntityPanel'
 import { GatheringNodes } from './GatheringNodes'
+import { Term } from '../peek/Term'
 import {
   attributeStats,
   CATEGORIES,
@@ -816,7 +817,15 @@ export function LibraryBrowser() {
                               }
                             }}
                           >
-                            {label}
+                            {key === 'ar' ? (
+                              <Term id="mechanic:attack-rating">{label}</Term>
+                            ) : key === 'requirement' ? (
+                              <Term id="mechanic:stat-requirements">{label}</Term>
+                            ) : key === 'weight' ? (
+                              <Term id="mechanic:equip-load">{label}</Term>
+                            ) : (
+                              label
+                            )}
                             {sort === key ? (sortDir === 'asc' ? ' ↑' : ' ↓') : ''}
                           </button>
                         </th>

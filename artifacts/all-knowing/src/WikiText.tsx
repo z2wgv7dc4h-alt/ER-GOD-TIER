@@ -1,4 +1,5 @@
 import { EntityLink } from './EntityLink'
+import { Term } from './peek/Term'
 import { autolink } from './lib/glossary'
 
 /**
@@ -14,9 +15,15 @@ export function WikiText({ text, className }: { text: string; className?: string
     <span className={className}>
       {spans.map((s, i) =>
         s.id ? (
-          <EntityLink key={i} id={s.id} className="wikilink">
-            {s.text}
-          </EntityLink>
+          s.kind === 'mechanic' ? (
+            <Term key={i} id={s.id} className="wikilink-term">
+              {s.text}
+            </Term>
+          ) : (
+            <EntityLink key={i} id={s.id} className="wikilink">
+              {s.text}
+            </EntityLink>
+          )
         ) : (
           <span key={i}>{s.text}</span>
         ),

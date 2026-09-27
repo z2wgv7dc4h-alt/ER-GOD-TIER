@@ -14,6 +14,7 @@ import { useWorkspace } from '../state'
 import type { Stats } from '../types'
 import { LevelUpCalculator, LoadoutPresets, SmithingTracker, StatPlanner } from '../build/BuildPowerTools'
 import { EntityLink } from '../EntityLink'
+import { Term } from '../peek/Term'
 import './advisor.css'
 import '../build/build.css'
 
@@ -169,7 +170,7 @@ export function BuildPlanner() {
           })}
         </div>
         <p className="note">
-          <span className="softcap-legend"><i /> soft caps</span>
+          <span className="softcap-legend"><i /> <Term id="mechanic:soft-cap-offensive">soft caps</Term></span>
         </p>
         {advice.warnings.length > 0 && (
           <>
@@ -199,7 +200,7 @@ export function BuildPlanner() {
                     <strong>{u.name}</strong> {u.affinity !== 'Unique' ? `· ${u.affinity}` : ''} +{u.upgrade}
                   </span>
                   <span className="note">
-                    Attack {u.ar}
+                    <Term id="mechanic:attack-rating">Attack</Term> {u.ar}
                     {u.gainPct ? ` · ${u.gainPct > 0 ? '+' : ''}${u.gainPct}% vs ${u.gainVs ?? 'your kit'}` : ''}
                   </span>
                 </div>

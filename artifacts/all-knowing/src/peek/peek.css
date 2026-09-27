@@ -1,0 +1,154 @@
+/* Task 115 — peek cards and term tooltips. Fixed, on-screen-clamped popovers. */
+
+.peek-card {
+  position: fixed;
+  z-index: 80;
+  width: min(320px, calc(100vw - 16px));
+  max-height: min(70vh, 420px);
+  overflow: auto;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg-raised);
+  color: var(--ink);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 55%);
+  font-size: 13px;
+}
+
+.peek-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.peek-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex: none;
+}
+
+.peek-title {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.peek-title strong {
+  font-family: var(--font-display);
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.peek-kind {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.peek-x {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  margin: -8px -8px -8px 0;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.peek-x:hover {
+  color: var(--ink);
+}
+
+.peek-status {
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--bg-panel);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.peek-status.owned,
+.peek-status.done,
+.peek-status.available {
+  color: var(--ok);
+}
+
+.peek-status.locked,
+.peek-status.missed {
+  color: var(--danger);
+}
+
+.peek-facts {
+  margin: 8px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.peek-fact {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.peek-fact dt {
+  flex: none;
+  min-width: 44%;
+  color: var(--muted);
+}
+
+.peek-fact dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+.peek-fact dd.ok {
+  color: var(--ok);
+}
+
+.peek-fact dd.unmet {
+  color: var(--danger);
+}
+
+.peek-summary {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.peek-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.peek-actions .chip {
+  min-height: 40px;
+}
+
+/* Inline jargon label. Dashed underline marks it as a definition. */
+.term {
+  color: inherit;
+  border-bottom: 1px dotted var(--gold-dim);
+  cursor: help;
+}
+
+.term:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (pointer: coarse) {
+  .term {
+    border-bottom-style: solid;
+  }
+}

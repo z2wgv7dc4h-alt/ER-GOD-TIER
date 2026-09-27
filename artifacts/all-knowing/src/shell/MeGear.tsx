@@ -16,6 +16,7 @@ import {
 } from '../lib/gearSheet'
 import { applyFacts, denyFacts } from '../lib/infer'
 import type { LibraryEntity } from '../library/model'
+import { Term } from '../peek/Term'
 import { useWorkspace } from '../state'
 import type { GearSlot, LoadoutSlot } from '../types'
 
@@ -117,13 +118,13 @@ export function MeGear() {
       <header className="gear-head">
         <h2 className="shell-page-title">Gear</h2>
         <div className="gear-load">
-          <span>Equip load</span>
+          <span><Term id="mechanic:equip-load">Equip load</Term></span>
           <strong>{totals.weight.toFixed(1)} / {load.max.toFixed(1)}</strong>
           <span className={`chip${load.loadClass === 'light' ? ' on' : ''}`}>{load.pct}% · {load.loadClass}</span>
         </div>
         <div className="gear-totals">
           <span>Weight {totals.weight.toFixed(1)}</span>
-          <span>Poise {totals.poise}</span>
+          <span><Term id="mechanic:poise">Poise</Term> {totals.poise}</span>
         </div>
       </header>
 
@@ -145,8 +146,19 @@ export function MeGear() {
                         {slot.upgrade ? <span className="note"> +{slot.upgrade}</span> : null}
                       </button>
                       <div className="note">
-                        {meta.group === 'armament' && (ar ? `AR ${ar.now} (max ${ar.max})` : 'AR —')}
-                        {meta.group === 'armor' && `wt ${entity?.weight ?? 0} · poise ${statNumber(entity, 'Poise')}`}
+                        {meta.group === 'armament' &&
+                          (ar ? (
+                            <>
+                              <Term id="mechanic:attack-rating">AR</Term> {ar.now} (max {ar.max})
+                            </>
+                          ) : (
+                            'AR —'
+                          ))}
+                        {meta.group === 'armor' && (
+                          <>
+                            wt {entity?.weight ?? 0} · <Term id="mechanic:poise">poise</Term> {statNumber(entity, 'Poise')}
+                          </>
+                        )}
                       </div>
                       <div className="opts">
                         <button type="button" className="chip" onClick={() => { setPickerSlot(meta.id); setPickerQuery('') }}>Change</button>

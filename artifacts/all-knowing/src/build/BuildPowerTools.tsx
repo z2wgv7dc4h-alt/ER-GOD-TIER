@@ -3,6 +3,7 @@ import { loadWeapons, type Weapon } from '../lib/ar'
 import { useCoords } from '../lib/coords'
 import { toggleWatch, watchlistOf } from '../lib/leftovers'
 import { useWorkspace } from '../state'
+import { Term } from '../peek/Term'
 import type { Stats } from '../types'
 import {
   applyPreset,
@@ -154,8 +155,8 @@ export function StatPlanner() {
   return (
     <>
       <p className="note">
-        Drag a stat up to plan the next levels. HP, FP, stamina, equip load and attack rating update as you go.
-        <span className="softcap-legend"><i /> soft caps</span>
+        Drag a stat up to plan the next levels.         HP, FP, stamina, equip load and attack rating update as you go.
+        <span className="softcap-legend"><i /> <Term id="mechanic:soft-cap-offensive">soft caps</Term></span>
       </p>
       <div className="opts">
         {[10, 20, 50].map((n) => (
@@ -223,20 +224,20 @@ export function StatPlanner() {
           <div className="advisor-row"><span>HP</span><span>{plan.hp}</span></div>
         </li>
         <li>
-          <div className="advisor-row"><span>FP</span><span>{plan.fp}</span></div>
+          <div className="advisor-row"><span><Term id="mechanic:soft-cap-mind">FP</Term></span><span>{plan.fp}</span></div>
         </li>
         <li>
-          <div className="advisor-row"><span>Stamina</span><span>{plan.stamina}</span></div>
+          <div className="advisor-row"><span><Term id="mechanic:stamina">Stamina</Term></span><span>{plan.stamina}</span></div>
         </li>
         <li>
           <div className="advisor-row">
-            <span>Equip load</span>
+            <span><Term id="mechanic:equip-load">Equip load</Term></span>
             <span>{plan.equipLoadPct}% · {plan.loadClass}</span>
           </div>
         </li>
         <li>
           <div className="advisor-row">
-            <span>Attack rating</span>
+            <span><Term id="mechanic:attack-rating">Attack rating</Term></span>
             <span>{plan.ar != null ? `${plan.ar} ${plan.arWeapon ?? ''}` : 'equip a weapon'}</span>
           </div>
         </li>

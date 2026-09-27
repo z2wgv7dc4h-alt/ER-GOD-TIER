@@ -183,7 +183,7 @@ export const mechanics: MechanicCard[] = [
     body: 'Mind raises your FP pool and therefore how many spells, Ashes of War and summons you can chain before drinking. The FP gains slow down after forty and nearly stop after sixty. Casters usually stop at forty early and push toward sixty later.',
     numbers: ['40 Mind — first FP soft cap', '60 Mind — second soft cap', 'FP refills with a Flask of Cerulean Tears'],
     related: ['mechanic:soft-cap-vigor', 'mechanic:soft-cap-endurance', 'mechanic:memory-slots'],
-    aliases: ['mind softcap', 'fp soft cap'],
+    aliases: ['mind softcap', 'fp soft cap', 'fp'],
     source: SRC_COMMUNITY,
   },
   {
@@ -240,6 +240,28 @@ export const mechanics: MechanicCard[] = [
     related: ['mechanic:damage-types', 'mechanic:guard-boost', 'mechanic:buff-stacking'],
     aliases: ['defense', 'negation', 'damage negation', 'absorption'],
     source: SRC_WIKI,
+  },
+  {
+    id: 'mechanic:attack-rating',
+    slug: 'attack-rating',
+    title: 'Attack rating (AR)',
+    category: 'equipment',
+    body: 'Attack rating, or AR, is the total damage number a weapon shows across every damage type it deals, after the character’s stats are applied through scaling. Buffs, enemy negation and status buildup are not part of the displayed AR. The number the game shows is the summed damage types floored, matching the AR calculator the app uses.',
+    numbers: ['AR sums every damage type the weapon deals', 'Scaling letters decide how much your stats add', 'Status buildup and enemy negation are not included'],
+    related: ['mechanic:weapon-scaling', 'mechanic:soft-cap-offensive', 'mechanic:affinities'],
+    aliases: ['AR', 'attack power', 'attack rating'],
+    source: 'Vendored vanilla 1.17 regulation data via the AR engine in src/lib/ar.ts (ThomasJClark calculator, MIT).',
+  },
+  {
+    id: 'mechanic:scaling-letters',
+    slug: 'scaling-letters',
+    title: 'Scaling letters',
+    category: 'equipment',
+    body: 'The letter beside a stat on a weapon shows how strongly its AR grows from that stat, running E, D, C, B, A, S from weakest to strongest. The grade is a band of the weapon’s stored scaling coefficient, so S adds far more per point than E. Upgrading a weapon usually raises these coefficients, which is why a weapon can climb a letter as it is reinforced.',
+    numbers: ['S: 1.75 and above', 'A: 1.40–1.74', 'B: 0.90–1.39', 'C: 0.60–0.89', 'D: 0.25–0.59', 'E: 0.01–0.24'],
+    related: ['mechanic:weapon-scaling', 'mechanic:attack-rating', 'mechanic:soft-cap-offensive'],
+    aliases: ['scaling grade', 'letter grade', 'scaling letters'],
+    source: 'Vendored vanilla 1.17 regulation scaling tiers (scalingTiers in regulation-vanilla-v1.17.json).',
   },
   {
     id: 'mechanic:weapon-scaling',
@@ -687,6 +709,20 @@ const byId = new Map(mechanics.map((m) => [m.id, m]))
 
 export function mechanicById(id: string): MechanicCard | undefined {
   return byId.get(id)
+}
+
+/**
+ * Task 115 — the short tooltip definition for a mechanic term: the card title
+ * plus the first one or two sentences of its body, trimmed to a glanceable
+ * length. Returns undefined when the id is not an authored mechanic.
+ */
+export function mechanicSummary(id: string, sentences = 2, max = 240): string | undefined {
+  const card = byId.get(id)
+  if (!card) return undefined
+  const parts = card.body.match(/[^.!?]+[.!?]+/g) ?? [card.body]
+  let text = parts.slice(0, sentences).join(' ').trim()
+  if (text.length > max) text = `${text.slice(0, max).trimEnd()}…`
+  return text
 }
 
 /** Every autolink term a mechanic card contributes, keyed by entity id. */

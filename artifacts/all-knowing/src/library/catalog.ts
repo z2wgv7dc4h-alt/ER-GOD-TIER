@@ -15,6 +15,7 @@ import { loadSecrets, type WallSecret } from '../lib/secrets'
 import { loadDialogueOwners, linesBySpeaker } from '../lib/dialogueOwners'
 import { loadGameTextTable } from '../lib/gameText'
 import { toWeaponStatRow } from '../lib/weaponStats'
+import { registerPeekCatalog } from '../peek/peekData'
 import { CATEGORIES, type AttributeKey, type CategoryId, type EntityStat, type LibraryEntity } from './model'
 
 /**
@@ -682,8 +683,8 @@ export function useLibraryCatalog(activeCategory: CategoryId): LibraryCatalog {
     })
   }, [bossCombat, recipes, acquisitions])
 
-  return useMemo(() => {
-    const catalog = buildCatalog({
+  const catalog = useMemo(() => {
+    const built = buildCatalog({
       fan,
       armoryWeapons,
       armoryBosses,
@@ -710,9 +711,16 @@ export function useLibraryCatalog(activeCategory: CategoryId): LibraryCatalog {
       (activeCategory === 'secrets' && secrets.length === 0 && !settled.has('secrets')) ||
       (activeCategory === 'guides' && guides.length === 0 && !settled.has('guides')) ||
       (activeCategory === 'dialogue' && dialogue.length === 0 && !settled.has('dialogue'))
-    const loading = catalog.byCategory[activeCategory].length === 0 && (!coreReady || lazyPending)
-    return { ...catalog, loading }
+    const loading = built.byCategory[activeCategory].length === 0 && (!coreReady || lazyPending)
+    return { ...built, loading }
   }, [fan, armoryWeapons, armoryBosses, weapons, recipes, secrets, acquisitions, guides, bossCombat, dialogue, activeCategory, settled])
+
+  // Task 115: let peek cards show the same numeric rows the Library has.
+  useEffect(() => {
+    registerPeekCatalog({ entities: catalog.entities, weaponByName: catalog.weaponByName })
+  }, [catalog])
+
+  return catalog
 }
 
 /** Exposed for tests: the empty catalogue shape. */

@@ -7,6 +7,7 @@ import { Related } from '../Related'
 import { Spoiler, SpoilerGate } from '../settings/Spoiler'
 import { WikiText } from '../WikiText'
 import { BossPrepCard } from '../combat/BossPrepCard'
+import { Term } from '../peek/Term'
 import type { Character } from '../types'
 import { BossFacts } from './BossFacts'
 import { attributeStats, isOwned, meetsRequirements, type AttributeKey, type CategoryId, type LibraryEntity } from './model'
@@ -209,7 +210,7 @@ export function EntityPanel({
 
             {!isBoss && (requirementEntries.length > 0 || metValue !== null) && (
               <div className="lib-panel-block">
-                <div className="kicker">Requirements</div>
+                <div className="kicker"><Term id="mechanic:stat-requirements">Requirements</Term></div>
                 {requirementEntries.length ? (
                   <ul className="lib-req-list">
                     {requirementEntries.map(([attr, value]) => (
@@ -251,7 +252,7 @@ export function EntityPanel({
 
             {scalingEntries.length > 0 && (
               <div className="lib-panel-block">
-                <div className="kicker">Scaling</div>
+                <div className="kicker"><Term id="mechanic:weapon-scaling">Scaling</Term></div>
                 <div className="lib-scaling">
                   {scalingEntries.map(([attr, letter]) => (
                     <span key={attr} className="lib-scaling-chip">
@@ -277,7 +278,7 @@ export function EntityPanel({
 
             {ar && (
               <div className="lib-panel-block">
-                <div className="kicker">Attack rating</div>
+                <div className="kicker"><Term id="mechanic:attack-rating">Attack rating</Term></div>
                 <div className="lib-ar">
                   <span>
                     At my stats <strong>{ar.now}</strong>

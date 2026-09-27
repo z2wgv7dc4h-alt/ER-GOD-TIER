@@ -1,7 +1,8 @@
-import type { ReactNode } from 'react'
+import { useRef, type ReactNode } from 'react'
 import { entityName } from './lib/entityGraph'
 import { useSpoiler } from './lib/spoilers'
 import { useWorkspace } from './state'
+import { PeekLayer, usePeek } from './peek/PeekCard'
 
 /**
  * Task 97 — the one clickable entity name.
@@ -30,6 +31,10 @@ export function EntityLink({
 }) {
   const { openEntity } = useWorkspace()
   const { hidden, reveal } = useSpoiler(id)
+  const anchorRef = useRef<HTMLButtonElement>(null)
+  // Task 115 §1: hover/focus/long-press opens one shared peek card; a normal tap
+  // still opens the full entity page as before.
+  const peek = usePeek(id, anchorRef)
   const label = children ?? entityName(id)
   if (hidden) {
     return (
@@ -45,17 +50,23 @@ export function EntityLink({
     )
   }
   return (
-    <button
-      type="button"
-      className={className}
-      title={title ?? `Open ${typeof label === 'string' ? label : entityName(id)}`}
-      onClick={() => {
-        openEntity(id)
-        onClick?.()
-      }}
-    >
-      {label}
-    </button>
+    <>
+      <button
+        type="button"
+        ref={anchorRef}
+        className={className}
+        title={title ?? `Open ${typeof label === 'string' ? label : entityName(id)}`}
+        onClick={() => {
+          if (peek.consumeLongPress()) return
+          openEntity(id)
+          onClick?.()
+        }}
+        {...peek.handlers}
+      >
+        {label}
+      </button>
+      <PeekLayer selfKey={peek.key} />
+    </>
   )
 }
 

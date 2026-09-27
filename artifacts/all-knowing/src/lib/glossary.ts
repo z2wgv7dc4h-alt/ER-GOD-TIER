@@ -87,6 +87,38 @@ export function glossaryIndex(): GlossaryIndex {
   return index
 }
 
+/**
+ * Task 115 — autolink restricted to authored mechanic terms, so prose renderers
+ * can apply the `<Term>` jargon tooltip without turning every entity mention into
+ * a different surface. Every returned segment is a link (`id` set) of
+ * `kind: 'mechanic'`.
+ */
+export function autolinkMechanics(text: string, opts: AutolinkOptions = {}): GlossarySegment[] {
+  return autolink(text, opts).filter((s) => s.kind === 'mechanic')
+}
+
+/** The mechanic entity ids a block of prose mentions, one per term. */
+export function mechanicTermIds(text: string): string[] {
+  const ids: string[] = []
+  for (const seg of autolinkMechanics(text)) {
+    if (seg.id && !ids.includes(seg.id)) ids.push(seg.id)
+  }
+  return ids
+}
+
+let cachedById: Map<string, GlossaryTerm> | null = null
+
+/** The first glossary term that resolves to a given entity id (for `<Term id>`). */
+export function glossaryTerm(id: string): GlossaryTerm | undefined {
+  if (!cachedById) {
+    cachedById = new Map()
+    for (const term of glossaryIndex().values()) {
+      if (!cachedById.has(term.id)) cachedById.set(term.id, term)
+    }
+  }
+  return cachedById.get(id)
+}
+
 /** Longest number of words any term in the index spans. */
 function maxTermWords(index: GlossaryIndex): number {
   let max = 1
