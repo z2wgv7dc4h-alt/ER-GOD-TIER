@@ -174,6 +174,7 @@ export function QuickLog({
     <>
       <button
         type="button"
+        data-tour="log"
         className={fabHidden ? 'quicklog-fab fab-hidden' : 'quicklog-fab'}
         aria-label="Quick log"
         title="Quick log"

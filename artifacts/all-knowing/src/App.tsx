@@ -27,14 +27,16 @@ import { WorkspaceProvider, useWorkspace } from './state'
 // Each room is a separate chunk, loaded only when its section/sub is opened.
 const AtlasWorkspace = lazy(() => import('./Atlas').then((m) => ({ default: m.AtlasWorkspace })))
 const BuildWorkspace = lazy(() => import('./Build').then((m) => ({ default: m.BuildWorkspace })))
+const BuildKits = lazy(() => import('./Build').then((m) => ({ default: m.BuildKits })))
+const PvpWorkspace = lazy(() => import('./Build').then((m) => ({ default: m.PvpWorkspace })))
 const BuildPlanner = lazy(() => import('./library/BuildPlanner').then((m) => ({ default: m.BuildPlanner })))
-const KitWorkspace = lazy(() => import('./Build').then((m) => ({ default: m.KitWorkspace })))
 // The Gear sheet resolves entity details through the library catalogue, so it
 // stays a lazy chunk rather than dragging FanAPI/regulation into the shell.
 const MeGear = lazy(() => import('./shell/MeGear').then((m) => ({ default: m.MeGear })))
 const QuestWorkspace = lazy(() => import('./Quests').then((m) => ({ default: m.QuestWorkspace })))
 const CodexWorkspace = lazy(() => import('./Codex').then((m) => ({ default: m.CodexWorkspace })))
-const LegacyCodex = lazy(() => import('./library/LegacyCodex').then((m) => ({ default: m.LegacyCodex })))
+const Guides = lazy(() => import('./library/Guides').then((m) => ({ default: m.Guides })))
+const Tour = lazy(() => import('./tour/Tour').then((m) => ({ default: m.Tour })))
 const Gideon = lazy(() => import('./Gideon').then((m) => ({ default: m.Gideon })))
 
 function EngineBridge() {
@@ -87,9 +89,17 @@ function ShellContent() {
     return <JourneyNow />
   }
   if (section === 'library') {
-    if (sub === 'builds') return (<div className="builds-page"><BuildPlanner /><BuildWorkspace /></div>)
-    if (sub === 'kit') return <KitWorkspace />
-    if (sub === 'reference') return <LegacyCodex />
+    if (sub === 'builds') {
+      return (
+        <div className="builds-page">
+          <BuildPlanner />
+          <BuildWorkspace />
+          <BuildKits />
+        </div>
+      )
+    }
+    if (sub === 'pvp') return <PvpWorkspace />
+    if (sub === 'guides') return <Guides />
     return <CodexWorkspace />
   }
   return (
@@ -186,6 +196,9 @@ function AppShell() {
       </div>
       <TabBar />
       <EntityOverlay />
+      <Suspense fallback={null}>
+        <Tour />
+      </Suspense>
       {w.glance && <GlanceMode onLog={() => openLog()} />}
       <QuickLog
         open={logOpen}

@@ -51,8 +51,8 @@ const TABLE: [string, 'entity' | 'log' | 'question' | 'command'][] = [
   ['library builds', 'command'],
   ['gideon', 'command'],
   ['profiles', 'command'],
-  ['reference', 'command'],
-  ['kit', 'command'],
+  ['guides', 'command'],
+  ['pvp', 'command'],
 
   // — entity: everything else is a search —
   ['Margit, the Fell Omen', 'entity'],

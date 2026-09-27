@@ -108,7 +108,7 @@ export const SHORTCUT_GROUPS: ShortcutGroup[] = [
       { keys: 'Search', label: 'Jump straight to a grace, boss, item or shop', note: 'results appear above the room' },
       { keys: 'Sections', label: 'Tarnished / Journey / Library / Gideon — the four surfaces', note: 'picked in the header; bottom tabs on a phone' },
       { keys: 'Codex', label: 'Opens from Library → Search or a / search hit' },
-      { keys: 'Kits', label: 'OP / PvP library, AR detail, matchup and build codes', note: 'Library → Kit' },
+      { keys: 'Kits', label: 'OP / PvP builds, AR detail, matchup and build codes', note: 'Library → Builds / PvP' },
       { keys: 'Co-op', label: 'Drops Mimic / Torrent advice', note: 'Tarnished → Profiles or interview' },
       { keys: 'Goods paste', label: 'Mark a pasted item list — one confident name per line', note: 'Tarnished → Update' },
       { keys: 'Atlas banner', label: 'Says why the static plate is showing when the engine is down', note: 'never a silent blank map' },

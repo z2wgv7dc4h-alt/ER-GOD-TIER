@@ -70,13 +70,22 @@ describe('location persistence (Task 93)', () => {
     expect(uiLocation({ ...legacy, module: 'codex' })).toEqual({ section: 'library', sub: 'search' })
   })
 
-  it('round-trips section/sub exactly through the vault (kit is no longer lossy)', () => {
+  it('round-trips section/sub exactly through the vault', () => {
     const base = loadVault()
-    const saved = upsertActive(base, { ui: { ...defaultUi(), section: 'library', sub: 'kit' } })
+    const saved = upsertActive(base, { ui: { ...defaultUi(), section: 'library', sub: 'pvp' } })
     saveVault(saved)
     const ui = activeProfile(loadVault()).ui
     expect(ui.section).toBe('library')
-    expect(ui.sub).toBe('kit')
-    expect(uiLocation(ui)).toEqual({ section: 'library', sub: 'kit' })
+    expect(ui.sub).toBe('pvp')
+    expect(uiLocation(ui)).toEqual({ section: 'library', sub: 'pvp' })
+  })
+
+  it('resolves a legacy Kit / Reference location to Builds / Guides', () => {
+    expect(uiLocation({ module: 'build', section: 'library', sub: 'kit', missingOnly: false, selectedMarkerId: null })).toEqual(
+      { section: 'library', sub: 'builds' },
+    )
+    expect(uiLocation({ module: 'codex', section: 'library', sub: 'reference', missingOnly: false, selectedMarkerId: null })).toEqual(
+      { section: 'library', sub: 'guides' },
+    )
   })
 })

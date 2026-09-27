@@ -19,8 +19,8 @@ vi.mock('../Reckon', () => ({ ReckonWorkspace: () => null }))
 
 import { demoCharacter } from '../data/seed'
 import type { Character, ModuleId, Section, Sub } from '../types'
-import { BuildWorkspace, KitWorkspace } from '../Build'
-import { LegacyCodex } from '../library/LegacyCodex'
+import { BuildWorkspace, BuildKits, PvpWorkspace } from '../Build'
+import { Guides } from '../library/Guides'
 import { Gideon } from '../Gideon'
 import { QuestWorkspace } from '../Quests'
 import { JourneyNow } from './JourneyNow'
@@ -126,25 +126,27 @@ describe('Task 92 coverage: every feature has a home', () => {
     expect(html).toContain('Build hunt')
   })
 
-  it('row 6 — the four labelled Kit groups in Library › Kit', () => {
-    const html = render(<KitWorkspace />, { section: 'library', sub: 'kit' })
-    for (const group of ['OP kits', 'PvP', 'Weapon compare', 'Tech &amp; cheese']) {
-      expect(html, group).toContain(group)
+  it('row 6 — Builds owns the planner, OP kits, damage calc and compare; PvP owns builds and tech', () => {
+    const builds = render(<BuildKits />, { section: 'library', sub: 'builds' })
+    for (const group of ['OP kits', 'Damage calculator', 'Weapon compare']) {
+      expect(builds, group).toContain(group)
+    }
+    const pvp = render(<PvpWorkspace />, { section: 'library', sub: 'pvp' })
+    for (const group of ['PvP builds', 'PvP matchups', 'Tech &amp; cheese']) {
+      expect(pvp, group).toContain(group)
     }
   })
 
-  it('row 7 — browse chips for every Search corpus on the empty state', () => {
-    const html = render(<LegacyCodex />, { section: 'library', sub: 'reference' })
-    expect(html).toContain('Browse a corpus')
-    for (const corpus of ['Recipes', 'Secrets', 'Guides', 'Community builds', 'Dialogue', 'Wiki prose', 'Boss strategy']) {
+  it('row 7 — browse chips for every Guides corpus on the empty state', () => {
+    const html = render(<Guides />, { section: 'library', sub: 'guides' })
+    expect(html).toContain('Guides &amp; mechanics')
+    for (const corpus of ['Guides', 'Recipes', 'Secrets', 'Dialogue', 'Wiki prose']) {
       expect(html, corpus).toContain(corpus)
     }
   })
 
-  it('row 8 — Weak to / resists on a Search entity page and in the Build matchup', () => {
-    const codex = render(<LegacyCodex />, { section: 'library', sub: 'reference', selectedMarkerId: 'boss:margit' })
-    expect(codex).toContain('Weak to / resists')
-    const kit = render(<KitWorkspace />, { section: 'library', sub: 'kit' })
+  it('row 8 — Weak to / resists in the Builds matchup', () => {
+    const kit = render(<BuildKits />, { section: 'library', sub: 'builds' })
     expect(kit).toContain('Weak to / resists')
   })
 

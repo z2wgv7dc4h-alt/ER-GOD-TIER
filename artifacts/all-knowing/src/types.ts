@@ -16,7 +16,12 @@ export type SectionSubs = {
    */
   me: 'overview' | 'gear' | 'setup' | 'profiles' | 'update'
   journey: 'now' | 'area' | 'map' | 'quests'
-  library: 'search' | 'builds' | 'kit' | 'reference'
+  /**
+   * Task 117: Library is Search · Builds · PvP · Guides. `kit` and `reference`
+   * are kept in the union only as legacy aliases the URL/vault layer resolves to
+   * `builds` and `guides` respectively.
+   */
+  library: 'search' | 'builds' | 'pvp' | 'guides' | 'kit' | 'reference'
   gideon: never
 }
 
