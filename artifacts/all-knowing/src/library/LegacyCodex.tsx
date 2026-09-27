@@ -460,7 +460,7 @@ export function LegacyCodex() {
                   ? `Next level at ${p.thresholds[p.level + 1]} ${p.unit}.`
                   : 'Max level.'}{' '}
                 {p.incomplete ? `List incomplete in-repo (${p.listCount}/${p.total} rows). ` : ''}
-                Source: {p.source}
+                Reference: {p.source}
               </p>
             </div>
             <div className="codex-grid">

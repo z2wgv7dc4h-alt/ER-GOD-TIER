@@ -74,7 +74,7 @@ export function BossPrepCard({ bossId, character: characterProp }: { bossId?: st
 
       {!prep ? (
         <p className="note">
-          {weapons === null ? 'Loading regulation data…' : 'No combat row for this boss yet.'}
+          {weapons === null ? 'Loading weapon data…' : 'No combat row for this boss yet.'}
         </p>
       ) : (
         <>
@@ -107,7 +107,7 @@ export function BossPrepCard({ bossId, character: characterProp }: { bossId?: st
           <section className="combat-block">
             <div className="kicker">Your weapons vs this boss</div>
             {prep.weapons.length === 0 ? (
-              <p className="note">No owned weapon has vanilla regulation data yet.</p>
+              <p className="note">No owned weapon has vanilla weapon data yet.</p>
             ) : (
               <ul className="combat-list">
                 {prep.weapons.slice(0, 6).map((w) => (

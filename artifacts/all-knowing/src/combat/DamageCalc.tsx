@@ -84,7 +84,7 @@ export function DamageCalc() {
 
   return (
     <div className="combat-damage">
-      <p className="note">AR from the vanilla 1.17 regulation table; negation from the game’s NpcParam dump.</p>
+      <p className="note">AR from the vanilla 1.17 weapon data; negation from the game’s NpcParam dump.</p>
       <div className="combat-fields">
         <label>
           <span>Weapon</span>
@@ -138,7 +138,7 @@ export function DamageCalc() {
       </div>
 
       {!weapons ? (
-        <p className="note">Loading regulation data…</p>
+        <p className="note">Loading weapon data…</p>
       ) : !result || result.status !== 'ok' ? (
         <p className="note">{result?.status === 'unknown' ? result.reason : 'Pick a weapon and a target.'}</p>
       ) : (

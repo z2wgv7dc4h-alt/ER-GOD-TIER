@@ -10,11 +10,10 @@ import { leftovers, toggleWatch, watchlistOf } from './lib/leftovers'
 import { idleSuggestions } from './lib/suggestions'
 import { lockoutWarningsFor, type LockWarning } from './lib/lockWarnings'
 import { LockoutPrompt } from './LockoutPrompt'
-import { packStatus } from './lib/sourcePack'
-import { hasGideonKey, type ChatMessage } from './lib/muse'
+import { type ChatMessage } from './lib/muse'
 import { labelOf } from './lib/links'
 import { GideonAnswer, GideonSay } from './GideonAnswer'
-import { Related } from './Related'
+import { RelatedCollapsible } from './Related'
 import { WikiText } from './WikiText'
 import { useWorkspace } from './state'
 
@@ -170,6 +169,8 @@ export function Gideon() {
       w.setModule('map')
     } else if (action.type === 'open') {
       w.openEntity(action.id)
+    } else if (action.type === 'showPlan') {
+      w.go('journey', 'now')
     }
   }
 
@@ -236,15 +237,15 @@ export function Gideon() {
 
   return (
     <section className="gideon">
-      <img className="guide-face" src="/art/guide.jpg" alt="" />
-      <div className="kicker">Guide · {packStatus().hint}</div>
-      <p className="note" style={{ opacity: 0.6 }}>
-        {hasGideonKey() ? 'Optional AI answers are on.' : 'Offline answers.'}
-      </p>
-      <p className="note">
-        Your goal, what’s next and what’s done live on{' '}
-        <button type="button" className="chip" onClick={() => w.go('journey', 'now')}>Journey → Now</button>.
-      </p>
+      {/* Task 109 §3: a small 40px avatar and the name. Engine/AI status and
+          icon-pack details live on Tarnished › Profiles, never here. */}
+      <div className="gideon-head">
+        <img className="guide-face" src="/art/guide.jpg" alt="" />
+        <div className="gideon-head-text">
+          <h2 className="gideon-name">Gideon Ofnir</h2>
+          <p className="note gideon-tagline">Ask about an item, a boss, or what to do next.</p>
+        </div>
+      </div>
 
       <div className="gideon-log" ref={logRef}>
         {log.map((row, i) => {
@@ -270,16 +271,7 @@ export function Gideon() {
                 />
               )}
               {isLast && row.factId && (
-                <>
-                  <button
-                    type="button"
-                    className="chip on"
-                    onClick={() => w.openEntity(row.factId!)}
-                  >
-                    Open {labelOf(row.factId)}
-                  </button>
-                  <Related id={row.factId} />
-                </>
+                <RelatedCollapsible id={row.factId} />
               )}
             </div>
           )

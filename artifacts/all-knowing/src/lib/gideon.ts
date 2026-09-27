@@ -63,6 +63,8 @@ export type GideonAction =
   | { type: 'setStats'; stats: Partial<Stats>; level?: number }
   | { type: 'showOnMap'; id: string }
   | { type: 'open'; id: string }
+  /** Task 109 §4: open Journey › Now for the full plan. */
+  | { type: 'showPlan' }
 
 export type GideonSource = { title: string; url: string }
 
@@ -538,6 +540,55 @@ function speakWhatNow(character: Character, area?: AreaSignal | null): GideonAct
   }
 }
 
+/**
+ * Task 109 §4 — "What should I do now?" answers with the top three next things
+ * for THIS character, one line each with the reason and a linked entity, plus a
+ * single "See the full plan" action. It never points the player away to
+ * Journey › Now.
+ */
+function speakNextUp(
+  character: Character,
+  memory: GideonMemory,
+  area?: AreaSignal | null,
+  regionLevelList?: RegionLevel[],
+): GideonAct {
+  const adv = advise(character, { areas: regionLevelList })
+  const where = area?.region ? `You are in ${areaLabel(area)}. ` : ''
+  const clip = (s: string, n: number) => (s.length > n ? `${s.slice(0, n - 1).trimEnd()}…` : s)
+  const line = (i: number, factId: string | undefined, title: string, reason: string) => {
+    const name = factId ? `[[${factId}|${clip(title, 42)}]]` : clip(title, 42)
+    return `${i}. ${name} — ${clip(reason, 64)}`
+  }
+  // A set goal still leads the answer: its next real beat is the first thing.
+  const route = memory.goalId ? routeById(memory.goalId) : undefined
+  const plan = route ? planRoute(character, route) : null
+  if (plan?.current) {
+    const planAct = speakPlan(character, route!)
+    const others = adv.todo.filter((t) => t.factId !== plan.current!.factId).slice(0, 2)
+    const lines = [
+      line(1, plan.current.factId, plan.current.do, plan.current.detail ?? plan.current.do),
+      ...others.map((t, i) => line(i + 2, t.factId, t.title, t.reason)),
+    ]
+    return {
+      ...planAct,
+      say: `${where}Goal: ${route!.name}. Next for this character:\n${lines.join('\n')}`,
+      actions: [{ type: 'showPlan' }],
+    }
+  }
+  const todo = adv.todo.slice(0, 3)
+  if (!todo.length) {
+    return {
+      say: `${where}Nothing seeded is outstanding on this run. Say “what is still available”.`,
+      actions: [{ type: 'showPlan' }],
+    }
+  }
+  const lines = todo.map((t, i) => line(i + 1, t.factId, t.title, t.reason))
+  return {
+    say: `${where}Next for this character:\n${lines.join('\n')}`,
+    actions: [{ type: 'showPlan' }],
+  }
+}
+
 /** Short "gate ahead" line for plain what-next answers. Empty when none is near. */
 function approachingGateLine(character: Character): string {
   const approaching = approachingGates(character)
@@ -886,6 +937,16 @@ export function askGideonRouter(
       factId: moves[0].id,
       markDone: [reported.id],
     }
+  }
+
+  // Task 109 §4 — a plain "what now / what should I do" answers with the top
+  // three next things for this character, not a pointer to Journey › Now.
+  // An explicitly named ending/quest still takes the plan path below.
+  if (
+    /\b(what next|what now|what should i do|what do i do|where to)\b/.test(q) &&
+    !findLine(q)
+  ) {
+    return speakNextUp(character, memory, area, regionLevelList)
   }
 
   const line = findLine(q) || (memory.goalId && /\b(what next|what now|what should i do|continue|plan|blitz)\b/.test(q) ? routeById(memory.goalId) : undefined)
@@ -1432,7 +1493,7 @@ export async function askGideon(
   const wantsMedusa = /\b(medusa|walkthrough|route)\b/.test(ql)
   const wantsGuides = /\b(how|guide|upgrade|smithing|somber|bell bearing|talisman|incantation|sorcer|damage type|stats?|buff|craft|recipe|cookbook)\b/.test(ql)
   const wantsWeapons = /\b(upgrade|reinforce|respec|rebirth|different weapon|switch weapons?|stat allocation|best weapons?|early weapons?|strong weapons?|good weapons?|recommend a weapon|suggest a weapon|what should i upgrade|switch to a|help me switch)\b/.test(ql)
-  const wantsLevels = /\b(what level|recommended level|am i (ready|overlevel|underlevel)|overlevell?ed|underlevell?ed|outlevell?ed|before i (go|leave|move)|i(?:'| a)m here)\b/.test(ql)
+  const wantsLevels = /\b(what level|recommended level|am i (ready|overlevel|underlevel)|overlevell?ed|underlevell?ed|outlevell?ed|before i (go|leave|move)|i(?:'| a)m here|what should i do|what now|what next)\b/.test(ql)
 
   // Load every optional context source in parallel — they are independent
   // fetches, and serialising them added seconds before the answer (or before

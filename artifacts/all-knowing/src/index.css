@@ -730,6 +730,14 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   padding: 0 6px;
 }
 .opts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+/* Task 109 §5: Gideon action/link chips stay compact inline chips. */
+.gideon-actions { align-items: center; }
+.gideon-chip {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .shots { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .shots li {
   display: grid;
@@ -988,14 +996,33 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
 .pickup { padding: 0 4px 12px; }
 .pickup-row { display: flex; gap: 6px; margin-top: 6px; }
 .pickup-row .search { flex: 1; min-width: 0; }
+/* Task 109 §3: a small round avatar, not a full-width portrait banner. */
 .guide-face {
-  width: 100%;
-  height: 88px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   object-fit: cover;
   object-position: center 18%;
   border: 1px solid var(--line);
-  margin-bottom: 12px;
+  flex: 0 0 auto;
   filter: saturate(0.85);
+}
+.gideon-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.gideon-head-text {
+  min-width: 0;
+}
+.gideon-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  margin: 0;
+}
+.gideon-tagline {
+  margin: 2px 0 0;
 }
 .legend-pins { display: flex; gap: 10px; align-items: center; margin: 8px 0 12px; }
 .legend-pins img { width: 28px; height: 28px; object-fit: cover; border-radius: 50%; border: 1px solid var(--line); }
@@ -1243,6 +1270,12 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   .quest { padding: 14px; }
   .pickup-row .chip,
   .gideon .chip { min-height: 42px; }
+  /* Task 109 §5: at most two answer chips per row on a phone. */
+  .gideon-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .gideon-actions .kicker { grid-column: 1 / -1; }
   .subtabs button { min-height: 40px; padding: 8px 12px; }
   .ribbon-toggle { min-height: 40px; }
   .atlas-jobs .chip,
@@ -1933,11 +1966,9 @@ body { overflow: hidden; overscroll-behavior: none; }
    it. Hide the FAB on the Gideon section and let the input row sit above the tab
    bar; the other phone views keep their FAB clearance (Task 107 §2). */
 @media (max-width: 700px) {
-  .lib-toolbar .lib-tools { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .app.gideon-active .quicklog-fab { display: none; }
   .app.gideon-active .gideon-page { padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
   .app.gideon-active .gideon-log { padding-bottom: 0; }
-  .gideon-page .guide-face { height: 56px; margin-bottom: 8px; }
   /* Task 108 §3: the quick-log toast reserves its own band so no control ends up
      underneath it (it sits 150px up, the tab bar is 58px, hence the +92px). */
   body.toast-open .shell-body {

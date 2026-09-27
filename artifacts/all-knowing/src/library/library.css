@@ -141,6 +141,35 @@
   gap: 8px;
 }
 
+/* Task 109 §1 — every facet chip is nowrap and wraps as a whole unit; never
+   squeezes its own label or overlaps a neighbour. */
+.lib-tools .chip,
+.lib-subtypes .chip,
+.lib-phone-tools .chip,
+.lib-filters-sheet .chip {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* The phone toolbar row; desktop hides it and keeps `.lib-tools` inline. */
+.lib-phone-tools {
+  display: none;
+  align-items: center;
+  gap: 6px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .lib-chipgroup {
   display: inline-flex;
   align-items: center;
@@ -174,8 +203,8 @@
 
 .lib-subtypes {
   display: flex;
+  flex-wrap: wrap;
   gap: 4px;
-  overflow-x: auto;
   padding-bottom: 2px;
 }
 
@@ -215,6 +244,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
+  overflow: hidden;
   padding: 8px;
   background: var(--bg-panel);
   border: 1px solid var(--line-soft);
@@ -286,12 +317,29 @@
   color: var(--muted);
 }
 
+/* Task 109 §2 — word badges with colour, never a bare symbol. */
 .lib-card-flags {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 46%;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  font-size: 12px;
+  align-items: flex-end;
+  gap: 3px;
+  font-size: 11px;
+}
+
+.lib-flag {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 1px 6px;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
 }
 
 .lib-flag.owned {
@@ -304,6 +352,18 @@
 
 .lib-flag.met {
   color: var(--gold);
+}
+
+.lib-flag.verdict-upgrade {
+  color: var(--ok);
+}
+
+.lib-flag.verdict-side-grade {
+  color: var(--muted);
+}
+
+.lib-flag.verdict-not-for-you {
+  color: var(--danger);
 }
 
 /* --- table ---------------------------------------------------------------- */
@@ -694,6 +754,55 @@
   font-size: 12px;
 }
 
+/* --- phone filter sheet (Task 109 §1) ------------------------------------ */
+
+.lib-filters-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.lib-filters-sheet {
+  display: flex;
+  flex-direction: column;
+  max-height: 78vh;
+  padding: 12px;
+  background: var(--bg-raised);
+  border-top: 1px solid var(--gold-dim);
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.lib-filters-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.lib-filters-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 0;
+}
+
+.lib-filters-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line-soft);
+}
+
 /* --- responsive ----------------------------------------------------------- */
 
 @media (max-width: 1000px) {
@@ -732,11 +841,21 @@
 
 @media (max-width: 700px) {
   .lib-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .lib-tray {
     max-height: 56%;
+  }
+
+  /* Task 109 §1: desktop facets hide; the phone gets one compact row + sheet. */
+  .lib-toolbar .lib-tools { display: none; }
+  .lib-phone-tools {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
   }
 
   /* Task 103 §8/§9: touch targets and a 12px phone type floor. */
@@ -746,6 +865,7 @@
   .lib-card-type,
   .lib-card-stats,
   .lib-card-mono,
+  .lib-flag,
   .lib-compare-table th,
   .lib-owned-badge,
   .lib-scaling-chip,

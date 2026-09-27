@@ -225,8 +225,20 @@ function auditPage() {
     transparent: 0,
     blank: 0,
     interactive: 0,
+    textOverflow: 0,
+    devText: 0,
   }
-  const items = { overlap: [], tapSize: [], offscreen: [], covered: [], dead: [], tinyText: [], transparent: [] }
+  const items = {
+    overlap: [],
+    tapSize: [],
+    offscreen: [],
+    covered: [],
+    dead: [],
+    tinyText: [],
+    transparent: [],
+    textOverflow: [],
+    devText: [],
+  }
   const bump = (kind, obj) => {
     counts[kind] += 1
     if (items[kind] && items[kind].length < MAX) items[kind].push(obj)
@@ -237,7 +249,8 @@ function auditPage() {
   // it is intentionally covered, so only audit the overlay's own controls.
   const OVERLAY_SELECTOR =
     '.entity-overlay, .quicklog-overlay, .area-picker, .header-more-menu, ' +
-    '.help-overlay, .gear-picker, .lockout-overlay, .qr-overlay, .lib-detail'
+    '.help-overlay, .gear-picker, .lockout-overlay, .qr-overlay, .lib-detail, ' +
+    '.lib-filters-overlay'
   const overlays = Array.prototype.slice.call(document.querySelectorAll(OVERLAY_SELECTOR)).filter((el) => {
     if (!isVisible(el)) return false
     // `.lib-detail` is a normal column on desktop but a fixed sheet on phone.
@@ -255,7 +268,7 @@ function auditPage() {
   const isExempt = (el) => !!el.closest(EXEMPT)
   const MODAL_SCRIM =
     '.entity-overlay-scrim, .quicklog-overlay, .area-picker, .help-overlay, ' +
-    '.gear-picker, .lockout-overlay, .qr-overlay, .lib-detail'
+    '.gear-picker, .lockout-overlay, .qr-overlay, .lib-detail, .lib-filters-overlay'
   const isModalScrim = (el) => !!el.closest(MODAL_SCRIM)
 
   // ---- collect visible interactive elements -------------------------------
@@ -391,6 +404,114 @@ function auditPage() {
     bump('tinyText', { sel: cssPath(parent), text: t.slice(0, 80), px: Math.round(size * 10) / 10 })
   }
 
+  // ---- text overflow (Task 109 §6) ---------------------------------------
+  // A visible text-bearing element whose own layout overflows horizontally, or
+  // whose text rects escape its border box with no clipping ancestor, reads as
+  // a collision. Intentional ellipsis and any overflow ancestor count as
+  // clipped, so a deliberate `…` is never reported.
+  function clippingAncestor(el) {
+    let n = el
+    let guard = 0
+    while (n && guard++ < 60) {
+      const cs = style(n)
+      if (cs) {
+        if (cs.textOverflow === 'ellipsis') return true
+        if (cs.overflowX !== 'visible' || cs.overflowY !== 'visible') return true
+      }
+      n = n.parentElement
+    }
+    return false
+  }
+  function ownTextNodes(el) {
+    const out = []
+    for (const n of Array.prototype.slice.call(el.childNodes)) {
+      if (n.nodeType === 3 && (n.nodeValue || '').trim()) out.push(n)
+    }
+    return out
+  }
+  {
+    const seen = new Set()
+    const all = Array.prototype.slice.call(root.querySelectorAll('*'))
+    for (const el of all) {
+      if (counts.textOverflow >= MAX) break
+      if (!isVisible(el)) continue
+      const nodes = ownTextNodes(el)
+      if (!nodes.length) continue
+      if (clippingAncestor(el)) continue
+      const box = rect(el)
+      if (box.width < 0.5 || box.height < 0.5) continue
+      let how = ''
+      if (el.scrollWidth > el.clientWidth + 2) {
+        how = 'scrollWidth'
+      } else {
+        const range = document.createRange()
+        let spill = false
+        for (const n of nodes) {
+          range.selectNodeContents(n)
+          for (const tr of Array.prototype.slice.call(range.getClientRects())) {
+            if (
+              tr.left < box.left - 1 ||
+              tr.right > box.right + 1 ||
+              tr.top < box.top - 1 ||
+              tr.bottom > box.bottom + 1
+            ) {
+              spill = true
+              break
+            }
+          }
+          if (spill) break
+        }
+        if (spill) how = 'text-rect'
+      }
+      if (!how) continue
+      const key = `${cssPath(el)}|${how}|${textOf(el)}`
+      if (seen.has(key)) continue
+      seen.add(key)
+      bump('textOverflow', { sel: cssPath(el), text: textOf(el), how })
+    }
+
+    // Two sibling chips whose text boxes actually intersect.
+    const chipEls = Array.prototype.slice.call(root.querySelectorAll('.chip')).filter(isVisible)
+    for (let i = 0; i < chipEls.length && counts.textOverflow < MAX; i++) {
+      for (let j = i + 1; j < chipEls.length; j++) {
+        const a = chipEls[i]
+        const b = chipEls[j]
+        if (a.parentElement !== b.parentElement) continue
+        if (overlapArea(rect(a), rect(b)) <= 4) continue
+        const key = `chips|${cssPath(a)}|${cssPath(b)}`
+        if (seen.has(key)) continue
+        seen.add(key)
+        bump('textOverflow', {
+          sel: cssPath(a),
+          text: `${textOf(a)} ∩ ${textOf(b)}`,
+          how: 'sibling-chips',
+        })
+        if (counts.textOverflow >= MAX) break
+      }
+    }
+  }
+
+  // ---- developer text (Task 109 §6) --------------------------------------
+  // Engine/pack/regulation/fact-id/source jargon is diagnostics, allowed only on
+  // Tarnished › Profiles. Anywhere else it is reported.
+  const DEV_RE = /icon pack|regulation|factId|source:|engine (live|offline)/i
+  if (!location.hash.startsWith('#/me/profiles')) {
+    const dwalk = document.createTreeWalker(scope || document.body, NodeFilter.SHOW_TEXT)
+    const dSeen = new Set()
+    let dnode
+    let dguard = 0
+    while ((dnode = dwalk.nextNode()) && dguard++ < 20000 && counts.devText < MAX) {
+      const t = (dnode.nodeValue || '').replace(/\s+/g, ' ').trim()
+      if (!t || !DEV_RE.test(t)) continue
+      const parent = dnode.parentElement
+      if (!parent || !isVisible(parent)) continue
+      const key = `${cssPath(parent)}|${t.slice(0, 60)}`
+      if (dSeen.has(key)) continue
+      dSeen.add(key)
+      bump('devText', { sel: cssPath(parent), text: t.slice(0, 80) })
+    }
+  }
+
   // ---- page length --------------------------------------------------------
   const scroller = mainScroller()
   const screens = scroller ? scroller.scrollHeight / window.innerHeight : 0
@@ -520,9 +641,9 @@ async function runScenario(browser, runCfg) {
       notes.push(`audit failed: ${err?.message || err}`)
       audit = {
         error: String(err?.message || err),
-        counts: { overlap: 0, tapSize: 0, offscreen: 0, hScroll: 0, covered: 0, dead: 0, tinyText: 0, transparent: 0, blank: 0, interactive: 0 },
+        counts: { overlap: 0, tapSize: 0, offscreen: 0, hScroll: 0, covered: 0, dead: 0, tinyText: 0, transparent: 0, blank: 0, interactive: 0, textOverflow: 0, devText: 0 },
         pageLength: { screens: 0, flagged: false, selector: '', scrollHeight: 0, clientHeight: 0 },
-        items: { overlap: [], tapSize: [], offscreen: [], covered: [], dead: [], tinyText: [], transparent: [] },
+        items: { overlap: [], tapSize: [], offscreen: [], covered: [], dead: [], tinyText: [], transparent: [], textOverflow: [], devText: [] },
       }
     }
     if (audit && audit.counts) audit.counts.blank = blank ? 1 : 0
@@ -949,6 +1070,8 @@ const TYPE_ROWS = [
   { key: 'dead', label: 'Dead' },
   { key: 'tinyText', label: 'Tiny text <11px' },
   { key: 'transparent', label: 'Transparent overlay' },
+  { key: 'textOverflow', label: 'Text overflow' },
+  { key: 'devText', label: 'Developer text' },
 ]
 
 function stepCounts(s) {
@@ -963,6 +1086,8 @@ function stepCounts(s) {
     tinyText: c.tinyText || 0,
     transparent: c.transparent || 0,
     blank: c.blank || 0,
+    textOverflow: c.textOverflow || 0,
+    devText: c.devText || 0,
     console: (s.consoleErrors || []).length,
     net: (s.networkFailures || []).length,
     screens: s.audit?.pageLength?.screens ?? 0,
@@ -971,6 +1096,30 @@ function stepCounts(s) {
     header: s.audit?.header?.height ?? 0,
     headerOk: s.audit?.header?.ok !== false,
   }
+}
+
+/**
+ * Task 109 §6 — hard checks: no visible text overflow and no developer text
+ * outside Tarnished › Profiles, on either run. Fails the command on regression.
+ */
+function contentChecks(runs) {
+  const out = []
+  for (const run of runs) {
+    let overflow = 0
+    let dev = 0
+    let worstOverflow = ''
+    let worstDev = ''
+    for (const s of run.steps) {
+      const c = stepCounts(s)
+      if (c.textOverflow > 0 && !worstOverflow) worstOverflow = `${s.index}. ${s.label} (${c.textOverflow})`
+      if (c.devText > 0 && !worstDev) worstDev = `${s.index}. ${s.label} (${c.devText})`
+      overflow += c.textOverflow
+      dev += c.devText
+    }
+    out.push({ run: run.name, kind: 'text-overflow', ok: overflow === 0, count: overflow, worst: worstOverflow })
+    out.push({ run: run.name, kind: 'dev-text', ok: dev === 0, count: dev, worst: worstDev })
+  }
+  return out
 }
 
 /**
@@ -1039,6 +1188,8 @@ function buildReport(runs, meta) {
         c.dead,
         c.tinyText,
         c.transparent,
+        c.textOverflow,
+        c.devText,
         c.blank,
         c.reached ? 'yes' : 'NO',
         c.console,
@@ -1049,7 +1200,7 @@ function buildReport(runs, meta) {
     })
     lines.push(
       mdTable(
-        ['Step', 'Screenshot', 'Overlap', 'Tap<40', 'Off-screen', 'H-Scroll', 'Covered', 'Dead', 'Tiny<11', 'Transparent', 'Blank', 'Reached', 'Console', 'Net', 'Screens', 'Header'],
+        ['Step', 'Screenshot', 'Overlap', 'Tap<40', 'Off-screen', 'H-Scroll', 'Covered', 'Dead', 'Tiny<11', 'Transparent', 'TextOvf', 'DevText', 'Blank', 'Reached', 'Console', 'Net', 'Screens', 'Header'],
         rows,
       ),
     )
@@ -1063,19 +1214,28 @@ function buildReport(runs, meta) {
     }
   }
 
-  // ---- hard checks (Task 108 §1) -----------------------------------------
+  // ---- hard checks (Task 108 §1, Task 109 §6) ----------------------------
   const checks = headerChecks(runs)
+  const content = contentChecks(runs)
   lines.push('## Checks')
   lines.push('')
   lines.push(
     mdTable(
       ['Check', 'Run', 'Result', 'Detail'],
-      checks.map((c) => [
-        'Header \u2264 60px on phone',
-        c.run,
-        c.ok ? 'PASS' : 'FAIL',
-        `max ${c.max}px at ${c.worst || 'n/a'} (${c.countMax} header children)`,
-      ]),
+      [
+        ...checks.map((c) => [
+          'Header \u2264 60px on phone',
+          c.run,
+          c.ok ? 'PASS' : 'FAIL',
+          `max ${c.max}px at ${c.worst || 'n/a'} (${c.countMax} header children)`,
+        ]),
+        ...content.map((c) => [
+          c.kind === 'text-overflow' ? 'No text overflow' : 'No dev text outside Profiles',
+          c.run,
+          c.ok ? 'PASS' : 'FAIL',
+          c.count === 0 ? '0' : `${c.count} at ${c.worst || 'n/a'}`,
+        ]),
+      ],
     ),
   )
   lines.push('')
@@ -1173,6 +1333,26 @@ function buildReport(runs, meta) {
   )
   lines.push('')
 
+  lines.push('### Text overflow')
+  lines.push('')
+  lines.push(
+    mdTable(
+      ['Run', 'Step', 'Selector', 'Text', 'How'],
+      top.textOverflow.map((r) => [r.run, r.step, r.it.sel, r.it.text, r.it.how]),
+    ),
+  )
+  lines.push('')
+
+  lines.push('### Developer text outside Profiles')
+  lines.push('')
+  lines.push(
+    mdTable(
+      ['Run', 'Step', 'Selector', 'Text'],
+      top.devText.map((r) => [r.run, r.step, r.it.sel, r.it.text]),
+    ),
+  )
+  lines.push('')
+
   // ---- console + failed requests -----------------------------------------
   const consoles = []
   const nets = []
@@ -1234,12 +1414,18 @@ async function main() {
 
   console.log(`[ui-audit] wrote ${path.join(OUT, 'report.md')}`)
 
-  // Task 108 §1: report the hard checks and fail the command if one regresses.
+  // Task 108 §1 / Task 109 §6: report the hard checks and fail on regression.
   const checks = headerChecks(runs)
   for (const c of checks) {
     console.log(`[ui-audit] check header\u226460px (${c.run}): ${c.ok ? 'PASS' : 'FAIL'} (max ${c.max}px)`)
   }
-  if (checks.some((c) => !c.ok)) process.exitCode = 1
+  const content = contentChecks(runs)
+  for (const c of content) {
+    console.log(
+      `[ui-audit] check ${c.kind} (${c.run}): ${c.ok ? 'PASS' : 'FAIL'} (${c.count}${c.worst ? ` — ${c.worst}` : ''})`,
+    )
+  }
+  if (checks.some((c) => !c.ok) || content.some((c) => !c.ok)) process.exitCode = 1
 }
 
 main().catch((err) => {

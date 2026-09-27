@@ -341,7 +341,7 @@ export function relatedFor(id: string): RelatedResult {
   ]
   push(
     'graph',
-    'Graph',
+    'Related',
     edges(id)
       .filter((e) => GRAPH_RELS.includes(e.rel))
       .map((e) => ({

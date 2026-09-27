@@ -355,10 +355,18 @@ export function AtlasWorkspace() {
             the static plate is showing, and it differs for a down engine vs a
             failed embed. */}
         {(embedFailed || showDown) && (
-          <div className="atlas-banner" role="status">
+          <div
+            className="atlas-banner"
+            role="status"
+            title={
+              embedFailed
+                ? 'Live map embed failed — restart the map engine (npm start) and reload.'
+                : 'Map engine offline (:8099) — start it with npm start.'
+            }
+          >
             {embedFailed
-              ? 'Live map embed failed — showing the static plate. Restart the engine (npm start) and reload.'
-              : 'Map engine offline (:8099) — showing the static plate. Start it with npm start.'}
+              ? 'Live map embed failed — showing the saved map plate. Reload to try again.'
+              : 'The live map is unavailable — showing the saved map plate. Check Tarnished → Profiles for details.'}
           </div>
         )}
         {/* Task 69: the phone Atlas surface. `.topbar .toggles` is hidden under

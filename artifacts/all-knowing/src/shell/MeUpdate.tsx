@@ -75,7 +75,7 @@ export function MeUpdate() {
       <div className="me-cards">
         <section className="me-card">
           <div className="kicker">Save file</div>
-          <p className="note">A PC <code>.sl2</code> is the richest source: stats, bosses, graces, items.</p>
+          <p className="note">A PC <code>.sl2</code> records the most: stats, bosses, graces, items.</p>
           <SaveDrop />
         </section>
         <section className="me-card">

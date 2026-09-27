@@ -394,7 +394,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
                 targetName={target?.name}
               />
             ) : (
-              <p className="note" style={{ marginTop: 8 }}>Loading regulation data…</p>
+              <p className="note" style={{ marginTop: 8 }}>Loading weapon data…</p>
             )}
           </KitGroup>
         </section>
@@ -407,7 +407,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
       <section className="panel">
         <div className="kicker">Build lab</div>
         <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>Stats drive every other pane</h3>
-        <p className="note">Change a number here and the atlas / quest advice still talk about the same person. Attack rating is the real formula from Thomas Clark’s calculator, run on this project’s vendored vanilla 1.17 regulation data (see THIRD_PARTY_NOTICES.md).</p>
+        <p className="note">Change a number here and the atlas / quest advice still talk about the same person. Attack rating is the real formula from Thomas Clark’s calculator, run on this project’s vendored vanilla 1.17 game data (see THIRD_PARTY_NOTICES.md).</p>
         <div className="stat-grid">
           {(Object.keys(character.stats) as (keyof Stats)[]).map((key) => {
             const value = character.stats[key]
@@ -440,7 +440,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
         <p className="note" style={{ marginTop: -8 }}>
           Dots are the real soft-cap tiers (filled when reached). Offensive-stat
           breakpoints are the game's own scaling-curve stages in this project's vendored
-          1.17 regulation data (Thomas Clark); Vigor/Mind/Endurance use the community
+          1.17 game data (Thomas Clark); Vigor/Mind/Endurance use the community
           HP/FP/stamina breakpoints. See <code>src/lib/softCaps.ts</code>.
         </p>
 
@@ -494,9 +494,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
                   <ul className="list">
                     {hunt.missing.map((p) => (
                       <li key={p.factId} style={{ display: 'block', cursor: 'default' }}>
-                        <span>
-                          {p.name} <em className="dim">{p.factId}</em>
-                        </span>
+                        <span>{p.name}</span>
                         <div className="opts" style={{ marginTop: 4 }}>
                           <button
                             type="button"
@@ -543,7 +541,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
       </section>
 
       <section className="panel">
-        <div className="kicker">Attack rating · regulation {REGULATION_STAMP}</div>
+        <div className="kicker">Attack rating · patch {REGULATION_STAMP}</div>
         <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>{preview.label}</h3>
         <label className="chip" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 10 }}>
           <input
@@ -555,10 +553,10 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
         </label>
         {arError && (
           <p className="note" style={{ marginTop: 12 }}>
-            Regulation data unavailable ({arError}). Showing no attack rating rather than guessing.
+            Weapon data unavailable ({arError}). Showing no attack rating rather than guessing.
           </p>
         )}
-        {!weapons && !arError && <p className="note" style={{ marginTop: 12 }}>Loading regulation data…</p>}
+        {!weapons && !arError && <p className="note" style={{ marginTop: 12 }}>Loading weapon data…</p>}
         {weapons && ratings.length === 0 && (
           <p className="note" style={{ marginTop: 12 }}>No armament equipped. Equip a kit or load a save.</p>
         )}
@@ -582,8 +580,8 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
           </p>
         )}
         <p className="note" style={{ marginTop: 18 }}>
-          Preview: {preview.label}. Poise and equip load are estimates only — the in-repo regulation
-          extract has no player poise or equip-load formula, so the attack rating above is the only
+          Preview: {preview.label}. Poise and equip load are estimates only — the in-repo game
+          data has no player poise or equip-load formula, so the attack rating above is the only
           number drawn from real game data.
         </p>
         <p className="note" style={{ marginTop: 18 }}>

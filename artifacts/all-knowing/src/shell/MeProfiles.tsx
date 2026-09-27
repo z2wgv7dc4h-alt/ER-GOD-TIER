@@ -1,5 +1,7 @@
 import { engineBanner, engineChipLabel } from '../lib/mapEngine'
 import { gideonModel, hasGideonKey } from '../lib/muse'
+import { REGULATION_STAMP } from '../lib/regulation'
+import { packStatus } from '../lib/sourcePack'
 import { ProfileSwitcher } from '../ProfileSwitcher'
 import { SpoilerToggle } from '../QoL'
 import { useWorkspace } from '../state'
@@ -39,6 +41,7 @@ function CoopChip() {
 
 /** `me/profiles`: switch Tarnished, co-op, spoilers, engine status. */
 export function MeProfiles() {
+  const pack = packStatus()
   return (
     <div className="me-profiles">
       <h2 className="shell-page-title">Profiles &amp; settings</h2>
@@ -47,6 +50,16 @@ export function MeProfiles() {
         <div className="kicker">Advice mode</div>
         <CoopChip />
         <SpoilerToggle />
+      </section>
+      <section className="me-card">
+        <div className="kicker">Data &amp; diagnostics</div>
+        <div className="opts" style={{ margin: '6px 0' }}>
+          <span className="chip">regulation {REGULATION_STAMP}</span>
+          <span className={pack.ready ? 'chip on' : 'chip'}>{pack.hint}</span>
+        </div>
+        <p className="note">
+          Regulation stamp and icon-pack status are shown here, not in play views.
+        </p>
       </section>
       <section className="me-card">
         <div className="kicker">Map engine</div>

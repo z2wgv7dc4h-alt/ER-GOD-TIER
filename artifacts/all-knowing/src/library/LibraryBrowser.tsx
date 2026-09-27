@@ -10,6 +10,7 @@ import { CompareTray } from './CompareTray'
 import { EntityPanel } from './EntityPanel'
 import { GatheringNodes } from './GatheringNodes'
 import {
+  attributeStats,
   CATEGORIES,
   addToCompare,
   applyFilters,
@@ -23,6 +24,7 @@ import {
   subtypesOf,
   weaponAr,
   weaponArAtMax,
+  type AttributeKey,
   type CategoryId,
   type LibraryEntity,
   type LibraryFilter,
@@ -187,7 +189,28 @@ function CategoryRail({
   )
 }
 
-const VERDICT_GLYPH: Record<Verdict['kind'], string> = { upgrade: '↑', 'side-grade': '≈', 'not-for-you': '↓' }
+/**
+ * Task 109 §2 — readable word badges, never symbol-only. The stored verdict
+ * `line` is the full sentence; the card gets the short form.
+ */
+function verdictBadge(verdict: Verdict): string {
+  if (verdict.kind === 'upgrade') {
+    return verdict.gainPct != null ? `Upgrade +${verdict.gainPct}%` : 'Upgrade'
+  }
+  if (verdict.kind === 'side-grade') return 'Side-grade'
+  const need = verdict.line.match(/needs\s+([0-9]+\s+[A-Z]+)/i)
+  return need ? `Needs ${need[1].toUpperCase()}` : 'Not for you'
+}
+
+/** The first unmet requirement, as a readable "Needs 20 INT". */
+function unmetBadge(entity: LibraryEntity, character: Character): string | null {
+  if (!entity.requirements) return null
+  const attrs = attributeStats(character)
+  for (const [key, value] of Object.entries(entity.requirements) as [AttributeKey, number][]) {
+    if ((value ?? 0) > 0 && attrs[key] < value) return `Needs ${value} ${key.toUpperCase()}`
+  }
+  return null
+}
 
 function EntityCard({
   entity,
@@ -204,6 +227,8 @@ function EntityCard({
 }) {
   const owned = isOwned(entity, character)
   const met = meetsRequirements(entity, character)
+  // The verdict badge already says "Needs …" for an unmet weapon; avoid a twin.
+  const unmet = met === false && !verdict ? unmetBadge(entity, character) : null
   const stats = cardStats(entity)
   return (
     <button
@@ -229,12 +254,11 @@ function EntityCard({
       <span className="lib-card-flags">
         {verdict && (
           <span className={`lib-flag verdict verdict-${verdict.kind}`} title={verdict.line}>
-            {VERDICT_GLYPH[verdict.kind]}
+            {verdictBadge(verdict)}
           </span>
         )}
-        {owned && <span className="lib-flag owned" title="Owned">✓</span>}
-        {met === false && <span className="lib-flag unmet" title="Requirements not met">✗</span>}
-        {met === true && <span className="lib-flag met" title="Requirements met">●</span>}
+        {owned && <span className="lib-flag owned" title="Owned">Owned ✓</span>}
+        {unmet && <span className="lib-flag unmet" title="Requirements not met">{unmet}</span>}
       </span>
     </button>
   )
@@ -255,6 +279,9 @@ export function LibraryBrowser() {
   const [compareOpen, setCompareOpen] = useState(false)
   const [page, setPage] = useState(0)
   const [near, setNear] = useState(false)
+  // Task 109 §1: on a phone the type/damage/campaign facets move into a bottom
+  // sheet so the toolbar stays one clean row.
+  const [filtersOpen, setFiltersOpen] = useState(false)
 
   const catalog = useLibraryCatalog(cat)
   const { byCategory, weaponByName } = catalog
@@ -383,6 +410,114 @@ export function LibraryBrowser() {
   const isEmpty = sorted.length === 0
   const showSkeleton = catalog.loading && isEmpty
 
+  function clearFilters() {
+    setFilter(defaultFilter())
+    setQ('')
+    setNear(false)
+    setPage(0)
+  }
+
+  // Task 109 §1: the type / damage / campaign / scaling facets. Rendered inline
+  // on desktop and inside the phone Filters sheet — one definition, no drift.
+  const facetControls = (
+    <>
+      <div className="lib-chipgroup" role="group" aria-label="Campaign">
+        {(['all', 'base', 'dlc'] as const).map((c) => (
+          <button
+            key={c}
+            type="button"
+            className={filter.campaign === c ? 'chip on' : 'chip'}
+            onClick={() => {
+              setFilter((f) => ({ ...f, campaign: c }))
+              setPage(0)
+            }}
+          >
+            {c === 'all' ? 'All' : c === 'base' ? 'Base' : 'DLC'}
+          </button>
+        ))}
+      </div>
+
+      {hasScaling && (
+        <div className="lib-chipgroup" role="group" aria-label="Minimum scaling">
+          <span className="lib-chipgroup-label">Scaling ≥</span>
+          {(['S', 'A', 'B', 'C', 'D'] as ScalingLetter[]).map((letter) => (
+            <button
+              key={letter}
+              type="button"
+              className={filter.scalingMin === letter ? 'chip on' : 'chip'}
+              onClick={() => {
+                setFilter((f) => ({ ...f, scalingMin: f.scalingMin === letter ? null : letter }))
+                setPage(0)
+              }}
+            >
+              {letter}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {subtypes.length > 1 && (
+        <div className="lib-subtypes" role="group" aria-label="Type filters">
+          <button
+            type="button"
+            className={filter.subtypes.length === 0 ? 'chip on' : 'chip'}
+            onClick={() => setFilter((f) => ({ ...f, subtypes: [] }))}
+          >
+            All types
+          </button>
+          {subtypes.map((s) => {
+            const on = filter.subtypes.includes(s)
+            return (
+              <button
+                key={s}
+                type="button"
+                className={on ? 'chip on' : 'chip'}
+                onClick={() =>
+                  setFilter((f) => ({
+                    ...f,
+                    subtypes: on ? f.subtypes.filter((x) => x !== s) : [...f.subtypes, s],
+                  }))
+                }
+              >
+                {s}
+              </button>
+            )
+          })}
+        </div>
+      )}
+
+      {damageOptions.length > 0 && (
+        <div className="lib-subtypes" role="group" aria-label="Damage types">
+          <button
+            type="button"
+            className={filter.damages.length === 0 ? 'chip on' : 'chip'}
+            onClick={() => setFilter((f) => ({ ...f, damages: [] }))}
+          >
+            All damage
+          </button>
+          {damageOptions.map((d) => {
+            const on = filter.damages.includes(d)
+            return (
+              <button
+                key={d}
+                type="button"
+                className={on ? 'chip on' : 'chip'}
+                onClick={() =>
+                  setFilter((f) => ({
+                    ...f,
+                    damages: on ? f.damages.filter((x) => x !== d) : [...f.damages, d],
+                  }))
+                }
+              >
+                {d}
+              </button>
+            )
+          })}
+        </div>
+      )}
+    </>
+  )
+
   return (
     <div className="lib-browser">
       <div className="lib-layout">
@@ -443,40 +578,7 @@ export function LibraryBrowser() {
                 Near me
               </button>
 
-              <div className="lib-chipgroup" role="group" aria-label="Campaign">
-                {(['all', 'base', 'dlc'] as const).map((c) => (
-                  <button
-                    key={c}
-                    type="button"
-                    className={filter.campaign === c ? 'chip on' : 'chip'}
-                    onClick={() => {
-                      setFilter((f) => ({ ...f, campaign: c }))
-                      setPage(0)
-                    }}
-                  >
-                    {c === 'all' ? 'All' : c === 'base' ? 'Base' : 'DLC'}
-                  </button>
-                ))}
-              </div>
-
-              {hasScaling && (
-                <div className="lib-chipgroup" role="group" aria-label="Minimum scaling">
-                  <span className="lib-chipgroup-label">Scaling ≥</span>
-                  {(['S', 'A', 'B', 'C', 'D'] as ScalingLetter[]).map((letter) => (
-                    <button
-                      key={letter}
-                      type="button"
-                      className={filter.scalingMin === letter ? 'chip on' : 'chip'}
-                      onClick={() => {
-                        setFilter((f) => ({ ...f, scalingMin: f.scalingMin === letter ? null : letter }))
-                        setPage(0)
-                      }}
-                    >
-                      {letter}
-                    </button>
-                  ))}
-                </div>
-              )}
+              {facetControls}
 
               <label className="lib-sort">
                 Sort
@@ -530,66 +632,103 @@ export function LibraryBrowser() {
               )}
             </div>
 
-            {subtypes.length > 1 && (
-              <div className="lib-subtypes" role="group" aria-label="Type filters">
-                <button
-                  type="button"
-                  className={filter.subtypes.length === 0 ? 'chip on' : 'chip'}
-                  onClick={() => setFilter((f) => ({ ...f, subtypes: [] }))}
+            {/* Task 109 §1: the phone toolbar is search + one row. The owned
+                dropdown, requirement/near toggles, a Filters sheet opener and
+                Sort. Facets live in the sheet below. */}
+            <div className="lib-phone-tools" role="group" aria-label="Library filters">
+              <label className="lib-sort">
+                <span className="sr-only">Ownership</span>
+                <select
+                  aria-label="Ownership"
+                  value={filter.owned}
+                  onChange={(e) => {
+                    setFilter((f) => ({ ...f, owned: e.target.value as OwnershipFilter }))
+                    setPage(0)
+                  }}
                 >
-                  All types
-                </button>
-                {subtypes.map((s) => {
-                  const on = filter.subtypes.includes(s)
-                  return (
-                    <button
-                      key={s}
-                      type="button"
-                      className={on ? 'chip on' : 'chip'}
-                      onClick={() =>
-                        setFilter((f) => ({
-                          ...f,
-                          subtypes: on ? f.subtypes.filter((x) => x !== s) : [...f.subtypes, s],
-                        }))
-                      }
-                    >
-                      {s}
-                    </button>
-                  )
-                })}
-              </div>
-            )}
-
-            {damageOptions.length > 0 && (
-              <div className="lib-subtypes" role="group" aria-label="Damage types">
-                <button
-                  type="button"
-                  className={filter.damages.length === 0 ? 'chip on' : 'chip'}
-                  onClick={() => setFilter((f) => ({ ...f, damages: [] }))}
+                  <option value="all">Owned: All</option>
+                  <option value="owned">Owned: Yes</option>
+                  <option value="not">Owned: No</option>
+                </select>
+              </label>
+              <button
+                type="button"
+                aria-label="I meet requirements"
+                className={filter.meets ? 'chip on' : 'chip'}
+                aria-pressed={filter.meets}
+                onClick={() => {
+                  setFilter((f) => ({ ...f, meets: !f.meets }))
+                  setPage(0)
+                }}
+              >
+                I meet reqs
+              </button>
+              <button
+                type="button"
+                className={near ? 'chip on' : 'chip'}
+                aria-pressed={near}
+                disabled={!w.currentArea}
+                onClick={() => {
+                  setNear((v) => !v)
+                  setPage(0)
+                }}
+              >
+                Near me
+              </button>
+              <button
+                type="button"
+                className={activeFilters > 0 ? 'chip on' : 'chip'}
+                aria-expanded={filtersOpen}
+                onClick={() => setFiltersOpen(true)}
+              >
+                Filters ({activeFilters})
+              </button>
+              <label className="lib-sort">
+                Sort
+                <select
+                  value={sort}
+                  onChange={(e) => {
+                    setSort(e.target.value as SortKey)
+                    setPage(0)
+                  }}
                 >
-                  All damage
-                </button>
-                {damageOptions.map((d) => {
-                  const on = filter.damages.includes(d)
-                  return (
-                    <button
-                      key={d}
-                      type="button"
-                      className={on ? 'chip on' : 'chip'}
-                      onClick={() =>
-                        setFilter((f) => ({
-                          ...f,
-                          damages: on ? f.damages.filter((x) => x !== d) : [...f.damages, d],
-                        }))
-                      }
-                    >
-                      {d}
-                    </button>
-                  )
-                })}
-              </div>
-            )}
+                  <option value="name">Name</option>
+                  <option value="ar">AR at my stats</option>
+                  <option value="weight">Weight</option>
+                  <option value="requirement">Requirement</option>
+                  <option value="region">Region</option>
+                </select>
+              </label>
+            </div>
           </div>
+
+          {filtersOpen && (
+            <div
+              className="lib-filters-overlay"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Library filters"
+              onClick={() => setFiltersOpen(false)}
+            >
+              <div className="lib-filters-sheet" onClick={(e) => e.stopPropagation()}>
+                <div className="lib-filters-head">
+                  <span className="kicker">Filters · {sorted.length} results</span>
+                  <button type="button" className="chip" onClick={() => setFiltersOpen(false)}>
+                    Close
+                  </button>
+                </div>
+                <div className="lib-filters-scroll">{facetControls}</div>
+                <div className="lib-filters-foot">
+                  <button type="button" className="chip" onClick={clearFilters}>
+                    Clear all
+                  </button>
+                  <button type="button" className="chip on" onClick={() => setFiltersOpen(false)}>
+                    Done
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="lib-resultbar">
             <span className="lib-count">

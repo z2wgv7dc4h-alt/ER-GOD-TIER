@@ -62,7 +62,7 @@ export function actionIds(action: GideonAction): string[] {
 
 /** True for actions that mutate the character rather than just navigate. */
 export function isCharacterAction(action: GideonAction): boolean {
-  return action.type !== 'showOnMap' && action.type !== 'open'
+  return action.type !== 'showOnMap' && action.type !== 'open' && action.type !== 'showPlan'
 }
 
 /** A confirm-chip label naming the real entities, e.g. "Mark Margit done". */
@@ -86,6 +86,8 @@ export function describeAction(action: GideonAction): string {
       return `Show ${entityName(action.id)} on map`
     case 'open':
       return `Open ${entityName(action.id)}`
+    case 'showPlan':
+      return 'See the full plan'
   }
 }
 

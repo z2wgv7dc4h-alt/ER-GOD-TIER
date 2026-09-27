@@ -248,7 +248,7 @@ export function BossFacts({
             leaning on <strong>{best.damageType}</strong>.
           </p>
         ) : combat && !weapons.length ? (
-          <p className="note">Loading regulation data…</p>
+          <p className="note">Loading weapon data…</p>
         ) : combat ? (
           <p className="note">Equip an armament (or load one) to see the best pick here.</p>
         ) : (

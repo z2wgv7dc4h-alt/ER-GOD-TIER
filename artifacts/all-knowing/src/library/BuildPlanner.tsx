@@ -126,7 +126,7 @@ export function BuildPlanner() {
         <div className="kicker">Stronger for your build</div>
         {advice.upgrades.length === 0 ? (
           <p className="note">
-            {weapons ? 'No on-build weapon beats what you have at these stats.' : 'Loading regulation data…'}
+            {weapons ? 'No on-build weapon beats what you have at these stats.' : 'Loading weapon data…'}
           </p>
         ) : (
           <ul className="advisor-list">

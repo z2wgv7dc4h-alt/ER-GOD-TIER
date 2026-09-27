@@ -54,11 +54,6 @@ export function Related({ id, title = 'Related' }: { id: string; title?: string 
           </div>
         </div>
       ))}
-      {result.engineRow && (
-        <p className="note related-engine">
-          Engine row {result.engineRow.engineId} · {result.engineRow.fmgName} ({result.engineRow.source})
-        </p>
-      )}
     </div>
   )
 }

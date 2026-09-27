@@ -27,6 +27,15 @@ export function GideonSay({ text }: { text: string }) {
   )
 }
 
+/**
+ * Task 109 §5 — action chips stay compact inline chips, never full-width boxes.
+ * Long action sentences ellipsize at 28 chars; the title carries the full text.
+ */
+const ACTION_CLIP = 28
+function clipAction(s: string): string {
+  return s.length > ACTION_CLIP ? `${s.slice(0, ACTION_CLIP - 1).trimEnd()}…` : s
+}
+
 export function GideonAnswer({
   text,
   links,
@@ -56,10 +65,10 @@ export function GideonAnswer({
   return (
     <>
       {mentioned.length > 0 && (
-        <div className="opts" style={{ marginBottom: 6 }}>
+        <div className="opts gideon-actions" style={{ marginBottom: 6 }}>
           <span className="kicker">Mentioned</span>
           {mentioned.map((id) => (
-            <EntityLink key={id} id={id} className="chip" />
+            <EntityLink key={id} id={id} className="chip gideon-chip" />
           ))}
         </div>
       )}
@@ -77,29 +86,35 @@ export function GideonAnswer({
         </p>
       ) : null}
       {showActions && charActions.length > 0 && (
-        <div className="opts" style={{ marginBottom: 6 }}>
+        <div className="opts gideon-actions" style={{ marginBottom: 6 }}>
           <span className="kicker">Gideon suggests:</span>
           {charActions.map((a, ai) => (
-            <span key={ai} className="chip">
-              {describeAction(a)}
+            <span key={ai} className="chip gideon-chip" title={describeAction(a)}>
+              {clipAction(describeAction(a))}
             </span>
           ))}
-          <button type="button" className="chip on" onClick={onApply}>
+          <button type="button" className="chip on gideon-chip" onClick={onApply}>
             Apply
           </button>
-          <button type="button" className="chip" onClick={onApplyAll}>
+          <button type="button" className="chip gideon-chip" onClick={onApplyAll}>
             Apply all
           </button>
-          <button type="button" className="chip" onClick={onSkip}>
+          <button type="button" className="chip gideon-chip" onClick={onSkip}>
             Skip
           </button>
         </div>
       )}
       {showActions && navActions.length > 0 && (
-        <div className="opts" style={{ marginBottom: 6 }}>
+        <div className="opts gideon-actions" style={{ marginBottom: 6 }}>
           {navActions.map((a, ai) => (
-            <button key={ai} type="button" className="chip" onClick={() => onNav(a)}>
-              {describeAction(a)}
+            <button
+              key={ai}
+              type="button"
+              className="chip gideon-chip"
+              title={describeAction(a)}
+              onClick={() => onNav(a)}
+            >
+              {clipAction(describeAction(a))}
             </button>
           ))}
         </div>
