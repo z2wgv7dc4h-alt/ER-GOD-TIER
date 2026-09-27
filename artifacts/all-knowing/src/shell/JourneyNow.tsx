@@ -16,6 +16,7 @@ import { RelatedCollapsible } from '../Related'
 import { NextMoves } from '../Thread'
 import { useWorkspace } from '../state'
 import { WorldRibbon } from './WorldRibbon'
+import { RecommendedCard } from './RecommendedCard'
 
 /**
  * Task 91 `journey/now`: the "working towards" dashboard that used to sit on top
@@ -155,6 +156,7 @@ export function JourneyNow() {
             {openCount} open · {lockedCount} locked
           </button>
         </section>
+        <RecommendedCard />
 
         <section className="panel">
           <div className="kicker">Next moves</div>

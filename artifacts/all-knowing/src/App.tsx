@@ -21,6 +21,7 @@ import { WorkspaceProvider, useWorkspace } from './state'
 // Each room is a separate chunk, loaded only when its section/sub is opened.
 const AtlasWorkspace = lazy(() => import('./Atlas').then((m) => ({ default: m.AtlasWorkspace })))
 const BuildWorkspace = lazy(() => import('./Build').then((m) => ({ default: m.BuildWorkspace })))
+const BuildPlanner = lazy(() => import('./library/BuildPlanner').then((m) => ({ default: m.BuildPlanner })))
 const KitWorkspace = lazy(() => import('./Build').then((m) => ({ default: m.KitWorkspace })))
 const QuestWorkspace = lazy(() => import('./Quests').then((m) => ({ default: m.QuestWorkspace })))
 const CodexWorkspace = lazy(() => import('./Codex').then((m) => ({ default: m.CodexWorkspace })))
@@ -70,7 +71,7 @@ function ShellContent() {
     return <JourneyNow />
   }
   if (section === 'library') {
-    if (sub === 'builds') return <BuildWorkspace />
+    if (sub === 'builds') return (<div className="builds-page"><BuildPlanner /><BuildWorkspace /></div>)
     if (sub === 'kit') return <KitWorkspace />
     if (sub === 'reference') return <LegacyCodex />
     return <CodexWorkspace />
