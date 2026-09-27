@@ -2,6 +2,7 @@ import type { Character } from '../types'
 import { GIDEON_TOOLS, runGideonTool, type ToolContext } from './gideonTools'
 import { callGideonChat, callGideonResponses, type AgentMessage, type AgentTool, type ChatMessage } from './muse'
 import { buildGrounding, gideonMessages, validateGideonAct, type Grounding } from './gideonLlm'
+import type { AreaSignal } from './areaContext'
 import type { GideonAct, GideonMemory } from './gideon'
 
 /**
@@ -37,6 +38,19 @@ function agentTools(): AgentTool[] {
   return WEB_SEARCH ? [{ type: 'web_search' }, ...GIDEON_TOOLS] : GIDEON_TOOLS
 }
 
+const URL_RE = /https?:\/\/[^\s"'<>)\]]+/g
+
+/**
+ * Task 101: the only urls a source may cite are ones a web_search result
+ * produced this turn. The provider runs web search server-side, so we collect
+ * every url seen in any tool output / response text this turn and validate the
+ * model's `sources` against that set; an unverified url is dropped.
+ */
+function collectUrls(value: unknown, into: Set<string>): void {
+  const text = typeof value === 'string' ? value : JSON.stringify(value ?? '')
+  for (const m of text.match(URL_RE) ?? []) into.add(m.replace(/[.,;:]+$/, ''))
+}
+
 function runTools(
   calls: { id: string; name: string; arguments: string }[],
   ctx: ToolContext,
@@ -55,18 +69,22 @@ async function viaResponses(
   memory: GideonMemory,
   history: ChatMessage[],
   grounding: Grounding,
+  area?: AreaSignal | null,
 ): Promise<GideonAct | null> {
   const firstInput = gideonMessages(question, grounding, history).map((m) => ({ role: m.role, content: m.content }))
-  const ctx: ToolContext = { character, memory }
+  const ctx: ToolContext = { character, memory, area }
+  const urls = new Set<string>()
   let input: unknown = firstInput
   for (let step = 0; step < MAX_STEPS; step++) {
     const res = await callGideonResponses(input, agentTools(), lastResponseId)
     if (res.id) lastResponseId = res.id
+    if (res.outputText) collectUrls(res.outputText, urls)
     if (res.functionCalls.length === 0) {
       const raw = parseJson(res.outputText)
-      return raw ? validateGideonAct(raw, grounding).act : null
+      return raw ? validateGideonAct(raw, grounding, urls).act : null
     }
     const results = await runTools(res.functionCalls, ctx)
+    for (const r of results) collectUrls(r.result, urls)
     input = results.map((r) => ({
       type: 'function_call_output',
       call_id: r.call_id,
@@ -82,17 +100,20 @@ async function viaChat(
   memory: GideonMemory,
   history: ChatMessage[],
   grounding: Grounding,
+  area?: AreaSignal | null,
 ): Promise<GideonAct | null> {
   const messages: AgentMessage[] = gideonMessages(question, grounding, history).map((m) => ({
     role: m.role,
     content: m.content,
   }))
-  const ctx: ToolContext = { character, memory }
+  const ctx: ToolContext = { character, memory, area }
+  const urls = new Set<string>()
   for (let step = 0; step < MAX_STEPS; step++) {
     const { content, toolCalls } = await callGideonChat(messages, agentTools())
+    if (content) collectUrls(content, urls)
     if (toolCalls.length === 0) {
       const raw = parseJson(content)
-      return raw ? validateGideonAct(raw, grounding).act : null
+      return raw ? validateGideonAct(raw, grounding, urls).act : null
     }
     messages.push({
       role: 'assistant',
@@ -105,6 +126,7 @@ async function viaChat(
     })
     const results = await runTools(toolCalls, ctx)
     for (const r of results) {
+      collectUrls(r.result, urls)
       messages.push({ role: 'tool', tool_call_id: r.call_id, content: JSON.stringify(r.result).slice(0, 4000) })
     }
   }
@@ -116,16 +138,17 @@ export async function askGideonAgent(
   character: Character,
   memory: GideonMemory,
   history: ChatMessage[] = [],
+  area?: AreaSignal | null,
 ): Promise<GideonAct | null> {
-  const grounding = buildGrounding(question, character, memory)
+  const grounding = buildGrounding(question, character, memory, area)
   // Responses first (reasoning continuity); Chat Completions as fallback.
   try {
-    const act = await viaResponses(question, character, memory, history, grounding)
+    const act = await viaResponses(question, character, memory, history, grounding, area)
     if (act) return act
   } catch (e) {
     console.warn('[gideon] Responses path unavailable; using Chat Completions.', e)
   }
-  return viaChat(question, character, memory, history, grounding)
+  return viaChat(question, character, memory, history, grounding, area)
 }
 
 /** Reset the threaded response id (e.g. on a new character / new session). */

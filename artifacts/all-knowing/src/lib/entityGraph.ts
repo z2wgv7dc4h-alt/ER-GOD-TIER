@@ -668,6 +668,20 @@ export function allEntities(): EntitySummary[] {
   return [...ensureIndex().entities.values()].sort((a, b) => a.name.localeCompare(b.name))
 }
 
+/**
+ * True when the graph actually holds a row for this id, after alias/name
+ * resolution. Task 101 uses this to tell a real entity from a hallucinated one.
+ */
+export function hasEntity(factId: string, name?: string): boolean {
+  return ensureIndex().entities.has(canonicalEntityId(factId, name))
+}
+
+/** The canonical id when the entity is known, else null. */
+export function resolveEntityId(factId: string, name?: string): string | null {
+  const id = canonicalEntityId(factId, name)
+  return ensureIndex().entities.has(id) ? id : null
+}
+
 /** The display name for an id, falling back to a humanised slug. */
 export function entityName(id: string): string {
   const idx = ensureIndex()

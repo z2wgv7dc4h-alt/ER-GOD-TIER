@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { opBuilds } from './knowledge/builds'
 import { pvpBuilds } from './knowledge/pvp'
 import { applyFacts } from './lib/infer'
-import { askGideon, type GideonMemory } from './lib/gideon'
+import { askGideon, type GideonAction, type GideonMemory, type GideonSource } from './lib/gideon'
+import { actionIds, applyFollowUp, applyGideonActions, isCharacterAction } from './lib/gideonAct'
 import { searchSync } from './lib/search'
 import { medusaChapters } from './knowledge/medusa'
 import { leftovers, toggleWatch, watchlistOf } from './lib/leftovers'
@@ -12,9 +13,23 @@ import { LockoutPrompt } from './LockoutPrompt'
 import { packStatus } from './lib/sourcePack'
 import { hasGideonKey, type ChatMessage } from './lib/muse'
 import { labelOf } from './lib/links'
+import { GideonAnswer, GideonSay } from './GideonAnswer'
 import { Related } from './Related'
 import { WikiText } from './WikiText'
 import { useWorkspace } from './state'
+
+type LogRow = {
+  role: 'you' | 'gideon'
+  text: string
+  factId?: string
+  links?: string[]
+  actions?: GideonAction[]
+  sources?: GideonSource[]
+}
+
+type Pending =
+  | { kind: 'mark'; ids: string[]; warnings: LockWarning[] }
+  | { kind: 'actions'; actions: GideonAction[]; text: string; includeNav: boolean; warnings: LockWarning[] }
 
 export function Gideon() {
   const w = useWorkspace()
@@ -23,10 +38,11 @@ export function Gideon() {
   const [memory, setMemory] = useState<GideonMemory>({ goalId: savedGoal })
   const [offer, setOffer] = useState<{ label: string; prompt: string } | null>(null)
   const [dismissed, setDismissed] = useState(false)
+  const [skipped, setSkipped] = useState<number[]>([])
   // Muse is a reasoning model — a turn takes seconds, so show that it is working.
   const [busy, setBusy] = useState(false)
-  const [lockPending, setLockPending] = useState<{ ids: string[]; warnings: LockWarning[]; after?: () => void } | null>(null)
-  const [log, setLog] = useState<{ role: 'you' | 'gideon'; text: string; factId?: string }[]>([
+  const [lockPending, setLockPending] = useState<Pending | null>(null)
+  const [log, setLog] = useState<LogRow[]>([
     { role: 'gideon', text: 'Name a line, tap Blitz, or ask what is still available. Show it pins the atlas. I’m done ticks the beat.' },
   ])
 
@@ -69,7 +85,7 @@ export function Gideon() {
     const history: ChatMessage[] = log
       .slice(1)
       .map((r) => ({ role: r.role === 'you' ? 'user' : 'assistant', content: r.text }))
-    const act = await askGideon(text, w.character, memory, history).finally(() => setBusy(false))
+    const act = await askGideon(text, w.character, memory, history, w.currentArea).finally(() => setBusy(false))
     const nextMem: GideonMemory = {
       goalId: act.goal ?? memory.goalId,
       lastFact: act.factId ?? memory.lastFact,
@@ -107,13 +123,57 @@ export function Gideon() {
       // Confirm-before-tick: only mutate once a lockout warning is acknowledged.
       const warnings = lockoutWarningsFor(w.character, act.markDone)
       if (warnings.length) {
-        setLockPending({ ids: act.markDone, warnings })
+        setLockPending({ kind: 'mark', ids: act.markDone, warnings })
       } else {
         w.setCharacter(applyFacts(w.character, act.markDone, 'answer', `Gideon: ${text}`))
       }
     }
     setOffer(act.offer ?? null)
-    setLog((rows) => [...rows, { role: 'you' as const, text }, { role: 'gideon' as const, text: act.say, factId: act.factId }].slice(-10))
+    // Task 101 actions are never auto-applied: they render as confirm chips
+    // (character changes) or plain navigation buttons under the answer.
+    setLog((rows) => [
+      ...rows,
+      { role: 'you' as const, text },
+      {
+        role: 'gideon' as const,
+        text: act.say,
+        factId: act.factId,
+        links: act.links,
+        actions: act.actions,
+        sources: act.sources,
+      },
+    ].slice(-10))
+  }
+
+  /** Run a navigation-only action immediately (no confirm needed). */
+  function runNav(action: GideonAction) {
+    if (action.type === 'showOnMap') {
+      w.setSelectedMarkerId(action.id)
+      w.setModule('map')
+    } else if (action.type === 'open') {
+      w.openEntity(action.id)
+    }
+  }
+
+  /** Commit character actions + (optionally) navigation, then post the follow-up. */
+  function commitActions(actions: GideonAction[], text: string, includeNav: boolean) {
+    const charActions = actions.filter(isCharacterAction)
+    const result = applyGideonActions(w.character, charActions, `Gideon: ${text}`)
+    if (charActions.length) w.setCharacter(result.character)
+    if (includeNav) actions.filter((a) => !isCharacterAction(a)).forEach(runNav)
+    const follow = applyFollowUp(result)
+    if (follow) setLog((rows) => [...rows, { role: 'gideon' as const, text: follow }].slice(-10))
+  }
+
+  /** Apply proposed actions, stopping for the lockout prompt when a gate trips. */
+  function runActions(actions: GideonAction[], text: string, includeNav: boolean) {
+    const ids = actions.filter(isCharacterAction).flatMap(actionIds)
+    const warnings = ids.length ? lockoutWarningsFor(w.character, ids) : []
+    if (warnings.length) {
+      setLockPending({ kind: 'actions', actions, text, includeNav, warnings })
+      return
+    }
+    commitActions(actions, text, includeNav)
   }
 
   function submit() {
@@ -135,10 +195,13 @@ export function Gideon() {
 
   function confirmLock() {
     if (!lockPending) return
-    w.setCharacter(applyFacts(w.character, lockPending.ids, 'answer', 'Gideon: confirmed lockout'))
-    const after = lockPending.after
+    const pending = lockPending
     setLockPending(null)
-    after?.()
+    if (pending.kind === 'mark') {
+      w.setCharacter(applyFacts(w.character, pending.ids, 'answer', 'Gideon: confirmed lockout'))
+    } else {
+      commitActions(pending.actions, pending.text, pending.includeNav)
+    }
   }
 
   return (
@@ -248,26 +311,43 @@ export function Gideon() {
       )}
 
       <div className="gideon-log" ref={logRef}>
-        {log.map((row, i) => (
-          <div key={i}>
-            <p className={row.role === 'gideon' ? 'note' : ''}>
-              <strong>{row.role === 'gideon' ? 'Gideon' : 'You'} · </strong>
-              <WikiText text={row.text} />
-            </p>
-            {row.role === 'gideon' && row.factId && i === lastGideonIdx && (
-              <>
-                <button
-                  type="button"
-                  className="chip on"
-                  onClick={() => w.openEntity(row.factId!)}
-                >
-                  Open {labelOf(row.factId)}
-                </button>
-                <Related id={row.factId} />
-              </>
-            )}
-          </div>
-        ))}
+        {log.map((row, i) => {
+          const isLast = row.role === 'gideon' && i === lastGideonIdx
+          const showActions = isLast && !skipped.includes(i)
+          return (
+            <div key={i}>
+              <p className={row.role === 'gideon' ? 'note' : ''}>
+                <strong>{row.role === 'gideon' ? 'Gideon' : 'You'} · </strong>
+                {row.role === 'gideon' ? <GideonSay text={row.text} /> : <WikiText text={row.text} />}
+              </p>
+              {isLast && (
+                <GideonAnswer
+                  text={row.text}
+                  links={row.links}
+                  actions={row.actions}
+                  sources={row.sources}
+                  showActions={showActions}
+                  onApply={() => runActions(row.actions ?? [], row.text, false)}
+                  onApplyAll={() => runActions(row.actions ?? [], row.text, true)}
+                  onNav={runNav}
+                  onSkip={() => setSkipped((s) => [...s, i])}
+                />
+              )}
+              {isLast && row.factId && (
+                <>
+                  <button
+                    type="button"
+                    className="chip on"
+                    onClick={() => w.openEntity(row.factId!)}
+                  >
+                    Open {labelOf(row.factId)}
+                  </button>
+                  <Related id={row.factId} />
+                </>
+              )}
+            </div>
+          )
+        })}
       </div>
 
       <div className="pickup-row">
