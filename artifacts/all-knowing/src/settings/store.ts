@@ -29,7 +29,7 @@ export const DEFAULT_SETTINGS: Settings = {
   textSize: 'M',
   reduceMotion: false,
   landing: 'journey',
-  spoiler: 'light',
+  spoiler: 'full',
   haptics: true,
 }
 
