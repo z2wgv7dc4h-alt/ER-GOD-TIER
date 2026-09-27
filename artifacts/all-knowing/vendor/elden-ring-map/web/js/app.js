@@ -636,6 +636,13 @@ function recentreOnPlayer() {
   map.centerOn(p.px, p.py, Math.max(map.scale, 1.2));
 }
 
+// All-Knowing Task 111 §3: the host Atlas toggles follow in the embedded map
+// over postMessage, so the engine's own live player dot stays centred on PC.
+window.addEventListener('message', (ev) => {
+  const d = ev && ev.data;
+  if (d && d.type === 'all-knowing:follow') setFollow(!!d.on);
+});
+
 function drawPlayer(ctx, m) {
   const target = playerTarget();
   if (!target) { state.playerRender = null; return; }

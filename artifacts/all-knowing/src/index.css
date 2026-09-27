@@ -494,6 +494,53 @@ button { cursor: pointer; }
   stroke-width: 3px;
 }
 
+/* ── Task 111 — map power tools ──────────────────────────────────────────
+   The plate image is drawn inside the SVG (Task 111 §1) so a focused viewBox
+   zooms art and pins together; the pulse marks a fresh result. */
+image.atlas-art-img { background: #050403; }
+.atlas-focus { cursor: crosshair; }
+.pin.result .pin-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: atlas-pulse 1.6s ease-out infinite;
+}
+@keyframes atlas-pulse {
+  0% { transform: scale(0.45); opacity: 0.95; }
+  75% { transform: scale(2.1); opacity: 0; }
+  100% { transform: scale(2.1); opacity: 0; }
+}
+.heat { pointer-events: none; }
+.map-note-editor {
+  position: absolute;
+  z-index: 8;
+  left: 12px;
+  right: 12px;
+  bottom: 56px;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 12px;
+  background: rgba(20, 17, 12, 0.97);
+  border: 1px solid var(--gold-dim);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.map-note-editor textarea,
+.map-note-editor input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 10px;
+  font-size: 14px;
+  min-height: 40px;
+}
+.map-note-field { display: block; }
+.map-note-field .note { display: block; margin-bottom: 4px; }
+.map-note-row { display: flex; flex-direction: column; justify-content: center; flex: 1 1 auto; cursor: pointer; min-width: 0; min-height: 40px; }
+
 .side {
   border-left: 1px solid var(--line);
   background: var(--bg-panel);

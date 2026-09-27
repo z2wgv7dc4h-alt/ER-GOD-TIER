@@ -20,6 +20,12 @@ export function MapControls() {
       <button className={w.showGates ? 'chip on' : 'chip'} onClick={() => w.toggleGates()}>
         locks
       </button>
+      <button className={w.follow ? 'chip on' : 'chip'} aria-pressed={w.follow} onClick={() => w.toggleFollow()}>
+        follow
+      </button>
+      <button className={w.showHeat ? 'chip on' : 'chip'} aria-pressed={w.showHeat} onClick={() => w.toggleHeat()}>
+        undone heat
+      </button>
       {layerOrder.map((id) => (
         <button key={id} className={w.layers[id] ? 'chip on' : 'chip'} onClick={() => w.toggleLayer(id)}>
           {id}
