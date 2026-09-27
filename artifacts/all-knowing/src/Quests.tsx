@@ -19,6 +19,10 @@ import type { Character } from './types'
  * and `lockoutWarnings` use. There is no second quest list: a beat's done state
  * is the character's known facts on the beat's `factId`, and ticking a beat runs
  * `applyFacts` / `clearFact` on that fact id (never a seed step id).
+ *
+ * Task 107 §9 — on every viewport each questline is collapsed to its title, its
+ * current step and a progress bar; tapping the row expands the whole beat list.
+ * That keeps the phone page to a couple of screens instead of a dozen.
  */
 
 /** The catalog fact a beat reads and writes. `factIds` is the fallback marker. */
@@ -34,14 +38,14 @@ export function currentStepId(character: Character, line: Line): string | null {
 export function QuestWorkspace() {
   const { character, setCharacter, setModule, query, selectedMarkerId, setSelectedMarkerId } = useWorkspace()
   const coords = useCoords()
-  const [activeId, setActiveId] = useState(allLines[0]?.id)
+  const [activeId, setActiveId] = useState<string | null>(null)
   const [pendingLock, setPendingLock] = useState<{ factId: string; warnings: LockWarning[] } | null>(null)
 
   // A link from elsewhere (item/boss/Atlas) selects a step's fact id; land on its line.
   const linkedLine = selectedMarkerId
     ? allLines.find((l) => l.steps.some((s) => stepFact(s) === selectedMarkerId))
     : undefined
-  const active = linkedLine ?? allLines.find((l) => l.id === activeId) ?? allLines[0]
+  const active = linkedLine ?? (activeId ? allLines.find((l) => l.id === activeId) : undefined)
   const q = query.trim().toLowerCase()
   const filtered = allLines.filter((l) => `${l.name} ${l.aliases.join(' ')}`.toLowerCase().includes(q))
   const linkedStep = linkedLine && linkedLine.id === active?.id ? selectedMarkerId : null
@@ -76,87 +80,99 @@ export function QuestWorkspace() {
 
   function pickLine(id: string) {
     setSelectedMarkerId(null)
-    setActiveId(id)
+    setActiveId((cur) => (cur === id && !linkedLine ? null : id))
   }
 
-  if (!active) return null
-
   return (
-    <div className="split">
+    <div className="quests-page">
       <section className="panel">
+        <MedusaRoute compact collapsedByDefault />
         <div className="kicker">Lines that can break</div>
-        <div className="quest-list" style={{ marginTop: 14 }}>
+        <ul className="quest-accordion">
           {filtered.map((l) => {
             const done = l.steps.filter((s) => isStepDone(character, s)).length
+            const lineCurrentId = currentStepId(character, l)
+            const step = l.steps.find((s) => s.id === lineCurrentId)
+            const pct = l.steps.length ? Math.round((done / l.steps.length) * 100) : 0
+            const expanded = active?.id === l.id
             return (
-              <button
-                key={l.id}
-                className={l.id === active.id ? 'quest active' : 'quest'}
-                onClick={() => pickLine(l.id)}
-              >
-                <header>
-                  <strong>{l.name}</strong>
-                  <span className="note">{done}/{l.steps.length}</span>
-                </header>
-                <div className="note" style={{ marginTop: 6 }}>{l.kind}</div>
-              </button>
-            )
-          })}
-        </div>
-      </section>
-      <section className="panel">
-        <MedusaRoute />
-        <div className="kicker">{active.kind}</div>
-        <h3 style={{ fontFamily: 'var(--font-display)', margin: '6px 0 8px' }}>
-          <EntityLink id={`line:${active.id}`}>{active.name}</EntityLink>
-        </h3>
-        {npcLoc && (
-          <p className="note" style={{ marginBottom: 8 }}>
-            {npcLoc.name} is at {npcLoc.graceName}.
-          </p>
-        )}
-        {selectedMarkerId && !linkedStep && <Thread id={selectedMarkerId} />}
-        <ul className="steps">
-          {active.steps.map((step) => {
-            const factId = stepFact(step)
-            return (
-              <li
-                key={step.id}
-                className={factId === linkedStep || step.id === currentId ? 'step-linked' : undefined}
-              >
-                <input
-                  type="checkbox"
-                  checked={isStepDone(character, step)}
-                  disabled={!factId}
-                  onChange={() => toggle(step)}
-                />
-                <div>
-                  <div>
-                    {step.do}
-                    {step.id === currentId ? ' · now' : ''}
+              <li key={l.id} className={expanded ? 'quest-line open' : 'quest-line'}>
+                <button
+                  type="button"
+                  className="quest-line-head"
+                  aria-expanded={expanded}
+                  onClick={() => pickLine(l.id)}
+                >
+                  <span className="quest-line-top">
+                    <strong>{l.name}</strong>
+                    <span className="note">{done}/{l.steps.length}</span>
+                  </span>
+                  <span className="note quest-line-step">
+                    {step ? step.do : 'All beats done'}
+                  </span>
+                  <span className="quest-line-bar" aria-hidden>
+                    <span style={{ width: `${pct}%` }} />
+                  </span>
+                </button>
+                {expanded && (
+                  <div className="quest-line-body">
+                    <div className="kicker">{l.kind}</div>
+                    <h3 style={{ fontFamily: 'var(--font-display)', margin: '6px 0 8px' }}>
+                      <EntityLink id={`line:${l.id}`}>{l.name}</EntityLink>
+                    </h3>
+                    {npcLoc && (
+                      <p className="note" style={{ marginBottom: 8 }}>
+                        {npcLoc.name} is at {npcLoc.graceName}.
+                      </p>
+                    )}
+                    {selectedMarkerId && !linkedStep && <Thread id={selectedMarkerId} />}
+                    <ul className="steps">
+                      {l.steps.map((s) => {
+                        const factId = stepFact(s)
+                        return (
+                          <li
+                            key={s.id}
+                            className={factId === linkedStep || s.id === lineCurrentId ? 'step-linked' : undefined}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={isStepDone(character, s)}
+                              disabled={!factId}
+                              onChange={() => toggle(s)}
+                            />
+                            <div>
+                              <div>
+                                {s.do}
+                                {s.id === lineCurrentId ? ' · now' : ''}
+                              </div>
+                              <div className="note">{s.detail}</div>
+                              {s.obtain && <div className="note">Reward: {s.obtain}</div>}
+                              {s.lockout && <div className="warn">{s.lockout}</div>}
+                              {factId && (
+                                <button type="button" className="chip" onClick={() => setSelectedMarkerId(factId)}>
+                                  Thread
+                                </button>
+                              )}
+                              {s.id === lineCurrentId && currentPin && factId && (
+                                <button
+                                  type="button"
+                                  className="chip"
+                                  onClick={() => {
+                                    setSelectedMarkerId(factId)
+                                    setModule('map')
+                                  }}
+                                >
+                                  Show on map
+                                </button>
+                              )}
+                              <Related id={factId ?? s.id} />
+                            </div>
+                          </li>
+                        )
+                      })}
+                    </ul>
                   </div>
-                  <div className="note">{step.detail}</div>
-                  {step.obtain && <div className="note">Reward: {step.obtain}</div>}
-                  {step.lockout && <div className="warn">{step.lockout}</div>}
-                  {factId && (
-                    <button type="button" className="chip" onClick={() => setSelectedMarkerId(factId)}>
-                      Thread
-                    </button>
-                  )}
-                  {step.id === currentId && currentPin && factId && (
-                    <button
-                      type="button"
-                      className="chip"
-                      onClick={() => {
-                        setSelectedMarkerId(factId)
-                        setModule('map')
-                      }}
-                    >
-                      Show on map
-                    </button>
-                  )}
-                  <Related id={factId ?? step.id} />
-                </div>
+                )}
               </li>
             )
           })}

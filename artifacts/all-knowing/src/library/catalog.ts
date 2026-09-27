@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { facts } from '../knowledge/catalog'
+import { mechanics } from '../knowledge/mechanics'
 import { canonicalEntityId, registerEntityGraphData } from '../lib/entityGraph'
 import { loadWeapons, type Weapon } from '../lib/ar'
 import { useArmory, type ArmoryBoss, type ArmoryWeapon } from '../lib/armory'
@@ -77,6 +78,7 @@ const FACT_PREFIX: Record<CategoryId, string> = {
   recipes: 'item',
   secrets: 'secret',
   guides: 'guide',
+  mechanics: 'mechanic',
   dialogue: 'npc',
 }
 
@@ -513,6 +515,26 @@ function buildGuides(guides: GuideExcerpt[]): LibraryEntity[] {
   )
 }
 
+function buildMechanics(): LibraryEntity[] {
+  // Task 107 §11: the Task 106 mechanics glossary as a Library category. Each
+  // card is an entity page, its numbers become the stat rows and its prose the
+  // lore tab; the ids are the authored `mechanic:<slug>` facts.
+  return mechanics.map((m) => {
+    const stats: EntityStat[] = m.numbers.map((n, i) => ({ label: `Key ${i + 1}`, value: n }))
+    return {
+      id: m.id,
+      factId: m.id,
+      name: m.title,
+      category: 'mechanics' as CategoryId,
+      subtype: m.category,
+      stats: stats.length ? stats : undefined,
+      tags: [m.category, ...m.aliases],
+      lore: m.body,
+      where: m.source,
+    }
+  })
+}
+
 function buildDialogue(dialogue: DialogueSpeaker[]): LibraryEntity[] {
   return dialogue.map((d) =>
     baseEntity('dialogue', d.speaker, {
@@ -546,6 +568,7 @@ export function buildCatalog(input: CatalogInput): BuiltCatalog {
     ...buildRecipes(input.recipes),
     ...buildSecrets(input.secrets),
     ...buildGuides(input.guides),
+    ...buildMechanics(),
     ...buildDialogue(input.dialogue),
   ]
   const byCategory = Object.fromEntries(CATEGORIES.map((c) => [c.id, [] as LibraryEntity[]])) as Record<CategoryId, LibraryEntity[]>

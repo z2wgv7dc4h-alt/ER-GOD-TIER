@@ -48,7 +48,8 @@ export function FirstVisitHint() {
   return (
     <div className="help-hint" role="status">
       <span>
-        New here? Press <kbd>?</kbd> — or tap the <strong>?</strong> above — for every shortcut.
+        New here? Press <kbd>?</kbd> — or open the <strong>⋯</strong> menu and tap{' '}
+        <strong>Help</strong> — for every shortcut.
       </span>
       <button
         type="button"

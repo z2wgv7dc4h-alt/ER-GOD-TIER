@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import { Help } from '../Help'
-import { sectionMeta } from '../lib/sections'
 import { useWorkspace } from '../state'
 import { AreaChip } from './AreaChip'
 import { SectionTabs } from './SectionTabs'
 
 /**
- * Task 103 §1 — the phone header is exactly one 52px row: brand mark · section
- * title · search (magnifier) · area (pin + truncated name) · character (initial
- * + Lv) · overflow `⋯` (Glance mode and Help). The Quick-log `+` lives on the
- * floating thumb button (QuickLog) on phone, and stays a header button on
- * desktop. Desktop keeps the wide search field, section tabs and inline
- * Glance/Help buttons.
+ * Task 103 §1 / Task 107 §3 — the phone header is exactly one 52px row: brand
+ * mark · search (magnifier) · area (pin + name) · character (initial + Lv) ·
+ * overflow `⋯` (Glance mode and Help). There is no text section title on phone;
+ * the bottom tab bar already names the section, and the freed width goes to the
+ * area chip. The Quick-log `+` lives on the floating thumb button (QuickLog) on
+ * phone, and stays a header button on desktop. Desktop keeps the wide search
+ * field, section tabs and inline Glance/Help buttons.
  */
 export function Header({
   searchOpen,
@@ -27,7 +27,6 @@ export function Header({
   onOpenLog?: () => void
 }) {
   const w = useWorkspace()
-  const meta = sectionMeta(w.section)
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement | null>(null)
 
@@ -50,7 +49,6 @@ export function Header({
         aria-label="All-Knowing — Tarnished overview"
         onClick={() => w.go('me', 'overview')}
       />
-      <span className="shell-title phone-only">{meta.label}</span>
       <SectionTabs />
       <input
         id="command-search"

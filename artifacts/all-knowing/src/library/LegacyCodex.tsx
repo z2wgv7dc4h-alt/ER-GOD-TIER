@@ -48,7 +48,7 @@ import {
 
 type RefRow = { key: string; kicker: string; name: string; note: string; combat?: CombatStats }
 
-function RefSection({ title, count, rows }: { title: string; count: number; rows: RefRow[] }) {
+function RefSection({ title, count, rows, defaultOpen = false }: { title: string; count: number; rows: RefRow[]; defaultOpen?: boolean }) {
   if (rows.length === 0) return null
   // Reference rows are keyed by name; a scraped duplicate would collide, so
   // keep the first occurrence of each key.
@@ -58,9 +58,10 @@ function RefSection({ title, count, rows }: { title: string; count: number; rows
     seen.add(r.key)
     return true
   })
+  // Task 107 §9: a reference section collapses to its heading.
   return (
-    <>
-      <h3 className="codex-head">{title} · {count} in reference</h3>
+    <details className="codex-section" open={defaultOpen}>
+      <summary className="codex-head codex-summary">{title} · {count} in reference</summary>
       <div className="codex-grid">
         {unique.map((r) => (
           <article className="card" key={r.key}>
@@ -71,7 +72,7 @@ function RefSection({ title, count, rows }: { title: string; count: number; rows
           </article>
         ))}
       </div>
-    </>
+    </details>
   )
 }
 
@@ -396,45 +397,50 @@ export function LegacyCodex() {
           </div>
         </>
       )}
-      {referenceSections.map((s) => (
-        <RefSection key={s.title} title={s.title} count={s.count} rows={s.rows} />
+      {referenceSections.map((s, i) => (
+        <RefSection key={s.title} title={s.title} count={s.count} rows={s.rows} defaultOpen={i === 0 || q.length >= 2} />
       ))}
-      <h3 className="codex-head">Tips &amp; tech · {techTips.length}</h3>
-      <p className="note" style={{ padding: '0 20px' }}>
-        Real, structured tech — jump attacks, stance breaks, buff stacking, spirit ashes, items and
-        PvP counters. Numeric values are quoted only where a source states them. Sources per card
-        (Fextralife, patch 1.17). See docs/research/op-builds-pvp-tricks-sources.md.
-      </p>
-      <div className="codex-grid">
-        {techTips
-          .filter((e) => !q || `${e.name} ${e.category} ${e.what} ${e.tags.join(' ')}`.toLowerCase().includes(q))
-          .map((e) => (
+      <details className="codex-section" open={q.length >= 2}>
+        <summary className="codex-head codex-summary">Tips &amp; tech · {techTips.length}</summary>
+        <p className="note" style={{ padding: '0 20px' }}>
+          Real, structured tech — jump attacks, stance breaks, buff stacking, spirit ashes, items and
+          PvP counters. Numeric values are quoted only where a source states them. Sources per card
+          (Fextralife, patch 1.17). See docs/research/op-builds-pvp-tricks-sources.md.
+        </p>
+        <div className="codex-grid">
+          {techTips
+            .filter((e) => !q || `${e.name} ${e.category} ${e.what} ${e.tags.join(' ')}`.toLowerCase().includes(q))
+            .map((e) => (
+              <article className="card" key={e.id}>
+                <div className="kicker">{e.category}{e.patch ? ' · patch-sensitive' : ''}</div>
+                <h3>{e.name}</h3>
+                <p className="note">{e.what} {e.why}</p>
+                <p className="note">How: {e.how}</p>
+                {e.patch && <p className="note">{e.patch}</p>}
+                <p><a className="ext" href={e.source} target="_blank" rel="noreferrer">Source</a></p>
+              </article>
+            ))}
+        </div>
+      </details>
+      <details className="codex-section" open={q.length >= 2}>
+        <summary className="codex-head codex-summary">Scadutree / map fragments</summary>
+        <div className="codex-grid">
+          {[...scadutreeFragments, ...mapFragments, ...flaskUpgrades].filter((e) => !q || `${e.name} ${e.region} ${e.note}`.toLowerCase().includes(q)).slice(0, 10).map((e) => (
             <article className="card" key={e.id}>
-              <div className="kicker">{e.category}{e.patch ? ' · patch-sensitive' : ''}</div>
+              <CodexThumb name={e.name} />
+              <div className="kicker">{e.campaign} · {e.region}</div>
               <h3>{e.name}</h3>
-              <p className="note">{e.what} {e.why}</p>
-              <p className="note">How: {e.how}</p>
-              {e.patch && <p className="note">{e.patch}</p>}
-              <p><a className="ext" href={e.source} target="_blank" rel="noreferrer">Source</a></p>
+              <p className="note">{e.note}</p>
+              <button type="button" className="chip" onClick={() => setCharacter(applyFacts(character, [e.id], 'answer', 'collectible'))}>Mark</button>
             </article>
           ))}
-      </div>
-      <h3 className="codex-head">Scadutree / map fragments</h3>
-      <div className="codex-grid">
-        {[...scadutreeFragments, ...mapFragments, ...flaskUpgrades].filter((e) => !q || `${e.name} ${e.region} ${e.note}`.toLowerCase().includes(q)).slice(0, 10).map((e) => (
-          <article className="card" key={e.id}>
-            <CodexThumb name={e.name} />
-            <div className="kicker">{e.campaign} · {e.region}</div>
-            <h3>{e.name}</h3>
-            <p className="note">{e.note}</p>
-            <button type="button" className="chip" onClick={() => setCharacter(applyFacts(character, [e.id], 'answer', 'collectible'))}>Mark</button>
-          </article>
-        ))}
-      </div>
-      <h3 className="codex-head">
-        Blessing meters · {blessings.map(blessingLine).join(' · ')}
-      </h3>
-      {blessings.map((p) => {
+        </div>
+      </details>
+      <details className="codex-section" open={q.length >= 2}>
+        <summary className="codex-head codex-summary">
+          Blessing meters · {blessings.map(blessingLine).join(' · ')}
+        </summary>
+        {blessings.map((p) => {
         const left = p.remaining.filter((r) => !q || `${r.name} ${r.how}`.toLowerCase().includes(q))
         if (q && left.length === 0) return null
         const open = expanded[p.id]
@@ -486,88 +492,96 @@ export function LegacyCodex() {
           </div>
         )
       })}
-      <h3 className="codex-head">
-        Achievement sets ·{' '}
-        {achievements.map((p) => `${p.name} ${p.done}/${p.total}`).join(' · ')}
-      </h3>
-      {guide.items.length === 0 && <p className="note" style={{ padding: '0 20px' }}>Loading guide catalog…</p>}
-      {achievements.map((set) => {
-        const left = set.remaining.filter((r) => !q || `${r.name} ${r.how}`.toLowerCase().includes(q))
-        if (q && left.length === 0) return null
-        const open = expanded[set.id]
-        const shown = open ? left : left.slice(0, 12)
-        return (
-          <div key={set.id}>
-            <div className="kicker" style={{ padding: '0 20px' }}>
-              {set.name} · {set.done}/{set.total} · {set.remaining.length} left — {set.note}
+      </details>
+      <details className="codex-section" open={q.length >= 2}>
+        <summary className="codex-head codex-summary">
+          Achievement sets ·{' '}
+          {achievements.map((p) => `${p.name} ${p.done}/${p.total}`).join(' · ')}
+        </summary>
+        {guide.items.length === 0 && <p className="note" style={{ padding: '0 20px' }}>Loading guide catalog…</p>}
+        {achievements.map((set) => {
+          const left = set.remaining.filter((r) => !q || `${r.name} ${r.how}`.toLowerCase().includes(q))
+          if (q && left.length === 0) return null
+          const open = expanded[set.id]
+          const shown = open ? left : left.slice(0, 12)
+          return (
+            <div key={set.id}>
+              <div className="kicker" style={{ padding: '0 20px' }}>
+                {set.name} · {set.done}/{set.total} · {set.remaining.length} left — {set.note}
+              </div>
+              <div className="codex-grid">
+                {shown.map((r) => (
+                  <article className="card" key={r.id}>
+                    <div className="kicker">
+                      {set.name}{r.dlc ? ' · DLC' : ''}{r.missable ? ` · missable: ${r.missable}` : ''}
+                    </div>
+                    <h3>{r.name}</h3>
+                    <p className="note">{r.how}</p>
+                    <button
+                      type="button"
+                      className="chip"
+                      onClick={() => setCharacter(applyFacts(character, [r.id], 'answer', `${set.name} set`))}
+                    >
+                      Mark
+                    </button>
+                  </article>
+                ))}
+              </div>
+              {left.length > 12 && (
+                <button
+                  type="button"
+                  className="chip"
+                  style={{ margin: '0 20px' }}
+                  onClick={() => setExpanded((cur) => ({ ...cur, [set.id]: !open }))}
+                >
+                  {open ? 'Show fewer' : `Show all ${left.length} left`}
+                </button>
+              )}
             </div>
-            <div className="codex-grid">
-              {shown.map((r) => (
-                <article className="card" key={r.id}>
-                  <div className="kicker">
-                    {set.name}{r.dlc ? ' · DLC' : ''}{r.missable ? ` · missable: ${r.missable}` : ''}
-                  </div>
-                  <h3>{r.name}</h3>
-                  <p className="note">{r.how}</p>
-                  <button
-                    type="button"
-                    className="chip"
-                    onClick={() => setCharacter(applyFacts(character, [r.id], 'answer', `${set.name} set`))}
-                  >
-                    Mark
-                  </button>
-                </article>
-              ))}
-            </div>
-            {left.length > 12 && (
-              <button
-                type="button"
-                className="chip"
-                style={{ margin: '0 20px' }}
-                onClick={() => setExpanded((cur) => ({ ...cur, [set.id]: !open }))}
-              >
-                {open ? 'Show fewer' : `Show all ${left.length} left`}
-              </button>
-            )}
-          </div>
-        )
-      })}
-      <DungeonChecklist />
-      <h3 className="codex-head">
-        Merchant conditionals · {conditionalHits.length} of {conditionalUnlocks.length}
-      </h3>
-      <p className="note" style={{ padding: '0 20px' }}>
-        “What does X sell after I give Y.” Stock stays in the merchant table; this is the unlock condition.
-      </p>
-      <div className="codex-grid">
-        {(expanded['merchant-conditional'] ? conditionalHits : conditionalHits.slice(0, 12)).map((u) => (
-          <article className="card" key={u.vendor}>
-            <div className="kicker">{u.soldBy} · conditional</div>
-            <h3>{u.trigger}</h3>
-            <p className="note">{u.items.join(', ') || 'Stock row missing.'}</p>
-            <p className="note">{u.note}</p>
-            {u.triggerId && (
-              <button
-                type="button"
-                className="chip"
-                onClick={() => setCharacter(applyFacts(character, [u.triggerId as string], 'answer', 'merchant condition'))}
-              >
-                Log trigger
-              </button>
-            )}
-          </article>
-        ))}
-      </div>
-      {conditionalHits.length > 12 && (
-        <button
-          type="button"
-          className="chip"
-          style={{ margin: '0 20px' }}
-          onClick={() => setExpanded((cur) => ({ ...cur, 'merchant-conditional': !cur['merchant-conditional'] }))}
-        >
-          {expanded['merchant-conditional'] ? 'Show fewer' : `Show all ${conditionalHits.length}`}
-        </button>
-      )}
+          )
+        })}
+      </details>
+      <details className="codex-section" open={q.length >= 2}>
+        <summary className="codex-head codex-summary">Dungeon checklist</summary>
+        <DungeonChecklist />
+      </details>
+      <details className="codex-section" open={q.length >= 2}>
+        <summary className="codex-head codex-summary">
+          Merchant conditionals · {conditionalHits.length} of {conditionalUnlocks.length}
+        </summary>
+        <p className="note" style={{ padding: '0 20px' }}>
+          “What does X sell after I give Y.” Stock stays in the merchant table; this is the unlock condition.
+        </p>
+        <div className="codex-grid">
+          {(expanded['merchant-conditional'] ? conditionalHits : conditionalHits.slice(0, 12)).map((u) => (
+            <article className="card" key={u.vendor}>
+              <div className="kicker">{u.soldBy} · conditional</div>
+              <h3>{u.trigger}</h3>
+              <p className="note">{u.items.join(', ') || 'Stock row missing.'}</p>
+              <p className="note">{u.note}</p>
+              {u.triggerId && (
+                <button
+                  type="button"
+                  className="chip"
+                  onClick={() => setCharacter(applyFacts(character, [u.triggerId as string], 'answer', 'merchant condition'))}
+                >
+                  Log trigger
+                </button>
+              )}
+            </article>
+          ))}
+        </div>
+        {conditionalHits.length > 12 && (
+          <button
+            type="button"
+            className="chip"
+            style={{ margin: '0 20px' }}
+            onClick={() => setExpanded((cur) => ({ ...cur, 'merchant-conditional': !cur['merchant-conditional'] }))}
+          >
+            {expanded['merchant-conditional'] ? 'Show fewer' : `Show all ${conditionalHits.length}`}
+          </button>
+        )}
+      </details>
       {q.length >= 2 && (
         <>
           <h3 className="codex-head">Armory</h3>
@@ -592,7 +606,10 @@ export function LegacyCodex() {
           </div>
         </>
       )}
-      <h3 className="codex-head">Hunts · {hunts.length || '…'} with flags</h3>
+      <details className="codex-section" open={q.length >= 2}>
+        <summary className="codex-head codex-summary">
+          Hunts · {hunts.length || '…'} with flags · NPC model notes · locations · awesome list
+        </summary>
       <div className="codex-grid">
         {(hunts.length ? hunts : fieldHunts.map((e) => ({ ...e, flag: 0 }))).filter((e) => !q || `${e.name} ${e.region} ${(e as {place?: string}).place || ''}`.toLowerCase().includes(q)).slice(0, 16).map((e) => (
           <article className="card" key={e.id}>
@@ -670,6 +687,7 @@ export function LegacyCodex() {
           </article>
         ))}
       </div>
+      </details>
     </div>
   )
 }

@@ -23,6 +23,7 @@ import {
 } from './lib/packet'
 import { packetQr, type PacketQr } from './lib/packetQr'
 import { markHelpSeen, resolveHotkey } from './lib/shortcuts'
+import { levelFromStats, statsTotal } from './lib/level'
 import type { Character, Stats } from './types'
 import { useWorkspace } from './state'
 
@@ -418,7 +419,12 @@ export function CommandHits({ onLog }: { onLog?: (ids: string[]) => void } = {})
     const cls = isActive ? 'quest palette-active' : 'quest'
     if (row.kind === 'entity') {
       return (
-        <EntityLink key={`e:${row.hit.source}:${row.hit.id}`} id={row.hit.id} className={cls}>
+        <EntityLink
+          key={`e:${row.hit.source}:${row.hit.id}`}
+          id={row.hit.id}
+          className={cls}
+          onClick={() => w.setQuery('')}
+        >
           <header>
             <strong>{row.hit.name}</strong>
             <span className="note">{row.hit.source}</span>
@@ -643,9 +649,19 @@ export function StatEdit() {
   // Task 93: collapsed by default so eight inputs don't stack into a wall; the
   // read-only grid in the character card stays visible.
   const [open, setOpen] = useState(false)
+  // Task 107 §4: the level is derived from the stat sum (sum − 79 for every
+  // class). Editing a stat moves the level with it; a hand-typed level that
+  // disagrees is kept but flagged rather than silently contradicting the stats.
+  const derived = levelFromStats(character.stats)
+  const mismatched = character.level !== derived
   function setStat(key: keyof Stats, raw: string) {
     const n = Math.max(1, Math.min(99, Number(raw) || 1))
-    setCharacter({ ...character, stats: { ...character.stats, [key]: n } })
+    const stats = { ...character.stats, [key]: n }
+    setCharacter({ ...character, stats, level: levelFromStats(stats) })
+  }
+  function setLevel(raw: string) {
+    const n = Math.max(1, Math.min(713, Number(raw) || 1))
+    setCharacter({ ...character, level: n })
   }
   return (
     <div className={open ? 'stat-edit open' : 'stat-edit'}>
@@ -660,6 +676,22 @@ export function StatEdit() {
       {open && (
         <>
           <div className="kicker" style={{ marginTop: 8 }}>Type the numbers from the status screen</div>
+          <label className="stat-level">
+            <span>Level</span>
+            <input
+              id="character-level"
+              inputMode="numeric"
+              aria-label="Level"
+              value={character.level}
+              onChange={(e) => setLevel(e.target.value)}
+            />
+          </label>
+          {mismatched && (
+            <p className="warn stat-level-warn" role="status">
+              Stats sum to {statsTotal(character.stats)} — that is Lv {derived}. The level field says{' '}
+              {character.level}; change a stat or fix the level.
+            </p>
+          )}
           <div className="stats">
             {statKeys.map((key) => (
               <label key={key}>

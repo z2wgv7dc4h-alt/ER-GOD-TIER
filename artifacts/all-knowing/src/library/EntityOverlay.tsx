@@ -42,7 +42,7 @@ const CATEGORY_BY_KIND: Record<EntityKind, CategoryId> = {
   ending: 'guides',
   build: 'guides',
   merchant: 'npcs',
-  mechanic: 'guides',
+  mechanic: 'mechanics',
 }
 
 export function EntityOverlay() {

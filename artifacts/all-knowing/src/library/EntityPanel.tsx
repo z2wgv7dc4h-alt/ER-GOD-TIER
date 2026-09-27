@@ -5,6 +5,7 @@ import type { RemembranceOption } from '../lib/remembranceChoice'
 import type { Verdict } from '../lib/verdict'
 import { Related } from '../Related'
 import { WikiText } from '../WikiText'
+import { BossPrepCard } from '../combat/BossPrepCard'
 import type { Character } from '../types'
 import { BossFacts } from './BossFacts'
 import { attributeStats, isOwned, meetsRequirements, type AttributeKey, type CategoryId, type LibraryEntity } from './model'
@@ -200,6 +201,10 @@ export function EntityPanel({
                 character={character}
               />
             )}
+
+            {/* Task 107 §10: the Task 105 combat toolkit — best weapon, status
+                procs, spirit ashes, buffs and the recommended-level verdict. */}
+            {isBoss && <BossPrepCard bossId={statusFactId} character={character} />}
 
             {!isBoss && (requirementEntries.length > 0 || metValue !== null) && (
               <div className="lib-panel-block">

@@ -11,7 +11,12 @@ export function WorldRibbon() {
   const spoil = character.answers.spoil !== '0'
   const miss = spoil ? leftovers(character) : []
   if (!banners.length && !miss.length) return null
-  const count = banners.length + miss.length
+  // Task 107 §8: "N story flags" tells a player nothing. The ribbon leads with
+  // the first real world change (a readable sentence), with a count of any
+  // further ones; with no banner it names what is still missable here.
+  const label = banners.length
+    ? `${banners[0].text}${banners.length > 1 ? ` +${banners.length - 1} more` : ''}`
+    : `${miss.length} still missable here`
   return (
     <div className={open ? 'world-ribbon open' : 'world-ribbon'}>
       <button
@@ -20,7 +25,7 @@ export function WorldRibbon() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
       >
-        <span>{count} story flag{count === 1 ? '' : 's'}</span>
+        <span>{label}</span>
         <span aria-hidden>{open ? '▴' : '▾'}</span>
       </button>
       <div className="ribbon-items">

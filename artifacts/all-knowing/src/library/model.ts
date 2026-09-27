@@ -27,6 +27,7 @@ export type CategoryId =
   | 'recipes'
   | 'secrets'
   | 'guides'
+  | 'mechanics'
   | 'dialogue'
 
 export type CategoryMeta = {
@@ -53,6 +54,7 @@ export const CATEGORIES: CategoryMeta[] = [
   { id: 'recipes', label: 'Recipes', mono: 'R' },
   { id: 'secrets', label: 'Secrets', mono: 'Se' },
   { id: 'guides', label: 'Guides', mono: 'G' },
+  { id: 'mechanics', label: 'Mechanics', mono: 'Me' },
   { id: 'dialogue', label: 'Dialogue', mono: 'D' },
 ]
 

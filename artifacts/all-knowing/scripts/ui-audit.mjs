@@ -129,6 +129,14 @@ function auditPage() {
     if (!cs) return false
     if (cs.display === 'none' || cs.visibility === 'hidden' || cs.visibility === 'collapse') return false
     if (parseFloat(cs.opacity || '1') === 0) return false
+    // A closed `<details>` keeps its light-DOM children laid out in Chromium, so
+    // exclude everything except the summary — otherwise collapsed Reference
+    // sections report phantom overlaps.
+    const closedDetails = el.closest('details:not([open])')
+    if (closedDetails) {
+      const summary = closedDetails.querySelector(':scope > summary')
+      if (!summary || !summary.contains(el)) return false
+    }
     const r = shownRect(el)
     if (r.width < 0.5 || r.height < 0.5) return false
     return true
@@ -180,7 +188,7 @@ function auditPage() {
     const sels = [
       '.workspace', '.shell-body', '.stage', 'main', '.split', '.side',
       '.panel', '.me-overview', '.me-update', '.me-profiles', '.now-page',
-      '.gideon-page', '.me-setup', '.me-gear', '.codex-wrap', '.lib-results',
+      '.gideon-page', '.me-setup', '.me-gear', '.codex-wrap', '.quests-page', '.lib-results',
       '.lib-panel-body', '.lib-rail', '.gear-picker-box', '.quicklog-sheet',
     ]
     let best = null
@@ -190,6 +198,12 @@ function auditPage() {
         const cs = style(el)
         if (!cs) continue
         if (cs.overflowY !== 'auto' && cs.overflowY !== 'scroll') continue
+        // The page scroller is one that actually scrolls…
+        if (el.scrollHeight <= el.clientHeight + 1) continue
+        // …and is substantially on screen (a closed phone drawer is not).
+        const box = el.getBoundingClientRect()
+        const visibleH = Math.min(box.bottom, window.innerHeight) - Math.max(box.top, 0)
+        if (box.height > 0 && visibleH < box.height * 0.5) continue
         const s = el.scrollHeight
         if (s > score) {
           score = s
@@ -208,10 +222,11 @@ function auditPage() {
     covered: 0,
     dead: 0,
     tinyText: 0,
+    transparent: 0,
     blank: 0,
     interactive: 0,
   }
-  const items = { overlap: [], tapSize: [], offscreen: [], covered: [], dead: [], tinyText: [] }
+  const items = { overlap: [], tapSize: [], offscreen: [], covered: [], dead: [], tinyText: [], transparent: [] }
   const bump = (kind, obj) => {
     counts[kind] += 1
     if (items[kind] && items[kind].length < MAX) items[kind].push(obj)
@@ -232,10 +247,16 @@ function auditPage() {
   const scope = overlays.length ? overlays[overlays.length - 1] : null
   const root = scope || document
 
-  // Floating action buttons and modal scrims are deliberate overlays, never
-  // "content that overlaps" — exclude them from the interactive scan.
+  // Floating action buttons are deliberate overlays, never "content that
+  // overlaps" — exclude them from the interactive scan. Task 107 §12: they are
+  // NOT forgiven by the covered check any more, so a FAB hiding a form row is
+  // reported; only a modal's own scrim is (the content behind it is intended).
   const EXEMPT = '.quicklog-fab, .quicklog-toast, .entity-overlay-scrim, .glance-exit'
   const isExempt = (el) => !!el.closest(EXEMPT)
+  const MODAL_SCRIM =
+    '.entity-overlay-scrim, .quicklog-overlay, .area-picker, .help-overlay, ' +
+    '.gear-picker, .lockout-overlay, .qr-overlay, .lib-detail'
+  const isModalScrim = (el) => !!el.closest(MODAL_SCRIM)
 
   // ---- collect visible interactive elements -------------------------------
   const rawEls = Array.prototype.slice.call(root.querySelectorAll(INTERACTIVE))
@@ -295,8 +316,45 @@ function auditPage() {
     const hit = document.elementFromPoint(cx, cy)
     if (!hit) continue
     if (hit === b.el || b.el.contains(hit)) continue
-    if (isExempt(hit)) continue
-    bump('covered', { sel: b.sel, text: b.text, by: cssPath(hit), byText: textOf(hit) })
+    if (isModalScrim(hit)) continue
+    bump('covered', { sel: b.sel, text: b.text, by: cssPath(hit), byText: textOf(hit), cx: Math.round(cx), cy: Math.round(cy), w: Math.round(b.full.width), h: Math.round(b.full.height) })
+  }
+
+  // ---- transparent overlays (Task 107 §12) -------------------------------
+  // A fixed/absolute layer that paints its own text but no background lets the
+  // page bleed through it (the Task 103 "Where are you?" defect). Report it.
+  for (const el of Array.prototype.slice.call(root.querySelectorAll('*'))) {
+    if (counts.transparent >= MAX) break
+    const cs = style(el)
+    if (!cs || cs.display === 'none' || cs.visibility === 'hidden') continue
+    if (cs.position !== 'fixed' && cs.position !== 'absolute') continue
+    if (isExempt(el)) continue
+    // Own text only: a wrapper that merely contains textful children is not the
+    // layer a reader sees as transparent.
+    const ownText = Array.prototype.some.call(
+      el.childNodes,
+      (n) => n.nodeType === 3 && (n.nodeValue || '').trim().length > 0,
+    )
+    if (!ownText) continue
+    const bg = cs.backgroundColor || ''
+    let alpha = bg === 'transparent' ? 0 : 1
+    const m = bg.match(/rgba?\(([^)]+)\)/)
+    if (m) {
+      const parts = m[1].split(',').map((s) => parseFloat(s))
+      if (parts.length === 4) alpha = parts[3]
+    }
+    if (alpha > 0.05) continue
+    const r = shownRect(el)
+    if (r.width < 0.5 || r.height < 0.5) continue
+    let overlaps = ''
+    for (const b of boxes) {
+      if (b.el === el || el.contains(b.el) || b.el.contains(el)) continue
+      if (overlapArea(r, b.r) > 8) {
+        overlaps = b.sel
+        break
+      }
+    }
+    if (overlaps) bump('transparent', { sel: cssPath(el), text: textOf(el), overlaps })
   }
 
   // ---- dead links / empty buttons ----------------------------------------
@@ -408,7 +466,7 @@ async function runScenario(browser, runCfg) {
       .catch(() => false)
   }
 
-  async function step(label, action) {
+  async function step(label, action, check) {
     buffers.console.length = 0
     buffers.requests.length = 0
     const notes = []
@@ -420,6 +478,19 @@ async function runScenario(browser, runCfg) {
     const blank = !(await contentReady())
     if (blank) notes.push('blank section — no real content within 10s')
     await sleep(150)
+    // Task 107 §12: each step states whether it actually reached its target.
+    let reached = true
+    if (typeof check === 'function') {
+      try {
+        reached = (await check(notes)) === true
+      } catch (err) {
+        reached = false
+        notes.push(`check error: ${err?.message || err}`)
+      }
+      if (!reached) notes.push('did not reach target')
+    } else if (blank) {
+      reached = false
+    }
     const index = steps.length + 1
     const file = `${String(index).padStart(2, '0')}-${slug(label)}.png`
     let shot = file
@@ -437,9 +508,9 @@ async function runScenario(browser, runCfg) {
       notes.push(`audit failed: ${err?.message || err}`)
       audit = {
         error: String(err?.message || err),
-        counts: { overlap: 0, tapSize: 0, offscreen: 0, hScroll: 0, covered: 0, dead: 0, tinyText: 0, blank: 0, interactive: 0 },
+        counts: { overlap: 0, tapSize: 0, offscreen: 0, hScroll: 0, covered: 0, dead: 0, tinyText: 0, transparent: 0, blank: 0, interactive: 0 },
         pageLength: { screens: 0, flagged: false, selector: '', scrollHeight: 0, clientHeight: 0 },
-        items: { overlap: [], tapSize: [], offscreen: [], covered: [], dead: [], tinyText: [] },
+        items: { overlap: [], tapSize: [], offscreen: [], covered: [], dead: [], tinyText: [], transparent: [] },
       }
     }
     if (audit && audit.counts) audit.counts.blank = blank ? 1 : 0
@@ -448,6 +519,7 @@ async function runScenario(browser, runCfg) {
       label,
       file: shot,
       notes,
+      reached,
       audit,
       consoleErrors: buffers.console.splice(0),
       networkFailures: buffers.requests.splice(0),
@@ -565,7 +637,7 @@ async function runScenario(browser, runCfg) {
       const sels = [
         '.workspace', '.shell-body', '.stage', 'main', '.split', '.side',
         '.panel', '.me-overview', '.me-update', '.me-profiles', '.now-page',
-        '.gideon-page', '.me-setup', '.me-gear', '.codex-wrap', '.lib-results',
+        '.gideon-page', '.me-setup', '.me-gear', '.codex-wrap', '.quests-page', '.lib-results',
         '.lib-panel-body', '.lib-rail', '.gear-picker-box', '.quicklog-sheet',
       ]
       let best = null
@@ -574,6 +646,10 @@ async function runScenario(browser, runCfg) {
         for (const el of document.querySelectorAll(sel)) {
           const cs = getComputedStyle(el)
           if (cs.overflowY !== 'auto' && cs.overflowY !== 'scroll') continue
+          if (el.scrollHeight <= el.clientHeight + 1) continue
+          const box = el.getBoundingClientRect()
+          const visibleH = Math.min(box.bottom, window.innerHeight) - Math.max(box.top, 0)
+          if (box.height > 0 && visibleH < box.height * 0.5) continue
           const s = el.scrollHeight
           if (s > score) {
             score = s
@@ -672,16 +748,18 @@ async function runScenario(browser, runCfg) {
 
     // --- Step 4: omnibox search -------------------------------------------
     await step('search-margit-results', async (notes) => {
-      await clickText('Tarnished', { selector: '.section-tabs button, .tabbar button' })
-      await sleep(200)
-      const visible = await page.locator('#command-search').isVisible().catch(() => false)
-      if (!visible) {
-        await clickText('find', { selector: 'button' })
-        await sleep(250)
+      // A phone hides the field behind the magnifier; desktop has it inline.
+      if (!(await page.locator('#command-search').isVisible().catch(() => false))) {
+        await clickLocator(page.locator('.search-toggle'), notes, 'search toggle')
+        await sleep(300)
       }
-      await page.locator('#command-search').fill('Margit').catch(() => {})
+      await page.locator('#command-search').fill('Margit').catch(() => notes.push('search input not found'))
       await page.waitForSelector('.command-hits', { timeout: 6000 }).catch(() => notes.push('no command hits'))
       await sleep(300)
+    }, async () => {
+      const hits = await page.locator('.command-hits').isVisible().catch(() => false)
+      const groups = await page.locator('.command-hits .command-group').count().catch(() => 0)
+      return hits && groups > 0
     })
 
     await step('search-margit-open-boss', async (notes) => {
@@ -698,10 +776,14 @@ async function runScenario(browser, runCfg) {
       if (opened) notes.push(`opened hit: ${opened}`)
       else notes.push('no boss hit found')
       await sleep(500)
-    })
+    }, async () => page.locator('.entity-overlay .lib-panel').first().isVisible().catch(() => false))
 
     // --- Step 5: Journey > Now (top, 50%, 100%) ---------------------------
     await step('journey-now-top', async (notes) => {
+      // The entity panel opened above owns the screen; close it before the nav.
+      await page.locator('.entity-overlay .lib-panel-close').first().click({ timeout: 1500 }).catch(() => {})
+      await page.keyboard.press('Escape').catch(() => {})
+      await sleep(200)
       await nav('journey', 'Journey', 'now', 'Now', notes)
     })
     await step('journey-now-scroll-50', async () => {
@@ -766,7 +848,7 @@ async function runScenario(browser, runCfg) {
     await step('library-search-open-detail', async (notes) => {
       await clickLocator(page.locator('.lib-card'), notes, 'first result')
       await sleep(400)
-    })
+    }, async () => page.locator('.lib-panel').first().isVisible().catch(() => false))
 
     await step('library-search-close-detail', async (notes) => {
       await clickLocator(page.locator('.lib-panel-close'), notes, 'close detail')
@@ -822,10 +904,18 @@ async function runScenario(browser, runCfg) {
     await step('gideon-where-is-moonveil', async (notes) => {
       await nav('gideon', 'Gideon', null, null, notes)
       await askGideon('where is moonveil', 8000, notes)
+    }, async () => {
+      const inGideon = await page.locator('.gideon').count().catch(() => 0)
+      if (!inGideon) return false
+      return (await page.locator('.gideon-log > div').count().catch(() => 0)) >= 3
     })
 
     await step('gideon-what-should-i-do-now', async (notes) => {
       await askGideon('what should I do now', 8000, notes)
+    }, async () => {
+      const inGideon = await page.locator('.gideon').count().catch(() => 0)
+      if (!inGideon) return false
+      return (await page.locator('.gideon-log > div').count().catch(() => 0)) >= 5
     })
   } finally {
     await context.close().catch(() => {})
@@ -843,6 +933,7 @@ const TYPE_ROWS = [
   { key: 'covered', label: 'Covered' },
   { key: 'dead', label: 'Dead' },
   { key: 'tinyText', label: 'Tiny text <11px' },
+  { key: 'transparent', label: 'Transparent overlay' },
 ]
 
 function stepCounts(s) {
@@ -855,11 +946,13 @@ function stepCounts(s) {
     covered: c.covered || 0,
     dead: c.dead || 0,
     tinyText: c.tinyText || 0,
+    transparent: c.transparent || 0,
     blank: c.blank || 0,
     console: (s.consoleErrors || []).length,
     net: (s.networkFailures || []).length,
     screens: s.audit?.pageLength?.screens ?? 0,
     flagged: !!s.audit?.pageLength?.flagged,
+    reached: s.reached !== false,
   }
 }
 
@@ -903,7 +996,9 @@ function buildReport(runs, meta) {
         c.covered,
         c.dead,
         c.tinyText,
+        c.transparent,
         c.blank,
+        c.reached ? 'yes' : 'NO',
         c.console,
         c.net,
         screens,
@@ -911,7 +1006,7 @@ function buildReport(runs, meta) {
     })
     lines.push(
       mdTable(
-        ['Step', 'Screenshot', 'Overlap', 'Tap<40', 'Off-screen', 'H-Scroll', 'Covered', 'Dead', 'Tiny<11', 'Blank', 'Console', 'Net', 'Screens'],
+        ['Step', 'Screenshot', 'Overlap', 'Tap<40', 'Off-screen', 'H-Scroll', 'Covered', 'Dead', 'Tiny<11', 'Transparent', 'Blank', 'Reached', 'Console', 'Net', 'Screens'],
         rows,
       ),
     )
@@ -1004,6 +1099,16 @@ function buildReport(runs, meta) {
     mdTable(
       ['Run', 'Step', 'Selector', 'Text', 'px'],
       top.tinyText.map((r) => [r.run, r.step, r.it.sel, r.it.text, r.it.px]),
+    ),
+  )
+  lines.push('')
+
+  lines.push('### Transparent overlay (fixed/absolute text with no background)')
+  lines.push('')
+  lines.push(
+    mdTable(
+      ['Run', 'Step', 'Selector', 'Text', 'Overlaps'],
+      top.transparent.map((r) => [r.run, r.step, r.it.sel, r.it.text, r.it.overlaps]),
     ),
   )
   lines.push('')

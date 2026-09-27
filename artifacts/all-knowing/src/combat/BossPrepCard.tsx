@@ -3,7 +3,8 @@ import { findWeapon, loadWeapons, type Weapon } from '../lib/ar'
 import { bossPrep } from '../lib/combat'
 import { negationText, useBossCombat, type DamageType } from '../lib/enemy'
 import { loadRegionLevels, type RegionLevel } from '../lib/regionLevels'
-import { useWorkspace } from '../state'
+import { useWorkspaceOptional } from '../state'
+import type { Character } from '../types'
 import { StatusTable } from './StatusTable'
 import './combat.css'
 
@@ -20,8 +21,9 @@ const DAMAGE_LABELS: Record<DamageType, string> = {
  * Self-contained, own CSS, not wired into the shell. Pass `bossId` to pin a
  * boss; otherwise it renders a picker from the loaded combat table.
  */
-export function BossPrepCard({ bossId }: { bossId?: string }) {
-  const { character } = useWorkspace()
+export function BossPrepCard({ bossId, character: characterProp }: { bossId?: string; character?: Character }) {
+  const w = useWorkspaceOptional()
+  const character = characterProp ?? w?.character ?? null
   const { bosses } = useBossCombat()
   const [weapons, setWeapons] = useState<Weapon[] | null>(null)
   const [areas, setAreas] = useState<RegionLevel[]>([])
@@ -38,7 +40,7 @@ export function BossPrepCard({ bossId }: { bossId?: string }) {
   const activeId = bossId ?? (selected || bosses[0]?.factId || '')
 
   const prep = useMemo(
-    () => (activeId ? bossPrep(activeId, character, { weapons: weapons ?? undefined, bosses, areas }) : null),
+    () => (activeId && character ? bossPrep(activeId, character, { weapons: weapons ?? undefined, bosses, areas }) : null),
     [activeId, character, weapons, bosses, areas],
   )
 
@@ -46,6 +48,14 @@ export function BossPrepCard({ bossId }: { bossId?: string }) {
     () => (weapons && prep?.bestWeapon ? findWeapon(weapons, { id: 'best', name: prep.bestWeapon.name, kind: 'armament', affinity: prep.bestWeapon.affinity }) : undefined),
     [weapons, prep],
   )
+
+  if (!character) {
+    return (
+      <div className="combat-prep">
+        <p className="note">Load a character to see this matchup.</p>
+      </div>
+    )
+  }
 
   return (
     <div className="combat-prep">

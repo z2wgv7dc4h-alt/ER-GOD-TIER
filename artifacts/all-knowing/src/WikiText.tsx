@@ -1,13 +1,15 @@
 import { EntityLink } from './EntityLink'
-import { linkIndex, linkify } from './lib/interlink'
+import { autolink } from './lib/glossary'
 
 /**
- * Renders prose with known entities turned into links. Clicking a mention opens
- * the universal entity panel overlay (Task 97), using `src/lib/interlink.ts` —
- * exact-name matches only, so nothing is over-linked.
+ * Renders prose with known entities turned into links and authored mechanics
+ * terms (poise, stance break, Rune Arc, …) turned into their reference pages.
+ * Clicking a mention opens the universal entity panel overlay (Task 97) through
+ * `src/lib/glossary.ts` — matched by longest known name/alias on word boundaries,
+ * at most one link per term per paragraph, so nothing is over-linked.
  */
 export function WikiText({ text, className }: { text: string; className?: string }) {
-  const spans = linkify(text, linkIndex())
+  const spans = autolink(text)
   return (
     <span className={className}>
       {spans.map((s, i) =>

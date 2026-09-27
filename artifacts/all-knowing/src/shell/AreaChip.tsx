@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { warpGraces, type WarpGrace } from '../knowledge/graces'
 import { areaLabel, isAreaStale, type AreaSignal } from '../lib/areaContext'
 import { regionMatches } from '../lib/areaHub'
@@ -12,6 +12,9 @@ function norm(s: string): string {
   return s.toLowerCase().replace(/[^a-z0-9+]+/g, ' ').trim()
 }
 
+const FOCUSABLE =
+  'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+
 /**
  * Task 98 — the header location chip and the PS5 "Where are you?" picker.
  *
@@ -19,12 +22,18 @@ function norm(s: string): string {
  * the usual inference), and closes. The first six suggestions are the graces
  * adjacent to the last known one along the `legs.json` route, undiscovered first,
  * then the rest of the current region.
+ *
+ * Task 107 §1 — it is a real modal: an opaque sheet over a dimming scrim, with a
+ * close button, a focus trap and Escape to dismiss. It closes itself when the
+ * section or sub changes so it can never hover over a page it was not opened on.
  */
 export function AreaChip() {
   const w = useWorkspace()
   const [open, setOpen] = useState(false)
   const [legs, setLegs] = useState<Leg[]>([])
   const [q, setQ] = useState('')
+  const sheetRef = useRef<HTMLDivElement | null>(null)
+  const triggerRef = useRef<HTMLButtonElement | null>(null)
 
   useEffect(() => {
     if (!open || legs.length) return
@@ -35,6 +44,51 @@ export function AreaChip() {
       .catch(() => { /* no routes; region graces still show */ })
     return () => { cancelled = true }
   }, [open, legs.length])
+
+  // Task 107 §1: a section or sub move closes the sheet.
+  useEffect(() => {
+    setOpen(false)
+    setQ('')
+  }, [w.section, w.sub])
+
+  function close() {
+    setOpen(false)
+    setQ('')
+    triggerRef.current?.focus()
+  }
+
+  // Focus lands on the search box; Escape and Tab are trapped in the sheet.
+  useEffect(() => {
+    if (!open) return
+    sheetRef.current?.querySelector<HTMLInputElement>('input')?.focus()
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        e.stopPropagation()
+        close()
+        return
+      }
+      if (e.key !== 'Tab') return
+      const root = sheetRef.current
+      if (!root) return
+      const list = Array.prototype.slice
+        .call(root.querySelectorAll<HTMLElement>(FOCUSABLE))
+        .filter((el) => el.offsetParent !== null)
+      if (!list.length) return
+      const first = list[0]
+      const last = list[list.length - 1]
+      const active = document.activeElement as HTMLElement | null
+      if (e.shiftKey && (active === first || !root.contains(active))) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+    document.addEventListener('keydown', onKey, true)
+    return () => document.removeEventListener('keydown', onKey, true)
+  }, [open])
 
   const region = w.currentArea?.region ?? currentRegion(w.character)
   const discovered = w.character.discoveredGraces
@@ -81,8 +135,7 @@ export function AreaChip() {
     w.setCharacter(applyFacts(w.character, [g.id], 'answer', 'Where are you?'))
     const signal: AreaSignal = { region: g.region, place: g.name, factId: g.id, source: 'map', at: Date.now() }
     w.setCurrentArea(signal)
-    setOpen(false)
-    setQ('')
+    close()
   }
 
   const label = areaLabel(w.currentArea) || 'Set area'
@@ -91,55 +144,76 @@ export function AreaChip() {
   return (
     <div className="area-chip-wrap">
       <button
+        ref={triggerRef}
         type="button"
         className={stale ? 'area-chip stale' : 'area-chip'}
         aria-haspopup="dialog"
         aria-expanded={open}
         title="Where are you?"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          // Task 107 §2: opening the picker dismisses any lingering quick-log toast.
+          window.dispatchEvent(new Event('allknowing:dismiss-toast'))
+          setOpen((v) => !v)
+        }}
       >
         <span aria-hidden>📍</span> {label}
       </button>
       {open && (
-        <div className="area-picker panel" role="dialog" aria-label="Where are you?">
-          <div className="kicker">Where are you?</div>
-          <p className="note">One tap sets your area and marks the grace found.</p>
-          <div className="opts area-picker-likely">
-            {likely.map((g) => (
-              <button key={g.id} type="button" className="chip" onClick={() => pick(g)}>
-                {g.name}
+        <div
+          className="area-picker"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Where are you?"
+          onClick={close}
+        >
+          <div
+            className="area-picker-sheet"
+            ref={sheetRef}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <header className="area-picker-head">
+              <div className="kicker">Where are you?</div>
+              <button type="button" className="chip area-picker-close" onClick={close} aria-label="Close">
+                Close
               </button>
-            ))}
-          </div>
-          {region && inRegion.length > 0 && (
-            <>
-              <div className="kicker">In {region}</div>
-              <div className="opts">
-                {inRegion.map((g) => (
-                  <button key={g.id} type="button" className="chip" onClick={() => pick(g)}>
-                    {g.name}
-                  </button>
-                ))}
-              </div>
-            </>
-          )}
-          <input
-            className="search area-picker-search"
-            placeholder="Search a grace…"
-            aria-label="Search a grace"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-          />
-          {results.length > 0 && (
-            <div className="opts">
-              {results.map((g) => (
+            </header>
+            <p className="note">One tap sets your area and marks the grace found.</p>
+            <div className="opts area-picker-likely">
+              {likely.map((g) => (
                 <button key={g.id} type="button" className="chip" onClick={() => pick(g)}>
-                  {g.name} · {g.region}
+                  {g.name}
                 </button>
               ))}
             </div>
-          )}
-          <button type="button" className="chip" onClick={() => setOpen(false)}>Close</button>
+            {region && inRegion.length > 0 && (
+              <>
+                <div className="kicker">In {region}</div>
+                <div className="opts">
+                  {inRegion.map((g) => (
+                    <button key={g.id} type="button" className="chip" onClick={() => pick(g)}>
+                      {g.name}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+            <input
+              className="search area-picker-search"
+              placeholder="Search a grace…"
+              aria-label="Search a grace"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+            />
+            {results.length > 0 && (
+              <div className="opts">
+                {results.map((g) => (
+                  <button key={g.id} type="button" className="chip" onClick={() => pick(g)}>
+                    {g.name} · {g.region}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>

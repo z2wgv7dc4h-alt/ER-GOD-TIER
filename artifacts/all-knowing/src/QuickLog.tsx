@@ -49,6 +49,16 @@ export function QuickLog({
     setSelected(seed && seed.length ? [...new Set(seed)] : [])
   }, [open, seed])
 
+  // Task 107 §2: the toast is transient. A section/sub move or opening another
+  // surface (the area picker announces itself) clears it, so it never lingers
+  // over fresh content.
+  useEffect(() => {
+    function dismiss() { setToast(null) }
+    window.addEventListener('allknowing:dismiss-toast', dismiss)
+    return () => window.removeEventListener('allknowing:dismiss-toast', dismiss)
+  }, [])
+  useEffect(() => { setToast(null) }, [w.section, w.sub])
+
   const fuzzy = useMemo(() => fuzzyLogTargets(text), [text])
   const recent = useMemo(() => recentLogTargets(w.recentFacts, w.character), [w.recentFacts, w.character])
   const near = useMemo(() => nearMeTargets(currentArea, w.character), [currentArea, w.character])

@@ -93,9 +93,26 @@ export function Gideon() {
     }
     setMemory(nextMem)
     persistGoal(nextMem.goalId)
-    if (act.module) w.setModule(act.module)
-    if (act.factId && (act.navigateNow || act.module === 'map' || /show|take me|pin/i.test(text))) {
-      w.setSelectedMarkerId(act.factId)
+    // Task 107 §7: on a phone (or a desktop without the dock) an answer must
+    // never move the player off it. Section/map moves become buttons under the
+    // log entry. A desktop with the dock open may keep the old auto-nav.
+    const isPhone = typeof window !== 'undefined' && window.matchMedia('(max-width: 700px)').matches
+    const autoNav = !isPhone && w.dockOpen && w.section !== 'gideon'
+    const navActions: GideonAction[] = []
+    if (autoNav) {
+      if (act.module) w.setModule(act.module)
+      if (act.factId && (act.navigateNow || act.module === 'map' || /show|take me|pin/i.test(text))) {
+        w.setSelectedMarkerId(act.factId)
+      }
+    } else if (act.factId && act.module === 'map') {
+      navActions.push({ type: 'showOnMap', id: act.factId })
+    } else if (act.factId && act.module) {
+      navActions.push({ type: 'open', id: act.factId })
+    }
+    const mergedActions = [...(act.actions ?? [])]
+    for (const a of navActions) {
+      const dup = mergedActions.some((x) => x.type === a.type && 'id' in x && 'id' in a && x.id === a.id)
+      if (!dup) mergedActions.push(a)
     }
     // One commit for build stats/loadout + hunt watchlist: two setCharacter
     // calls in the same tick would each start from the stale render value.
@@ -130,7 +147,8 @@ export function Gideon() {
     }
     setOffer(act.offer ?? null)
     // Task 101 actions are never auto-applied: they render as confirm chips
-    // (character changes) or plain navigation buttons under the answer.
+    // (character changes) or plain navigation buttons under the answer. Task 107
+    // §7 folds the suppressed phone navigation in as "Show on map" buttons.
     setLog((rows) => [
       ...rows,
       { role: 'you' as const, text },
@@ -139,7 +157,7 @@ export function Gideon() {
         text: act.say,
         factId: act.factId,
         links: act.links,
-        actions: act.actions,
+        actions: mergedActions.length ? mergedActions : undefined,
         sources: act.sources,
       },
     ].slice(-10))

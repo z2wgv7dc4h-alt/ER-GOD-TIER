@@ -386,6 +386,15 @@ export function useWorkspace() {
   return ctx
 }
 
+/**
+ * Task 107 §10 — the same context without the throw, for components that can
+ * also be rendered standalone (e.g. `BossPrepCard` inside a unit-rendered
+ * `EntityPanel`). Callers fall back to a passed-in value.
+ */
+export function useWorkspaceOptional(): Workspace | null {
+  return useContext(WorkspaceContext)
+}
+
 export type { FactState }
 
 export function factState(character: Character, id: string): FactState {

@@ -14,11 +14,14 @@ export function EntityLink({
   children,
   className = 'entity-link',
   title,
+  onClick,
 }: {
   id: string
   children?: ReactNode
   className?: string
   title?: string
+  /** Extra handler run after the entity panel opens (e.g. clear the omnibox). */
+  onClick?: () => void
 }) {
   const { openEntity } = useWorkspace()
   const label = children ?? entityName(id)
@@ -27,7 +30,10 @@ export function EntityLink({
       type="button"
       className={className}
       title={title ?? `Open ${typeof label === 'string' ? label : entityName(id)}`}
-      onClick={() => openEntity(id)}
+      onClick={() => {
+        openEntity(id)
+        onClick?.()
+      }}
     >
       {label}
     </button>

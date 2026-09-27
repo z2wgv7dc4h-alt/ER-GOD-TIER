@@ -34,7 +34,9 @@ import {
 import { useWorkspace } from '../state'
 import './library.css'
 
-const PAGE_SIZE = 50
+// Task 107 §9: a phone shows one card per row, so 50 results overflowed the
+// 4-screen budget. 30 keeps the grid scannable and the page short on any width.
+const PAGE_SIZE = 30
 
 /** Task 103 §2: the grid placeholder shown while the category dataset loads. */
 function SkeletonGrid({ rows = 9 }: { rows?: number }) {
