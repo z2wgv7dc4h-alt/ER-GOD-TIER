@@ -1,0 +1,47 @@
+/* Task 110 — Build lab power tools. */
+
+.build-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.build-panel .build-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+  margin: 10px 0;
+}
+
+.build-stat {
+  min-width: 0;
+}
+
+.build-stat-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.build-stat-head label {
+  font-weight: 600;
+}
+
+.build-tools input[type='range'],
+.build-tools input[type='number'] {
+  width: 100%;
+  min-height: 40px;
+}
+
+.build-plan {
+  border-left: 3px solid var(--line, #3a3a3a);
+  padding: 8px 10px;
+  margin-top: 10px;
+}
+
+@media (max-width: 560px) {
+  .build-panel .build-stats {
+    grid-template-columns: 1fr;
+  }
+}

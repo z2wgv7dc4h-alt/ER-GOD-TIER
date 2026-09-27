@@ -362,6 +362,10 @@
   color: var(--muted);
 }
 
+.lib-flag.verdict-usable {
+  color: var(--gold);
+}
+
 .lib-flag.verdict-not-for-you {
   color: var(--danger);
 }

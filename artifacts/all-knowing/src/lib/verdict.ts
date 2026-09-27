@@ -19,7 +19,7 @@ import type { Character } from '../types'
  * regardless of AR.
  */
 
-export type VerdictKind = 'upgrade' | 'side-grade' | 'not-for-you'
+export type VerdictKind = 'upgrade' | 'side-grade' | 'not-for-you' | 'usable'
 
 export type Verdict = {
   kind: VerdictKind
@@ -121,6 +121,15 @@ export function weaponVerdict(character: Character, weapons: Weapon[], weapon: W
   const result = getWeaponAttack({ weapon, attributes: attrs, upgradeLevel: upgrade })
   const candidateAr = displayAttackRating(result.attackPower)
   const current = bestEquippedAr(character, weapons)
+  // Task 110 §5: with nothing equipped there is no baseline to call something
+  // an upgrade. The requirements are the whole answer — "Usable" or "Needs …".
+  if (meets && current.ar <= 0) {
+    return {
+      kind: 'usable',
+      line: 'Usable: your stats meet its requirements and nothing better is equipped yet.',
+      meets: true,
+    }
+  }
   return verdictFromAr({
     meets,
     requirement,

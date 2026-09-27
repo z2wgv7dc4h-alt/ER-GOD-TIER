@@ -1742,11 +1742,13 @@ body { overflow: hidden; overscroll-behavior: none; }
 .entity-verdict { margin: 8px 0 0; padding: 8px 10px; border-left: 3px solid var(--line); font-size: 14px; }
 .entity-verdict.upgrade { border-color: var(--ok, #7fb36b); }
 .entity-verdict.side-grade { border-color: var(--gold, #c9a227); }
+.entity-verdict.usable { border-color: var(--gold, #c9a227); }
 .entity-verdict.not-for-you { border-color: #c45c3e; }
 .remembrance-options li { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .lib-card-flags .lib-flag.verdict { font-weight: 700; }
 .lib-card-flags .lib-flag.verdict-upgrade { color: var(--ok, #7fb36b); }
 .lib-card-flags .lib-flag.verdict-side-grade { color: var(--gold, #c9a227); }
+.lib-card-flags .lib-flag.verdict-usable { color: var(--gold, #c9a227); }
 .lib-card-flags .lib-flag.verdict-not-for-you { color: #c45c3e; }
 
 .completion-cats { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }

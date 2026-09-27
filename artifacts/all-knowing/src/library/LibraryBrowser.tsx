@@ -194,6 +194,7 @@ function CategoryRail({
  * `line` is the full sentence; the card gets the short form.
  */
 function verdictBadge(verdict: Verdict): string {
+  if (verdict.kind === 'usable') return 'Usable'
   if (verdict.kind === 'upgrade') {
     return verdict.gainPct != null ? `Upgrade +${verdict.gainPct}%` : 'Upgrade'
   }

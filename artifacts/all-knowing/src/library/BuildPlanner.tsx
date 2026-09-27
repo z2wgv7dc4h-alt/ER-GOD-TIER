@@ -9,6 +9,7 @@ import { toggleWatch, watchlistOf } from '../lib/leftovers'
 import { SOFT_CAPS, softCapLabel, type StatKey } from '../lib/softCaps'
 import { useWorkspace } from '../state'
 import type { Stats } from '../types'
+import { BuildPowerTools } from '../build/BuildPowerTools'
 import './advisor.css'
 
 /**
@@ -79,6 +80,10 @@ export function BuildPlanner() {
 
   return (
     <div className="advisor planner">
+      {/* Task 110 — the build power tools: presets, stat planner, level-up
+          calculator and smithing tracker, above the advisor cards. */}
+      <BuildPowerTools />
+
       <section className="panel advisor-card">
         <div className="kicker">Your build</div>
         <h3>{advice.build.label}</h3>
