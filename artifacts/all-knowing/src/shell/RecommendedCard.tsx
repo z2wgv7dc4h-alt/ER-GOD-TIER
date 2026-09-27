@@ -117,7 +117,7 @@ export function RecommendedCard() {
                 <li key={`${u.weaponName}-${u.upgrade}`}>
                   <strong>{u.name}</strong>
                   <p className="note" style={{ margin: '2px 0 0' }}>
-                    {u.ar} AR{u.gainPct ? ` · +${u.gainPct}%` : ''} · {u.meets ? 'requirements met' : u.requirement}
+                    Attack {u.ar}{u.gainPct ? ` · ${u.gainPct > 0 ? '+' : ''}${u.gainPct}%` : ''} · {u.meets ? '✓ meets' : u.requirement}
                     {u.obtainableNow ? ' · obtainable now' : u.owned ? ' · owned' : u.region ? ` · ${u.region}` : ''}
                   </p>
                 </li>

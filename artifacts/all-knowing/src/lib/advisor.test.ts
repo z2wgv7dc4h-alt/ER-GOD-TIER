@@ -71,12 +71,12 @@ describe('advisor AR-ranked upgrades', () => {
       discoveredGraces: ['grace:gatefront'],
     })
 
-  it('ranks upgrades by AR and specialises to the archetype', () => {
+  it('ranks upgrades by build fit and specialises to the archetype', () => {
     const c = dexChar()
     const list = rankUpgrades(c, detectBuild(c, weapons), { weapons, reachableUpgrade: 10, limit: 200 })
     expect(list.length).toBeGreaterThan(0)
     for (let i = 0; i + 1 < list.length; i++) {
-      expect(list[i].ar).toBeGreaterThanOrEqual(list[i + 1].ar)
+      expect(list[i].score).toBeGreaterThanOrEqual(list[i + 1].score)
     }
   })
 
@@ -218,10 +218,123 @@ describe('advisor warnings', () => {
 })
 
 describe('advisor advise', () => {
-  it('returns the five consolidated sections', () => {
+  it('returns the six consolidated sections', () => {
     const result = advise(char({ stats: stats({ intelligence: 60 }) }), { weapons })
-    expect(Object.keys(result).sort()).toEqual(['build', 'gear', 'todo', 'upgrades', 'warnings'])
+    expect(Object.keys(result).sort()).toEqual(['build', 'gear', 'later', 'todo', 'upgrades', 'warnings'])
     expect(result.build.archetype).toBe('intelligence')
     expect(result.gear.length).toBeGreaterThan(0)
+  })
+})
+
+/* ---------------------------------------------------------------------------
+ * Task 114 §6 — golden-path sanity. The same Lv 30 start as the phone audit:
+ * a Limgrave Dex character must never be told to chase DLC or far-region gear.
+ * ------------------------------------------------------------------------- */
+
+const DEX_STATS: Stats = {
+  vigor: 15,
+  mind: 10,
+  endurance: 12,
+  strength: 12,
+  dexterity: 18,
+  intelligence: 9,
+  faith: 8,
+  arcane: 10,
+}
+
+const STARTED = ['grace:gatefront', 'grace:stormhill-shack']
+
+/** DLC is open only with Mohg + Radahn down; these fixtures have neither. */
+function baseGameOnly(list: { dlc: boolean }[]): boolean {
+  return list.every((u) => !u.dlc)
+}
+
+const EARLY = /limgrave|weeping peninsula|stormhill|stormveil|liurnia|raya lucaria/i
+
+function letterRank(letter: string): number {
+  return { S: 6, A: 5, B: 4, C: 3, D: 2, E: 1, '–': 0, '-': 0 }[letter] ?? 0
+}
+
+/** The scaling letter the entry shows for the given attribute. */
+function scalingLetterFor(scaling: string, attr: string): string {
+  const m = scaling.match(new RegExp(`${attr} ([SABCDE])`, 'i'))
+  return m ? m[1].toUpperCase() : '-'
+}
+
+describe('advisor golden path (Task 114)', () => {
+  it('a Limgrave Dex start gets reachable, non-DLC, Dex-suited top 5', () => {
+    const c = char({
+      level: 30,
+      stats: DEX_STATS,
+      startingClass: 'warrior',
+      discoveredGraces: STARTED,
+      defeatedBosses: ['boss:margit'],
+      answers: { lastRegion: 'Limgrave' },
+    })
+    const adv = advise(c, { weapons, reachableUpgrade: 6, limit: 5 })
+    expect(adv.build.archetype).toBe('dexterity')
+    expect(adv.upgrades).toHaveLength(5)
+    expect(baseGameOnly(adv.upgrades)).toBe(true)
+    for (const u of adv.upgrades) {
+      expect(letterRank(scalingLetterFor(u.scaling, 'Dex')), u.name).toBeGreaterThanOrEqual(letterRank('C'))
+      expect(u.region ?? '', u.name).toMatch(EARLY)
+      expect(u.reachable).toBe(true)
+      expect(u.later).toBe(false)
+    }
+  })
+
+  it('a Limgrave Strength start gets reachable, non-DLC, Str-suited top 5', () => {
+    const c = char({
+      level: 35,
+      stats: { ...DEX_STATS, strength: 30, dexterity: 12 },
+      startingClass: 'hero',
+      discoveredGraces: STARTED,
+      defeatedBosses: ['boss:margit'],
+      answers: { lastRegion: 'Limgrave' },
+    })
+    const adv = advise(c, { weapons, reachableUpgrade: 6, limit: 5 })
+    expect(adv.build.archetype).toBe('strength')
+    expect(adv.upgrades).toHaveLength(5)
+    expect(baseGameOnly(adv.upgrades)).toBe(true)
+    for (const u of adv.upgrades) {
+      expect(letterRank(scalingLetterFor(u.scaling, 'Str')), u.name).toBeGreaterThanOrEqual(letterRank('C'))
+      expect(u.reachable).toBe(true)
+      expect(u.later).toBe(false)
+      expect(u.region ?? '', u.name).toMatch(EARLY)
+    }
+  })
+
+  it('a Liurnia Intelligence start gets reachable, non-DLC, Int-suited top 5', () => {
+    const c = char({
+      level: 40,
+      stats: { ...DEX_STATS, intelligence: 40, dexterity: 14 },
+      startingClass: 'astrologer',
+      discoveredGraces: STARTED,
+      defeatedBosses: ['boss:rennala', 'boss:radahn'],
+      answers: { lastRegion: 'Ainsel' },
+    })
+    const adv = advise(c, { weapons, reachableUpgrade: 6, limit: 5 })
+    expect(adv.build.archetype).toBe('intelligence')
+    expect(adv.upgrades).toHaveLength(5)
+    expect(baseGameOnly(adv.upgrades)).toBe(true)
+    for (const u of adv.upgrades) {
+      expect(letterRank(scalingLetterFor(u.scaling, 'Int')), u.name).toBeGreaterThanOrEqual(letterRank('C'))
+      expect(u.reachable).toBe(true)
+      expect(u.later).toBe(false)
+      expect(u.region ?? '', u.name).toMatch(/liurnia|raya lucaria|caelid|gael tunnel|ainsel|limgrave/i)
+    }
+  })
+
+  it('never recommends a Shadow of the Erdtree weapon before the DLC is open', () => {
+    const c = char({
+      level: 30,
+      stats: DEX_STATS,
+      discoveredGraces: STARTED,
+      answers: { lastRegion: 'Limgrave' },
+    })
+    const adv = advise(c, { weapons, reachableUpgrade: 6, limit: 200 })
+    expect(adv.upgrades.every((u) => !u.dlc)).toBe(true)
+    const pool = rankUpgrades(c, detectBuild(c, weapons), { weapons, reachableUpgrade: 6, limit: 500 })
+    expect(pool.some((u) => u.dlc && u.later)).toBe(true)
   })
 })

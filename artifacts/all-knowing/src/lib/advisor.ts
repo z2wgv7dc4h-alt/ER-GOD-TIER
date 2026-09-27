@@ -10,6 +10,7 @@ import {
   type Weapon,
 } from './ar'
 import { primaryScaling } from './upgradeAdvice'
+import { scalingLetter } from './weaponStats'
 import { buildHunt } from './buildHunt'
 import { opBuilds, type OpBuild } from '../knowledge/builds'
 import { pvpBuilds } from '../knowledge/pvp'
@@ -23,6 +24,7 @@ import { currentRegion } from './leftovers'
 import { lootPin } from './leftoverPins'
 import { SOFT_CAPS, type StatKey } from './softCaps'
 import { canonicalFactId } from './aliases'
+import { regionReachableFrom } from '../knowledge/regionRoutes'
 import type { CoordPin } from './coords'
 import type { Character, MapMarker, ModuleId, Stats } from '../types'
 
@@ -38,12 +40,20 @@ import type { Character, MapMarker, ModuleId, Stats } from '../types'
  *   - to-do via `gates.ts` + `storylines.ts` + `regionLevels.ts`
  *   - warnings from `softCaps.ts` and real weapon requirements
  *
+ * Task 114 makes the ranking honest: an item is only recommended when its
+ * acquisition region is reached (or adjacent on the guide's route) and it is
+ * not Shadow of the Erdtree content the character cannot reach. Scores weight
+ * AR by how well the weapon scales with the stats the build actually invests in
+ * and by how much it grows +10 levels in the main stat.
+ *
  * `advise` is synchronous and pure: callers pass the optional data they already
- * loaded (weapons, region bands, coords). It never fetches and never mutates.
+ * loaded (weapons, region bands, coords, weights). It never fetches and never
+ * mutates.
  */
 
 const OFF: Attribute[] = ['str', 'dex', 'int', 'fai', 'arc']
 const ATTR_LABELS: Record<Attribute, string> = { str: 'STR', dex: 'DEX', int: 'INT', fai: 'FAI', arc: 'ARC' }
+const ATTR_LABELS_SHORT: Record<Attribute, string> = { str: 'Str', dex: 'Dex', int: 'Int', fai: 'Fai', arc: 'Arc' }
 const STAT_LABELS: Record<keyof Stats, string> = {
   vigor: 'Vig',
   mind: 'Mind',
@@ -55,6 +65,11 @@ const STAT_LABELS: Record<keyof Stats, string> = {
   arcane: 'Arc',
 }
 const norm = (s: string) => s.toLowerCase().replace(/['’`]/g, '').replace(/[^a-z0-9+]+/g, ' ').trim()
+
+/** Weapon-type buckets used by the Task 114 sanity filters. */
+const TORCH_TYPE = 87
+const SHIELD_TYPES = new Set([65, 67, 69, 90])
+const BOW_TYPES = new Set([50, 51, 53, 55, 56])
 
 export type Archetype =
   | 'strength'
@@ -88,6 +103,25 @@ const ARCHETYPE_ATTRS: Record<Archetype, Attribute[]> = {
   hybrid: ['int', 'fai'],
 }
 
+/** The class starting armament, for the "otherwise compare to…" fallback. */
+const STARTING_WEAPON: Record<string, string> = {
+  vagabond: 'Longsword',
+  warrior: 'Scimitar',
+  hero: 'Battle Axe',
+  bandit: 'Great Knife',
+  astrologer: "Astrologer's Staff",
+  prophet: 'Short Spear',
+  samurai: 'Uchigatana',
+  prisoner: 'Estoc',
+  confessor: 'Broadsword',
+  wretch: 'Club',
+  'heavy-knight': 'Hefty Scimitar',
+  'idus-knight': 'Idus Sword',
+}
+
+const SCALING_RANK: Record<string, number> = { S: 6, A: 5, B: 4, C: 3, D: 2, E: 1, '–': 0, '-': 0 }
+const SCALING_FIT: Record<string, number> = { S: 1.5, A: 1.35, B: 1.2, C: 1.05, D: 0.9, E: 0.78, '–': 0.6, '-': 0.6 }
+
 export type BuildRead = {
   archetype: Archetype
   label: string
@@ -107,8 +141,17 @@ export type UpgradeRecommendation = {
   ar: number
   /** AR at the currently equipped upgrade, when this weapon is equipped. */
   arNow: number
-  /** Percent gain over the best currently equipped armament (0 when nothing equipped). */
+  /** Percent gain over the comparison armament (0 when there is no baseline). */
   gainPct: number
+  /** Name of the armament the gain is measured against. */
+  gainVs?: string
+  /** Build fit: AR × scaling fit × growth. Higher is better. */
+  score: number
+  /** Scaling letters at max upgrade, e.g. "Dex C · Str D". */
+  scaling: string
+  /** One-line why, e.g. "C Dex scaling, 5.5 wt, bleed". */
+  why: string
+  weight?: number
   meets: boolean
   /** Human string, e.g. "needs +5 STR", or '' when the requirements are met. */
   requirement: string
@@ -116,6 +159,12 @@ export type UpgradeRecommendation = {
   obtainableNow: boolean
   /** Behind a fired world-state gate — gone this run. */
   lost: boolean
+  /** Shadow of the Erdtree content the character cannot yet reach. */
+  dlc: boolean
+  /** Acquisition region not reached and not adjacent — belongs under "Later". */
+  later: boolean
+  /** Owned, or its acquisition region is reached/adjacent. */
+  reachable: boolean
   region?: string
   where?: string
   factId?: string
@@ -129,6 +178,8 @@ export type GearPick = {
   owned: boolean
   obtainableNow: boolean
   lost: boolean
+  reachable: boolean
+  dlc: boolean
   region?: string
   where?: string
   factId?: string
@@ -190,6 +241,8 @@ export type AdviseOptions = {
   reachableUpgrade?: number
   /** Current/max equip load, when the caller has it. No formula in-repo. */
   equipLoad?: { current: number; max: number }
+  /** Base weapon name (normalised) → weight, so the 70% load guard can act. */
+  weights?: Record<string, number>
   /** Cap for the upgrades list. Default 8. */
   limit?: number
 }
@@ -197,6 +250,8 @@ export type AdviseOptions = {
 export type Advice = {
   build: BuildRead
   upgrades: UpgradeRecommendation[]
+  /** Unreachable picks (DLC locked, region not reached), capped at 3. */
+  later: UpgradeRecommendation[]
   gear: GearPick[]
   todo: TodoItem[]
   warnings: AdvisorWarning[]
@@ -230,8 +285,6 @@ for (const f of facts) {
 }
 
 // Task 113 §6 — the reverse of `Fact.implies`: which facts a fact opens up.
-// Used to give each "still up" boss a concrete reason ("opens Liurnia") instead
-// of the same generic "you have already reached X" line for every one.
 const unlocksBy = new Map<string, Fact[]>()
 for (const f of facts) {
   for (const req of f.implies) {
@@ -253,7 +306,7 @@ export function reachedRegions(character: Character): string[] {
     ...character.collectedItems,
     ...character.completedQuestSteps,
   ]) {
-    const f = byId.get(id)
+    const f = byId.get(canonicalFactId(id))
     if (f?.region) out.add(f.region)
   }
   for (const id of character.discoveredGraces) {
@@ -266,14 +319,23 @@ export function reachedRegions(character: Character): string[] {
   return [...out]
 }
 
-function regionReached(reached: string[], region?: string | null): boolean {
-  if (!region) return false
-  const r = norm(region)
-  if (r.length < 4) return false
-  return reached.some((x) => {
-    const n = norm(x)
-    return n.length >= 4 && (n.includes(r) || r.includes(n))
-  })
+/**
+ * Task 114 §1 — the character can enter the Realm of Shadow once Mohg and
+ * Radahn are down (the withered arm), or if they are already there, or if any
+ * DLC fact is known at all. Otherwise every SotE item stays under "Later".
+ */
+function canEnterDlc(character: Character): boolean {
+  if (known(character, 'boss:mohg') && known(character, 'boss:radahn')) return true
+  if (known(character, 'region:shadow')) return true
+  for (const id of [
+    ...character.discoveredGraces,
+    ...character.defeatedBosses,
+    ...character.collectedItems,
+    ...character.completedQuestSteps,
+  ]) {
+    if (byId.get(canonicalFactId(id))?.campaign === 'sote') return true
+  }
+  return false
 }
 
 /** A fired gate that names this item — it is gone for this run. */
@@ -399,36 +461,156 @@ function slotUpgrade(character: Character, weaponName: string): number {
   return slot?.upgrade ?? 0
 }
 
+function maxUpgradeOf(weapon: Weapon): number {
+  return Math.max(0, weapon.attack.length - 1)
+}
+
+/** The scaling letter for one attribute at a given upgrade level. */
+function letterAt(weapon: Weapon, attr: Attribute, upgrade: number): string {
+  const value = weapon.attributeScaling[upgrade]?.[attr] ?? 0
+  return scalingLetter(weapon.scalingTiers, value)
+}
+
+function bestLetter(weapon: Weapon, attrs: Attribute[], upgrade: number): string {
+  let best = '–'
+  for (const a of attrs) {
+    const letter = letterAt(weapon, a, upgrade)
+    if (SCALING_RANK[letter] > SCALING_RANK[best]) best = letter
+  }
+  return best
+}
+
+/** "Dex C · Str D", archetype attribute first, then the rest. */
+function scalingText(weapon: Weapon, archetype: Archetype): string {
+  const max = maxUpgradeOf(weapon)
+  const primary = ARCHETYPE_ATTRS[archetype]
+  const parts: string[] = []
+  for (const a of primary) parts.push(`${ATTR_LABELS_SHORT[a]} ${letterAt(weapon, a, max)}`)
+  for (const a of OFF) {
+    if (primary.includes(a)) continue
+    parts.push(`${ATTR_LABELS_SHORT[a]} ${letterAt(weapon, a, max)}`)
+  }
+  return parts.join(' · ')
+}
+
+function weaponWeight(opts: AdviseOptions, weapon: Weapon): number | undefined {
+  const w = opts.weights?.[norm(weapon.weaponName)] ?? opts.weights?.[norm(weapon.name)]
+  return typeof w === 'number' && Number.isFinite(w) ? w : undefined
+}
+
+/** The five attributes weighted by how much the character invests in them. */
+function fitOf(weapon: Weapon, build: BuildRead, attrs: ReturnType<typeof statsToAttributes>, ar: number, arPlus: number): number {
+  const max = maxUpgradeOf(weapon)
+  const relevant = ARCHETYPE_ATTRS[build.archetype]
+  const archLetter = bestLetter(weapon, relevant, max)
+  const topLetter = bestLetter(weapon, OFF, max)
+  const primary = primaryScaling(weapon)
+  const onBuild = Boolean(primary && relevant.includes(primary))
+  let fit = SCALING_FIT[archLetter] ?? 0.6
+  // AR mostly from a stat the player does not invest in: the weapon only
+  // splashes the archetype, so dock it.
+  if (!onBuild && SCALING_RANK[archLetter] < SCALING_RANK[topLetter]) fit *= 0.8
+  // Reflects growth: a weapon that barely improves +10 levels is a dead end.
+  const growth = ar > 0 ? Math.max(0.5, Math.min(1.6, arPlus / ar)) : 1
+  return fit * growth * (1 + attrs[relevant[0]] / 500)
+}
+
+type Baseline = { ar: number; name?: string }
+
+function bestEquipped(character: Character, weapons: Weapon[]): Baseline {
+  let ar = 0
+  let name: string | undefined
+  for (const slot of character.loadout.filter((s) => s.kind === 'armament')) {
+    const rating = attackRatingForSlot(weapons, slot, character.stats, false)
+    if (rating.status === 'ok' && rating.total > ar) {
+      ar = rating.total
+      name = slot.name
+    }
+  }
+  return { ar, name }
+}
+
+function findWeaponByName(weapons: Weapon[], name: string): Weapon | undefined {
+  const n = norm(name)
+  const hits = weapons.filter((w) => norm(w.weaponName) === n || norm(w.name) === n)
+  return hits.find((w) => w.affinityId === 0) ?? hits.find((w) => w.affinityId === -1) ?? hits[0]
+}
+
+function arAt(weapon: Weapon, character: Character, upgrade: number): number {
+  const result = getWeaponAttack({
+    weapon,
+    attributes: statsToAttributes(character.stats),
+    upgradeLevel: Math.min(Math.max(0, upgrade), maxUpgradeOf(weapon)),
+  })
+  return displayAttackRating(result.attackPower)
+}
+
+/**
+ * Task 114 §4 — the armament a pick is measured against: the best equipped
+ * weapon, else the best weapon already owned, else the class starting weapon.
+ */
+function comparisonBaseline(character: Character, weapons: Weapon[], opts: AdviseOptions): Baseline {
+  const equipped = bestEquipped(character, weapons)
+  if (equipped.ar > 0) return equipped
+
+  const reachable = reachableUpgradeFor(character, opts)
+  let owned: Baseline = { ar: 0 }
+  for (const row of loot) {
+    if (row.kind !== 'weapon' || !known(character, row.id)) continue
+    const weapon = findWeaponByName(weapons, row.name)
+    if (!weapon) continue
+    const ar = arAt(weapon, character, reachable)
+    if (ar > owned.ar) owned = { ar, name: row.name }
+  }
+  if (owned.ar > 0) return owned
+
+  const start = STARTING_WEAPON[character.startingClass]
+  if (start) {
+    const weapon = findWeaponByName(weapons, start)
+    if (weapon) {
+      const ar = arAt(weapon, character, reachable)
+      if (ar > 0) return { ar, name: start }
+    }
+  }
+  return { ar: 0 }
+}
+
 export function rankUpgrades(character: Character, build: BuildRead, opts: AdviseOptions = {}): UpgradeRecommendation[] {
   const weapons = opts.weapons
   if (!weapons) return []
-  const maxResults = opts.limit ?? 8
+  const cap = opts.limit ?? 200
   const reachable = reachableUpgradeFor(character, opts)
-  const prefer = ARCHETYPE_ATTRS[build.archetype]
+  const relevant = ARCHETYPE_ATTRS[build.archetype]
   const attrs = statsToAttributes(character.stats)
+  const reached = reachedRegions(character)
+  const dlcOpen = canEnterDlc(character)
+  const baseline = comparisonBaseline(character, weapons, opts)
 
-  let equippedBestAr = 0
-  for (const slot of character.loadout.filter((s) => s.kind === 'armament')) {
-    const rating = attackRatingForSlot(weapons, slot, character.stats, false)
-    if (rating.status === 'ok') equippedBestAr = Math.max(equippedBestAr, rating.total)
-  }
+  // Classes the player already uses: allow bows/shields only then (Task 114 §3).
+  const equippedTypes = new Set(equippedWeapons(character, weapons).map((w) => w.weaponType))
+  const weightBudget = opts.equipLoad && opts.equipLoad.max > 0 ? opts.equipLoad : null
 
   const byName = new Map<string, UpgradeRecommendation>()
   for (const weapon of weapons) {
     if (weapon.affinityId !== 0 && weapon.affinityId !== -1) continue
     if (weapon.sorceryTool || weapon.incantationTool) continue
+    if (weapon.weaponType === TORCH_TYPE) continue
+    if (SHIELD_TYPES.has(weapon.weaponType) && !equippedTypes.has(weapon.weaponType)) continue
+    if (BOW_TYPES.has(weapon.weaponType) && !equippedTypes.has(weapon.weaponType)) continue
+
+    const max = maxUpgradeOf(weapon)
     const primary = primaryScaling(weapon)
     const bleed = (weapon.attack[0]?.[AttackPowerType.BLEED] ?? 0) > 0
-    const onBuild = primary ? prefer.includes(primary) : false
-    if (!onBuild && !(build.archetype === 'bleed' && bleed)) continue
+    const archLetter = bestLetter(weapon, relevant, max)
+    const onBuild = Boolean(primary && relevant.includes(primary))
+    // Keep on-build weapons, or off-build ones that still scale meaningfully
+    // (≥ C) in the archetype stat — but never a random AR-king.
+    const splash = SCALING_RANK[archLetter] >= SCALING_RANK.C
+    const bleedBuild = build.archetype === 'bleed' && bleed
+    if (!onBuild && !splash && !bleedBuild) continue
 
-    const maxUpgrade = Math.max(0, weapon.attack.length - 1)
-    const upgrade = Math.min(reachable, maxUpgrade)
-    const result = getWeaponAttack({
-      weapon,
-      attributes: attrs,
-      upgradeLevel: upgrade,
-    })
+    const upgrade = Math.min(reachable, max)
+    const result = getWeaponAttack({ weapon, attributes: attrs, upgradeLevel: upgrade })
     const ar = displayAttackRating(result.attackPower)
     if (!ar) continue
 
@@ -436,14 +618,36 @@ export function rankUpgrades(character: Character, build: BuildRead, opts: Advis
     const owned = Boolean((lootRow && known(character, lootRow.id)) || ownedInLoadout(character, weapon.weaponName))
     const gate = lostToGate(character, lootRow?.id, lootRow?.name ?? weapon.weaponName)
     const lost = Boolean(gate)
-    const reached = reachedRegions(character)
-    const obtainableNow = !owned && !lost && Boolean(lootRow) && regionReached(reached, lootRow?.region)
+    const region = lootRow?.region
+    const weight = weaponWeight(opts, weapon)
+
+    // Task 114 §3 — a weapon that would push a not-yet-owned kit past 70% load
+    // is skipped outright.
+    if (!owned && weightBudget && weight != null) {
+      if ((weightBudget.current + weight) / weightBudget.max > 0.7) continue
+    }
+
+    const dlc = Boolean(weapon.dlc)
+    const dlcBlocked = dlc && !dlcOpen
+    const placeReachable =
+      !dlcBlocked && !lost && Boolean(lootRow) && regionReachableFrom(reached, region)
+    const isReachable = owned || placeReachable
+
     const { meets, requirement } = requirementOf(character, weapon)
     const arNow = ownedInLoadout(character, weapon.weaponName)
-      ? attackRatingAt(weapon, character, slotUpgrade(character, weapon.weaponName))
+      ? arAt(weapon, character, slotUpgrade(character, weapon.weaponName))
       : 0
+    const attrsPlus = { ...attrs, [relevant[0]]: Math.min(99, attrs[relevant[0]] + 10) }
+    const arPlus = displayAttackRating(
+      getWeaponAttack({ weapon, attributes: attrsPlus, upgradeLevel: upgrade }).attackPower,
+    )
     const gainPct =
-      equippedBestAr > 0 ? Math.round(((ar - equippedBestAr) / equippedBestAr) * 1000) / 10 : 0
+      baseline.ar > 0 ? Math.round(((ar - baseline.ar) / baseline.ar) * 1000) / 10 : 0
+
+    const whyBits = [`${archLetter} ${ATTR_LABELS_SHORT[relevant[0]]} scaling`]
+    if (weight != null) whyBits.push(`${weight} wt`)
+    if (bleed) whyBits.push('bleed')
+    if ((weapon.attack[0]?.[AttackPowerType.FROST] ?? 0) > 0) whyBits.push('frost')
 
     const entry: UpgradeRecommendation = {
       name: weapon.name,
@@ -453,31 +657,31 @@ export function rankUpgrades(character: Character, build: BuildRead, opts: Advis
       ar,
       arNow,
       gainPct,
+      gainVs: baseline.ar > 0 ? baseline.name : undefined,
+      score: Math.round(ar * fitOf(weapon, build, attrs, ar, arPlus) * 10) / 10,
+      scaling: scalingText(weapon, build.archetype),
+      why: whyBits.join(', '),
+      weight,
       meets,
       requirement,
       owned,
-      obtainableNow,
+      obtainableNow: !owned && !lost && placeReachable,
       lost,
-      region: lootRow?.region,
+      dlc,
+      later: !isReachable,
+      reachable: isReachable,
+      region,
       where: lootRow?.how,
       factId: lootRow?.id,
       pin: lootRow ? lootPin(lootRow, opts.coords ?? []) : null,
     }
     const cur = byName.get(weapon.weaponName)
-    if (!cur || entry.ar > cur.ar) byName.set(weapon.weaponName, entry)
+    if (!cur || entry.score > cur.score) byName.set(weapon.weaponName, entry)
   }
 
-  return [...byName.values()].sort((a, b) => b.ar - a.ar).slice(0, maxResults)
-}
-
-function attackRatingAt(weapon: Weapon, character: Character, upgrade: number): number {
-  const maxUpgrade = Math.max(0, weapon.attack.length - 1)
-  const result = getWeaponAttack({
-    weapon,
-    attributes: statsToAttributes(character.stats),
-    upgradeLevel: Math.min(Math.max(0, upgrade), maxUpgrade),
-  })
-  return displayAttackRating(result.attackPower)
+  return [...byName.values()]
+    .sort((a, b) => b.score - a.score || b.ar - a.ar || a.name.localeCompare(b.name))
+    .slice(0, cap)
 }
 
 // ---------------------------------------------------------------------------
@@ -543,28 +747,42 @@ export const GEAR_TAGS: Record<Archetype, GearTag[]> = {
 
 export function pickGear(character: Character, build: BuildRead, opts: AdviseOptions = {}): GearPick[] {
   const reached = reachedRegions(character)
-  return GEAR_TAGS[build.archetype].map((tag) => {
-    const lootRow = lootForName(tag.name)
-    const fact = lootRow ? undefined : factByNorm.get(norm(tag.name))
-    const id = lootRow?.id ?? fact?.id
-    const owned = Boolean((id && known(character, id)) || ownedInLoadout(character, tag.name))
-    const gate = lostToGate(character, id, tag.name)
-    const lost = Boolean(gate)
-    const region = lootRow?.region ?? fact?.region
-    const obtainableNow = !owned && !lost && Boolean(id) && regionReached(reached, region)
-    return {
-      name: lootRow?.name ?? fact?.name ?? tag.name,
-      kind: tag.kind,
-      why: tag.why,
-      owned,
-      obtainableNow,
-      lost,
-      region,
-      where: lootRow?.how,
-      factId: id,
-      pin: lootRow ? lootPin(lootRow, opts.coords ?? []) : null,
-    }
-  })
+  const dlcOpen = canEnterDlc(character)
+  return GEAR_TAGS[build.archetype]
+    .map((tag) => {
+      const lootRow = lootForName(tag.name)
+      const fact = lootRow ? undefined : factByNorm.get(norm(tag.name))
+      const id = lootRow?.id ?? fact?.id
+      const owned = Boolean((id && known(character, id)) || ownedInLoadout(character, tag.name))
+      const gate = lostToGate(character, id, tag.name)
+      const lost = Boolean(gate)
+      const region = lootRow?.region ?? fact?.region
+      const campaign = lootRow?.campaign ?? fact?.campaign
+      const dlc = campaign === 'sote' || campaign === 'tarnished-pack'
+      const reachable =
+        owned || (!(dlc && !dlcOpen) && !lost && Boolean(id) && regionReachableFrom(reached, region))
+      return {
+        name: lootRow?.name ?? fact?.name ?? tag.name,
+        kind: tag.kind,
+        why: tag.why,
+        owned,
+        obtainableNow: !owned && !lost && reachable,
+        lost,
+        reachable,
+        dlc,
+        region,
+        where: lootRow?.how,
+        factId: id,
+        pin: lootRow ? lootPin(lootRow, opts.coords ?? []) : null,
+      }
+    })
+    // Reachable picks first (owned, then obtainable), then the long shots.
+    .sort(
+      (a, b) =>
+        Number(b.owned) - Number(a.owned) ||
+        Number(b.obtainableNow) - Number(a.obtainableNow) ||
+        Number(b.reachable) - Number(a.reachable),
+    )
 }
 
 // ---------------------------------------------------------------------------
@@ -639,16 +857,13 @@ export function buildTodo(character: Character, opts: AdviseOptions = {}): TodoI
     })
   })
 
-  // (b) Bosses in regions already reached but not defeated. Task 113 §6: each
-  // one gets a concrete reason from the data — its level band, its drops, what
-  // it opens, or the gate it sits in front of — never a repeated "you have
-  // already reached X".
+  // (b) Bosses in regions already reached but not defeated.
   const usedBossReasons = new Set<string>()
   let regionCount = 0
   for (const f of facts) {
     if (regionCount >= 4) break
     if (f.kind !== 'boss' || known(character, f.id)) continue
-    if (!regionReached(reached, f.region)) continue
+    if (!regionReachableFrom(reached, f.region)) continue
     const bits: string[] = []
     const band = opts.areas?.length ? bandFor(opts.areas, f.region) : null
     if (band) bits.push(`recommended Lv ${band.levelMin}\u2013${band.levelMax}, you're ${character.level}`)
@@ -662,8 +877,6 @@ export function buildTodo(character: Character, opts: AdviseOptions = {}): TodoI
       bits.push(names.length ? `gate ahead (${gate.name}) locks ${names.join(', ')}` : `gate ahead: ${gate.name}`)
     }
     let reason = bits.length ? bits.join('; ') : `${f.name} is still up in ${f.region}`
-    // Guarantee the spec's "no repeated reason text" even when two bosses share
-    // a region and have no drops/unlocks of their own.
     if (usedBossReasons.has(reason)) reason = `${reason} — ${f.name}`
     usedBossReasons.add(reason)
     out.push({
@@ -732,8 +945,6 @@ export function buildTodo(character: Character, opts: AdviseOptions = {}): TodoI
 export function buildWarnings(character: Character, opts: AdviseOptions = {}): AdvisorWarning[] {
   const out: AdvisorWarning[] = []
 
-  // Equip load only when the caller supplies real numbers — there is no
-  // player equip-load formula in this repo, so the advisor never invents one.
   if (opts.equipLoad && opts.equipLoad.max > 0) {
     const pct = opts.equipLoad.current / opts.equipLoad.max
     if (pct > 0.7) {
@@ -744,7 +955,6 @@ export function buildWarnings(character: Character, opts: AdviseOptions = {}): A
     }
   }
 
-  // Stats below an equipped weapon's requirement.
   const weapons = opts.weapons
   if (weapons) {
     const attrs = statsToAttributes(character.stats)
@@ -765,7 +975,6 @@ export function buildWarnings(character: Character, opts: AdviseOptions = {}): A
     }
   }
 
-  // Points spent past the final soft cap.
   for (const key of Object.keys(character.stats) as StatKey[]) {
     const caps = SOFT_CAPS[key]
     const last = caps[caps.length - 1]
@@ -788,9 +997,14 @@ export function buildWarnings(character: Character, opts: AdviseOptions = {}): A
 
 export function advise(character: Character, opts: AdviseOptions = {}): Advice {
   const build = detectBuild(character, opts.weapons)
+  const pool = rankUpgrades(character, build, { ...opts, limit: 500 })
+  const limit = opts.limit ?? 8
   return {
     build,
-    upgrades: rankUpgrades(character, build, opts),
+    upgrades: pool.filter((u) => u.reachable).slice(0, limit),
+    // "Later" is only useful when we can say where: a DLC item or an item with
+    // a known region. An unplaceable weapon is neither recommended nor listed.
+    later: pool.filter((u) => !u.reachable && (u.dlc || Boolean(u.region))).slice(0, 3),
     gear: pickGear(character, build, opts),
     todo: buildTodo(character, opts),
     warnings: buildWarnings(character, opts),

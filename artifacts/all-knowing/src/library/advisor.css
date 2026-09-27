@@ -94,18 +94,20 @@
 
 .advisor-caps {
   display: flex;
-  gap: 4px;
+  gap: 6px;
 }
 
-.advisor-caps i {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+/* Task 114 §7 — labelled soft-cap ticks (40 / 60 / 80), not anonymous dots. */
+.advisor-caps span {
+  font-size: 11px;
+  line-height: 1;
+  color: var(--muted);
   border: 1px solid var(--line);
+  padding: 1px 4px;
 }
 
-.advisor-caps i.on {
-  background: var(--gold);
+.advisor-caps span.on {
+  color: var(--gold);
   border-color: var(--gold);
 }
 

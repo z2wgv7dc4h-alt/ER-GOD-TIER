@@ -3,6 +3,9 @@ import { opBuilds } from '../knowledge/builds'
 import { pvpBuilds } from '../knowledge/pvp'
 import { loadWeapons, type Weapon } from '../lib/ar'
 import { advise, planRespec } from '../lib/advisor'
+import { useArmory } from '../lib/armory'
+import { useGearInfo } from '../build/useGearInfo'
+import { equipLoad } from '../lib/gearSheet'
 import { loadRegionLevels, type RegionLevel } from '../lib/regionLevels'
 import { useCoords } from '../lib/coords'
 import { toggleWatch, watchlistOf } from '../lib/leftovers'
@@ -10,6 +13,7 @@ import { SOFT_CAPS, softCapLabel, type StatKey } from '../lib/softCaps'
 import { useWorkspace } from '../state'
 import type { Stats } from '../types'
 import { LevelUpCalculator, LoadoutPresets, SmithingTracker, StatPlanner } from '../build/BuildPowerTools'
+import { EntityLink } from '../EntityLink'
 import './advisor.css'
 import '../build/build.css'
 
@@ -33,6 +37,8 @@ const STAT_LABELS: Record<StatKey, string> = {
 }
 
 const CUSTOM = '__custom'
+
+const normName = (s: string) => s.toLowerCase().replace(/['’`]/g, '').replace(/[^a-z0-9+]+/g, ' ').trim()
 
 /**
  * Task 113 §2 — one collapsible card per section of the Builds page. Native
@@ -62,6 +68,8 @@ function BuildSection({
 export function BuildPlanner() {
   const w = useWorkspace()
   const coords = useCoords()
+  const { weapons: armoryWeapons } = useArmory()
+  const { gearInfo } = useGearInfo()
   const [weapons, setWeapons] = useState<Weapon[] | null>(null)
   const [areas, setAreas] = useState<RegionLevel[]>([])
   const [targetId, setTargetId] = useState('')
@@ -78,9 +86,31 @@ export function BuildPlanner() {
     return () => { cancelled = true }
   }, [])
 
+  const weights = useMemo(() => {
+    const map: Record<string, number> = {}
+    for (const row of armoryWeapons) {
+      const key = normName(row.name)
+      const value = Number.parseFloat(row.weight)
+      if (key && Number.isFinite(value) && value > 0 && map[key] === undefined) map[key] = value
+    }
+    return map
+  }, [armoryWeapons])
+
+  const load = useMemo(() => {
+    const total = w.character.loadout.reduce((sum, slot) => sum + (gearInfo(slot).weight ?? 0), 0)
+    return equipLoad(total, w.character.stats.endurance)
+  }, [w.character.loadout, w.character.stats.endurance, gearInfo])
+
   const advice = useMemo(
-    () => advise(w.character, { weapons: weapons ?? undefined, areas, coords }),
-    [w.character, weapons, areas, coords],
+    () =>
+      advise(w.character, {
+        weapons: weapons ?? undefined,
+        areas,
+        coords,
+        weights,
+        equipLoad: load.max > 0 ? { current: load.total, max: load.max } : undefined,
+      }),
+    [w.character, weapons, areas, coords, weights, load],
   )
 
   const plan = useMemo(
@@ -127,15 +157,20 @@ export function BuildPlanner() {
                 <div className="advisor-bar" aria-hidden>
                   <i style={{ width: `${Math.min(100, (value / 99) * 100)}%` }} />
                 </div>
+                {/* Task 114 §7 — the breakpoints are labelled (40 / 60 / 80) like
+                    the planner, not anonymous dots. */}
                 <div className="advisor-caps" aria-hidden>
                   {SOFT_CAPS[key].map((cap) => (
-                    <i key={cap} className={value >= cap ? 'on' : ''} />
+                    <span key={cap} className={value >= cap ? 'on' : ''}>{cap}</span>
                   ))}
                 </div>
               </div>
             )
           })}
         </div>
+        <p className="note">
+          <span className="softcap-legend"><i /> soft caps</span>
+        </p>
         {advice.warnings.length > 0 && (
           <>
             <div className="kicker" style={{ marginTop: 12 }}>Warnings</div>
@@ -153,7 +188,7 @@ export function BuildPlanner() {
       <BuildSection title="Stronger for your build" defaultOpen>
         {advice.upgrades.length === 0 ? (
           <p className="note">
-            {weapons ? 'No on-build weapon beats what you have at these stats.' : 'Loading weapon data…'}
+            {weapons ? 'No reachable on-build weapon beats what you have at these stats.' : 'Loading weapon data…'}
           </p>
         ) : (
           <ul className="advisor-list">
@@ -164,15 +199,22 @@ export function BuildPlanner() {
                     <strong>{u.name}</strong> {u.affinity !== 'Unique' ? `· ${u.affinity}` : ''} +{u.upgrade}
                   </span>
                   <span className="note">
-                    {u.ar} AR used{u.gainPct ? ` · +${u.gainPct}% vs equipped` : ''}
+                    Attack {u.ar}
+                    {u.gainPct ? ` · ${u.gainPct > 0 ? '+' : ''}${u.gainPct}% vs ${u.gainVs ?? 'your kit'}` : ''}
                   </span>
                 </div>
+                <p className="note">{u.scaling} — {u.why}</p>
                 <div className="opts">
-                  <span className={u.meets ? 'chip' : 'chip warn'}>{u.meets ? 'requirements met' : u.requirement}</span>
+                  {u.meets ? (
+                    <span className="chip on">✓ meets</span>
+                  ) : (
+                    <span className="chip warn">{u.requirement}</span>
+                  )}
                   {u.owned && <span className="chip on">owned</span>}
                   {u.obtainableNow && <span className="chip on">obtainable now</span>}
                   {u.lost && <span className="chip warn">locked out this run</span>}
                   {!u.owned && !u.obtainableNow && !u.lost && u.region && <span className="chip">{u.region}</span>}
+                  {u.factId && <EntityLink id={u.factId}>{u.region ?? 'where to get it'}</EntityLink>}
                   {u.factId && (
                     <button type="button" className="chip" onClick={() => showOnMap(u.factId)}>
                       Show on map
@@ -183,6 +225,26 @@ export function BuildPlanner() {
               </li>
             ))}
           </ul>
+        )}
+        {advice.later.length > 0 && (
+          <>
+            <div className="kicker" style={{ marginTop: 12 }}>Later</div>
+            <p className="note">Reachable only once you get there — or open the Realm of Shadow.</p>
+            <ul className="advisor-list">
+              {advice.later.map((u) => (
+                <li key={`later-${u.weaponName}-${u.upgrade}`}>
+                  <div className="advisor-row">
+                    <span><strong>{u.name}</strong> +{u.upgrade}</span>
+                    <span className="note">Attack {u.ar}</span>
+                  </div>
+                  <p className="note">
+                    {u.dlc ? 'Shadow of the Erdtree — not open yet' : u.region ?? 'No known acquisition'}
+                    {u.where ? ` · ${u.where}` : ''}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </>
         )}
       </BuildSection>
 
@@ -306,7 +368,17 @@ export function BuildPlanner() {
             <li key={`${g.kind}-${g.name}`}>
               <div className="advisor-row">
                 <span><strong>{g.name}</strong> <em className="dim">{g.kind}</em></span>
-                <span className="note">{g.owned ? 'owned' : g.obtainableNow ? `obtainable · ${g.region ?? ''}` : g.lost ? 'locked out' : g.region ?? ''}</span>
+                <span className="note">
+                  {g.owned
+                    ? 'owned'
+                    : g.obtainableNow
+                      ? `obtainable · ${g.region ?? ''}`
+                      : g.lost
+                        ? 'locked out'
+                        : g.reachable
+                          ? g.region ?? ''
+                          : `later${g.dlc ? ' · Shadow of the Erdtree' : g.region ? ` · ${g.region}` : ''}`}
+                </span>
               </div>
               <p className="note">{g.why}{g.where ? ` ${g.where}` : ''}</p>
               {g.factId && (

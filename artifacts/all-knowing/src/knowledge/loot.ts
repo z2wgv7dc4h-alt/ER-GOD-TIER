@@ -132,6 +132,26 @@ export const loot: Loot[] = [
   { id: 'loot:stargazer-heirloom', name: 'Stargazer Heirloom', aliases: ['stargazer'], kind: 'talisman', region: 'Liurnia', campaign: 'base', how: 'Found in the Divine Tower of Liurnia.' },
   { id: 'loot:bullgoat-armor', name: 'Bull-Goat Armor', aliases: ['bullgoat set', 'bull goat set', 'bull goat armor'], kind: 'item', region: 'Mountaintops', campaign: 'base', how: 'Found in the Mountaintops of the Giants.' },
   { id: 'loot:dagger', name: 'Dagger', aliases: ['plain dagger'], kind: 'weapon', region: 'Roundtable', campaign: 'base', how: 'Bought from the Twin Maiden Husks at the Roundtable Hold.' },
+
+  // --- Task 114: the early-game weapons the advisor must be able to place. Each
+  // row is what the reachability/region ranking reads; names verified against
+  // public/sourced/open/names.json, one original location sentence each.
+  { id: 'loot:nagakiba', name: 'Nagakiba', aliases: ['naga'], kind: 'weapon', region: 'Limgrave', campaign: 'base', how: 'Bloody Finger Hunter Yura on the Limgrave road; finish or end his quest to claim it.' },
+  { id: 'loot:shamshir', name: 'Shamshir', aliases: ['shamshir'], kind: 'weapon', region: 'Limgrave', campaign: 'base', how: 'Corpse in the water-filled chamber of Highroad Cave, northern Limgrave.' },
+  { id: 'loot:estoc', name: 'Estoc', aliases: ['estoc'], kind: 'weapon', region: 'Liurnia', campaign: 'base', how: 'Sold by the Nomadic Merchant in southern Liurnia; the Prisoner class also starts with it.' },
+  { id: 'loot:rogiers-rapier', name: "Rogier's Rapier", aliases: ['rogier rapier'], kind: 'weapon', region: 'Stormveil', campaign: 'base', how: 'Given by Sorcerer Rogier once Godrick is down; his Stormveil chapel is the tie-in.' },
+  { id: 'loot:great-knife', name: 'Great Knife', aliases: ['great knife'], kind: 'weapon', region: 'Limgrave', campaign: 'base', how: 'Bandit starting blade, or a 2% drop from the small Demi-Humans.' },
+
+  { id: 'loot:brick-hammer', name: 'Brick Hammer', aliases: ['brick hammer'], kind: 'weapon', region: 'Stormveil', campaign: 'base', how: 'Corpse along the Stormveil Castle wall past the Cliffside site of grace.' },
+  { id: 'loot:rusted-anchor', name: 'Rusted Anchor', aliases: ['rusted anchor'], kind: 'weapon', region: 'Weeping Peninsula', campaign: 'base', how: 'Dropped by the Scaly Misbegotten in the Morne Tunnel, Weeping Peninsula.' },
+  { id: 'loot:large-club', name: 'Large Club', aliases: ['large club'], kind: 'weapon', region: 'Limgrave', campaign: 'base', how: 'Corpse on the cliff by the Demi-Humans south of the Forlorn Hound Evergaol, Limgrave.' },
+  { id: 'loot:great-mace', name: 'Great Mace', aliases: ['great mace'], kind: 'weapon', region: 'Liurnia', campaign: 'base', how: 'Chest by the trebuchets before the Grand Lift of Dectus, Liurnia.' },
+  { id: 'loot:bastard-sword', name: 'Bastard Sword', aliases: ['bastard sword'], kind: 'weapon', region: 'Weeping Peninsula', campaign: 'base', how: 'Sold by the Nomadic Merchant at the Castle Morne Rampart, Weeping Peninsula.' },
+  { id: 'loot:lordsworns-greatsword', name: "Lordsworn's Greatsword", aliases: ['lordsworn greatsword'], kind: 'weapon', region: 'Limgrave', campaign: 'base', how: 'In the carriage at Gatefront Ruins, Limgrave.' },
+
+  { id: 'loot:rosus-axe', name: "Rosus' Axe", aliases: ['rosus axe'], kind: 'weapon', region: 'Liurnia', campaign: 'base', how: 'Chest in the Black Knife Catacombs, north-east Liurnia; needs a Stonesword Key.' },
+  { id: 'loot:glintstone-kris', name: 'Glintstone Kris', aliases: ['glintstone kris'], kind: 'weapon', region: 'Raya Lucaria', campaign: 'base', how: 'Given in the Raya Lucaria Grand Library if you side with Sellen at the end of her line.' },
+  { id: 'loot:ivory-sickle', name: 'Ivory Sickle', aliases: ['ivory sickle'], kind: 'weapon', region: 'Liurnia', campaign: 'base', how: 'Stone coffin on the hill at the Village of the Albinaurics, Liurnia.' },
 ]
 
 export function matchLoot(text: string): Loot[] {
