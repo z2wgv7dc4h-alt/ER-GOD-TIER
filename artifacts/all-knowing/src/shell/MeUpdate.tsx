@@ -10,7 +10,7 @@ import { useWorkspace } from '../state'
 // Screenshot source: the Reckon workspace, lazy like every other room.
 const ReckonWorkspace = lazy(() => import('../Reckon').then((m) => ({ default: m.ReckonWorkspace })))
 
-function SaveDrop() {
+export function SaveDrop() {
   const { setCharacter, setModule } = useWorkspace()
   const inputRef = useRef<HTMLInputElement>(null)
   const [hot, setHot] = useState(false)

@@ -10,7 +10,11 @@ export type Section = 'me' | 'journey' | 'library' | 'gideon'
 
 /** Every sub-view each section exposes via its segmented control. */
 export type SectionSubs = {
-  me: 'overview' | 'update' | 'profiles'
+  /**
+   * Task 94: Tarnished is Overview · Gear · Setup · Profiles. `update` is kept
+   * in the union only as a legacy alias the URL layer resolves to `setup`.
+   */
+  me: 'overview' | 'gear' | 'setup' | 'profiles' | 'update'
   journey: 'now' | 'map' | 'quests'
   library: 'search' | 'builds' | 'kit' | 'reference'
   gideon: never
@@ -49,12 +53,26 @@ export type Stats = {
   arcane: number
 }
 
+/**
+ * Task 94 — where an equipped row sits in the Gear sheet. Legacy loadouts (a
+ * save dump, an OP kit, the demo) have no `slot`, so the sheet auto-arranges
+ * them by kind until the player taps a slot and assigns one.
+ */
+export type GearSlot =
+  | 'right-1' | 'right-2' | 'right-3'
+  | 'left-1' | 'left-2' | 'left-3'
+  | 'head' | 'chest' | 'arms' | 'legs'
+  | 'talisman-1' | 'talisman-2' | 'talisman-3' | 'talisman-4'
+  | 'spell-1' | 'spell-2' | 'spell-3' | 'spell-4' | 'spell-5' | 'spell-6' | 'spell-7' | 'spell-8'
+
 export type LoadoutSlot = {
   id: string
   name: string
-  kind: 'armament' | 'catalyst' | 'shield' | 'armor' | 'talisman' | 'ash'
+  kind: 'armament' | 'catalyst' | 'shield' | 'armor' | 'talisman' | 'spell' | 'ash'
   affinity?: string
   upgrade?: number
+  /** Gear-sheet position (Task 94). Optional for backwards compatibility. */
+  slot?: GearSlot
 }
 
 export type MarkerKind = 'grace' | 'boss' | 'item' | 'npc' | 'fragment' | 'spirit-ash' | 'dungeon'

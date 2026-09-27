@@ -4,6 +4,7 @@ import { canonicalHunts } from '../knowledge/completion'
 import { warpGraces } from '../knowledge/graces'
 import { allLines } from '../knowledge/storylines'
 import { summarize } from '../lib/infer'
+import { setupSteps, weakestStep } from '../lib/setupWizard'
 import { sourceLabel } from '../lib/sourceLabel'
 import { Recents, StatEdit, softCapMark } from '../QoL'
 import { factState, useWorkspace } from '../state'
@@ -34,10 +35,10 @@ function CharacterCard() {
         <button
           type="button"
           className="chip"
-          title="Add a save or screenshot"
-          onClick={() => go('me', 'update')}
+          title="Guided setup"
+          onClick={() => go('me', 'setup')}
         >
-          Update
+          Set up
         </button>
       </div>
       <h2>{character.name}</h2>
@@ -78,7 +79,16 @@ function CharacterCard() {
 }
 
 export function MeOverview() {
-  const { character, setSelectedMarkerId, setModule } = useWorkspace()
+  const { character, go, setSelectedMarkerId, setModule } = useWorkspace()
+  const firstRun =
+    character.source === 'empty' &&
+    character.level <= 1 &&
+    character.loadout.length === 0 &&
+    character.defeatedBosses.length === 0 &&
+    character.discoveredGraces.length === 0 &&
+    character.collectedItems.length === 0
+  const weak = weakestStep(character)
+  const weakLabel = setupSteps.find((s) => s.id === weak)?.label ?? 'Setup'
   const graces = new Set(character.discoveredGraces)
   const bosses = new Set(character.defeatedBosses)
   const items = new Set(character.collectedItems)
@@ -94,6 +104,16 @@ export function MeOverview() {
   return (
     <div className="me-overview">
       <WorldRibbon />
+      {firstRun && (
+        <section className="panel setup-cta">
+          <div className="kicker">New Tarnished</div>
+          <h3 style={{ fontFamily: 'var(--font-display)', margin: '4px 0 6px' }}>Set up your Tarnished</h3>
+          <p className="note">A PS5 player with no save file: answer, photograph, and the app infers the rest. About five minutes.</p>
+          <button type="button" className="chip on" onClick={() => go('me', 'setup')}>
+            Start the guided setup
+          </button>
+        </section>
+      )}
       <CharacterCard />
       <StatEdit />
       <section className="panel">
@@ -108,6 +128,9 @@ export function MeOverview() {
         <div className="opts" style={{ marginTop: 12 }}>
           <button type="button" className="chip" onClick={() => { setSelectedMarkerId(null); setModule('map') }}>
             Open the map
+          </button>
+          <button type="button" className="chip on" title={`Completeness is weakest on ${weakLabel}`} onClick={() => go('me', 'setup')}>
+            Fill the weakest step: {weakLabel}
           </button>
         </div>
       </section>

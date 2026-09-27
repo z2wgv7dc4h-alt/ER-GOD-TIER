@@ -310,3 +310,13 @@ article HTML; only structured fields/text, each row keeping its source.
   (`menu`/`item` message bundles, ESD talk scripts, map MSBs) by the `scripts/extract-*.py`
   extractors; only strings/ids/positions, no game binaries.
 
+## Elden Ring Wiki — Equip Load by Endurance table
+
+- **Source:** https://eldenring.wiki.gg/wiki/Equip_Load (CC BY-SA 4.0).
+- **Used by:** `src/knowledge/equipLoad.ts`; shown on the Gear sheet as the max equip-load
+  denominator.
+- **What was taken:** the per-Endurance maximum equip-load values (Endurance 8–99) and the load
+  class cutoffs (light <30%, medium 30–70%, heavy >70%, overloaded >100%).
+- **What was changed:** encoded as a TypeScript lookup table with a clamped accessor. It is the only
+  player equip-load source in the repo — the regulation extract has none.
+

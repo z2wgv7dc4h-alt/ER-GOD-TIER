@@ -16,7 +16,8 @@ export const SECTIONS: SectionMeta[] = [
     label: 'Tarnished',
     subs: [
       { id: 'overview', label: 'Overview' },
-      { id: 'update', label: 'Update' },
+      { id: 'gear', label: 'Gear' },
+      { id: 'setup', label: 'Setup' },
       { id: 'profiles', label: 'Profiles' },
     ],
   },
@@ -56,7 +57,7 @@ export function isSub(section: Section, sub: string): sub is Sub {
 
 /** The compat shim: every old ModuleId still maps to a (section, sub). */
 export const MODULE_TO_LOCATION: Record<ModuleId, { section: Section; sub: Sub }> = {
-  reckon: { section: 'me', sub: 'update' },
+  reckon: { section: 'me', sub: 'setup' },
   map: { section: 'journey', sub: 'map' },
   quests: { section: 'journey', sub: 'quests' },
   build: { section: 'library', sub: 'builds' },
@@ -96,7 +97,9 @@ export function hashToLocation(hash: string): Location | null {
   const section = match[1] as Section
   if (!SECTIONS.some((s) => s.id === section)) return null
   if (section === 'gideon') return { section, sub: null }
-  const sub = match[2]
+  // Task 94: `#/me/update` is kept as an alias that resolves to `setup`.
+  let sub = match[2]
+  if (section === 'me' && sub === 'update') sub = 'setup'
   if (sub && isSub(section, sub)) return { section, sub }
   return { section, sub: defaultSub(section) }
 }

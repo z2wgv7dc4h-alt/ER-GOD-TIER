@@ -45,7 +45,7 @@ const LEGACY_KEY = 'all-knowing.character.v1'
 export const defaultUi = (): VaultUi => ({
   module: 'reckon',
   section: 'me',
-  sub: 'update',
+  sub: 'overview',
   missingOnly: true,
   selectedMarkerId: null,
 })

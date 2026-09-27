@@ -23,7 +23,8 @@ describe('Task 91 four-section shell', () => {
   it('mounts the new shell components and keeps every room lazy', () => {
     for (const part of [
       '<MeOverview />',
-      '<MeUpdate />',
+      '<MeGear />',
+      '<MeSetup />',
       '<MeProfiles />',
       '<JourneyNow />',
       '<AtlasWorkspace />',

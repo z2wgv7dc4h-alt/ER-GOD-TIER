@@ -13,7 +13,7 @@ import { JourneyNow } from './shell/JourneyNow'
 import { MapControls } from './shell/MapControls'
 import { MeOverview } from './shell/MeOverview'
 import { MeProfiles } from './shell/MeProfiles'
-import { MeUpdate } from './shell/MeUpdate'
+import { MeSetup } from './shell/MeSetup'
 import { SubTabs } from './shell/SubTabs'
 import { TabBar } from './shell/TabBar'
 import { WorkspaceProvider, useWorkspace } from './state'
@@ -23,6 +23,9 @@ const AtlasWorkspace = lazy(() => import('./Atlas').then((m) => ({ default: m.At
 const BuildWorkspace = lazy(() => import('./Build').then((m) => ({ default: m.BuildWorkspace })))
 const BuildPlanner = lazy(() => import('./library/BuildPlanner').then((m) => ({ default: m.BuildPlanner })))
 const KitWorkspace = lazy(() => import('./Build').then((m) => ({ default: m.KitWorkspace })))
+// The Gear sheet resolves entity details through the library catalogue, so it
+// stays a lazy chunk rather than dragging FanAPI/regulation into the shell.
+const MeGear = lazy(() => import('./shell/MeGear').then((m) => ({ default: m.MeGear })))
 const QuestWorkspace = lazy(() => import('./Quests').then((m) => ({ default: m.QuestWorkspace })))
 const CodexWorkspace = lazy(() => import('./Codex').then((m) => ({ default: m.CodexWorkspace })))
 const LegacyCodex = lazy(() => import('./library/LegacyCodex').then((m) => ({ default: m.LegacyCodex })))
@@ -61,7 +64,8 @@ function EngineBridge() {
 function ShellContent() {
   const { section, sub } = useWorkspace()
   if (section === 'me') {
-    if (sub === 'update') return <MeUpdate />
+    if (sub === 'gear') return <MeGear />
+    if (sub === 'setup' || sub === 'update') return <MeSetup />
     if (sub === 'profiles') return <MeProfiles />
     return <MeOverview />
   }

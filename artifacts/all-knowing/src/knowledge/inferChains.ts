@@ -37,6 +37,20 @@ export type InferChain = {
   why: string
 }
 
+/**
+ * A named NPC only drops their Bell Bearing once they are gone, which means the
+ * player reached that NPC's area. The bearing's shop side (Twin Maiden Husks)
+ * lives in `merchantConditions.ts`; this is only the reachability implication.
+ */
+function bellBearingRule(bearing: string, region: string, owner: string): InferChain {
+  return {
+    whenFact: bearing,
+    implies: [region],
+    confidence: 0.85,
+    why: `${owner} only drops their Bell Bearing once they are gone, so ${owner}'s area was reached.`,
+  }
+}
+
 export const inferChains: InferChain[] = [
   {
     whenFact: 'item:fingerslayer',
@@ -114,6 +128,41 @@ export const inferChains: InferChain[] = [
     confidence: 0.9,
     why: 'Both halves of the Haligtree Secret Medallion are held, so the secret path to the Consecrated Snowfield is open.',
   },
+  // Task 94 — Setup wizard rules. Great Rune → shardbearer and remembrance →
+  // boss already live on their catalog rows (see `catalog.ts`); these are the
+  // rules that were missing. Dectus follows the same compound rule as Haligtree.
+  {
+    whenFact: 'item:dectus-medallion-left',
+    implies: ['item:dusk-medallion'],
+    allOf: ['item:dectus-medallion-right'],
+    confidence: 0.9,
+    why: 'Both halves of the Dectus Medallion are held, so the Grand Lift of Dectus opens the way to Altus.',
+  },
+  {
+    whenFact: 'item:dectus-medallion-right',
+    implies: ['item:dusk-medallion'],
+    allOf: ['item:dectus-medallion-left'],
+    confidence: 0.9,
+    why: 'Both halves of the Dectus Medallion are held, so the Grand Lift of Dectus opens the way to Altus.',
+  },
+  // Bell bearing → NPC/region state (item ids are real `guide/catalog.json` rows).
+  bellBearingRule('bell-bearing-kale-s-bell-bearing', 'region:limgrave', 'Merchant Kalé'),
+  bellBearingRule('bell-bearing-rogier-s-bell-bearing', 'region:limgrave', 'Sorcerer Rogier'),
+  bellBearingRule('bell-bearing-d-s-bell-bearing', 'region:limgrave', 'D, Hunter of the Dead'),
+  bellBearingRule('bell-bearing-corhyn-s-bell-bearing', 'region:limgrave', 'Brother Corhyn'),
+  bellBearingRule('bell-bearing-patches-bell-bearing', 'region:limgrave', 'Patches'),
+  bellBearingRule('bell-bearing-gostoc-s-bell-bearing', 'region:limgrave', 'Gatekeeper Gostoc'),
+  bellBearingRule('bell-bearing-sellen-s-bell-bearing', 'region:liurnia', 'Sorceress Sellen'),
+  bellBearingRule('bell-bearing-miriel-s-bell-bearing', 'region:liurnia', 'Miriel'),
+  bellBearingRule('bell-bearing-iji-s-bell-bearing', 'region:liurnia', 'Iji'),
+  bellBearingRule('bell-bearing-blackguard-s-bell-bearing', 'region:liurnia', 'Blackguard Big Boggart'),
+  bellBearingRule('bell-bearing-thops-s-bell-bearing', 'region:liurnia', 'Thops'),
+  bellBearingRule('bell-bearing-seluvis-s-bell-bearing', 'region:liurnia', 'Preceptor Seluvis'),
+  bellBearingRule('bell-bearing-gowry-s-bell-bearing', 'region:caelid', 'Gowry'),
+  bellBearingRule('bell-bearing-abandoned-merchant-s-bell-bearing', 'region:leyndell', 'the Abandoned Merchant'),
+  bellBearingRule('bell-bearing-ymir-s-bell-bearing', 'region:shadow', 'Count Ymir'),
+  bellBearingRule('bell-bearing-igon-s-bell-bearing', 'region:shadow', 'Igon'),
+  bellBearingRule('bell-bearing-moore-s-bell-bearing', 'region:shadow', 'Moore'),
 ]
 
 const byWhen = new Map<string, InferChain[]>()

@@ -61,7 +61,7 @@ describe('vault round-trip', () => {
 
 describe('location persistence (Task 93)', () => {
   it('defaults the UI to a real section/sub, not just a module id', () => {
-    expect(uiLocation(defaultUi())).toEqual({ section: 'me', sub: 'update' })
+    expect(uiLocation(defaultUi())).toEqual({ section: 'me', sub: 'overview' })
   })
 
   it('migrates a legacy vault that only stored a ModuleId', () => {

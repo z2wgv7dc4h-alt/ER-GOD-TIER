@@ -390,6 +390,10 @@ export const facts: Fact[] = [
   { id: 'item:mimic-tear-ashes', kind: 'item', name: 'Mimic Tear Ashes', aliases: ['mimic tear ashes', 'mimic ash'], region: 'Nokron', campaign: 'base', implies: [] },
   { id: 'item:haligtree-medallion-left', kind: 'item', name: 'Haligtree Secret Medallion (Left)', aliases: ['haligtree medallion left'], region: 'Mountaintops', campaign: 'base', implies: [] },
   { id: 'item:haligtree-medallion-right', kind: 'item', name: 'Haligtree Secret Medallion (Right)', aliases: ['haligtree medallion right'], region: 'Liurnia', campaign: 'base', implies: [] },
+  // Task 94: the Dectus medallion is the same compound-gate shape as the
+  // Haligtree one — each half implies nothing on its own (see inferChains.ts).
+  { id: 'item:dectus-medallion-left', kind: 'item', name: 'Dectus Medallion (Left)', aliases: ['dectus medallion left'], region: 'Limgrave', campaign: 'base', implies: [] },
+  { id: 'item:dectus-medallion-right', kind: 'item', name: 'Dectus Medallion (Right)', aliases: ['dectus medallion right'], region: 'Liurnia', campaign: 'base', implies: [] },
 
   // Task 74: the remaining companion lines. Every row is authored quest state
   // (`implies: []`) — no extracted flag is invented, and no new fact closes the
