@@ -24,6 +24,7 @@ const BuildWorkspace = lazy(() => import('./Build').then((m) => ({ default: m.Bu
 const KitWorkspace = lazy(() => import('./Build').then((m) => ({ default: m.KitWorkspace })))
 const QuestWorkspace = lazy(() => import('./Quests').then((m) => ({ default: m.QuestWorkspace })))
 const CodexWorkspace = lazy(() => import('./Codex').then((m) => ({ default: m.CodexWorkspace })))
+const LegacyCodex = lazy(() => import('./library/LegacyCodex').then((m) => ({ default: m.LegacyCodex })))
 const Gideon = lazy(() => import('./Gideon').then((m) => ({ default: m.Gideon })))
 
 function EngineBridge() {
@@ -71,6 +72,7 @@ function ShellContent() {
   if (section === 'library') {
     if (sub === 'builds') return <BuildWorkspace />
     if (sub === 'kit') return <KitWorkspace />
+    if (sub === 'reference') return <LegacyCodex />
     return <CodexWorkspace />
   }
   return (

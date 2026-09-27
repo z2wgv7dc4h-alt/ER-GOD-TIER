@@ -36,6 +36,7 @@ export const SECTIONS: SectionMeta[] = [
       { id: 'search', label: 'Search' },
       { id: 'builds', label: 'Builds' },
       { id: 'kit', label: 'Kit' },
+      { id: 'reference', label: 'Reference' },
     ],
   },
   { id: 'gideon', label: 'Gideon', subs: [] },
@@ -71,6 +72,7 @@ export function locationToModule(section: Section, sub: Sub | null): ModuleId {
   if (section === 'journey' && sub === 'map') return 'map'
   if (section === 'journey' && sub === 'quests') return 'quests'
   if (section === 'library' && sub === 'builds') return 'build'
+  if (section === 'library' && sub === 'reference') return 'codex'
   if (section === 'library' && sub === 'kit') return 'build'
   if (section === 'library' && sub === 'search') return 'codex'
   // The remaining sub-views fall back to the rooms that used to own them.

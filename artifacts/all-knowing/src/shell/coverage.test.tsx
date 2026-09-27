@@ -20,7 +20,7 @@ vi.mock('../Reckon', () => ({ ReckonWorkspace: () => null }))
 import { demoCharacter } from '../data/seed'
 import type { Character, ModuleId, Section, Sub } from '../types'
 import { BuildWorkspace, KitWorkspace } from '../Build'
-import { CodexWorkspace } from '../Codex'
+import { LegacyCodex } from '../library/LegacyCodex'
 import { Gideon } from '../Gideon'
 import { QuestWorkspace } from '../Quests'
 import { JourneyNow } from './JourneyNow'
@@ -134,7 +134,7 @@ describe('Task 92 coverage: every feature has a home', () => {
   })
 
   it('row 7 — browse chips for every Search corpus on the empty state', () => {
-    const html = render(<CodexWorkspace />, { section: 'library', sub: 'search' })
+    const html = render(<LegacyCodex />, { section: 'library', sub: 'reference' })
     expect(html).toContain('Browse a corpus')
     for (const corpus of ['Recipes', 'Secrets', 'Guides', 'Community builds', 'Dialogue', 'Wiki prose', 'Boss strategy']) {
       expect(html, corpus).toContain(corpus)
@@ -142,7 +142,7 @@ describe('Task 92 coverage: every feature has a home', () => {
   })
 
   it('row 8 — Weak to / resists on a Search entity page and in the Build matchup', () => {
-    const codex = render(<CodexWorkspace />, { section: 'library', sub: 'search', selectedMarkerId: 'boss:margit' })
+    const codex = render(<LegacyCodex />, { section: 'library', sub: 'reference', selectedMarkerId: 'boss:margit' })
     expect(codex).toContain('Weak to / resists')
     const kit = render(<KitWorkspace />, { section: 'library', sub: 'kit' })
     expect(kit).toContain('Weak to / resists')

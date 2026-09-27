@@ -12,7 +12,7 @@ export type Section = 'me' | 'journey' | 'library' | 'gideon'
 export type SectionSubs = {
   me: 'overview' | 'update' | 'profiles'
   journey: 'now' | 'map' | 'quests'
-  library: 'search' | 'builds' | 'kit'
+  library: 'search' | 'builds' | 'kit' | 'reference'
   gideon: never
 }
 
