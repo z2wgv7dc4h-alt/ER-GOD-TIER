@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { facts } from '../knowledge/catalog'
+import { canonicalEntityId, registerEntityGraphData } from '../lib/entityGraph'
 import { loadWeapons, type Weapon } from '../lib/ar'
 import { useArmory, type ArmoryBoss, type ArmoryWeapon } from '../lib/armory'
 import { loadBossCombat, type CombatStats } from '../lib/enemy'
@@ -91,7 +92,10 @@ function factFor(name: string) {
 function factIdFor(category: CategoryId, name: string): string {
   const known = factFor(name)
   if (known) return known.id
-  return `${FACT_PREFIX[category]}:${slug(name)}`
+  // No catalog fact matched: let the entity graph be the id authority so a
+  // synthesised id (item:uchigatana) resolves through canonicalFactId/aliases and
+  // ownership + Related edges agree with the rest of the app.
+  return canonicalEntityId(`${FACT_PREFIX[category]}:${slug(name)}`, name)
 }
 
 const ICON_KIND: Partial<Record<CategoryId, string>> = {
@@ -618,6 +622,16 @@ export function useLibraryCatalog(activeCategory: CategoryId): LibraryCatalog {
     }
     return () => { cancelled = true }
   }, [activeCategory, bossCombat.length, recipes.length, secrets.length, guides.length, acquisitions.length, dialogue.length])
+
+  // Task 97: fold the loaded async reference data into the shared entity graph,
+  // so the universal entity panel's edges agree with the Library browser.
+  useEffect(() => {
+    registerEntityGraphData({
+      bossCombat: bossCombat.length ? bossCombat : undefined,
+      recipes: recipes.length ? recipes : undefined,
+      acquisitions: acquisitions.length ? acquisitions : undefined,
+    })
+  }, [bossCombat, recipes, acquisitions])
 
   return useMemo(
     () =>

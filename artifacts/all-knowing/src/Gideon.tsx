@@ -13,7 +13,6 @@ import { packStatus } from './lib/sourcePack'
 import { hasGideonKey, type ChatMessage } from './lib/muse'
 import { labelOf } from './lib/links'
 import { Related } from './Related'
-import { targetModule } from './lib/related'
 import { WikiText } from './WikiText'
 import { useWorkspace } from './state'
 
@@ -260,10 +259,7 @@ export function Gideon() {
                 <button
                   type="button"
                   className="chip on"
-                  onClick={() => {
-                    w.setSelectedMarkerId(row.factId!)
-                    w.setModule(targetModule(row.factId!))
-                  }}
+                  onClick={() => w.openEntity(row.factId!)}
                 >
                   Open {labelOf(row.factId)}
                 </button>

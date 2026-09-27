@@ -49,7 +49,8 @@ describe('AtlasWorkspace engine-live projection', () => {
   })
 
   it('defaults the detail panel to an engine marker, not a plate pin', () => {
-    expect(html).toContain('<h3>Engine Grace One</h3>')
-    expect(html).not.toContain('<h3>The First Step</h3>')
+    // Task 97: the name renders as an EntityLink (button) inside the heading.
+    expect(html).toContain('>Engine Grace One</button>')
+    expect(html).not.toContain('>The First Step</button>')
   })
 })

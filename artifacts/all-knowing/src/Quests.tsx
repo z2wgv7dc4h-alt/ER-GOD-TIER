@@ -4,6 +4,7 @@ import { npcLocate } from './knowledge/npcLocations'
 import { allLines, type Line } from './knowledge/storylines'
 import { LockoutPrompt } from './LockoutPrompt'
 import { MedusaRoute } from './MedusaRoute'
+import { EntityLink } from './EntityLink'
 import { Related } from './Related'
 import { Thread } from './Thread'
 import { applyFacts, clearFact } from './lib/infer'
@@ -106,7 +107,9 @@ export function QuestWorkspace() {
       <section className="panel">
         <MedusaRoute />
         <div className="kicker">{active.kind}</div>
-        <h3 style={{ fontFamily: 'var(--font-display)', margin: '6px 0 8px' }}>{active.name}</h3>
+        <h3 style={{ fontFamily: 'var(--font-display)', margin: '6px 0 8px' }}>
+          <EntityLink id={`line:${active.id}`}>{active.name}</EntityLink>
+        </h3>
         {npcLoc && (
           <p className="note" style={{ marginBottom: 8 }}>
             {npcLoc.name} is at {npcLoc.graceName}.

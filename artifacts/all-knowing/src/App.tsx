@@ -8,6 +8,7 @@ import {
 import { mergeCharacter } from './lib/merge'
 import { CommandHits, useClipboardShots, useHotkeys } from './QoL'
 import { FirstVisitHint } from './Help'
+import { EntityOverlay } from './library/EntityOverlay'
 import { Header } from './shell/Header'
 import { JourneyNow } from './shell/JourneyNow'
 import { MapControls } from './shell/MapControls'
@@ -132,6 +133,7 @@ function AppShell() {
         )}
       </div>
       <TabBar />
+      <EntityOverlay />
     </div>
   )
 }

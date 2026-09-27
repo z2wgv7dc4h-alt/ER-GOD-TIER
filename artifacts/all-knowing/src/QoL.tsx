@@ -311,8 +311,14 @@ export function CommandHits() {
   /** The one select action, shared by click and Enter (no duplicate handler). */
   function choose(hit: SearchHit | undefined) {
     if (!hit) return
-    w.setSelectedMarkerId(hit.id)
-    w.setModule(hit.module)
+    // Task 97: a real entity hit opens the universal panel overlay; the
+    // merchant/missable rows are not entities and keep their navigation.
+    if (hit.source === 'seed' || hit.source === 'warp' || hit.source === 'boss' || hit.source === 'loot' || hit.source === 'alias') {
+      w.openEntity(hit.id)
+    } else {
+      w.setSelectedMarkerId(hit.id)
+      w.setModule(hit.module)
+    }
     w.setQuery('')
   }
 

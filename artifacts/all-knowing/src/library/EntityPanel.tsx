@@ -1,8 +1,28 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { status, type EntityState } from '../lib/entityGraph'
 import { Related } from '../Related'
 import { WikiText } from '../WikiText'
 import type { Character } from '../types'
 import { attributeStats, isOwned, meetsRequirements, type AttributeKey, type LibraryEntity } from './model'
+
+const STATUS_LABELS: Record<EntityState, string> = {
+  done: 'Done',
+  owned: 'Owned',
+  available: 'Available',
+  locked: 'Locked',
+  missed: 'Missed',
+  unknown: 'Unknown',
+}
+
+function EntityStatusStrip({ factId, character }: { factId: string; character: Character }) {
+  const info = useMemo(() => status(factId, character), [factId, character])
+  return (
+    <div className={`entity-status ${info.state}`} title={info.why}>
+      <span className="entity-status-state">{STATUS_LABELS[info.state]}</span>
+      <span className="entity-status-why">{info.why}</span>
+    </div>
+  )
+}
 
 /**
  * Task 95 — the reusable entity detail panel.
@@ -15,6 +35,11 @@ import { attributeStats, isOwned, meetsRequirements, type AttributeKey, type Lib
 export type EntityPanelProps = {
   entity: LibraryEntity
   character: Character
+  /**
+   * Canonical fact id, when it differs from `entity.factId` (Task 97: the
+   * universal overlay mounts any graph entity, not just a Library row).
+   */
+  factId?: string
   /** Overrides; when omitted they are derived from `character`. */
   owned?: boolean
   requirementsMet?: boolean | null
@@ -27,6 +52,7 @@ export type EntityPanelProps = {
   onEquip?: () => void
   onAskGideon?: () => void
   onShowOnMap?: () => void
+  onSetGoal?: () => void
 }
 
 type Tab = 'stats' | 'where' | 'lore' | 'related'
@@ -53,6 +79,7 @@ function RequirementRow({ attr, value, character }: { attr: AttributeKey; value:
 export function EntityPanel({
   entity,
   character,
+  factId,
   owned,
   requirementsMet,
   ar,
@@ -63,8 +90,10 @@ export function EntityPanel({
   onEquip,
   onAskGideon,
   onShowOnMap,
+  onSetGoal,
 }: EntityPanelProps) {
   const [tab, setTab] = useState<Tab>('stats')
+  const statusFactId = factId ?? entity.factId
   const isOwnedValue = owned ?? isOwned(entity, character)
   const metValue = requirementsMet === undefined ? meetsRequirements(entity, character) : requirementsMet
   const requirementEntries = Object.entries(entity.requirements ?? {}) as [AttributeKey, number][]
@@ -89,6 +118,8 @@ export function EntityPanel({
           </button>
         )}
       </header>
+
+      <EntityStatusStrip factId={statusFactId} character={character} />
 
       <div className="lib-panel-tabs" role="tablist">
         {(['stats', 'where', 'lore', 'related'] as Tab[]).map((t) => (
@@ -246,6 +277,11 @@ export function EntityPanel({
         {onAskGideon && (
           <button type="button" className="chip" onClick={onAskGideon}>
             Ask Gideon
+          </button>
+        )}
+        {onSetGoal && (
+          <button type="button" className="chip" onClick={onSetGoal}>
+            Set as goal
           </button>
         )}
       </footer>

@@ -9,6 +9,7 @@ import {
   markerKind,
   markerName,
 } from './lib/mapEngine'
+import { EntityLink } from './EntityLink'
 import { Thread } from './Thread'
 import { factState, useWorkspace, type FactState } from './state'
 import { useCoords } from './lib/coords'
@@ -505,7 +506,7 @@ export function AtlasWorkspace() {
           “not discovered” — it is unknown until the name is on the warp list.
         </p>
 
-        <h3>{selectedName}</h3>
+        <h3>{selectedId ? <EntityLink id={selectedId}>{selectedName}</EntityLink> : selectedName}</h3>
         {selected && (
           <p className="note">
             {selected.leftover ? 'leftover · ' : ''}{selected.kind} · {selected.region} · {selectedState}
