@@ -1,0 +1,2564 @@
+[
+ {
+  "id": "abandoned-cave",
+  "name": "Abandoned Cave",
+  "kind": "cave",
+  "region": "Greyoll's Dragonbarrow",
+  "world": "overworld",
+  "x": 50.82,
+  "y": 61.69,
+  "bosses": [
+   {
+    "id": "hunt:cleanrot-knight-spear-cleanrot-knight-sickle",
+    "name": "Cleanrot Knight (Spear) & Cleanrot Knight (Sickle)"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "academy-crystal-cave",
+  "name": "Academy Crystal Cave",
+  "kind": "cave",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld",
+  "x": 16.2,
+  "y": 46.65,
+  "bosses": [
+   {
+    "id": "hunt:crystalian-staff-crystalian-spear",
+    "name": "Crystalian (Staff) & Crystalian (Spear)"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "altus-tunnel",
+  "name": "Altus Tunnel",
+  "kind": "tunnel",
+  "region": "Altus Plateau",
+  "world": "overworld",
+  "x": 32.26,
+  "y": 29.75,
+  "bosses": [
+   {
+    "id": "hunt:crystalian-spear-crystalian-ringblade",
+    "name": "Crystalian (Spear) & Crystalian (Ringblade)"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "auriza-hero-s-grave",
+  "name": "Auriza Hero's Grave",
+  "kind": "hero-grave",
+  "region": "Capital Outskirts",
+  "world": "overworld",
+  "x": 43.49,
+  "y": 31.69,
+  "bosses": [
+   {
+    "id": "hunt:crucible-knight-crucible-knight-ordovis",
+    "name": "Crucible Knight & Crucible Knight Ordovis"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 1,
+  "dlc": false
+ },
+ {
+  "id": "auriza-side-tomb",
+  "name": "Auriza Side Tomb",
+  "kind": "catacomb",
+  "region": "Capital Outskirts",
+  "world": "overworld",
+  "x": 43.79,
+  "y": 30.28,
+  "bosses": [
+   {
+    "id": "boss:grave-warden-duelist",
+    "name": "Grave Warden Duelist"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "belurat-gaol",
+  "name": "Belurat Gaol",
+  "kind": "gaol",
+  "region": "Gravesite Plain",
+  "world": "shadow",
+  "x": 14.65,
+  "y": 40.65,
+  "bosses": [
+   {
+    "id": "hunt:demi-human-swordmaster-onze",
+    "name": "Demi-Human Swordmaster Onze"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "belurat-tower-settlement",
+  "name": "Belurat Tower Settlement",
+  "kind": "legacy",
+  "region": "Gravesite Plain",
+  "world": "shadow",
+  "x": 8.38,
+  "y": 42.79,
+  "bosses": [
+   {
+    "id": "boss:divine-beast",
+    "name": "Divine Beast Dancing Lion"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "black-knife-catacombs",
+  "name": "Black Knife Catacombs",
+  "kind": "catacomb",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld",
+  "x": 27.2,
+  "y": 39.08,
+  "bosses": [
+   {
+    "id": "boss:cemetery-shade",
+    "name": "Cemetery Shade"
+   },
+   {
+    "id": "boss:black-knife-assassin",
+    "name": "Black Knife Assassin"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:black-knifeprint",
+    "name": "Black Knifeprint"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "bonny-gaol",
+  "name": "Bonny Gaol",
+  "kind": "gaol",
+  "region": "Scadu Altus",
+  "world": "shadow",
+  "x": 58.59,
+  "y": 46.14,
+  "bosses": [
+   {
+    "id": "hunt:curseblade-labirith",
+    "name": "Curseblade Labirith"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "caelem-ruins",
+  "name": "Caelem Ruins",
+  "kind": "ruins",
+  "region": "Caelid",
+  "world": "overworld",
+  "x": 48.7,
+  "y": 60.17,
+  "bosses": [
+   {
+    "id": "hunt:mad-pumpkin-head-hammer-mad-pumpkin-head-flail",
+    "name": "Mad Pumpkin Head (Hammer) & Mad Pumpkin Head (Flail)"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "caelid-catacombs",
+  "name": "Caelid Catacombs",
+  "kind": "catacomb",
+  "region": "Caelid",
+  "world": "overworld",
+  "x": 51.07,
+  "y": 68.51,
+  "bosses": [
+   {
+    "id": "boss:cemetery-shade",
+    "name": "Cemetery Shade"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "caria-manor",
+  "name": "Caria Manor",
+  "kind": "legacy",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld",
+  "x": 18.22,
+  "y": 36.74,
+  "bosses": [
+   {
+    "id": "boss:royal-knight-loretta",
+    "name": "Royal Knight Loretta"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:frozen-armament",
+    "name": "Frozen Armament"
+   },
+   {
+    "id": "item:juvenile-scholar-cap",
+    "name": "Juvenile Scholar Cap"
+   },
+   {
+    "id": "item:juvenile-scholar-robe",
+    "name": "Juvenile Scholar Robe"
+   },
+   {
+    "id": "item:sword-of-night-and-flame",
+    "name": "Sword of Night and Flame"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "castle-ensis",
+  "name": "Castle Ensis",
+  "kind": "legacy",
+  "region": "Gravesite Plain",
+  "world": "shadow",
+  "x": 37.11,
+  "y": 36.44,
+  "bosses": [
+   {
+    "id": "boss:rennala-sote",
+    "name": "Rellana, Twin Moon Knight"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:castle-cross-message",
+    "name": "Castle Cross Message"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "castle-morne",
+  "name": "Castle Morne",
+  "kind": "legacy",
+  "region": "Weeping Peninsula",
+  "world": "overworld",
+  "x": 40.91,
+  "y": 77.61,
+  "bosses": [
+   {
+    "id": "boss:leonine-misbegotten",
+    "name": "Leonine Misbegotten"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:ash-of-war-barricade-shield",
+    "name": "Ash of War: Barricade Shield"
+   },
+   {
+    "id": "item:ash-of-war-mighty-shot",
+    "name": "Ash of War: Mighty Shot"
+   },
+   {
+    "id": "item:crimson-amber-medallion",
+    "name": "Crimson Amber Medallion"
+   },
+   {
+    "id": "item:map-weeping-peninsula",
+    "name": "Map Weeping Peninsula"
+   },
+   {
+    "id": "item:nightrider-flail",
+    "name": "Nightrider Flail"
+   },
+   {
+    "id": "item:tarnished-golden-sunflower",
+    "name": "Tarnished Golden Sunflower"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "castle-sol",
+  "name": "Castle Sol",
+  "kind": "legacy",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld",
+  "x": 57.19,
+  "y": 17.74,
+  "bosses": [
+   {
+    "id": "boss:commander-niall",
+    "name": "Commander Niall"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:haligtree-medallion-left",
+    "name": "Haligtree Secret Medallion (Left)"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "cave-of-the-forlorn",
+  "name": "Cave of the Forlorn",
+  "kind": "cave",
+  "region": "Consecrated Snowfield",
+  "world": "overworld",
+  "x": 54.16,
+  "y": 20.44,
+  "bosses": [
+   {
+    "id": "hunt:misbegotten-crusader",
+    "name": "Misbegotten Crusader"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "chapel-of-anticipation",
+  "name": "Chapel of Anticipation",
+  "kind": "legacy",
+  "region": "Chapel of Anticipation",
+  "world": "overworld",
+  "x": 26.73,
+  "y": 64.01,
+  "bosses": [
+   {
+    "id": "boss:grafted-scion",
+    "name": "Grafted Scion"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "cliffbottom-catacombs",
+  "name": "Cliffbottom Catacombs",
+  "kind": "catacomb",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld",
+  "x": 28.62,
+  "y": 56.71,
+  "bosses": [
+   {
+    "id": "boss:erdtree-burial-watchdog",
+    "name": "Erdtree Burial Watchdog"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "coastal-cave",
+  "name": "Coastal Cave",
+  "kind": "cave",
+  "region": "Limgrave",
+  "world": "overworld",
+  "x": 33.52,
+  "y": 69.83,
+  "bosses": [
+   {
+    "id": "hunt:demi-human-chief-x2",
+    "name": "Demi-Human Chief(x2)"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "consecrated-snowfield-catacombs",
+  "name": "Consecrated Snowfield Catacombs",
+  "kind": "catacomb",
+  "region": "Consecrated Snowfield",
+  "world": "overworld",
+  "x": 54.28,
+  "y": 23.82,
+  "bosses": [
+   {
+    "id": "hunt:putrid-grave-warden-duelist",
+    "name": "Putrid Grave Warden Duelist"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:helphen-s-steeple",
+    "name": "Helphen's Steeple"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "crumbling-farum-azula",
+  "name": "Crumbling Farum Azula",
+  "kind": "legacy",
+  "region": "Crumbling Farum Azula",
+  "world": "overworld",
+  "x": 81.61,
+  "y": 43.44,
+  "bosses": [
+   {
+    "id": "boss:godskin-duo",
+    "name": "Godskin Duo"
+   },
+   {
+    "id": "boss:maliketh",
+    "name": "Maliketh, the Black Blade"
+   },
+   {
+    "id": "boss:placidusax",
+    "name": "Dragonlord Placidusax"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "cuckoo-s-evergaol",
+  "name": "Cuckoo's Evergaol",
+  "kind": "evergaol",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld",
+  "x": 13.13,
+  "y": 47.92,
+  "bosses": [
+   {
+    "id": "hunt:bols-carian-knight",
+    "name": "Bols, Carian Knight"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "darklight-catacombs",
+  "name": "Darklight Catacombs",
+  "kind": "catacomb",
+  "region": "Abyssal Woods",
+  "world": "shadow",
+  "x": 66.93,
+  "y": 41.8,
+  "bosses": [
+   {
+    "id": "hunt:jori-elder-inquisitor",
+    "name": "Jori, Elder Inquisitor"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "deathtouched-catacombs",
+  "name": "Deathtouched Catacombs",
+  "kind": "catacomb",
+  "region": "Limgrave",
+  "world": "overworld",
+  "x": 36.96,
+  "y": 61.69,
+  "bosses": [
+   {
+    "id": "boss:black-knife-assassin",
+    "name": "Black Knife Assassin"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:uchigatana",
+    "name": "Uchigatana"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "deeproot-depths",
+  "name": "Deeproot Depths",
+  "kind": "legacy",
+  "region": "Deeproot Depths",
+  "world": "underground",
+  "x": 40.51,
+  "y": 33.64,
+  "bosses": [
+   {
+    "id": "boss:fortissax",
+    "name": "Lichdragon Fortissax"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:ash-of-war-vacuum-slice",
+    "name": "Ash of War: Vacuum Slice"
+   },
+   {
+    "id": "item:prince-of-death-s-cyst",
+    "name": "Prince of Death's Cyst"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "divine-tower-of-caelid",
+  "name": "Divine Tower of Caelid",
+  "kind": "divine-tower",
+  "region": "Greyoll's Dragonbarrow",
+  "world": "overworld",
+  "x": 53.38,
+  "y": 57.31,
+  "bosses": [
+   {
+    "id": "boss:godskin-apostle",
+    "name": "Godskin Apostle"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "divine-tower-of-east-altus",
+  "name": "Divine Tower of East Altus",
+  "kind": "divine-tower",
+  "region": "Altus Plateau",
+  "world": "overworld",
+  "x": 48.82,
+  "y": 36.98,
+  "bosses": [
+   {
+    "id": "hunt:fell-twin-x2",
+    "name": "Fell Twin(x2)"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "divine-tower-of-limgrave",
+  "name": "Divine Tower of Limgrave",
+  "kind": "divine-tower",
+  "region": "Limgrave",
+  "world": "overworld",
+  "x": 40.66,
+  "y": 59.17,
+  "bosses": [],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "divine-tower-of-liurnia",
+  "name": "Divine Tower of Liurnia",
+  "kind": "divine-tower",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld",
+  "x": 32.15,
+  "y": 48.89,
+  "bosses": [],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "divine-tower-of-west-altus",
+  "name": "Divine Tower of West Altus",
+  "kind": "divine-tower",
+  "region": "Altus Plateau",
+  "world": "overworld",
+  "x": 37.37,
+  "y": 38.87,
+  "bosses": [],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "dragon-s-pit",
+  "name": "Dragon's Pit",
+  "kind": "cave",
+  "region": "Jagged Peak",
+  "world": "shadow",
+  "x": 39.75,
+  "y": 58.88,
+  "bosses": [
+   {
+    "id": "hunt:ancient-dragon-man",
+    "name": "Ancient Dragon-Man"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "dragonbarrow-cave",
+  "name": "Dragonbarrow Cave",
+  "kind": "cave",
+  "region": "Greyoll's Dragonbarrow",
+  "world": "overworld",
+  "x": 57.92,
+  "y": 58.36,
+  "bosses": [
+   {
+    "id": "hunt:beastman-of-farum-azula-cleaver-beastman-of-farum-azula-throwing-knife",
+    "name": "Beastman of Farum Azula (Cleaver) & Beastman of Farum Azula (Throwing Knife)"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "earthbore-cave",
+  "name": "Earthbore Cave",
+  "kind": "cave",
+  "region": "Weeping Peninsula",
+  "world": "overworld",
+  "x": 39.58,
+  "y": 74.44,
+  "bosses": [
+   {
+    "id": "boss:runebear",
+    "name": "Runebear"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:rune-arc",
+    "name": "Rune Arc"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "elphael-brace-of-the-haligtree",
+  "name": "Elphael, Brace of the Haligtree",
+  "kind": "legacy",
+  "region": "Miquella's Haligtree",
+  "world": "overworld",
+  "x": 53.44,
+  "y": 8.34,
+  "bosses": [],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "enir-ilim",
+  "name": "Enir-Ilim",
+  "kind": "legacy",
+  "region": "Enir-Ilim",
+  "world": "shadow",
+  "x": 6.48,
+  "y": 32.78,
+  "bosses": [
+   {
+    "id": "boss:consort",
+    "name": "Promised Consort Radahn & Radahn, Consort of Miquella"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:horned-warrior-s-greatsword",
+    "name": "Horned Warrior's Greatsword"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "fog-rift-catacombs",
+  "name": "Fog Rift Catacombs",
+  "kind": "catacomb",
+  "region": "Scadu Altus",
+  "world": "shadow",
+  "x": 30.6,
+  "y": 26.03,
+  "bosses": [
+   {
+    "id": "hunt:death-knight",
+    "name": "Death Knight"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "forlorn-hound-evergaol",
+  "name": "Forlorn Hound Evergaol",
+  "kind": "evergaol",
+  "region": "Limgrave",
+  "world": "overworld",
+  "x": 40.08,
+  "y": 73.05,
+  "bosses": [
+   {
+    "id": "boss:darriwil",
+    "name": "Bloodhound Knight Darriwil"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "fringefolk-hero-s-grave",
+  "name": "Fringefolk Hero's Grave",
+  "kind": "hero-grave",
+  "region": "Limgrave",
+  "world": "overworld",
+  "x": 35.75,
+  "y": 69.69,
+  "bosses": [
+   {
+    "id": "boss:ulcerated-tree-spirit",
+    "name": "Ulcerated Tree Spirit"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:dragon-communion-seal",
+    "name": "Dragon Communion Seal"
+   }
+  ],
+  "keys": [
+   "Stonesword Key"
+  ],
+  "levers": 0,
+  "impSeals": 2,
+  "dlc": false
+ },
+ {
+  "id": "gael-tunnel",
+  "name": "Gael Tunnel",
+  "kind": "tunnel",
+  "region": "Caelid",
+  "world": "overworld",
+  "x": 45.99,
+  "y": 61.5,
+  "bosses": [
+   {
+    "id": "boss:magma-wyrm",
+    "name": "Magma Wyrm"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:moonveil",
+    "name": "Moonveil"
+   },
+   {
+    "id": "item:ash-of-war-cragblade",
+    "name": "Ash of War: Cragblade"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "gaol-cave",
+  "name": "Gaol Cave",
+  "kind": "cave",
+  "region": "Caelid",
+  "world": "overworld",
+  "x": 47.58,
+  "y": 64.27,
+  "bosses": [
+   {
+    "id": "hunt:frenzied-duelist",
+    "name": "Frenzied Duelist"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "gelmir-hero-s-grave",
+  "name": "Gelmir Hero's Grave",
+  "kind": "hero-grave",
+  "region": "Mt. Gelmir",
+  "world": "overworld",
+  "x": 23.94,
+  "y": 27.47,
+  "bosses": [
+   {
+    "id": "boss:red-wolf-champion",
+    "name": "Red Wolf of the Champion"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 1,
+  "dlc": false
+ },
+ {
+  "id": "giant-conquering-hero-s-grave",
+  "name": "Giant-Conquering Hero's Grave",
+  "kind": "hero-grave",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld",
+  "x": 53.8,
+  "y": 26.87,
+  "bosses": [
+   {
+    "id": "boss:ancient-hero-zamor",
+    "name": "Ancient Hero of Zamor"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "giants-mountaintop-catacombs",
+  "name": "Giants' Mountaintop Catacombs",
+  "kind": "catacomb",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld",
+  "x": 55.13,
+  "y": 27.01,
+  "bosses": [
+   {
+    "id": "boss:ulcerated-tree-spirit",
+    "name": "Ulcerated Tree Spirit"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "golden-lineage-evergaol",
+  "name": "Golden Lineage Evergaol",
+  "kind": "evergaol",
+  "region": "Altus Plateau",
+  "world": "overworld",
+  "x": 27.43,
+  "y": 36.13,
+  "bosses": [
+   {
+    "id": "boss:godefroy",
+    "name": "Godefroy the Grafted"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "grand-cloister",
+  "name": "Grand Cloister",
+  "kind": "legacy",
+  "region": "Lake of Rot",
+  "world": "underground",
+  "x": 18.59,
+  "y": 48.19,
+  "bosses": [
+   {
+    "id": "boss:astel",
+    "name": "Astel, Naturalborn of the Void"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:scorpion-s-stinger",
+    "name": "Scorpion's Stinger"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "groveside-cave",
+  "name": "Groveside Cave",
+  "kind": "cave",
+  "region": "Limgrave",
+  "world": "overworld",
+  "x": 34.83,
+  "y": 67.52,
+  "bosses": [
+   {
+    "id": "hunt:beastman-of-farum-azula",
+    "name": "Beastman of Farum Azula"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "hallowhorn-grounds",
+  "name": "Hallowhorn Grounds",
+  "kind": "legacy",
+  "region": "Siofra River",
+  "world": "underground",
+  "x": 48.24,
+  "y": 66.69,
+  "bosses": [
+   {
+    "id": "boss:regal-ancestor",
+    "name": "Regal Ancestor Spirit"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "hidden-path-to-the-haligtree",
+  "name": "Hidden Path to the Haligtree",
+  "kind": "legacy",
+  "region": "Consecrated Snowfield",
+  "world": "overworld",
+  "x": 51.81,
+  "y": 26.66,
+  "bosses": [
+   {
+    "id": "boss:stray-mimic-tear",
+    "name": "Stray Mimic Tear"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "highroad-cave",
+  "name": "Highroad Cave",
+  "kind": "cave",
+  "region": "Limgrave",
+  "world": "overworld",
+  "x": 38.24,
+  "y": 61.06,
+  "bosses": [
+   {
+    "id": "boss:guardian-golem",
+    "name": "Guardian Golem"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "impaler-s-catacombs",
+  "name": "Impaler's Catacombs",
+  "kind": "catacomb",
+  "region": "Weeping Peninsula",
+  "world": "overworld",
+  "x": 42.62,
+  "y": 75.24,
+  "bosses": [
+   {
+    "id": "boss:erdtree-burial-watchdog",
+    "name": "Erdtree Burial Watchdog"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "isolated-divine-tower",
+  "name": "Isolated Divine Tower",
+  "kind": "divine-tower",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld",
+  "x": 57.15,
+  "y": 46.15,
+  "bosses": [],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "kingsrealm-ruins",
+  "name": "Kingsrealm Ruins",
+  "kind": "ruins",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld",
+  "x": 16.35,
+  "y": 39.35,
+  "bosses": [
+   {
+    "id": "hunt:royal-revenant",
+    "name": "Royal Revenant"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "lake-of-rot",
+  "name": "Lake of Rot",
+  "kind": "legacy",
+  "region": "Lake of Rot",
+  "world": "underground",
+  "x": 19.68,
+  "y": 43.8,
+  "bosses": [],
+  "loot": [
+   {
+    "id": "item:black-key-bolt",
+    "name": "Black-Key Bolt"
+   },
+   {
+    "id": "item:map-lake-of-rot",
+    "name": "Map Lake of Rot"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "lakeside-crystal-cave",
+  "name": "Lakeside Crystal Cave",
+  "kind": "cave",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld",
+  "x": 21.62,
+  "y": 57.14,
+  "bosses": [
+   {
+    "id": "boss:darriwil",
+    "name": "Bloodhound Knight"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:spear-talisman",
+    "name": "Spear Talisman"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "lamenter-s-gaol",
+  "name": "Lamenter's Gaol",
+  "kind": "gaol",
+  "region": "Gravesite Plain",
+  "world": "shadow",
+  "x": 28.94,
+  "y": 66.26,
+  "bosses": [
+   {
+    "id": "hunt:lamenter",
+    "name": "Lamenter"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "leyndell-catacombs",
+  "name": "Leyndell Catacombs",
+  "kind": "catacomb",
+  "region": "Leyndell, Royal Capital",
+  "world": "overworld",
+  "x": 41.03,
+  "y": 33.85,
+  "bosses": [
+   {
+    "id": "hunt:esgar-priest-of-blood",
+    "name": "Esgar, Priest of Blood"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 1,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "leyndell-royal-capital",
+  "name": "Leyndell, Royal Capital",
+  "kind": "legacy",
+  "region": "Leyndell, Royal Capital",
+  "world": "overworld",
+  "x": 35.12,
+  "y": 33.23,
+  "bosses": [
+   {
+    "id": "boss:godfrey",
+    "name": "Godfrey, First Elden Lord"
+   },
+   {
+    "id": "boss:morgott",
+    "name": "Morgott, the Omen King"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "limgrave-tunnels",
+  "name": "Limgrave Tunnels",
+  "kind": "tunnel",
+  "region": "Limgrave",
+  "world": "overworld",
+  "x": 36.72,
+  "y": 66.97,
+  "bosses": [
+   {
+    "id": "boss:stonedigger-troll",
+    "name": "Stonedigger Troll"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "lord-contender-s-evergaol",
+  "name": "Lord Contender's Evergaol",
+  "kind": "evergaol",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld",
+  "x": 61.75,
+  "y": 21.77,
+  "bosses": [
+   {
+    "id": "hunt:roundtable-knight-vyke",
+    "name": "Roundtable Knight Vyke"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "lux-ruins",
+  "name": "Lux Ruins",
+  "kind": "ruins",
+  "region": "Altus Plateau",
+  "world": "overworld",
+  "x": 25.33,
+  "y": 32.87,
+  "bosses": [
+   {
+    "id": "hunt:demi-human-queen-gilika",
+    "name": "Demi-Human Queen Gilika"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "malefactor-s-evergaol",
+  "name": "Malefactor's Evergaol",
+  "kind": "evergaol",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld",
+  "x": 25.57,
+  "y": 58.31,
+  "bosses": [
+   {
+    "id": "hunt:adan-thief-of-fire",
+    "name": "Adan, Thief of Fire"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "midra-s-manse",
+  "name": "Midra's Manse",
+  "kind": "legacy",
+  "region": "Abyssal Woods",
+  "world": "shadow",
+  "x": 52.05,
+  "y": 59.05,
+  "bosses": [
+   {
+    "id": "boss:midra",
+    "name": "Midra, Lord of Frenzied Flame"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "minor-erdtree-catacombs",
+  "name": "Minor Erdtree Catacombs",
+  "kind": "catacomb",
+  "region": "Caelid",
+  "world": "overworld",
+  "x": 47.05,
+  "y": 58.54,
+  "bosses": [
+   {
+    "id": "hunt:erdtree-burial-watchdog-sword-erdtree-burial-watchdog-scepter",
+    "name": "Erdtree Burial Watchdog (Sword) & Erdtree Burial Watchdog (Scepter)"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:golden-centipede",
+    "name": "Golden Centipede"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "miquella-s-haligtree",
+  "name": "Miquella's Haligtree",
+  "kind": "legacy",
+  "region": "Miquella's Haligtree",
+  "world": "overworld",
+  "x": 53.96,
+  "y": 11.44,
+  "bosses": [
+   {
+    "id": "boss:loretta-haligtree",
+    "name": "Loretta, Knight of the Haligtree"
+   },
+   {
+    "id": "hunt:malenia-blade-of-miquella-malenia-goddess-of-rot",
+    "name": "Malenia, Blade of Miquella & Malenia, Goddess of Rot"
+   }
+  ],
+  "loot": [],
+  "keys": [
+   "Haligtree Secret Medallion"
+  ],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "mohgwyn-dynasty-mausoleum",
+  "name": "Mohgwyn Dynasty Mausoleum",
+  "kind": "legacy",
+  "region": "Mohgwyn Dynasty Mausoleum",
+  "world": "underground",
+  "x": 53.68,
+  "y": 65.07,
+  "bosses": [
+   {
+    "id": "boss:mohg",
+    "name": "Mohg, Lord of Blood"
+   }
+  ],
+  "loot": [],
+  "keys": [
+   "Pureblood Knight’s Medal"
+  ],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "moonlight-altar",
+  "name": "Moonlight Altar",
+  "kind": "legacy",
+  "region": "Moonlight Altar",
+  "world": "overworld",
+  "x": 15.83,
+  "y": 56.7,
+  "bosses": [
+   {
+    "id": "boss:adula",
+    "name": "Glintstone Dragon Adula"
+   },
+   {
+    "id": "boss:astel",
+    "name": "Astel, Naturalborn of the Void"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:black-knife-tiche",
+    "name": "Black Knife Tiche"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "moorth-ruins",
+  "name": "Moorth Ruins",
+  "kind": "ruins",
+  "region": "Scadu Altus",
+  "world": "shadow",
+  "x": 49.63,
+  "y": 34.83,
+  "bosses": [
+   {
+    "id": "hunt:dryleaf-dane",
+    "name": "Dryleaf Dane"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:fire-knight-s-cookbook-1",
+    "name": "Fire Knight's Cookbook 1"
+   },
+   {
+    "id": "item:messmer-soldier-s-spear",
+    "name": "Messmer Soldier's Spear"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "morne-tunnel",
+  "name": "Morne Tunnel",
+  "kind": "tunnel",
+  "region": "Weeping Peninsula",
+  "world": "overworld",
+  "x": 38.26,
+  "y": 77.2,
+  "bosses": [
+   {
+    "id": "hunt:scaly-misbegotten",
+    "name": "Scaly Misbegotten"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "murkwater-catacombs",
+  "name": "Murkwater Catacombs",
+  "kind": "catacomb",
+  "region": "Limgrave",
+  "world": "overworld",
+  "x": 38.39,
+  "y": 63.97,
+  "bosses": [
+   {
+    "id": "boss:grave-warden-duelist",
+    "name": "Grave Warden Duelist"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "murkwater-cave",
+  "name": "Murkwater Cave",
+  "kind": "cave",
+  "region": "Limgrave",
+  "world": "overworld",
+  "x": 38.22,
+  "y": 66.35,
+  "bosses": [
+   {
+    "id": "hunt:patches",
+    "name": "Patches"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "night-s-sacred-ground",
+  "name": "Night's Sacred Ground",
+  "kind": "legacy",
+  "region": "Siofra River",
+  "world": "underground",
+  "x": 45.86,
+  "y": 65.67,
+  "bosses": [],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "nokron-eternal-city",
+  "name": "Nokron, Eternal City",
+  "kind": "legacy",
+  "region": "Siofra River",
+  "world": "underground",
+  "x": 43.41,
+  "y": 66.32,
+  "bosses": [
+   {
+    "id": "boss:mimic-tear",
+    "name": "Mimic Tear"
+   },
+   {
+    "id": "boss:regal-ancestor",
+    "name": "Regal Ancestor Spirit"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "nokstella-eternal-city",
+  "name": "Nokstella, Eternal City",
+  "kind": "legacy",
+  "region": "Ainsel River",
+  "world": "underground",
+  "x": 22.99,
+  "y": 42.43,
+  "bosses": [
+   {
+    "id": "boss:dragonkin-nokstella",
+    "name": "Dragonkin Soldier of Nokstella"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "old-altus-tunnel",
+  "name": "Old Altus Tunnel",
+  "kind": "tunnel",
+  "region": "Altus Plateau",
+  "world": "overworld",
+  "x": 26.82,
+  "y": 29.15,
+  "bosses": [
+   {
+    "id": "boss:stonedigger-troll",
+    "name": "Stonedigger Troll"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "ordina-liturgical-town",
+  "name": "Ordina, Liturgical Town",
+  "kind": "legacy",
+  "region": "Consecrated Snowfield",
+  "world": "overworld",
+  "x": 50.29,
+  "y": 18.75,
+  "bosses": [],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "perfumer-s-grotto",
+  "name": "Perfumer's Grotto",
+  "kind": "cave",
+  "region": "Altus Plateau",
+  "world": "overworld",
+  "x": 33.55,
+  "y": 32.84,
+  "bosses": [
+   {
+    "id": "hunt:omenkiller-miranda-the-blighted-bloom",
+    "name": "Omenkiller & Miranda the Blighted Bloom"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "raya-lucaria-academy",
+  "name": "Raya Lucaria Academy",
+  "kind": "legacy",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld",
+  "x": 17.56,
+  "y": 47.26,
+  "bosses": [
+   {
+    "id": "boss:red-wolf",
+    "name": "Red Wolf of Radagon"
+   },
+   {
+    "id": "boss:rennala",
+    "name": "Rennala, Queen of the Full Moon"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:radagon-icon",
+    "name": "Radagon Icon"
+   }
+  ],
+  "keys": [
+   "Academy Glintstone Key"
+  ],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "raya-lucaria-crystal-tunnel",
+  "name": "Raya Lucaria Crystal Tunnel",
+  "kind": "tunnel",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld",
+  "x": 22.23,
+  "y": 42.49,
+  "bosses": [
+   {
+    "id": "boss:crystalian-duo",
+    "name": "Crystalian (Ringblade)"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "redmane-castle",
+  "name": "Redmane Castle",
+  "kind": "legacy",
+  "region": "Caelid",
+  "world": "overworld",
+  "x": 58.14,
+  "y": 69.38,
+  "bosses": [
+   {
+    "id": "hunt:crucible-knight-misbegotten-warrior",
+    "name": "Crucible Knight & Misbegotten Warrior"
+   },
+   {
+    "id": "boss:radahn",
+    "name": "Starscourge Radahn"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "ringleader-s-evergaol",
+  "name": "Ringleader's Evergaol",
+  "kind": "evergaol",
+  "region": "Moonlight Altar",
+  "world": "overworld",
+  "x": 13.11,
+  "y": 54.23,
+  "bosses": [
+   {
+    "id": "hunt:alecto-black-knife-ringleader",
+    "name": "Alecto, Black Knife Ringleader"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "rivermouth-cave",
+  "name": "Rivermouth Cave",
+  "kind": "cave",
+  "region": "Gravesite Plain",
+  "world": "shadow",
+  "x": 22.55,
+  "y": 33.85,
+  "bosses": [
+   {
+    "id": "hunt:chief-bloodfiend",
+    "name": "Chief Bloodfiend"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "road-s-end-catacombs",
+  "name": "Road's End Catacombs",
+  "kind": "catacomb",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld",
+  "x": 13.46,
+  "y": 52.45,
+  "bosses": [
+   {
+    "id": "boss:spiritcaller-snail",
+    "name": "Spiritcaller Snail"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "royal-grave-evergaol",
+  "name": "Royal Grave Evergaol",
+  "kind": "evergaol",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld",
+  "x": 21.68,
+  "y": 35.21,
+  "bosses": [
+   {
+    "id": "boss:onyx-lord",
+    "name": "Onyx Lord"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "ruin-strewn-precipice",
+  "name": "Ruin-Strewn Precipice",
+  "kind": "legacy",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld",
+  "x": 24.76,
+  "y": 34.46,
+  "bosses": [
+   {
+    "id": "boss:magma-wyrm-makar",
+    "name": "Magma Wyrm Makar"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "ruined-forge-lava-intake",
+  "name": "Ruined Forge Lava Intake",
+  "kind": "legacy",
+  "region": "Gravesite Plain",
+  "world": "shadow",
+  "x": 39.31,
+  "y": 50.23,
+  "bosses": [],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "ruined-forge-of-starfall-past",
+  "name": "Ruined Forge of Starfall Past",
+  "kind": "legacy",
+  "region": "Scadu Altus",
+  "world": "shadow",
+  "x": 44.47,
+  "y": 40.73,
+  "bosses": [],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "sage-s-cave",
+  "name": "Sage's Cave",
+  "kind": "cave",
+  "region": "Altus Plateau",
+  "world": "overworld",
+  "x": 24.16,
+  "y": 30.77,
+  "bosses": [
+   {
+    "id": "hunt:necromancer-garris",
+    "name": "Necromancer Garris"
+   },
+   {
+    "id": "boss:black-knife-assassin",
+    "name": "Black Knife Assassin"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "sainted-hero-s-grave",
+  "name": "Sainted Hero's Grave",
+  "kind": "hero-grave",
+  "region": "Altus Plateau",
+  "world": "overworld",
+  "x": 30.57,
+  "y": 30.45,
+  "bosses": [
+   {
+    "id": "boss:black-knife-assassin",
+    "name": "Black Knife Assassin"
+   },
+   {
+    "id": "boss:ancient-hero-zamor",
+    "name": "Ancient Hero of Zamor"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "scorpion-river-catacombs",
+  "name": "Scorpion River Catacombs",
+  "kind": "catacomb",
+  "region": "Scadu Altus",
+  "world": "shadow",
+  "x": 6.48,
+  "y": 21.92,
+  "bosses": [
+   {
+    "id": "hunt:death-knight",
+    "name": "Death Knight"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "sealed-tunnel",
+  "name": "Sealed Tunnel",
+  "kind": "tunnel",
+  "region": "Capital Outskirts",
+  "world": "overworld",
+  "x": 37.39,
+  "y": 34.81,
+  "bosses": [
+   {
+    "id": "boss:onyx-lord",
+    "name": "Onyx Lord"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "seethewater-cave",
+  "name": "Seethewater Cave",
+  "kind": "cave",
+  "region": "Mt. Gelmir",
+  "world": "overworld",
+  "x": 22.85,
+  "y": 26.62,
+  "bosses": [
+   {
+    "id": "hunt:kindred-of-rot-x2",
+    "name": "Kindred of Rot(x2)"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "sellia-crystal-tunnel",
+  "name": "Sellia Crystal Tunnel",
+  "kind": "tunnel",
+  "region": "Caelid",
+  "world": "overworld",
+  "x": 52.23,
+  "y": 61.06,
+  "bosses": [
+   {
+    "id": "boss:fallingstar-beast",
+    "name": "Fallingstar Beast"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:sword-of-st-trina",
+    "name": "Sword of St. Trina"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "sellia-evergaol",
+  "name": "Sellia Evergaol",
+  "kind": "evergaol",
+  "region": "Greyoll's Dragonbarrow",
+  "world": "overworld",
+  "x": 51.58,
+  "y": 62.08,
+  "bosses": [
+   {
+    "id": "hunt:battlemage-hugues",
+    "name": "Battlemage Hugues"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "sellia-hideaway",
+  "name": "Sellia Hideaway",
+  "kind": "cave",
+  "region": "Caelid",
+  "world": "overworld",
+  "x": 56.38,
+  "y": 61.92,
+  "bosses": [
+   {
+    "id": "hunt:putrid-crystalian-ringblade-putrid-crystalian-spear-putrid-crystalian-staff",
+    "name": "Putrid Crystalian (Ringblade) & Putrid Crystalian (Spear) & Putrid Crystalian (Staff)"
+   }
+  ],
+  "loot": [],
+  "keys": [
+   "Sellian Sealbreaker"
+  ],
+  "levers": 0,
+  "impSeals": 1,
+  "dlc": false
+ },
+ {
+  "id": "shadow-keep",
+  "name": "Shadow Keep",
+  "kind": "legacy",
+  "region": "Scadu Altus",
+  "world": "shadow",
+  "x": 46.79,
+  "y": 18.04,
+  "bosses": [
+   {
+    "id": "hunt:golden-hippopotamus",
+    "name": "Golden Hippopotamus"
+   },
+   {
+    "id": "hunt:messmer-the-impaler-base-serpent-messmer",
+    "name": "Messmer the Impaler & Base Serpent Messmer"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "siofra-aqueduct",
+  "name": "Siofra Aqueduct",
+  "kind": "legacy",
+  "region": "Siofra River",
+  "world": "underground",
+  "x": 49.07,
+  "y": 61.03,
+  "bosses": [
+   {
+    "id": "hunt:valiant-gargoyle-valiant-gargoyle-twinblade",
+    "name": "Valiant Gargoyle & Valiant Gargoyle (Twinblade)"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "spiritcaller-cave",
+  "name": "Spiritcaller Cave",
+  "kind": "cave",
+  "region": "Mountaintops of the Giants",
+  "world": "overworld",
+  "x": 61.66,
+  "y": 19.51,
+  "bosses": [
+   {
+    "id": "hunt:godskin-apostle-godskin-noble-spiritcaller-snail",
+    "name": "Godskin Apostle & Godskin Noble & Spiritcaller Snail"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "stillwater-cave",
+  "name": "Stillwater Cave",
+  "kind": "cave",
+  "region": "Liurnia of the Lakes",
+  "world": "overworld",
+  "x": 27.97,
+  "y": 60.01,
+  "bosses": [
+   {
+    "id": "boss:cleanrot-knight",
+    "name": "Cleanrot Knight"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "stone-coffin-fissure",
+  "name": "Stone Coffin Fissure",
+  "kind": "cave",
+  "region": "Cerulean Coast",
+  "world": "shadow",
+  "x": 38.06,
+  "y": 98.3,
+  "bosses": [
+   {
+    "id": "hunt:putrescent-knight",
+    "name": "Putrescent Knight"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "stormfoot-catacombs",
+  "name": "Stormfoot Catacombs",
+  "kind": "catacomb",
+  "region": "Limgrave",
+  "world": "overworld",
+  "x": 33.16,
+  "y": 67.32,
+  "bosses": [
+   {
+    "id": "boss:erdtree-burial-watchdog",
+    "name": "Erdtree Burial Watchdog"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "stormhill-evergaol",
+  "name": "Stormhill Evergaol",
+  "kind": "evergaol",
+  "region": "Limgrave",
+  "world": "overworld",
+  "x": 34.74,
+  "y": 66.65,
+  "bosses": [
+   {
+    "id": "hunt:crucible-knight",
+    "name": "Crucible Knight"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "stormveil",
+  "name": "Stormveil Castle",
+  "kind": "legacy",
+  "region": "Stormveil Castle",
+  "world": "overworld",
+  "x": 30.6,
+  "y": 64.61,
+  "bosses": [
+   {
+    "id": "boss:margit",
+    "name": "Margit, the Fell Omen"
+   },
+   {
+    "id": "boss:godrick",
+    "name": "Godrick the Grafted"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:dozing-cross-legged",
+    "name": "Dozing Cross-Legged"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "stranded-graveyard",
+  "name": "Stranded Graveyard",
+  "kind": "legacy",
+  "region": "Limgrave",
+  "world": "overworld",
+  "x": 35.43,
+  "y": 70.56,
+  "bosses": [
+   {
+    "id": "hunt:soldier-of-godrick",
+    "name": "Soldier of Godrick"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:dragon-communion-seal",
+    "name": "Dragon Communion Seal"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "subterranean-shunning-grounds",
+  "name": "Subterranean Shunning-Grounds",
+  "kind": "legacy",
+  "region": "Leyndell, Royal Capital",
+  "world": "overworld",
+  "x": 41.3,
+  "y": 33.46,
+  "bosses": [
+   {
+    "id": "boss:mohg-omen",
+    "name": "Mohg, the Omen"
+   },
+   {
+    "id": "hunt:esgar-priest-of-blood",
+    "name": "Esgar, Priest of Blood"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "taylew-s-ruined-forge",
+  "name": "Taylew's Ruined Forge",
+  "kind": "legacy",
+  "region": "Rauh Base",
+  "world": "shadow",
+  "x": 41.58,
+  "y": 12.5,
+  "bosses": [],
+  "loot": [
+   {
+    "id": "item:pearl-shield-talisman",
+    "name": "Pearl Shield Talisman"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": true
+ },
+ {
+  "id": "the-shaded-castle",
+  "name": "The Shaded Castle",
+  "kind": "legacy",
+  "region": "Altus Plateau",
+  "world": "overworld",
+  "x": 27.8,
+  "y": 25.48,
+  "bosses": [
+   {
+    "id": "boss:elemer",
+    "name": "Elemer of the Briar"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "tombsward-catacombs",
+  "name": "Tombsward Catacombs",
+  "kind": "catacomb",
+  "region": "Weeping Peninsula",
+  "world": "overworld",
+  "x": 36.45,
+  "y": 75.69,
+  "bosses": [
+   {
+    "id": "boss:cemetery-shade",
+    "name": "Cemetery Shade"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "tombsward-cave",
+  "name": "Tombsward Cave",
+  "kind": "cave",
+  "region": "Weeping Peninsula",
+  "world": "overworld",
+  "x": 36.13,
+  "y": 77.12,
+  "bosses": [
+   {
+    "id": "hunt:miranda-the-blighted-bloom",
+    "name": "Miranda the Blighted Bloom"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "uhl-palace-ruins",
+  "name": "Uhl Palace Ruins",
+  "kind": "legacy",
+  "region": "Ainsel River",
+  "world": "underground",
+  "x": 24.19,
+  "y": 44.83,
+  "bosses": [],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "unsightly-catacombs",
+  "name": "Unsightly Catacombs",
+  "kind": "catacomb",
+  "region": "Altus Plateau",
+  "world": "overworld",
+  "x": 20.12,
+  "y": 32.24,
+  "bosses": [
+   {
+    "id": "boss:perfumer-tricia",
+    "name": "Perfumer Tricia & Misbegotten Warrior"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "volcano-cave",
+  "name": "Volcano Cave",
+  "kind": "cave",
+  "region": "Mt. Gelmir",
+  "world": "overworld",
+  "x": 22.6,
+  "y": 23.33,
+  "bosses": [
+   {
+    "id": "hunt:demi-human-queen-margot",
+    "name": "Demi-Human Queen Margot"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "volcano-manor",
+  "name": "Volcano Manor",
+  "kind": "legacy",
+  "region": "Mt. Gelmir",
+  "world": "overworld",
+  "x": 21.32,
+  "y": 27.62,
+  "bosses": [
+   {
+    "id": "hunt:god-devouring-serpent-rykard-lord-of-blasphemy",
+    "name": "God-Devouring Serpent & Rykard, Lord of Blasphemy"
+   },
+   {
+    "id": "boss:godskin-noble",
+    "name": "Godskin Noble"
+   }
+  ],
+  "loot": [
+   {
+    "id": "item:ghiza-s-wheel",
+    "name": "Ghiza's Wheel"
+   },
+   {
+    "id": "item:serpent-amnion",
+    "name": "Serpent’s Amnion"
+   }
+  ],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "war-dead-catacombs",
+  "name": "War-Dead Catacombs",
+  "kind": "catacomb",
+  "region": "Greyoll's Dragonbarrow",
+  "world": "overworld",
+  "x": 59.61,
+  "y": 58.84,
+  "bosses": [
+   {
+    "id": "hunt:putrid-tree-spirit",
+    "name": "Putrid Tree Spirit"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "waypoint-ruins",
+  "name": "Waypoint Ruins",
+  "kind": "ruins",
+  "region": "Limgrave",
+  "world": "overworld",
+  "x": 40.43,
+  "y": 69.23,
+  "bosses": [
+   {
+    "id": "boss:mad-pumpkin-head",
+    "name": "Mad Pumpkin Head"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "weeping-evergaol",
+  "name": "Weeping Evergaol",
+  "kind": "evergaol",
+  "region": "Weeping Peninsula",
+  "world": "overworld",
+  "x": 34.32,
+  "y": 75.82,
+  "bosses": [
+   {
+    "id": "boss:ancient-hero-zamor",
+    "name": "Ancient Hero of Zamor"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "writheblood-ruins",
+  "name": "Writheblood Ruins",
+  "kind": "ruins",
+  "region": "Altus Plateau",
+  "world": "overworld",
+  "x": 29.86,
+  "y": 27.36,
+  "bosses": [
+   {
+    "id": "invader:sanguine-noble",
+    "name": "Sanguine Noble"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "wyndham-catacombs",
+  "name": "Wyndham Catacombs",
+  "kind": "catacomb",
+  "region": "Altus Plateau",
+  "world": "overworld",
+  "x": 24.41,
+  "y": 29.63,
+  "bosses": [
+   {
+    "id": "boss:erdtree-burial-watchdog",
+    "name": "Erdtree Burial Watchdog"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "wyndham-ruins",
+  "name": "Wyndham Ruins",
+  "kind": "ruins",
+  "region": "Altus Plateau",
+  "world": "overworld",
+  "x": 25.1,
+  "y": 30.34,
+  "bosses": [
+   {
+    "id": "boss:tibia-mariner",
+    "name": "Tibia Mariner"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ },
+ {
+  "id": "yelough-anix-tunnel",
+  "name": "Yelough Anix Tunnel",
+  "kind": "tunnel",
+  "region": "Consecrated Snowfield",
+  "world": "overworld",
+  "x": 48.33,
+  "y": 23.97,
+  "bosses": [
+   {
+    "id": "boss:astel",
+    "name": "Astel, Stars of Darkness"
+   }
+  ],
+  "loot": [],
+  "keys": [],
+  "levers": 0,
+  "impSeals": 0,
+  "dlc": false
+ }
+]
