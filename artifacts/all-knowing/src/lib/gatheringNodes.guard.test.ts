@@ -37,7 +37,9 @@ describe('gathering nodes stay off the player map', () => {
   })
 
   it('only the Codex lists them, labelled unverified / model code only', () => {
-    const codex = read('src/Codex.tsx')
+    // Task 95 moved the Codex body into the Library browser; the gathering-node
+    // listing moved with it and keeps the same honesty contract.
+    const codex = read('src/library/GatheringNodes.tsx')
     expect(codex).toMatch(/useGatheringNodes/)
     expect(codex).toMatch(/unverified placement, model code only/i)
     // ...and with no "show on map" affordance, since there is no verified pin.

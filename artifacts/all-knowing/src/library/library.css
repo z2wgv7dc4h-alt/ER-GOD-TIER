@@ -1,0 +1,732 @@
+/*
+ * Task 95 — Library browser styles.
+ *
+ * New file on purpose: the shell owns index.css. Everything here is scoped to
+ * `.lib-*` so it can move or be deleted without touching the global sheet.
+ */
+
+.lib-browser {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  color: var(--ink);
+}
+
+.lib-layout {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+}
+
+.lib-layout:has(.lib-detail) {
+  grid-template-columns: 200px minmax(0, 1fr) 340px;
+}
+
+/* --- category rail -------------------------------------------------------- */
+
+.lib-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 8px;
+  overflow-y: auto;
+  border-right: 1px solid var(--line-soft);
+  background: var(--bg-raised);
+}
+
+.lib-rail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  min-height: 34px;
+}
+
+.lib-rail-item:hover {
+  color: var(--ink);
+  background: var(--bg-panel);
+}
+
+.lib-rail-item.on {
+  color: var(--gold);
+  border-color: var(--gold-dim);
+  background: var(--bg-panel);
+}
+
+.lib-rail-mono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.lib-rail-label {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lib-rail-count {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- main column ---------------------------------------------------------- */
+
+.lib-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.lib-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.lib-search {
+  width: 100%;
+  padding: 8px 10px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+}
+
+.lib-search:focus {
+  outline: none;
+  border-color: var(--gold-dim);
+}
+
+.lib-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.lib-chipgroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lib-chipgroup-label {
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.lib-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.lib-sort select {
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 5px 6px;
+  font: inherit;
+  font-size: 12px;
+}
+
+.lib-subtypes {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.lib-resultbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.lib-pager {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lib-results {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+/* --- results -------------------------------------------------------------- */
+
+.lib-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+}
+
+.lib-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  background: var(--bg-panel);
+  border: 1px solid var(--line-soft);
+  border-radius: 5px;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.lib-card:hover {
+  border-color: var(--gold-dim);
+}
+
+.lib-card.on {
+  border-color: var(--gold);
+}
+
+.lib-card-thumb {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.lib-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.lib-card-mono {
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.lib-card-body {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.lib-card-type {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.lib-card-name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lib-card-stats {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.lib-card-flags {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+}
+
+.lib-flag.owned {
+  color: var(--ok);
+}
+
+.lib-flag.unmet {
+  color: var(--danger);
+}
+
+.lib-flag.met {
+  color: var(--gold);
+}
+
+/* --- table ---------------------------------------------------------------- */
+
+.lib-tablewrap {
+  overflow-x: auto;
+}
+
+.lib-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.lib-table th,
+.lib-table td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--line-soft);
+  white-space: nowrap;
+}
+
+.lib-table th button {
+  background: none;
+  border: none;
+  color: var(--gold);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.lib-table tbody tr {
+  cursor: pointer;
+}
+
+.lib-table tbody tr:hover,
+.lib-table tbody tr.on {
+  background: var(--bg-panel);
+}
+
+.lib-table-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+/* --- empty state ---------------------------------------------------------- */
+
+.lib-empty {
+  padding: 20px;
+}
+
+.lib-empty h3 {
+  font-family: var(--font-display);
+  margin: 0 0 6px;
+}
+
+.lib-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.lib-tile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  background: var(--bg-panel);
+  border: 1px solid var(--line-soft);
+  border-radius: 5px;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.lib-tile:hover {
+  border-color: var(--gold-dim);
+}
+
+/* --- detail panel --------------------------------------------------------- */
+
+.lib-detail {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-left: 1px solid var(--line-soft);
+  background: var(--bg-raised);
+}
+
+.lib-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.lib-panel-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.lib-panel-icon {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+  border-radius: 5px;
+}
+
+.lib-panel-title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.lib-panel-title h2 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  margin: 4px 0 0;
+}
+
+.lib-owned-badge {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 1px 6px;
+  border: 1px solid var(--ok);
+  border-radius: 10px;
+  color: var(--ok);
+  font-size: 11px;
+}
+
+.lib-panel-close {
+  flex: 0 0 auto;
+}
+
+.lib-panel-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.lib-panel-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.lib-panel-block {
+  margin-bottom: 14px;
+}
+
+.lib-req-list {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.lib-req {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.lib-req.met {
+  color: var(--ok);
+  border-color: var(--ok);
+}
+
+.lib-req.unmet {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.lib-met {
+  color: var(--ok);
+}
+
+.lib-unmet {
+  color: var(--danger);
+}
+
+.lib-scaling,
+.lib-attack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.lib-scaling-chip,
+.lib-attack-chip {
+  padding: 2px 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.lib-scaling-chip strong,
+.lib-attack-chip strong {
+  color: var(--ink);
+}
+
+.lib-ar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.lib-ar strong {
+  color: var(--gold);
+  font-size: 16px;
+}
+
+.lib-stat-grid {
+  margin: 6px 0 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+
+.lib-stat {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 3px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.lib-stat dt {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.lib-stat dd {
+  margin: 0;
+  font-size: 12px;
+  text-align: right;
+}
+
+.lib-lore-text {
+  white-space: pre-wrap;
+}
+
+.lib-panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--line-soft);
+}
+
+/* --- compare tray --------------------------------------------------------- */
+
+.lib-tray {
+  flex: 0 0 auto;
+  border-top: 1px solid var(--gold-dim);
+  background: var(--bg-raised);
+  max-height: 46%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.lib-compare-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  flex-wrap: wrap;
+}
+
+.lib-compare-label {
+  font-size: 12px;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.lib-compare-pins {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1 1 auto;
+}
+
+.lib-compare-pin {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lib-pin-x {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+.lib-compare-scroll {
+  overflow: auto;
+  min-height: 0;
+}
+
+.lib-compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.lib-compare-table th,
+.lib-compare-table td {
+  text-align: left;
+  padding: 6px 10px;
+  border-top: 1px solid var(--line-soft);
+  white-space: nowrap;
+}
+
+.lib-compare-table th {
+  color: var(--muted);
+  font-weight: normal;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+}
+
+.lib-compare-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+/* --- gathering nodes (Task 62 invariant: Library only, no map affordance) --- */
+
+.lib-gathering {
+  margin-top: 20px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lib-gathering-head {
+  font-family: var(--font-display);
+  font-size: 14px;
+  margin: 0;
+}
+
+.lib-gathering-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lib-gathering-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 6px 8px;
+  background: var(--bg-panel);
+  border: 1px solid var(--line-soft);
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+/* --- responsive ----------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .lib-layout,
+  .lib-layout:has(.lib-detail) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .lib-rail {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-right: none;
+    border-bottom: 1px solid var(--line-soft);
+    padding: 8px;
+  }
+
+  .lib-rail-item {
+    flex: 0 0 auto;
+  }
+
+  .lib-detail {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 70;
+    max-height: 72vh;
+    border-left: none;
+    border-top: 1px solid var(--gold-dim);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.5);
+    border-radius: 10px 10px 0 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .lib-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lib-tray {
+    max-height: 56%;
+  }
+}
