@@ -48,7 +48,23 @@ import { loadWeapons, type Weapon } from './ar'
 import { earlyWeaponRanking, weaponAdvice, dominantAttributes } from './upgradeAdvice'
 import { respecAdvice } from './respecAdvice'
 import { advise, planRespec } from './advisor'
-import type { Character, ModuleId } from '../types'
+import { areaLabel, type AreaSignal } from './areaContext'
+import type { Character, ModuleId, Stats } from '../types'
+
+/**
+ * Task 101 — a proposed, app-appliable side effect of an answer. Character-
+ * changing actions (mark*, add/removeOwned, equip, setStats, setGoal) are shown
+ * as confirm chips; navigation actions (showOnMap, open) are plain buttons.
+ */
+export type GideonAction =
+  | { type: 'markDone' | 'markNotDone' | 'addOwned' | 'removeOwned'; ids: string[] }
+  | { type: 'setGoal'; id: string }
+  | { type: 'equip'; slot: string; id: string }
+  | { type: 'setStats'; stats: Partial<Stats>; level?: number }
+  | { type: 'showOnMap'; id: string }
+  | { type: 'open'; id: string }
+
+export type GideonSource = { title: string; url: string }
 
 export type GideonAct = {
   say: string
@@ -58,6 +74,12 @@ export type GideonAct = {
   offer?: { label: string; prompt: string }
   goal?: string
   navigateNow?: boolean
+  /** Task 101: fact ids referenced in the answer, for the "Mentioned" row. */
+  links?: string[]
+  /** Task 101: proposed actions the UI can apply. */
+  actions?: GideonAction[]
+  /** Task 101: external source links (verified against this turn's web search). */
+  sources?: GideonSource[]
   /**
    * Fact ids the router determined the player just reported as true (e.g.
    * "I killed Margit"), not merely asked about. The caller must actually
@@ -486,6 +508,32 @@ function speakMissed(character: Character, question: string): GideonAct {
   }
 }
 
+/**
+ * Task 101: location-aware "what now". When the shared `currentArea` is known
+ * and no goal is set, answer from what is still open in that region instead of
+ * the global pool, so the answer matches the screen the player is looking at.
+ * Returns undefined when there is no area (the caller keeps its old behaviour).
+ */
+function speakWhatNow(character: Character, area?: AreaSignal | null): GideonAct | undefined {
+  if (!area?.region) return undefined
+  const label = areaLabel(area)
+  const res = regionLeftovers(character, area.region, 3)
+  if (!res.items.length) {
+    return {
+      say: `You are in ${label}. Nothing seeded is still open here — say "what is still available" or name an ending.`,
+      module: 'map',
+    }
+  }
+  const top = res.items[0]
+  const more = res.more ? ` — and ${res.more} more.` : '.'
+  return {
+    say: `You are in ${label}. Still open here: ${res.items.map((i) => i.name).join(', ')}${more}`,
+    module: 'map',
+    factId: top.id,
+    offer: { label: 'Show it', prompt: `where is ${top.name}` },
+  }
+}
+
 /** Short "gate ahead" line for plain what-next answers. Empty when none is near. */
 function approachingGateLine(character: Character): string {
   const approaching = approachingGates(character)
@@ -591,6 +639,7 @@ export function askGideonRouter(
   guides?: GuideExcerpt[],
   weapons?: Weapon[],
   regionLevelList?: RegionLevel[],
+  area?: AreaSignal | null,
 ): GideonAct {
   const q = question.toLowerCase().trim()
   if (!q) return { say: 'Name an ending, or ask what to do next.' }
@@ -846,9 +895,13 @@ export function askGideonRouter(
       if (route) {
         const act = speakPlan(character, route)
         const hint = approachingGateLine(character)
-        return hint ? { ...act, say: `${hint}${act.say}` } : act
+        const where = area ? `You are in ${areaLabel(area)}. ` : ''
+        return { ...act, say: `${where}${hint}${act.say}` }
       }
     }
+    // Task 101: no goal but a known area — answer "here" specifically.
+    const areaAct = speakWhatNow(character, area)
+    if (areaAct) return areaAct
     const s = stillAvailable(character)
     const pick = s.active[0] || s.open[0]
     const moves = nextMoves(character, 3)
@@ -1365,6 +1418,7 @@ export async function askGideon(
   character: Character,
   memory: GideonMemory = {},
   history: ChatMessage[] = [],
+  area?: AreaSignal | null,
 ): Promise<GideonAct> {
   const ql = question.toLowerCase()
   const wantsCombat =
@@ -1392,7 +1446,7 @@ export async function askGideon(
     wantsLevels ? loadRegionLevels().then((d) => d.areas).catch(() => undefined) : Promise.resolve(undefined),
   ])
   const regionLevelList = regionLevels
-  const router = askGideonRouter(question, character, memory, combat, dialogue, placements, medusaSteps, guides, weapons, regionLevelList)
+  const router = askGideonRouter(question, character, memory, combat, dialogue, placements, medusaSteps, guides, weapons, regionLevelList, area)
   if (isFastLookup(question, memory, combat ?? cachedBossCombat(), placements, medusaSteps, guides, weapons, regionLevelList)) return router
 
   if (!hasGideonKey()) {
@@ -1404,12 +1458,12 @@ export async function askGideon(
   }
 
   try {
-    const grounding = buildGrounding(question, character, memory)
+    const grounding = buildGrounding(question, character, memory, area)
     // Tool-calling harness first: Muse can call our deterministic functions and
     // answer from real data. If the harness is unavailable, fall back to a plain
     // completion, then the router.
     try {
-      const agentAct = await askGideonAgent(question, character, memory, history)
+      const agentAct = await askGideonAgent(question, character, memory, history, area)
       if (agentAct) return agentAct
     } catch (agentErr) {
       console.warn('[gideon] tool harness unavailable; plain completion.', agentErr)

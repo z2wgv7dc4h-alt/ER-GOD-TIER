@@ -3,11 +3,17 @@ import { pvpBuilds } from '../knowledge/pvp'
 import { byId, matchMany, type Fact } from '../knowledge/catalog'
 import { planRoute } from '../knowledge/endings'
 import { allLines, findLine, stillAvailable } from '../knowledge/storylines'
-import type { Character, ModuleId } from '../types'
-import { generatedAliases, matchAllWarps } from './aliases'
+import type { Character, ModuleId, Stats } from '../types'
+import { canonicalFactId, generatedAliases, matchAllWarps } from './aliases'
+import { areaLabel, type AreaSignal } from './areaContext'
+import { resolveEntityId } from './entityGraph'
 import type { ChatMessage } from './muse'
-import type { GideonAct, GideonMemory } from './gideon'
+import type { GideonAction, GideonAct, GideonMemory, GideonSource } from './gideon'
 import { searchSync } from './search'
+
+const STAT_KEYS: (keyof Stats)[] = [
+  'vigor', 'mind', 'endurance', 'strength', 'dexterity', 'intelligence', 'faith', 'arcane',
+]
 
 export const GIDEON_MODULES: ModuleId[] = ['reckon', 'map', 'build', 'quests', 'codex']
 
@@ -28,7 +34,12 @@ export type Grounding = {
  * repo: still-available lines, the route plan for the current goal, search hits
  * for the player's own words, and a bounded catalog slice. No wiki text, no RAG.
  */
-export function buildGrounding(question: string, character: Character, memory: GideonMemory = {}): Grounding {
+export function buildGrounding(
+  question: string,
+  character: Character,
+  memory: GideonMemory = {},
+  area?: AreaSignal | null,
+): Grounding {
   const factIds = new Set<string>()
   const allBuilds = [...opBuilds, ...pvpBuilds]
   const buildIds = new Set(allBuilds.map((b) => b.id))
@@ -87,6 +98,7 @@ export function buildGrounding(question: string, character: Character, memory: G
       collectedItems: character.collectedItems.slice(0, 30),
       completedQuestSteps: character.completedQuestSteps.slice(0, 30),
     },
+    currentArea: area?.region ? { region: area.region, place: area.place ?? null, label: areaLabel(area) } : null,
     lines,
     goalPlan,
     search: hits.map((h) => ({ id: h.id, name: h.name, detail: h.detail, module: h.module })),
@@ -100,19 +112,20 @@ export function buildGrounding(question: string, character: Character, memory: G
 
 const SYSTEM_PROMPT = `You are Gideon Ofnir, the All-Knowing, the guide inside an Elden Ring companion app. The Tarnished is mid-run and asking for advice.
 
-Answer ONLY from the grounding pack provided in the user message. The pack is json and contains: the character's facts, the storylines and their state, the current route plan, search results, a catalog slice, and the available builds.
+Answer ONLY from the grounding pack in the user message and from the results of the tools you call. The pack contains the character's facts, the current area, the storylines and their state, the route plan, search results, a catalog slice, and the builds.
 
 Hard rules:
-- Never invent fact ids, build ids, goal ids, module names, or item names. Use an id only if it appears verbatim in the grounding pack.
-- "factId" must be one of the ids listed in the catalog or search arrays.
-- "buildId" must be one of the ids listed in the builds array.
-- "goal" must be one of the ids listed in the lines array.
-- "module" must be one of the allowedModules.
+- Refer to anything in the game with [[id]] from a tool result. Never invent ids. Cite such an id as [[boss:godrick]] or [[boss:godrick|the Grafted]]. A cited id must resolve; an unknown one is dropped.
+- Never invent fact ids, build ids, goal ids, module names, or item names. Use an id only if it appears verbatim in a tool result or the grounding pack.
+- "factId" / "buildId" / "goal" / "module" must be one of the ids / values in the pack (legacy fields; prefer links + actions).
+- To change the player's record, propose an action; do not claim you changed it. Character-changing actions: markDone / markNotDone / addOwned / removeOwned ({ids}), setGoal ({id}), equip ({slot,id}), setStats ({stats, level}). Navigation actions: showOnMap / open ({id}).
+- "links" lists fact ids you referenced but did not inline as [[id]].
+- "sources" may only contain urls returned by a web_search result in this same turn. Never invent a url.
 - If the pack does not cover the question, say so briefly and point at the closest grounded lead instead of guessing.
 - Stay in Gideon's voice: precise, arch, a little cold. 1-4 sentences. No markdown.
 
 Return json only, exactly this shape:
-{"say": string, "module": string|null, "factId": string|null, "buildId": string|null, "goal": string|null, "offer": {"label": string, "prompt": string}|null, "navigateNow": boolean}
+{"say": string, "module": string|null, "factId": string|null, "buildId": string|null, "goal": string|null, "offer": {"label": string, "prompt": string}|null, "navigateNow": boolean, "links": string[]|null, "actions": array|null, "sources": {"title": string, "url": string}[]|null}
 
 Set navigateNow true only when you also set factId or module. Omit (null) every optional field you do not need.`
 
@@ -156,38 +169,124 @@ function splitSentences(say: string): string[] {
  * Each sentence is inspected for `prefix:slug` tokens; a sentence with any unknown
  * token is dropped whole rather than edited. Returns the surviving prose.
  */
+/** Task 101 marker spans are resolved by the renderer, not by the id gate. */
+const MARKER_SPAN = /\[\[[^\]]*\]\]/g
+
 export function stripUngroundedSentences(say: string, g: Grounding): string {
   const allowed = allowedIds(g)
   return splitSentences(say)
     .filter((sentence) => {
-      const tokens = sentence.match(ID_TOKEN) ?? []
-      return tokens.every((token) => allowed.has(token))
+      // Bare `prefix:slug` tokens are gated; `[[id]]` markers are left for the
+      // renderer, which shows an unknown id as plain text (never a dead link).
+      const masked = sentence.replace(MARKER_SPAN, ' ')
+      const tokens = masked.match(ID_TOKEN) ?? []
+      return tokens.every((token) => allowed.has(token) || resolveEntityId(token) !== null)
     })
     .join(' ')
     .trim()
 }
 
-export type Validation = { act: GideonAct | null; rejected: string[] }
+export type Validation = {
+  act: GideonAct | null
+  /** Legacy critical id fields. A non-empty list rejects the whole act. */
+  rejected: string[]
+  /** Task 101 softer drops (unknown action/link ids, source urls): logged, act kept. */
+  dropped: string[]
+}
+
+/** Resolve an id through the alias plane + entity graph, or null when unknown. */
+function knownEntityId(id: unknown, g: Grounding): string | null {
+  if (typeof id !== 'string' || !id.trim()) return null
+  const raw = id.trim()
+  const resolved = resolveEntityId(raw)
+  if (resolved) return resolved
+  // Grounding ids that are not graph entities (e.g. blitz/story goal ids).
+  if (g.factIds.has(raw) || g.buildIds.has(raw) || g.goalIds.has(raw)) return canonicalFactId(raw)
+  return null
+}
+
+/** Canonicalise a goal id: graph entity, or the raw grounding goal id. */
+function knownGoalId(id: unknown, g: Grounding): string | null {
+  if (typeof id !== 'string' || !id.trim()) return null
+  const raw = id.trim()
+  if (g.goalIds.has(raw)) return raw
+  return resolveEntityId(raw) ?? (g.factIds.has(raw) ? canonicalFactId(raw) : null)
+}
+
+function pickStats(value: unknown): Partial<Stats> {
+  const out: Partial<Stats> = {}
+  if (!value || typeof value !== 'object') return out
+  const o = value as Record<string, unknown>
+  for (const key of STAT_KEYS) {
+    const v = o[key]
+    if (typeof v === 'number' && Number.isFinite(v)) out[key] = v
+  }
+  return out
+}
+
+function validateActions(raw: unknown, g: Grounding, dropped: string[]): GideonAction[] {
+  if (!Array.isArray(raw)) return []
+  const out: GideonAction[] = []
+  for (const item of raw) {
+    if (!item || typeof item !== 'object') continue
+    const a = item as Record<string, unknown>
+    const type = typeof a.type === 'string' ? a.type : ''
+    if (type === 'markDone' || type === 'markNotDone' || type === 'addOwned' || type === 'removeOwned') {
+      const ids = (Array.isArray(a.ids) ? a.ids : [])
+        .map((id) => knownEntityId(id, g))
+        .filter((id): id is string => Boolean(id))
+      if (ids.length) out.push({ type, ids })
+      else dropped.push(`action:${type}`)
+    } else if (type === 'setGoal') {
+      const id = knownGoalId(a.id, g)
+      if (id) out.push({ type, id })
+      else dropped.push(`action:setGoal:${String(a.id)}`)
+    } else if (type === 'equip') {
+      const id = knownEntityId(a.id, g)
+      const slot = typeof a.slot === 'string' ? a.slot.trim() : ''
+      if (id && slot) out.push({ type, slot, id })
+      else dropped.push(`action:equip:${String(a.id)}`)
+    } else if (type === 'setStats') {
+      const stats = pickStats(a.stats)
+      const level = typeof a.level === 'number' && Number.isFinite(a.level) ? a.level : undefined
+      if (Object.keys(stats).length || level != null) out.push({ type, stats, level })
+      else dropped.push('action:setStats')
+    } else if (type === 'showOnMap' || type === 'open') {
+      const id = knownEntityId(a.id, g)
+      if (id) out.push({ type, id })
+      else dropped.push(`action:${type}:${String(a.id)}`)
+    } else {
+      dropped.push(`action:${type || 'unknown'}`)
+    }
+  }
+  return out
+}
 
 /**
- * Turn the model's JSON into a GideonAct, but only for ids that exist in the
- * grounding pack. An invented factId/buildId/goal id poisons the whole turn:
- * returning null makes the caller fall back to the deterministic router rather
- * than surfacing a fabricated pin or build. A bad `module` is dropped silently
- * because it carries no id the UI navigates to.
+ * Turn the model's JSON into a GideonAct. Legacy id fields (factId/buildId/goal)
+ * still poison the whole turn, so a fabricated pin or build never reaches the UI
+ * and the caller falls back to the router. Task 101's `links`, `actions` and
+ * `sources` are validated more softly: an unknown id or an unverified url is
+ * dropped from that field (and logged in `dropped`), the rest of the act stands.
+ * `allowedUrls` is the set of urls a `web_search` result produced this turn;
+ * sources outside it (including an empty set) are dropped.
  */
-export function validateGideonAct(raw: unknown, g: Grounding): Validation {
+export function validateGideonAct(raw: unknown, g: Grounding, allowedUrls: Iterable<string> = []): Validation {
   const rejected: string[] = []
-  if (!raw || typeof raw !== 'object') return { act: null, rejected: ['response'] }
+  const dropped: string[] = []
+  if (!raw || typeof raw !== 'object') return { act: null, rejected: ['response'], dropped }
   const r = raw as Record<string, unknown>
   const rawSay = typeof r.say === 'string' ? r.say.trim() : ''
-  if (!rawSay) return { act: null, rejected: ['say'] }
+  if (!rawSay) return { act: null, rejected: ['say'], dropped }
 
-  // Drop any sentence that names an id the grounding pack and catalog do not
-  // know. Keep validating the id fields below so the report lists every problem;
-  // an empty result rejects the turn and the router takes over either way.
+  // Drop any sentence that names a bare unknown id. `[[id]]` markers survive and
+  // the renderer shows an unknown one as plain text — but log the drop.
   const say = stripUngroundedSentences(rawSay, g)
   if (!say) rejected.push('say:ungrounded')
+  for (const m of rawSay.matchAll(/\[\[([^\]|]+)(?:\|[^\]]+)?\]\]/g)) {
+    const id = (m[1] ?? '').trim()
+    if (id && knownEntityId(id, g) === null) dropped.push(`say:marker:${id}`)
+  }
 
   const act: GideonAct = { say }
 
@@ -217,6 +316,37 @@ export function validateGideonAct(raw: unknown, g: Grounding): Validation {
 
   if (r.navigateNow === true && (act.factId || act.module)) act.navigateNow = true
 
-  if (rejected.length) return { act: null, rejected }
-  return { act, rejected }
+  // --- Task 101: links / actions / sources (soft drops) --------------------
+  if (Array.isArray(r.links)) {
+    const links: string[] = []
+    for (const id of r.links) {
+      const resolved = knownEntityId(id, g)
+      if (resolved) {
+        if (!links.includes(resolved)) links.push(resolved)
+      } else {
+        dropped.push(`link:${String(id)}`)
+      }
+    }
+    if (links.length) act.links = links
+  }
+
+  const actions = validateActions(r.actions, g, dropped)
+  if (actions.length) act.actions = actions
+
+  if (Array.isArray(r.sources)) {
+    const allowed = new Set(allowedUrls)
+    const sources: GideonSource[] = []
+    for (const item of r.sources) {
+      if (!item || typeof item !== 'object') continue
+      const s = item as Record<string, unknown>
+      const title = typeof s.title === 'string' ? s.title.trim() : ''
+      const url = typeof s.url === 'string' ? s.url.trim() : ''
+      if (title && url && allowed.has(url)) sources.push({ title, url })
+      else dropped.push(`source:${url || 'unknown'}`)
+    }
+    if (sources.length) act.sources = sources
+  }
+
+  if (rejected.length) return { act: null, rejected, dropped }
+  return { act, rejected, dropped }
 }

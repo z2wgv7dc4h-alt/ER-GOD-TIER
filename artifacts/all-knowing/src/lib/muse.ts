@@ -25,6 +25,54 @@ const DEFAULT_TIMEOUT_MS = 45000
  * the loose `json_object` parsing. Root is a plain object, every property is in
  * `required`, and `additionalProperties:false`, per the strict subset.
  */
+const STAT_KEYS = ['vigor', 'mind', 'endurance', 'strength', 'dexterity', 'intelligence', 'faith', 'arcane'] as const
+
+/** The Task 101 action union, discriminated on `type`. */
+const ACTION_SCHEMA = {
+  anyOf: [
+    ...['markDone', 'markNotDone', 'addOwned', 'removeOwned'].map((t) => ({
+      type: 'object',
+      additionalProperties: false,
+      properties: { type: { const: t }, ids: { type: 'array', items: { type: 'string' } } },
+      required: ['type', 'ids'],
+    })),
+    {
+      type: 'object',
+      additionalProperties: false,
+      properties: { type: { const: 'setGoal' }, id: { type: 'string' } },
+      required: ['type', 'id'],
+    },
+    {
+      type: 'object',
+      additionalProperties: false,
+      properties: { type: { const: 'equip' }, slot: { type: 'string' }, id: { type: 'string' } },
+      required: ['type', 'slot', 'id'],
+    },
+    {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        type: { const: 'setStats' },
+        ...Object.fromEntries(STAT_KEYS.map((k) => [k, { type: ['number', 'null'] }])),
+        level: { type: ['number', 'null'] },
+      },
+      required: ['type', ...STAT_KEYS, 'level'],
+    },
+    {
+      type: 'object',
+      additionalProperties: false,
+      properties: { type: { const: 'showOnMap' }, id: { type: 'string' } },
+      required: ['type', 'id'],
+    },
+    {
+      type: 'object',
+      additionalProperties: false,
+      properties: { type: { const: 'open' }, id: { type: 'string' } },
+      required: ['type', 'id'],
+    },
+  ],
+} as const
+
 const ACT_SCHEMA = {
   type: 'json_schema',
   json_schema: {
@@ -46,8 +94,19 @@ const ACT_SCHEMA = {
           required: ['label', 'prompt'],
         },
         navigateNow: { type: 'boolean' },
+        links: { type: ['array', 'null'], items: { type: 'string' } },
+        actions: { type: ['array', 'null'], items: ACTION_SCHEMA },
+        sources: {
+          type: ['array', 'null'],
+          items: {
+            type: 'object',
+            additionalProperties: false,
+            properties: { title: { type: 'string' }, url: { type: 'string' } },
+            required: ['title', 'url'],
+          },
+        },
       },
-      required: ['say', 'module', 'factId', 'buildId', 'goal', 'offer', 'navigateNow'],
+      required: ['say', 'module', 'factId', 'buildId', 'goal', 'offer', 'navigateNow', 'links', 'actions', 'sources'],
     },
   },
 } as const
