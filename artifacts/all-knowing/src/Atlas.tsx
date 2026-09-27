@@ -396,7 +396,7 @@ export function AtlasWorkspace() {
         </>)}
         <button
           type="button"
-          className="atlas-toggle"
+          className={engineLive ? 'atlas-toggle engine-live' : 'atlas-toggle'}
           onClick={() => setSideOpen((v) => !v)}
           aria-expanded={sideOpen}
         >

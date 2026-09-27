@@ -26,7 +26,10 @@ import { EngineItemSection, ErclSection, MedusaSection, NpcPlacementSection, Bos
 import { RecipesSection, SecretsSection, AcquisitionSection, QuestStepsSection, WikiTextSection } from './CodexData'
 import { DungeonChecklist } from './Dungeon'
 import { useWorkspace } from './state'
+import { combatByName, useCombatTargets, type CombatStats } from './lib/enemy'
 import { matchGatheringNodes, useGatheringNodes } from './lib/gatheringNodes'
+import { CombatWeakness } from './CombatWeakness'
+import { EntityActions } from './EntityActions'
 import {
   matchAmmos,
   matchArmors,
@@ -43,7 +46,7 @@ import {
   useFanapiData,
 } from './lib/fanapiData'
 
-type RefRow = { key: string; kicker: string; name: string; note: string }
+type RefRow = { key: string; kicker: string; name: string; note: string; combat?: CombatStats }
 
 function RefSection({ title, count, rows }: { title: string; count: number; rows: RefRow[] }) {
   if (rows.length === 0) return null
@@ -56,12 +59,30 @@ function RefSection({ title, count, rows }: { title: string; count: number; rows
             <div className="kicker">{r.kicker}</div>
             <h3>{r.name}</h3>
             {r.note && <p className="note">{r.note}</p>}
+            {r.combat !== undefined && <CombatWeakness target={r.combat} name={r.name} />}
           </article>
         ))}
       </div>
     </>
   )
 }
+
+type BrowseCorpus = 'recipes' | 'secrets' | 'guides' | 'builds' | 'dialogue' | 'wiki' | 'bosses'
+
+/**
+ * Task 92 row 7: the empty-state browse chips. Each names a corpus and, when
+ * clicked, forces that corpus open through its existing lazy loader — no new
+ * data or search logic.
+ */
+const BROWSE_CORPORA: { id: BrowseCorpus; label: string }[] = [
+  { id: 'recipes', label: 'Recipes' },
+  { id: 'secrets', label: 'Secrets' },
+  { id: 'guides', label: 'Guides' },
+  { id: 'builds', label: 'Community builds' },
+  { id: 'dialogue', label: 'Dialogue' },
+  { id: 'wiki', label: 'Wiki prose' },
+  { id: 'bosses', label: 'Boss strategy' },
+]
 
 function CodexThumb({ name, aliases }: { name: string; aliases?: string[] }) {
   const src = fanImage(name, aliases)
@@ -79,9 +100,12 @@ export function CodexWorkspace() {
   const regions = useGraceRegions()
   const gatheringNodes = useGatheringNodes()
   const fan = useFanapiData()
+  const { targets: combatTargets } = useCombatTargets()
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
+  const [browse, setBrowse] = useState<BrowseCorpus | null>(null)
   const q = query.trim().toLowerCase()
   const selectedFact = selectedMarkerId ? byId.get(selectedMarkerId) : undefined
+  const selectedCombat = combatByName(combatTargets, selectedFact?.name)
   const catalogHits = useMemo(() => (q.length >= 2 ? matchMany(query) : []), [q, query])
   const guideHits = q.length >= 3 ? matchGuide(q, guide.items, guide.legs) : { items: [], legs: [] }
   const openHits = q.length >= 3 ? matchOpen(q, open.names, open.areas, open.shops, open.ashes, open.spells, open.lots, open.extra) : []
@@ -130,7 +154,13 @@ export function CodexWorkspace() {
     {
       title: 'Bosses',
       count: fan.bosses.length,
-      rows: bossHits.map((b) => ({ key: b.name, kicker: `${b.region || 'Boss'}${b.hp ? ` · ${b.hp} HP` : ''}`, name: b.name, note: b.drops.join(' · ') })),
+      rows: bossHits.map((b) => ({
+        key: b.name,
+        kicker: `${b.region || 'Boss'}${b.hp ? ` · ${b.hp} HP` : ''}`,
+        name: b.name,
+        note: b.drops.join(' · '),
+        combat: combatByName(combatTargets, b.name),
+      })),
     },
     { title: 'Field enemies', count: fan.creatures.length, rows: creatureHits.map((c) => ({ key: c.name, kicker: c.location || 'Enemy', name: c.name, note: c.drops.join(' · ') })) },
     { title: 'NPCs', count: fan.npcs.length, rows: npcHits.map((n) => ({ key: n.name, kicker: (n.role ?? '').trim() || 'NPC', name: n.name, note: n.location })) },
@@ -184,18 +214,32 @@ export function CodexWorkspace() {
   )
   return (
     <div className="codex-wrap">
-      {q.length < 2 && !selectedMarkerId && (
+      {q.length < 2 && !selectedMarkerId && !browse && (
         <section className="codex-empty">
           <h3 className="codex-head">Search everything</h3>
           <p className="note">
             Facts, items, weapons, bosses + drops, dialogue, NPC quests, recipes, secrets, guides,
-            the map, and the wiki. Type in the bar above — or try one:
+            the map, and the wiki. Type in the bar above — or search one:
           </p>
           <div className="opts">
             {['Margit', 'Rivers of Blood', 'Fire Pot', 'illusory wall', 'Larval Tear', 'Sellen', 'Scadutree'].map((s) => (
               <button key={s} type="button" className="chip" onClick={() => setQuery(s)}>{s}</button>
             ))}
           </div>
+          <div className="kicker" style={{ marginTop: 12 }}>Browse a corpus</div>
+          <div className="opts">
+            {BROWSE_CORPORA.map((c) => (
+              <button key={c.id} type="button" className="chip" onClick={() => setBrowse(c.id)}>
+                {c.label}
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+      {browse && (
+        <section className="codex-browse">
+          <div className="kicker">Browsing · {BROWSE_CORPORA.find((c) => c.id === browse)?.label}</div>
+          <button type="button" className="chip" onClick={() => setBrowse(null)}>Back to search</button>
         </section>
       )}
       {selectedMarkerId && (
@@ -205,7 +249,9 @@ export function CodexWorkspace() {
           </div>
           <h3>{selectedFact?.name || labelOf(selectedMarkerId)}</h3>
           {selectedFact?.note && <p className="note">{selectedFact.note}</p>}
+          <CombatWeakness target={selectedCombat} name={selectedFact?.name || labelOf(selectedMarkerId)} />
           <Related id={selectedMarkerId} />
+          <EntityActions id={selectedMarkerId} name={selectedFact?.name} />
           <div className="opts">
             <button type="button" className="chip" onClick={() => setSelectedMarkerId(null)}>Close</button>
           </div>
@@ -221,29 +267,27 @@ export function CodexWorkspace() {
                 <h3>{f.name}</h3>
                 {f.note && <p className="note">{f.note}</p>}
                 <Related id={f.id} />
-                <div className="opts">
-                  <button type="button" className="chip" onClick={() => setSelectedMarkerId(f.id)}>Open detail</button>
-                </div>
+                <EntityActions id={f.id} name={f.name} />
               </article>
             ))}
           </div>
         </>
       )}
-      <DialogueBySpeaker query={query} />
-      <DialogueHits query={query} />
+      <DialogueBySpeaker query={query} browse={browse === 'dialogue'} />
+      <DialogueHits query={query} browse={browse === 'dialogue'} />
       <WeaponStatsSection query={query} />
       <EngineItemSection query={query} />
       <ErclSection query={query} />
       <MedusaSection query={query} />
       <NpcPlacementSection query={query} />
-      <BossDropsSection query={query} />
-      <GuidesSection query={query} />
-      <MetaBuildsSection query={query} />
-      <RecipesSection query={query} />
-      <SecretsSection query={query} />
+      <BossDropsSection query={query} browse={browse === 'bosses'} />
+      <GuidesSection query={query} browse={browse === 'guides'} />
+      <MetaBuildsSection query={query} browse={browse === 'builds'} />
+      <RecipesSection query={query} browse={browse === 'recipes'} />
+      <SecretsSection query={query} browse={browse === 'secrets'} />
       <AcquisitionSection query={query} />
       <QuestStepsSection query={query} />
-      <WikiTextSection query={query} />
+      <WikiTextSection query={query} browse={browse === 'wiki'} />
       {(guideHits.items.length > 0 || guideHits.legs.length > 0) && (
         <>
           <h3 className="codex-head">Guide · {guide.items.length} items · {guide.legs.length} legs</h3>
@@ -534,6 +578,7 @@ export function CodexWorkspace() {
                 <div className="kicker">{e.type} · {e.region}{e.parryable ? ' · parryable' : ''}</div>
                 <h3>{e.name}</h3>
                 <p className="note">{e.notes || 'Remembrance / field boss.'}</p>
+                <CombatWeakness target={combatByName(combatTargets, e.name)} name={e.name} />
               </article>
             ))}
           </div>

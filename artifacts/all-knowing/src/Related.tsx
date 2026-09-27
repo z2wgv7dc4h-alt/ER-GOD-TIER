@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { relatedFor, type RelatedLink } from './lib/related'
 import { factState, useWorkspace } from './state'
 
@@ -58,6 +59,30 @@ export function Related({ id, title = 'Related' }: { id: string; title?: string 
           Engine row {result.engineRow.engineId} · {result.engineRow.fmgName} ({result.engineRow.source})
         </p>
       )}
+    </div>
+  )
+}
+
+/**
+ * Task 93: the same `Related` graph, folded behind a `Related (N)` disclosure so
+ * a long chip list cannot become a wall. Reuses `relatedFor`, no new edges.
+ */
+export function RelatedCollapsible({ id, title = 'Related' }: { id: string; title?: string }) {
+  const [open, setOpen] = useState(false)
+  const result = relatedFor(id)
+  if (!result.hasAny) return null
+  const count = result.groups.reduce((n, g) => n + g.links.length, 0)
+  return (
+    <div className="related-disclosure">
+      <button
+        type="button"
+        className={open ? 'chip on' : 'chip'}
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+      >
+        {title} ({count})
+      </button>
+      {open && <Related id={id} title={title} />}
     </div>
   )
 }

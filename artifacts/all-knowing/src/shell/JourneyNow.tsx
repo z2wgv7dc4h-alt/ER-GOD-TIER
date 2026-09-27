@@ -5,11 +5,14 @@ import { applyFacts } from '../lib/infer'
 import { beatPin } from '../lib/beatPins'
 import { useCoords } from '../lib/coords'
 import { gideonHeader } from '../lib/gideonHeader'
+import { leftoverPins } from '../lib/leftoverPins'
 import { labelOf } from '../lib/links'
 import { lockoutWarningsFor, type LockWarning } from '../lib/lockWarnings'
 import { targetModule } from '../lib/related'
+import { BeforeYouGoCard } from '../BeforeYouGoCard'
 import { LockoutPrompt } from '../LockoutPrompt'
-import { Related } from '../Related'
+import { MedusaRoute } from '../MedusaRoute'
+import { RelatedCollapsible } from '../Related'
 import { NextMoves } from '../Thread'
 import { useWorkspace } from '../state'
 import { WorldRibbon } from './WorldRibbon'
@@ -35,6 +38,10 @@ export function JourneyNow() {
   const lockedCount = survey.locked.length
   const showPin = header.factId ? beatPin(w.character, header.factId, coords) : null
   const blitzLine = useMemo(() => allLines.find((l) => l.kind === 'blitz'), [])
+  const nextSteps = useMemo(() => (plan ? plan.available.slice(1, 4) : []), [plan])
+  // Task 92 row 3: the same leftover pins the Atlas draws, counted here so the
+  // player can see how much is still outstanding before opening the map.
+  const outstanding = useMemo(() => leftoverPins(w.character, coords), [w.character, coords])
   const [lockPending, setLockPending] = useState<{ ids: string[]; warnings: LockWarning[] } | null>(null)
 
   function persistGoal(id?: string) {
@@ -63,13 +70,13 @@ export function JourneyNow() {
   return (
     <div className="now-page">
       <WorldRibbon />
-      <div className="split now-split">
-        <section className="panel">
+      <div className="now-cards">
+        <section className="panel now-lead">
           <div className="kicker">Working towards{header.goal ? ` · ${header.goal}` : ''}</div>
           {header.beat ? (
-            <div className="gideon-header gideon-now" role="status" aria-label="Current beat">
-              <div className="kicker">Now{header.goal ? ` · ${header.goal}` : ''}</div>
-              <h3>{header.beat}</h3>
+            <>
+              <div className="kicker" style={{ marginTop: 6 }}>Now</div>
+              <h3 className="now-beat" aria-label="Current beat">{header.beat}</h3>
               {header.gate && <p className="note" style={{ margin: '4px 0 0' }}>Gate ahead: {header.gate}</p>}
               <div className="opts" style={{ marginTop: 10 }}>
                 {showPin && (
@@ -81,7 +88,7 @@ export function JourneyNow() {
                       w.setModule('map')
                     }}
                   >
-                    Show
+                    Show on map
                   </button>
                 )}
                 {plan?.current && (
@@ -97,9 +104,8 @@ export function JourneyNow() {
                     Blitz
                   </button>
                 )}
-              </div>
-              {header.factId && (
-                <>
+                <button type="button" className="chip" onClick={() => w.go('gideon')}>Ask Gideon</button>
+                {header.factId && (
                   <button
                     type="button"
                     className="chip"
@@ -110,10 +116,32 @@ export function JourneyNow() {
                   >
                     Open {labelOf(header.factId)}
                   </button>
-                  <Related id={header.factId} />
-                </>
+                )}
+              </div>
+
+              {nextSteps.length > 0 && (
+                <div className="now-steps">
+                  <div className="kicker">Next</div>
+                  {nextSteps.map((s) => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      className="quest"
+                      onClick={() => {
+                        if (!s.factId) return
+                        w.setSelectedMarkerId(s.factId)
+                        w.setModule(s.module ?? 'map')
+                      }}
+                    >
+                      <strong>{s.do}</strong>
+                      <div className="note">{s.detail}</div>
+                    </button>
+                  ))}
+                </div>
               )}
-            </div>
+
+              {header.factId && <RelatedCollapsible id={header.factId} />}
+            </>
           ) : (
             <p className="note">No beat yet. Ask what is still available.</p>
           )}
@@ -144,6 +172,34 @@ export function JourneyNow() {
             <button type="button" className="chip" onClick={() => w.go('journey', 'quests')}>Open Quests</button>
           </div>
         </section>
+
+        <section className="panel leftover-card">
+          <div className="kicker">Leftovers nearby</div>
+          <h3 className="now-beat" aria-label="Leftover count">
+            {outstanding.length} still outstanding here
+          </h3>
+          <p className="note">
+            Same layer as the Atlas. Nothing is marked until you collect it.
+          </p>
+          <div className="opts" style={{ marginTop: 10 }}>
+            <button
+              type="button"
+              className={w.showLeftovers ? 'chip on' : 'chip'}
+              aria-pressed={w.showLeftovers}
+              onClick={() => {
+                if (!w.showLeftovers) w.toggleLeftovers()
+                w.go('journey', 'map')
+              }}
+            >
+              Show on map
+            </button>
+            <button type="button" className="chip" onClick={() => w.go('journey', 'map')}>Open the map</button>
+          </div>
+        </section>
+
+        <BeforeYouGoCard />
+
+        <MedusaRoute compact />
       </div>
 
       {lockPending && (

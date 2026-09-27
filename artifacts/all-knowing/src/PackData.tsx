@@ -156,20 +156,21 @@ export function NpcPlacementSection({ query, preloaded }: { query: string; prelo
 }
 
 /** Boss drops from the Fextralife scrape (base + SotE). */
-export function BossDropsSection({ query, preloaded }: { query: string; preloaded?: FextBoss[] }) {
+export function BossDropsSection({ query, preloaded, browse = false }: { query: string; preloaded?: FextBoss[]; browse?: boolean }) {
   const [rows, setRows] = useState<FextBoss[] | null>(preloaded ?? null)
   const q = query.trim()
+  const show = browse || q.length >= 3
   useEffect(() => {
-    if (q.length < 3 || rows) return
+    if (!show || rows) return
     let cancelled = false
     void loadBossDrops()
       .then((d) => { if (!cancelled) setRows(d.bosses) })
       .catch(() => { /* dataset absent: section stays hidden */ })
     return () => { cancelled = true }
-  }, [q, rows])
+  }, [show, rows])
   const data = preloaded ?? rows
-  if (q.length < 3 || !data) return null
-  const hits = matchBossDrops(q, data)
+  if (!show || !data) return null
+  const hits = browse ? data.slice(0, 12) : matchBossDrops(q, data)
   if (hits.length === 0) return null
   return (
     <>
@@ -188,20 +189,21 @@ export function BossDropsSection({ query, preloaded }: { query: string; preloade
 }
 
 /** Fextralife guide excerpts matching the query. */
-export function GuidesSection({ query, preloaded }: { query: string; preloaded?: GuideExcerpt[] }) {
+export function GuidesSection({ query, preloaded, browse = false }: { query: string; preloaded?: GuideExcerpt[]; browse?: boolean }) {
   const [rows, setRows] = useState<GuideExcerpt[] | null>(preloaded ?? null)
   const q = query.trim()
+  const show = browse || q.length >= 3
   useEffect(() => {
-    if (q.length < 3 || rows) return
+    if (!show || rows) return
     let cancelled = false
     void loadGuides()
       .then((d) => { if (!cancelled) setRows(guideExcerpts(d)) })
       .catch(() => { /* dataset absent: section stays hidden */ })
     return () => { cancelled = true }
-  }, [q, rows])
+  }, [show, rows])
   const data = preloaded ?? rows
-  if (q.length < 3 || !data) return null
-  const hits = matchGuides(q, data)
+  if (!show || !data) return null
+  const hits = browse ? data.slice(0, 12) : matchGuides(q, data)
   if (hits.length === 0) return null
   return (
     <>
@@ -219,20 +221,21 @@ export function GuidesSection({ query, preloaded }: { query: string; preloaded?:
 }
 
 /** Meta builds + status/strat excerpts (Fextralife). */
-export function MetaBuildsSection({ query, preloaded }: { query: string; preloaded?: MetaExcerpt[] }) {
+export function MetaBuildsSection({ query, preloaded, browse = false }: { query: string; preloaded?: MetaExcerpt[]; browse?: boolean }) {
   const [rows, setRows] = useState<MetaExcerpt[] | null>(preloaded ?? null)
   const q = query.trim()
+  const show = browse || q.length >= 3
   useEffect(() => {
-    if (q.length < 3 || rows) return
+    if (!show || rows) return
     let cancelled = false
     void loadMetaBuilds()
       .then((d) => { if (!cancelled) setRows(metaExcerpts(d)) })
       .catch(() => { /* dataset absent: section stays hidden */ })
     return () => { cancelled = true }
-  }, [q, rows])
+  }, [show, rows])
   const data = preloaded ?? rows
-  if (q.length < 3 || !data) return null
-  const hits = matchMeta(q, data)
+  if (!show || !data) return null
+  const hits = browse ? data.slice(0, 12) : matchMeta(q, data)
   if (hits.length === 0) return null
   return (
     <>

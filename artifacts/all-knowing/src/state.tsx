@@ -16,6 +16,7 @@ import {
   loadVault,
   saveVault,
   switchProfile,
+  uiLocation,
   upsertActive,
   type Profile,
   type Vault,
@@ -80,10 +81,8 @@ const defaultLayers: Record<LayerId, boolean> = {
   dungeon: true,
 }
 
-function bootLocation(hash: string, module: ModuleId): { section: Section; sub: Sub | null } {
-  const fromHash = hashToLocation(hash)
-  if (fromHash) return fromHash
-  return moduleToLocation(module)
+function bootLocation(hash: string, fallback: { section: Section; sub: Sub | null }): { section: Section; sub: Sub | null } {
+  return hashToLocation(hash) ?? fallback
 }
 
 const DOCK_KEY = 'all-knowing.dock.open.v1'
@@ -102,7 +101,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const boot = useRef(loadVault()).current
   const [vault, setVault] = useState<Vault>(boot)
   const bootProfile = activeProfile(boot)
-  const start = bootLocation(typeof window !== 'undefined' ? window.location.hash : '', bootProfile.ui.module)
+  const start = bootLocation(typeof window !== 'undefined' ? window.location.hash : '', uiLocation(bootProfile.ui))
 
   const [module, setModuleState] = useState<ModuleId>(bootProfile.ui.module)
   const [section, setSection] = useState<Section>(start.section)
@@ -180,7 +179,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     const next = upsertActive(vaultRef.current, {
       character: { ...character, shots: [] },
       label: character.name || activeProfile(vaultRef.current).label,
-      ui: { module: locationToModule(section, sub), missingOnly, selectedMarkerId },
+      ui: { module: locationToModule(section, sub), section, sub, missingOnly, selectedMarkerId },
     })
     vaultRef.current = next
     setVault(next)
@@ -192,7 +191,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setVault(next)
     saveVault(next)
     setCharacter(p.character)
-    const loc = moduleToLocation(p.ui.module)
+    const loc = uiLocation(p.ui)
     setSection(loc.section)
     setSub(loc.sub)
     setModuleState(p.ui.module)

@@ -109,6 +109,11 @@ const STRINGS = {
     'master.M01': 'Underground',
     'master.M10': 'Realm of Shadow',
     'master.M11': 'Realm of Shadow — Underground',
+    // All-Knowing Task 93: short names for the compact phone <select>.
+    'masterShort.M00': 'Lands Between',
+    'masterShort.M01': 'Underground',
+    'masterShort.M10': 'Shadow',
+    'masterShort.M11': 'Shadow Under',
 
     'char.level': 'Level',
     'char.deaths': ['death', 'deaths', 'deaths'],
@@ -249,6 +254,11 @@ const STRINGS = {
     'master.M01': 'Подземелья',
     'master.M10': 'Царство теней',
     'master.M11': 'Царство теней — подземелья',
+    // All-Knowing Task 93: short names for the compact phone <select>.
+    'masterShort.M00': 'Междуземье',
+    'masterShort.M01': 'Подземелья',
+    'masterShort.M10': 'Тени',
+    'masterShort.M11': 'Тени низ',
 
     'char.level': 'Уровень',
     'char.deaths': ['смерть', 'смерти', 'смертей'],

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { DIALOGUE_TABLES, loadGameTextTable, searchGameText } from './lib/gameText'
+import { DIALOGUE_TABLES, allGameText, loadGameTextTable, searchGameText } from './lib/gameText'
 import { linesBySpeaker, loadDialogueOwners, speakerLabel, type DialogueOwners } from './lib/dialogueOwners'
 import { WikiText } from './WikiText'
 
@@ -23,18 +23,20 @@ export function DialogueHits({
   limit = 20,
   preloaded,
   owners,
+  browse = false,
 }: {
   query: string
   limit?: number
   preloaded?: Tables
   owners?: DialogueOwners
+  browse?: boolean
 }) {
   const [loaded, setLoaded] = useState<Tables | null>(preloaded ?? null)
   const [ownersLoaded, setOwnersLoaded] = useState<DialogueOwners | null>(owners ?? null)
   const q = query.trim()
 
   useEffect(() => {
-    if (q.length < 3 || loaded) return
+    if ((!browse && q.length < 3) || loaded) return
     let cancelled = false
     void Promise.all(
       DIALOGUE_TABLES.map((t) => loadGameTextTable(t).catch(() => ({}) as Record<string, string>)),
@@ -50,12 +52,12 @@ export function DialogueHits({
     return () => {
       cancelled = true
     }
-  }, [q, loaded, ownersLoaded])
+  }, [q, loaded, ownersLoaded, browse])
 
   const tables = preloaded ?? loaded
   const own = owners ?? ownersLoaded
-  if (q.length < 3 || !tables) return null
-  const hits = searchGameText(tables, q, limit)
+  if ((!browse && q.length < 3) || !tables) return null
+  const hits = browse && q.length < 3 ? allGameText(tables, limit) : searchGameText(tables, q, limit)
   if (hits.length === 0) return null
 
   return (
@@ -86,18 +88,20 @@ export function DialogueBySpeaker({
   preloadedText,
   owners,
   perSpeaker = 8,
+  browse = false,
 }: {
   query: string
   preloadedText?: Record<string, string>
   owners?: DialogueOwners
   perSpeaker?: number
+  browse?: boolean
 }) {
   const [text, setText] = useState<Record<string, string> | null>(preloadedText ?? null)
   const [own, setOwn] = useState<DialogueOwners | null>(owners ?? null)
   const q = query.trim().toLowerCase()
 
   useEffect(() => {
-    if (q.length < 3 || text) return
+    if ((!browse && q.length < 3) || text) return
     let cancelled = false
     void loadGameTextTable('TalkMsg')
       .then((rows) => { if (!cancelled) setText(rows) })
@@ -110,13 +114,15 @@ export function DialogueBySpeaker({
     return () => {
       cancelled = true
     }
-  }, [q, text, own])
+  }, [q, text, own, browse])
 
   const rows = preloadedText ?? text
   const o = owners ?? own
-  if (q.length < 3 || !rows || !o) return null
+  if ((!browse && q.length < 3) || !rows || !o) return null
 
-  const groups = [...linesBySpeaker(o).entries()].filter(([name]) => name.toLowerCase().includes(q))
+  const groups = [...linesBySpeaker(o).entries()].filter(
+    ([name]) => browse || name.toLowerCase().includes(q),
+  )
   if (groups.length === 0) return null
 
   return (

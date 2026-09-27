@@ -228,6 +228,28 @@ export function resistSummary(target: CombatStats): string {
   return `poison ${r.poison} · rot ${r.scarletRot} · bleed ${r.bleed} · sleep ${r.sleep} · madness ${r.madness} · curse ${r.curse}`
 }
 
+/**
+ * Task 92: the one-line "weak to / resists" summary reused by Search entity
+ * results and the Build matchup, from the same NpcParam negation the matchup
+ * already renders. `bestDamageType` is the highest negation (weakest) type; the
+ * resist type is the highest positive negation.
+ */
+export function weaknessLine(target: CombatStats): string {
+  const weak = bestDamageType(target)
+  const resist = damageTypes.reduce(
+    (best, type) => (target.negation[type] > target.negation[best] ? type : best),
+    damageTypes[0],
+  )
+  return `weak to ${damageTypeLabels[weak]} · resists ${damageTypeLabels[resist]} (${negationText(target.negation[resist])})`
+}
+
+/** Name lookup for the async combat tables, so a card can show a boss' line. */
+export function combatByName(targets: CombatStats[], name: string | undefined): CombatStats | undefined {
+  if (!name) return undefined
+  const n = name.trim().toLowerCase().replace(/\s*\([^)]*\)\s*$/, '')
+  return targets.find((t) => t.name.trim().toLowerCase().replace(/\s*\([^)]*\)\s*$/, '') === n)
+}
+
 export type EffectiveDamage = {
   total: number
   byType: Partial<Record<AttackPowerType, number>>

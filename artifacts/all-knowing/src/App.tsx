@@ -7,6 +7,7 @@ import {
 } from './lib/mapEngine'
 import { mergeCharacter } from './lib/merge'
 import { CommandHits, useClipboardShots, useHotkeys } from './QoL'
+import { FirstVisitHint } from './Help'
 import { Header } from './shell/Header'
 import { JourneyNow } from './shell/JourneyNow'
 import { MapControls } from './shell/MapControls'
@@ -109,6 +110,7 @@ function AppShell() {
       />
       <div className="shell-body">
         <main className="workspace">
+          <FirstVisitHint />
           <SubTabs />
           {w.section === 'journey' && w.sub === 'map' && <MapControls />}
           <CommandHits />

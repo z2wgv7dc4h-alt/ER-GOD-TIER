@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from 'vitest'
 import type { Shot } from '../types'
 import { fromPacket, toPacket } from './packet'
-import { activeProfile, exportActive, loadVault, saveVault, upsertActive } from './vault'
+import { activeProfile, defaultUi, exportActive, loadVault, saveVault, uiLocation, upsertActive, type VaultUi } from './vault'
 
 function memoryStorage(): Storage {
   const map = new Map<string, string>()
@@ -56,5 +56,27 @@ describe('vault round-trip', () => {
   it('rejects documents that are not All-Knowing packets', () => {
     expect(() => fromPacket({ kind: 'something-else' })).toThrow(/packet/i)
     expect(toPacket(activeProfile(loadVault()).character).kind).toBe('all-knowing.packet')
+  })
+})
+
+describe('location persistence (Task 93)', () => {
+  it('defaults the UI to a real section/sub, not just a module id', () => {
+    expect(uiLocation(defaultUi())).toEqual({ section: 'me', sub: 'update' })
+  })
+
+  it('migrates a legacy vault that only stored a ModuleId', () => {
+    const legacy: VaultUi = { module: 'map', missingOnly: true, selectedMarkerId: null }
+    expect(uiLocation(legacy)).toEqual({ section: 'journey', sub: 'map' })
+    expect(uiLocation({ ...legacy, module: 'codex' })).toEqual({ section: 'library', sub: 'search' })
+  })
+
+  it('round-trips section/sub exactly through the vault (kit is no longer lossy)', () => {
+    const base = loadVault()
+    const saved = upsertActive(base, { ui: { ...defaultUi(), section: 'library', sub: 'kit' } })
+    saveVault(saved)
+    const ui = activeProfile(loadVault()).ui
+    expect(ui.section).toBe('library')
+    expect(ui.sub).toBe('kit')
+    expect(uiLocation(ui)).toEqual({ section: 'library', sub: 'kit' })
   })
 })

@@ -1,9 +1,12 @@
 import { markers } from '../data/seed'
+import { scadutreeFragments } from '../knowledge/collectibles'
+import { canonicalHunts } from '../knowledge/completion'
 import { warpGraces } from '../knowledge/graces'
 import { allLines } from '../knowledge/storylines'
 import { summarize } from '../lib/infer'
+import { sourceLabel } from '../lib/sourceLabel'
 import { Recents, StatEdit, softCapMark } from '../QoL'
-import { useWorkspace } from '../state'
+import { factState, useWorkspace } from '../state'
 import { WorldRibbon } from './WorldRibbon'
 
 function Meter({ label, have, total }: { label: string; have: number; total: number }) {
@@ -20,22 +23,22 @@ function Meter({ label, have, total }: { label: string; have: number; total: num
 }
 
 function CharacterCard() {
-  const { character, engineStatus, setSelectedMarkerId, setModule } = useWorkspace()
+  const { character, go, setSelectedMarkerId, setModule } = useWorkspace()
   const s = character.stats
   const tot = summarize(character)
   const recent = [...character.evidence].slice(-3).reverse()
   return (
     <section className="char-card">
-      <div className="label">
-        {engineStatus === 'live'
-          ? 'Map engine · live save'
-          : engineStatus === 'connecting'
-            ? 'Map engine · connecting'
-            : character.source === 'empty'
-              ? 'No save bound'
-              : character.source === 'demo'
-                ? 'Demo character'
-                : 'Save (local)'}
+      <div className="char-card-head">
+        <div className="label">{sourceLabel(character)}</div>
+        <button
+          type="button"
+          className="chip"
+          title="Add a save or screenshot"
+          onClick={() => go('me', 'update')}
+        >
+          Update
+        </button>
       </div>
       <h2>{character.name}</h2>
       <div className="meta">
@@ -81,6 +84,13 @@ export function MeOverview() {
   const items = new Set(character.collectedItems)
   const totalBosses = markers.filter((m) => m.kind === 'boss').length
   const totalItems = markers.filter((m) => m.kind === 'item').length
+  // Task 92 row 4: the full completion picture — graces, bosses, items,
+  // fragments and field hunts — from the same collections the rest of the app
+  // uses. Field hunts are the canonical `hunts.json` ids (deduped across spawns).
+  const fragmentIds = scadutreeFragments.map((f) => f.id)
+  const fragmentsHave = fragmentIds.filter((id) => character.collectedItems.includes(id)).length
+  const huntIds = [...new Set(canonicalHunts.map((h) => h.id))]
+  const huntsHave = huntIds.filter((id) => factState(character, id) === 'true').length
   return (
     <div className="me-overview">
       <WorldRibbon />
@@ -92,6 +102,8 @@ export function MeOverview() {
           <Meter label="Graces" have={graces.size} total={warpGraces.length} />
           <Meter label="Bosses" have={bosses.size} total={totalBosses} />
           <Meter label="Items found" have={items.size} total={totalItems} />
+          <Meter label="Fragments" have={fragmentsHave} total={fragmentIds.length} />
+          <Meter label="Field hunts" have={huntsHave} total={huntIds.length} />
         </div>
         <div className="opts" style={{ marginTop: 12 }}>
           <button type="button" className="chip" onClick={() => { setSelectedMarkerId(null); setModule('map') }}>

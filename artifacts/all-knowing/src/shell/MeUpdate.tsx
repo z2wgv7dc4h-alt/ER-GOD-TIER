@@ -1,6 +1,8 @@
 import { lazy, Suspense, useRef, useState } from 'react'
+import { BuildCodeCard } from '../BuildCodeCard'
 import { demoCharacter } from '../data/seed'
 import { ingestSave } from '../lib/save'
+import { shotKinds } from '../lib/shotKinds'
 import { GoodsPaste } from '../GoodsPaste'
 import { PacketBar } from '../QoL'
 import { useWorkspace } from '../state'
@@ -79,6 +81,16 @@ export function MeUpdate() {
         <section className="me-card">
           <div className="kicker">Screenshot</div>
           <p className="note">PS5-first: throw captures at Reckoning and it reads them on-device.</p>
+          {/* Task 92 row 9: what each shot type reads, from the shared catalogue. */}
+          <div className="kicker" style={{ marginTop: 10 }}>What each shot reads</div>
+          <ul className="list shot-reads">
+            {shotKinds.map((s) => (
+              <li key={s.id} style={{ cursor: 'default' }}>
+                <span>{s.label}</span>
+                <span className="note">{s.ask}</span>
+              </li>
+            ))}
+          </ul>
           <Suspense fallback={<p className="note">Loading Reckoning…</p>}>
             <ReckonWorkspace />
           </Suspense>
@@ -91,6 +103,10 @@ export function MeUpdate() {
           <div className="kicker">Share / import</div>
           <p className="note">Copy, save, load or scan a packet. QR included.</p>
           <PacketBar />
+        </section>
+        <section className="me-card">
+          <div className="kicker">Build codes</div>
+          <BuildCodeCard />
         </section>
       </div>
     </div>

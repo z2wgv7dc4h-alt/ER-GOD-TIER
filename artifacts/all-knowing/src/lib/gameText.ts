@@ -70,3 +70,15 @@ export function searchGameText(
   }
   return out
 }
+
+/** First `limit` lines of a loaded corpus, for the Task 92 browse chips. */
+export function allGameText(tables: Record<string, Record<string, string>>, limit = 20): TextHit[] {
+  const out: TextHit[] = []
+  for (const [table, rows] of Object.entries(tables)) {
+    for (const [id, text] of Object.entries(rows)) {
+      out.push({ table, id, text })
+      if (out.length >= limit) return out
+    }
+  }
+  return out
+}

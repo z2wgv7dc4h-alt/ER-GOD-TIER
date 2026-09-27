@@ -7,6 +7,7 @@ import { readCharacterScreen } from './lib/museVision'
 import { hasGideonKey } from './lib/muse'
 import { applyAnswers, clearFact, summarize } from './lib/infer'
 import { labelOf } from './lib/links'
+import { shotKinds } from './lib/shotKinds'
 import { NextMoves, Thread } from './Thread'
 import { useWorkspace } from './state'
 import type { Character, Shot, ShotKind } from './types'
@@ -19,15 +20,6 @@ function fileToDataUrl(file: File): Promise<string> {
     fr.readAsDataURL(file)
   })
 }
-
-const shotKinds: { id: ShotKind; label: string; ask: string }[] = [
-  { id: 'warp-list', label: 'Warp / grace list', ask: 'Map menu → a Site of Grace list. Best single shot a PS5 player can give.' },
-  { id: 'map', label: 'World map', ask: 'Opened map with gold grace icons. Fog still matters — only visible pins count.' },
-  { id: 'inventory', label: 'Inventory / Great Runes', ask: 'Key items and Great Runes reconstruct shardbearers and quests.' },
-  { id: 'equipment', label: 'Equipment screen', ask: 'Weapons and armor currently worn.' },
-  { id: 'pickup', label: 'Item pickup banner', ask: 'The name plate after you pick something up.' },
-  { id: 'boss', label: 'Boss remembrance / arena', ask: 'A remembrance or the “legend felled” banner.' },
-]
 
 /** Per-line verdicts for a pasted/recognized list: every line gets a match or a miss. */function LineResults({ lines }: { lines: OcrLineResult[] }) {
   if (!lines.length) return null

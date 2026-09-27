@@ -1,4 +1,5 @@
 import { engineBanner, engineChipLabel } from '../lib/mapEngine'
+import { gideonModel, hasGideonKey } from '../lib/muse'
 import { ProfileSwitcher } from '../ProfileSwitcher'
 import { SpoilerToggle } from '../QoL'
 import { useWorkspace } from '../state'
@@ -50,6 +51,18 @@ export function MeProfiles() {
       <section className="me-card">
         <div className="kicker">Map engine</div>
         <EngineChip />
+      </section>
+      <section className="me-card">
+        <div className="kicker">Gideon</div>
+        <div className="opts" style={{ margin: '6px 0' }}>
+          <span className={hasGideonKey() ? 'chip on' : 'chip'}>
+            LLM: {hasGideonKey() ? `${gideonModel()} key configured` : 'router only — no key'}
+          </span>
+        </div>
+        <p className="note">
+          The deterministic router always works. The optional model is used only for open-ended
+          questions when a key is configured.
+        </p>
       </section>
     </div>
   )

@@ -3,6 +3,7 @@ import { isStepDone, planRoute, type PlanStep } from './knowledge/endings'
 import { npcLocate } from './knowledge/npcLocations'
 import { allLines, type Line } from './knowledge/storylines'
 import { LockoutPrompt } from './LockoutPrompt'
+import { MedusaRoute } from './MedusaRoute'
 import { Related } from './Related'
 import { Thread } from './Thread'
 import { applyFacts, clearFact } from './lib/infer'
@@ -103,6 +104,7 @@ export function QuestWorkspace() {
         </div>
       </section>
       <section className="panel">
+        <MedusaRoute />
         <div className="kicker">{active.kind}</div>
         <h3 style={{ fontFamily: 'var(--font-display)', margin: '6px 0 8px' }}>{active.name}</h3>
         {npcLoc && (

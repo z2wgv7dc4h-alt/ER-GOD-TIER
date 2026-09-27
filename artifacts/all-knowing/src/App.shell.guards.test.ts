@@ -49,9 +49,13 @@ describe('shell guards (Task 91)', () => {
     expect(qol).toMatch(/case 'dock'/)
   })
 
-  it('persists the last location as a legacy ModuleId', () => {
+  it('persists the last location as section/sub, migrating the legacy ModuleId', () => {
     expect(vault).toContain('module: ModuleId')
-    expect(state).toMatch(/ui: \{ module: locationToModule/)
+    expect(vault).toMatch(/section\?: Section/)
+    expect(vault).toMatch(/sub\?: Sub \| null/)
+    expect(vault).toMatch(/function uiLocation/)
+    expect(state).toMatch(/ui: \{ module: locationToModule\(section, sub\), section, sub,/)
+    expect(state).toMatch(/uiLocation\(bootProfile\.ui\)/)
   })
 
   it('hides the Gideon dock while the gideon section is active', () => {

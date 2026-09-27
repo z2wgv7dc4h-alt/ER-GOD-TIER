@@ -1,11 +1,28 @@
 import { emptyCharacter } from '../data/seed'
-import type { Character, ModuleId } from '../types'
+import type { Character, ModuleId, Section, Sub } from '../types'
 import { fromPacket, toPacket, type Packet } from './packet'
+import { defaultSub, moduleToLocation } from './sections'
 
 export type VaultUi = {
+  /** Legacy room id. Still written so an older build keeps working, but the
+   *  `section`/`sub` pair is the source of truth now (Task 93). */
   module: ModuleId
+  /** New shell location. Optional only so a pre-Task-93 vault still loads. */
+  section?: Section
+  sub?: Sub | null
   missingOnly: boolean
   selectedMarkerId: string | null
+}
+
+/**
+ * The shell location a saved UI points at. Prefers the exact `section`/`sub`,
+ * falling back to the legacy `module` id for a vault written before Task 93.
+ */
+export function uiLocation(ui: VaultUi): { section: Section; sub: Sub | null } {
+  if (ui.section) {
+    return { section: ui.section, sub: ui.sub === undefined ? defaultSub(ui.section) : ui.sub }
+  }
+  return moduleToLocation(ui.module)
 }
 
 export type Profile = {
@@ -27,6 +44,8 @@ const LEGACY_KEY = 'all-knowing.character.v1'
 
 export const defaultUi = (): VaultUi => ({
   module: 'reckon',
+  section: 'me',
+  sub: 'update',
   missingOnly: true,
   selectedMarkerId: null,
 })

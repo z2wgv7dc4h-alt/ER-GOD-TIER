@@ -516,25 +516,40 @@ const statKeys: (keyof Stats)[] = ['vigor', 'mind', 'endurance', 'strength', 'de
 
 export function StatEdit() {
   const { character, setCharacter } = useWorkspace()
+  // Task 93: collapsed by default so eight inputs don't stack into a wall; the
+  // read-only grid in the character card stays visible.
+  const [open, setOpen] = useState(false)
   function setStat(key: keyof Stats, raw: string) {
     const n = Math.max(1, Math.min(99, Number(raw) || 1))
     setCharacter({ ...character, stats: { ...character.stats, [key]: n } })
   }
   return (
-    <div className="stat-edit">
-      <div className="kicker">Type the numbers from the status screen</div>
-      <div className="stats">
-        {statKeys.map((key) => (
-          <label key={key}>
-            <span>{key.slice(0, 3)}</span>
-            <input
-              inputMode="numeric"
-              value={character.stats[key]}
-              onChange={(e) => setStat(key, e.target.value)}
-            />
-          </label>
-        ))}
-      </div>
+    <div className={open ? 'stat-edit open' : 'stat-edit'}>
+      <button
+        type="button"
+        className={open ? 'chip on' : 'chip'}
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+      >
+        {open ? 'Hide stats' : 'Edit stats'}
+      </button>
+      {open && (
+        <>
+          <div className="kicker" style={{ marginTop: 8 }}>Type the numbers from the status screen</div>
+          <div className="stats">
+            {statKeys.map((key) => (
+              <label key={key}>
+                <span>{key.slice(0, 3)}</span>
+                <input
+                  inputMode="numeric"
+                  value={character.stats[key]}
+                  onChange={(e) => setStat(key, e.target.value)}
+                />
+              </label>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   )
 }

@@ -4,7 +4,9 @@ import { opBuilds } from './knowledge/builds'
 import { pvpBuilds, pvpMatchups } from './knowledge/pvp'
 import { techTips } from './knowledge/tech'
 import { isCollected, useWorkspace } from './state'
+import { CombatWeakness } from './CombatWeakness'
 import { RespecAdvisor } from './RespecAdvisor'
+import { UpgradeAdvisor } from './UpgradeAdvisor'
 import { applyFacts } from './lib/infer'
 import { buildHunt } from './lib/buildHunt'
 import { useCoords } from './lib/coords'
@@ -14,7 +16,7 @@ import type { AttackRating, Weapon } from './lib/ar'
 import { REGULATION_STAMP } from './lib/regulation'
 import { isSoteRun } from './lib/blessings'
 import { SOFT_CAPS, softCapLabel } from './lib/softCaps'
-import { BUILD_CODE_PREFIX, copyBuildCode, encodeBuildCode, tryDecodeBuildCode } from './lib/buildCode'
+import { BuildCodeCard } from './BuildCodeCard'
 import { Related } from './Related'
 import { WeaponCompare } from './WeaponCompare'
 import {
@@ -63,11 +65,15 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
   const preview = estimateDefense(character)
   const allBuilds = useMemo(() => [...opBuilds, ...pvpBuilds], [])
   const kitId = typeof character.answers.buildKit === 'string' ? character.answers.buildKit : ''
-  const selectedBuild = allBuilds.find((b) => b.id === kitId)
+  // Task 92 row 5: the build hunt is a panel, not something buried behind a kit
+  // pick — a default build is always hunted so the list is on first paint.
+  const selectedBuild = allBuilds.find((b) => b.id === kitId) ?? allBuilds[0]
   const hunt = useMemo(
     () => (selectedBuild ? buildHunt(character, selectedBuild, coords) : null),
     [character, selectedBuild, coords],
   )
+  const chooseBuild = (id: string) =>
+    setCharacter({ ...character, answers: { ...character.answers, buildKit: id } })
   const [weapons, setWeapons] = useState<Weapon[] | null>(null)
   const [arError, setArError] = useState<string | null>(null)
   const [twoHanding, setTwoHanding] = useState(false)
@@ -75,10 +81,6 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
   const [targetId, setTargetId] = useState('')
   const [enemyQuery, setEnemyQuery] = useState('')
   const [pvpId, setPvpId] = useState('')
-  const [buildLabel, setBuildLabel] = useState('')
-  const [buildCode, setBuildCode] = useState('')
-  const [importCode, setImportCode] = useState('')
-  const [buildMsg, setBuildMsg] = useState<{ ok: boolean; text: string } | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -119,46 +121,16 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
     })
   }
 
-  async function exportBuild() {
-    const code = encodeBuildCode({
-      level: character.level,
-      stats: character.stats,
-      loadout: character.loadout,
-      name: buildLabel.trim() || undefined,
-    })
-    setBuildCode(code)
-    const copied = await copyBuildCode(code)
-    setBuildMsg({
-      ok: true,
-      text: copied ? 'Build code copied to clipboard.' : 'Copy blocked — select the code below.',
-    })
-  }
-
-  function importBuild() {
-    const result = tryDecodeBuildCode(importCode)
-    if (!result.ok) {
-      // Visible error, nothing applied.
-      setBuildMsg({ ok: false, text: result.error })
-      return
-    }
-    // Same apply path as the OP/PvP kit chips.
-    const { level, stats, loadout, name } = result.build
-    setCharacter({ ...character, stats, level, loadout })
-    setImportCode('')
-    setBuildMsg({
-      ok: true,
-      text: `Applied ${name ? `“${name}”` : 'build'}: Lv ${level}, ${loadout.length} gear slot${loadout.length === 1 ? '' : 's'}.`,
-    })
-  }
-
   if (view === 'kit') {
     return (
       <div className="split">
         <section className="panel">
           <div className="kicker">Kit library</div>
-          <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>OP kits, PvP and matchup tech</h3>
+          <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>
+            OP kits · PvP · Weapon compare · Tech &amp; cheese
+          </h3>
 
-          <div className="kicker" style={{ marginTop: 18 }}>OP kits</div>
+          <div className="kicker kit-group" style={{ marginTop: 18 }}>OP kits</div>
           <div className="opts">
             {opBuilds.map((b) => (
               <button
@@ -175,7 +147,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
             Kits set stats and a shopping list. They do not invent AR. Locations are in the Codex and Gideon.
           </p>
 
-          <div className="kicker" style={{ marginTop: 18 }}>PvP kits · patch 1.17</div>
+          <div className="kicker kit-group" style={{ marginTop: 18 }}>PvP · patch 1.17</div>
           <p className="note">
             PvP is its own game: poise, stance and invade-vs-host asymmetry matter more than raw damage,
             and skills/status are scaled separately against players. Kits below are target spreads, not
@@ -215,7 +187,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
             ))}
           </ul>
 
-          <div className="kicker" style={{ marginTop: 18 }}>Broken tricks &amp; tech</div>
+          <div className="kicker kit-group" style={{ marginTop: 18 }}>Tech &amp; cheese · broken tricks</div>
           <ul className="list" style={{ marginTop: 8 }}>
             {techTips.map((t) => (
               <li key={t.id} style={{ cursor: 'default', display: 'block' }}>
@@ -238,55 +210,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
           </div>
 
           <div className="kicker" style={{ marginTop: 18 }}>Build code</div>
-          <p className="note">
-            Share just the build — stats, level and gear. Not a packet: it carries no run
-            progress, and importing a code never renames your Tarnished.
-          </p>
-          <div className="opts" style={{ marginTop: 8 }}>
-            <input
-              className="search"
-              style={{ minWidth: 150 }}
-              placeholder="Build label (optional)"
-              maxLength={40}
-              value={buildLabel}
-              onChange={(e) => setBuildLabel(e.target.value)}
-            />
-            <button type="button" className="chip on" onClick={() => void exportBuild()}>
-              Export build
-            </button>
-          </div>
-          {buildCode && (
-            <input
-              className="search"
-              style={{ width: '100%', marginTop: 6 }}
-              readOnly
-              value={buildCode}
-              aria-label="Build code"
-              onFocus={(e) => e.target.select()}
-            />
-          )}
-          <div className="kicker" style={{ marginTop: 12 }}>Import a build code</div>
-          <textarea
-            className="search"
-            style={{ width: '100%', minHeight: 56, marginTop: 6, resize: 'vertical' }}
-            placeholder={`Paste a code starting with ${BUILD_CODE_PREFIX}`}
-            value={importCode}
-            onChange={(e) => setImportCode(e.target.value)}
-          />
-          <div className="opts" style={{ marginTop: 6 }}>
-            <button type="button" className="chip on" disabled={!importCode.trim()} onClick={importBuild}>
-              Apply build code
-            </button>
-          </div>
-          {buildMsg && (
-            <p
-              className="note"
-              role="status"
-              style={{ color: buildMsg.ok ? 'var(--ok)' : 'var(--danger)' }}
-            >
-              {buildMsg.text}
-            </p>
-          )}
+          <BuildCodeCard />
 
           <div className="kicker" style={{ marginTop: 18 }}>Attack rating detail</div>
           {ratings.length > 0 && (
@@ -312,6 +236,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
           )}
 
           <div className="kicker" style={{ marginTop: 20 }}>Matchup · NpcParam absorb</div>
+          <CombatWeakness target={target} name={target?.name} />
           {combatError && (
             <p className="note" style={{ marginTop: 10 }}>
               Combat data unavailable ({combatError}). Nothing shown rather than guessed.
@@ -407,13 +332,16 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
             Show on atlas
           </button>
 
-          {weapons && (
+          <div className="kicker kit-group" style={{ marginTop: 20 }}>Weapon compare</div>
+          {weapons ? (
             <WeaponCompare
               weapons={weapons}
               stats={character.stats}
               target={target}
               targetName={target?.name}
             />
+          ) : (
+            <p className="note" style={{ marginTop: 8 }}>Loading regulation data…</p>
           )}
         </section>
       </div>
@@ -464,81 +392,100 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
 
         <RespecAdvisor />
 
-        {selectedBuild && hunt ? (
-          <div className="kit-hunt" style={{ marginTop: 14 }}>
-            <div className="kicker">Active hunt · {selectedBuild.name}</div>
-            {hunt.missing.length === 0 ? (
-              <p className="note">Every seeded piece of this kit is already logged on this character.</p>
-            ) : (
-              <>
-                <p className="note">
-                  {hunt.missing.length} missing · {hunt.pins.length} with a pin. Picking a kit only sets
-                  stats and loadout — nothing here is marked until you say so.
+        <UpgradeAdvisor />
+
+        <div className="kit-hunt" style={{ marginTop: 14 }}>
+          <div className="kicker">Build hunt</div>
+          <label className="note" htmlFor="build-hunt-select" style={{ display: 'block', marginTop: 6 }}>
+            Pick a kit to hunt the missing pieces for:
+          </label>
+          <select
+            id="build-hunt-select"
+            value={selectedBuild?.id ?? ''}
+            onChange={(e) => chooseBuild(e.target.value)}
+            style={{ width: '100%', marginTop: 6 }}
+          >
+            {allBuilds.map((b) => (
+              <option key={b.id} value={b.id}>{b.name}</option>
+            ))}
+          </select>
+          {hunt && selectedBuild && (
+            <>
+              {hunt.missing.length === 0 ? (
+                <p className="note" style={{ marginTop: 8 }}>
+                  Every seeded piece of {selectedBuild.name} is already logged on this character.
                 </p>
-                {hunt.pinTarget && (
-                  <button
-                    type="button"
-                    className="chip on"
-                    style={{ marginTop: 6 }}
-                    onClick={() => {
-                      const t = hunt.pinTarget!
-                      if (!watchlistOf(character).includes(t.factId)) setCharacter(toggleWatch(character, t.factId))
-                      if (!showLeftovers) toggleLeftovers()
-                      setSelectedMarkerId(t.factId)
-                      setModule('map')
-                    }}
-                  >
-                    Show on map · {hunt.pinTarget.name}
-                  </button>
-                )}
-                <ul className="list">
-                  {hunt.missing.map((p) => (
-                    <li key={p.factId} style={{ display: 'block', cursor: 'default' }}>
-                      <span>
-                        {p.name} <em className="dim">{p.factId}</em>
-                      </span>
-                      <div className="opts" style={{ marginTop: 4 }}>
-                        <button
-                          type="button"
-                          className="chip"
-                          onClick={() => setCharacter(applyFacts(character, [p.factId], 'answer', 'build hunt mark'))}
-                        >
-                          Mark
-                        </button>
-                        {p.pin && (
+              ) : (
+                <>
+                  <p className="note" style={{ marginTop: 8 }}>
+                    {hunt.missing.length} missing · {hunt.pins.length} with a pin. Picking a kit only sets
+                    stats and loadout — nothing here is marked until you say so.
+                  </p>
+                  {hunt.pinTarget && (
+                    <button
+                      type="button"
+                      className="chip on"
+                      style={{ marginTop: 6 }}
+                      onClick={() => {
+                        const t = hunt.pinTarget!
+                        if (!watchlistOf(character).includes(t.factId)) setCharacter(toggleWatch(character, t.factId))
+                        if (!showLeftovers) toggleLeftovers()
+                        setSelectedMarkerId(t.factId)
+                        setModule('map')
+                      }}
+                    >
+                      Show on map · {hunt.pinTarget.name}
+                    </button>
+                  )}
+                  <ul className="list">
+                    {hunt.missing.map((p) => (
+                      <li key={p.factId} style={{ display: 'block', cursor: 'default' }}>
+                        <span>
+                          {p.name} <em className="dim">{p.factId}</em>
+                        </span>
+                        <div className="opts" style={{ marginTop: 4 }}>
                           <button
                             type="button"
                             className="chip"
-                            onClick={() => {
-                              if (!watchlistOf(character).includes(p.factId)) {
-                                setCharacter(toggleWatch(character, p.factId))
-                              }
-                              if (!showLeftovers) toggleLeftovers()
-                              setSelectedMarkerId(p.factId)
-                              setModule('map')
-                            }}
+                            onClick={() => setCharacter(applyFacts(character, [p.factId], 'answer', 'build hunt mark'))}
                           >
-                            Show on map
+                            Mark
                           </button>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-            {hunt.unresolved.length > 0 && (
-              <p className="note">
-                No row yet for {hunt.unresolved.length} id{hunt.unresolved.length === 1 ? '' : 's'} (
-                {hunt.unresolved.map((u) => u.id).join(', ')}), listed not dropped.
-              </p>
-            )}
-          </div>
-        ) : (
-          <p className="note" style={{ marginTop: 14 }}>
-            <strong>Pick a kit…</strong> Open <button type="button" className="chip" onClick={() => go('library', 'kit')}>Library → Kit</button> for the OP and PvP lists, or load a save.
+                          {p.pin && (
+                            <button
+                              type="button"
+                              className="chip"
+                              onClick={() => {
+                                if (!watchlistOf(character).includes(p.factId)) {
+                                  setCharacter(toggleWatch(character, p.factId))
+                                }
+                                if (!showLeftovers) toggleLeftovers()
+                                setSelectedMarkerId(p.factId)
+                                setModule('map')
+                              }}
+                            >
+                              Show on map
+                            </button>
+                          )}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              {hunt.unresolved.length > 0 && (
+                <p className="note">
+                  No row yet for {hunt.unresolved.length} id{hunt.unresolved.length === 1 ? '' : 's'} (
+                  {hunt.unresolved.map((u) => u.id).join(', ')}), listed not dropped.
+                </p>
+              )}
+            </>
+          )}
+          <p className="note" style={{ marginTop: 10 }}>
+            The full OP and PvP lists live in{' '}
+            <button type="button" className="chip" onClick={() => go('library', 'kit')}>Library → Kit</button>.
           </p>
-        )}
+        </div>
       </section>
 
       <section className="panel">

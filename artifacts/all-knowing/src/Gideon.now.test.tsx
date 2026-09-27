@@ -53,8 +53,10 @@ describe('Journey → Now panel (Task 84/91)', () => {
     expect(html).toMatch(/\d+ open · \d+ locked/)
   })
 
-  it('hides Show when the current beat has no existing pin', () => {
-    // item:fingerslayer has no loot row / grace coord, so no Show control.
-    expect(html).not.toContain('>Show<')
+  it('hides Show on map on the current beat when it has no existing pin', () => {
+    // item:fingerslayer has no loot row / grace coord, so the beat itself gets no
+    // Show control. The Task 92 leftovers card is a separate section, excluded here.
+    const lead = html.slice(html.indexOf('now-lead'), html.indexOf('</section>', html.indexOf('now-lead')))
+    expect(lead).not.toContain('Show on map')
   })
 })

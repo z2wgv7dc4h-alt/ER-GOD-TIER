@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { hasSeenHelp, markHelpSeen, SHORTCUT_GROUPS } from './lib/shortcuts'
 import { useWorkspace } from './state'
 
@@ -11,16 +11,6 @@ import { useWorkspace } from './state'
  */
 export function Help() {
   const { helpOpen, setHelpOpen } = useWorkspace()
-  const [hint, setHint] = useState(() => !hasSeenHelp())
-
-  // Opening the help (including via the `?` key) retires the first-visit hint.
-  if (helpOpen && hint) setHint(false)
-
-  function dismissHint() {
-    setHint(false)
-    markHelpSeen()
-  }
-
   return (
     <>
       <button
@@ -29,27 +19,46 @@ export function Help() {
         aria-label="Keyboard shortcuts and help"
         aria-haspopup="dialog"
         title="Shortcuts & help (?)"
-        onClick={() => {
-          dismissHint()
-          setHelpOpen(true)
-        }}
+        onClick={() => setHelpOpen(true)}
       >
         ?
       </button>
 
-      {hint && !helpOpen && (
-        <div className="help-hint" role="status">
-          <span>
-            New here? Press <kbd>?</kbd> — or tap the <strong>?</strong> above — for every shortcut.
-          </span>
-          <button type="button" className="help-hint-x" aria-label="Dismiss hint" onClick={dismissHint}>
-            ×
-          </button>
-        </div>
-      )}
-
       {helpOpen && <HelpSheet onClose={() => setHelpOpen(false)} />}
     </>
+  )
+}
+
+/**
+ * Task 93: the first-visit hint lives in normal flow above the sub-tabs, so it
+ * can never cover them. It retires after the first section/sub change.
+ */
+export function FirstVisitHint() {
+  const { section, sub } = useWorkspace()
+  const [hint, setHint] = useState(() => !hasSeenHelp())
+  const initial = useRef(`${section}/${sub}`)
+
+  useEffect(() => {
+    if (!hint || `${section}/${sub}` === initial.current) return
+    setHint(false)
+    markHelpSeen()
+  }, [section, sub, hint])
+
+  if (!hint) return null
+  return (
+    <div className="help-hint" role="status">
+      <span>
+        New here? Press <kbd>?</kbd> — or tap the <strong>?</strong> above — for every shortcut.
+      </span>
+      <button
+        type="button"
+        className="help-hint-x"
+        aria-label="Dismiss hint"
+        onClick={() => { setHint(false); markHelpSeen() }}
+      >
+        ×
+      </button>
+    </div>
   )
 }
 

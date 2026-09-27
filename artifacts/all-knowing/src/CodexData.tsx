@@ -12,18 +12,19 @@ import { loadWikiText, matchWiki, type WikiSection } from './lib/wikiText'
  * query matches, mirroring the other Codex sections.
  */
 
-export function RecipesSection({ query, preloaded }: { query: string; preloaded?: Recipe[] }) {
+export function RecipesSection({ query, preloaded, browse = false }: { query: string; preloaded?: Recipe[]; browse?: boolean }) {
   const [rows, setRows] = useState<Recipe[] | null>(preloaded ?? null)
   const q = query.trim()
+  const show = browse || q.length >= 3
   useEffect(() => {
-    if (q.length < 3 || rows) return
+    if (!show || rows) return
     let cancelled = false
     void loadRecipes().then((d) => { if (!cancelled) setRows(d.recipes) }).catch(() => {})
     return () => { cancelled = true }
-  }, [q, rows])
+  }, [show, rows])
   const data = preloaded ?? rows
-  if (q.length < 3 || !data) return null
-  const hits = matchRecipes(q, data)
+  if (!show || !data) return null
+  const hits = browse ? data.slice(0, 12) : matchRecipes(q, data)
   if (!hits.length) return null
   return (
     <>
@@ -41,18 +42,19 @@ export function RecipesSection({ query, preloaded }: { query: string; preloaded?
   )
 }
 
-export function SecretsSection({ query, preloaded }: { query: string; preloaded?: WallSecret[] }) {
+export function SecretsSection({ query, preloaded, browse = false }: { query: string; preloaded?: WallSecret[]; browse?: boolean }) {
   const [rows, setRows] = useState<WallSecret[] | null>(preloaded ?? null)
   const q = query.trim()
+  const show = browse || q.length >= 3
   useEffect(() => {
-    if (q.length < 3 || rows) return
+    if (!show || rows) return
     let cancelled = false
     void loadSecrets().then((d) => { if (!cancelled) setRows(d.walls) }).catch(() => {})
     return () => { cancelled = true }
-  }, [q, rows])
+  }, [show, rows])
   const data = preloaded ?? rows
-  if (q.length < 3 || !data) return null
-  const hits = matchSecrets(q, data)
+  if (!show || !data) return null
+  const hits = browse ? data.slice(0, 12) : matchSecrets(q, data)
   if (!hits.length) return null
   return (
     <>
@@ -130,19 +132,20 @@ export function QuestStepsSection({ query, preloaded }: { query: string; preload
   )
 }
 
-export function WikiTextSection({ query, preloaded }: { query: string; preloaded?: WikiSection[] }) {
+export function WikiTextSection({ query, preloaded, browse = false }: { query: string; preloaded?: WikiSection[]; browse?: boolean }) {
   const [rows, setRows] = useState<WikiSection[] | null>(preloaded ?? null)
   const q = query.trim()
+  const show = browse || q.length >= 6
   useEffect(() => {
-    // The wiki corpus is ~6 MB; only fetch it for a substantial query.
-    if (q.length < 6 || rows) return
+    // The wiki corpus is ~6 MB; only fetch it for a substantial query or browse.
+    if (!show || rows) return
     let cancelled = false
     void loadWikiText().then((d) => { if (!cancelled) setRows(d.sections) }).catch(() => {})
     return () => { cancelled = true }
-  }, [q, rows])
+  }, [show, rows])
   const data = preloaded ?? rows
-  if (q.length < 6 || !data) return null
-  const hits = matchWiki(q, data, 3)
+  if (!show || !data) return null
+  const hits = browse ? data.slice(0, 3) : matchWiki(q, data, 3)
   if (!hits.length) return null
   return (
     <>

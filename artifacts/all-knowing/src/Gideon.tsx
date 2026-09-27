@@ -45,6 +45,19 @@ export function Gideon() {
   // A new character is a new context: let the strip offer again.
   useEffect(() => { setDismissed(false) }, [w.character])
 
+  // Task 92: an entity's "Ask Gideon" action drops a one-shot question into the
+  // character's answers, then lands here. Consume it exactly once (StrictMode
+  // double-invokes effects, so guard on the question text).
+  const handledAsk = useRef('')
+  const pendingAsk = typeof w.character.answers.gideonAsk === 'string' ? w.character.answers.gideonAsk : ''
+  useEffect(() => {
+    if (!pendingAsk || handledAsk.current === pendingAsk) return
+    handledAsk.current = pendingAsk
+    w.setCharacter({ ...w.character, answers: { ...w.character.answers, gideonAsk: '' } })
+    void run(pendingAsk)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingAsk])
+
   function persistGoal(id?: string) {
     if (!id || w.character.answers.gideonGoal === id) return
     w.setCharacter({ ...w.character, answers: { ...w.character.answers, gideonGoal: id } })
@@ -191,27 +204,36 @@ export function Gideon() {
         </div>
       )}
 
-      <div className="opts" style={{ marginBottom: 8 }}>
-        <button type="button" className="chip" onClick={() => run('What is still available on this run?')}>Still available</button>
-        <button type="button" className="chip" onClick={() => run('I am stuck. Help with this wall.')}>Stuck</button>
-        <button type="button" className="chip" onClick={() => run('100% completionist route')}>100% spine</button>
-        <button
-          type="button"
-          className="chip"
-          onClick={() => run(`100% route: ${medusaChapters[0].name}. ${medusaChapters[0].goal} Then ${medusaChapters[1].name}.`)}
-        >
-          100% · {medusaChapters[0].name}
-        </button>
-      </div>
+      {/* Task 92 row 12: the quick chips are the empty-input state. Typing to ask
+          something hides them; clearing (or sending) brings them back. */}
+      {q.trim() === '' && (
+        <>
+          <div className="opts" style={{ marginBottom: 8 }}>
+            <button type="button" className="chip" onClick={() => run('What is still available on this run?')}>Still available</button>
+            <button type="button" className="chip" onClick={() => run('I am stuck. Help with this wall.')}>Stuck</button>
+            <button type="button" className="chip" onClick={() => run('100% completionist route')}>100% spine</button>
+            <button
+              type="button"
+              className="chip"
+              onClick={() => run(`100% route: ${medusaChapters[0].name}. ${medusaChapters[0].goal} Then ${medusaChapters[1].name}.`)}
+            >
+              100% · {medusaChapters[0].name}
+            </button>
+          </div>
 
-      {/* Guided asks: the deterministic router answers these exactly. Free text
-          stays for open-ended questions, which go to the optional model. */}
+          {/* Guided asks: the deterministic router answers these exactly. Free text
+              stays for open-ended questions, which go to the optional model. */}
+          <div className="opts" style={{ marginBottom: 8 }}>
+            <button type="button" className="chip" onClick={() => run('I am here, before I go on, what should I do so I do not outlevel it')}>Before I go</button>
+            <button type="button" className="chip" onClick={() => run('What did I miss here?')}>Missed here</button>
+            <button type="button" className="chip" onClick={() => run('Where are the illusory walls here?')}>Secrets</button>
+            <button type="button" className="chip" onClick={() => run('What are good early weapons?')}>Upgrade advice</button>
+            <button type="button" className="chip" onClick={() => run('What is on my list?')}>My list</button>
+          </div>
+        </>
+      )}
+
       <div className="opts" style={{ marginBottom: 8 }}>
-        <button type="button" className="chip" onClick={() => run('I am here, before I go on, what should I do so I do not outlevel it')}>Before I go</button>
-        <button type="button" className="chip" onClick={() => run('What did I miss here?')}>Missed here</button>
-        <button type="button" className="chip" onClick={() => run('Where are the illusory walls here?')}>Secrets</button>
-        <button type="button" className="chip" onClick={() => run('What are good early weapons?')}>Upgrade advice</button>
-        <button type="button" className="chip" onClick={() => run('What is on my list?')}>My list</button>
         <button
           type="button"
           className="chip"

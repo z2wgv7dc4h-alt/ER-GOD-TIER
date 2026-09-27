@@ -938,6 +938,22 @@ function buildLayerButtons() {
       wrap.appendChild(b);
     }
   }
+  // All-Knowing Task 93: the compact phone world switch, a second copy of the
+  // same four worlds with short labels. Same Task 59 pattern as the button
+  // grid: buildLayerButtons() populates every ".embed-world-select" element, so
+  // it stays in sync with the active master and the language.
+  for (const sel of document.querySelectorAll('.embed-world-select')) {
+    sel.innerHTML = '';
+    for (const id of order) {
+      const opt = document.createElement('option');
+      opt.value = id;
+      opt.textContent = t('masterShort.' + id);
+      opt.disabled = !masterInfo(id);
+      sel.appendChild(opt);
+    }
+    sel.value = state.master;
+    sel.onchange = (e) => switchMaster(e.target.value);
+  }
 }
 
 function switchMaster(id) {
