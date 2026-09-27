@@ -8,13 +8,13 @@ import {
   areaBosses,
   areaCompletion,
   areaDontMiss,
-  areaDungeons,
   areaGraces,
   areaLoot,
   areaNpcs,
   levelVerdict,
   regionMatches,
 } from '../lib/areaHub'
+import { dungeonsInRegion } from '../lib/dungeons'
 import { useGatheringNodes } from '../lib/gatheringNodes'
 import { loadRegionLevels, type RegionLevel } from '../lib/regionLevels'
 import { loadSecrets, type WallSecret } from '../lib/secrets'
@@ -62,7 +62,7 @@ export function JourneyArea() {
   const completion = useMemo(() => areaCompletion(character, area), [character, area])
   const graces = useMemo(() => areaGraces(character, area), [character, area])
   const bosses = useMemo(() => areaBosses(character, area), [character, area])
-  const piles = useMemo(() => areaDungeons(character, area), [character, area])
+  const regionDungeons = useMemo(() => dungeonsInRegion(area), [area])
   const npcs = useMemo(() => areaNpcs(character, area), [character, area])
   const lootRows = useMemo(() => areaLoot(character, area), [character, area])
   const dontMiss = useMemo(() => areaDontMiss(character, area), [character, area])
@@ -175,16 +175,23 @@ export function JourneyArea() {
 
       <section className="panel">
         <div className="kicker">Dungeons</div>
-        {piles.length === 0 ? (
-          <p className="note">No authored dungeons here yet.</p>
+        {regionDungeons.length === 0 ? (
+          <p className="note">No dungeons catalogued here yet.</p>
         ) : (
           <ul className="area-list">
-            {piles.map((d) => (
+            {regionDungeons.map((d) => (
               <li key={d.id}>
-                <span aria-hidden>{d.status === 'done' ? '✓' : d.status === 'current' ? '▸' : '○'}</span>{' '}
-                <EntityLink id={d.id}>{d.name}</EntityLink>
-                {d.boss && <> · <EntityLink id={d.bossId!}>{d.boss}</EntityLink></>}
-                <div className="note">{d.have}/{d.total} beats</div>
+                <EntityLink id={`dungeon:${d.id}`}>{d.name}</EntityLink>
+                {d.dlc && <span className="chip">DLC</span>}
+                {d.bosses[0] && (
+                  <> · <EntityLink id={d.bosses[0].id}>{d.bosses[0].name}</EntityLink></>
+                )}
+                <div className="note">
+                  {d.kind}
+                  {d.keys.length > 0 ? ` · ${d.keys.join(', ')}` : ''}
+                  {d.impSeals > 0 ? ` · ${d.impSeals} imp seal${d.impSeals > 1 ? 's' : ''}` : ''}
+                  {d.levers > 0 ? ` · ${d.levers} lever${d.levers > 1 ? 's' : ''}` : ''}
+                </div>
               </li>
             ))}
           </ul>

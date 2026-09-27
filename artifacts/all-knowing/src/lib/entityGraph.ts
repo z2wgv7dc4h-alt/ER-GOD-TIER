@@ -5,6 +5,7 @@ import { remembrances } from '../knowledge/remembrances'
 import { gates, gateState } from '../knowledge/gates'
 import { allLines } from '../knowledge/storylines'
 import { dungeons } from '../knowledge/dungeons'
+import { dungeons as dungeonIndex, dungeonBosses } from './dungeons'
 import { opBuilds } from '../knowledge/builds'
 import { merchants } from '../knowledge/merchants'
 import { npcLocations } from '../knowledge/npcLocations'
@@ -402,6 +403,13 @@ function buildIndex(): Index {
   // --- dungeons, builds, merchants, NPCs -----------------------------------
   for (const d of dungeons) {
     addEntity({ id: `dungeon:${d.id}`, kind: 'dungeon', name: d.name, summary: d.region })
+  }
+  // Task 104: the complete generated dungeon index and every boss it names.
+  for (const d of dungeonIndex) {
+    addEntity({ id: `dungeon:${d.id}`, kind: 'dungeon', name: d.name, icon: iconForKind('dungeon', d.name), summary: d.region })
+  }
+  for (const b of dungeonBosses) {
+    addEntity({ id: b.id, kind: 'boss', name: b.name, summary: 'Dungeon boss' })
   }
   for (const b of opBuilds) {
     addEntity({ id: b.id, kind: 'build', name: b.name, summary: b.why }, [b.tag])
