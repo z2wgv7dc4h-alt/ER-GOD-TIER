@@ -8,11 +8,13 @@ export function Header({
   onToggleSearch,
   dockOpen,
   onToggleDock,
+  onOpenLog,
 }: {
   searchOpen: boolean
   onToggleSearch: () => void
   dockOpen: boolean
   onToggleDock: () => void
+  onOpenLog?: () => void
 }) {
   const w = useWorkspace()
   const meta = sectionMeta(w.section)
@@ -50,6 +52,15 @@ export function Header({
         title="Open the Tarnished overview"
       >
         {w.character.name} · Lv.{w.character.level}
+      </button>
+      <button
+        type="button"
+        className="chip on quicklog-open desktop-only"
+        aria-label="Quick log"
+        title="Quick log — mark a boss, grace, or item done"
+        onClick={onOpenLog}
+      >
+        +
       </button>
       <Help />
       <button
