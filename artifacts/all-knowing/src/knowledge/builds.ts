@@ -1,4 +1,5 @@
 import type { LoadoutSlot, Stats } from '../types'
+import { LEVEL_OFFSET, STAT_KEYS, statsTotal } from '../lib/level'
 
 export type PatchFlag = 'still-strong' | 'nerfed-but-works' | 'sote' | 'pre-1.08-dead'
 
@@ -492,3 +493,65 @@ export const opBuilds: OpBuild[] = [
     source: 'Fextralife, Marais Executioner\u2019s Sword (patch 1.17).',
   },
 ]
+
+/**
+ * Task 116 §4 — OP kit "level plan". Every OP kit is a target spread at its own
+ * level; a plan projects that same identity down or up to the four checkpoint
+ * levels the task asks for (40/60/100/150). This is a derived projection of the
+ * authored spread, not extracted game data: total points always equal
+ * `level + 79`, so the plan is a legal character at that level.
+ */
+export const LEVEL_PLAN_LEVELS = [40, 60, 100, 150] as const
+
+export type LevelPlan = { level: number; stats: Stats }
+
+/**
+ * Rescale a spread to an exact stat total using largest-remainder rounding, so
+ * every stat stays >= 1 and the sum is exactly `total`.
+ */
+export function scaleStats(stats: Stats, total: number): Stats {
+  const current = Math.max(1, statsTotal(stats))
+  const raw = STAT_KEYS.map((k) => Math.max(1, (stats[k] * total) / current))
+  const out = raw.map((v) => Math.floor(v))
+  let remainder = total - out.reduce((a, b) => a + b, 0)
+  if (remainder < 0) {
+    // Clamping to >= 1 pushed the floor sum over the target: trim the largest stats.
+    const order = out.map((v, i) => ({ i, v })).sort((a, b) => b.v - a.v)
+    let over = -remainder
+    let i = 0
+    while (over > 0 && order.length > 0) {
+      const idx = order[i % order.length].i
+      if (out[idx] > 1) {
+        out[idx] -= 1
+        over -= 1
+      }
+      i += 1
+      if (i > order.length * 50) break
+    }
+    remainder = 0
+  }
+  const order = raw
+    .map((v, i) => ({ i, frac: v - Math.floor(v) }))
+    .sort((a, b) => b.frac - a.frac)
+  let idx = 0
+  while (remainder > 0 && order.length > 0) {
+    out[order[idx % order.length].i] += 1
+    remainder -= 1
+    idx += 1
+  }
+  const result = {} as Stats
+  STAT_KEYS.forEach((key, i) => {
+    result[key] = Math.max(1, out[i])
+  })
+  return result
+}
+
+/** The kit's spread planned at a specific character level (sum = level + 79). */
+export function levelPlanFor(build: OpBuild, level: number): Stats {
+  return scaleStats(build.stats, level + LEVEL_OFFSET)
+}
+
+/** All four checkpoint levels for a kit, ready to render as one-tap chips. */
+export function levelPlansFor(build: OpBuild): LevelPlan[] {
+  return LEVEL_PLAN_LEVELS.map((level) => ({ level, stats: levelPlanFor(build, level) }))
+}

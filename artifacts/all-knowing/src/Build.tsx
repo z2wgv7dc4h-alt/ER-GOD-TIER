@@ -3,6 +3,8 @@ import { markers } from './data/seed'
 import { opBuilds } from './knowledge/builds'
 import { pvpBuilds, pvpMatchups } from './knowledge/pvp'
 import { techTips } from './knowledge/tech'
+import { pvpTech } from './knowledge/pvpTech'
+import { OpKitPanel, PvpBuildPanel, PvpMatchupPanel, PvpTechPanel } from './build/KitLibraryPanels'
 import { isCollected, useWorkspace } from './state'
 import { CombatWeakness } from './CombatWeakness'
 import { DamageCalc } from './combat/DamageCalc'
@@ -113,13 +115,18 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
   )
   const chooseBuild = (id: string) =>
     setCharacter({ ...character, answers: { ...character.answers, buildKit: id } })
+  const showOnMap = (factId: string) => {
+    if (!watchlistOf(character).includes(factId)) setCharacter(toggleWatch(character, factId))
+    if (!showLeftovers) toggleLeftovers()
+    setSelectedMarkerId(factId)
+    setModule('map')
+  }
   const [weapons, setWeapons] = useState<Weapon[] | null>(null)
   const [arError, setArError] = useState<string | null>(null)
   const [twoHanding, setTwoHanding] = useState(false)
   const { targets: combatTargets, error: combatError } = useCombatTargets()
   const [targetId, setTargetId] = useState('')
   const [enemyQuery, setEnemyQuery] = useState('')
-  const [pvpId, setPvpId] = useState('')
 
   useEffect(() => {
     let cancelled = false
@@ -169,63 +176,39 @@ function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
           </h3>
 
           <KitGroup title="OP kits" count={opBuilds.length} defaultOpen>
-            <div className="opts">
-              {opBuilds.map((b) => (
-                <button
-                  key={b.id}
-                  type="button"
-                  className="chip"
-                  onClick={() => setCharacter({ ...character, stats: b.stats, level: b.level, loadout: b.kit, answers: { ...character.answers, buildKit: b.id } })}
-                >
-                  {b.name}
-                </button>
-              ))}
-            </div>
+            <OpKitPanel
+              character={character}
+              setCharacter={setCharacter}
+              coords={coords}
+              onShowOnMap={showOnMap}
+            />
             <p className="note" style={{ marginTop: 8 }}>
-              Kits set stats and a shopping list. They do not invent AR. Locations are in the Codex and Gideon.
+              Kits set stats and a shopping list. They do not invent AR. The level plan projects each kit to
+              Lv 40/60/100/150 (points always sum to the level); the route reuses the build-hunt pins.
+              Locations are in the Codex and Gideon.
             </p>
           </KitGroup>
 
-          <KitGroup title="PvP · patch 1.17" count={pvpBuilds.length}>
+          <KitGroup title="PvP builds · patch 1.17" count={pvpBuilds.length}>
             <p className="note">
               PvP is its own game: poise, stance and invade-vs-host asymmetry matter more than raw damage,
-              and skills/status are scaled separately against players. Kits below are target spreads, not
-              extracted numbers — see docs/research/op-builds-pvp-tricks-sources.md.
+              and skills/status are scaled separately against players. Brackets are RL30-50, RL60-90, RL125
+              and RL150. Stat spreads are exact — points always sum to the bracket level — but they are
+              target spreads, not extracted numbers. See docs/research/op-builds-pvp-tricks-sources.md.
             </p>
-            <div className="opts">
-              {pvpBuilds.map((b) => (
-                <button
-                  key={b.id}
-                  type="button"
-                  className="chip"
-                  onClick={() => {
-                    setCharacter({ ...character, stats: b.stats, level: b.level, loadout: b.kit, answers: { ...character.answers, buildKit: b.id } })
-                    setPvpId(b.id)
-                  }}
-                >
-                  {b.name}
-                </button>
-              ))}
-            </div>
-            {(() => {
-              const b = pvpBuilds.find((x) => x.id === pvpId)
-              return b ? (
-                <p className="note" style={{ marginTop: 8 }}>
-                  <strong>{b.mode}</strong> · {b.bracket} — {b.why} Beats: {b.beats} Watch out for: {b.losesTo}
-                </p>
-              ) : null
-            })()}
+            <PvpBuildPanel character={character} setCharacter={setCharacter} />
           </KitGroup>
 
           <KitGroup title="PvP matchups" count={pvpMatchups.length}>
-            <ul className="list" style={{ marginTop: 8 }}>
-              {pvpMatchups.map((m) => (
-                <li key={m.id} style={{ cursor: 'default', display: 'block' }}>
-                  <span>{m.threat}</span>
-                  <p className="note" style={{ margin: '4px 0 0' }}>{m.tell} {m.counters[0]}</p>
-                </li>
-              ))}
-            </ul>
+            <PvpMatchupPanel />
+          </KitGroup>
+
+          <KitGroup title="PvP tech" count={pvpTech.length}>
+            <p className="note">
+              Backstabs, parry windows by tool class, roll-catching, invasion items and gank tactics. Each
+              row is a how-to; balance-sensitive values are quoted from the wiki and dated.
+            </p>
+            <PvpTechPanel />
           </KitGroup>
 
           <KitGroup title="Tech & cheese · broken tricks" count={techTips.length}>
