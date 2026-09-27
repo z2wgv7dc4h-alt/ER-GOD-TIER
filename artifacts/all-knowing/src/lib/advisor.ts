@@ -229,6 +229,18 @@ for (const f of facts) {
   if (n && !factByNorm.has(n)) factByNorm.set(n, f)
 }
 
+// Task 113 §6 — the reverse of `Fact.implies`: which facts a fact opens up.
+// Used to give each "still up" boss a concrete reason ("opens Liurnia") instead
+// of the same generic "you have already reached X" line for every one.
+const unlocksBy = new Map<string, Fact[]>()
+for (const f of facts) {
+  for (const req of f.implies) {
+    const list = unlocksBy.get(req) ?? []
+    list.push(f)
+    unlocksBy.set(req, list)
+  }
+}
+
 export function lootForName(name: string): Loot | undefined {
   return lootByNorm.get(norm(name))
 }
@@ -612,7 +624,8 @@ export function buildTodo(character: Character, opts: AdviseOptions = {}): TodoI
   const out: TodoItem[] = []
 
   // (a) Missables before the next point of no return — the highest priority.
-  approachingGates(character).forEach((gate, i) => {
+  const approaching = approachingGates(character)
+  approaching.forEach((gate, i) => {
     const names = gate.locks.map((l) => l.name)
     out.push({
       id: gate.id,
@@ -626,17 +639,38 @@ export function buildTodo(character: Character, opts: AdviseOptions = {}): TodoI
     })
   })
 
-  // (b) Bosses in regions already reached but not defeated.
+  // (b) Bosses in regions already reached but not defeated. Task 113 §6: each
+  // one gets a concrete reason from the data — its level band, its drops, what
+  // it opens, or the gate it sits in front of — never a repeated "you have
+  // already reached X".
+  const usedBossReasons = new Set<string>()
   let regionCount = 0
   for (const f of facts) {
     if (regionCount >= 4) break
     if (f.kind !== 'boss' || known(character, f.id)) continue
     if (!regionReached(reached, f.region)) continue
+    const bits: string[] = []
+    const band = opts.areas?.length ? bandFor(opts.areas, f.region) : null
+    if (band) bits.push(`recommended Lv ${band.levelMin}\u2013${band.levelMax}, you're ${character.level}`)
+    const drops = (f.drops ?? []).map((id) => byId.get(id)?.name).filter((n): n is string => Boolean(n))
+    if (drops.length) bits.push(`drops ${drops.slice(0, 2).join(', ')}`)
+    const opens = (unlocksBy.get(f.id) ?? []).map((u) => u.name).filter(Boolean)
+    if (opens.length) bits.push(`opens ${opens.slice(0, 2).join(', ')}`)
+    const gate = approaching.find((g) => g.approachingWhen.includes(f.id))
+    if (gate) {
+      const names = gate.locks.slice(0, 2).map((lock) => lock.name)
+      bits.push(names.length ? `gate ahead (${gate.name}) locks ${names.join(', ')}` : `gate ahead: ${gate.name}`)
+    }
+    let reason = bits.length ? bits.join('; ') : `${f.name} is still up in ${f.region}`
+    // Guarantee the spec's "no repeated reason text" even when two bosses share
+    // a region and have no drops/unlocks of their own.
+    if (usedBossReasons.has(reason)) reason = `${reason} — ${f.name}`
+    usedBossReasons.add(reason)
     out.push({
       id: f.id,
       kind: 'region',
       title: `${f.name} — still up in ${f.region}`,
-      reason: `You have already reached ${f.region}.`,
+      reason,
       action: `Go clear ${f.name}.`,
       factId: f.id,
       module: 'map',

@@ -45,6 +45,10 @@ export type WatchPin = {
   x: number
   y: number
   region?: string
+  /** Pin kind, when known (the coord set or the seed marker). */
+  kind?: string
+  /** Which plate the pin belongs on. */
+  campaign?: 'base' | 'sote' | 'tarnished-pack'
 }
 
 /**
@@ -66,14 +70,29 @@ export function watchPins(character: Character, coords: CoordPin[] = []): WatchP
     if (coord) {
       if (seen.has(coord.id)) continue
       seen.add(coord.id)
-      out.push({ id: coord.id, name: coord.name, x: coord.x, y: coord.y })
+      out.push({
+        id: coord.id,
+        name: coord.name,
+        x: coord.x,
+        y: coord.y,
+        kind: coord.kind,
+        campaign: coord.world === 'shadow' ? 'sote' : 'base',
+      })
       continue
     }
     const seed = bySeed.get(raw) ?? bySeed.get(canonical)
     if (seed) {
       if (seen.has(seed.id)) continue
       seen.add(seed.id)
-      out.push({ id: seed.id, name: seed.name, x: seed.x, y: seed.y, region: seed.region })
+      out.push({
+        id: seed.id,
+        name: seed.name,
+        x: seed.x,
+        y: seed.y,
+        region: seed.region,
+        kind: seed.kind,
+        campaign: seed.campaign,
+      })
     }
   }
   return out

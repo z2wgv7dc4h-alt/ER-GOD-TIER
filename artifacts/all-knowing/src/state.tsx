@@ -69,6 +69,9 @@ type Workspace = {
   /** Task 111 §4: show the not-done density layer. */
   showHeat: boolean
   toggleHeat: () => void
+  /** Task 113 §5: the starred-entity watchlist layer (on by default). */
+  showWatch: boolean
+  toggleWatch: () => void
   missingOnly: boolean
   setMissingOnly: (v: boolean) => void
   query: string
@@ -189,6 +192,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [showGates, setShowGates] = useState(false)
   const [follow, setFollow] = useState(false)
   const [showHeat, setShowHeat] = useState(false)
+  const [showWatch, setShowWatch] = useState(true)
   const [missingOnly, setMissingOnly] = useState(bootProfile.ui.missingOnly)
   const [query, setQuery] = useState('')
   const [engineStatus, setEngineStatus] = useState<EngineStatus>('offline')
@@ -373,6 +377,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       toggleFollow: () => setFollow((v) => !v),
       showHeat,
       toggleHeat: () => setShowHeat((v) => !v),
+      showWatch,
+      toggleWatch: () => setShowWatch((v) => !v),
       missingOnly,
       setMissingOnly,
       query,
@@ -407,7 +413,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [module, section, sub, character, selectedMarkerId, entityId, currentArea, layers, showLeftovers, showGates, follow, showHeat, missingOnly, query, engineStatus, engineState, engineMarkers, history, helpOpen, dockOpen, glance, resume, recentFacts, vault],
+    [module, section, sub, character, selectedMarkerId, entityId, currentArea, layers, showLeftovers, showGates, follow, showHeat, showWatch, missingOnly, query, engineStatus, engineState, engineMarkers, history, helpOpen, dockOpen, glance, resume, recentFacts, vault],
   )
 
   return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>

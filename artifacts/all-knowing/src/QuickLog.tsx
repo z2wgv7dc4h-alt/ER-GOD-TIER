@@ -40,6 +40,10 @@ export function QuickLog({
   const [selected, setSelected] = useState<string[]>([])
   const [pending, setPending] = useState<QuickLogPlan | null>(null)
   const [toast, setToast] = useState<QuickLogPlan | null>(null)
+  // Task 113 §1 — the floating + starts tucked away and only comes out once the
+  // player has started scrolling, so at rest it can never sit on a readout. The
+  // header `⋯` menu keeps a Quick log entry for the no-scroll case.
+  const [fabHidden, setFabHidden] = useState(true)
   const toastRef = useRef<HTMLDivElement>(null)
 
   // Opening seeds the selection (an omnibox "Do" row) and clears the input.
@@ -84,6 +88,33 @@ export function QuickLog({
       document.documentElement.style.removeProperty('--toast-h')
     }
   }, [toast])
+
+  // Task 113 §1 — the floating + hides while the player scrolls down and
+  // returns on scroll up or after a short idle. Scroll events do not bubble, so
+  // listen in the capture phase to catch every inner scroller as well as the
+  // window.
+  useEffect(() => {
+    let lastY = 0
+    function onScroll(e: Event) {
+      const t = e.target as HTMLElement | Document | null
+      const el =
+        !t || t === document || (t as unknown) === window
+          ? ((document.scrollingElement || document.documentElement) as HTMLElement)
+          : (t as HTMLElement)
+      const y = el?.scrollTop ?? 0
+      const dy = y - lastY
+      lastY = y
+      // Down tucks the + away; up (or reaching the very top) brings it back.
+      if (dy < -6 || y <= 8) setFabHidden(false)
+      else if (dy > 6) setFabHidden(true)
+    }
+    window.addEventListener('scroll', onScroll, true)
+    return () => window.removeEventListener('scroll', onScroll, true)
+  }, [])
+
+  // Moving section/sub is not a scroll: tuck the button away until the player
+  // scrolls in the new room.
+  useEffect(() => { setFabHidden(true) }, [w.section, w.sub])
 
   const fuzzy = useMemo(() => fuzzyLogTargets(text), [text])
   const recent = useMemo(() => recentLogTargets(w.recentFacts, w.character), [w.recentFacts, w.character])
@@ -141,7 +172,13 @@ export function QuickLog({
 
   return (
     <>
-      <button type="button" className="quicklog-fab" aria-label="Quick log" title="Quick log" onClick={onOpen}>
+      <button
+        type="button"
+        className={fabHidden ? 'quicklog-fab fab-hidden' : 'quicklog-fab'}
+        aria-label="Quick log"
+        title="Quick log"
+        onClick={onOpen}
+      >
         +
       </button>
 

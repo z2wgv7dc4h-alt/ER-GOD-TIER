@@ -124,6 +124,41 @@ function auditPage() {
     return { left: r.left, top: r.top, right: r.right, bottom: r.bottom, width: r.width, height: r.height }
   }
 
+  /**
+   * Clip an arbitrary rect (a text node's line fragment) by every overflow
+   * ancestor, exactly like `shownRect` does for an element. A text fragment
+   * scrolled out of its pane keeps its layout rect and would otherwise look
+   * "covered" by the sticky header it has scrolled under.
+   */
+  function clipRect(r, el) {
+    let left = r.left
+    let top = r.top
+    let right = r.right
+    let bottom = r.bottom
+    let node = el.parentElement
+    let guard = 0
+    while (node && guard++ < 60) {
+      const cs = style(node)
+      if (cs) {
+        const clipX = cs.overflowX !== 'visible'
+        const clipY = cs.overflowY !== 'visible'
+        if (clipX || clipY) {
+          const nr = node.getBoundingClientRect()
+          if (clipX) {
+            left = Math.max(left, nr.left)
+            right = Math.min(right, nr.right)
+          }
+          if (clipY) {
+            top = Math.max(top, nr.top)
+            bottom = Math.min(bottom, nr.bottom)
+          }
+        }
+      }
+      node = node.parentElement
+    }
+    return { left, top, right, bottom, width: Math.max(0, right - left), height: Math.max(0, bottom - top) }
+  }
+
   function isVisible(el) {
     const cs = style(el)
     if (!cs) return false
@@ -179,37 +214,41 @@ function auditPage() {
   }
 
   /**
-   * Task 103 §12: the section's own scroll container, i.e. the element that
-   * actually has `overflow-y: auto|scroll` and the largest `scrollHeight` —
+   * Task 103 §12 / Task 113 §7: the section's own scroll container. Walk the
+   * whole subtree under the main region and pick the element that actually has
+   * `overflow-y: auto|scroll` and the largest `scrollHeight` — including nested
+   * scrollers whose class is not on any hard-coded list (the Builds page) —
    * never `body`/`html` (the shell is fixed-height and the window does not
    * scroll). Shared by the length metric and `scrollMain`.
    */
   function mainScroller() {
-    const sels = [
-      '.workspace', '.shell-body', '.stage', 'main', '.split', '.side',
-      '.panel', '.me-overview', '.me-update', '.me-profiles', '.now-page',
-      '.gideon-page', '.me-setup', '.me-gear', '.codex-wrap', '.quests-page', '.lib-results',
-      '.lib-panel-body', '.lib-rail', '.gear-picker-box', '.quicklog-sheet',
-    ]
+    const main =
+      document.querySelector('main.workspace') ||
+      document.querySelector('main') ||
+      document.querySelector('.workspace') ||
+      document.body
     let best = null
     let score = -1
-    for (const sel of sels) {
-      for (const el of document.querySelectorAll(sel)) {
-        const cs = style(el)
-        if (!cs) continue
-        if (cs.overflowY !== 'auto' && cs.overflowY !== 'scroll') continue
-        // The page scroller is one that actually scrolls…
-        if (el.scrollHeight <= el.clientHeight + 1) continue
-        // …and is substantially on screen (a closed phone drawer is not).
-        const box = el.getBoundingClientRect()
-        const visibleH = Math.min(box.bottom, window.innerHeight) - Math.max(box.top, 0)
-        if (box.height > 0 && visibleH < box.height * 0.5) continue
-        const s = el.scrollHeight
-        if (s > score) {
-          score = s
-          best = el
-        }
+    const consider = (el) => {
+      if (!el) return
+      // Cheap test first: reading scrollHeight forces no style resolution.
+      if (el.scrollHeight <= el.clientHeight + 1) return
+      const cs = style(el)
+      if (!cs) return
+      if (cs.overflowY !== 'auto' && cs.overflowY !== 'scroll') return
+      // …and it is substantially on screen (a closed phone drawer is not).
+      const box = el.getBoundingClientRect()
+      const visibleH = Math.min(box.bottom, window.innerHeight) - Math.max(box.top, 0)
+      if (box.height > 0 && visibleH < box.height * 0.5) return
+      if (el.scrollHeight > score) {
+        score = el.scrollHeight
+        best = el
       }
+    }
+    consider(main)
+    for (const el of main.querySelectorAll('*')) consider(el)
+    if (!best) {
+      for (const sel of ['.shell-body', '.stage']) consider(document.querySelector(sel))
     }
     return best || document.scrollingElement || document.documentElement
   }
@@ -330,7 +369,65 @@ function auditPage() {
     if (!hit) continue
     if (hit === b.el || b.el.contains(hit)) continue
     if (isModalScrim(hit)) continue
+    const fab = hit.closest && hit.closest('.quicklog-fab')
+    if (fab && fab.classList.contains('fab-hidden')) continue
     bump('covered', { sel: b.sel, text: b.text, by: cssPath(hit), byText: textOf(hit), cx: Math.round(cx), cy: Math.round(cy), w: Math.round(b.full.width), h: Math.round(b.full.height) })
+  }
+
+  // Task 113 §1: covered must include visible *text*, not only interactive
+  // elements — the floating + hiding a readout ("10 → 10") is exactly the
+  // defect. Test each text node's own line fragments (not the whole parent box)
+  // so a wide row whose text sits clear of a coverer is not a false positive.
+  // The FAB counts as a coverer while it is up, but not once the scroll handler
+  // has hidden it. Inline prose links keep their deliberate text-sized hit
+  // padding, so they are never treated as a coverer. SVG text is skipped (the
+  // map is a canvas of deliberate overlaps).
+  {
+    const seen = new Set()
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
+    const range = document.createRange()
+    let node
+    let guard = 0
+    while ((node = walker.nextNode()) && guard++ < 6000 && counts.covered < MAX) {
+      const t = (node.nodeValue || '').replace(/\s+/g, ' ').trim()
+      if (!t) continue
+      const parent = node.parentElement
+      if (!parent) continue
+      if (parent.closest('svg')) continue
+      if (isExempt(parent)) continue
+      if (!isVisible(parent)) continue
+      range.selectNodeContents(node)
+      const rects = Array.prototype.slice.call(range.getClientRects())
+      for (const raw of rects) {
+        const rc = clipRect(raw, parent)
+        if (rc.width < 1 || rc.height < 1) continue
+        const cx = (rc.left + rc.right) / 2
+        const cy = (rc.top + rc.bottom) / 2
+        if (cx < 0 || cy < 0 || cx >= window.innerWidth || cy >= window.innerHeight) continue
+        const hit = document.elementFromPoint(cx, cy)
+        if (!hit) continue
+        if (hit === parent || parent.contains(hit) || hit.contains(parent)) continue
+        if (isModalScrim(hit)) continue
+        if (INLINE_LINK && hit.closest && hit.closest(INLINE_LINK)) continue
+        const fab = hit.closest && hit.closest('.quicklog-fab')
+        if (fab && fab.classList.contains('fab-hidden')) continue
+        const key = `${cssPath(parent)}|${t.slice(0, 40)}`
+        if (!seen.has(key)) {
+          seen.add(key)
+          bump('covered', {
+            sel: cssPath(parent),
+            text: t.slice(0, 80),
+            by: cssPath(hit),
+            byText: textOf(hit),
+            cx: Math.round(cx),
+            cy: Math.round(cy),
+            w: Math.round(rc.width),
+            h: Math.round(rc.height),
+          })
+        }
+        break
+      }
+    }
   }
 
   // ---- transparent overlays (Task 107 §12) -------------------------------
@@ -767,31 +864,42 @@ async function runScenario(browser, runCfg) {
 
   async function scrollMain(frac) {
     await page.evaluate((f) => {
-      const sels = [
-        '.workspace', '.shell-body', '.stage', 'main', '.split', '.side',
-        '.panel', '.me-overview', '.me-update', '.me-profiles', '.now-page',
-        '.gideon-page', '.me-setup', '.me-gear', '.codex-wrap', '.quests-page', '.lib-results',
-        '.lib-panel-body', '.lib-rail', '.gear-picker-box', '.quicklog-sheet',
-      ]
-      let best = null
-      let score = -1
-      for (const sel of sels) {
-        for (const el of document.querySelectorAll(sel)) {
+      // Task 113 §7: same rule as the page audit — the largest actually-scrolls
+      // element under the main region, nested ones included, is the scroller.
+      const main =
+        document.querySelector('main.workspace') ||
+        document.querySelector('main') ||
+        document.querySelector('.workspace') ||
+        document.body
+      const pick = (root) => {
+        if (!root) return null
+        let best = null
+        let score = -1
+        const consider = (el) => {
+          if (!el || el.scrollHeight <= el.clientHeight + 1) return
           const cs = getComputedStyle(el)
-          if (cs.overflowY !== 'auto' && cs.overflowY !== 'scroll') continue
-          if (el.scrollHeight <= el.clientHeight + 1) continue
+          if (cs.overflowY !== 'auto' && cs.overflowY !== 'scroll') return
           const box = el.getBoundingClientRect()
           const visibleH = Math.min(box.bottom, window.innerHeight) - Math.max(box.top, 0)
-          if (box.height > 0 && visibleH < box.height * 0.5) continue
-          const s = el.scrollHeight
-          if (s > score) {
-            score = s
+          if (box.height > 0 && visibleH < box.height * 0.5) return
+          if (el.scrollHeight > score) {
+            score = el.scrollHeight
             best = el
           }
         }
+        consider(root)
+        for (const el of root.querySelectorAll('*')) consider(el)
+        return best
       }
-      const el = best || document.scrollingElement
-      if (el) el.scrollTop = (el.scrollHeight - el.clientHeight) * f
+      let el = pick(main)
+      if (!el) {
+        for (const sel of ['.shell-body', '.stage']) {
+          el = pick(document.querySelector(sel))
+          if (el) break
+        }
+      }
+      if (!el) el = document.scrollingElement || document.documentElement
+      el.scrollTop = (el.scrollHeight - el.clientHeight) * f
     }, frac)
     await sleep(250)
   }
@@ -1013,7 +1121,14 @@ async function runScenario(browser, runCfg) {
 
     // --- Step 12: Quick-log sheet, log Margit -----------------------------
     await step('quicklog-log-margit', async (notes) => {
-      await clickLocator(page.locator('.quicklog-fab:visible, .quicklog-open:visible').first(), notes, 'quick-log opener')
+      let opened = await clickLocator(page.locator('.quicklog-fab:visible, .quicklog-open:visible').first(), notes, 'quick-log opener')
+      // Task 113 §1: the phone + starts hidden until the player scrolls, so the
+      // header `⋯` menu is the no-scroll way in. Fall back to it.
+      if (!opened) {
+        await clickLocator(page.locator('.header-more-toggle:visible').first(), notes, 'header more')
+        await sleep(200)
+        opened = await clickText('Quick log', { selector: '.header-more-menu button' })
+      }
       await page.waitForSelector('.quicklog-sheet', { timeout: 6000 }).catch(() => notes.push('quick-log sheet not shown'))
       await page.locator('.quicklog-input').fill('Margit').catch(() => notes.push('quick-log input not found'))
       await sleep(400)

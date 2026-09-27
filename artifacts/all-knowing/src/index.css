@@ -439,6 +439,19 @@ button { cursor: pointer; }
 
 .stage { flex: 1 1 auto; min-height: 0; overflow: hidden; }
 
+/* Task 113 §7 — Library › Builds is one page: the planner cards and the build
+   lab scroll together in this container instead of each panel trapping its own
+   scroll. Without this the page never scrolled (it measured one screen). */
+.builds-page {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px;
+}
+.builds-page .split,
+.builds-page .panel { height: auto; overflow: visible; }
+
 .map-stage {
   display: grid;
   grid-template-columns: 1fr 320px;
@@ -938,18 +951,25 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
     right: 14px;
     bottom: calc(70px + env(safe-area-inset-bottom, 0px));
     z-index: 40;
-    width: 56px;
-    height: 56px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     align-items: center;
     justify-content: center;
     background: var(--gold);
     color: #1a1408;
     border: 0;
-    font-size: 30px;
+    font-size: 28px;
     line-height: 1;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
     cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  /* Task 113 §1 — out of the way until the player scrolls, and again while
+     scrolling down. `display:none` keeps it out of hit-testing entirely, so it
+     can never be the element that "covers" content. */
+  .quicklog-fab.fab-hidden {
+    display: none;
   }
   .quicklog-toast { bottom: calc(140px + env(safe-area-inset-bottom, 0px)); }
 }
@@ -1897,9 +1917,9 @@ body { overflow: hidden; overscroll-behavior: none; }
 @media (max-width: 700px) {
   .chip { min-width: 40px; }
   .area-chip { min-height: 40px; }
-  /* Task 107 §2: the floating + is 56px tall, sitting 70px off the bottom. Every
-     phone scroller reserves that footprint plus 24px so no row can hide behind
-     it, and the quick-log toast clears the button entirely. */
+  /* Task 107 §2 / Task 113 §1: the floating + is 52px tall, sitting 70px off the
+     bottom. Every phone scroller reserves that footprint plus a margin so no row
+     can hide behind it, and the quick-log toast clears the button entirely. */
   .split,
   .me-overview,
   .me-update,
@@ -1913,6 +1933,7 @@ body { overflow: hidden; overscroll-behavior: none; }
   .lib-results,
   .lib-panel-body,
   .area-hub,
+  .builds-page,
   .quicklog-sheet {
     padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
   }
@@ -2016,6 +2037,9 @@ body { overflow: hidden; overscroll-behavior: none; }
    bar; the other phone views keep their FAB clearance (Task 107 §2). */
 @media (max-width: 700px) {
   .app.gideon-active .quicklog-fab { display: none; }
+  /* Task 113 §1 — while the omnibox owns the phone screen the + has no job and
+     would sit on the results. */
+  .app.search-open .quicklog-fab { display: none; }
   .app.gideon-active .gideon-page { padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
   .app.gideon-active .gideon-log { padding-bottom: 0; }
   /* Task 108 §3: the quick-log toast reserves its own band so no control ends up

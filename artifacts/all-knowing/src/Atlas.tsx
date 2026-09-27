@@ -29,6 +29,7 @@ import { leftoverPins } from './lib/leftoverPins'
 import { approachingGateList, gatePins, unresolvedGateLocks } from './lib/gatePins'
 import { resultMarkers, useResultPins } from './map/resultPins'
 import { addNote, noteMarkers, notesForWorld, readNotes, removeNote } from './map/notes'
+import { watchPins } from './watch/watchlist'
 import { heatCells, heatRadius } from './map/heat'
 import { focusViewBox, followFocus, graceFocus } from './map/follow'
 import { MapNotesPanel, NoteEditor } from './map/MapNotes'
@@ -215,6 +216,26 @@ export function AtlasWorkspace() {
     [seedPins, leftoverList, gateList],
   )
 
+  // Task 113 §5 — the Watchlist layer: every starred entity that has a plate
+  // position, kept out of the seed layers so it can be drawn on top and toggled
+  // independently. On by default.
+  const watchList = useMemo<MapMarker[]>(() => {
+    const target = world === 'shadow' ? 'sote' : 'base'
+    const kinds: MapMarker['kind'][] = ['grace', 'boss', 'item', 'npc', 'fragment', 'spirit-ash', 'dungeon']
+    return watchPins(w.character, coords)
+      .filter((p) => (p.campaign ?? 'base') === target)
+      .map((p) => ({
+        id: p.id,
+        name: p.name,
+        kind: (p.kind && kinds.includes(p.kind as MapMarker['kind']) ? (p.kind as MapMarker['kind']) : 'item') as MapMarker['kind'],
+        region: p.region ?? '',
+        campaign: target,
+        x: p.x,
+        y: p.y,
+        watch: true,
+      }))
+  }, [w.character, coords, world])
+
   const q = w.query.trim().toLowerCase()
   const shown = allPins.filter((m) => {
     if (m.gate) {
@@ -258,7 +279,7 @@ export function AtlasWorkspace() {
     engineLive,
     // Result and note pins are not part of the filtered seed layers, but the
     // shared detail panel must be able to name one when it is clicked.
-    platePins: [...allPins, ...resultList, ...noteList],
+    platePins: [...allPins, ...resultList, ...noteList, ...watchList],
     shown,
     enginePins: w.engineMarkers,
     engineList,
@@ -518,6 +539,20 @@ export function AtlasWorkspace() {
                 </g>
               )
             })}
+            {/* Task 113 §5 — the watchlist layer, a gold ring over its lore pins. */}
+            {(!plate || artReady) && w.showWatch && watchList.map((m) => {
+              const st = factState(w.character, m.id)
+              const p = at(m)
+              return (
+                <g key={`watch:${m.id}`} className="pin watch" onClick={() => w.setSelectedMarkerId(m.id)}>
+                  <circle cx={p.x} cy={p.y} r={2.6 * k} fill="none" stroke="#ffe9a8" strokeWidth={0.35 * k} />
+                  <circle cx={p.x} cy={p.y} r={1.25 * k} fill={stateFill(st, m.kind)} stroke="#c9a227" strokeWidth={0.3 * k} />
+                  {w.selectedMarkerId === m.id && (
+                    <text x={p.x + 2.2 * k} y={p.y + 0.8 * k}>{m.name}</text>
+                  )}
+                </g>
+              )
+            })}
           </svg>
           </div>
         )}
@@ -622,6 +657,14 @@ export function AtlasWorkspace() {
         </div>
         {layersOpen && (
           <div className="atlas-layers" id="atlas-layers" role="group" aria-label="Map pin layers">
+            <button
+              type="button"
+              className={w.showWatch ? 'chip on' : 'chip'}
+              aria-pressed={!!w.showWatch}
+              onClick={() => w.toggleWatch()}
+            >
+              Watchlist{watchList.length ? ` ${watchList.length}` : ''}
+            </button>
             {layerOrder.map((id) => (
               <button
                 key={id}
@@ -684,6 +727,20 @@ export function AtlasWorkspace() {
                 }}
               />
               locks if you continue
+            </span>
+          )}
+          {w.showWatch && watchList.length > 0 && (
+            <span className="note" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span
+                style={{
+                  width: 12,
+                  height: 12,
+                  borderRadius: '50%',
+                  border: '2px solid #ffe9a8',
+                  display: 'inline-block',
+                }}
+              />
+              watchlist
             </span>
           )}
         </div>

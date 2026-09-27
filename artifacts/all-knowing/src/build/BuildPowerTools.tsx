@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import { loadWeapons, type Weapon } from '../lib/ar'
 import { useCoords } from '../lib/coords'
 import { toggleWatch, watchlistOf } from '../lib/leftovers'
@@ -69,8 +69,7 @@ export function LoadoutPresets() {
   }
 
   return (
-    <section className="panel advisor-card build-panel">
-      <div className="kicker">Loadout presets</div>
+    <>
       <p className="note">
         Save the current weapons, armor, talismans and spells as a named loadout, then switch back in one tap.
       </p>
@@ -119,7 +118,7 @@ export function LoadoutPresets() {
           })}
         </ul>
       )}
-    </section>
+    </>
   )
 }
 
@@ -153,10 +152,10 @@ export function StatPlanner() {
   }
 
   return (
-    <section className="panel advisor-card build-panel">
-      <div className="kicker">Stat planner</div>
+    <>
       <p className="note">
         Drag a stat up to plan the next levels. HP, FP, stamina, equip load and attack rating update as you go.
+        <span className="softcap-legend"><i /> soft caps</span>
       </p>
       <div className="opts">
         {[10, 20, 50].map((n) => (
@@ -175,6 +174,9 @@ export function StatPlanner() {
       <div className="build-stats">
         {plan.rows.map((row) => {
           const max = Math.min(99, row.current + budget)
+          const span = Math.max(1, max - row.current)
+          const fill = Math.round(((row.planned - row.current) / span) * 100)
+          const caps = row.caps.filter((cap) => cap >= row.current && cap <= max)
           return (
             <div className="build-stat" key={row.key}>
               <div className="build-stat-head">
@@ -184,19 +186,32 @@ export function StatPlanner() {
                   {row.reached > 0 ? ' · past soft cap' : ''}
                 </span>
               </div>
-              <input
-                id={`plan-${row.key}`}
-                type="range"
-                min={row.current}
-                max={max}
-                value={row.planned}
-                aria-label={`${row.label} planned value`}
-                onChange={(e) => setStat(row.key, Number(e.target.value))}
-              />
-              <div className="advisor-caps" aria-hidden>
-                {row.caps.map((cap) => (
-                  <i key={cap} className={row.planned >= cap ? 'on' : ''} />
-                ))}
+              <div className="build-range-wrap">
+                <input
+                  id={`plan-${row.key}`}
+                  className="build-range"
+                  type="range"
+                  min={row.current}
+                  max={max}
+                  value={row.planned}
+                  aria-label={`${row.label} planned value`}
+                  style={{ '--fill': `${fill}%` } as CSSProperties}
+                  onChange={(e) => setStat(row.key, Number(e.target.value))}
+                />
+                {/* Task 113 §4 — the soft-cap breakpoints as labelled ticks on
+                    the track, not anonymous dots. */}
+                {caps.length > 0 && (
+                  <div className="build-ticks" aria-hidden>
+                    {caps.map((cap) => {
+                      const pct = Math.max(8, Math.min(92, Math.round(((cap - row.current) / span) * 100)))
+                      return (
+                        <span key={cap} className={row.planned >= cap ? 'tick on' : 'tick'} style={{ left: `${pct}%` }}>
+                          {cap}
+                        </span>
+                      )
+                    })}
+                  </div>
+                )}
               </div>
             </div>
           )
@@ -255,7 +270,7 @@ export function StatPlanner() {
           </div>
         </div>
       )}
-    </section>
+    </>
   )
 }
 
@@ -270,8 +285,7 @@ export function LevelUpCalculator() {
   const plan = useMemo(() => levelUpPlan(character, value), [character, value])
 
   return (
-    <section className="panel advisor-card build-panel">
-      <div className="kicker">Level-up calculator</div>
+    <>
       <p className="note">Enter the runes you are holding to see the levels they buy.</p>
       <div className="opts">
         <input
@@ -308,7 +322,7 @@ export function LevelUpCalculator() {
       ) : (
         <p className="note">Runes are read as a plain number; no account data is touched.</p>
       )}
-    </section>
+    </>
   )
 }
 
@@ -338,8 +352,7 @@ export function SmithingTracker() {
   }
 
   return (
-    <section className="panel advisor-card build-panel">
-      <div className="kicker">Smithing tracker</div>
+    <>
       <p className="note">
         Stones each owned weapon still needs. Regular weapons use Smithing Stones to +25; somber weapons use Somber
         Stones to +10.
@@ -395,18 +408,35 @@ export function SmithingTracker() {
           ))}
         </ul>
       )}
-    </section>
+    </>
   )
 }
 
-/** Every Task 110 build power tool, in reveal order. */
+/**
+ * Every Task 110 build power tool, wrapped in its own panel. Kept as a
+ * standalone composition for callers that want the tools outside the
+ * collapsible Library › Builds page (the page renders the individual exports
+ * inside `BuildSection` cards, see `library/BuildPlanner.tsx`).
+ */
 export function BuildPowerTools() {
   return (
     <div className="build-tools">
-      <LoadoutPresets />
-      <StatPlanner />
-      <LevelUpCalculator />
-      <SmithingTracker />
+      <section className="panel advisor-card build-panel">
+        <div className="kicker">Loadout presets</div>
+        <LoadoutPresets />
+      </section>
+      <section className="panel advisor-card build-panel">
+        <div className="kicker">Stat planner</div>
+        <StatPlanner />
+      </section>
+      <section className="panel advisor-card build-panel">
+        <div className="kicker">Level-up calculator</div>
+        <LevelUpCalculator />
+      </section>
+      <section className="panel advisor-card build-panel">
+        <div className="kicker">Smithing tracker</div>
+        <SmithingTracker />
+      </section>
     </div>
   )
 }

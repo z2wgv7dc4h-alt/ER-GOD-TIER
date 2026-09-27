@@ -113,6 +113,16 @@ export function Header({
         </button>
         {menuOpen && (
           <div className="header-more-menu panel" role="menu" aria-label="More options">
+            {onOpenLog && (
+              <button
+                type="button"
+                role="menuitem"
+                className="chip on"
+                onClick={() => { onOpenLog(); setMenuOpen(false) }}
+              >
+                Quick log
+              </button>
+            )}
             <button
               type="button"
               role="menuitem"

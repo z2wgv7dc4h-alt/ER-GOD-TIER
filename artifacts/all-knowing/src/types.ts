@@ -91,6 +91,8 @@ export type MapMarker = {
   leftover?: boolean
   /** Part of the "locks if you continue" gate layer (Task 52). */
   gate?: boolean
+  /** Part of the Task 112/113 watchlist layer (starred entities). */
+  watch?: boolean
 }
 
 export type CodexEntry = {

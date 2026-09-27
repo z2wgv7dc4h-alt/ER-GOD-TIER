@@ -6,7 +6,7 @@
   gap: 14px;
 }
 
-.build-panel .build-stats {
+.build-stats {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px 16px;
@@ -34,6 +34,123 @@
   min-height: 40px;
 }
 
+/* Task 113 §3 — themed sliders: dark track, gold fill and thumb, 44px touch
+   height, visible focus ring. The filled width is passed from the component as
+   the `--fill` custom property. */
+.build-range-wrap {
+  position: relative;
+}
+
+.build-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.build-range::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to right, var(--gold) 0 var(--fill, 0%), var(--bg) var(--fill, 0%) 100%);
+  border: 1px solid var(--line-soft);
+}
+
+.build-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid #1a1408;
+  margin-top: -8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.build-range::-moz-range-track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+}
+
+.build-range::-moz-range-progress {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--gold);
+}
+
+.build-range::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid #1a1408;
+}
+
+.build-range:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Task 113 §4 — labelled soft-cap ticks on the track. */
+.build-ticks {
+  position: relative;
+  height: 16px;
+  margin-top: -6px;
+}
+
+.build-ticks .tick {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  font-size: 11px;
+  line-height: 1;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.build-ticks .tick::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -7px;
+  width: 1px;
+  height: 6px;
+  background: var(--line);
+}
+
+.build-ticks .tick.on {
+  color: var(--gold);
+}
+
+.build-ticks .tick.on::before {
+  background: var(--gold);
+}
+
+.softcap-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 8px;
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.softcap-legend i {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
 .build-plan {
   border-left: 3px solid var(--line, #3a3a3a);
   padding: 8px 10px;
@@ -41,7 +158,7 @@
 }
 
 @media (max-width: 560px) {
-  .build-panel .build-stats {
+  .build-stats {
     grid-template-columns: 1fr;
   }
 }

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { opBuilds } from '../knowledge/builds'
 import { pvpBuilds } from '../knowledge/pvp'
 import { loadWeapons, type Weapon } from '../lib/ar'
@@ -9,8 +9,9 @@ import { toggleWatch, watchlistOf } from '../lib/leftovers'
 import { SOFT_CAPS, softCapLabel, type StatKey } from '../lib/softCaps'
 import { useWorkspace } from '../state'
 import type { Stats } from '../types'
-import { BuildPowerTools } from '../build/BuildPowerTools'
+import { LevelUpCalculator, LoadoutPresets, SmithingTracker, StatPlanner } from '../build/BuildPowerTools'
 import './advisor.css'
+import '../build/build.css'
 
 /**
  * Library › Builds planner (Task 96). Standalone: it is NOT wired into the
@@ -32,6 +33,31 @@ const STAT_LABELS: Record<StatKey, string> = {
 }
 
 const CUSTOM = '__custom'
+
+/**
+ * Task 113 §2 — one collapsible card per section of the Builds page. Native
+ * `<details>` keeps the collapsed content out of hit-testing and out of the
+ * accessibility tree; the two sections that answer "where am I" open first.
+ */
+function BuildSection({
+  title,
+  defaultOpen = false,
+  children,
+}: {
+  title: string
+  defaultOpen?: boolean
+  children: ReactNode
+}) {
+  return (
+    <details className="panel advisor-card build-section" open={defaultOpen}>
+      <summary className="build-section-summary">
+        <span className="kicker">{title}</span>
+        <span className="build-section-chevron" aria-hidden>▾</span>
+      </summary>
+      <div className="build-section-body">{children}</div>
+    </details>
+  )
+}
 
 export function BuildPlanner() {
   const w = useWorkspace()
@@ -80,12 +106,10 @@ export function BuildPlanner() {
 
   return (
     <div className="advisor planner">
-      {/* Task 110 — the build power tools: presets, stat planner, level-up
-          calculator and smithing tracker, above the advisor cards. */}
-      <BuildPowerTools />
-
-      <section className="panel advisor-card">
-        <div className="kicker">Your build</div>
+      {/* Task 113 §2 — lead with what matters: your detected build and the
+          weapons/gear that beat it, then the planning tools. Every section is a
+          collapsible card; the first two open by default. */}
+      <BuildSection title="Your build" defaultOpen>
         <h3>{advice.build.label}</h3>
         <p className="note">
           {Math.round(advice.build.confidence * 100)}% confidence · {advice.build.reason}
@@ -112,23 +136,21 @@ export function BuildPlanner() {
             )
           })}
         </div>
-      </section>
+        {advice.warnings.length > 0 && (
+          <>
+            <div className="kicker" style={{ marginTop: 12 }}>Warnings</div>
+            <ul className="advisor-list">
+              {advice.warnings.map((warning, i) => (
+                <li key={`${warning.kind}-${i}`}>
+                  <span>{warning.text}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </BuildSection>
 
-      {advice.warnings.length > 0 && (
-        <section className="panel advisor-card">
-          <div className="kicker">Warnings</div>
-          <ul className="advisor-list">
-            {advice.warnings.map((warning, i) => (
-              <li key={`${warning.kind}-${i}`}>
-                <span>{warning.text}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      <section className="panel advisor-card">
-        <div className="kicker">Stronger for your build</div>
+      <BuildSection title="Stronger for your build" defaultOpen>
         {advice.upgrades.length === 0 ? (
           <p className="note">
             {weapons ? 'No on-build weapon beats what you have at these stats.' : 'Loading weapon data…'}
@@ -162,30 +184,9 @@ export function BuildPlanner() {
             ))}
           </ul>
         )}
-      </section>
+      </BuildSection>
 
-      <section className="panel advisor-card">
-        <div className="kicker">Gear picks</div>
-        <ul className="advisor-list">
-          {advice.gear.map((g) => (
-            <li key={`${g.kind}-${g.name}`}>
-              <div className="advisor-row">
-                <span><strong>{g.name}</strong> <em className="dim">{g.kind}</em></span>
-                <span className="note">{g.owned ? 'owned' : g.obtainableNow ? `obtainable · ${g.region ?? ''}` : g.lost ? 'locked out' : g.region ?? ''}</span>
-              </div>
-              <p className="note">{g.why}{g.where ? ` ${g.where}` : ''}</p>
-              {g.factId && (
-                <div className="opts">
-                  <button type="button" className="chip" onClick={() => showOnMap(g.factId)}>Show on map</button>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="panel advisor-card">
-        <div className="kicker">Change build</div>
+      <BuildSection title="Change build">
         <p className="note">Pick a target. The plan shows the stat spread and a shopping list; nothing is applied.</p>
         <select
           className="search"
@@ -281,7 +282,42 @@ export function BuildPlanner() {
             </div>
           </div>
         )}
-      </section>
+      </BuildSection>
+
+      <BuildSection title="Stat planner">
+        <StatPlanner />
+      </BuildSection>
+
+      <BuildSection title="Level-up calculator">
+        <LevelUpCalculator />
+      </BuildSection>
+
+      <BuildSection title="Smithing tracker">
+        <SmithingTracker />
+      </BuildSection>
+
+      <BuildSection title="Loadout presets">
+        <LoadoutPresets />
+      </BuildSection>
+
+      <BuildSection title="Gear picks">
+        <ul className="advisor-list">
+          {advice.gear.map((g) => (
+            <li key={`${g.kind}-${g.name}`}>
+              <div className="advisor-row">
+                <span><strong>{g.name}</strong> <em className="dim">{g.kind}</em></span>
+                <span className="note">{g.owned ? 'owned' : g.obtainableNow ? `obtainable · ${g.region ?? ''}` : g.lost ? 'locked out' : g.region ?? ''}</span>
+              </div>
+              <p className="note">{g.why}{g.where ? ` ${g.where}` : ''}</p>
+              {g.factId && (
+                <div className="opts">
+                  <button type="button" className="chip" onClick={() => showOnMap(g.factId)}>Show on map</button>
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+      </BuildSection>
     </div>
   )
 }

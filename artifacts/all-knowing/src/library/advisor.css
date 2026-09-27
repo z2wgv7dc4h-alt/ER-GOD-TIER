@@ -18,6 +18,42 @@
   margin: 6px 0 4px;
 }
 
+/* Task 113 §2 — collapsible Builds sections. */
+.advisor-card.build-section {
+  padding: 0;
+}
+
+.build-section-summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px;
+}
+
+.build-section-summary::-webkit-details-marker {
+  display: none;
+}
+
+.build-section-summary .kicker {
+  margin: 0;
+}
+
+.build-section-chevron {
+  color: var(--muted);
+  transition: transform 0.15s ease;
+}
+
+.build-section[open] > .build-section-summary .build-section-chevron {
+  transform: rotate(180deg);
+}
+
+.build-section-body {
+  padding: 0 14px 14px;
+}
+
 .advisor-card h4 {
   font-family: var(--font-display);
   margin: 10px 0 4px;
