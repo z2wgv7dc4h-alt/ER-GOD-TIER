@@ -249,7 +249,7 @@ function baseGameOnly(list: { dlc: boolean }[]): boolean {
   return list.every((u) => !u.dlc)
 }
 
-const EARLY = /limgrave|weeping peninsula|stormhill|stormveil|liurnia|raya lucaria/i
+const EARLY = /limgrave|weeping peninsula|stormhill|stormveil|liurnia|raya lucaria|roundtable/i
 
 function letterRank(letter: string): number {
   return { S: 6, A: 5, B: 4, C: 3, D: 2, E: 1, '–': 0, '-': 0 }[letter] ?? 0

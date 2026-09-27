@@ -43,7 +43,7 @@ describe('completion counts for a region', () => {
     expect(c.bosses).toEqual({ have: 2, total: 2 })
     // Task 114 added the two grounded Stormveil weapon drops (Brick Hammer,
     // Rogier's Rapier) to the loot table, so the region's item total grew.
-    expect(c.items).toEqual({ have: 0, total: 5 })
+    expect(c.items).toEqual({ have: 0, total: 4 })
     expect(c.dungeons).toEqual({ have: 0, total: 1 })
     expect(c.done).toBe(2)
     expect(c.total).toBe(11)

@@ -139,7 +139,7 @@ export const loot: Loot[] = [
   { id: 'loot:nagakiba', name: 'Nagakiba', aliases: ['naga'], kind: 'weapon', region: 'Limgrave', campaign: 'base', how: 'Bloody Finger Hunter Yura on the Limgrave road; finish or end his quest to claim it.' },
   { id: 'loot:shamshir', name: 'Shamshir', aliases: ['shamshir'], kind: 'weapon', region: 'Limgrave', campaign: 'base', how: 'Corpse in the water-filled chamber of Highroad Cave, northern Limgrave.' },
   { id: 'loot:estoc', name: 'Estoc', aliases: ['estoc'], kind: 'weapon', region: 'Liurnia', campaign: 'base', how: 'Sold by the Nomadic Merchant in southern Liurnia; the Prisoner class also starts with it.' },
-  { id: 'loot:rogiers-rapier', name: "Rogier's Rapier", aliases: ['rogier rapier'], kind: 'weapon', region: 'Stormveil', campaign: 'base', how: 'Given by Sorcerer Rogier once Godrick is down; his Stormveil chapel is the tie-in.' },
+  { id: 'loot:rogiers-rapier', name: "Rogier's Rapier", aliases: ['rogier rapier'], kind: 'weapon', region: 'Roundtable', campaign: 'base', how: 'Given by Sorcerer Rogier in Roundtable Hold after you defeat Godrick the Grafted.' },
   { id: 'loot:great-knife', name: 'Great Knife', aliases: ['great knife'], kind: 'weapon', region: 'Limgrave', campaign: 'base', how: 'Bandit starting blade, or a 2% drop from the small Demi-Humans.' },
 
   { id: 'loot:brick-hammer', name: 'Brick Hammer', aliases: ['brick hammer'], kind: 'weapon', region: 'Stormveil', campaign: 'base', how: 'Corpse along the Stormveil Castle wall past the Cliffside site of grace.' },
