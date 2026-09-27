@@ -4,6 +4,7 @@ import { warpGraces } from '../knowledge/graces'
 import { loot, type Loot } from '../knowledge/loot'
 import { allLines } from '../knowledge/storylines'
 import { canonicalFactId, generatedAliasBySlug } from './aliases'
+import { edges, type AnyEdgeRel } from './entityGraph'
 import type { ModuleId } from '../types'
 
 /**
@@ -39,6 +40,7 @@ export type RelatedGroupKey =
   | 'atlas'
   | 'loot'
   | 'alias'
+  | 'graph'
 
 export type RelatedLink = {
   id: string
@@ -317,6 +319,39 @@ export function relatedFor(id: string): RelatedResult {
   if (canonical !== id) {
     push('alias', 'Engine row', [factLink(canonical, `Canonical fact for ${id}`)])
   }
+
+  // --- Task 97 graph edges not already covered above -----------------------
+  // `Related` used to be the only cross-link builder; the entity graph is now
+  // the single edge source. Fold its extra relationship types in here so the
+  // shared component keeps one set of props and one renderer.
+  const GRAPH_RELS: AnyEdgeRel[] = [
+    'soldBy',
+    'foundIn',
+    'weakTo',
+    'resists',
+    'goodForBuild',
+    'craftedFrom',
+    'tradedFor',
+    'upgradeMaterial',
+    'relatedLore',
+    'partOfQuest',
+    'nextBeat',
+    'locks',
+    'unlocks',
+  ]
+  push(
+    'graph',
+    'Graph',
+    edges(id)
+      .filter((e) => GRAPH_RELS.includes(e.rel))
+      .map((e) => ({
+        id: `${e.rel}:${e.to}`,
+        label: labelFor(e.to),
+        module: targetModule(e.to),
+        factId: e.to,
+        note: `${e.rel} · from ${e.source}`,
+      })),
+  )
 
   return {
     id,

@@ -1,3 +1,4 @@
+import { EntityLink } from './EntityLink'
 import { labelOf, moduleFor, nextMoves, statusOf, thread, whyKnown } from './lib/links'
 import { searchSync } from './lib/search'
 import { Related } from './Related'
@@ -28,7 +29,7 @@ export function Thread({ id }: { id: string }) {
   return (
     <div className="thread">
       <div className="kicker">{t.node.kind} · {t.node.region} · {t.node.campaign}</div>
-      <h3>{t.node.name}</h3>
+      <h3><EntityLink id={id}>{t.node.name}</EntityLink></h3>
       <p className="note">{known ? 'On this character.' : 'Not evidenced on this character yet.'}</p>
       {t.node.note && <p className="note">{t.node.note}</p>}
 

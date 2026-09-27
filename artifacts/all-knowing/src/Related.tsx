@@ -11,7 +11,7 @@ import { factState, useWorkspace } from './state'
  * holds no edge for an entity, it says so plainly instead of hiding.
  */
 export function Related({ id, title = 'Related' }: { id: string; title?: string }) {
-  const { character, setModule, setSelectedMarkerId } = useWorkspace()
+  const { character, openEntity } = useWorkspace()
   const result = relatedFor(id)
 
   if (!result.hasAny) {
@@ -26,8 +26,8 @@ export function Related({ id, title = 'Related' }: { id: string; title?: string 
   }
 
   function open(link: RelatedLink) {
-    setModule(link.module)
-    setSelectedMarkerId(link.factId)
+    // Task 97: every related name opens the one universal entity panel.
+    openEntity(link.factId)
   }
 
   return (

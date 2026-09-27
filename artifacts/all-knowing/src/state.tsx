@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { markers } from './data/seed'
 import type { EngineMarker, EngineState, EngineStatus } from './lib/mapEngine'
+import { buildEntityHash, parseEntityHash } from './lib/entityHash'
 import { pushRecent, recentAfterProfileSwitch } from './lib/recent'
 import {
   defaultSub,
@@ -37,6 +38,10 @@ type Workspace = {
   setCharacter: (c: Character) => void
   selectedMarkerId: string | null
   setSelectedMarkerId: (id: string | null) => void
+  /** Task 97: the entity whose universal panel overlay is open, or null. */
+  entityId: string | null
+  openEntity: (id: string) => void
+  closeEntity: () => void
   layers: Record<LayerId, boolean>
   toggleLayer: (id: LayerId) => void
   showLeftovers: boolean
@@ -108,6 +113,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [sub, setSub] = useState<Sub | null>(start.sub)
   const [character, setCharacter] = useState<Character>(bootProfile.character)
   const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(bootProfile.ui.selectedMarkerId)
+  const [entityId, setEntityId] = useState<string | null>(() =>
+    parseEntityHash(typeof window !== 'undefined' ? window.location.hash : ''),
+  )
   const [layers, setLayers] = useState(defaultLayers)
   const [showLeftovers, setShowLeftovers] = useState(false)
   const [showGates, setShowGates] = useState(false)
@@ -157,14 +165,16 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setModuleState(locationToModule(next, subId))
   }
 
-  // Hash routing: the URL is `#/section/sub`, so reloads and the back button work.
+  // Hash routing: the URL is `#/section/sub` (plus the Task 97 `?e=` entity
+  // param), so reloads and the back button work.
   useEffect(() => {
-    const hash = locationToHash(section, sub)
+    const hash = buildEntityHash(locationToHash(section, sub), entityId)
     if (window.location.hash !== hash) window.location.hash = hash
-  }, [section, sub])
+  }, [section, sub, entityId])
 
   useEffect(() => {
     function onHashChange() {
+      setEntityId(parseEntityHash(window.location.hash))
       const loc = hashToLocation(window.location.hash)
       if (!loc) return
       setSection(loc.section)
@@ -174,6 +184,22 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     window.addEventListener('hashchange', onHashChange)
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
+
+  /** Open the universal entity panel as an overlay from any section. */
+  function openEntity(id: string) {
+    setEntityId(id)
+    setRecentFacts((r) => pushRecent(r, id))
+    if (typeof window === 'undefined') return
+    const next = buildEntityHash(locationToHash(section, sub), id)
+    if (window.location.hash !== next) window.location.hash = next
+  }
+
+  function closeEntity() {
+    setEntityId(null)
+    if (typeof window !== 'undefined' && parseEntityHash(window.location.hash)) {
+      window.location.hash = locationToHash(section, sub)
+    }
+  }
 
   useEffect(() => {
     const next = upsertActive(vaultRef.current, {
@@ -217,6 +243,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         setSelectedMarkerId(id)
         if (id) setRecentFacts((r) => pushRecent(r, id))
       },
+      entityId,
+      openEntity,
+      closeEntity,
       layers,
       toggleLayer: (id) => setLayers((prev) => ({ ...prev, [id]: !prev[id] })),
       showLeftovers,
@@ -253,7 +282,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [module, section, sub, character, selectedMarkerId, layers, showLeftovers, showGates, missingOnly, query, engineStatus, engineState, engineMarkers, history, helpOpen, dockOpen, recentFacts, vault],
+    [module, section, sub, character, selectedMarkerId, entityId, layers, showLeftovers, showGates, missingOnly, query, engineStatus, engineState, engineMarkers, history, helpOpen, dockOpen, recentFacts, vault],
   )
 
   return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>
