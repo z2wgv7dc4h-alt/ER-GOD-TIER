@@ -99,9 +99,8 @@ function AppShell() {
   const [logOpen, setLogOpen] = useState(false)
   const [logSeed, setLogSeed] = useState<string[]>([])
 
-  // Task 99: the workspace may expose `currentArea`; read it defensively so the
-  // quick log still builds when the field is absent.
-  const currentArea = (w as unknown as { currentArea?: string | null }).currentArea ?? null
+  // Quick log's near-me suggestions take the grace id when known, else the region name.
+  const currentArea = w.currentArea?.factId ?? w.currentArea?.region ?? null
 
   function openLog(seed: string[] = []) {
     setLogSeed(seed)
