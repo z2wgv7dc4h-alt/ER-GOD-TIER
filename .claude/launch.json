@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "all-knowing",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "artifacts/all-knowing", "run", "dev"],
+      "port": 5173
+    }
+  ]
+}

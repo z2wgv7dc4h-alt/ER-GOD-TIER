@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { remembrances } from '../knowledge/remembrances'
 import { findWeapon, loadWeapons, type Weapon } from '../lib/ar'
+import { areaFromFactId } from '../lib/areaContext'
 import { getEntity, type EntityKind } from '../lib/entityGraph'
 import { applyFacts, denyFacts } from '../lib/infer'
 import { rankRemembrance, type RemembranceOption } from '../lib/remembranceChoice'
@@ -106,6 +107,7 @@ export function EntityOverlay() {
         <EntityPanel
           entity={entity}
           factId={entityId}
+          kind={entity.subtype as EntityKind}
           character={character}
           verdict={verdict}
           remembrance={remembrance}
@@ -119,6 +121,11 @@ export function EntityOverlay() {
           }}
           onEquip={() => {
             w.setModule('build')
+            w.closeEntity()
+          }}
+          onCompare={() => {
+            w.setSelectedMarkerId(entityId)
+            w.setModule('codex')
             w.closeEntity()
           }}
           onAskGideon={() => {
@@ -135,6 +142,18 @@ export function EntityOverlay() {
               answers: { ...character.answers, gideonGoal: entityId },
             })
             w.go('journey', 'now')
+            w.closeEntity()
+          }}
+          onQuestline={() => {
+            w.go('journey', 'quests')
+            w.closeEntity()
+          }}
+          onImHere={() => {
+            const area = areaFromFactId(entityId)
+            setCharacter(applyFacts(character, [entityId], 'answer', "I'm here"))
+            if (area) {
+              w.setCurrentArea({ ...area, factId: entityId, source: 'map', at: Date.now() })
+            }
             w.closeEntity()
           }}
         />

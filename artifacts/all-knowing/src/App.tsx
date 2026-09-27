@@ -18,6 +18,7 @@ import { MapControls } from './shell/MapControls'
 import { MeOverview } from './shell/MeOverview'
 import { MeProfiles } from './shell/MeProfiles'
 import { MeSetup } from './shell/MeSetup'
+import { SectionSkeleton, DockSkeleton } from './shell/Skeletons'
 import { SubTabs } from './shell/SubTabs'
 import { TabBar } from './shell/TabBar'
 import { WorkspaceProvider, useWorkspace } from './state'
@@ -139,14 +140,14 @@ function AppShell() {
           {w.section === 'journey' && w.sub === 'map' && <MapControls />}
           <CommandHits onLog={(ids) => openLog(ids)} />
           <div className="stage">
-            <Suspense fallback={null}>
+            <Suspense fallback={<SectionSkeleton />}>
               <ShellContent />
             </Suspense>
           </div>
         </main>
         {dockVisible && (
           <aside className="guide" aria-label="Gideon">
-            <Suspense fallback={null}>
+            <Suspense fallback={<DockSkeleton />}>
               <Gideon />
             </Suspense>
           </aside>

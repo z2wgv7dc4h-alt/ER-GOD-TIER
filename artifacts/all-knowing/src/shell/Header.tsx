@@ -1,9 +1,18 @@
+import { useEffect, useRef, useState } from 'react'
 import { Help } from '../Help'
 import { sectionMeta } from '../lib/sections'
 import { useWorkspace } from '../state'
 import { AreaChip } from './AreaChip'
 import { SectionTabs } from './SectionTabs'
 
+/**
+ * Task 103 §1 — the phone header is exactly one 52px row: brand mark · section
+ * title · search (magnifier) · area (pin + truncated name) · character (initial
+ * + Lv) · overflow `⋯` (Glance mode and Help). The Quick-log `+` lives on the
+ * floating thumb button (QuickLog) on phone, and stays a header button on
+ * desktop. Desktop keeps the wide search field, section tabs and inline
+ * Glance/Help buttons.
+ */
 export function Header({
   searchOpen,
   onToggleSearch,
@@ -19,6 +28,20 @@ export function Header({
 }) {
   const w = useWorkspace()
   const meta = sectionMeta(w.section)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    if (!menuOpen) return
+    function onDoc(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false)
+    }
+    document.addEventListener('mousedown', onDoc)
+    return () => document.removeEventListener('mousedown', onDoc)
+  }, [menuOpen])
+
+  const initial = (w.character.name || 'T').trim().charAt(0).toUpperCase()
+
   return (
     <header className="shell-header">
       <button
@@ -44,7 +67,10 @@ export function Header({
         aria-expanded={searchOpen}
         onClick={onToggleSearch}
       >
-        find
+        <svg className="icon-magnifier" viewBox="0 0 24 24" width="18" height="18" aria-hidden focusable="false">
+          <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" strokeWidth="2" />
+          <line x1="15.4" y1="15.4" x2="21" y2="21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>
       </button>
       <AreaChip />
       <button
@@ -62,7 +88,10 @@ export function Header({
         onClick={() => w.go('me', 'overview')}
         title="Open the Tarnished overview"
       >
-        {w.character.name} · Lv.{w.character.level}
+        <span className="char-avatar" aria-hidden>{initial}</span>
+        <span className="char-name">{w.character.name}</span>
+        <span className="char-sep" aria-hidden>·</span>
+        <span className="char-level">Lv {w.character.level}</span>
       </button>
       <button
         type="button"
@@ -73,6 +102,38 @@ export function Header({
       >
         +
       </button>
+      <div className="header-more" ref={menuRef}>
+        <button
+          type="button"
+          className={menuOpen ? 'chip on header-more-toggle phone-only' : 'chip header-more-toggle phone-only'}
+          aria-label="More options"
+          aria-haspopup="menu"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((v) => !v)}
+        >
+          ⋯
+        </button>
+        {menuOpen && (
+          <div className="header-more-menu panel" role="menu" aria-label="More options">
+            <button
+              type="button"
+              role="menuitem"
+              className={w.glance ? 'chip on' : 'chip'}
+              onClick={() => { w.setGlance(!w.glance); setMenuOpen(false) }}
+            >
+              {w.glance ? 'Glance on' : 'Glance mode'}
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              className="chip"
+              onClick={() => { w.setHelpOpen(true); setMenuOpen(false) }}
+            >
+              Help
+            </button>
+          </div>
+        )}
+      </div>
       <Help />
       <button
         type="button"

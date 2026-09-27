@@ -200,9 +200,10 @@ describe('entityGraph — status', () => {
     expect(s.why).toMatch(/passed/)
   })
 
-  it('reports locked when prerequisites are missing', () => {
+  it('reports ahead when prerequisites are not yet reached', () => {
     const s = status('item:fingerslayer', baseCharacter())
-    expect(s.state).toBe('locked')
+    expect(s.state).toBe('ahead')
+    expect(s.why).toMatch(/reach/)
     expect(s.why).toMatch(/Radahn/)
   })
 

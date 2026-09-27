@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { Character } from '../types'
 import { regionMatches } from '../lib/areaHub'
+import { areaFromFactId } from '../lib/areaContext'
 import { normalizeName } from '../lib/fanImage'
 import { applyFacts, denyFacts } from '../lib/infer'
 import { weaponVerdict, type Verdict } from '../lib/verdict'
@@ -34,6 +35,27 @@ import { useWorkspace } from '../state'
 import './library.css'
 
 const PAGE_SIZE = 50
+
+/** Task 103 §2: the grid placeholder shown while the category dataset loads. */
+function SkeletonGrid({ rows = 9 }: { rows?: number }) {
+  return (
+    <div className="lib-skel" role="status" aria-live="polite" aria-label="Loading entries">
+      <span className="skel-label">Loading entries…</span>
+      <div className="lib-grid">
+        {Array.from({ length: rows }).map((_, i) => (
+          <div className="lib-skel-card" key={i} aria-hidden>
+            <span className="skel skel-thumb" />
+            <span className="lib-skel-body">
+              <span className="skel skel-line skel-line-sm" />
+              <span className="skel skel-line" />
+              <span className="skel skel-line skel-line-xs" />
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 function activeFilterCount(filter: LibraryFilter): number {
   let n = 0
@@ -279,6 +301,7 @@ export function LibraryBrowser() {
 
   const activeFilters = activeFilterCount(filter)
   const isEmpty = sorted.length === 0
+  const showSkeleton = catalog.loading && isEmpty
 
   return (
     <div className="lib-browser">
@@ -490,7 +513,9 @@ export function LibraryBrowser() {
 
           <div className="lib-resultbar">
             <span className="lib-count">
-              {sorted.length} {CATEGORIES.find((c) => c.id === cat)?.label ?? ''} · {activeFilters} filters
+              {showSkeleton
+                ? `Loading ${CATEGORIES.find((c) => c.id === cat)?.label ?? ''}…`
+                : `${sorted.length} ${CATEGORIES.find((c) => c.id === cat)?.label ?? ''} · ${activeFilters} filters`}
             </span>
             {pageCount > 1 && (
               <span className="lib-pager">
@@ -513,7 +538,9 @@ export function LibraryBrowser() {
           </div>
 
           <div className="lib-results">
-            {isEmpty ? (
+            {showSkeleton ? (
+              <SkeletonGrid />
+            ) : isEmpty ? (
               <div className="lib-empty">
                 <h3>Nothing in {CATEGORIES.find((c) => c.id === cat)?.label}</h3>
                 <p className="note">
@@ -625,6 +652,21 @@ export function LibraryBrowser() {
               onAskGideon={() => {
                 w.setQuery(selected.name)
                 w.go('gideon')
+              }}
+              onSetGoal={() => {
+                setCharacter({
+                  ...character,
+                  answers: { ...character.answers, gideonGoal: selected.factId },
+                })
+                w.go('journey', 'now')
+              }}
+              onQuestline={() => w.go('journey', 'quests')}
+              onImHere={() => {
+                const area = areaFromFactId(selected.factId)
+                setCharacter(applyFacts(character, [selected.factId], 'answer', "I'm here"))
+                if (area) {
+                  w.setCurrentArea({ ...area, factId: selected.factId, source: 'map', at: Date.now() })
+                }
               }}
               onShowOnMap={() => {
                 w.setSelectedMarkerId(selected.factId)

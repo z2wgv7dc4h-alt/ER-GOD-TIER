@@ -103,7 +103,7 @@ export type Edge = {
   source: string
 }
 
-export type EntityState = 'done' | 'owned' | 'available' | 'locked' | 'missed' | 'unknown'
+export type EntityState = 'done' | 'owned' | 'available' | 'ahead' | 'locked' | 'missed' | 'unknown'
 
 const INVERSE: Record<EdgeRel, AnyEdgeRel> = {
   drops: 'droppedBy',
@@ -753,7 +753,10 @@ export function status(factId: string, character: Character): { state: EntitySta
     .map((x) => canonicalEntityId(x))
     .filter((x) => !known.has(x))
   if (missing.length) {
-    return { state: 'locked', why: `Needs ${missing.map((x) => entityName(x)).join(', ')} first` }
+    // Task 103 §5: a not-yet-reached prerequisite is "ahead of you", not
+    // "locked" — Locked stays reserved for a gate that forecloses (point of no
+    // return) and Missed for a fact permanently lost to a fired gate.
+    return { state: 'ahead', why: `— reach ${missing.map((x) => entityName(x)).join(', ')}` }
   }
 
   if (entity.kind === 'mechanic' || entity.kind === 'merchant' || entity.kind === 'build') {

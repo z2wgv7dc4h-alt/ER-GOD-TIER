@@ -43,7 +43,12 @@ export type LibraryCatalog = {
   entities: LibraryEntity[]
   byCategory: Record<CategoryId, LibraryEntity[]>
   weaponByName: Map<string, Weapon>
+  /** True while the active category's source dataset is still being fetched. */
+  loading: boolean
 }
+
+/** The synchronous builder result, before the hook adds its loading flag. */
+export type BuiltCatalog = Omit<LibraryCatalog, 'loading'>
 
 // ---------------------------------------------------------------------------
 // small helpers
@@ -523,7 +528,7 @@ function buildDialogue(dialogue: DialogueSpeaker[]): LibraryEntity[] {
 // assembly
 // ---------------------------------------------------------------------------
 
-export function buildCatalog(input: CatalogInput): LibraryCatalog {
+export function buildCatalog(input: CatalogInput): BuiltCatalog {
   const { weapons, shields, weaponByName } = buildWeapons(input)
   const entities: LibraryEntity[] = [
     ...weapons,
@@ -584,6 +589,11 @@ export function useLibraryCatalog(activeCategory: CategoryId): LibraryCatalog {
   const [guides, setGuides] = useState<GuideExcerpt[]>([])
   const [bossCombat, setBossCombat] = useState<CombatStats[]>([])
   const [dialogue, setDialogue] = useState<DialogueSpeaker[]>([])
+  // Task 103 §2: which lazy datasets have finished (success or failure), so the
+  // skeleton grid can stop even when a dataset is legitimately empty.
+  const [settled, setSettled] = useState<Set<CategoryId>>(() => new Set())
+  const markSettled = (id: CategoryId) =>
+    setSettled((prev) => (prev.has(id) ? prev : new Set(prev).add(id)))
 
   useEffect(() => {
     let cancelled = false
@@ -594,19 +604,34 @@ export function useLibraryCatalog(activeCategory: CategoryId): LibraryCatalog {
   useEffect(() => {
     let cancelled = false
     if (activeCategory === 'bosses' && bossCombat.length === 0) {
-      void loadBossCombat().then((rows) => { if (!cancelled) setBossCombat(rows) }).catch(() => { /* optional */ })
+      void loadBossCombat()
+        .then((rows) => { if (!cancelled) setBossCombat(rows) })
+        .catch(() => { /* optional */ })
+        .finally(() => { if (!cancelled) markSettled('bosses') })
     }
     if (activeCategory === 'recipes' && recipes.length === 0) {
-      void loadRecipes().then((d) => { if (!cancelled) setRecipes(d.recipes) }).catch(() => { /* optional */ })
+      void loadRecipes()
+        .then((d) => { if (!cancelled) setRecipes(d.recipes) })
+        .catch(() => { /* optional */ })
+        .finally(() => { if (!cancelled) markSettled('recipes') })
     }
     if (activeCategory === 'secrets' && secrets.length === 0) {
-      void loadSecrets().then((d) => { if (!cancelled) setSecrets(d.walls) }).catch(() => { /* optional */ })
+      void loadSecrets()
+        .then((d) => { if (!cancelled) setSecrets(d.walls) })
+        .catch(() => { /* optional */ })
+        .finally(() => { if (!cancelled) markSettled('secrets') })
     }
     if (activeCategory === 'guides' && guides.length === 0) {
-      void loadGuides().then((d) => { if (!cancelled) setGuides(guideExcerpts(d)) }).catch(() => { /* optional */ })
+      void loadGuides()
+        .then((d) => { if (!cancelled) setGuides(guideExcerpts(d)) })
+        .catch(() => { /* optional */ })
+        .finally(() => { if (!cancelled) markSettled('guides') })
     }
     if ((activeCategory === 'weapons' || activeCategory === 'shields' || activeCategory === 'items' || activeCategory === 'armor' || activeCategory === 'talismans') && acquisitions.length === 0) {
-      void loadAcquisition().then((d) => { if (!cancelled) setAcquisitions(d.rows) }).catch(() => { /* optional */ })
+      void loadAcquisition()
+        .then((d) => { if (!cancelled) setAcquisitions(d.rows) })
+        .catch(() => { /* optional */ })
+        .finally(() => { if (!cancelled) markSettled(activeCategory) })
     }
     if (activeCategory === 'dialogue' && dialogue.length === 0) {
       void Promise.all([loadDialogueOwners(), loadGameTextTable('TalkMsg')])
@@ -619,6 +644,7 @@ export function useLibraryCatalog(activeCategory: CategoryId): LibraryCatalog {
           setDialogue(groups)
         })
         .catch(() => { /* optional */ })
+        .finally(() => { if (!cancelled) markSettled('dialogue') })
     }
     return () => { cancelled = true }
   }, [activeCategory, bossCombat.length, recipes.length, secrets.length, guides.length, acquisitions.length, dialogue.length])
@@ -633,22 +659,37 @@ export function useLibraryCatalog(activeCategory: CategoryId): LibraryCatalog {
     })
   }, [bossCombat, recipes, acquisitions])
 
-  return useMemo(
-    () =>
-      buildCatalog({
-        fan,
-        armoryWeapons,
-        armoryBosses,
-        weapons,
-        recipes,
-        secrets,
-        acquisitions,
-        guides,
-        bossCombat,
-        dialogue,
-      }),
-    [fan, armoryWeapons, armoryBosses, weapons, recipes, secrets, acquisitions, guides, bossCombat, dialogue],
-  )
+  return useMemo(() => {
+    const catalog = buildCatalog({
+      fan,
+      armoryWeapons,
+      armoryBosses,
+      weapons,
+      recipes,
+      secrets,
+      acquisitions,
+      guides,
+      bossCombat,
+      dialogue,
+    })
+    const coreReady =
+      weapons.length > 0 ||
+      fan.armors.length > 0 ||
+      fan.talismans.length > 0 ||
+      fan.spells.length > 0 ||
+      fan.items.length > 0 ||
+      fan.bosses.length > 0 ||
+      fan.npcs.length > 0 ||
+      fan.locations.length > 0
+    const lazyPending =
+      (activeCategory === 'bosses' && bossCombat.length === 0 && !settled.has('bosses')) ||
+      (activeCategory === 'recipes' && recipes.length === 0 && !settled.has('recipes')) ||
+      (activeCategory === 'secrets' && secrets.length === 0 && !settled.has('secrets')) ||
+      (activeCategory === 'guides' && guides.length === 0 && !settled.has('guides')) ||
+      (activeCategory === 'dialogue' && dialogue.length === 0 && !settled.has('dialogue'))
+    const loading = catalog.byCategory[activeCategory].length === 0 && (!coreReady || lazyPending)
+    return { ...catalog, loading }
+  }, [fan, armoryWeapons, armoryBosses, weapons, recipes, secrets, acquisitions, guides, bossCombat, dialogue, activeCategory, settled])
 }
 
 /** Exposed for tests: the empty catalogue shape. */

@@ -1,17 +1,19 @@
 import { useMemo, useState } from 'react'
 import type { Remembrance } from '../knowledge/remembrances'
-import { status, type EntityState } from '../lib/entityGraph'
+import { getEntity, status, type EntityKind, type EntityState } from '../lib/entityGraph'
 import type { RemembranceOption } from '../lib/remembranceChoice'
 import type { Verdict } from '../lib/verdict'
 import { Related } from '../Related'
 import { WikiText } from '../WikiText'
 import type { Character } from '../types'
-import { attributeStats, isOwned, meetsRequirements, type AttributeKey, type LibraryEntity } from './model'
+import { BossFacts } from './BossFacts'
+import { attributeStats, isOwned, meetsRequirements, type AttributeKey, type CategoryId, type LibraryEntity } from './model'
 
 const STATUS_LABELS: Record<EntityState, string> = {
   done: 'Done',
   owned: 'Owned',
   available: 'Available',
+  ahead: 'Ahead of you',
   locked: 'Locked',
   missed: 'Missed',
   unknown: 'Unknown',
@@ -43,6 +45,8 @@ export type EntityPanelProps = {
    * universal overlay mounts any graph entity, not just a Library row).
    */
   factId?: string
+  /** Graph kind override; when omitted it is derived from the category/id. */
+  kind?: EntityKind
   /** Overrides; when omitted they are derived from `character`. */
   owned?: boolean
   requirementsMet?: boolean | null
@@ -61,6 +65,31 @@ export type EntityPanelProps = {
   onAskGideon?: () => void
   onShowOnMap?: () => void
   onSetGoal?: () => void
+  /** NPC: jump to the questline board (Journey › Quests). */
+  onQuestline?: () => void
+  /** Grace: set the current area to here and mark the grace found. */
+  onImHere?: () => void
+}
+
+const CATEGORY_KIND: Partial<Record<CategoryId, EntityKind>> = {
+  weapons: 'weapon',
+  shields: 'shield',
+  armor: 'armor',
+  talismans: 'talisman',
+  sorceries: 'spell',
+  incantations: 'spell',
+  ashes: 'ash',
+  spirits: 'spirit',
+  bosses: 'boss',
+  npcs: 'npc',
+}
+
+const EQUIPPABLE = new Set<EntityKind>(['weapon', 'shield', 'armor', 'talisman'])
+const COMPARABLE = new Set<EntityKind>(['weapon', 'shield', 'armor', 'talisman'])
+
+function panelKind(entity: LibraryEntity, factId: string, kind?: EntityKind): EntityKind {
+  if (kind) return kind
+  return CATEGORY_KIND[entity.category] ?? getEntity(factId).kind
 }
 
 type Tab = 'stats' | 'where' | 'lore' | 'related'
@@ -88,6 +117,7 @@ export function EntityPanel({
   entity,
   character,
   factId,
+  kind,
   owned,
   requirementsMet,
   ar,
@@ -102,9 +132,15 @@ export function EntityPanel({
   onAskGideon,
   onShowOnMap,
   onSetGoal,
+  onQuestline,
+  onImHere,
 }: EntityPanelProps) {
   const [tab, setTab] = useState<Tab>('stats')
   const statusFactId = factId ?? entity.factId
+  const panelKindValue = panelKind(entity, statusFactId, kind)
+  const isBoss = panelKindValue === 'boss' || panelKindValue === 'enemy'
+  const isNpc = panelKindValue === 'npc' || panelKindValue === 'merchant'
+  const isGrace = panelKindValue === 'grace'
   const isOwnedValue = owned ?? isOwned(entity, character)
   const metValue = requirementsMet === undefined ? meetsRequirements(entity, character) : requirementsMet
   const requirementEntries = Object.entries(entity.requirements ?? {}) as [AttributeKey, number][]
@@ -156,7 +192,16 @@ export function EntityPanel({
       <div className="lib-panel-body">
         {tab === 'stats' && (
           <div className="lib-panel-stats">
-            {(requirementEntries.length > 0 || metValue !== null) && (
+            {isBoss && (
+              <BossFacts
+                factId={statusFactId}
+                name={entity.name}
+                region={entity.region}
+                character={character}
+              />
+            )}
+
+            {!isBoss && (requirementEntries.length > 0 || metValue !== null) && (
               <div className="lib-panel-block">
                 <div className="kicker">Requirements</div>
                 {requirementEntries.length ? (
@@ -245,7 +290,7 @@ export function EntityPanel({
               </div>
             )}
 
-            {entity.stats && entity.stats.length > 0 && (
+            {!isBoss && entity.stats && entity.stats.length > 0 && (
               <div className="lib-panel-block">
                 <div className="kicker">Stats</div>
                 <dl className="lib-stat-grid">
@@ -259,7 +304,7 @@ export function EntityPanel({
               </div>
             )}
 
-            {requirementEntries.length === 0 && !entity.attack?.length && !entity.stats?.length && !ar && entity.weight === undefined && (
+            {!isBoss && requirementEntries.length === 0 && !entity.attack?.length && !entity.stats?.length && !ar && entity.weight === undefined && (
               <p className="note">No structured stats in the data for this entry.</p>
             )}
           </div>
@@ -298,30 +343,99 @@ export function EntityPanel({
       </div>
 
       <footer className="lib-panel-actions">
-        {onOwnedChange && (
-          <button type="button" className={isOwnedValue ? 'chip on' : 'chip'} onClick={() => onOwnedChange(!isOwnedValue)}>
-            {isOwnedValue ? 'Mark not owned' : 'Mark owned'}
-          </button>
+        {isBoss && (
+          <>
+            {onOwnedChange && (
+              <button
+                type="button"
+                className={isOwnedValue ? 'chip on' : 'chip'}
+                aria-pressed={isOwnedValue}
+                onClick={() => onOwnedChange(!isOwnedValue)}
+              >
+                {isOwnedValue ? 'Defeated ✓' : 'Mark defeated'}
+              </button>
+            )}
+            {onShowOnMap && (
+              <button type="button" className="chip" onClick={onShowOnMap}>
+                Show arena on map
+              </button>
+            )}
+            {onSetGoal && (
+              <button type="button" className="chip" onClick={onSetGoal}>
+                Set as goal
+              </button>
+            )}
+            {onAskGideon && (
+              <button type="button" className="chip" onClick={onAskGideon}>
+                Ask Gideon
+              </button>
+            )}
+          </>
         )}
-        {onCompare && (
-          <button type="button" className={compareActive ? 'chip on' : 'chip'} onClick={onCompare}>
-            {compareActive ? 'Pinned to compare' : 'Compare'}
-          </button>
+
+        {isNpc && (
+          <>
+            {onShowOnMap && (
+              <button type="button" className="chip" onClick={onShowOnMap}>
+                Show where they are now
+              </button>
+            )}
+            {onQuestline && (
+              <button type="button" className="chip" onClick={onQuestline}>
+                Questline
+              </button>
+            )}
+            {onAskGideon && (
+              <button type="button" className="chip" onClick={onAskGideon}>
+                Ask Gideon
+              </button>
+            )}
+          </>
         )}
-        {onEquip && (
-          <button type="button" className="chip" onClick={onEquip}>
-            Equip (opens Gear)
-          </button>
+
+        {isGrace && (
+          <>
+            {onImHere && (
+              <button type="button" className="chip on" onClick={onImHere}>
+                I&apos;m here
+              </button>
+            )}
+            {onShowOnMap && (
+              <button type="button" className="chip" onClick={onShowOnMap}>
+                Show on map
+              </button>
+            )}
+          </>
         )}
-        {onAskGideon && (
-          <button type="button" className="chip" onClick={onAskGideon}>
-            Ask Gideon
-          </button>
-        )}
-        {onSetGoal && (
-          <button type="button" className="chip" onClick={onSetGoal}>
-            Set as goal
-          </button>
+
+        {!isBoss && !isNpc && !isGrace && (
+          <>
+            {onOwnedChange && (
+              <button type="button" className={isOwnedValue ? 'chip on' : 'chip'} onClick={() => onOwnedChange(!isOwnedValue)}>
+                {isOwnedValue ? 'Mark not owned' : 'Mark owned'}
+              </button>
+            )}
+            {onEquip && EQUIPPABLE.has(panelKindValue) && (
+              <button type="button" className="chip" onClick={onEquip}>
+                Equip (opens Gear)
+              </button>
+            )}
+            {onCompare && COMPARABLE.has(panelKindValue) && (
+              <button type="button" className={compareActive ? 'chip on' : 'chip'} onClick={onCompare}>
+                {compareActive ? 'Pinned to compare' : 'Compare'}
+              </button>
+            )}
+            {onShowOnMap && (
+              <button type="button" className="chip" onClick={onShowOnMap}>
+                Show where
+              </button>
+            )}
+            {onAskGideon && (
+              <button type="button" className="chip" onClick={onAskGideon}>
+                Ask Gideon
+              </button>
+            )}
+          </>
         )}
       </footer>
     </section>
