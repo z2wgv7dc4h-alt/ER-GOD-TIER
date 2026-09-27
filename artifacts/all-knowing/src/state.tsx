@@ -3,6 +3,13 @@ import { markers } from './data/seed'
 import type { EngineMarker, EngineState, EngineStatus } from './lib/mapEngine'
 import { pushRecent, recentAfterProfileSwitch } from './lib/recent'
 import {
+  defaultSub,
+  hashToLocation,
+  locationToHash,
+  locationToModule,
+  moduleToLocation,
+} from './lib/sections'
+import {
   activeProfile,
   addProfile,
   deleteProfile,
@@ -13,13 +20,18 @@ import {
   type Profile,
   type Vault,
 } from './lib/vault'
-import type { Character, FactState, MapMarker, ModuleId } from './types'
+import type { Character, FactState, MapMarker, ModuleId, Section, Sub } from './types'
 
 type LayerId = MapMarker['kind']
 
 type Workspace = {
+  /** Legacy room id (kept for every pre-Task-91 caller). */
   module: ModuleId
   setModule: (id: ModuleId) => void
+  /** New shell location. */
+  section: Section
+  sub: Sub | null
+  go: (section: Section, sub?: Sub) => void
   character: Character
   setCharacter: (c: Character) => void
   selectedMarkerId: string | null
@@ -44,6 +56,9 @@ type Workspace = {
   canUndo: boolean
   helpOpen: boolean
   setHelpOpen: (v: boolean) => void
+  /** Gideon dock open/closed; default from viewport width, persisted. */
+  dockOpen: boolean
+  toggleDock: () => void
   recentFacts: string[]
   vault: Vault
   profile: Profile
@@ -65,11 +80,33 @@ const defaultLayers: Record<LayerId, boolean> = {
   dungeon: true,
 }
 
+function bootLocation(hash: string, module: ModuleId): { section: Section; sub: Sub | null } {
+  const fromHash = hashToLocation(hash)
+  if (fromHash) return fromHash
+  return moduleToLocation(module)
+}
+
+const DOCK_KEY = 'all-knowing.dock.open.v1'
+
+/** Gideon dock default: open at ≥1200px, closed below; persisted thereafter. */
+function readDockOpen(): boolean {
+  try {
+    const raw = localStorage.getItem(DOCK_KEY)
+    if (raw === '1') return true
+    if (raw === '0') return false
+  } catch { /* storage disabled */ }
+  return typeof window !== 'undefined' ? window.innerWidth >= 1200 : false
+}
+
 export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const boot = useRef(loadVault()).current
   const [vault, setVault] = useState<Vault>(boot)
   const bootProfile = activeProfile(boot)
-  const [module, setModule] = useState<ModuleId>(bootProfile.ui.module)
+  const start = bootLocation(typeof window !== 'undefined' ? window.location.hash : '', bootProfile.ui.module)
+
+  const [module, setModuleState] = useState<ModuleId>(bootProfile.ui.module)
+  const [section, setSection] = useState<Section>(start.section)
+  const [sub, setSub] = useState<Sub | null>(start.sub)
   const [character, setCharacter] = useState<Character>(bootProfile.character)
   const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(bootProfile.ui.selectedMarkerId)
   const [layers, setLayers] = useState(defaultLayers)
@@ -82,7 +119,12 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [engineMarkers, setEngineMarkers] = useState<EngineMarker[]>([])
   const [history, setHistory] = useState<Character[]>([])
   const [helpOpen, setHelpOpen] = useState(false)
+  const [dockOpen, setDockOpen] = useState(readDockOpen)
   const [recentFacts, setRecentFacts] = useState<string[]>([])
+
+  useEffect(() => {
+    try { localStorage.setItem(DOCK_KEY, dockOpen ? '1' : '0') } catch { /* storage disabled */ }
+  }, [dockOpen])
 
   function commitCharacter(next: Character) {
     setHistory((h) => [...h.slice(-19), character])
@@ -100,23 +142,60 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const vaultRef = useRef(vault)
   vaultRef.current = vault
 
+  /** Compat shim: `setModule(oldId)` lands on the mapped section/sub. */
+  function navigateModule(id: ModuleId) {
+    const loc = moduleToLocation(id)
+    setSection(loc.section)
+    setSub(loc.sub)
+    setModuleState(id)
+  }
+
+  /** New navigation entry point. Missing sub defaults to the section's first. */
+  function go(next: Section, nextSub?: Sub) {
+    setSection(next)
+    const subId = next === 'gideon' ? null : (nextSub ?? defaultSub(next))
+    setSub(subId)
+    setModuleState(locationToModule(next, subId))
+  }
+
+  // Hash routing: the URL is `#/section/sub`, so reloads and the back button work.
+  useEffect(() => {
+    const hash = locationToHash(section, sub)
+    if (window.location.hash !== hash) window.location.hash = hash
+  }, [section, sub])
+
+  useEffect(() => {
+    function onHashChange() {
+      const loc = hashToLocation(window.location.hash)
+      if (!loc) return
+      setSection(loc.section)
+      setSub(loc.sub)
+      setModuleState(locationToModule(loc.section, loc.sub))
+    }
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
+  }, [])
+
   useEffect(() => {
     const next = upsertActive(vaultRef.current, {
       character: { ...character, shots: [] },
       label: character.name || activeProfile(vaultRef.current).label,
-      ui: { module, missingOnly, selectedMarkerId },
+      ui: { module: locationToModule(section, sub), missingOnly, selectedMarkerId },
     })
     vaultRef.current = next
     setVault(next)
     saveVault(next)
-  }, [character, module, missingOnly, selectedMarkerId])
+  }, [character, section, sub, missingOnly, selectedMarkerId])
 
   function applyVault(next: Vault) {
     const p = activeProfile(next)
     setVault(next)
     saveVault(next)
     setCharacter(p.character)
-    setModule(p.ui.module)
+    const loc = moduleToLocation(p.ui.module)
+    setSection(loc.section)
+    setSub(loc.sub)
+    setModuleState(p.ui.module)
     setMissingOnly(p.ui.missingOnly)
     setSelectedMarkerId(p.ui.selectedMarkerId)
     setHistory([])
@@ -128,7 +207,10 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const value = useMemo<Workspace>(
     () => ({
       module,
-      setModule,
+      setModule: navigateModule,
+      section,
+      sub,
+      go,
       character,
       setCharacter: commitCharacter,
       selectedMarkerId,
@@ -156,6 +238,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       canUndo: history.length > 0,
       helpOpen,
       setHelpOpen,
+      dockOpen,
+      toggleDock: () => setDockOpen((v) => !v),
       recentFacts,
       vault,
       profile: activeProfile(vault),
@@ -169,7 +253,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         setCharacter({ ...character, name: label })
       },
     }),
-    [module, character, selectedMarkerId, layers, showLeftovers, showGates, missingOnly, query, engineStatus, engineState, engineMarkers, history, helpOpen, recentFacts, vault],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [module, section, sub, character, selectedMarkerId, layers, showLeftovers, showGates, missingOnly, query, engineStatus, engineState, engineMarkers, history, helpOpen, dockOpen, recentFacts, vault],
   )
 
   return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>

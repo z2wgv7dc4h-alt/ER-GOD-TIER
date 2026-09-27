@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { markers } from './data/seed'
 import { opBuilds } from './knowledge/builds'
 import { pvpBuilds, pvpMatchups } from './knowledge/pvp'
+import { techTips } from './knowledge/tech'
 import { isCollected, useWorkspace } from './state'
 import { RespecAdvisor } from './RespecAdvisor'
 import { applyFacts } from './lib/infer'
@@ -42,8 +43,22 @@ export function estimateDefense(character: Character) {
   return { label: `${weapon.name} +${upgrade} ${weapon.affinity ?? ''}`.trim() }
 }
 
+/**
+ * The Build lab (Task 91): `library/builds` is the character build — stats, soft
+ * caps, respec, active hunt and attack rating. `library/kit` is the library that
+ * used to hide behind the Build `Kits…` drawer — OP / PvP kits, matchups, build
+ * codes, AR detail, weapon compare and the tech tips. Same logic, two views.
+ */
 export function BuildWorkspace() {
-  const { character, setCharacter, setModule, setSelectedMarkerId, showLeftovers, toggleLeftovers } = useWorkspace()
+  return <BuildRoom view="builds" />
+}
+
+export function KitWorkspace() {
+  return <BuildRoom view="kit" />
+}
+
+function BuildRoom({ view }: { view: 'builds' | 'kit' }) {
+  const { character, setCharacter, setModule, setSelectedMarkerId, showLeftovers, toggleLeftovers, go } = useWorkspace()
   const coords = useCoords()
   const preview = estimateDefense(character)
   const allBuilds = useMemo(() => [...opBuilds, ...pvpBuilds], [])
@@ -136,128 +151,12 @@ export function BuildWorkspace() {
     })
   }
 
-  return (
-    <div className="split">
-      <section className="panel">
-        <div className="kicker">Kit</div>
-        <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>Stats drive every other pane</h3>
-        <p className="note">Change a number here and the atlas / quest advice still talk about the same person. Attack rating is the real formula from Thomas Clark’s calculator, run on this project’s vendored vanilla 1.17 regulation data (see THIRD_PARTY_NOTICES.md).</p>
-        <div className="stat-grid">
-          {(Object.keys(character.stats) as (keyof Stats)[]).map((key) => {
-            const value = character.stats[key]
-            const label = softCapLabel(key, value)
-            return (
-              <div className="stat" key={key}>
-                <div className="stat-head">
-                  <label htmlFor={key}>{key}</label>
-                  <span
-                    className={label ? 'soft-cap hit' : 'soft-cap'}
-                    title={label ? `Soft cap reached: ${label}` : 'Below the first soft cap'}
-                  >
-                    {SOFT_CAPS[key].map((cap) => (
-                      <i key={cap} className={value >= cap ? 'on' : ''} aria-hidden />
-                    ))}
-                  </span>
-                </div>
-                <input
-                  id={key}
-                  type="number"
-                  min={1}
-                  max={99}
-                  value={value}
-                  onChange={(e) => patchStat(key, Number(e.target.value))}
-                />
-              </div>
-            )
-          })}
-        </div>
-        <p className="note" style={{ marginTop: -8 }}>
-          Dots are the real soft-cap tiers (filled when reached). Offensive-stat
-          breakpoints are the game's own scaling-curve stages in this project's vendored
-          1.17 regulation data (Thomas Clark); Vigor/Mind/Endurance use the community
-          HP/FP/stamina breakpoints. See <code>src/lib/softCaps.ts</code>.
-        </p>
-
-        <RespecAdvisor />
-
-        {selectedBuild && hunt ? (
-          <div className="kit-hunt" style={{ marginTop: 14 }}>
-            <div className="kicker">Active hunt · {selectedBuild.name}</div>
-            {hunt.missing.length === 0 ? (
-              <p className="note">Every seeded piece of this kit is already logged on this character.</p>
-            ) : (
-              <>
-                <p className="note">
-                  {hunt.missing.length} missing · {hunt.pins.length} with a pin. Picking a kit only sets
-                  stats and loadout — nothing here is marked until you say so.
-                </p>
-                {hunt.pinTarget && (
-                  <button
-                    type="button"
-                    className="chip on"
-                    style={{ marginTop: 6 }}
-                    onClick={() => {
-                      const t = hunt.pinTarget!
-                      if (!watchlistOf(character).includes(t.factId)) setCharacter(toggleWatch(character, t.factId))
-                      if (!showLeftovers) toggleLeftovers()
-                      setSelectedMarkerId(t.factId)
-                      setModule('map')
-                    }}
-                  >
-                    Show on map · {hunt.pinTarget.name}
-                  </button>
-                )}
-                <ul className="list">
-                  {hunt.missing.map((p) => (
-                    <li key={p.factId} style={{ display: 'block', cursor: 'default' }}>
-                      <span>
-                        {p.name} <em className="dim">{p.factId}</em>
-                      </span>
-                      <div className="opts" style={{ marginTop: 4 }}>
-                        <button
-                          type="button"
-                          className="chip"
-                          onClick={() => setCharacter(applyFacts(character, [p.factId], 'answer', 'build hunt mark'))}
-                        >
-                          Mark
-                        </button>
-                        {p.pin && (
-                          <button
-                            type="button"
-                            className="chip"
-                            onClick={() => {
-                              if (!watchlistOf(character).includes(p.factId)) {
-                                setCharacter(toggleWatch(character, p.factId))
-                              }
-                              if (!showLeftovers) toggleLeftovers()
-                              setSelectedMarkerId(p.factId)
-                              setModule('map')
-                            }}
-                          >
-                            Show on map
-                          </button>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-            {hunt.unresolved.length > 0 && (
-              <p className="note">
-                No row yet for {hunt.unresolved.length} id{hunt.unresolved.length === 1 ? '' : 's'} (
-                {hunt.unresolved.map((u) => u.id).join(', ')}), listed not dropped.
-              </p>
-            )}
-          </div>
-        ) : (
-          <p className="note" style={{ marginTop: 14 }}>
-            <strong>Pick a kit…</strong> Open the Kits drawer for the OP and PvP lists, or load a save.
-          </p>
-        )}
-
-        <details className="kits-drawer" style={{ marginTop: 16 }}>
-          <summary className="chip" style={{ cursor: 'pointer' }}>Kits…</summary>
+  if (view === 'kit') {
+    return (
+      <div className="split">
+        <section className="panel">
+          <div className="kicker">Kit library</div>
+          <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>OP kits, PvP and matchup tech</h3>
 
           <div className="kicker" style={{ marginTop: 18 }}>OP kits</div>
           <div className="opts">
@@ -316,7 +215,18 @@ export function BuildWorkspace() {
             ))}
           </ul>
 
-          <div className="gear">
+          <div className="kicker" style={{ marginTop: 18 }}>Broken tricks &amp; tech</div>
+          <ul className="list" style={{ marginTop: 8 }}>
+            {techTips.map((t) => (
+              <li key={t.id} style={{ cursor: 'default', display: 'block' }}>
+                <span>{t.name}</span>
+                <p className="note" style={{ margin: '4px 0 0' }}>{t.what} {t.why} <em>{t.how}</em></p>
+              </li>
+            ))}
+          </ul>
+
+          <div className="kicker" style={{ marginTop: 18 }}>Owned gear</div>
+          <div className="gear" style={{ marginTop: 8 }}>
             {character.loadout.length === 0 && <p className="note">Load a save, an OP kit, or the demo character.</p>}
             {character.loadout.map((slot) => (
               <div className="gear-row" key={slot.id}>
@@ -505,7 +415,130 @@ export function BuildWorkspace() {
               targetName={target?.name}
             />
           )}
-        </details>
+        </section>
+      </div>
+    )
+  }
+
+  return (
+    <div className="split">
+      <section className="panel">
+        <div className="kicker">Build lab</div>
+        <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>Stats drive every other pane</h3>
+        <p className="note">Change a number here and the atlas / quest advice still talk about the same person. Attack rating is the real formula from Thomas Clark’s calculator, run on this project’s vendored vanilla 1.17 regulation data (see THIRD_PARTY_NOTICES.md).</p>
+        <div className="stat-grid">
+          {(Object.keys(character.stats) as (keyof Stats)[]).map((key) => {
+            const value = character.stats[key]
+            const label = softCapLabel(key, value)
+            return (
+              <div className="stat" key={key}>
+                <div className="stat-head">
+                  <label htmlFor={key}>{key}</label>
+                  <span
+                    className={label ? 'soft-cap hit' : 'soft-cap'}
+                    title={label ? `Soft cap reached: ${label}` : 'Below the first soft cap'}
+                  >
+                    {SOFT_CAPS[key].map((cap) => (
+                      <i key={cap} className={value >= cap ? 'on' : ''} aria-hidden />
+                    ))}
+                  </span>
+                </div>
+                <input
+                  id={key}
+                  type="number"
+                  min={1}
+                  max={99}
+                  value={value}
+                  onChange={(e) => patchStat(key, Number(e.target.value))}
+                />
+              </div>
+            )
+          })}
+        </div>
+        <p className="note" style={{ marginTop: -8 }}>
+          Dots are the real soft-cap tiers (filled when reached). Offensive-stat
+          breakpoints are the game's own scaling-curve stages in this project's vendored
+          1.17 regulation data (Thomas Clark); Vigor/Mind/Endurance use the community
+          HP/FP/stamina breakpoints. See <code>src/lib/softCaps.ts</code>.
+        </p>
+
+        <RespecAdvisor />
+
+        {selectedBuild && hunt ? (
+          <div className="kit-hunt" style={{ marginTop: 14 }}>
+            <div className="kicker">Active hunt · {selectedBuild.name}</div>
+            {hunt.missing.length === 0 ? (
+              <p className="note">Every seeded piece of this kit is already logged on this character.</p>
+            ) : (
+              <>
+                <p className="note">
+                  {hunt.missing.length} missing · {hunt.pins.length} with a pin. Picking a kit only sets
+                  stats and loadout — nothing here is marked until you say so.
+                </p>
+                {hunt.pinTarget && (
+                  <button
+                    type="button"
+                    className="chip on"
+                    style={{ marginTop: 6 }}
+                    onClick={() => {
+                      const t = hunt.pinTarget!
+                      if (!watchlistOf(character).includes(t.factId)) setCharacter(toggleWatch(character, t.factId))
+                      if (!showLeftovers) toggleLeftovers()
+                      setSelectedMarkerId(t.factId)
+                      setModule('map')
+                    }}
+                  >
+                    Show on map · {hunt.pinTarget.name}
+                  </button>
+                )}
+                <ul className="list">
+                  {hunt.missing.map((p) => (
+                    <li key={p.factId} style={{ display: 'block', cursor: 'default' }}>
+                      <span>
+                        {p.name} <em className="dim">{p.factId}</em>
+                      </span>
+                      <div className="opts" style={{ marginTop: 4 }}>
+                        <button
+                          type="button"
+                          className="chip"
+                          onClick={() => setCharacter(applyFacts(character, [p.factId], 'answer', 'build hunt mark'))}
+                        >
+                          Mark
+                        </button>
+                        {p.pin && (
+                          <button
+                            type="button"
+                            className="chip"
+                            onClick={() => {
+                              if (!watchlistOf(character).includes(p.factId)) {
+                                setCharacter(toggleWatch(character, p.factId))
+                              }
+                              if (!showLeftovers) toggleLeftovers()
+                              setSelectedMarkerId(p.factId)
+                              setModule('map')
+                            }}
+                          >
+                            Show on map
+                          </button>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+            {hunt.unresolved.length > 0 && (
+              <p className="note">
+                No row yet for {hunt.unresolved.length} id{hunt.unresolved.length === 1 ? '' : 's'} (
+                {hunt.unresolved.map((u) => u.id).join(', ')}), listed not dropped.
+              </p>
+            )}
+          </div>
+        ) : (
+          <p className="note" style={{ marginTop: 14 }}>
+            <strong>Pick a kit…</strong> Open <button type="button" className="chip" onClick={() => go('library', 'kit')}>Library → Kit</button> for the OP and PvP lists, or load a save.
+          </p>
+        )}
       </section>
 
       <section className="panel">
@@ -554,7 +587,7 @@ export function BuildWorkspace() {
         </p>
         <p className="note" style={{ marginTop: 18 }}>
           Everything else — the OP and PvP lists, the full AR detail, the matchup, build codes and the
-          weapon compare — is behind <strong>Kits…</strong>.
+          weapon compare — lives in <strong>Library → Kit</strong>.
         </p>
       </section>
     </div>

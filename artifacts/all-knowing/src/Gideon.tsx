@@ -1,17 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { opBuilds } from './knowledge/builds'
-import { nextCompletionId, planRoute } from './knowledge/endings'
 import { pvpBuilds } from './knowledge/pvp'
-import { allLines, stillAvailable } from './knowledge/storylines'
 import { applyFacts } from './lib/infer'
 import { askGideon, type GideonMemory } from './lib/gideon'
-import { beatPin } from './lib/beatPins'
-import { useCoords } from './lib/coords'
 import { searchSync } from './lib/search'
 import { medusaChapters } from './knowledge/medusa'
 import { leftovers, toggleWatch, watchlistOf } from './lib/leftovers'
 import { idleSuggestions } from './lib/suggestions'
-import { gideonHeader } from './lib/gideonHeader'
 import { lockoutWarningsFor, type LockWarning } from './lib/lockWarnings'
 import { LockoutPrompt } from './LockoutPrompt'
 import { packStatus } from './lib/sourcePack'
@@ -22,9 +17,8 @@ import { targetModule } from './lib/related'
 import { WikiText } from './WikiText'
 import { useWorkspace } from './state'
 
-export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
+export function Gideon() {
   const w = useWorkspace()
-  const coords = useCoords()
   const savedGoal = typeof w.character.answers.gideonGoal === 'string' ? w.character.answers.gideonGoal : undefined
   const [q, setQ] = useState('')
   const [memory, setMemory] = useState<GideonMemory>({ goalId: savedGoal })
@@ -37,20 +31,9 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
     { role: 'gideon', text: 'Name a line, tap Blitz, or ask what is still available. Show it pins the atlas. I’m done ticks the beat.' },
   ])
 
-  const line = allLines.find((e) => e.id === memory.goalId)
-  const plan = useMemo(() => (line ? planRoute(w.character, line) : null), [line, w.character])
   // Real next actions for this character; recomputed only when the character
   // changes, never per keystroke, so the input stays responsive.
   const suggestions = useMemo(() => idleSuggestions(w.character, 3), [w.character])
-  // Task 72: one sticky context bar (goal · beat · gate) above the log. Pure,
-  // reuses planRoute / idleSuggestions / approachingGates — no router change.
-  const header = useMemo(() => gideonHeader(w.character), [w.character])
-  // Task 84: the Now panel is current beat + one gate + Show/Done + a counts
-  // line into the Quests archive. Counts come from the same survey the room uses.
-  const survey = useMemo(() => stillAvailable(w.character), [w.character])
-  const openCount = survey.active.length + survey.open.length
-  const lockedCount = survey.locked.length
-  const showPin = header.factId ? beatPin(w.character, header.factId, coords) : null
   // The latest Gideon answer gets an explicit link + its real graph edges.
   const lastGideonIdx = log.reduce((acc, r, i) => (r.role === 'gideon' ? i : acc), -1)
   // Keep the newest turn in view as the conversation grows.
@@ -138,19 +121,6 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
     setQ('')
   }
 
-  function doneNow() {
-    if (!plan?.current) return
-    const factId = nextCompletionId(w.character, plan.current)
-    if (!factId) return
-    const warnings = lockoutWarningsFor(w.character, [factId])
-    if (warnings.length) {
-      setLockPending({ ids: [factId], warnings, after: () => void run('what next') })
-      return
-    }
-    w.setCharacter(applyFacts(w.character, [factId], 'answer', 'I’m done'))
-    void run('what next')
-  }
-
   function confirmLock() {
     if (!lockPending) return
     w.setCharacter(applyFacts(w.character, lockPending.ids, 'answer', 'Gideon: confirmed lockout'))
@@ -166,56 +136,10 @@ export function Gideon({ onOpenArchive }: { onOpenArchive?: () => void } = {}) {
       <p className="note" style={{ opacity: 0.6 }}>
         {hasGideonKey() ? 'Muse 1.3 contributor (optional)' : 'router only'}
       </p>
-      {header.beat ? (
-        <div className="gideon-header gideon-now" role="status" aria-label="Current beat">
-          <div className="kicker">Now{header.goal ? ` · ${header.goal}` : ''}</div>
-          <h3>{header.beat}</h3>
-          {header.gate && <p className="note" style={{ margin: '4px 0 0' }}>Gate ahead: {header.gate}</p>}
-          <div className="opts" style={{ marginTop: 10 }}>
-            {showPin && (
-              <button
-                type="button"
-                className="chip on"
-                onClick={() => {
-                  w.setSelectedMarkerId(showPin.id)
-                  w.setModule('map')
-                }}
-              >
-                Show
-              </button>
-            )}
-            {plan?.current && (
-              <button type="button" className="chip" onClick={doneNow}>Done</button>
-            )}
-          </div>
-          {header.factId && (
-            <>
-              <button
-                type="button"
-                className="chip"
-                onClick={() => {
-                  w.setSelectedMarkerId(header.factId!)
-                  w.setModule(targetModule(header.factId!))
-                }}
-              >
-                Open {labelOf(header.factId)}
-              </button>
-              <Related id={header.factId} />
-            </>
-          )}
-        </div>
-      ) : (
-        <p className="note">No beat yet. Ask what is still available.</p>
-      )}
-
-      <button
-        type="button"
-        className="chip"
-        style={{ marginTop: 8 }}
-        onClick={() => (onOpenArchive ? onOpenArchive() : w.setModule('quests'))}
-      >
-        {openCount} open · {lockedCount} locked
-      </button>
+      <p className="note">
+        The working-towards dashboard — current beat, gate and Show / Done — lives in{' '}
+        <button type="button" className="chip" onClick={() => w.go('journey', 'now')}>Journey → Now</button>.
+      </p>
 
       {q.trim() === '' && !dismissed && suggestions.length > 0 && (
         <div className="gideon-suggest">

@@ -1,4 +1,23 @@
+/**
+ * The five legacy room ids. Kept as the persistence + compat key (Task 91): the
+ * new shell is four sections, but every old caller still navigates by module and
+ * `w.setModule(id)` still works. See `src/lib/sections.ts` for the mapping.
+ */
 export type ModuleId = 'reckon' | 'map' | 'build' | 'quests' | 'codex'
+
+/** The four top-level sections of the redesigned shell (Task 91). */
+export type Section = 'me' | 'journey' | 'library' | 'gideon'
+
+/** Every sub-view each section exposes via its segmented control. */
+export type SectionSubs = {
+  me: 'overview' | 'update' | 'profiles'
+  journey: 'now' | 'map' | 'quests'
+  library: 'search' | 'builds' | 'kit'
+  gideon: never
+}
+
+/** Union of all real sub-view ids (`never` drops out of the gideon slot). */
+export type Sub = SectionSubs[keyof SectionSubs]
 
 export type Platform = 'ps5' | 'pc' | 'both'
 

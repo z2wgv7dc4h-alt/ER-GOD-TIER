@@ -1,4 +1,4 @@
-import type { ModuleId } from '../types'
+import type { Section } from '../types'
 
 /**
  * The single source of truth for what the keyboard actually does.
@@ -19,7 +19,8 @@ export type Hotkey =
   | { type: 'search' }
   | { type: 'packet' }
   | { type: 'undo' }
-  | { type: 'module'; id: ModuleId }
+  | { type: 'section'; section: Section }
+  | { type: 'dock' }
   | { type: 'help' }
 
 export type HotkeyContext = {
@@ -27,12 +28,12 @@ export type HotkeyContext = {
   helpOpen: boolean
 }
 
-const ROOMS: Record<string, ModuleId> = {
-  '1': 'reckon',
-  '2': 'map',
-  '3': 'build',
-  '4': 'quests',
-  '5': 'codex',
+/** Task 91: `1`–`4` switch the four sections (was `1`–`5` rooms). */
+const SECTIONS: Record<string, Section> = {
+  '1': 'me',
+  '2': 'journey',
+  '3': 'library',
+  '4': 'gideon',
 }
 
 export function resolveHotkey(e: KeyLike, ctx: HotkeyContext): Hotkey | null {
@@ -45,7 +46,8 @@ export function resolveHotkey(e: KeyLike, ctx: HotkeyContext): Hotkey | null {
   if (ctx.helpOpen && e.key === 'Escape') return { type: 'help' }
   if (ctx.typing) return null
   if (e.key === '?') return { type: 'help' }
-  if (ROOMS[e.key]) return { type: 'module', id: ROOMS[e.key] }
+  if (key === 'g') return { type: 'dock' }
+  if (SECTIONS[e.key]) return { type: 'section', section: SECTIONS[e.key] }
   if (e.key === '/') return { type: 'search' }
   return null
 }
@@ -68,18 +70,18 @@ export type ShortcutGroup = {
 
 export const SHORTCUT_GROUPS: ShortcutGroup[] = [
   {
-    title: 'Search & rooms',
+    title: 'Search & sections',
     items: [
       { keys: '/', label: 'Focus the search bar', probe: { key: '/' }, action: 'search' },
       { keys: 'Ctrl / ⌘ K', label: 'Focus the search bar', note: 'command palette', probe: { key: 'k', ctrlKey: true }, action: 'search' },
       { keys: '↑ ↓', label: 'Move through the command palette results', note: 'while the search is focused' },
       { keys: 'Enter', label: 'Open the highlighted search result', note: 'command palette' },
       { keys: 'Esc', label: 'Clear the search and close the results', note: 'command palette' },
-      { keys: '1', label: 'Reckoning', probe: { key: '1' }, action: 'module' },
-      { keys: '2', label: 'Atlas', probe: { key: '2' }, action: 'module' },
-      { keys: '3', label: 'Build lab', probe: { key: '3' }, action: 'module' },
-      { keys: '4', label: 'Quest graph', probe: { key: '4' }, action: 'module' },
-      { keys: '5', label: 'Codex', probe: { key: '5' }, action: 'module' },
+      { keys: '1', label: 'Tarnished', note: 'overview / update / profiles', probe: { key: '1' }, action: 'section' },
+      { keys: '2', label: 'Journey', note: 'now / map / quests', probe: { key: '2' }, action: 'section' },
+      { keys: '3', label: 'Library', note: 'search / builds / kit', probe: { key: '3' }, action: 'section' },
+      { keys: '4', label: 'Gideon', note: 'full chat', probe: { key: '4' }, action: 'section' },
+      { keys: 'g', label: 'Toggle the Gideon dock', note: 'desktop', probe: { key: 'g' }, action: 'dock' },
     ],
   },
   {
@@ -88,8 +90,8 @@ export const SHORTCUT_GROUPS: ShortcutGroup[] = [
       { keys: 'Ctrl / ⌘ S', label: 'Save this character to a packet file', probe: { key: 's', ctrlKey: true }, action: 'packet' },
       { keys: 'Ctrl / ⌘ Z', label: 'Undo the last character change', probe: { key: 'z', ctrlKey: true }, action: 'undo' },
       { keys: 'Paste image', label: 'Add a clipboard screenshot to Reckoning', note: 'Ctrl / ⌘ V anywhere' },
-      { keys: 'Drop ER0000.sl2', label: 'Read a PC save locally — stats, bosses, graces', note: 'Tarnished sheet' },
-      { keys: 'Drop / paste images', label: 'OCR a PS5 screenshot on-device', note: 'Reckoning' },
+      { keys: 'Drop ER0000.sl2', label: 'Read a PC save locally — stats, bosses, graces', note: 'Tarnished → Update' },
+      { keys: 'Drop / paste images', label: 'OCR a PS5 screenshot on-device', note: 'Tarnished → Update' },
     ],
   },
   {
@@ -102,18 +104,18 @@ export const SHORTCUT_GROUPS: ShortcutGroup[] = [
   {
     title: 'Also worth knowing',
     items: [
-      { keys: 'Enter', label: 'Send a question to Gideon', note: 'his ask box on Now' },
+      { keys: 'Enter', label: 'Send a question to Gideon', note: 'the Gideon tab or dock' },
       { keys: 'Search', label: 'Jump straight to a grace, boss, item or shop', note: 'results appear above the room' },
-      { keys: 'Tabs', label: 'Map / Now / Kit — the three surfaces', note: 'tabs on a phone; the Now strip on desktop' },
-      { keys: 'Codex', label: 'Opens from the Tarnished sheet or a / search hit', note: 'never a tab' },
-      { keys: 'Kits…', label: 'OP / PvP library, AR detail, matchup and build codes', note: 'Kit room, closed by default' },
-      { keys: 'Co-op', label: 'Drops Mimic / Torrent advice', note: 'Tarnished sheet or interview' },
-      { keys: 'Goods paste', label: 'Mark a pasted item list — one confident name per line', note: 'Tarnished sheet' },
+      { keys: 'Sections', label: 'Tarnished / Journey / Library / Gideon — the four surfaces', note: 'picked in the header; bottom tabs on a phone' },
+      { keys: 'Codex', label: 'Opens from Library → Search or a / search hit' },
+      { keys: 'Kits', label: 'OP / PvP library, AR detail, matchup and build codes', note: 'Library → Kit' },
+      { keys: 'Co-op', label: 'Drops Mimic / Torrent advice', note: 'Tarnished → Profiles or interview' },
+      { keys: 'Goods paste', label: 'Mark a pasted item list — one confident name per line', note: 'Tarnished → Update' },
       { keys: 'Atlas banner', label: 'Says why the static plate is showing when the engine is down', note: 'never a silent blank map' },
-      { keys: 'Missing only', label: 'Hide everything you already have', note: 'Atlas' },
-      { keys: 'Tarnished menu', label: 'Switch, rename or forget profiles', note: 'Tarnished sheet' },
-      { keys: 'Diff', label: 'Compare this character against another packet', note: 'Tarnished sheet' },
-      { keys: 'Spoilers on / off', label: 'Hide or show what is still ahead', note: 'Tarnished sheet' },
+      { keys: 'Missing only', label: 'Hide everything you already have', note: 'Journey → Map' },
+      { keys: 'Tarnished menu', label: 'Switch, rename or forget profiles', note: 'Tarnished → Profiles' },
+      { keys: 'Diff', label: 'Compare this character against another packet', note: 'Tarnished → Update' },
+      { keys: 'Spoilers on / off', label: 'Hide or show what is still ahead', note: 'Tarnished → Profiles' },
     ],
   },
 ]

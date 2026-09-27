@@ -4,7 +4,7 @@
   <img src="public/art/all-knowing-cover.jpg" alt="All-Knowing — tarnished facing a hollow-helm beast in the snow, Haligtree burning on the horizon" width="100%">
 </p>
 
-Local-first Elden Ring workspace. One character. Five rooms. Gideon.
+Local-first Elden Ring workspace. One character. Four sections. Gideon.
 
 Base + Shadow of the Erdtree + Tarnished Pack. No server. No accounts. Saves and shots stay on the box.
 
@@ -14,14 +14,14 @@ The atlas is [egormagurin/EldenRingMap](https://github.com/egormagurin/EldenRing
 
 ## Features
 
-**Play shell** — desktop is a 280px Gideon strip beside the stage; a phone gets three tabs, Map / Gideon / Kit. The identity rail is a sheet behind your name, and the old lean-back toggle is gone.  
+**Shell** — four sections: **Tarnished** (overview / update / profiles), **Journey** (now / map / quests), **Library** (search / builds / kit) and **Gideon**. A shared header carries the section tabs, command search and character chip; a phone gets four bottom tabs, desktop gets an optional Gideon dock. The old off-canvas Tarnished rail is gone. `#/journey/map` URL hashes keep reload and back working, and every old room still resolves through `setModule`.  
 **Reckoning** — interview, warp-list paste, on-device Tesseract, inference with undo.  
 **Atlas** — plates or live engine, leftover / gate / hunt pins, phone job chips. Plates also carry our grounded EldenRingMap-pack pins (dungeons, merchants, night bosses, collectibles). Fails closed: if the embed fails it shows the plate and a banner, never a blank iframe. The live engine has marker **search**, per-category toggles (all/none) and hide-found/labels/icons; our NPC placements sit under a dedicated **NPCs** category that defaults off.  
-**Build lab** — Clark AR, soft caps, a one-AR first paint with the active hunt (missing pieces ordered by the kit's route) and the OP/PvP list, AR detail, matchup and `akb1.` codes behind one `Kits…` drawer. Show on map targets the first pinnable missing piece.  
+**Builds** — Clark AR, soft caps and a one-AR first paint with the active hunt (missing pieces ordered by the kit's route). **Library → Kit** holds the OP/PvP list, AR detail, matchup, broken-tricks tech and `akb1.` codes. Show on map targets the first pinnable missing piece.  
 **Goods paste** — paste an item list; one confident catalog/loot hit per line marks, anything else stays unknown (no OCR).  
-**Quests** — the same `allLines()` graph Gideon plans, incl. the remaining companion lines; confirm before a lockout. Now's “N open · M locked” line opens this archive.  
-**Codex** — guide, chests, merchants, achievement-shaped sets, SotE meters — plus the data pass: **full game text** with verbatim **dialogue** search + per-speaker cards, **weapon requirements/scaling/attack**, **EldenRingMap locations**, the **ER Checklist** item lists, **Medusa's 100% route** steps, **NPC placements**, and **boss drops** (163 bosses, base + SotE). Opened from the Tarnished sheet or a `/` search hit, never a tab.  
-**Gideon** — router, Gideon strip (current beat · one gate · Show/Done), co-op toggle, idle chips, command palette. Quotes **verbatim dialogue** for a named speaker, answers **Medusa route** steps, and falls back to **placed-NPC maps**. Optional local LLM behind an env key.  
+**Quests** — the same `allLines()` graph Gideon plans, incl. the remaining companion lines; confirm before a lockout. Journey → Now's “N open · M locked” line opens this archive.  
+**Codex** — guide, chests, merchants, achievement-shaped sets, SotE meters — plus the data pass: **full game text** with verbatim **dialogue** search + per-speaker cards, **weapon requirements/scaling/attack**, **EldenRingMap locations**, the **ER Checklist** item lists, **Medusa's 100% route** steps, **NPC placements**, and **boss drops** (163 bosses, base + SotE). Opened from Library → Search or a `/` search hit, never its own top tab.  
+**Gideon** — router, chat + idle chips + command palette; the current beat · one gate · Show/Done dashboard is Journey → Now, and Gideon also docks on wide desktops. Quotes **verbatim dialogue** for a named speaker, answers **Medusa route** steps, and falls back to **placed-NPC maps**. Optional local LLM behind an env key.  
 **Companions** — where-is-it locator for eight NPCs, region “what did I miss here”, a Stormveil checklist, and a co-op mode that drops Mimic / Torrent advice.  
 **Vault** — profiles, packet copy/paste/QR, PWA offline shell.  
 **Alias plane** — every warp-list grace canonicalises to a slug: authored where one exists, else a name-derived stub (no invented pin).
@@ -66,19 +66,21 @@ If you do not know why you want it, leave it off.
 
 ---
 
-## Rooms
+## Sections
 
-The three play tabs are **Map / Gideon / Kit**. Everything else opens from the Tarnished sheet (or the
-`1–5` keys / search).
+Four sections (keys `1`–`4`, or the phone's four bottom tabs). The legacy five rooms still resolve:
+`Reckon→Tarnished/Update`, `Atlas→Journey/Map`, `Quests→Journey/Quests`, `Build→Library/Builds`,
+`Codex→Library/Search`.
 
-| Room | Job |
-|---|---|
-| Map (Atlas) | Where to walk, what locks, what is still on the ground |
-| Gideon | The current beat, one gate, Show / Done — ask it |
-| Kit (Build lab) | Whether the numbers are real |
-| Reckoning | How this Tarnished entered the world (sheet link) |
-| Quests | Which line you are on, and what a tick would kill (sheet link) |
-| Codex | The warehouse (sheet link or `/` search hit) |
+| Section | Sub-views | Job |
+|---|---|---|
+| Tarnished | Overview · Update · Profiles | Where am I at? Character, progress, saves, profiles |
+| Journey | Now · Map · Quests | What now / where / working towards |
+| Library | Search · Builds · Kit | What do I know / what should I build |
+| Gideon | — | Ask me anything (full chat) |
+
+Every old room still opens through the compat shim, so Cursor/Thread/Related/command-palette links
+keep working unchanged.
 
 ---
 

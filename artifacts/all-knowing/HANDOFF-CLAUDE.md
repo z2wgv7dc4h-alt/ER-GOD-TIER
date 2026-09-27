@@ -8,6 +8,18 @@ This file is the briefing. Code contracts are also in `HANDOFF.md`. Data invento
 
 ## 0. Latest (2026-09-23)
 
+- **Four-section shell (Task 91).** The off-canvas "Tarnished" rail, its backdrop, the 3-tab phone
+  bar and the `now-open` mode are gone. The shell is now four sections — **Tarnished** (`overview` /
+  `update` / `profiles`), **Journey** (`now` / `map` / `quests`), **Library** (`search` / `builds` /
+  `kit`) and **Gideon** — with a shared header (section tabs · command search · character chip · help ·
+  Gideon dock toggle) and a segmented sub-tab row. Phone gets exactly four bottom tabs. State gained
+  `section` + `sub` + `w.go(section, sub?)`; `w.setModule(oldId)` is a compat shim mapping
+  `reckon→me/update`, `map→journey/map`, `quests→journey/quests`, `build→library/builds`,
+  `codex→library/search` (persistence still stores the legacy `ModuleId`). URL hash `#/journey/map`
+  drives reload + back. New components live in `src/shell/`; the Build `Kits…` drawer is now the
+  **Library → Kit** sub-view. Keyboard `1`–`4` switch sections, `/` search, `?` help, `g` toggles the
+  Gideon dock. `App.shell.guard(s).test.ts` were rewritten and `src/shell/shell.test.tsx` pins the
+  ModuleId mapping and that all four sections render.
 - **Engine served by the app.** `vite.config.ts`'s `all-knowing-map-engine` plugin serves the live
   tiled map at `/engine/**` (tiles, icons, and the `/api/{markers,state,events,saves}` the front-end
   calls). `npm run dev` alone gives the live map — same-origin, phone included. `MAP_ENGINE_BASE` is
@@ -41,8 +53,11 @@ A single tool that beats wiki tabs + MapGenie + spreadsheet trackers.
 - Base + SotE + Tarnished Pack. Not Nightreign in v1.
 
 **Tone / UI**
-- Dark ER: gold on soot. Desktop is a 280px Gideon strip beside the stage; a phone gets Map / Gideon / Kit.
-- The identity rail is the Tarnished sheet behind the name (Task 83; Sit mode is gone).
+- Dark ER: gold on soot. Desktop is a header + sub-tabs + content, with an optional ~340px Gideon dock
+  on the right (default open ≥1200px). A phone gets four bottom tabs: Tarnished / Journey / Library /
+  Gideon.
+- There is no identity rail: profiles, saves, recents, the packet and the co-op/spoiler toggles all
+  live in the **Tarnished** section (Task 91 supersedes the Task 83 sheet).
 - Gideon is Gideon Ofnir, not a generic chatbot.
 
 **Non-goals**
@@ -59,8 +74,10 @@ A single tool that beats wiki tabs + MapGenie + spreadsheet trackers.
 Repo: `artifacts/all-knowing`
 
 ```
-Desktop: Gideon strip 280px │ Stage. Phone tabs: Map / Gideon / Kit.
-Sheet links: Reckoning, Atlas, Build lab, Quest graph, Codex (Codex also via a '/' search hit)
+Shell: Header (section tabs · search · character chip · help · Gideon dock) │ SubTabs │ Content
+Sections: Tarnished (overview/update/profiles) · Journey (now/map/quests) · Library (search/builds/kit) · Gideon
+Phone: four bottom tabs. Legacy rooms map in: Reckon→me/update, Atlas→journey/map, Quests→journey/quests,
+Build→library/builds, Codex→library/search.
 ```
 
 **Kernel**
@@ -83,7 +100,10 @@ Sheet links: Reckoning, Atlas, Build lab, Quest graph, Codex (Codex also via a '
 `src/knowledge/{catalog,endings,storylines,loot,builds,graces,collectibles,completion,gates,inferChains,medusa,missables,merchants,bossPins,awesome}.ts`
 
 **Shell**
-`App.tsx` is now just the play-shell chrome (~400 lines); every room is its own lazy chunk.
+`App.tsx` is a thin router over the four sections; the chrome lives in `src/shell/` (`Header`,
+`SectionTabs`, `SubTabs`, `TabBar`, `MeOverview`, `MeUpdate`, `MeProfiles`, `JourneyNow`,
+`MapControls`, `WorldRibbon`) and `src/lib/sections.ts` owns the section/sub + legacy-ModuleId map.
+Every room is still its own lazy chunk.
 
 **Vendor**
 `vendor/elden-ring-map` — egormagurin/EldenRingMap, served by our Vite server at `/engine`. Tiles/markers come from a **local game install** (not shipped); `npm run map` still runs the engine alone for the PC live save reader / player dot.

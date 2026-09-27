@@ -93,12 +93,17 @@ export function HelpSheet({ onClose }: { onClose: () => void }) {
         </div>
         <p className="kicker" style={{ marginTop: 20 }}>What this does</p>
         <p className="note">
-          <strong>Map / Now / Kit.</strong> Those are the three surfaces. A phone shows them as tabs;
-          desktop is the Now strip beside the stage. The Tarnished sheet (your name button) holds
-          profiles, the packet, saves, recents and the five room links, so Reckon / Quests / Codex
-          are links there — not tabs. The Codex also opens from a <kbd>/</kbd> search hit, and the
-          Build library (OP/PvP chips, AR detail, matchup, build codes, compare) sits behind the
-          closed <strong>Kits…</strong> drawer.
+          <strong>Four sections.</strong> <strong>Tarnished</strong> (overview / update / profiles),{' '}
+          <strong>Journey</strong> (now / map / quests), <strong>Library</strong> (search / builds /
+          kit) and <strong>Gideon</strong>. Pick them in the header or with <kbd>1</kbd>–<kbd>4</kbd>;
+          a phone gets a four-tab bar. The old identity rail is gone — profiles, saves, recents and the
+          packet live under Tarnished. Gideon is its own section, or a dock on a wide desktop
+          (<kbd>g</kbd>). The Codex is Library → Search (also a <kbd>/</kbd> hit), and the Build library
+          (OP/PvP chips, AR detail, matchup, build codes, compare) is Library → Kit.
+        </p>
+        <p className="note">
+          <strong>Keyboard.</strong> <kbd>1</kbd>–<kbd>4</kbd> switch sections, <kbd>/</kbd> focuses
+          the search, <kbd>?</kbd> opens this help, and <kbd>g</kbd> toggles the Gideon dock.
         </p>
         <p className="note">
           <strong>Lockout confirm.</strong> Ticking a beat that would foreclose a line you have
@@ -119,9 +124,9 @@ export function HelpSheet({ onClose }: { onClose: () => void }) {
           tracked in the Codex.
         </p>
         <p className="note">
-          <strong>Co-op &amp; goods paste.</strong> The co-op toggle (Tarnished sheet or the interview)
-          drops Mimic / Torrent advice. The sheet also has a goods-paste box: a line marks only when
-          it is one confident name, anything else stays unknown.
+          <strong>Co-op &amp; goods paste.</strong> The co-op toggle (Tarnished → Profiles, or the
+          interview) drops Mimic / Torrent advice. Tarnished → Update also has a goods-paste box:
+          a line marks only when it is one confident name, anything else stays unknown.
         </p>
         <p className="note">
           <strong>Atlas never goes blank.</strong> If the map engine is down or the embed fails, you

@@ -31,6 +31,7 @@ vi.mock('./state', async (importOriginal) => {
     setSelectedMarkerId: () => {},
     showLeftovers: false,
     toggleLeftovers: () => {},
+    go: () => {},
   }
   return {
     ...actual,
@@ -38,10 +39,10 @@ vi.mock('./state', async (importOriginal) => {
   }
 })
 
-import { Gideon } from './Gideon'
+import { JourneyNow } from './shell/JourneyNow'
 
-describe('Now panel (Task 84)', () => {
-  const html = renderToStaticMarkup(<Gideon />)
+describe('Journey → Now panel (Task 84/91)', () => {
+  const html = renderToStaticMarkup(<JourneyNow />)
 
   it("names the current beat (Fingerslayer) and never lists Alexander's line", () => {
     expect(html).toMatch(/Fingerslayer/)

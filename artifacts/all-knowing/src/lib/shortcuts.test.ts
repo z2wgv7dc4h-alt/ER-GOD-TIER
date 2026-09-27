@@ -8,7 +8,7 @@ import {
   type Hotkey,
 } from './shortcuts'
 
-const ALL_TYPES: Hotkey['type'][] = ['search', 'packet', 'undo', 'module', 'help']
+const ALL_TYPES: Hotkey['type'][] = ['search', 'packet', 'undo', 'section', 'dock', 'help']
 
 function memoryStorage(): Storage {
   const map = new Map<string, string>()
@@ -27,11 +27,12 @@ beforeAll(() => {
 })
 
 describe('resolveHotkey', () => {
-  it('maps the room digits to modules', () => {
-    const rooms = { '1': 'reckon', '2': 'map', '3': 'build', '4': 'quests', '5': 'codex' } as const
-    for (const [digit, id] of Object.entries(rooms)) {
-      expect(resolveHotkey({ key: digit }, { typing: false, helpOpen: false })).toEqual({ type: 'module', id })
+  it('maps 1–4 to the four sections and g to the Gideon dock', () => {
+    const sections = { '1': 'me', '2': 'journey', '3': 'library', '4': 'gideon' } as const
+    for (const [digit, section] of Object.entries(sections)) {
+      expect(resolveHotkey({ key: digit }, { typing: false, helpOpen: false })).toEqual({ type: 'section', section })
     }
+    expect(resolveHotkey({ key: 'g' }, { typing: false, helpOpen: false })).toEqual({ type: 'dock' })
   })
 
   it('treats Ctrl and ⌘ the same', () => {

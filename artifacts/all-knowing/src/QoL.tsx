@@ -43,8 +43,12 @@ export function useHotkeys() {
           e.preventDefault()
           w.undo()
           break
-        case 'module':
-          w.setModule(hit.id)
+        case 'section':
+          w.go(hit.section)
+          break
+        case 'dock':
+          e.preventDefault()
+          w.toggleDock()
           break
         case 'help':
           e.preventDefault()

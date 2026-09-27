@@ -11,6 +11,7 @@ vi.mock('./state', async (importOriginal) => {
     setSelectedMarkerId: () => {},
     showLeftovers: false,
     toggleLeftovers: () => {},
+    go: () => {},
   }
   return {
     ...actual,
@@ -18,36 +19,39 @@ vi.mock('./state', async (importOriginal) => {
   }
 })
 
+import { KitWorkspace } from './Build'
 import { BuildWorkspace } from './Build'
 
-describe('Kit first paint (Task 85)', () => {
+describe('Kit sub-view (Task 91)', () => {
+  const html = renderToStaticMarkup(<KitWorkspace />)
+
+  it('surfaces the OP / PvP / matchup library as its own sub-view', () => {
+    expect(html).toContain('Rivers of Blood')
+    expect(html).toContain('Colossal poise monster')
+    expect(html).toContain('OP kits')
+    expect(html).toContain('PvP matchups')
+  })
+
+  it('includes the tech tips ("broken tricks")', () => {
+    expect(html).toMatch(/Lion&#x27;s Claw|Lion's Claw/)
+  })
+
+  it('does not render the stat editor — that is library/builds', () => {
+    expect(html).not.toContain('Stats drive every other pane')
+  })
+})
+
+describe('Build sub-view (Task 91)', () => {
   const html = renderToStaticMarkup(<BuildWorkspace />)
 
-  it('keeps the library chips behind a closed Kits… disclosure', () => {
-    const start = html.indexOf('<details')
-    expect(start, 'a Kits… disclosure exists').toBeGreaterThan(-1)
-    const end = html.indexOf('</details>', start)
-    expect(end).toBeGreaterThan(start)
-    const above = html.slice(0, start)
-    const drawer = html.slice(start, end)
-
-    // First paint must not show the kit library.
-    expect(above).not.toContain('Rivers of Blood')
-    expect(drawer).toContain('Rivers of Blood')
-    expect(drawer).toContain('Colossal poise monster')
-    expect(html).toContain('Kits…')
-    // Closed by default.
-    expect(/<details[^>]*\sopen\b/.test(html)).toBe(false)
+  it('keeps the stat editor and attack rating first paint', () => {
+    expect(html).toContain('Stats drive every other pane')
+    expect(html).toContain('Attack rating')
+    expect(html).toMatch(/Pick a kit/i)
   })
 
-  it('shows stats and a Pick a kit prompt on first paint', () => {
-    const above = html.slice(0, html.indexOf('<details'))
-    expect(above).toContain('Stats drive every other pane')
-    expect(above).toMatch(/Pick a kit/i)
-    expect(above).toContain('Attack rating')
-  })
-
-  it('does not put blessing meters in the Kit room', () => {
-    expect(html).not.toMatch(/Scadutree Blessing Lv|Revered Spirit Ash Blessing Lv/i)
+  it('points at Library → Kit instead of the old drawer', () => {
+    expect(html).toContain('Library → Kit')
+    expect(html).not.toMatch(/<details[^>]*kits-drawer/)
   })
 })

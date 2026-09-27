@@ -165,72 +165,51 @@ body {
 button, input { font: inherit; color: inherit; }
 button { cursor: pointer; }
 
-/* ── Play shell (Task 83) ──────────────────────────────────────────────
-   Two columns: a 280px "Now" strip (Gideon) and the stage. There is no
-   identity rail on the first screen — the Tarnished sheet is an off-canvas
-   drawer behind the name button at every width. Mobile turns this into a
-   single stage with three tabs (Map / Now / Kit). */
+/* ── Shell (Task 91) ───────────────────────────────────────────────────
+   Four sections; a header with the section tabs + search + character chip; a
+   segmented sub-tab row; content fills the rest. The old off-canvas "Tarnished"
+   rail and its backdrop are gone — its contents moved into the `me` section. An
+   optional Gideon dock is a right column on desktop. */
 .app {
-  height: 100%;
-  display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1fr);
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
   background:
     radial-gradient(1200px 600px at 10% -10%, #1d1810 0%, transparent 55%),
     var(--bg);
 }
 
-/* Off-canvas Tarnished sheet, closed by default. */
-.rail {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: min(380px, 92vw);
-  z-index: 40;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 18px 16px calc(18px + env(safe-area-inset-bottom, 0px));
-  border-right: 1px solid var(--line);
-  background: linear-gradient(180deg, #14110c 0%, #0b0906 100%);
-  overflow: auto;
-  transform: translateX(-105%);
-  transition: transform 0.25s ease;
-}
-.app.sheet-open .rail { transform: translateX(0); }
-
-.sheet-head {
+.shell-header {
+  flex: none;
+  min-height: 56px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--line);
 }
-.sheet-close {
-  min-height: 40px;
-  padding: 6px 16px;
+.brand-mark {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--gold);
+  background: #0b0906 url('/art/sigil.jpg') center 28% / 240% no-repeat;
+}
+.section-tabs { display: flex; gap: 4px; }
+.section-tabs button {
   background: transparent;
-  border: 1px solid var(--line);
-  color: var(--ink);
-  font-size: 12px;
-  letter-spacing: 0.08em;
+  border: 1px solid transparent;
+  color: var(--muted);
+  padding: 8px 12px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
-.sheet-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 39;
-  border: 0;
-  padding: 0;
-  background: rgba(11, 9, 6, 0.62);
-  display: none;
-}
-.app.sheet-open .sheet-backdrop { display: block; }
-
-.tarnished-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.section-tabs button.active { color: var(--gold); border-color: var(--line); background: #1c1811; }
+.header-search { flex: 1; }
+.char-chip {
+  flex: none;
   min-height: 34px;
   padding: 6px 12px;
   background: var(--bg-raised);
@@ -238,39 +217,70 @@ button { cursor: pointer; }
   color: var(--gold);
   font-size: 12px;
   letter-spacing: 0.05em;
-  max-width: 46vw;
+  max-width: 40vw;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.phone-only { display: none; }
 
-.brand {
+.shell-body { flex: 1; min-height: 0; display: flex; min-width: 0; }
+.workspace { flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+.subtabs {
+  flex: none;
   display: flex;
-  gap: 12px;
-  align-items: center;
-  margin-bottom: 28px;
+  gap: 6px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--line-soft);
+  overflow-x: auto;
 }
-.brand-mark {
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--gold);
-  background: #0b0906 url('/art/sigil.jpg') center 28% / 240% no-repeat;
-}
-.brand h1 {
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 600;
-  margin: 0;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-.brand p {
-  margin: 2px 0 0;
+.subtabs button {
+  background: transparent;
+  border: 1px solid var(--line);
   color: var(--muted);
+  padding: 6px 12px;
   font-size: 11px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
+.subtabs button.active { color: var(--gold); border-color: var(--gold-dim); }
+.map-controls { flex: none; padding: 8px 16px 0; }
+
+.guide {
+  flex: none;
+  width: 340px;
+  border-left: 1px solid var(--line);
+  background: linear-gradient(180deg, #120f0a 0%, #0b0906 100%);
+  padding: 16px 14px;
+  overflow: auto;
+  min-width: 0;
+}
+
+.shell-page-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  margin: 0 0 4px;
+}
+.me-overview,
+.me-update,
+.me-profiles,
+.now-page,
+.gideon-page {
+  height: 100%;
+  overflow: auto;
+  padding: 16px;
+}
+.now-page .split { height: auto; }
+.now-page .panel { overflow: visible; }
+.me-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+.me-card { border: 1px solid var(--line); background: var(--bg-raised); padding: 14px; }
 
 .profile-switcher {
   border: 1px solid var(--line);
@@ -286,28 +296,6 @@ button { cursor: pointer; }
 .profile-switcher .profile-hint { font-size: 11px; margin: 0; }
 .profile-switcher .opts { margin-top: 0; }
 
-.nav { display: flex; flex-direction: column; gap: 4px; }
-.nav button {
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--muted);
-  text-align: left;
-  padding: 8px 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-size: 11px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.nav button img {
-  width: 22px;
-  height: 22px;
-  object-fit: cover;
-  border-radius: 2px;
-  border: 1px solid var(--line-soft);
-  flex: none;
-}
 .seal-chip {
   width: 28px;
   height: 28px;
@@ -317,12 +305,6 @@ button { cursor: pointer; }
   vertical-align: middle;
   margin-right: 6px;
 }
-.nav button.active {
-  color: var(--gold);
-  border-color: var(--line);
-  background: #1c1811;
-}
-
 .char-card {
   margin-top: auto;
   border: 1px solid var(--line);
@@ -372,23 +354,6 @@ button { cursor: pointer; }
 }
 .ghost.gold { border-color: var(--gold-dim); color: var(--gold); }
 
-.workspace { grid-column: 2; grid-row: 1; display: grid; grid-template-rows: 56px auto minmax(0, 1fr); min-width: 0; min-height: 0; }
-
-.topbar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 18px;
-  border-bottom: 1px solid var(--line);
-}
-.topbar h2 {
-  font-family: var(--font-display);
-  font-size: 14px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  margin: 0;
-  white-space: nowrap;
-}
 .search {
   flex: 1;
   background: var(--bg-raised);
@@ -410,7 +375,7 @@ button { cursor: pointer; }
 }
 .chip.on { color: var(--gold); border-color: var(--gold-dim); }
 
-.stage { min-height: 0; overflow: hidden; }
+.stage { flex: 1 1 auto; min-height: 0; overflow: hidden; }
 
 .map-stage {
   display: grid;
@@ -844,15 +809,6 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
 .pickup { padding: 0 4px 12px; }
 .pickup-row { display: flex; gap: 6px; margin-top: 6px; }
 .pickup-row .search { flex: 1; min-width: 0; }
-.guide {
-  grid-column: 1;
-  grid-row: 1;
-  border-right: 1px solid var(--line);
-  background: linear-gradient(180deg, #120f0a 0%, #0b0906 100%);
-  padding: 16px 14px;
-  overflow: auto;
-  min-width: 0;
-}
 .guide-face {
   width: 100%;
   height: 88px;
@@ -1018,7 +974,7 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
 .help-groups li em { color: var(--muted); font-style: normal; font-size: 11px; }
 
 @media (max-width: 1100px) {
-  .topbar { flex-wrap: wrap; gap: 8px; padding: 8px 12px; }
+  .shell-header { flex-wrap: wrap; gap: 8px; padding: 8px 12px; }
   .help-hint { top: 56px; left: 12px; right: 12px; max-width: none; }
   .world-ribbon { max-height: 15vh; overflow-y: auto; }
   .map-stage, .split { grid-template-columns: 1fr; }
@@ -1066,16 +1022,25 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   .pickup-row .chip,
   .gideon .chip { min-height: 42px; }
 
-  /* ── App frame: one row for the room, one for the tab bar ────────── */
-  .app {
-    grid-template-columns: 1fr;
-    grid-template-rows: minmax(0, 1fr) auto;
+  /* ── Header: title · search icon · character chip ────────────────── */
+  .shell-header {
+    flex-wrap: nowrap;
+    min-height: 52px;
+    padding: 6px 10px;
+    gap: 8px;
   }
-  .workspace { grid-column: 1; grid-row: 1; }
+  .section-tabs { display: none; }
+  .desktop-only { display: none !important; }
+  .phone-only { display: inline-flex; }
+  .header-search { display: none; }
+  .app.search-open .shell-header { flex-wrap: wrap; }
+  .app.search-open .header-search { display: block; flex-basis: 100%; order: 10; }
+  .char-chip { margin-left: auto; max-width: 46vw; }
+  .subtabs { padding: 6px 10px; }
+  .map-controls { display: none; }
 
   /* ── Bottom tab bar ──────────────────────────────────────────────── */
   .tabbar {
-    grid-row: 2;
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
@@ -1109,21 +1074,9 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   .tabbar button.active { color: var(--gold); }
   .tabbar button.active img { border-color: var(--gold-dim); }
 
-  /* ── Workspace / top bar ─────────────────────────────────────────── */
-  .workspace { display: flex; flex-direction: column; min-height: 0; }
+  /* ── Content ─────────────────────────────────────────────────────── */
+  .guide { display: none; }
   .stage { flex: 1 1 auto; min-height: 0; }
-
-  .topbar {
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 8px 12px;
-    border-bottom: 1px solid var(--line);
-  }
-  .topbar h2 { font-size: 13px; }
-  .topbar .search { order: 10; flex: 1 1 100%; }
-  .topbar .toggles { display: none; }
-
-  .tarnished-toggle { margin-left: auto; max-width: 52vw; }
 
   /* ── World ribbon: one line, tap to expand ───────────────────────── */
   .world-ribbon {
@@ -1157,6 +1110,8 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   /* ── Rooms: one scrolling column ─────────────────────────────────── */
   .split { display: block; height: 100%; overflow: auto; -webkit-overflow-scrolling: touch; }
   .split .panel { overflow: visible; padding: 16px 14px 28px; }
+  .me-overview, .me-update, .me-profiles, .now-page, .gideon-page { padding: 12px; }
+  .me-cards { grid-template-columns: 1fr; }
   .codex-wrap { padding-bottom: 12px; }
   .codex-grid { grid-template-columns: 1fr; padding: 14px; gap: 10px; }
   .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
@@ -1241,17 +1196,6 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   }
   .atlas-layers .chip { min-height: 38px; }
 
-  /* ── Now: Gideon becomes the full stage (the "Now" tab) ──────────── */
-  .guide { display: none; }
-  .app.now-open .guide {
-    display: block;
-    grid-column: 1;
-    grid-row: 1;
-    border: 0;
-    overflow: auto;
-    padding: 16px 14px 28px;
-  }
-  .app.now-open .workspace { display: none; }
 }
 
 
@@ -1281,6 +1225,7 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
 body { overflow: hidden; overscroll-behavior: none; }
 .app { height: 100dvh; }
 .stage, .map-stage, .atlas { overscroll-behavior: contain; }
-.side, .guide, .codex-wrap, .panel, .split, .rail { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+.side, .guide, .codex-wrap, .panel, .split,
+.me-overview, .me-update, .me-profiles, .now-page, .gideon-page { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
 
 .atlas-loading { position: absolute; inset: 50% 0 auto; text-align: center; }
