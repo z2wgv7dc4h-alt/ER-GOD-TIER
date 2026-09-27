@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { markers } from './data/seed'
+import { engineAreaSignal, resolveCurrentArea, type AreaSignal } from './lib/areaContext'
 import type { EngineMarker, EngineState, EngineStatus } from './lib/mapEngine'
 import { buildEntityHash, parseEntityHash } from './lib/entityHash'
 import { pushRecent, recentAfterProfileSwitch } from './lib/recent'
@@ -42,6 +43,9 @@ type Workspace = {
   entityId: string | null
   openEntity: (id: string) => void
   closeEntity: () => void
+  /** Task 98: the shared "where am I" context, persisted per profile. */
+  currentArea: AreaSignal | null
+  setCurrentArea: (a: AreaSignal | null) => void
   layers: Record<LayerId, boolean>
   toggleLayer: (id: LayerId) => void
   showLeftovers: boolean
@@ -128,10 +132,32 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [helpOpen, setHelpOpen] = useState(false)
   const [dockOpen, setDockOpen] = useState(readDockOpen)
   const [recentFacts, setRecentFacts] = useState<string[]>([])
+  const [currentArea, setCurrentAreaState] = useState<AreaSignal | null>(bootProfile.ui.currentArea ?? null)
 
   useEffect(() => {
     try { localStorage.setItem(DOCK_KEY, dockOpen ? '1' : '0') } catch { /* storage disabled */ }
   }, [dockOpen])
+
+  // Task 98: recompute the current area whenever the character or the live engine
+  // position changes. The persisted pick is itself a signal, so it survives until
+  // a newer signal (a logged fact, a discovered grace, the engine) beats it.
+  useEffect(() => {
+    setCurrentAreaState((prev) => {
+      const next = resolveCurrentArea(character, prev, { engine: engineAreaSignal(engineState) })
+      if (!next) return prev
+      if (
+        prev &&
+        prev.region === next.region &&
+        prev.place === next.place &&
+        prev.factId === next.factId &&
+        prev.source === next.source &&
+        prev.at === next.at
+      ) {
+        return prev
+      }
+      return next
+    })
+  }, [character, engineState])
 
   function commitCharacter(next: Character) {
     setHistory((h) => [...h.slice(-19), character])
@@ -205,12 +231,12 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     const next = upsertActive(vaultRef.current, {
       character: { ...character, shots: [] },
       label: character.name || activeProfile(vaultRef.current).label,
-      ui: { module: locationToModule(section, sub), section, sub, missingOnly, selectedMarkerId },
+      ui: { module: locationToModule(section, sub), section, sub, missingOnly, selectedMarkerId, currentArea },
     })
     vaultRef.current = next
     setVault(next)
     saveVault(next)
-  }, [character, section, sub, missingOnly, selectedMarkerId])
+  }, [character, section, sub, missingOnly, selectedMarkerId, currentArea])
 
   function applyVault(next: Vault) {
     const p = activeProfile(next)
@@ -223,6 +249,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setModuleState(p.ui.module)
     setMissingOnly(p.ui.missingOnly)
     setSelectedMarkerId(p.ui.selectedMarkerId)
+    setCurrentAreaState(p.ui.currentArea ?? null)
     setHistory([])
     // Recents are derived from the previous Tarnished's pins; don't let one
     // profile's fact history leak into another's rail.
@@ -246,6 +273,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       entityId,
       openEntity,
       closeEntity,
+      currentArea,
+      setCurrentArea: setCurrentAreaState,
       layers,
       toggleLayer: (id) => setLayers((prev) => ({ ...prev, [id]: !prev[id] })),
       showLeftovers,
@@ -282,7 +311,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [module, section, sub, character, selectedMarkerId, entityId, layers, showLeftovers, showGates, missingOnly, query, engineStatus, engineState, engineMarkers, history, helpOpen, dockOpen, recentFacts, vault],
+    [module, section, sub, character, selectedMarkerId, entityId, currentArea, layers, showLeftovers, showGates, missingOnly, query, engineStatus, engineState, engineMarkers, history, helpOpen, dockOpen, recentFacts, vault],
   )
 
   return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>

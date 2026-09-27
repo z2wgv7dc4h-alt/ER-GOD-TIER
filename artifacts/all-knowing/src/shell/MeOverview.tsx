@@ -8,6 +8,7 @@ import { setupSteps, weakestStep } from '../lib/setupWizard'
 import { sourceLabel } from '../lib/sourceLabel'
 import { Recents, StatEdit, softCapMark } from '../QoL'
 import { factState, useWorkspace } from '../state'
+import { AreaPrompt } from './AreaPrompt'
 import { WorldRibbon } from './WorldRibbon'
 
 function Meter({ label, have, total }: { label: string; have: number; total: number }) {
@@ -104,6 +105,7 @@ export function MeOverview() {
   return (
     <div className="me-overview">
       <WorldRibbon />
+      <AreaPrompt className="panel area-prompt" />
       {firstRun && (
         <section className="panel setup-cta">
           <div className="kicker">New Tarnished</div>

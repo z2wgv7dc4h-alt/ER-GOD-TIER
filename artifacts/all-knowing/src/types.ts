@@ -15,7 +15,7 @@ export type SectionSubs = {
    * in the union only as a legacy alias the URL layer resolves to `setup`.
    */
   me: 'overview' | 'gear' | 'setup' | 'profiles' | 'update'
-  journey: 'now' | 'map' | 'quests'
+  journey: 'now' | 'area' | 'map' | 'quests'
   library: 'search' | 'builds' | 'kit' | 'reference'
   gideon: never
 }

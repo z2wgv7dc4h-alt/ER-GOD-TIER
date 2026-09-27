@@ -1,5 +1,6 @@
 import { emptyCharacter } from '../data/seed'
 import type { Character, ModuleId, Section, Sub } from '../types'
+import type { CurrentArea } from './areaContext'
 import { fromPacket, toPacket, type Packet } from './packet'
 import { defaultSub, moduleToLocation } from './sections'
 
@@ -12,6 +13,8 @@ export type VaultUi = {
   sub?: Sub | null
   missingOnly: boolean
   selectedMarkerId: string | null
+  /** Task 98: the persisted "where am I" record, derived + picked per profile. */
+  currentArea?: CurrentArea | null
 }
 
 /**

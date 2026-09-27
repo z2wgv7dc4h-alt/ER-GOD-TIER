@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { Character } from '../types'
+import { regionMatches } from '../lib/areaHub'
 import { normalizeName } from '../lib/fanImage'
 import { applyFacts, denyFacts } from '../lib/infer'
 import { useLibraryCatalog } from './catalog'
@@ -141,6 +142,7 @@ export function LibraryBrowser() {
   const [compare, setCompare] = useState<string[]>([])
   const [compareOpen, setCompareOpen] = useState(false)
   const [page, setPage] = useState(0)
+  const [near, setNear] = useState(false)
 
   const catalog = useLibraryCatalog(cat)
   const { byCategory, weaponByName } = catalog
@@ -192,10 +194,12 @@ export function LibraryBrowser() {
     [weaponByName, character],
   )
 
-  const filtered = useMemo(
-    () => applyFilters(catEntities, { ...filter, q }, character),
-    [catEntities, filter, q, character],
-  )
+  const filtered = useMemo(() => {
+    const base = applyFilters(catEntities, { ...filter, q }, character)
+    const area = w.currentArea?.region
+    if (!near || !area) return base
+    return base.filter((e) => regionMatches(e.region, area))
+  }, [catEntities, filter, q, character, near, w.currentArea])
 
   const sorted = useMemo(
     () => sortEntities(filtered, sort, sortDir, { arFor }),
@@ -302,6 +306,19 @@ export function LibraryBrowser() {
                 I meet requirements
               </button>
 
+              <button
+                type="button"
+                className={near ? 'chip on' : 'chip'}
+                aria-pressed={near}
+                disabled={!w.currentArea}
+                onClick={() => {
+                  setNear((v) => !v)
+                  setPage(0)
+                }}
+              >
+                Near me
+              </button>
+
               <div className="lib-chipgroup" role="group" aria-label="Campaign">
                 {(['all', 'base', 'dlc'] as const).map((c) => (
                   <button
@@ -373,13 +390,14 @@ export function LibraryBrowser() {
                 </button>
               </div>
 
-              {(activeFilters > 0 || q) && (
+              {(activeFilters > 0 || q || near) && (
                 <button
                   type="button"
                   className="chip"
                   onClick={() => {
                     setFilter(defaultFilter())
                     setQ('')
+                    setNear(false)
                     setPage(0)
                   }}
                 >

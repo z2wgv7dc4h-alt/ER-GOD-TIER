@@ -15,6 +15,7 @@ import { MedusaRoute } from '../MedusaRoute'
 import { RelatedCollapsible } from '../Related'
 import { NextMoves } from '../Thread'
 import { useWorkspace } from '../state'
+import { AreaPrompt } from './AreaPrompt'
 import { WorldRibbon } from './WorldRibbon'
 import { RecommendedCard } from './RecommendedCard'
 
@@ -42,7 +43,11 @@ export function JourneyNow() {
   const nextSteps = useMemo(() => (plan ? plan.available.slice(1, 4) : []), [plan])
   // Task 92 row 3: the same leftover pins the Atlas draws, counted here so the
   // player can see how much is still outstanding before opening the map.
-  const outstanding = useMemo(() => leftoverPins(w.character, coords), [w.character, coords])
+  const [near, setNear] = useState(false)
+  const outstanding = useMemo(
+    () => leftoverPins(w.character, coords, near && w.currentArea ? { region: w.currentArea.region } : {}),
+    [w.character, coords, near, w.currentArea],
+  )
   const [lockPending, setLockPending] = useState<{ ids: string[]; warnings: LockWarning[] } | null>(null)
 
   function persistGoal(id?: string) {
@@ -72,6 +77,7 @@ export function JourneyNow() {
     <div className="now-page">
       <WorldRibbon />
       <div className="now-cards">
+        <AreaPrompt className="panel area-prompt" />
         <section className="panel now-lead">
           <div className="kicker">Working towards{header.goal ? ` · ${header.goal}` : ''}</div>
           {header.beat ? (
@@ -184,6 +190,15 @@ export function JourneyNow() {
             Same layer as the Atlas. Nothing is marked until you collect it.
           </p>
           <div className="opts" style={{ marginTop: 10 }}>
+            <button
+              type="button"
+              className={near ? 'chip on' : 'chip'}
+              aria-pressed={near}
+              disabled={!w.currentArea}
+              onClick={() => setNear((v) => !v)}
+            >
+              Near me
+            </button>
             <button
               type="button"
               className={w.showLeftovers ? 'chip on' : 'chip'}

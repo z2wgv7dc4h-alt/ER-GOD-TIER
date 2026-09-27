@@ -26,6 +26,7 @@ export const SECTIONS: SectionMeta[] = [
     label: 'Journey',
     subs: [
       { id: 'now', label: 'Now' },
+      { id: 'area', label: 'Area' },
       { id: 'map', label: 'Map' },
       { id: 'quests', label: 'Quests' },
     ],

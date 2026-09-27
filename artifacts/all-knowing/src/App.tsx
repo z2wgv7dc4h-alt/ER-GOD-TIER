@@ -10,6 +10,7 @@ import { CommandHits, useClipboardShots, useHotkeys } from './QoL'
 import { FirstVisitHint } from './Help'
 import { EntityOverlay } from './library/EntityOverlay'
 import { Header } from './shell/Header'
+import { JourneyArea } from './shell/JourneyArea'
 import { JourneyNow } from './shell/JourneyNow'
 import { MapControls } from './shell/MapControls'
 import { MeOverview } from './shell/MeOverview'
@@ -71,6 +72,7 @@ function ShellContent() {
     return <MeOverview />
   }
   if (section === 'journey') {
+    if (sub === 'area') return <JourneyArea />
     if (sub === 'map') return <AtlasWorkspace />
     if (sub === 'quests') return <QuestWorkspace />
     return <JourneyNow />

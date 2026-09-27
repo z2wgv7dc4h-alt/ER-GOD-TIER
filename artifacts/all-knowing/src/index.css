@@ -1372,3 +1372,45 @@ body { overflow: hidden; overscroll-behavior: none; }
     border-top: 1px solid rgba(255, 255, 255, 0.12); border-radius: 14px 14px 0 0;
   }
 }
+
+/* Task 98 — current area chip, "Where are you?" picker, and the Area hub. */
+.area-chip-wrap { position: relative; flex: none; }
+.area-chip {
+  min-height: 34px;
+  padding: 6px 12px;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  max-width: 30vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.area-chip.stale { border-color: var(--gold-dim); }
+.area-picker {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 70;
+  width: min(360px, 92vw);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+}
+.area-picker-search { width: 100%; }
+
+.area-hub { display: grid; gap: 12px; padding: 12px; }
+.area-head h2 { margin: 4px 0 2px; }
+.area-verdict.warn { color: #e0b050; }
+.area-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.area-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; }
+.area-list li .note { flex-basis: 100%; }
+.area-prompt { border-color: var(--gold-dim); }
+
+@media (max-width: 700px) {
+  .area-chip { max-width: 34vw; }
+  .area-picker { position: fixed; top: 64px; left: 8px; right: 8px; width: auto; }
+}

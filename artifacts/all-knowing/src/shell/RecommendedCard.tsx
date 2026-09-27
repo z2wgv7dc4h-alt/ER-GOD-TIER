@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
+import { byId } from '../knowledge/catalog'
 import { loadWeapons, type Weapon } from '../lib/ar'
 import { advise } from '../lib/advisor'
+import { regionMatches } from '../lib/areaHub'
 import { loadRegionLevels, type RegionLevel } from '../lib/regionLevels'
 import { useCoords } from '../lib/coords'
 import { useWorkspace } from '../state'
@@ -16,6 +18,7 @@ export function RecommendedCard() {
   const coords = useCoords()
   const [weapons, setWeapons] = useState<Weapon[] | null>(null)
   const [areas, setAreas] = useState<RegionLevel[]>([])
+  const [near, setNear] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -33,14 +36,29 @@ export function RecommendedCard() {
     [w.character, weapons, areas, coords],
   )
 
-  const todos = advice.todo.slice(0, 3)
-  const upgrades = advice.upgrades.slice(0, 2)
+  const inArea = (region?: string) => {
+    if (!near) return true
+    const area = w.currentArea?.region
+    return Boolean(area && regionMatches(region, area))
+  }
+
+  const todos = advice.todo.filter((t) => inArea(t.factId ? byId.get(t.factId)?.region : undefined)).slice(0, 3)
+  const upgrades = advice.upgrades.filter((u) => inArea(u.region)).slice(0, 2)
 
   return (
     <section className="panel recommended">
       <div className="kicker">Recommended for you</div>
       <h3>{advice.build.label}</h3>
       <p className="note">{advice.build.reason}</p>
+      <button
+        type="button"
+        className={near ? 'chip on' : 'chip'}
+        aria-pressed={near}
+        disabled={!w.currentArea}
+        onClick={() => setNear((v) => !v)}
+      >
+        Near me
+      </button>
 
       <div className="recommended-cols">
         <div>

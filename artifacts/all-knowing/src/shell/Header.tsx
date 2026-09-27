@@ -1,6 +1,7 @@
 import { Help } from '../Help'
 import { sectionMeta } from '../lib/sections'
 import { useWorkspace } from '../state'
+import { AreaChip } from './AreaChip'
 import { SectionTabs } from './SectionTabs'
 
 export function Header({
@@ -43,6 +44,7 @@ export function Header({
       >
         find
       </button>
+      <AreaChip />
       <button
         type="button"
         className="char-chip"
