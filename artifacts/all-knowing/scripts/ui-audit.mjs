@@ -402,7 +402,19 @@ function auditPage() {
     clientHeight: scroller ? scroller.clientHeight : 0,
   }
 
-  return { counts, pageLength, items }
+  // ---- header height (Task 108 §1) ---------------------------------------
+  // The phone header must be a single non-wrapping row; the task sets a 60px
+  // ceiling so a long area name can never push the `⋯` onto a second row.
+  const headerEl = document.querySelector('.shell-header')
+  const headerHeight = headerEl ? Math.round(headerEl.getBoundingClientRect().height) : 0
+  const header = {
+    height: headerHeight,
+    limit: 60,
+    count: headerEl ? Math.round(headerEl.querySelectorAll(':scope > *').length) : 0,
+    ok: !phone || headerHeight <= 60,
+  }
+
+  return { counts, pageLength, header, items }
 }
 
 /* ------------------------------------------------------------------- runner */
@@ -764,9 +776,12 @@ async function runScenario(browser, runCfg) {
 
     await step('search-margit-open-boss', async (notes) => {
       const opened = await page.evaluate(() => {
-        const groups = Array.prototype.slice.call(document.querySelectorAll('.command-hits .command-group'))
-        const boss = groups.find((g) => /Bosses/i.test(g.querySelector('.kicker')?.textContent || ''))
-        const group = boss || groups[0]
+        // Task 108 §6: entity kinds are sub-headings inside the Things group.
+        const groups = Array.prototype.slice.call(
+          document.querySelectorAll('.command-hits .command-subgroup, .command-hits .command-group'),
+        )
+        const boss = groups.find((g) => /Bosses/i.test(g.querySelector('.command-subhead, .kicker')?.textContent || ''))
+        const group = boss || groups.find((g) => g.querySelector('.quest'))
         const btn = group?.querySelector('button.quest, .quest')
         if (!btn) return null
         btn.scrollIntoView({ block: 'center' })
@@ -953,7 +968,34 @@ function stepCounts(s) {
     screens: s.audit?.pageLength?.screens ?? 0,
     flagged: !!s.audit?.pageLength?.flagged,
     reached: s.reached !== false,
+    header: s.audit?.header?.height ?? 0,
+    headerOk: s.audit?.header?.ok !== false,
   }
+}
+
+/**
+ * Task 108 §1 — the phone header must be a single non-wrapping row no taller
+ * than 60px, even with a long area name. One PASS/FAIL per phone run.
+ */
+function headerChecks(runs) {
+  const out = []
+  for (const run of runs) {
+    const width = run.viewport?.viewport?.width ?? 0
+    if (!(width > 0 && width <= 500)) continue
+    let max = 0
+    let countMax = 0
+    let worst = ''
+    for (const s of run.steps) {
+      const h = s.audit?.header?.height ?? 0
+      if (h > max) {
+        max = h
+        worst = `${s.index}. ${s.label}`
+      }
+      countMax = Math.max(countMax, s.audit?.header?.count ?? 0)
+    }
+    out.push({ run: run.name, ok: max <= 60, max, countMax, worst })
+  }
+  return out
 }
 
 function mdTable(headers, rows) {
@@ -1002,11 +1044,12 @@ function buildReport(runs, meta) {
         c.console,
         c.net,
         screens,
+        `${c.header}${c.headerOk ? '' : ' \u26a0'}`,
       ]
     })
     lines.push(
       mdTable(
-        ['Step', 'Screenshot', 'Overlap', 'Tap<40', 'Off-screen', 'H-Scroll', 'Covered', 'Dead', 'Tiny<11', 'Transparent', 'Blank', 'Reached', 'Console', 'Net', 'Screens'],
+        ['Step', 'Screenshot', 'Overlap', 'Tap<40', 'Off-screen', 'H-Scroll', 'Covered', 'Dead', 'Tiny<11', 'Transparent', 'Blank', 'Reached', 'Console', 'Net', 'Screens', 'Header'],
         rows,
       ),
     )
@@ -1019,6 +1062,23 @@ function buildReport(runs, meta) {
       lines.push('')
     }
   }
+
+  // ---- hard checks (Task 108 §1) -----------------------------------------
+  const checks = headerChecks(runs)
+  lines.push('## Checks')
+  lines.push('')
+  lines.push(
+    mdTable(
+      ['Check', 'Run', 'Result', 'Detail'],
+      checks.map((c) => [
+        'Header \u2264 60px on phone',
+        c.run,
+        c.ok ? 'PASS' : 'FAIL',
+        `max ${c.max}px at ${c.worst || 'n/a'} (${c.countMax} header children)`,
+      ]),
+    ),
+  )
+  lines.push('')
 
   // ---- top issues per type (all runs) ------------------------------------
   const top = {}
@@ -1173,6 +1233,13 @@ async function main() {
   fs.writeFileSync(path.join(OUT, 'report.md'), md)
 
   console.log(`[ui-audit] wrote ${path.join(OUT, 'report.md')}`)
+
+  // Task 108 §1: report the hard checks and fail the command if one regresses.
+  const checks = headerChecks(runs)
+  for (const c of checks) {
+    console.log(`[ui-audit] check header\u226460px (${c.run}): ${c.ok ? 'PASS' : 'FAIL'} (max ${c.max}px)`)
+  }
+  if (checks.some((c) => !c.ok)) process.exitCode = 1
 }
 
 main().catch((err) => {

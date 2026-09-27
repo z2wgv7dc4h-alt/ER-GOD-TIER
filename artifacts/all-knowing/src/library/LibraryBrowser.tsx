@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import type { Character } from '../types'
 import { regionMatches } from '../lib/areaHub'
 import { areaFromFactId } from '../lib/areaContext'
-import { normalizeName } from '../lib/fanImage'
+import { fanImage, normalizeName } from '../lib/fanImage'
 import { applyFacts, denyFacts } from '../lib/infer'
 import { weaponVerdict, type Verdict } from '../lib/verdict'
 import { useLibraryCatalog } from './catalog'
@@ -33,6 +33,84 @@ import {
 } from './model'
 import { useWorkspace } from '../state'
 import './library.css'
+
+/**
+ * Task 108 §4 — the category rail shows a real picture, not a monogram. Each
+ * category names a representative entity that the FanAPI image plane has a
+ * cached thumbnail for; `fanImage` resolves it from `image-index.json`. Every
+ * category also has an inline SVG glyph, used when a dataset/image is missing
+ * (and for entity cards) — never a 1–2 letter circle.
+ */
+const CATEGORY_ICON_NAME: Partial<Record<CategoryId, string>> = {
+  weapons: 'Longsword',
+  shields: 'Heater Shield',
+  armor: 'Vagabond Knight Helm',
+  talismans: 'Erdtree Favor',
+  sorceries: 'Glintstone Pebble',
+  incantations: 'Lightning Spear',
+  ashes: 'Ash of War: Storm Stomp',
+  spirits: 'Mimic Tear Ashes',
+  items: 'Flask of Crimson Tears',
+  bosses: 'Starscourge Radahn',
+  npcs: 'Melina',
+  recipes: 'Missionary Cookbook 1',
+  secrets: 'Stonesword Key',
+}
+
+const GLYPH: Record<CategoryId, ReactNode> = {
+  weapons: <path d="M6 18 18 6M4 14l6 6M16 7l2-2-1 4z" />,
+  shields: <path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z" />,
+  armor: <path d="M6 13a6 6 0 0 1 12 0v6H6zM9 19v-3a3 3 0 0 1 6 0v3" />,
+  talismans: <path d="M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />,
+  sorceries: <path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" />,
+  incantations: <path d="M12 3c2 4 5 5 5 9a5 5 0 0 1-10 0c0-2 1-3 2-5 0 2 1 3 2 3 0-3-1-4 1-7z" />,
+  ashes: <path d="M20 12a8 8 0 1 1-3-6M20 4v5h-5" />,
+  spirits: <path d="M6 20v-9a6 6 0 0 1 12 0v9l-3-2-3 2-3-2zM10 11h.01M14 11h.01" />,
+  items: <path d="M10 3h4v4l3 4v7a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3v-7l3-4zM7 14h10" />,
+  bosses: <path d="M4 17l2-9 4 4 2-6 2 6 4-4 2 9zM4 17h16" />,
+  npcs: <path d="M12 4.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4zM5 20a7 7 0 0 1 14 0" />,
+  locations: <path d="M12 21s7-6 7-11a7 7 0 1 0-14 0c0 5 7 11 7 11zM12 7.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z" />,
+  recipes: <path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17a3 3 0 0 1 3-3h11" />,
+  secrets: <path d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM11.5 11.5 20 20M17 17l2 2M14 14l2 2" />,
+  guides: <path d="M12 6c-2-1.5-4.5-2-8-2v14c3.5 0 6 .5 8 2 2-1.5 4.5-2 8-2V4c-3.5 0-6 .5-8 2zM12 6v14" />,
+  mechanics: <path d="M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" />,
+  dialogue: <path d="M4 5h16v11H9l-5 4z" />,
+}
+
+function CategoryGlyph({
+  id,
+  className = 'lib-rail-glyph',
+  size = 22,
+}: {
+  id: CategoryId
+  className?: string
+  size?: number
+}) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      focusable="false"
+    >
+      {GLYPH[id] ?? GLYPH.items}
+    </svg>
+  )
+}
+
+function CategoryIcon({ id }: { id: CategoryId }) {
+  const name = CATEGORY_ICON_NAME[id]
+  const src = name ? fanImage(name) : undefined
+  if (src) return <img className="lib-rail-icon" src={src} alt="" loading="lazy" decoding="async" />
+  return <CategoryGlyph id={id} />
+}
 
 // Task 107 §9: a phone shows one card per row, so 50 results overflowed the
 // 4-screen budget. 30 keeps the grid scannable and the page short on any width.
@@ -100,7 +178,7 @@ function CategoryRail({
           onClick={() => onSelect(c.id)}
           aria-current={c.id === active}
         >
-          <span className="lib-rail-mono" aria-hidden>{c.mono}</span>
+          <CategoryIcon id={c.id} />
           <span className="lib-rail-label">{c.label}</span>
           <span className="lib-rail-count">{counts[c.id] ?? 0}</span>
         </button>
@@ -137,7 +215,7 @@ function EntityCard({
         {entity.icon ? (
           <img src={entity.icon} alt="" loading="lazy" decoding="async" />
         ) : (
-          <span className="lib-card-mono" aria-hidden>{entity.name.slice(0, 2)}</span>
+          <CategoryGlyph id={entity.category} className="lib-card-glyph" size={20} />
         )}
       </span>
       <span className="lib-card-body">
@@ -553,7 +631,7 @@ export function LibraryBrowser() {
                 <div className="lib-tiles">
                   {CATEGORIES.map((c) => (
                     <button key={c.id} type="button" className="lib-tile" onClick={() => selectCategory(c.id)}>
-                      <span className="lib-rail-mono" aria-hidden>{c.mono}</span>
+                      <CategoryIcon id={c.id} />
                       <span>{c.label}</span>
                       <span className="lib-rail-count">{counts[c.id] ?? 0}</span>
                     </button>

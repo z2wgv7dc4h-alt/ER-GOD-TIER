@@ -308,7 +308,10 @@ type PaletteRow =
  * Questions get a deterministic router answer inline (loaded lazily so the
  * shell bundle does not pull in all of Gideon), with a Continue in Gideon link.
  */
-export function CommandHits({ onLog }: { onLog?: (ids: string[]) => void } = {}) {
+export function CommandHits({
+  onLog,
+  onCloseSearch,
+}: { onLog?: (ids: string[]) => void; onCloseSearch?: () => void } = {}) {
   const w = useWorkspace()
   const debounced = useDebounced(w.query, 175)
   const q = debounced.trim()
@@ -360,10 +363,12 @@ export function CommandHits({ onLog }: { onLog?: (ids: string[]) => void } = {})
     if (row.kind === 'log') {
       onLog?.(row.factIds)
       w.setQuery('')
+      onCloseSearch?.()
       return
     }
     if (row.kind === 'command') {
       w.setQuery('')
+      onCloseSearch?.()
       // Task 100 §2: the "glance" omnibox command opens the chrome-free map.
       if (row.command.glance) {
         w.go(row.command.section, row.command.sub ?? undefined)
@@ -376,6 +381,7 @@ export function CommandHits({ onLog }: { onLog?: (ids: string[]) => void } = {})
     // Task 97: a real entity hit opens the universal panel overlay.
     w.openEntity(row.hit.id)
     w.setQuery('')
+    onCloseSearch?.()
   }
 
   useEffect(() => {
@@ -391,12 +397,13 @@ export function CommandHits({ onLog }: { onLog?: (ids: string[]) => void } = {})
       else if (key === 'select') choose(rows[active])
       else if (key === 'close') {
         w.setQuery('')
+        onCloseSearch?.()
         if (input instanceof HTMLElement) input.blur()
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [rows, active, w, onLog])
+  }, [rows, active, w, onLog, onCloseSearch])
 
   // Keep the highlighted row in view as it moves.
   useEffect(() => {
@@ -423,7 +430,10 @@ export function CommandHits({ onLog }: { onLog?: (ids: string[]) => void } = {})
           key={`e:${row.hit.source}:${row.hit.id}`}
           id={row.hit.id}
           className={cls}
-          onClick={() => w.setQuery('')}
+          onClick={() => {
+            w.setQuery('')
+            onCloseSearch?.()
+          }}
         >
           <header>
             <strong>{row.hit.name}</strong>
@@ -465,40 +475,57 @@ export function CommandHits({ onLog }: { onLog?: (ids: string[]) => void } = {})
     )
   }
 
-  const doCount = rows.filter((r) => r.kind !== 'entity').length
+  // Task 108 §6: the three top-level groups are always labelled Do · Things ·
+  // Ask; entity hits live under Things, grouped by kind inside.
+  const doRows = rows.filter((r) => r.kind !== 'entity')
+  const entityCount = sections.reduce((n, s) => n + s.hits.length, 0)
   return (
     <div className="command-hits" ref={listRef}>
-      {doCount > 0 && (
-        <section className="command-group command-do">
-          <div className="kicker">Do · {doCount}</div>
-          {rows.filter((r) => r.kind !== 'entity').map(renderRow)}
-        </section>
-      )}
-      {sections.map((section) => (
-        <section className="command-group" key={section.group}>
-          <div className="kicker">{section.group} · {section.hits.length}</div>
-          {section.hits.map((hit) => renderRow({ kind: 'entity', hit }))}
-        </section>
-      ))}
-      {question && (
-        <section className="command-group command-ask">
-          <div className="kicker">Ask · Gideon</div>
-          <div className="command-answer">
-            {asking ? <span className="note">Thinking…</span> : answer ? <WikiText text={answer.say} /> : null}
-          </div>
-          <button
-            type="button"
-            className="chip"
-            onClick={() => {
-              w.setCharacter({ ...w.character, answers: { ...w.character.answers, gideonAsk: question } })
-              w.setQuery('')
-              w.go('gideon')
-            }}
-          >
-            Continue in Gideon
-          </button>
-        </section>
-      )}
+      <section className="command-group command-do">
+        <div className="kicker">Do · {doRows.length}</div>
+        {doRows.length > 0 ? (
+          doRows.map(renderRow)
+        ) : (
+          <p className="note">Log something you just did, e.g. “killed Margit”.</p>
+        )}
+      </section>
+      <section className="command-group command-things">
+        <div className="kicker">Things · {entityCount}</div>
+        {entityCount > 0 ? (
+          sections.map((section) => (
+            <div className="command-subgroup" key={section.group}>
+              <div className="command-subhead">{section.group}</div>
+              {section.hits.map((hit) => renderRow({ kind: 'entity', hit }))}
+            </div>
+          ))
+        ) : (
+          <p className="note">No matching things.</p>
+        )}
+      </section>
+      <section className="command-group command-ask">
+        <div className="kicker">Ask · Gideon</div>
+        {question ? (
+          <>
+            <div className="command-answer">
+              {asking ? <span className="note">Thinking…</span> : answer ? <WikiText text={answer.say} /> : null}
+            </div>
+            <button
+              type="button"
+              className="chip"
+              onClick={() => {
+                w.setCharacter({ ...w.character, answers: { ...w.character.answers, gideonAsk: question } })
+                w.setQuery('')
+                onCloseSearch?.()
+                w.go('gideon')
+              }}
+            >
+              Continue in Gideon
+            </button>
+          </>
+        ) : (
+          <p className="note">Ask a question — where, how, what next.</p>
+        )}
+      </section>
     </div>
   )
 }

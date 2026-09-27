@@ -784,6 +784,16 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
 /* Task 99: Do · Things · Ask rows in the omnibox. */
 .command-linkrow { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; }
 .command-linkrow .entity-link { padding: 0; font-size: inherit; }
+/* Task 108 §6: Things are one group; the hit kinds are sub-headings inside it. */
+.command-things { flex: 2 1 300px; max-width: 480px; }
+.command-subgroup { display: flex; flex-direction: column; gap: 6px; }
+.command-subhead {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
 .command-answer { margin: 4px 0 8px; font-size: 13px; line-height: 1.45; }
 .command-ask { flex: 1 1 100%; max-width: 520px; }
 
@@ -858,7 +868,13 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   padding: 12px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
   font-size: 13px;
+  /* Task 108: a transient notification must not swallow taps meant for the page
+     it sits over — only its own controls take pointer events. */
+  pointer-events: none;
 }
+.quicklog-toast .opts,
+.quicklog-toast button,
+.quicklog-toast a { pointer-events: auto; }
 
 @media (max-width: 700px) {
   .quicklog-fab {
@@ -1036,9 +1052,24 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   cursor: pointer;
 }
 .gideon-suggest-x:hover { color: var(--ink); }
-/* The only scrolling region in the dock (Task 103 §10). */
+/* Task 108 §3: the Gideon view is a flex column — header fixed, log the only
+   scroller, one horizontal chip row, then the input pinned at the bottom. */
+.gideon-page { display: flex; flex-direction: column; overflow: hidden; }
+/* The only scrolling region in the dock/page (Task 103 §10). */
 .gideon-log { flex: 1 1 auto; min-height: 0; overflow: auto; margin: 8px 0; white-space: pre-wrap; }
 .gideon-log p { font-size: 13px; line-height: 1.4; margin: 0 0 8px; }
+/* Task 108 §3: one horizontally scrollable chip row above the input. */
+.gideon-chips {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0 8px;
+  -webkit-overflow-scrolling: touch;
+}
+.gideon-chips .chip,
+.gideon-chips .gideon-suggest-x { flex: 0 0 auto; white-space: nowrap; }
 .stat-edit { padding: 0 4px 12px; }
 /* Task 93: compact 4x2 grid, only when the editor is opened. */
 .stat-edit .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 8px; }
@@ -1193,6 +1224,7 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   .related-label,
   .gear-row em,
   .gear-slot-label,
+  .command-subhead,
   .help-groups li em { font-size: 12px; letter-spacing: 0.1em; }
   .list li { font-size: 14px; }
   .codex-head { font-size: 14px; }
@@ -1267,8 +1299,14 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   .desktop-only { display: none !important; }
   .phone-only { display: inline-flex; }
   .header-search { display: none; }
-  .app.search-open .shell-header { flex-wrap: wrap; }
-  .app.search-open .header-search { display: block; flex-basis: 100%; order: 10; }
+  /* Task 108 §1/§2: opening search must not push the header onto a second row.
+     The input takes the row in place of the chip cluster — still one 52px row. */
+  .app.search-open .shell-header { flex-wrap: nowrap; }
+  .app.search-open .header-search { display: block; flex: 1 1 auto; min-width: 0; order: 0; }
+  .app.search-open .area-chip-wrap,
+  .app.search-open .char-chip,
+  .app.search-open .header-more,
+  .app.search-open .glance-toggle { display: none; }
   .shell-title { display: block; flex: 1 1 auto; min-width: 0; font-size: 15px; }
   .glance-toggle,
   .help-open { display: none !important; }
@@ -1287,7 +1325,7 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   .char-sep { display: none; }
   .char-level { font-size: 11px; white-space: nowrap; }
   .area-chip { max-width: 110px; min-height: 40px; padding: 4px 8px; }
-  .search-toggle { min-width: 40px; min-height: 40px; padding: 0; justify-content: center; }
+  .search-toggle { min-width: 44px; min-height: 44px; padding: 0; justify-content: center; }
   .brand-mark { width: 40px; height: 40px; }
   .subtabs { padding: 6px 10px; }
   .map-controls { display: none; }
@@ -1891,10 +1929,18 @@ body { overflow: hidden; overscroll-behavior: none; }
 .stat-level input { width: 90px; }
 .stat-level-warn { margin: 8px 0 0; }
 
-/* Task 107 §2 — keep the bottom-right clear of the floating + on the audited
-   phone views: the Library tool row scrolls sideways instead of stacking, and
-   the Gideon log reserves room at its end. */
+/* Task 108 §3 — Gideon owns its own input, so the floating + would only cover
+   it. Hide the FAB on the Gideon section and let the input row sit above the tab
+   bar; the other phone views keep their FAB clearance (Task 107 §2). */
 @media (max-width: 700px) {
   .lib-toolbar .lib-tools { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .gideon-log { padding-bottom: 84px; }
+  .app.gideon-active .quicklog-fab { display: none; }
+  .app.gideon-active .gideon-page { padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
+  .app.gideon-active .gideon-log { padding-bottom: 0; }
+  .gideon-page .guide-face { height: 56px; margin-bottom: 8px; }
+  /* Task 108 §3: the quick-log toast reserves its own band so no control ends up
+     underneath it (it sits 150px up, the tab bar is 58px, hence the +92px). */
+  body.toast-open .shell-body {
+    padding-bottom: min(calc(var(--toast-h, 0px) + 92px), 55vh);
+  }
 }

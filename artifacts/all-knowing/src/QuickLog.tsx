@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { EntityLink } from './EntityLink'
 import { LockoutPrompt } from './LockoutPrompt'
 import {
@@ -40,6 +40,7 @@ export function QuickLog({
   const [selected, setSelected] = useState<string[]>([])
   const [pending, setPending] = useState<QuickLogPlan | null>(null)
   const [toast, setToast] = useState<QuickLogPlan | null>(null)
+  const toastRef = useRef<HTMLDivElement>(null)
 
   // Opening seeds the selection (an omnibox "Do" row) and clears the input.
   useEffect(() => {
@@ -58,6 +59,31 @@ export function QuickLog({
     return () => window.removeEventListener('allknowing:dismiss-toast', dismiss)
   }, [])
   useEffect(() => { setToast(null) }, [w.section, w.sub])
+
+  // Task 108 §3: while the toast is up, the phone content area reserves its
+  // height (plus the gap above the tab bar) so the toast can never sit on top of
+  // a control. The measured height keeps it correct whatever the message wraps to.
+  useEffect(() => {
+    if (!toast) {
+      document.body.classList.remove('toast-open')
+      document.documentElement.style.removeProperty('--toast-h')
+      return
+    }
+    document.body.classList.add('toast-open')
+    const measure = () => {
+      const el = toastRef.current
+      document.documentElement.style.setProperty('--toast-h', `${Math.ceil(el?.getBoundingClientRect().height ?? 0)}px`)
+    }
+    measure()
+    const raf = window.requestAnimationFrame(measure)
+    window.addEventListener('resize', measure)
+    return () => {
+      window.cancelAnimationFrame(raf)
+      window.removeEventListener('resize', measure)
+      document.body.classList.remove('toast-open')
+      document.documentElement.style.removeProperty('--toast-h')
+    }
+  }, [toast])
 
   const fuzzy = useMemo(() => fuzzyLogTargets(text), [text])
   const recent = useMemo(() => recentLogTargets(w.recentFacts, w.character), [w.recentFacts, w.character])
@@ -176,7 +202,7 @@ export function QuickLog({
       )}
 
       {toast && (
-        <div className="quicklog-toast" role="status">
+        <div className="quicklog-toast" role="status" ref={toastRef}>
           <p style={{ margin: 0 }}>
             Logged {links(toast.appliedTargets)} ✓
             {toast.inferred.length > 0 && <> — unlocked: {links(toast.inferred)}</>}

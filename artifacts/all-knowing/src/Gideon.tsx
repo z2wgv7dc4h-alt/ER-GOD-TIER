@@ -36,14 +36,14 @@ export function Gideon() {
   const savedGoal = typeof w.character.answers.gideonGoal === 'string' ? w.character.answers.gideonGoal : undefined
   const [q, setQ] = useState('')
   const [memory, setMemory] = useState<GideonMemory>({ goalId: savedGoal })
-  const [offer, setOffer] = useState<{ label: string; prompt: string } | null>(null)
+  const [offer, setOffer] = useState<{ label: string; prompt: string; factId?: string } | null>(null)
   const [dismissed, setDismissed] = useState(false)
   const [skipped, setSkipped] = useState<number[]>([])
   // Muse is a reasoning model — a turn takes seconds, so show that it is working.
   const [busy, setBusy] = useState(false)
   const [lockPending, setLockPending] = useState<Pending | null>(null)
   const [log, setLog] = useState<LogRow[]>([
-    { role: 'gideon', text: 'Name a line, tap Blitz, or ask what is still available. Show it pins the atlas. I’m done ticks the beat.' },
+    { role: 'gideon', text: 'Ask me anything — where an item is, what to do next, how to beat a boss. Or tell me what you just did.' },
   ])
 
   // Real next actions for this character; recomputed only when the character
@@ -222,111 +222,29 @@ export function Gideon() {
     }
   }
 
+  // Task 108 §5: a navigation offer names its target ("Show Gael Tunnel on map")
+  // instead of a bare "Show it".
+  const offerLabel = offer
+    ? offer.factId && /^show/i.test(offer.label)
+      ? `Show ${labelOf(offer.factId)} on map`
+      : offer.label
+    : ''
+  const idle = q.trim() === ''
+  const nearby = leftovers(w.character)
+  const watch = watchlistOf(w.character)
+  const hasChips = Boolean(offer) || idle
+
   return (
     <section className="gideon">
       <img className="guide-face" src="/art/guide.jpg" alt="" />
       <div className="kicker">Guide · {packStatus().hint}</div>
       <p className="note" style={{ opacity: 0.6 }}>
-        {hasGideonKey() ? 'Muse 1.3 contributor (optional)' : 'router only'}
+        {hasGideonKey() ? 'Optional AI answers are on.' : 'Offline answers.'}
       </p>
       <p className="note">
-        The working-towards dashboard — current beat, gate and Show / Done — lives in{' '}
+        Your goal, what’s next and what’s done live on{' '}
         <button type="button" className="chip" onClick={() => w.go('journey', 'now')}>Journey → Now</button>.
       </p>
-
-      {q.trim() === '' && !dismissed && suggestions.length > 0 && (
-        <div className="gideon-suggest">
-          <div className="kicker">
-            Next, maybe
-            <button
-              type="button"
-              className="gideon-suggest-x"
-              aria-label="Dismiss suggestions"
-              onClick={() => setDismissed(true)}
-            >
-              ×
-            </button>
-          </div>
-          <div className="opts">
-            {suggestions.map((s) => (
-              <button
-                key={s.id}
-                type="button"
-                className="chip"
-                title={s.prompt}
-                onClick={() => {
-                  setDismissed(true)
-                  void run(s.prompt)
-                }}
-              >
-                {s.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {leftovers(w.character).length > 0 && (
-        <div className="opts" style={{ marginBottom: 10 }}>
-          {leftovers(w.character).slice(0, 3).map((e) => (
-            <button
-              key={e.id}
-              type="button"
-              className={watchlistOf(w.character).includes(e.id) ? 'chip on' : 'chip'}
-              onClick={() => {
-                if (e.grace) { w.setSelectedMarkerId(e.grace); w.setModule('map') }
-                w.setCharacter(toggleWatch(w.character, e.id))
-              }}
-            >
-              Nearby leftover · {e.name}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* Task 92 row 12: the quick chips are the empty-input state. Typing to ask
-          something hides them; clearing (or sending) brings them back. */}
-      {q.trim() === '' && (
-        <>
-          <div className="opts" style={{ marginBottom: 8 }}>
-            <button type="button" className="chip" onClick={() => run('What is still available on this run?')}>Still available</button>
-            <button type="button" className="chip" onClick={() => run('I am stuck. Help with this wall.')}>Stuck</button>
-            <button type="button" className="chip" onClick={() => run('100% completionist route')}>100% spine</button>
-            <button
-              type="button"
-              className="chip"
-              onClick={() => run(`100% route: ${medusaChapters[0].name}. ${medusaChapters[0].goal} Then ${medusaChapters[1].name}.`)}
-            >
-              100% · {medusaChapters[0].name}
-            </button>
-          </div>
-
-          {/* Guided asks: the deterministic router answers these exactly. Free text
-              stays for open-ended questions, which go to the optional model. */}
-          <div className="opts" style={{ marginBottom: 8 }}>
-            <button type="button" className="chip" onClick={() => run('I am here, before I go on, what should I do so I do not outlevel it')}>Before I go</button>
-            <button type="button" className="chip" onClick={() => run('What did I miss here?')}>Missed here</button>
-            <button type="button" className="chip" onClick={() => run('Where are the illusory walls here?')}>Secrets</button>
-            <button type="button" className="chip" onClick={() => run('What are good early weapons?')}>Upgrade advice</button>
-            <button type="button" className="chip" onClick={() => run('What is on my list?')}>My list</button>
-          </div>
-        </>
-      )}
-
-      <div className="opts" style={{ marginBottom: 8 }}>
-        <button
-          type="button"
-          className="chip"
-          title="Clear the conversation"
-          onClick={() => setLog((rows) => rows.slice(0, 1))}
-        >
-          Clear
-        </button>
-      </div>
-
-      {offer && (
-        <button type="button" className="chip on" onClick={() => run(offer.prompt)}>{offer.label}</button>
-      )}
 
       <div className="gideon-log" ref={logRef}>
         {log.map((row, i) => {
@@ -368,11 +286,88 @@ export function Gideon() {
         })}
       </div>
 
+      {/* Task 108 §3: every quick ask — the standing offer, the next-step
+          suggestions, nearby leftovers and the guided prompts — is one
+          horizontally scrollable row above the input, never a stack. */}
+      {hasChips && (
+        <div className="gideon-chips" role="group" aria-label="Quick asks">
+          {offer && (
+            <button type="button" className="chip on gideon-offer" onClick={() => run(offer.prompt)}>
+              {offerLabel}
+            </button>
+          )}
+          {idle && !dismissed && suggestions.map((s) => (
+            <button
+              key={s.id}
+              type="button"
+              className="chip"
+              title={s.prompt}
+              onClick={() => {
+                setDismissed(true)
+                void run(s.prompt)
+              }}
+            >
+              {s.label}
+            </button>
+          ))}
+          {idle && !dismissed && suggestions.length > 0 && (
+            <button
+              type="button"
+              className="gideon-suggest-x"
+              aria-label="Dismiss suggestions"
+              onClick={() => setDismissed(true)}
+            >
+              ×
+            </button>
+          )}
+          {idle && nearby.slice(0, 3).map((e) => (
+            <button
+              key={e.id}
+              type="button"
+              className={watch.includes(e.id) ? 'chip on' : 'chip'}
+              onClick={() => {
+                if (e.grace) { w.setSelectedMarkerId(e.grace); w.setModule('map') }
+                w.setCharacter(toggleWatch(w.character, e.id))
+              }}
+            >
+              Nearby leftover · {e.name}
+            </button>
+          ))}
+          {idle && (
+            <>
+              <button type="button" className="chip" onClick={() => run('What is still available on this run?')}>Still available</button>
+              <button type="button" className="chip" onClick={() => run('I am stuck. Help with this wall.')}>Stuck</button>
+              <button type="button" className="chip" onClick={() => run('100% completionist route')}>100% spine</button>
+              <button
+                type="button"
+                className="chip"
+                onClick={() => run(`100% route: ${medusaChapters[0].name}. ${medusaChapters[0].goal} Then ${medusaChapters[1].name}.`)}
+              >
+                100% · {medusaChapters[0].name}
+              </button>
+              <button type="button" className="chip" onClick={() => run('I am here, before I go on, what should I do so I do not outlevel it')}>Before I go</button>
+              <button type="button" className="chip" onClick={() => run('What did I miss here?')}>Missed here</button>
+              <button type="button" className="chip" onClick={() => run('Where are the illusory walls here?')}>Secrets</button>
+              <button type="button" className="chip" onClick={() => run('What are good early weapons?')}>Upgrade advice</button>
+              <button type="button" className="chip" onClick={() => run('What is on my list?')}>My list</button>
+              <button
+                type="button"
+                className="chip"
+                title="Clear the conversation"
+                onClick={() => setLog((rows) => rows.slice(0, 1))}
+              >
+                Clear
+              </button>
+            </>
+          )}
+        </div>
+      )}
+
       <div className="pickup-row">
         <input
           className="search"
           value={q}
-          placeholder="Ask anything — open-ended goes to Muse, or type a grace / item to log"
+          placeholder="Ask anything, or type a grace / item to log"
           onChange={(e) => setQ(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter' && !busy) submit() }}
         />

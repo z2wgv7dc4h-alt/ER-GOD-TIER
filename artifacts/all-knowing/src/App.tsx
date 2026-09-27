@@ -119,6 +119,30 @@ function AppShell() {
     if (searchOpen) document.querySelector<HTMLInputElement>('#command-search')?.focus()
   }, [searchOpen])
 
+  // Task 108 §2 — the phone search row is transient. Moving section/sub, pressing
+  // Escape or tapping outside the field/results collapses it back to the icon.
+  useEffect(() => {
+    setSearchOpen(false)
+  }, [w.section, w.sub])
+
+  useEffect(() => {
+    if (!searchOpen) return
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setSearchOpen(false)
+    }
+    function onDown(e: MouseEvent) {
+      const target = e.target as HTMLElement | null
+      if (target?.closest('.shell-header, .command-hits')) return
+      setSearchOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    document.addEventListener('mousedown', onDown)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.removeEventListener('mousedown', onDown)
+    }
+  }, [searchOpen])
+
   const dockVisible = w.dockOpen && w.section !== 'gideon'
   const className = [
     'app',
@@ -143,7 +167,7 @@ function AppShell() {
           <FirstVisitHint />
           <SubTabs />
           {w.section === 'journey' && w.sub === 'map' && <MapControls />}
-          <CommandHits onLog={(ids) => openLog(ids)} />
+          <CommandHits onLog={(ids) => openLog(ids)} onCloseSearch={() => setSearchOpen(false)} />
           <div className="stage">
             <Suspense fallback={<SectionSkeleton />}>
               <ShellContent />

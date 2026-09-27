@@ -71,7 +71,11 @@ export type GideonAct = {
   module?: ModuleId
   factId?: string
   buildId?: string
-  offer?: { label: string; prompt: string }
+  /**
+   * Task 108 §5: a navigation offer also carries the entity it points at, so the
+   * UI can name it ("Show Gael Tunnel on map") instead of a bare "Show it".
+   */
+  offer?: { label: string; prompt: string; factId?: string }
   goal?: string
   navigateNow?: boolean
   /** Task 101: fact ids referenced in the answer, for the "Mentioned" row. */
@@ -165,10 +169,10 @@ function speakPlan(character: Character, route: EndingRoute): GideonAct {
   return {
     say: `${warn}${route.name} (${kind}) is still open (${plan.done.length}/${plan.total}). Next: ${plan.current.do}. ${plan.current.detail}${extra}${tail} Want the map pin and the short instruction list?`,
     module: 'quests',
-    factId: plan.current.factId,
-    goal: route.id,
-    offer: { label: 'Show it', prompt: 'yes show me on the map and give instructions' },
-  }
+     factId: plan.current.factId,
+     goal: route.id,
+     offer: { label: 'Show it', prompt: 'yes show me on the map and give instructions', factId: plan.current.factId },
+   }
 }
 
 /** Qualitative read of a NpcParam status resistance: lower means easier to inflict. */
@@ -504,7 +508,7 @@ function speakMissed(character: Character, question: string): GideonAct {
     say: `${res.scoped ? `Missed${scope}` : 'Still open'}: ${list.join(', ')}${tail}${coopNote}`,
     module: 'map',
     factId: top.id,
-    offer: { label: 'Show it', prompt: `where is ${top.name}` },
+    offer: { label: 'Show it', prompt: `where is ${top.name}`, factId: top.id },
   }
 }
 
@@ -530,7 +534,7 @@ function speakWhatNow(character: Character, area?: AreaSignal | null): GideonAct
     say: `You are in ${label}. Still open here: ${res.items.map((i) => i.name).join(', ')}${more}`,
     module: 'map',
     factId: top.id,
-    offer: { label: 'Show it', prompt: `where is ${top.name}` },
+    offer: { label: 'Show it', prompt: `where is ${top.name}`, factId: top.id },
   }
 }
 
@@ -1203,7 +1207,7 @@ export function askGideonRouter(
       say: `${l.name} — ${l.how}${l.missable ? ' Missable.' : ''} Want that grace on the atlas?`,
       module: 'map',
       factId: l.grace,
-      offer: l.grace ? { label: 'Show pin', prompt: 'yes show me on the map and give instructions' } : undefined,
+      offer: l.grace ? { label: 'Show pin', prompt: 'yes show me on the map and give instructions', factId: l.grace } : undefined,
     }
   }
 

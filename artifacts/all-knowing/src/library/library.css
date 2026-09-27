@@ -63,7 +63,9 @@
   background: var(--bg-panel);
 }
 
-.lib-rail-mono {
+/* Task 108 §4 — a real category picture (or the SVG glyph), never a monogram. */
+.lib-rail-icon,
+.lib-rail-glyph {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -73,10 +75,17 @@
   border-radius: 50%;
   border: 1px solid var(--line);
   background: var(--bg);
-  font-family: var(--font-display);
-  font-size: 11px;
-  letter-spacing: 0.5px;
+  color: var(--muted);
+  object-fit: cover;
 }
+
+.lib-rail-item.on .lib-rail-icon,
+.lib-rail-item.on .lib-rail-glyph {
+  border-color: var(--gold-dim);
+  color: var(--gold);
+}
+
+.lib-card-glyph { color: var(--muted); }
 
 .lib-rail-label {
   flex: 1 1 auto;
@@ -732,7 +741,6 @@
 
   /* Task 103 §8/§9: touch targets and a 12px phone type floor. */
   .lib-rail-count,
-  .lib-rail-mono,
   .lib-chipgroup-label,
   .lib-resultbar,
   .lib-card-type,
