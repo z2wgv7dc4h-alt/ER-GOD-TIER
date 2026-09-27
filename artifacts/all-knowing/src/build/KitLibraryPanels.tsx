@@ -47,10 +47,10 @@ export function OpKitPanel({
           <details key={b.id} className="kit-card">
             <summary>
               <strong>{b.name}</strong>{' '}
-              <em className="dim">Lv {b.level} · {b.tag}</em>
-              <span className="note kit-pitch">{b.why}</span>
+              <em className="dim">{b.tag} · Lv {b.level}</em>
             </summary>
             <div className="kit-detail">
+              <p className="note">{b.why}</p>
               <div className="kicker">Level plan</div>
               <div className="opts">
                 {plans.map((p) => (
@@ -128,6 +128,7 @@ function PvpLoadoutBlock({ build }: { build: PvpBuild }) {
   const l = build.loadout
   return (
     <div className="kit-detail">
+      <p className="note">{build.why}</p>
       <p className="note"><strong>Playstyle.</strong> {build.playstyle}</p>
       <div className="kicker">Combos</div>
       <ul className="list">
@@ -198,7 +199,6 @@ export function PvpBuildPanel({
             <summary>
               <strong>{b.name}</strong>{' '}
               <em className="dim">{b.bracket} · {b.mode} · {b.tag}</em>
-              <span className="note kit-pitch">{b.why}</span>
             </summary>
             <PvpLoadoutBlock build={b} />
             <button

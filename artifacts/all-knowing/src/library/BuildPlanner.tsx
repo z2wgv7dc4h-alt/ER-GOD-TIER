@@ -135,6 +135,46 @@ export function BuildPlanner() {
     w.setModule('map')
   }
 
+  // Task 118 §3 — an upgrade row, shared by the first-open list and the
+  // "more upgrades" disclosure so the two never drift. A plain render function
+  // (not a nested component) keeps React from remounting the rows each render.
+  function upgradeRow(u: (typeof advice.upgrades)[number]) {
+    return (
+      <li key={`${u.weaponName}-${u.affinity}-${u.upgrade}`}>
+        <div className="advisor-row">
+          <span>
+            <strong>{u.name}</strong> {u.affinity !== 'Unique' ? `· ${u.affinity}` : ''} +{u.upgrade}
+          </span>
+          <span className="note">
+            <Term id="mechanic:attack-rating">Attack</Term> {u.ar}
+            {u.gainPct ? ` · ${u.gainPct > 0 ? '+' : ''}${u.gainPct}% vs ${u.gainVs ?? 'your kit'}` : ''}
+          </span>
+        </div>
+        <p className="note">{u.scaling} — {u.why}</p>
+        <div className="opts">
+          {u.meets ? (
+            <span className="chip on">✓ meets</span>
+          ) : (
+            <span className="chip warn">{u.requirement}</span>
+          )}
+          {u.owned && <span className="chip on">owned</span>}
+          {u.obtainableNow && <span className="chip on">obtainable now</span>}
+          {u.lost && <span className="chip warn">locked out this run</span>}
+          {!u.owned && !u.obtainableNow && !u.lost && u.region && <span className="chip">{u.region}</span>}
+          {u.factId && <EntityLink id={u.factId}>{u.region ?? 'where to get it'}</EntityLink>}
+          {u.factId && (
+            <button type="button" className="chip" onClick={() => showOnMap(u.factId)}>
+              Show on map
+            </button>
+          )}
+        </div>
+        {u.where && <p className="note">{u.where}</p>}
+      </li>
+    )
+  }
+
+  const OPEN_UPGRADES = 3
+
   return (
     <div className="advisor planner">
       {/* Task 113 §2 — lead with what matters: your detected build and the
@@ -192,62 +232,46 @@ export function BuildPlanner() {
             {weapons ? 'No reachable on-build weapon beats what you have at these stats.' : 'Loading weapon data…'}
           </p>
         ) : (
-          <ul className="advisor-list">
-            {advice.upgrades.map((u) => (
-              <li key={`${u.weaponName}-${u.affinity}-${u.upgrade}`}>
-                <div className="advisor-row">
-                  <span>
-                    <strong>{u.name}</strong> {u.affinity !== 'Unique' ? `· ${u.affinity}` : ''} +{u.upgrade}
-                  </span>
-                  <span className="note">
-                    <Term id="mechanic:attack-rating">Attack</Term> {u.ar}
-                    {u.gainPct ? ` · ${u.gainPct > 0 ? '+' : ''}${u.gainPct}% vs ${u.gainVs ?? 'your kit'}` : ''}
-                  </span>
-                </div>
-                <p className="note">{u.scaling} — {u.why}</p>
-                <div className="opts">
-                  {u.meets ? (
-                    <span className="chip on">✓ meets</span>
-                  ) : (
-                    <span className="chip warn">{u.requirement}</span>
-                  )}
-                  {u.owned && <span className="chip on">owned</span>}
-                  {u.obtainableNow && <span className="chip on">obtainable now</span>}
-                  {u.lost && <span className="chip warn">locked out this run</span>}
-                  {!u.owned && !u.obtainableNow && !u.lost && u.region && <span className="chip">{u.region}</span>}
-                  {u.factId && <EntityLink id={u.factId}>{u.region ?? 'where to get it'}</EntityLink>}
-                  {u.factId && (
-                    <button type="button" className="chip" onClick={() => showOnMap(u.factId)}>
-                      Show on map
-                    </button>
-                  )}
-                </div>
-                {u.where && <p className="note">{u.where}</p>}
-              </li>
-            ))}
-          </ul>
-        )}
-        {advice.later.length > 0 && (
           <>
-            <div className="kicker" style={{ marginTop: 12 }}>Later</div>
-            <p className="note">Reachable only once you get there — or open the Realm of Shadow.</p>
             <ul className="advisor-list">
-              {advice.later.map((u) => (
-                <li key={`later-${u.weaponName}-${u.upgrade}`}>
-                  <div className="advisor-row">
-                    <span><strong>{u.name}</strong> +{u.upgrade}</span>
-                    <span className="note">Attack {u.ar}</span>
-                  </div>
-                  <p className="note">
-                    {u.dlc ? 'Shadow of the Erdtree — not open yet' : u.region ?? 'No known acquisition'}
-                    {u.where ? ` · ${u.where}` : ''}
-                  </p>
-                </li>
-              ))}
+              {advice.upgrades.slice(0, OPEN_UPGRADES).map(upgradeRow)}
             </ul>
+            {/* Task 118 §3 — the section stays short: the top picks inline, the
+                rest one tap away, so Builds fits in the four-screen budget. */}
+            {advice.upgrades.length > OPEN_UPGRADES && (
+              <details className="advisor-more">
+                <summary className="advisor-more-summary">
+                  {advice.upgrades.length - OPEN_UPGRADES} more on-build upgrade
+                  {advice.upgrades.length - OPEN_UPGRADES === 1 ? '' : 's'}
+                </summary>
+                <ul className="advisor-list">
+                  {advice.upgrades.slice(OPEN_UPGRADES).map(upgradeRow)}
+                </ul>
+              </details>
+            )}
           </>
         )}
       </BuildSection>
+
+      {advice.later.length > 0 && (
+        <BuildSection title="Later finds">
+          <p className="note">Reachable only once you get there — or open the Realm of Shadow.</p>
+          <ul className="advisor-list">
+            {advice.later.map((u) => (
+              <li key={`later-${u.weaponName}-${u.upgrade}`}>
+                <div className="advisor-row">
+                  <span><strong>{u.name}</strong> +{u.upgrade}</span>
+                  <span className="note">Attack {u.ar}</span>
+                </div>
+                <p className="note">
+                  {u.dlc ? 'Shadow of the Erdtree — not open yet' : u.region ?? 'No known acquisition'}
+                  {u.where ? ` · ${u.where}` : ''}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </BuildSection>
+      )}
 
       <BuildSection title="Change build">
         <p className="note">Pick a target. The plan shows the stat spread and a shopping list; nothing is applied.</p>

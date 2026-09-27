@@ -1960,22 +1960,94 @@ body { overflow: hidden; overscroll-behavior: none; }
   .setup-dot.on::after { background: var(--gold, #c9a227); box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.25); }
 }
 
-/* Task 107 §9 — collapsible Kit groups (first open, tap a header to expand). */
-.kit-group-panel { border-top: 1px solid var(--line-soft); margin-top: 10px; }
-.kit-group-panel:first-of-type { border-top: 0; margin-top: 6px; }
+/* Task 107 §9 / Task 118 §3 — collapsible cards. On Builds and PvP every
+   section is one of these; only the named first-paint answers start open. */
+.kit-group-panel {
+  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  margin-top: 10px;
+}
+.kit-group-panel:first-of-type { margin-top: 6px; }
 .kit-group-head {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 12px 0;
+  padding: 12px 14px;
   background: transparent;
   border: 0;
   text-align: left;
   cursor: pointer;
 }
-.kit-group-body { padding-bottom: 8px; }
+.kit-group-body { padding: 0 14px 12px; }
+
+/* Task 118 §3 — OP kit / PvP build cards collapse to a single line
+   (name · tag · level) and expand to the plan or loadout. */
+.kit-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+  /* A 28-kit list must not turn the page into a wall: the list scrolls inside
+     its own card, and opening a kit only grows the page by one screenful. */
+  max-height: 50vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.kit-card {
+  border: 1px solid var(--line);
+  background: var(--bg);
+}
+.kit-card > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 10px 12px;
+  min-height: 40px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.kit-card > summary::-webkit-details-marker { display: none; }
+.kit-card > summary::after {
+  content: '▾';
+  margin-left: auto;
+  color: var(--muted);
+  flex: none;
+}
+.kit-card[open] > summary::after { content: '▴'; }
+.kit-card > summary strong { flex: none; }
+.kit-card > summary .dim {
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.kit-detail { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 4px; }
+
+/* Task 118 §1 — the first-run tour: an opaque card over a dim scrim. */
+.tour-scrim { position: absolute; inset: 0; background: rgba(4, 3, 2, 0.72); }
+.tour-coach {
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
+}
+.tour-arrow { position: absolute; width: 0; height: 0; margin-left: -10px; }
+.tour-arrow.bottom {
+  bottom: -10px;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid var(--bg-panel);
+}
+.tour-arrow.top {
+  top: -10px;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid var(--bg-panel);
+}
 
 /* Task 107 §9 — Journey › Quests: one collapsible row per questline. */
 .quests-page { height: 100%; overflow: auto; padding: 16px; }

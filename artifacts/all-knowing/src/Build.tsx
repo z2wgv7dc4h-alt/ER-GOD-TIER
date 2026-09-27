@@ -69,8 +69,11 @@ export function PvpWorkspace() {
 }
 
 /**
- * Task 107 §9 — a collapsible Kit group header. The Kit page is a wall of
- * distinct tools, so each becomes a group with only the first open.
+ * Task 107 §9 / Task 118 §3 — a collapsible card. The Builds and PvP pages are a
+ * wall of distinct tools, so each becomes a card that is collapsed unless the
+ * spec names it as a first-paint answer ("Your build" / "Stronger for your
+ * build"). Children stay mounted (tests read them) but a collapsed card is
+ * hidden, so it neither paints nor lengthens the page.
  */
 function KitGroup({
   title,
@@ -98,8 +101,6 @@ function KitGroup({
         </span>
         <span aria-hidden>{open ? '▴' : '▾'}</span>
       </button>
-      {/* Children stay mounted (search/tests read them) but a collapsed group is
-          hidden, so it neither paints nor lengthens the page. */}
       <div className="kit-group-body" hidden={!open}>{children}</div>
     </section>
   )
@@ -189,7 +190,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
           </p>
 
           {!pvpView && (
-          <KitGroup title="OP kits" count={opBuilds.length} defaultOpen>
+          <KitGroup title="OP kits" count={opBuilds.length}>
             <OpKitPanel
               character={character}
               setCharacter={setCharacter}
@@ -206,7 +207,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
 
           {pvpView && (
           <>
-          <KitGroup title="PvP builds · patch 1.17" count={pvpBuilds.length}>
+          <KitGroup title="PvP builds · patch 1.17" count={pvpBuilds.length} defaultOpen>
             <p className="note">
               PvP is its own game: poise, stance and invade-vs-host asymmetry matter more than raw damage,
               and skills/status are scaled separately against players. Brackets are RL30-50, RL60-90, RL125
@@ -409,6 +410,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
   }
 
   return (
+    <KitGroup title="Build lab · stats & attack rating">
     <div className="split">
       <section className="panel">
         <div className="kicker">Build lab</div>
@@ -596,5 +598,6 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
         </p>
       </section>
     </div>
+    </KitGroup>
   )
 }

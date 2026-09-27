@@ -144,6 +144,39 @@
   padding-top: 10px;
 }
 
+/* Task 118 §3 — the overflow of the "Stronger for your build" list, one tap
+   away so the page stays inside its screen budget. */
+.advisor-more {
+  margin-top: 10px;
+  border-top: 1px dashed var(--line);
+  padding-top: 8px;
+}
+
+.advisor-more-summary {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  cursor: pointer;
+  list-style: none;
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.advisor-more-summary::-webkit-details-marker {
+  display: none;
+}
+
+.advisor-more-summary::before {
+  content: '▸ ';
+  color: var(--muted);
+}
+
+.advisor-more[open] > .advisor-more-summary::before {
+  content: '▾ ';
+}
+
 .panel .advisor-stat input {
   width: 100%;
 }

@@ -289,7 +289,7 @@ function auditPage() {
   const OVERLAY_SELECTOR =
     '.entity-overlay, .quicklog-overlay, .area-picker, .header-more-menu, ' +
     '.help-overlay, .gear-picker, .lockout-overlay, .qr-overlay, .lib-detail, ' +
-    '.lib-filters-overlay'
+    '.lib-filters-overlay, .tour-overlay'
   const overlays = Array.prototype.slice.call(document.querySelectorAll(OVERLAY_SELECTOR)).filter((el) => {
     if (!isVisible(el)) return false
     // `.lib-detail` is a normal column on desktop but a fixed sheet on phone.
@@ -439,6 +439,14 @@ function auditPage() {
     if (!cs || cs.display === 'none' || cs.visibility === 'hidden') continue
     if (cs.position !== 'fixed' && cs.position !== 'absolute') continue
     if (isExempt(el)) continue
+    // A closed `<details>` keeps its content laid out (and geo-measurable) in
+    // Chromium even though nothing paints, so skip it exactly like `isVisible`
+    // does — a collapsed planner's absolute ticks are not a transparent layer.
+    const closedDetails = el.closest('details:not([open])')
+    if (closedDetails) {
+      const summary = closedDetails.querySelector(':scope > summary')
+      if (!summary || !summary.contains(el)) continue
+    }
     // Own text only: a wrapper that merely contains textful children is not the
     // layer a reader sees as transparent.
     const ownText = Array.prototype.some.call(
@@ -969,14 +977,22 @@ async function runScenario(browser, runCfg) {
   }
 
   try {
-    // --- Step 1: open the app ---------------------------------------------
+    // --- Step 1: first-run tour (screenshot + audit it as a modal) --------
     await page.goto(`${BASE}/`, { waitUntil: 'domcontentloaded' })
     await page.waitForSelector('.app', { timeout: 20000 }).catch(() => {})
     await sleep(800)
-    await step('landing', async () => {})
+    await step('first-run-tour', async (notes) => {
+      const shown = await page
+        .waitForSelector('.tour-coach', { timeout: 6000 })
+        .then(() => true)
+        .catch(() => false)
+      if (!shown) notes.push('first-run tour did not appear')
+    }, async () => page.locator('.tour-coach').isVisible().catch(() => false))
 
-    // --- Step 2: Tarnished > Overview -------------------------------------
+    // --- Step 2: Tarnished > Overview (dismiss the tour first) ------------
     await step('tarnished-overview', async (notes) => {
+      await clickText('Skip', { selector: '.tour-coach button' })
+      await sleep(250)
       await nav('me', 'Tarnished', 'overview', 'Overview', notes)
     })
 
@@ -1099,7 +1115,7 @@ async function runScenario(browser, runCfg) {
       await sleep(200)
     })
 
-    // --- Step 9: Library > Builds / Kit / Reference -----------------------
+    // --- Step 9: Library > Builds / PvP / Guides --------------------------
     await step('library-builds-top', async (notes) => {
       await nav('library', 'Library', 'builds', 'Builds', notes)
       await sleep(800)
@@ -1107,11 +1123,26 @@ async function runScenario(browser, runCfg) {
     await step('library-builds-scrolled', async () => {
       await scrollMain(1)
     })
-    await step('library-kit', async (notes) => {
-      await nav('library', 'Library', 'kit', 'Kit', notes)
-    })
-    await step('library-reference', async (notes) => {
-      await nav('library', 'Library', 'reference', 'Reference', notes)
+    // Task 118 §2 — expand the OP kits group, then an OP kit's level plan.
+    await step('library-builds-kits', async (notes) => {
+      await nav('library', 'Library', 'builds', 'Builds', notes)
+      await sleep(300)
+      await clickLocator(page.locator('.kit-group-head').filter({ hasText: /OP kits/ }), notes, 'OP kits group')
+      await sleep(300)
+      await clickLocator(page.locator('.kit-card > summary').first(), notes, 'first OP kit')
+      await sleep(300)
+    }, async () => page.locator('.kit-card[open]').first().isVisible().catch(() => false))
+
+    // Task 118 §2 — the PvP sub-view, first build card expanded.
+    await step('library-pvp', async (notes) => {
+      await nav('library', 'Library', 'pvp', 'PvP', notes)
+      await sleep(400)
+      await clickLocator(page.locator('.kit-card > summary').first(), notes, 'first PvP build')
+      await sleep(300)
+    }, async () => page.locator('.kit-card[open]').first().isVisible().catch(() => false))
+
+    await step('library-guides', async (notes) => {
+      await nav('library', 'Library', 'guides', 'Guides', notes)
     })
 
     // --- Step 11: Journey > Area ------------------------------------------
