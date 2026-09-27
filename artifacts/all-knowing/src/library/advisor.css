@@ -1,0 +1,148 @@
+/* Task 96 — advisor UI. Kept out of index.css on purpose: the shell owner owns
+   that file, and the planner/card are not wired into the shell yet. */
+
+.advisor {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.advisor-card {
+  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  padding: 14px;
+}
+
+.advisor-card h3 {
+  font-family: var(--font-display);
+  margin: 6px 0 4px;
+}
+
+.advisor-card h4 {
+  font-family: var(--font-display);
+  margin: 10px 0 4px;
+}
+
+.advisor-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 8px 14px;
+  margin-top: 10px;
+}
+
+.advisor-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.advisor-stat-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.advisor-bar {
+  height: 6px;
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+}
+
+.advisor-bar i {
+  display: block;
+  height: 100%;
+  background: var(--gold-dim);
+}
+
+.advisor-caps {
+  display: flex;
+  gap: 4px;
+}
+
+.advisor-caps i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+}
+
+.advisor-caps i.on {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.advisor-list {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.advisor-list > li {
+  border-top: 1px solid var(--line-soft);
+  padding-top: 8px;
+}
+
+.advisor-list > li:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.advisor-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.advisor-plan {
+  margin-top: 12px;
+  border-top: 1px dashed var(--line);
+  padding-top: 10px;
+}
+
+.panel .advisor-stat input {
+  width: 100%;
+}
+
+/* Journey › Now recommended block (standalone, not mounted). */
+.recommended {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.recommended h3 {
+  font-family: var(--font-display);
+  margin: 0;
+}
+
+.recommended-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.recommended ul {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recommended li {
+  border-top: 1px solid var(--line-soft);
+  padding-top: 6px;
+}
+
+.recommended li:first-child {
+  border-top: none;
+  padding-top: 0;
+}

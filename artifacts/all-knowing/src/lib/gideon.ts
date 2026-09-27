@@ -46,6 +46,7 @@ import { guideExcerpts, loadGuides, matchGuides, type GuideExcerpt } from './gui
 import { loadWeapons, type Weapon } from './ar'
 import { earlyWeaponRanking, weaponAdvice, dominantAttributes } from './upgradeAdvice'
 import { respecAdvice } from './respecAdvice'
+import { advise, planRespec } from './advisor'
 import type { Character, ModuleId } from '../types'
 
 export type GideonAct = {
@@ -403,6 +404,16 @@ const MISSED_HERE =
  */
 const WEAR_KIT = /\b(wear|equip|put on|use|swap to)\b[^.!?]*\b(kit|build|set|loadout|gear)\b/
 
+/**
+ * Task 96: advisor intents. "what should I upgrade", "recommend a weapon" and
+ * "help me switch to a bleed build" route to the pure `advise` / `planRespec`
+ * engine rather than the LLM. Kept narrow so "should I upgrade Rivers of Blood"
+ * (a named-weapon question) still takes the existing AR advice path.
+ */
+const ADVISOR_UPGRADE = /\b(what should i upgrade|what to upgrade|what do i upgrade|which upgrade|upgrade (next|first)|best upgrade)\b/
+const ADVISOR_WEAPON = /\b(recommend (me )?(a |some )?weapons?|suggest (me )?a weapons?|what weapon should i|which weapon should i|best weapon for (me|my build)|weapon for my build)\b/
+const ADVISOR_SWITCH = /\b(switch|change|respec|move|convert|help me (switch|change|respec|move))\b[^.!?]*\b(strength|dex|dexterity|quality|intelligence|\bint\b|faith|arcane|bleed|frost|poison|hybrid)\b[^.!?]*\bbuild\b/
+
 /** NPC-flavoured label for a line (Ranni, not "Age of Stars"). */
 function threadLabel(line: Line): string {
   const npc = npcLines.find((n) => n.line === line.id)
@@ -496,6 +507,82 @@ function approachingGateLine(character: Character): string {
 }
 
 /**
+ * Task 96: the advisor fast path. Consolidates upgrade picks, weapon
+ * recommendations and build switches under one pure `advise` call. Returns
+ * undefined when the caller has no weapons loaded (so the router falls through
+ * to its existing behaviour) or when the engine has nothing grounded to say.
+ */
+function speakAdvisor(
+  character: Character,
+  question: string,
+  weapons?: Weapon[],
+  regionLevelList?: RegionLevel[],
+): GideonAct | undefined {
+  if (!weapons) return undefined
+  const q = question.toLowerCase()
+  const switchAsk = ADVISOR_SWITCH.test(q)
+  const weaponAsk = ADVISOR_WEAPON.test(q)
+  const upgradeAsk = ADVISOR_UPGRADE.test(q)
+  if (!switchAsk && !weaponAsk && !upgradeAsk) return undefined
+
+  const adv = advise(character, { weapons, areas: regionLevelList })
+
+  if (switchAsk) {
+    const allBuilds = [...opBuilds, ...pvpBuilds]
+    const target = allBuilds.find((b) => q.includes(b.name.toLowerCase())) || buildFromText(q) || opBuilds[0]
+    const plan = planRespec(character, target.id, { weapons })
+    if (plan) {
+      const up = plan.stats.filter((s) => s.to > s.from).map((s) => `${s.attr} ${s.from}→${s.to}`)
+      const down = plan.stats.filter((s) => s.to < s.from).map((s) => `${s.attr} ${s.from}→${s.to}`)
+      const missing = plan.missing.map((m) => m.name)
+      const pieces = missing.length
+        ? ` Missing ${missing.length}: ${missing.slice(0, 6).join(', ')}.`
+        : ' Every seeded piece is already logged.'
+      const tears = plan.larvalTears
+        ? ` Costs ${plan.larvalTears} Larval Tear${plan.larvalTears === 1 ? '' : 's'}.`
+        : ''
+      return {
+        say: `Your read: ${adv.build.label} (${Math.round(adv.build.confidence * 100)}%). Switching to ${plan.targetName} (Lv ${plan.levelTarget}): raise ${up.join(', ') || 'nothing'}; lower ${down.join(', ') || 'nothing'}.${plan.levelsNeeded ? ` ${plan.levelsNeeded} levels to go.` : ''}${tears}${pieces} ${plan.rennalaNote}`,
+        module: 'build',
+        buildId: plan.targetId,
+        factId: plan.pinTarget?.factId,
+        offer: plan.pinTarget ? { label: 'Show on map', prompt: `where is ${plan.pinTarget.name}` } : undefined,
+      }
+    }
+  }
+
+  const usable = adv.upgrades.filter((u) => u.obtainableNow || u.owned)
+  const pool = (weaponAsk || switchAsk) && usable.length ? usable : adv.upgrades
+  const picks = pool.slice(0, 3)
+  if (!picks.length) return undefined
+
+  const lines = picks.map((u) => {
+    const state = u.owned
+      ? 'owned'
+      : u.obtainableNow
+        ? 'obtainable now'
+        : u.lost
+          ? 'locked out this run'
+          : u.region
+            ? `in ${u.region}`
+            : 'later'
+    const req = u.meets ? 'requirements met' : u.requirement
+    const gain = u.gainPct ? ` (+${u.gainPct}% AR)` : ''
+    return `${u.name} ${u.ar} AR${gain} — ${req}, ${state}`
+  })
+  const lead = weaponAsk
+    ? `For your ${adv.build.label} build, best weapon pick${picks.length === 1 ? '' : 's'}:`
+    : `Your read: ${adv.build.label}. Top upgrades at your stats:`
+  const first = picks.find((u) => u.factId)
+  return {
+    say: `${lead} ${lines.join(' · ')}.`,
+    module: 'build',
+    factId: first?.factId,
+    offer: first ? { label: 'Show on map', prompt: `where is ${first.name}` } : undefined,
+  }
+}
+
+/**
  * Deterministic keyword router. This is the fallback and the fast path: it
  * answers lookups (a named ending, a warp, a build, still-available, "I'm
  * stuck") without a network round-trip.
@@ -534,6 +621,13 @@ export function askGideonRouter(
       const buildId = [...opBuilds, ...pvpBuilds].find((b) => b.name === adv.name)?.id
       return { say: `${adv.note} Rennala respecs for a Larval Tear.`, module: 'build', buildId }
     }
+  }
+
+  // Advisor (Task 96): "what should I upgrade", "recommend a weapon" and
+  // "help me switch to a bleed build" are answered by the pure `advise` engine.
+  if (weapons) {
+    const advisorAct = speakAdvisor(character, question, weapons, regionLevelList)
+    if (advisorAct) return advisorAct
   }
 
   // Weapon upgrade / "what should I use" advice from the AR engine at this
@@ -1230,6 +1324,8 @@ export function isFastLookup(
 
   // Weapon upgrade / early-weapon advice is deterministic from the AR engine.
   if (weapons && /\b(upgrade|reinforce|respec|rebirth|different weapon|switch weapons?|stat allocation|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(q)) return true
+  // ...and so is the consolidated advisor (upgrade picks, weapon recs, switches).
+  if (weapons && (ADVISOR_UPGRADE.test(q) || ADVISOR_WEAPON.test(q) || ADVISOR_SWITCH.test(q))) return true
 
   // To-do list + level/zone advice are deterministic.
   if (/\b(come back|go back|my (todo|list|watchlist)|what(?:'| i)?s on my (todo|list)|remember to|don'?t forget)\b/.test(q)) return true
@@ -1286,7 +1382,7 @@ export async function askGideon(
   const wantsPlacements = /\b(where|find|locate)\b/.test(ql)
   const wantsMedusa = /\b(medusa|walkthrough|route)\b/.test(ql)
   const wantsGuides = /\b(how|guide|upgrade|smithing|somber|bell bearing|talisman|incantation|sorcer|damage type|stats?|buff|craft|recipe|cookbook)\b/.test(ql)
-  const wantsWeapons = /\b(upgrade|reinforce|respec|rebirth|different weapon|switch weapons?|stat allocation|best weapons?|early weapons?|strong weapons?|good weapons?)\b/.test(ql)
+  const wantsWeapons = /\b(upgrade|reinforce|respec|rebirth|different weapon|switch weapons?|stat allocation|best weapons?|early weapons?|strong weapons?|good weapons?|recommend a weapon|suggest a weapon|what should i upgrade|switch to a|help me switch)\b/.test(ql)
   const wantsLevels = /\b(what level|recommended level|am i (ready|overlevel|underlevel)|overlevell?ed|underlevell?ed|outlevell?ed|before i (go|leave|move)|i(?:'| a)m here)\b/.test(ql)
 
   // Load every optional context source in parallel — they are independent
