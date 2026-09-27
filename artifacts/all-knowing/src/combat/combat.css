@@ -1,0 +1,163 @@
+/* Task 105 — combat toolkit UI. Kept out of index.css on purpose: the shell
+   owner owns that file and these cards are not wired into the shell yet. */
+
+.combat-prep,
+.combat-damage {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.combat-block {
+  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  padding: 12px 14px;
+}
+
+.combat-block h3 {
+  font-family: var(--font-display);
+  margin: 0 0 4px;
+}
+
+.combat-boss-pick,
+.combat-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.combat-boss-pick select,
+.combat-fields select,
+.combat-fields input {
+  width: 100%;
+  min-height: 32px;
+}
+
+.combat-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px 14px;
+}
+
+.combat-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.combat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--line);
+  padding: 2px 8px;
+  font-size: 12px;
+  border-radius: 999px;
+}
+
+.combat-chip.weak {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.combat-chip.resist {
+  border-color: var(--line);
+  opacity: 0.8;
+}
+
+.combat-chip.on {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.combat-chip.warn {
+  border-color: var(--danger, #c0703f);
+}
+
+.combat-list {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.combat-list > li {
+  border-top: 1px solid var(--line-soft);
+  padding-top: 8px;
+}
+
+.combat-list > li:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.combat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.combat-tier {
+  display: inline-block;
+  min-width: 18px;
+  text-align: center;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 3px;
+}
+
+.combat-tier.tier-B,
+.combat-tier.tier-C {
+  border-color: var(--line);
+  color: inherit;
+  font-weight: 400;
+}
+
+.combat-status,
+.combat-damage-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.combat-status th,
+.combat-status td,
+.combat-damage-table th,
+.combat-damage-table td {
+  text-align: left;
+  border-bottom: 1px solid var(--line-soft);
+  padding: 5px 6px;
+  vertical-align: top;
+}
+
+.combat-status th[scope='row'],
+.combat-damage-table th[scope='row'] {
+  font-weight: 500;
+}
+
+.combat-status tr.immune {
+  opacity: 0.6;
+}
+
+.combat-status-note {
+  display: block;
+  color: var(--dim, var(--line));
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+.combat-damage-table tr.total th,
+.combat-damage-table tr.total td {
+  font-weight: 700;
+  border-top: 1px solid var(--line);
+  border-bottom: none;
+}
