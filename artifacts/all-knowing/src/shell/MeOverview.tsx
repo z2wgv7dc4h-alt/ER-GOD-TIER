@@ -1,9 +1,12 @@
+import { useMemo, useState } from 'react'
 import { markers } from '../data/seed'
 import { scadutreeFragments } from '../knowledge/collectibles'
 import { canonicalHunts } from '../knowledge/completion'
 import { warpGraces } from '../knowledge/graces'
 import { allLines } from '../knowledge/storylines'
+import { completionCategories } from '../lib/completionView'
 import { summarize } from '../lib/infer'
+import { EntityLink } from '../EntityLink'
 import { setupSteps, weakestStep } from '../lib/setupWizard'
 import { sourceLabel } from '../lib/sourceLabel'
 import { Recents, StatEdit, softCapMark } from '../QoL'
@@ -79,6 +82,69 @@ function CharacterCard() {
   )
 }
 
+/**
+ * Task 100 §5 — the completion "Missing" drill-down (Usage model moment 16):
+ * one row per category with have/total, expandable to the missing rows, each
+ * linking into the universal entity page, with Show all on map where the rows
+ * are real Atlas pins.
+ */
+function MissingDrilldown() {
+  const { character, setMissingOnly, setSelectedMarkerId, setModule } = useWorkspace()
+  const categories = useMemo(() => completionCategories(character), [character])
+  const [open, setOpen] = useState<string | null>(null)
+
+  return (
+    <section className="panel completion-missing">
+      <div className="kicker">Missing</div>
+      <ul className="completion-cats">
+        {categories.map((c) => {
+          const expanded = open === c.id
+          return (
+            <li key={c.id}>
+              <div className="completion-cat-head">
+                <button
+                  type="button"
+                  className={expanded ? 'chip on' : 'chip'}
+                  aria-expanded={expanded}
+                  onClick={() => setOpen(expanded ? null : c.id)}
+                >
+                  {c.label} · {c.have}/{c.total}
+                </button>
+                {c.pinned && (
+                  <button
+                    type="button"
+                    className="chip"
+                    disabled={c.missing.length === 0}
+                    onClick={() => {
+                      setMissingOnly(true)
+                      setSelectedMarkerId(c.missing[0]?.id ?? null)
+                      setModule('map')
+                    }}
+                  >
+                    Show all on map
+                  </button>
+                )}
+              </div>
+              {expanded && (
+                c.missing.length === 0 ? (
+                  <p className="note">Nothing missing.</p>
+                ) : (
+                  <ul className="completion-rows">
+                    {c.missing.slice(0, 60).map((m) => (
+                      <li key={m.id}><EntityLink id={m.id}>{m.name}</EntityLink></li>
+                    ))}
+                    {c.missing.length > 60 && <li className="note">+{c.missing.length - 60} more</li>}
+                  </ul>
+                )
+              )}
+            </li>
+          )
+        })}
+      </ul>
+    </section>
+  )
+}
+
 export function MeOverview() {
   const { character, go, setSelectedMarkerId, setModule } = useWorkspace()
   const firstRun =
@@ -136,6 +202,7 @@ export function MeOverview() {
           </button>
         </div>
       </section>
+      <MissingDrilldown />
       <Recents />
     </div>
   )

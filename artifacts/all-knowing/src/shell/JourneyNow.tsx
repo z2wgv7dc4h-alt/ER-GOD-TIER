@@ -16,13 +16,16 @@ import { RelatedCollapsible } from '../Related'
 import { NextMoves } from '../Thread'
 import { useWorkspace } from '../state'
 import { AreaPrompt } from './AreaPrompt'
+import { ResumeCard } from './ResumeCard'
+import { SeeAllButton, useRowReveal } from './rows'
 import { WorldRibbon } from './WorldRibbon'
 import { RecommendedCard } from './RecommendedCard'
 
 /**
  * Task 91 `journey/now`: the "working towards" dashboard that used to sit on top
- * of the Gideon chat. Same data sources — `gideonHeader`, `planRoute`,
- * `stillAvailable`, `beatPin`, `lockoutWarningsFor` — moved, not rewritten.
+ * of the Gideon chat, reordered by the Task 100 playtest fix: lead, Recommended,
+ * Before you leave, Leftovers, Next moves, then the 100% route collapsed last.
+ * Every list caps at three rows behind a "See all (N)" control.
  */
 export function JourneyNow() {
   const w = useWorkspace()
@@ -40,7 +43,9 @@ export function JourneyNow() {
   const lockedCount = survey.locked.length
   const showPin = header.factId ? beatPin(w.character, header.factId, coords) : null
   const blitzLine = useMemo(() => allLines.find((l) => l.kind === 'blitz'), [])
-  const nextSteps = useMemo(() => (plan ? plan.available.slice(1, 4) : []), [plan])
+  const nextTotal = plan ? Math.max(0, plan.available.length - 1) : 0
+  const nextReveal = useRowReveal(nextTotal)
+  const nextSteps = plan ? plan.available.slice(1, 1 + nextReveal.visible) : []
   // Task 92 row 3: the same leftover pins the Atlas draws, counted here so the
   // player can see how much is still outstanding before opening the map.
   const [near, setNear] = useState(false)
@@ -48,6 +53,7 @@ export function JourneyNow() {
     () => leftoverPins(w.character, coords, near && w.currentArea ? { region: w.currentArea.region } : {}),
     [w.character, coords, near, w.currentArea],
   )
+  const leftovers = useRowReveal(outstanding.length)
   const [lockPending, setLockPending] = useState<{ ids: string[]; warnings: LockWarning[] } | null>(null)
 
   function persistGoal(id?: string) {
@@ -76,10 +82,13 @@ export function JourneyNow() {
   return (
     <div className="now-page">
       <WorldRibbon />
+      <ResumeCard />
       <div className="now-cards">
         <AreaPrompt className="panel area-prompt" />
         <section className="panel now-lead">
-          <div className="kicker">Working towards{header.goal ? ` · ${header.goal}` : ''}</div>
+          <div className="kicker">
+            {header.goal ? `Working towards · ${header.goal}` : 'Main path'}
+          </div>
           {header.beat ? (
             <>
               <div className="kicker" style={{ marginTop: 6 }}>Now</div>
@@ -144,6 +153,7 @@ export function JourneyNow() {
                       <div className="note">{s.detail}</div>
                     </button>
                   ))}
+                  <SeeAllButton total={nextTotal} expanded={nextReveal.expanded} onToggle={nextReveal.toggle} />
                 </div>
               )}
 
@@ -164,28 +174,33 @@ export function JourneyNow() {
         </section>
         <RecommendedCard />
 
-        <section className="panel">
-          <div className="kicker">Next moves</div>
-          <p className="note">
-            Every item links into the map or the quest graph — nothing here changes your run on its own.
-          </p>
-          <NextMoves
-            onOpen={(id) => {
-              w.setSelectedMarkerId(id)
-              w.setModule('map')
-            }}
-          />
-          <div className="opts" style={{ marginTop: 12 }}>
-            <button type="button" className="chip" onClick={() => w.go('journey', 'map')}>Open the map</button>
-            <button type="button" className="chip" onClick={() => w.go('journey', 'quests')}>Open Quests</button>
-          </div>
-        </section>
+        <BeforeYouGoCard />
 
         <section className="panel leftover-card">
           <div className="kicker">Leftovers nearby</div>
           <h3 className="now-beat" aria-label="Leftover count">
             {outstanding.length} still outstanding here
           </h3>
+          {outstanding.length > 0 && (
+            <ul className="now-rows">
+              {outstanding.slice(0, leftovers.visible).map((o) => (
+                <li key={o.id}>
+                  <button
+                    type="button"
+                    className="quest"
+                    onClick={() => {
+                      w.setSelectedMarkerId(o.id)
+                      w.setModule('map')
+                    }}
+                  >
+                    <strong>{o.name}</strong>
+                    <div className="note">{o.kind}{o.region ? ` · ${o.region}` : ''}</div>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+          <SeeAllButton total={outstanding.length} expanded={leftovers.expanded} onToggle={leftovers.toggle} />
           <p className="note">
             Same layer as the Atlas. Nothing is marked until you collect it.
           </p>
@@ -210,13 +225,27 @@ export function JourneyNow() {
             >
               Show on map
             </button>
-            <button type="button" className="chip" onClick={() => w.go('journey', 'map')}>Open the map</button>
           </div>
         </section>
 
-        <BeforeYouGoCard />
+        <section className="panel">
+          <div className="kicker">Next moves</div>
+          <p className="note">
+            Every item links into the map or the quest graph — nothing here changes your run on its own.
+          </p>
+          <NextMoves
+            onOpen={(id) => {
+              w.setSelectedMarkerId(id)
+              w.setModule('map')
+            }}
+          />
+          <div className="opts" style={{ marginTop: 12 }}>
+            <button type="button" className="chip" onClick={() => w.go('journey', 'map')}>Open the map</button>
+            <button type="button" className="chip" onClick={() => w.go('journey', 'quests')}>Open Quests</button>
+          </div>
+        </section>
 
-        <MedusaRoute compact />
+        <MedusaRoute compact collapsedByDefault />
       </div>
 
       {lockPending && (

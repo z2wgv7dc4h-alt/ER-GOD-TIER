@@ -15,6 +15,10 @@ export type VaultUi = {
   selectedMarkerId: string | null
   /** Task 98: the persisted "where am I" record, derived + picked per profile. */
   currentArea?: CurrentArea | null
+  /** Task 100 §1: the last visit wall clock, for the resume card trigger. */
+  lastVisitAt?: number
+  /** Task 100 §1: the known-fact count at that visit, for "+N facts". */
+  resumeFactCount?: number
 }
 
 /**

@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import { beforeYouGo } from './lib/beforeYouGo'
 import { loadRegionLevels, type RegionLevel } from './lib/regionLevels'
+import { SeeAllButton, useRowReveal } from './shell/rows'
 import { useWorkspace } from './state'
 
 /**
  * Task 92 row 2: missables / points of no return / "before I go" as a card on
  * Journey → Now, level-aware. Same pure `beforeYouGo` advice Gideon already
- * gives, scoped to the character's current region.
+ * gives, scoped to the character's current region. Task 100 caps the open list
+ * at three rows behind a "See all (N)" control.
  */
 export function BeforeYouGoCard() {
   const { character } = useWorkspace()
@@ -21,6 +23,7 @@ export function BeforeYouGoCard() {
   }, [])
 
   const advice = useMemo(() => beforeYouGo(character, 'here', areas), [character, areas])
+  const open = useRowReveal(advice.open.length)
 
   return (
     <section className="panel before-you-go">
@@ -37,14 +40,15 @@ export function BeforeYouGoCard() {
       <p className="note">{advice.advice}</p>
       {advice.open.length > 0 && (
         <ul className="list" style={{ marginTop: 8 }}>
-          {advice.open.map((o) => (
-            <li key={o.name} style={{ cursor: 'default' }}>
+          {advice.open.slice(0, open.visible).map((o) => (
+            <li key={`${o.name}-${o.source}`} style={{ cursor: 'default' }}>
               <span>{o.name}</span>
               <span className="note">{o.source}</span>
             </li>
           ))}
         </ul>
       )}
+      <SeeAllButton total={advice.open.length} expanded={open.expanded} onToggle={open.toggle} />
     </section>
   )
 }

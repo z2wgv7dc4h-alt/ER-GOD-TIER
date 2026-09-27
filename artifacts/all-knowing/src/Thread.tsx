@@ -2,6 +2,7 @@ import { EntityLink } from './EntityLink'
 import { labelOf, moduleFor, nextMoves, statusOf, thread, whyKnown } from './lib/links'
 import { searchSync } from './lib/search'
 import { Related } from './Related'
+import { SeeAllButton, useRowReveal } from './shell/rows'
 import { useWorkspace } from './state'
 
 export function Thread({ id }: { id: string }) {
@@ -56,16 +57,18 @@ export function Thread({ id }: { id: string }) {
 export function NextMoves({ onOpen }: { onOpen: (id: string) => void }) {
   const { character } = useWorkspace()
   const moves = nextMoves(character)
+  const reveal = useRowReveal(moves.length)
   if (!moves.length) return null
   return (
     <div className="thread-block">
       <div className="kicker">Ask or photograph next</div>
-      {moves.map((m) => (
+      {moves.slice(0, reveal.visible).map((m) => (
         <button key={m.id} type="button" className="quest" onClick={() => onOpen(m.id)}>
           <strong>{labelOf(m.id)}</strong>
           <div className="note">{m.reason}</div>
         </button>
       ))}
+      <SeeAllButton total={moves.length} expanded={reveal.expanded} onToggle={reveal.toggle} />
     </div>
   )
 }

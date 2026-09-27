@@ -1,9 +1,17 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { markers } from './data/seed'
-import { engineAreaSignal, resolveCurrentArea, type AreaSignal } from './lib/areaContext'
+import { areaLabel, engineAreaSignal, resolveCurrentArea, type AreaSignal } from './lib/areaContext'
 import type { EngineMarker, EngineState, EngineStatus } from './lib/mapEngine'
 import { buildEntityHash, parseEntityHash } from './lib/entityHash'
+import { gideonHeader } from './lib/gideonHeader'
 import { pushRecent, recentAfterProfileSwitch } from './lib/recent'
+import {
+  buildResume,
+  characterFactCount,
+  shouldShowResume,
+  type ResumeData,
+  type ResumeSnapshot,
+} from './lib/resume'
 import {
   defaultSub,
   hashToLocation,
@@ -69,6 +77,12 @@ type Workspace = {
   /** Gideon dock open/closed; default from viewport width, persisted. */
   dockOpen: boolean
   toggleDock: () => void
+  /** Task 100 §2: chrome-free full-screen map glance. */
+  glance: boolean
+  setGlance: (v: boolean) => void
+  /** Task 100 §1: the "welcome back" card, once per session after a >30 min gap. */
+  resume: ResumeData | null
+  dismissResume: () => void
   recentFacts: string[]
   vault: Vault
   profile: Profile
@@ -106,16 +120,44 @@ function readDockOpen(): boolean {
   return typeof window !== 'undefined' ? window.innerWidth >= 1200 : false
 }
 
+/** The display context for the resume card — the strings the rest of the app already knows. */
+function resumeContext(character: Character, area: AreaSignal | null): Pick<ResumeData, 'area' | 'goal' | 'next' | 'nextFactId'> {
+  const header = gideonHeader(character)
+  return {
+    area: areaLabel(area) || area?.region,
+    goal: header.goal,
+    next: header.beat,
+    nextFactId: header.factId,
+  }
+}
+
 export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const boot = useRef(loadVault()).current
   const [vault, setVault] = useState<Vault>(boot)
   const bootProfile = activeProfile(boot)
+  const bootSnapshot = useRef<ResumeSnapshot | null>(
+    bootProfile.ui.lastVisitAt != null
+      ? { lastVisitAt: bootProfile.ui.lastVisitAt, factCount: bootProfile.ui.resumeFactCount ?? 0 }
+      : null,
+  ).current
+  const resumeAtBoot = shouldShowResume(Date.now(), bootSnapshot)
   const start = bootLocation(typeof window !== 'undefined' ? window.location.hash : '', uiLocation(bootProfile.ui))
+  // Task 100 §1: a real "welcome back" lands on Journey › Now unless the URL
+  // already names a location (a deep link or a reload of another view wins).
+  const hasHash = typeof window !== 'undefined' && hashToLocation(window.location.hash) != null
+  const bootSection: Section = resumeAtBoot && !hasHash ? 'journey' : start.section
+  const bootSub: Sub | null = resumeAtBoot && !hasHash ? 'now' : start.sub
 
-  const [module, setModuleState] = useState<ModuleId>(bootProfile.ui.module)
-  const [section, setSection] = useState<Section>(start.section)
-  const [sub, setSub] = useState<Sub | null>(start.sub)
+  const [module, setModuleState] = useState<ModuleId>(locationToModule(bootSection, bootSub))
+  const [section, setSection] = useState<Section>(bootSection)
+  const [sub, setSub] = useState<Sub | null>(bootSub)
   const [character, setCharacter] = useState<Character>(bootProfile.character)
+  const [resume, setResume] = useState<ResumeData | null>(() =>
+    resumeAtBoot
+      ? buildResume(bootProfile.character, bootSnapshot, resumeContext(bootProfile.character, bootProfile.ui.currentArea ?? null))
+      : null,
+  )
+  const [glance, setGlance] = useState(false)
   const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(bootProfile.ui.selectedMarkerId)
   const [entityId, setEntityId] = useState<string | null>(() =>
     parseEntityHash(typeof window !== 'undefined' ? window.location.hash : ''),
@@ -174,6 +216,23 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
 
   const vaultRef = useRef(vault)
   vaultRef.current = vault
+
+  // Task 100 §1: record this visit once, so the next open can measure the gap and
+  // the fact delta. The resume card itself stays mounted until dismissed (or the
+  // session ends) even though the snapshot has already advanced.
+  useEffect(() => {
+    const next = upsertActive(vaultRef.current, {
+      ui: {
+        ...activeProfile(vaultRef.current).ui,
+        lastVisitAt: Date.now(),
+        resumeFactCount: characterFactCount(bootProfile.character),
+      },
+    })
+    vaultRef.current = next
+    setVault(next)
+    saveVault(next)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   /** Compat shim: `setModule(oldId)` lands on the mapped section/sub. */
   function navigateModule(id: ModuleId) {
@@ -297,6 +356,10 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       setHelpOpen,
       dockOpen,
       toggleDock: () => setDockOpen((v) => !v),
+      glance,
+      setGlance,
+      resume,
+      dismissResume: () => setResume(null),
       recentFacts,
       vault,
       profile: activeProfile(vault),
@@ -311,7 +374,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [module, section, sub, character, selectedMarkerId, entityId, currentArea, layers, showLeftovers, showGates, missingOnly, query, engineStatus, engineState, engineMarkers, history, helpOpen, dockOpen, recentFacts, vault],
+    [module, section, sub, character, selectedMarkerId, entityId, currentArea, layers, showLeftovers, showGates, missingOnly, query, engineStatus, engineState, engineMarkers, history, helpOpen, dockOpen, glance, resume, recentFacts, vault],
   )
 
   return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>

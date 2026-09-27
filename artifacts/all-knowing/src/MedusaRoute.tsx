@@ -11,10 +11,17 @@ import { useWorkspace } from './state'
  * steps are that chapter's own `medusaRoute` quests. Rendered on Journey →
  * Quests (full) and as a compact card on Journey → Now.
  */
-export function MedusaRoute({ compact = false }: { compact?: boolean }) {
+export function MedusaRoute({
+  compact = false,
+  collapsedByDefault = false,
+}: {
+  compact?: boolean
+  collapsedByDefault?: boolean
+}) {
   const { character, go } = useWorkspace()
   const [steps, setSteps] = useState<MedusaQuest[] | null>(null)
   const [open, setOpen] = useState(false)
+  const [bodyOpen, setBodyOpen] = useState(!collapsedByDefault)
 
   useEffect(() => {
     let cancelled = false
@@ -38,9 +45,23 @@ export function MedusaRoute({ compact = false }: { compact?: boolean }) {
 
   return (
     <div className="medusa-route">
-      <div className="kicker">
-        100% route · {actIds.length} acts · {steps ? `${steps.length} steps` : `${medusaChapters.length} chapters`}
+      <div className="medusa-head">
+        <div className="kicker">
+          100% route · {actIds.length} acts · {steps ? `${steps.length} steps` : `${medusaChapters.length} chapters`}
+        </div>
+        {collapsedByDefault && !bodyOpen && (
+          <button type="button" className="chip see-all" onClick={() => setBodyOpen(true)}>
+            See all ({medusaChapters.length})
+          </button>
+        )}
+        {collapsedByDefault && bodyOpen && (
+          <button type="button" className="chip see-all" onClick={() => setBodyOpen(false)}>
+            Hide
+          </button>
+        )}
       </div>
+      {bodyOpen && (
+        <>
       <h3 className="medusa-act" style={{ fontFamily: 'var(--font-display)', margin: '6px 0 4px' }}>
         Act {actNo}: {chapter.act}
       </h3>
@@ -94,6 +115,8 @@ export function MedusaRoute({ compact = false }: { compact?: boolean }) {
             </li>
           ))}
         </ol>
+      )}
+        </>
       )}
     </div>
   )

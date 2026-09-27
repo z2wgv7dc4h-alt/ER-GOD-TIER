@@ -1,6 +1,10 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { remembrances } from '../knowledge/remembrances'
+import { findWeapon, loadWeapons, type Weapon } from '../lib/ar'
 import { getEntity, type EntityKind } from '../lib/entityGraph'
 import { applyFacts, denyFacts } from '../lib/infer'
+import { rankRemembrance, type RemembranceOption } from '../lib/remembranceChoice'
+import { gearVerdict, weaponVerdict, type Verdict } from '../lib/verdict'
 import { useWorkspace } from '../state'
 import { EntityPanel } from './EntityPanel'
 import type { CategoryId, LibraryEntity } from './model'
@@ -11,6 +15,9 @@ import type { CategoryId, LibraryEntity } from './model'
  * Mounted once by the shell, it reads `entityId` off the workspace and shows the
  * shared `EntityPanel` for any graph entity — weapon, boss, grace, quest beat,
  * gate. It is the same panel the Library mounts, never a second one.
+ *
+ * Task 100 adds two pieces of the entity page here: the advisor verdict for a
+ * weapon/armor/talisman, and the ranked Enia options for a remembrance.
  */
 
 const CATEGORY_BY_KIND: Record<EntityKind, CategoryId> = {
@@ -40,6 +47,15 @@ const CATEGORY_BY_KIND: Record<EntityKind, CategoryId> = {
 export function EntityOverlay() {
   const w = useWorkspace()
   const { entityId, character, setCharacter } = w
+  const [weapons, setWeapons] = useState<Weapon[] | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+    void loadWeapons()
+      .then((rows) => { if (!cancelled) setWeapons(rows) })
+      .catch(() => { /* no regulation: no verdict, the rest of the panel still works */ })
+    return () => { cancelled = true }
+  }, [])
 
   const entity = useMemo<LibraryEntity | null>(() => {
     if (!entityId) return null
@@ -54,6 +70,24 @@ export function EntityOverlay() {
       lore: e.summary,
     }
   }, [entityId])
+
+  const verdict = useMemo<Verdict | null>(() => {
+    if (!entityId || !entity) return null
+    if (entity.subtype === 'armor' || entity.subtype === 'talisman') {
+      return gearVerdict(character, entity.name, entity.subtype)
+    }
+    if (entity.subtype !== 'weapon' && entity.subtype !== 'shield') return null
+    if (!weapons) return null
+    const weapon = findWeapon(weapons, { id: entityId, name: entity.name, kind: 'armament' })
+    return weapon ? weaponVerdict(character, weapons, weapon) : null
+  }, [entityId, entity, weapons, character])
+
+  const remembrance = useMemo<{ remembrance: (typeof remembrances)[number]; options: RemembranceOption[] } | null>(() => {
+    if (!entityId || !entity) return null
+    const row = remembrances.find((r) => r.id === entityId || r.id === entity.id)
+    if (!row) return null
+    return { remembrance: row, options: rankRemembrance(character, row) }
+  }, [entityId, entity, character])
 
   if (!entityId || !entity) return null
 
@@ -73,8 +107,11 @@ export function EntityOverlay() {
           entity={entity}
           factId={entityId}
           character={character}
+          verdict={verdict}
+          remembrance={remembrance}
           onClose={w.closeEntity}
           onOwnedChange={changeOwned}
+          onTradeOption={(factId) => setCharacter(applyFacts(character, [factId], 'answer', 'Enia trade'))}
           onShowOnMap={() => {
             w.setSelectedMarkerId(entityId)
             w.setModule('map')

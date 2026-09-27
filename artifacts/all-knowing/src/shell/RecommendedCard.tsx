@@ -5,14 +5,25 @@ import { advise } from '../lib/advisor'
 import { regionMatches } from '../lib/areaHub'
 import { loadRegionLevels, type RegionLevel } from '../lib/regionLevels'
 import { useCoords } from '../lib/coords'
+import type { Character } from '../types'
 import { useWorkspace } from '../state'
+import { SeeAllButton, useRowReveal } from './rows'
 import '../library/advisor.css'
 
 /**
- * Journey › Now: "Recommended for you" (Task 96). Top 3 to-dos and top 2
- * upgrades from the pure `advise` engine, with a See-all hand-off to the
- * Library › Builds planner. Standalone: not wired into the shell yet.
+ * Journey › Now: "Recommended for you" (Task 96). Top to-dos and upgrades from
+ * the pure `advise` engine, with a See-all hand-off to the Library › Builds
+ * planner. Task 100 caps each list at three rows and, when the character has no
+ * real stats yet, replaces the fake build read with a "Set up your Tarnished"
+ * call to action.
  */
+
+/** True for a character whose stats are the untouched default (all 10s or a demo/empty source). */
+export function hasUnsetStats(character: Character): boolean {
+  if (character.source === 'empty' || character.source === 'demo') return true
+  return Object.values(character.stats).every((v) => v === 10)
+}
+
 export function RecommendedCard() {
   const w = useWorkspace()
   const coords = useCoords()
@@ -42,8 +53,26 @@ export function RecommendedCard() {
     return Boolean(area && regionMatches(region, area))
   }
 
-  const todos = advice.todo.filter((t) => inArea(t.factId ? byId.get(t.factId)?.region : undefined)).slice(0, 3)
-  const upgrades = advice.upgrades.filter((u) => inArea(u.region)).slice(0, 2)
+  const todos = advice.todo.filter((t) => inArea(t.factId ? byId.get(t.factId)?.region : undefined))
+  const upgrades = advice.upgrades.filter((u) => inArea(u.region))
+  const todoReveal = useRowReveal(todos.length)
+  const upgradeReveal = useRowReveal(upgrades.length)
+
+  if (hasUnsetStats(w.character)) {
+    return (
+      <section className="panel recommended recommended-setup">
+        <div className="kicker">Recommended for you</div>
+        <h3>Set up your Tarnished</h3>
+        <p className="note">
+          Recommended weapons and to-dos are computed from your stats and gear — there is nothing to
+          recommend until we know them. Answer a few questions and the app infers the rest.
+        </p>
+        <button type="button" className="chip on" onClick={() => w.go('me', 'setup')}>
+          Set up your Tarnished
+        </button>
+      </section>
+    )
+  }
 
   return (
     <section className="panel recommended">
@@ -66,8 +95,8 @@ export function RecommendedCard() {
           {todos.length === 0 ? (
             <p className="note">Nothing open in the data yet.</p>
           ) : (
-            <ul>
-              {todos.map((t) => (
+            <ul className="now-rows">
+              {todos.slice(0, todoReveal.visible).map((t) => (
                 <li key={t.id}>
                   <strong>{t.title}</strong>
                   <p className="note" style={{ margin: '2px 0 0' }}>{t.reason}</p>
@@ -75,6 +104,7 @@ export function RecommendedCard() {
               ))}
             </ul>
           )}
+          <SeeAllButton total={todos.length} expanded={todoReveal.expanded} onToggle={todoReveal.toggle} />
         </div>
 
         <div>
@@ -82,8 +112,8 @@ export function RecommendedCard() {
           {upgrades.length === 0 ? (
             <p className="note">{weapons ? 'Nothing beats your current kit on-build.' : 'Loading regulation data…'}</p>
           ) : (
-            <ul>
-              {upgrades.map((u) => (
+            <ul className="now-rows">
+              {upgrades.slice(0, upgradeReveal.visible).map((u) => (
                 <li key={`${u.weaponName}-${u.upgrade}`}>
                   <strong>{u.name}</strong>
                   <p className="note" style={{ margin: '2px 0 0' }}>
@@ -94,6 +124,7 @@ export function RecommendedCard() {
               ))}
             </ul>
           )}
+          <SeeAllButton total={upgrades.length} expanded={upgradeReveal.expanded} onToggle={upgradeReveal.toggle} />
         </div>
       </div>
 

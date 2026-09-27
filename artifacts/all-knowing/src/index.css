@@ -1515,3 +1515,52 @@ body { overflow: hidden; overscroll-behavior: none; }
   .area-chip { max-width: 34vw; }
   .area-picker { position: fixed; top: 64px; left: 8px; right: 8px; width: auto; }
 }
+
+/* ── Task 100: resume, glance, verdicts, completion ─────────────────────── */
+.resume-card { border-color: var(--gold, var(--line)); }
+.resume-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.see-all { margin-top: 8px; }
+.now-rows { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.now-rows > li { display: block; }
+.now-rows .quest { width: 100%; text-align: left; }
+.recommended-setup h3 { font-family: var(--font-display); margin: 4px 0 6px; }
+
+.entity-verdict { margin: 8px 0 0; padding: 8px 10px; border-left: 3px solid var(--line); font-size: 14px; }
+.entity-verdict.upgrade { border-color: var(--ok, #7fb36b); }
+.entity-verdict.side-grade { border-color: var(--gold, #c9a227); }
+.entity-verdict.not-for-you { border-color: #c45c3e; }
+.remembrance-options li { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.lib-card-flags .lib-flag.verdict { font-weight: 700; }
+.lib-card-flags .lib-flag.verdict-upgrade { color: var(--ok, #7fb36b); }
+.lib-card-flags .lib-flag.verdict-side-grade { color: var(--gold, #c9a227); }
+.lib-card-flags .lib-flag.verdict-not-for-you { color: #c45c3e; }
+
+.completion-cats { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.completion-cat-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.completion-rows { list-style: none; margin: 6px 0 0; padding: 0 0 0 8px; display: flex; flex-direction: column; gap: 4px; }
+.completion-rows li { font-size: 14px; }
+
+.glance-active .shell-header,
+.glance-active .subtabs,
+.glance-active .tabbar,
+.glance-active .guide { display: none; }
+.glance-mode { position: fixed; inset: 0; z-index: 60; background: #0b0a08; }
+.glance-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.glance-exit { position: absolute; top: 12px; right: 12px; z-index: 2; }
+.glance-strip {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; align-items: center;
+  padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(to top, rgba(10, 9, 7, 0.96), rgba(10, 9, 7, 0.82));
+  border-top: 1px solid var(--line);
+}
+.glance-where { font-family: var(--font-display); font-size: 20px; }
+.glance-goal { grid-column: 1; display: flex; flex-direction: column; gap: 2px; }
+.glance-goal strong { font-size: 18px; }
+.glance-near { grid-column: 1; font-size: 14px; }
+.glance-log {
+  grid-column: 2; grid-row: 1 / span 3; align-self: stretch;
+  min-width: 96px; min-height: 64px; font-size: 20px; font-weight: 700;
+  border: 1px solid var(--gold, #c9a227); background: var(--gold, #c9a227); color: #14110a;
+  cursor: pointer;
+}

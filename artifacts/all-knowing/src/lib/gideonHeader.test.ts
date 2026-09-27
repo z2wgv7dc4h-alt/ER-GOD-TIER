@@ -38,12 +38,21 @@ describe('gideonHeader', () => {
     expect(header.offer).toEqual({ label: 'Show it', prompt: 'yes show me on the map and give instructions' })
   })
 
-  it('falls back to the first idle suggestion when no goal is set', () => {
+  it('with no goal set, defaults to the next main-path beat', () => {
     const header = gideonHeader(applyFacts(emptyCharacter, TRUE_FACTS, 'answer', 'no goal'))
     expect(header.goal).toBeUndefined()
     expect(header.beat).toBeTruthy()
     expect(header.factId).toBeTruthy()
     expect(header.offer).toBeUndefined()
+  })
+
+  it('a fresh character defaults to the main path (Godrick), not an ending questline', () => {
+    const header = gideonHeader(emptyCharacter)
+    expect(header.goal).toBeUndefined()
+    // The first main-progression beat, not "Enter Ranni's service" or another ending line.
+    expect(header.factId).toBe('boss:godrick')
+    expect(header.beat).toMatch(/Godrick|Great Runes|capital/i)
+    expect(header.beat).not.toMatch(/Ranni|Frenzied|Duskborn|Order/i)
   })
 
   it('is pure — never mutates the character', () => {

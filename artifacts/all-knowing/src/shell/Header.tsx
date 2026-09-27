@@ -49,6 +49,15 @@ export function Header({
       <AreaChip />
       <button
         type="button"
+        className={w.glance ? 'chip on glance-toggle' : 'chip glance-toggle'}
+        aria-pressed={w.glance}
+        title="Glance mode — full-screen map (Usage model moment 15)"
+        onClick={() => w.setGlance(!w.glance)}
+      >
+        Glance
+      </button>
+      <button
+        type="button"
         className="char-chip"
         onClick={() => w.go('me', 'overview')}
         title="Open the Tarnished overview"

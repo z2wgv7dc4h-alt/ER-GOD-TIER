@@ -3,6 +3,7 @@ import type { Character } from '../types'
 import { regionMatches } from '../lib/areaHub'
 import { normalizeName } from '../lib/fanImage'
 import { applyFacts, denyFacts } from '../lib/infer'
+import { weaponVerdict, type Verdict } from '../lib/verdict'
 import { useLibraryCatalog } from './catalog'
 import { CompareTray } from './CompareTray'
 import { EntityPanel } from './EntityPanel'
@@ -84,15 +85,19 @@ function CategoryRail({
   )
 }
 
+const VERDICT_GLYPH: Record<Verdict['kind'], string> = { upgrade: '↑', 'side-grade': '≈', 'not-for-you': '↓' }
+
 function EntityCard({
   entity,
   character,
   selected,
+  verdict,
   onOpen,
 }: {
   entity: LibraryEntity
   character: Character
   selected: boolean
+  verdict?: Verdict | null
   onOpen: () => void
 }) {
   const owned = isOwned(entity, character)
@@ -120,6 +125,11 @@ function EntityCard({
         {stats.length > 0 && <span className="lib-card-stats">{stats.join(' · ')}</span>}
       </span>
       <span className="lib-card-flags">
+        {verdict && (
+          <span className={`lib-flag verdict verdict-${verdict.kind}`} title={verdict.line}>
+            {VERDICT_GLYPH[verdict.kind]}
+          </span>
+        )}
         {owned && <span className="lib-flag owned" title="Owned">✓</span>}
         {met === false && <span className="lib-flag unmet" title="Requirements not met">✗</span>}
         {met === true && <span className="lib-flag met" title="Requirements met">●</span>}
@@ -209,6 +219,17 @@ export function LibraryBrowser() {
   const pageCount = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE))
   const safePage = Math.min(page, pageCount - 1)
   const pageRows = sorted.slice(safePage * PAGE_SIZE, safePage * PAGE_SIZE + PAGE_SIZE)
+
+  // Task 100 §3: the same advisor verdict the entity page shows, as a small card badge.
+  const verdicts = useMemo(() => {
+    const out = new Map<string, Verdict>()
+    for (const e of pageRows) {
+      if (!e.weaponName) continue
+      const weapon = weaponByName.get(normalizeName(e.weaponName))
+      if (weapon) out.set(e.id, weaponVerdict(character, weapons, weapon))
+    }
+    return out
+  }, [pageRows, weaponByName, weapons, character])
 
   const subtypes = useMemo(() => subtypesOf(catEntities), [catEntities])
   const damageOptions = useMemo(() => {
@@ -518,6 +539,7 @@ export function LibraryBrowser() {
                     entity={e}
                     character={character}
                     selected={e.id === selectedId}
+                    verdict={verdicts.get(e.id) ?? null}
                     onOpen={() => openEntity(e)}
                   />
                 ))}

@@ -363,6 +363,12 @@ export function CommandHits({ onLog }: { onLog?: (ids: string[]) => void } = {})
     }
     if (row.kind === 'command') {
       w.setQuery('')
+      // Task 100 §2: the "glance" omnibox command opens the chrome-free map.
+      if (row.command.glance) {
+        w.go(row.command.section, row.command.sub ?? undefined)
+        w.setGlance(true)
+        return
+      }
       w.go(row.command.section, row.command.sub ?? undefined)
       return
     }

@@ -1,5 +1,8 @@
 import { useMemo, useState } from 'react'
+import type { Remembrance } from '../knowledge/remembrances'
 import { status, type EntityState } from '../lib/entityGraph'
+import type { RemembranceOption } from '../lib/remembranceChoice'
+import type { Verdict } from '../lib/verdict'
 import { Related } from '../Related'
 import { WikiText } from '../WikiText'
 import type { Character } from '../types'
@@ -45,9 +48,14 @@ export type EntityPanelProps = {
   requirementsMet?: boolean | null
   /** AR at the character's stats, when the host can resolve the weapon row. */
   ar?: { now: number; max: number } | null
+  /** Task 100 §3: the advisor's one-line "is this good for me" verdict. */
+  verdict?: Verdict | null
+  /** Task 100 §4: a remembrance's Enia options, already ranked for the build. */
+  remembrance?: { remembrance: Remembrance; options: RemembranceOption[] } | null
   compareActive?: boolean
   onClose?: () => void
   onOwnedChange?: (owned: boolean) => void
+  onTradeOption?: (factId: string) => void
   onCompare?: () => void
   onEquip?: () => void
   onAskGideon?: () => void
@@ -83,9 +91,12 @@ export function EntityPanel({
   owned,
   requirementsMet,
   ar,
+  verdict,
+  remembrance,
   compareActive,
   onClose,
   onOwnedChange,
+  onTradeOption,
   onCompare,
   onEquip,
   onAskGideon,
@@ -120,6 +131,12 @@ export function EntityPanel({
       </header>
 
       <EntityStatusStrip factId={statusFactId} character={character} />
+
+      {verdict && (
+        <p className={`entity-verdict ${verdict.kind}`} role="status">
+          {verdict.line}
+        </p>
+      )}
 
       <div className="lib-panel-tabs" role="tablist">
         {(['stats', 'where', 'lore', 'related'] as Tab[]).map((t) => (
@@ -156,6 +173,28 @@ export function EntityPanel({
                     {metValue ? 'You meet the requirements.' : 'You do not meet all requirements.'}
                   </p>
                 )}
+              </div>
+            )}
+
+            {remembrance && (
+              <div className="lib-panel-block">
+                <div className="kicker">Enia trade — ranked for your build</div>
+                <ul className="lib-req-list remembrance-options">
+                  {remembrance.options.map((option) => (
+                    <li key={option.name} className={option.traded ? 'lib-req met' : 'lib-req'}>
+                      <span>
+                        <strong>{option.name}</strong>
+                        <br />
+                        <span className="note">{option.traded ? 'Already traded' : option.why}</span>
+                      </span>
+                      {!option.traded && option.factId && onTradeOption && (
+                        <button type="button" className="chip" onClick={() => onTradeOption(option.factId!)}>
+                          Mark traded
+                        </button>
+                      )}
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
 

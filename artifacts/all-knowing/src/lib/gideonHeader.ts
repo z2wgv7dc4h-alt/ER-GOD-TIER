@@ -1,7 +1,8 @@
-import { planRoute } from '../knowledge/endings'
+import { endings, planRoute } from '../knowledge/endings'
 import { approachingGates } from '../knowledge/gates'
 import { allLines } from '../knowledge/storylines'
 import type { Character } from '../types'
+import { characterFactCount } from './resume'
 import { idleSuggestions } from './suggestions'
 
 /**
@@ -57,8 +58,23 @@ export function gideonHeader(character: Character): GideonHeader {
     }
   }
 
-  // No goal, or the goal has no reachable beat left: fall back to the best real
-  // next action for this character (same source the idle chips use).
+  // No goal set. Task 100 playtest fix (c): a *fresh* character (no progress at
+  // all) defaults to the main progression path (Elden Lord) — the first
+  // uncompleted main beat such as Stormveil / Godrick — never an ending
+  // questline. A character already in progress keeps the in-progress beat from
+  // the shared idle suggestions, so we do not yank a mid-run player onto a
+  // different line.
+  if (!header.beat && characterFactCount(character) === 0) {
+    const lord = endings.find((e) => e.id === 'lord')
+    const mainPlan = lord ? planRoute(character, lord) : null
+    if (mainPlan?.current) {
+      header.beat = mainPlan.current.do
+      header.factId = mainPlan.current.factId
+    }
+  }
+
+  // Fallback for everyone else: the best real next action for this character
+  // (same source the idle chips use).
   if (!header.beat) {
     const first = idleSuggestions(character, 1)[0]
     if (first) {

@@ -10,6 +10,7 @@ import { CommandHits, useClipboardShots, useHotkeys } from './QoL'
 import { QuickLog } from './QuickLog'
 import { FirstVisitHint } from './Help'
 import { EntityOverlay } from './library/EntityOverlay'
+import { GlanceMode } from './shell/GlanceMode'
 import { Header } from './shell/Header'
 import { JourneyArea } from './shell/JourneyArea'
 import { JourneyNow } from './shell/JourneyNow'
@@ -116,6 +117,7 @@ function AppShell() {
   const className = [
     'app',
     w.section === 'gideon' ? 'gideon-active' : '',
+    w.glance ? 'glance-active' : '',
     dockVisible ? 'with-dock' : '',
     searchOpen ? 'search-open' : '',
   ].filter(Boolean).join(' ')
@@ -152,6 +154,7 @@ function AppShell() {
       </div>
       <TabBar />
       <EntityOverlay />
+      {w.glance && <GlanceMode onLog={() => openLog()} />}
       <QuickLog
         open={logOpen}
         seed={logSeed}
