@@ -211,9 +211,9 @@ export function cachedBossCombat(): BossCombat[] {
   return cache ?? []
 }
 
-/** The damage type the target is weakest to (highest negation). */
+/** The damage type the target is weakest to: the LOWEST negation (negative = takes extra). */
 export function bestDamageType(target: CombatStats): DamageType {
-  return damageTypes.reduce((best, type) => (target.negation[type] > target.negation[best] ? type : best), damageTypes[0])
+  return damageTypes.reduce((best, type) => (target.negation[type] < target.negation[best] ? type : best), damageTypes[0])
 }
 
 /** Human-readable negation, where negative means the target takes extra damage. */
@@ -231,8 +231,8 @@ export function resistSummary(target: CombatStats): string {
 /**
  * Task 92: the one-line "weak to / resists" summary reused by Search entity
  * results and the Build matchup, from the same NpcParam negation the matchup
- * already renders. `bestDamageType` is the highest negation (weakest) type; the
- * resist type is the highest positive negation.
+ * already renders. `bestDamageType` is the lowest negation (weakest) type; the
+ * resist type is the highest negation.
  */
 export function weaknessLine(target: CombatStats): string {
   const weak = bestDamageType(target)

@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { AttackPowerType } from './ar'
 import {
   bestDamageType,
+  weaknessLine,
   bossTarget,
   combatTargetFor,
   effectiveDamage,
@@ -33,8 +34,10 @@ const malenia: BossCombat = {
 }
 
 describe('enemy combat stats', () => {
-  it('picks the damage type with the highest negation', () => {
-    expect(bestDamageType(malenia)).toBe('holy')
+  it('picks the damage type with the lowest negation (the real weakness)', () => {
+    // Malenia negates 40% holy and 0% fire: she is weak to fire, resists holy.
+    expect(bestDamageType(malenia)).toBe('fire')
+    expect(weaknessLine(malenia)).toBe('weak to Fire · resists Holy (40% resist)')
   })
 
   it('applies per-type negation to an attack-rating breakdown', () => {
