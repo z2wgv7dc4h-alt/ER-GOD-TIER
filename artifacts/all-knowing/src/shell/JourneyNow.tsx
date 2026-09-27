@@ -15,6 +15,7 @@ import { MedusaRoute } from '../MedusaRoute'
 import { RelatedCollapsible } from '../Related'
 import { NextMoves } from '../Thread'
 import { useWorkspace } from '../state'
+import { WatchlistCard } from '../watch/WatchlistCard'
 import { AreaPrompt } from './AreaPrompt'
 import { ResumeCard } from './ResumeCard'
 import { SeeAllButton, useRowReveal } from './rows'
@@ -173,6 +174,8 @@ export function JourneyNow() {
           </button>
         </section>
         <RecommendedCard />
+
+        <WatchlistCard />
 
         <BeforeYouGoCard />
 

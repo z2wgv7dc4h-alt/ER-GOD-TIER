@@ -4,6 +4,7 @@ import { getEntity, status, type EntityKind, type EntityState } from '../lib/ent
 import type { RemembranceOption } from '../lib/remembranceChoice'
 import type { Verdict } from '../lib/verdict'
 import { Related } from '../Related'
+import { Spoiler, SpoilerGate } from '../settings/Spoiler'
 import { WikiText } from '../WikiText'
 import { BossPrepCard } from '../combat/BossPrepCard'
 import type { Character } from '../types'
@@ -157,7 +158,7 @@ export function EntityPanel({
             {entity.region ? ` · ${entity.region}` : ''}
             {entity.dlc ? ' · DLC' : ''}
           </div>
-          <h2>{entity.name}</h2>
+          <h2><Spoiler factId={statusFactId}>{entity.name}</Spoiler></h2>
           {isOwnedValue && <span className="lib-owned-badge">Owned ✓</span>}
         </div>
         {onClose && (
@@ -336,7 +337,13 @@ export function EntityPanel({
 
         {tab === 'lore' && (
           <div className="lib-panel-lore">
-            {entity.lore ? <WikiText className="note lib-lore-text" text={entity.lore} /> : <p className="note">No lore text in the data for this entry.</p>}
+            {entity.lore ? (
+              <SpoilerGate factId={statusFactId}>
+                <WikiText className="note lib-lore-text" text={entity.lore} />
+              </SpoilerGate>
+            ) : (
+              <p className="note">No lore text in the data for this entry.</p>
+            )}
           </div>
         )}
 

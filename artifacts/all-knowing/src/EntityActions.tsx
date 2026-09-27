@@ -1,6 +1,7 @@
 import { applyFacts } from './lib/infer'
 import { labelOf } from './lib/links'
 import { factState, useWorkspace } from './state'
+import { WatchButton } from './watch/WatchButton'
 
 /**
  * Task 92 cross-linking rule: any entity rendered anywhere exposes the same four
@@ -39,6 +40,7 @@ export function EntityActions({ id, name }: { id: string; name?: string }) {
       <button type="button" className="chip" onClick={() => { setSelectedMarkerId(id); setModule('codex') }}>
         Open in Library
       </button>
+      <WatchButton id={id} name={name} />
     </div>
   )
 }
