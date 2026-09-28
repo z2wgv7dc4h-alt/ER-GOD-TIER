@@ -60,6 +60,7 @@ import engineMarkersDoc from '../../public/sourced/open/engine-markers.json'
 import eldenringMap from '../../public/sourced/open/eldenringmap.json'
 import namesData from '../../public/sourced/open/names.json'
 import saveIds from '../../public/sourced/open/save-ids.json'
+import npcQuestsDoc from '../../public/sourced/open/npc-quests.json'
 
 // Task 132 §1 — the full wiki DB, classified per kind by `scripts/export-wiki-db.py`.
 import wikiBossDoc from '../../public/sourced/open/wiki-db/boss.json'
@@ -1536,6 +1537,69 @@ function mergeAcquisitionItems(): void {
   }
 }
 
+/**
+ * Task 132 §2 — link the wiki DB's 341 NPC quest steps to their NPC entity.
+ *
+ * Each step becomes a reference `quest` record (`quest:<npc>-step-N`) whose
+ * `related` names the NPC, and the NPC record gains a "Questline" section listing
+ * the step order/location/action, so the entity page peeks the whole line.
+ */
+function mergeNpcQuestSteps(): void {
+  const quests = (npcQuestsDoc as {
+    quests?: { npc: string; url?: string; steps: { id: string; order: number; location?: string; action?: string; breaks?: boolean }[] }[]
+  }).quests ?? []
+  const bySimple = new Map<string, string>()
+  for (const [id, rec] of records) {
+    // Only real character-ish records; never the authored quest-line beats.
+    if (rec.kind === 'item' || rec.kind === 'quest' || rec.kind === 'ending') continue
+    const key = simpleNorm(rec.name)
+    if (key && !bySimple.has(key)) bySimple.set(key, id)
+  }
+  const questNpcId = (name: string): string | undefined => {
+    const resolved = resolveName(name, 'npc')
+    const resolvedRecord = resolved ? records.get(resolved) : undefined
+    if (resolvedRecord && resolvedRecord.kind !== 'quest' && resolvedRecord.kind !== 'ending') return resolved
+    const key = simpleNorm(name)
+    const exact = bySimple.get(key)
+    if (exact) return exact
+    // Fall back to the closest entity whose name contains (or is contained by)
+    // the quest NPC name — the DB spells some names slightly differently.
+    for (const [candidate, id] of bySimple) {
+      if (candidate.length >= 4 && key.length >= 4 && (candidate.includes(key) || key.includes(candidate))) {
+        const rec = records.get(id)
+        if (rec && rec.kind !== 'quest' && rec.kind !== 'ending') return id
+      }
+    }
+    return undefined
+  }
+  for (const quest of quests) {
+    if (!quest.npc) continue
+    const npcId = questNpcId(quest.npc)
+    const npcRecord = npcId ? records.get(npcId) : undefined
+    const npcName = npcRecord?.name ?? quest.npc
+    if (npcRecord) {
+      if (quest.url) npcRecord.sourceUrl = npcRecord.sourceUrl ?? quest.url
+      const lines = quest.steps
+        .map((step) => `${step.order}. ${step.location ? `[${step.location}] ` : ''}${step.action ?? ''}${step.breaks ? ' (breaks the quest)' : ''}`.trim())
+        .filter(Boolean)
+      if (lines.length) {
+        npcRecord.sections = [...(npcRecord.sections ?? []), { heading: `Questline (${quest.steps.length} steps)`, text: lines.join('\n') }]
+      }
+      source(npcRecord, 'npc-quests')
+    }
+    for (const step of quest.steps) {
+      const id = `quest:${slug(quest.npc)}-step-${step.order}`
+      const record = ensure(id, 'quest', `${npcName} — step ${step.order}`)
+      record.catalogue = false
+      setText(record, 'description', step.action)
+      setText(record, 'location', step.location)
+      if (!record.region) record.region = regionFromText(step.location)
+      record.related = [npcName, ...(step.breaks ? ['breaks the quest'] : [])]
+      source(record, 'npc-quests')
+    }
+  }
+}
+
 function mergeDungeon(row: { id?: string; name: string; region?: string; x?: number; y?: number; bosses?: string[] }): void {
   const id = `dungeon:${row.id ?? slug(row.name)}`
   if (!hasEntity(id)) return
@@ -1788,6 +1852,7 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   mergeFmgNames()
   mergeAcquisitionItems()
   mergeWikiDb()
+  mergeNpcQuestSteps()
 
   // Task 124 §2 — the sourced gap-fill, applied last so every field is a
   // lowest-priority fallback. `setText`/`setStat` only write when absent.
