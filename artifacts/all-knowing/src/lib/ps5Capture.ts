@@ -52,7 +52,7 @@ export async function grayFromImage(image: Blob | string): Promise<GrayImage> {
   return rgbaToGray(data, width, height)
 }
 
-function grayToCanvas(gray: GrayImage): HTMLCanvasElement {
+export function grayToCanvas(gray: GrayImage): HTMLCanvasElement {
   const canvas = document.createElement('canvas')
   canvas.width = gray.width
   canvas.height = gray.height
