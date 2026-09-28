@@ -209,9 +209,19 @@ export default defineConfig({
     // Watching it can crash Vite on locked files (EBUSY) and should never trigger HMR.
     watch: { ignored: ['**/.scratch/**'] },
     proxy: {
-      // Optional Gideon LLM (Meta Muse Spark). Dev-only, so the browser is not
-      // blocked by CORS. The default base is `/gideon-llm/v1` in dev; an explicit
-      // VITE_GIDEON_BASE_URL bypasses this and calls the provider directly.
+      // Optional Gideon LLM. Dev-only, so the browser is not blocked by CORS.
+      // The default dev base is `/gideon-llm/v1` (Meta) or
+      // `/gideon-llm-deepseek/v1` (DeepSeek); an explicit VITE_GIDEON_BASE_URL
+      // bypasses this and calls the provider directly.
+      //
+      // DeepSeek must be matched before `/gideon-llm`: Vite tests string keys
+      // with `startsWith`, so the broader Meta prefix would otherwise swallow
+      // `/gideon-llm-deepseek/...`.
+      '/gideon-llm-deepseek': {
+        target: 'https://api.deepseek.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/gideon-llm-deepseek/, '') || '/',
+      },
       '/gideon-llm': {
         target: 'https://api.meta.ai',
         changeOrigin: true,
