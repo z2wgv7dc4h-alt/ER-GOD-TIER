@@ -175,15 +175,20 @@ function cardStats(entity: LibraryEntity, record?: EntityRecord): string[] {
 function CategoryRail({
   active,
   counts,
+  pending,
   onSelect,
 }: {
   active: CategoryId
   counts: Record<CategoryId, number>
+  pending: Set<CategoryId>
   onSelect: (id: CategoryId) => void
 }) {
+  // Hide a category only once its data has settled and it is genuinely empty;
+  // a still-loading category keeps its slot (Task 137 §1, no empty categories).
+  const visible = CATEGORIES.filter((c) => (counts[c.id] ?? 0) > 0 || c.id === active || pending.has(c.id))
   return (
     <nav className="lib-rail" aria-label="Library categories">
-      {CATEGORIES.map((c) => (
+      {visible.map((c) => (
         <button
           key={c.id}
           type="button"
@@ -297,8 +302,8 @@ export function LibraryBrowser() {
   // sheet so the toolbar stays one clean row.
   const [filtersOpen, setFiltersOpen] = useState(false)
 
-  const catalog = useLibraryCatalog(cat)
-  const { byCategory, weaponByName } = catalog
+  const catalog = useLibraryCatalog(cat, true)
+  const { byCategory, weaponByName, pending } = catalog
   const catEntities = byCategory[cat]
 
   const weapons = useMemo(() => [...new Set(weaponByName.values())], [weaponByName])
@@ -535,7 +540,7 @@ export function LibraryBrowser() {
   return (
     <div className="lib-browser">
       <div className="lib-layout">
-        <CategoryRail active={cat} counts={counts} onSelect={selectCategory} />
+        <CategoryRail active={cat} counts={counts} pending={pending} onSelect={selectCategory} />
 
         <div className="lib-main">
           <div className="lib-toolbar">
@@ -789,7 +794,9 @@ export function LibraryBrowser() {
                     : 'No entries match the current search and filters.'}
                 </p>
                 <div className="lib-tiles">
-                  {CATEGORIES.map((c) => (
+                  {CATEGORIES.filter(
+                    (c) => (counts[c.id] ?? 0) > 0 || c.id === cat || pending.has(c.id),
+                  ).map((c) => (
                     <button key={c.id} type="button" className="lib-tile" onClick={() => selectCategory(c.id)}>
                       <CategoryIcon id={c.id} />
                       <span>{c.label}</span>

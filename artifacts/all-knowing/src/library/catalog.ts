@@ -56,10 +56,16 @@ export type LibraryCatalog = {
   weaponByName: Map<string, Weapon>
   /** True while the active category's source dataset is still being fetched. */
   loading: boolean
+  /**
+   * Categories whose dataset has a loader that has not finished yet. The rail
+   * uses this to tell "not loaded yet" (show) from "genuinely empty" (hide), so
+   * a category can never render as a permanent 0 (Task 137 §1).
+   */
+  pending: Set<CategoryId>
 }
 
-/** The synchronous builder result, before the hook adds its loading flag. */
-export type BuiltCatalog = Omit<LibraryCatalog, 'loading'>
+/** The synchronous builder result, before the hook adds loading/pending. */
+export type BuiltCatalog = Omit<LibraryCatalog, 'loading' | 'pending'>
 
 // ---------------------------------------------------------------------------
 // small helpers
@@ -773,7 +779,7 @@ const EMPTY_INPUT: CatalogInput = {
  * the heavier ripped-pack datasets (recipes/secrets/guides/acquisition/boss
  * combat/dialogue) are fetched the first time their category is opened.
  */
-export function useLibraryCatalog(activeCategory: CategoryId): LibraryCatalog {
+export function useLibraryCatalog(activeCategory: CategoryId, preload = false): LibraryCatalog {
   const fan = useFanapiData()
   const { weapons: armoryWeapons, bosses: armoryBosses } = useArmory()
   const { items: guideItems } = useGuide()
@@ -802,25 +808,26 @@ export function useLibraryCatalog(activeCategory: CategoryId): LibraryCatalog {
 
   useEffect(() => {
     let cancelled = false
-    if (activeCategory === 'bosses' && bossCombat.length === 0) {
+    const want = (id: CategoryId) => preload || activeCategory === id
+    if (want('bosses') && bossCombat.length === 0) {
       void loadBossCombat()
         .then((rows) => { if (!cancelled) setBossCombat(rows) })
         .catch(() => { /* optional */ })
         .finally(() => { if (!cancelled) markSettled('bosses') })
     }
-    if (activeCategory === 'recipes' && recipes.length === 0) {
+    if (want('recipes') && recipes.length === 0) {
       void loadRecipes()
         .then((d) => { if (!cancelled) setRecipes(d.recipes) })
         .catch(() => { /* optional */ })
         .finally(() => { if (!cancelled) markSettled('recipes') })
     }
-    if (activeCategory === 'secrets' && secrets.length === 0) {
+    if (want('secrets') && secrets.length === 0) {
       void loadSecrets()
         .then((d) => { if (!cancelled) setSecrets(d.walls) })
         .catch(() => { /* optional */ })
         .finally(() => { if (!cancelled) markSettled('secrets') })
     }
-    if (activeCategory === 'guides' && guides.length === 0) {
+    if (want('guides') && guides.length === 0) {
       void loadGuides()
         .then((d) => { if (!cancelled) setGuides(guideExcerpts(d)) })
         .catch(() => { /* optional */ })
@@ -832,7 +839,7 @@ export function useLibraryCatalog(activeCategory: CategoryId): LibraryCatalog {
         .catch(() => { /* optional */ })
         .finally(() => { if (!cancelled) markSettled(activeCategory) })
     }
-    if (activeCategory === 'dialogue' && dialogue.length === 0) {
+    if (want('dialogue') && dialogue.length === 0) {
       void Promise.all([loadDialogueOwners(), loadGameTextTable('TalkMsg')])
         .then(([owners, text]) => {
           if (cancelled) return
@@ -846,7 +853,7 @@ export function useLibraryCatalog(activeCategory: CategoryId): LibraryCatalog {
         .finally(() => { if (!cancelled) markSettled('dialogue') })
     }
     return () => { cancelled = true }
-  }, [activeCategory, bossCombat.length, recipes.length, secrets.length, guides.length, acquisitions.length, dialogue.length])
+  }, [activeCategory, preload, bossCombat.length, recipes.length, secrets.length, guides.length, acquisitions.length, dialogue.length])
 
   // Task 97: fold the loaded async reference data into the shared entity graph,
   // so the universal entity panel's edges agree with the Library browser.
@@ -891,7 +898,19 @@ export function useLibraryCatalog(activeCategory: CategoryId): LibraryCatalog {
       (activeCategory === 'enemies' && !indexReady) ||
       (activeCategory === 'materials' && guideItems.length === 0)
     const loading = built.byCategory[activeCategory].length === 0 && (!coreReady || lazyPending)
-    return { ...built, loading }
+    // A category is pending while its own loader (or the shared entity index)
+    // has not finished. The rail must not hide these as "empty" (Task 137 §1).
+    const pending = new Set<CategoryId>()
+    if (!indexReady) {
+      pending.add('enemies')
+      pending.add('npcs')
+      pending.add('locations')
+    }
+    if (guideItems.length === 0) pending.add('materials')
+    for (const id of ['bosses', 'recipes', 'secrets', 'guides', 'dialogue'] as CategoryId[]) {
+      if (!settled.has(id)) pending.add(id)
+    }
+    return { ...built, loading, pending }
   }, [fan, armoryWeapons, armoryBosses, weapons, recipes, secrets, acquisitions, guides, bossCombat, dialogue, guideItems, indexReady, indexVersion, activeCategory, settled])
 
   // Task 115: let peek cards show the same numeric rows the Library has.

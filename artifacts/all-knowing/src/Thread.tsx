@@ -6,7 +6,7 @@ import { SeeAllButton, useRowReveal } from './shell/rows'
 import { useWorkspace } from './state'
 
 export function Thread({ id }: { id: string }) {
-  const { character, setSelectedMarkerId, setModule } = useWorkspace()
+  const { character, setSelectedMarkerId, setModule, module, openEntity } = useWorkspace()
   const t = thread(id)
   if (!t.node) {
     const hit = searchSync(id.replace(/^[a-z]+:/, '').replace(/-/g, ' '))[0] || searchSync(id)[0]
@@ -38,8 +38,15 @@ export function Thread({ id }: { id: string }) {
 
       <div className="opts" style={{ marginTop: 10 }}>
         <button type="button" className="ghost gold" onClick={() => {
-          setSelectedMarkerId(id)
-          setModule(moduleFor(id))
+          const target = moduleFor(id)
+          // A map entity has no other workspace to jump to, so open its entity
+          // page instead of re-selecting the same marker (a no-op).
+          if (target === module) {
+            openEntity(id)
+          } else {
+            setSelectedMarkerId(id)
+            setModule(target)
+          }
         }}>Follow into workspace</button>
       </div>
       {receipts.length > 0 && (

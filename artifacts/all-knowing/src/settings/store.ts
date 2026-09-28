@@ -48,7 +48,8 @@ const LANDINGS = LANDING_SECTIONS.map((s) => s.id)
 export function sanitizeSettings(raw: unknown): Settings {
   const o = (raw && typeof raw === 'object' ? raw : {}) as Record<string, unknown>
   const textSize: TextSize = o.textSize === 'S' || o.textSize === 'L' ? o.textSize : DEFAULT_SETTINGS.textSize
-  const spoiler: SpoilerLevel = o.spoiler === 'none' || o.spoiler === 'full' ? o.spoiler : DEFAULT_SETTINGS.spoiler
+  const spoiler: SpoilerLevel =
+    o.spoiler === 'none' || o.spoiler === 'light' || o.spoiler === 'full' ? o.spoiler : DEFAULT_SETTINGS.spoiler
   const landing = LANDINGS.includes(o.landing as Section) ? (o.landing as Section) : DEFAULT_SETTINGS.landing
   return {
     textSize,

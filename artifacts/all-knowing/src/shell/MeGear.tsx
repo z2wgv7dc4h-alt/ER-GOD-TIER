@@ -7,6 +7,7 @@ import {
   clearSlot,
   equipLoad,
   equipSlot,
+  entityForSlot,
   GEAR_SLOTS,
   gearSlotMeta,
   ownedInventory,
@@ -34,11 +35,7 @@ const GROUPS: { id: GearSlotGroup; label: string }[] = [
   { id: 'spell', label: 'Spells' },
 ]
 
-function norm(s: string) {
-  return s.toLowerCase().replace(/[^a-z0-9+]+/g, ' ').trim()
-}
-
-function statNumber(entity: LibraryEntity | undefined, label: string): number {
+function statNumber(entity: LibraryEntity | null | undefined, label: string): number {
   const row = entity?.stats?.find((s) => s.label.toLowerCase() === label.toLowerCase())
   if (!row) return 0
   const n = Number.parseFloat(row.value)
@@ -62,16 +59,10 @@ export function MeGear() {
     return () => { cancelled = true }
   }, [])
 
-  const byName = useMemo(() => {
-    const map = new Map<string, LibraryEntity>()
-    for (const e of catalog.entities) map.set(norm(e.name), e)
-    return map
-  }, [catalog.entities])
-
   const arranged = useMemo(() => arrangeLoadout(character.loadout), [character.loadout])
 
-  function entityFor(slot: LoadoutSlot): LibraryEntity | undefined {
-    return catalog.entities.find((e) => e.factId === slot.id) ?? byName.get(norm(slot.name))
+  function entityFor(slot: LoadoutSlot): LibraryEntity {
+    return entityForSlot(catalog.entities, slot)
   }
 
   function arFor(slot: LoadoutSlot): { now: number; max: number } | null {
@@ -90,12 +81,12 @@ export function MeGear() {
     for (const meta of GEAR_SLOTS) {
       const slot = arranged[meta.id]
       if (!slot) continue
-      const entity = catalog.entities.find((e) => e.factId === slot.id) ?? byName.get(norm(slot.name))
-      weight += entity?.weight ?? 0
+      const entity = entityForSlot(catalog.entities, slot)
+      weight += entity.weight ?? 0
       if (meta.group === 'armor') poise += statNumber(entity, 'Poise')
     }
     return { weight: Math.round(weight * 10) / 10, poise }
-  }, [arranged, byName, catalog.entities])
+  }, [arranged, catalog.entities])
 
   const load = equipLoad(totals.weight, character.stats.endurance)
   const owned = useMemo(() => ownedInventory(catalog.entities, character, ownedQuery), [catalog.entities, character, ownedQuery])
@@ -134,14 +125,14 @@ export function MeGear() {
           <div className="gear-slots">
             {GEAR_SLOTS.filter((m) => m.group === group.id).map((meta) => {
               const slot = arranged[meta.id]
-              const entity = slot ? entityFor(slot) : undefined
+              const entity = slot ? entityFor(slot) : null
               const ar = slot && meta.group === 'armament' ? arFor(slot) : null
               return (
                 <div key={meta.id} className={slot ? 'gear-slot filled' : 'gear-slot'}>
                   {slot ? (
                     <>
                       <div className="gear-slot-label">{meta.label}</div>
-                      <button type="button" className="gear-item" onClick={() => entity && setSelected(entity)}>
+                      <button type="button" className="gear-item" onClick={() => setSelected(entity)}>
                         <strong>{slot.name}</strong>
                         {slot.upgrade ? <span className="note"> +{slot.upgrade}</span> : null}
                       </button>

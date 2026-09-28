@@ -6,8 +6,10 @@ import type { LoadoutSlot } from '../types'
 import {
   arrangeLoadout,
   clearSlot,
+  entityForSlot,
   equipLoad,
   equipSlot,
+  matchEntityForSlot,
   ownedInventory,
   slotFromEntity,
 } from './gearSheet'
@@ -89,5 +91,30 @@ describe('slotFromEntity', () => {
     expect(slotFromEntity({ id: 'armor:helm', factId: 'item:helm', name: 'Knight Helm', category: 'armor' }, 'head')).toEqual({
       id: 'item:helm', name: 'Knight Helm', kind: 'armor', slot: 'head',
     })
+  })
+})
+
+describe('resolving an equipped slot to an entity (Task 137 §1)', () => {
+  const entities: LibraryEntity[] = [
+    { id: 'shields:carian', factId: 'item:carian-knights-shield', name: "Carian Knight's Shield", category: 'shields' },
+    { id: 'weapons:uchi', factId: 'item:uchi', name: 'Uchigatana', category: 'weapons' },
+  ]
+
+  it('matches an id first', () => {
+    const slot: LoadoutSlot = { id: 'item:uchi', name: 'Uchigatana', kind: 'armament' }
+    expect(matchEntityForSlot(entities, slot)?.factId).toBe('item:uchi')
+  })
+
+  it("matches the save spelling to the catalogue's possessive spelling", () => {
+    const slot: LoadoutSlot = { id: 'carian', name: 'Carian Knight Shield', kind: 'shield', upgrade: 12 }
+    expect(matchEntityForSlot(entities, slot)?.factId).toBe('item:carian-knights-shield')
+  })
+
+  it('never leaves a slot row dead: an unknown name synthesises an entity', () => {
+    const slot: LoadoutSlot = { id: 'okina', name: 'White Reed Set', kind: 'armor' }
+    const entity = entityForSlot(entities, slot)
+    expect(entity.name).toBe('White Reed Set')
+    expect(entity.category).toBe('armor')
+    expect(entity.id).toBe('okina')
   })
 })
