@@ -30,6 +30,7 @@ vendor/elden-ring-map/data/legacy-conv.json
 vendor/elden-ring-map/data/items.json
 vendor/elden-ring-map/data/pieces.json
 vendor/elden-ring-map/data/place-names.json
+vendor/elden-ring-map/data/map-banners.json
 vendor/elden-ring-map/data/tips.json
 vendor/elden-ring-map/data/user-state.json
 vendor/elden-ring-map/data/timeline.jsonl
@@ -49,6 +50,7 @@ vendor/elden-ring-map/data/legacy-conv.json
 vendor/elden-ring-map/data/items.json
 vendor/elden-ring-map/data/pieces.json
 vendor/elden-ring-map/data/place-names.json
+vendor/elden-ring-map/data/map-banners.json
 vendor/elden-ring-map/data/user-state.json
 vendor/elden-ring-map/data/timeline.jsonl
 vendor/elden-ring-map/data/tips.json

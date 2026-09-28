@@ -1,0 +1,210 @@
+{
+ "generatedBy": "vendor/elden-ring-map/tools/find_map_banners.py",
+ "source": "template match on the extracted tile pyramids + BonfireWarpSubCategoryParam",
+ "masterPx": 10496,
+ "scale": 4,
+ "matchMin": 0.55,
+ "knownLabels": 9,
+ "banners": [
+  {
+   "id": "place:8001200",
+   "master": "M00",
+   "px": 6760,
+   "py": 3392,
+   "rect": [
+    5720,
+    3008,
+    7532,
+    3716
+   ],
+   "confidence": 1.0,
+   "source": "param-banner",
+   "name": "Mountaintops of the Giants",
+   "textId": 8001200
+  },
+  {
+   "id": "place:8000400",
+   "master": "M00",
+   "px": 3336,
+   "py": 4636,
+   "rect": [
+    2296,
+    4252,
+    3824,
+    5020
+   ],
+   "confidence": 1.0,
+   "source": "param-banner",
+   "name": "Liurnia of the Lakes",
+   "textId": 8000400
+  },
+  {
+   "id": "place:8000800",
+   "master": "M00",
+   "px": 3012,
+   "py": 1816,
+   "rect": [
+    2268,
+    1432,
+    4052,
+    2200
+   ],
+   "confidence": 1.0,
+   "source": "param-banner",
+   "name": "Altus Plateau",
+   "textId": 8000800
+  },
+  {
+   "id": "place:8000000",
+   "master": "M00",
+   "px": 2580,
+   "py": 6876,
+   "rect": [
+    2748,
+    6492,
+    3620,
+    7052
+   ],
+   "confidence": 1.0,
+   "source": "param-banner",
+   "name": "Limgrave",
+   "textId": 8000000
+  },
+  {
+   "id": "place:8000900",
+   "master": "M00",
+   "px": 5504,
+   "py": 7512,
+   "rect": [
+    4472,
+    7128,
+    6132,
+    7588
+   ],
+   "confidence": 1.0,
+   "source": "param-banner",
+   "name": "Caelid",
+   "textId": 8000900
+  },
+  {
+   "id": "place:8010200",
+   "master": "M01",
+   "px": 5392,
+   "py": 5696,
+   "rect": [
+    5016,
+    5632,
+    6276,
+    5996
+   ],
+   "confidence": 1.0,
+   "source": "param-banner",
+   "name": "Siofra River",
+   "textId": 8010200
+  },
+  {
+   "id": "place:8010400",
+   "master": "M01",
+   "px": 4196,
+   "py": 2260,
+   "rect": [
+    3660,
+    1916,
+    4716,
+    2568
+   ],
+   "confidence": 1.0,
+   "source": "param-banner",
+   "name": "Deeproot Depths",
+   "textId": 8010400
+  },
+  {
+   "id": "place:8010000",
+   "master": "M01",
+   "px": 1796,
+   "py": 3700,
+   "rect": [
+    1340,
+    3740,
+    2816,
+    4084
+   ],
+   "confidence": 1.0,
+   "source": "param-banner",
+   "name": "Ainsel River",
+   "textId": 8010000
+  },
+  {
+   "id": "place:8020000",
+   "master": "M10",
+   "px": 3864,
+   "py": 6676,
+   "rect": [
+    3352,
+    6292,
+    4880,
+    6980
+   ],
+   "confidence": 1.0,
+   "source": "param-banner",
+   "name": "Realm of Shadow",
+   "textId": 8020000
+  }
+ ],
+ "unlabeled": [],
+ "unplacedSubcategories": [
+  "Abyssal Woods",
+  "Academy of Raya Lucaria",
+  "Ainsel River",
+  "Ainsel River Main",
+  "Altus Plateau",
+  "Ancient Ruins of Rauh",
+  "Bellum Highway",
+  "Belurat, Tower Settlement",
+  "Caelid",
+  "Capital Outskirts",
+  "Castle Ensis",
+  "Cerulean Coast",
+  "Charo's Hidden Grave",
+  "Consecrated Snowfield",
+  "Crumbling Farum Azula",
+  "Deeproot Depths",
+  "Elphael, Brace of the Haligtree",
+  "Enir-Ilim",
+  "Flame Peak",
+  "Foot of the Jagged Peak",
+  "Forbidden Lands",
+  "Gravesite Plain",
+  "Greyoll's Dragonbarrow",
+  "Jagged Peak",
+  "Lake of Rot",
+  "Leyndell, Ashen Capital",
+  "Leyndell, Royal Capital",
+  "Limgrave",
+  "Liurnia of the Lakes",
+  "Midra's Manse",
+  "Miquella's Haligtree",
+  "Mohgwyn Palace",
+  "Moonlight Altar",
+  "Mountaintops of the Giants",
+  "Mt. Gelmir",
+  "Nokron, Eternal City",
+  "Rauh Base",
+  "Roundtable Hold",
+  "Ruin,Strewn Precipice",
+  "Scadu Altus",
+  "Scaduview",
+  "Shadow Keep",
+  "Shadow Keep, Church District",
+  "Siofra River",
+  "Specimen Storehouse",
+  "Stone Coffin Fissure",
+  "Stormhill",
+  "Stormveil Castle",
+  "Stranded Graveyard",
+  "Subterranean Shunning,Grounds",
+  "Swamp of Aeonia",
+  "Volcano Manor",
+  "Weeping Peninsula"
+ ]
+}

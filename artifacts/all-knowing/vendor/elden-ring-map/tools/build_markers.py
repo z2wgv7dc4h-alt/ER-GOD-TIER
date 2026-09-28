@@ -71,6 +71,37 @@ UNDERGROUND_BLOCKS = {(12, 1), (12, 2), (12, 3), (12, 4), (12, 5), (12, 7)}
 # (20), Shadow Keep (21) and Midra's Manse (28) stay on M10.
 SOTE_UNDERGROUND_AREAS = {22, 25, 40, 41, 42, 43}
 
+# The M11 master is a small extracted inset, not a full 10496 square (Task 121):
+# its tiles cover only this rectangle. The SotE-underground markers project by
+# ``WorldMapLegacyConvParam`` onto the DLC *surface* grid, which spills outside
+# this patch (and the marker bounding box is taller than the patch, so no single
+# projection can fit them all). A marker whose projected point falls outside the
+# patch is left on M10 - its real surface entrance - instead of floating over
+# transparent tiles on M11. Verified by sampling tile alpha at the pin px in
+# ``find_map_banners.py``-style probes and reported in docs/tasks/122.
+M11_FALLBACK_BOUNDS = [4608, 5120, 8704, 7680]
+
+
+def m11_bounds():
+    """[left, top, right, bottom] of the extracted M11 content, or the fallback."""
+    path = os.path.join(ROOT, "web", "tiles", "manifest.json")
+    try:
+        m11 = json.load(open(path, encoding="utf-8"))["masters"]["M11"]
+        b = m11.get("bounds")
+        if b:
+            return b
+    except (OSError, ValueError, KeyError, TypeError):
+        pass
+    return M11_FALLBACK_BOUNDS
+
+
+M11_BOUNDS = m11_bounds()
+
+
+def in_m11_bounds(px, py):
+    l, t, r, b = M11_BOUNDS
+    return l <= px < r and t <= py < b
+
 
 def project(area, grid_x, grid_z, pos_x, pos_z, tier=0):
     """Overworld grid + local offset -> master pixel.
@@ -238,8 +269,11 @@ def place(area, block, mapno, x, y, z, conv, tier=0):
         # Realm of Shadow. The area-61 grid is the DLC *surface* (M10); its
         # underground interiors (Stone Coffin Fissure, Finger Birthing Grounds,
         # catacombs/gaols/forges/caves) are M11. Routing every area-61 marker to
-        # M10 put the whole underground layer on the surface map.
-        master = "M11" if area in SOTE_UNDERGROUND_AREAS else "M10"
+        # M10 put the whole underground layer on the surface map. A point that
+        # lands outside the extracted M11 patch cannot be shown on M11 (the
+        # projection is surface-space), so it stays on M10 rather than floating
+        # over transparent tiles.
+        master = "M11" if (area in SOTE_UNDERGROUND_AREAS and in_m11_bounds(px, py)) else "M10"
     elif (area, block) in UNDERGROUND_BLOCKS:
         master = "M01"
     else:

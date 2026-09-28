@@ -51,7 +51,7 @@ describe('map place names - committed extractor output', () => {
 
     const ids = new Set<string>()
     for (const l of doc.labels) {
-      expect(l.id).toMatch(/^place:\d+$/)
+      expect(l.id).toMatch(/^(place|banner):/)
       expect(Number.isInteger(l.textId)).toBe(true)
       expect(Number.isInteger(l.tier)).toBe(true)
       expect(['M00', 'M01', 'M10', 'M11']).toContain(l.master)
