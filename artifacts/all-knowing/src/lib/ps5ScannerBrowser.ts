@@ -1,6 +1,6 @@
 import { ensureEntityIndex } from './entityEnrich'
 import { grayFromImage, grayToCanvas } from './ps5Capture'
-import { ps5PreprocessLadder, rgbaToGray, type GrayImage } from './ps5Image'
+import { preprocessVariants, ps5PreprocessLadder, rgbaToGray, type GrayImage } from './ps5Image'
 import { readImageTsv } from './ocr'
 import { parseTsvWords } from './ps5Ocr'
 import { analyzeFrame, extractScanObservation, InventoryStabilizer, type ScanResult } from './ps5Scanner'
@@ -18,7 +18,9 @@ import { analyzeFrame, extractScanObservation, InventoryStabilizer, type ScanRes
 export async function scanImage(image: Blob | string): Promise<ScanResult> {
   ensureEntityIndex()
   const gray = await grayFromImage(image)
-  const variants = ps5PreprocessLadder(gray)
+  // A still has no second frame to agree with, so run the full Task 134 ladder
+  // (deskew + median + otsu included) and let its reads vote.
+  const variants = preprocessVariants(gray).map((v) => v.image)
   const observations = await analyzeFrame(variants, gray.width, (variant, psm) =>
     readImageTsv(variant as HTMLCanvasElement, psm).then((read) => parseTsvWords(read.tsv)),
   )
