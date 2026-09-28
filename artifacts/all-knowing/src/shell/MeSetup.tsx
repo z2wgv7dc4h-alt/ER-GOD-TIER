@@ -6,6 +6,9 @@ import { applyAnswers, applyFacts, denyFacts } from '../lib/infer'
 import { parseEquipmentText } from '../lib/equipmentOcr'
 import { headerToLoadout } from '../lib/ps5Equipment'
 import { analyzeEquipmentImage, analyzeStatusImage, loadBrowserWeaponCatalogue } from '../lib/ps5Capture'
+import { recipesForCookbook } from '../lib/ps5Crafting'
+import type { ScanItem } from '../lib/ps5Scanner'
+import { loadRecipes } from '../lib/recipes'
 import { bonusExplanation } from '../lib/statBoostGear'
 import { matchArmors, matchSpells, matchTalismans, useFanapiData } from '../lib/fanapiData'
 import type { GuideItem } from '../lib/guide'
@@ -32,6 +35,7 @@ import { bossRoster, isRosterMajor, TIER_LABEL, type BossEncounter } from '../li
 import { factState, useWorkspace } from '../state'
 import type { LoadoutSlot, StartingClass } from '../types'
 import { SaveDrop } from './MeUpdate'
+import { InventoryScanOverlay } from './ScanInventory'
 
 const STAT_KEYS = [
   ['vigor', 'Vig'],
@@ -166,6 +170,7 @@ export function MeSetup() {
   const [blob, setBlob] = useState('')
   const [bossQuery, setBossQuery] = useState('')
   const [openRegions, setOpenRegions] = useState<Record<string, boolean>>({})
+  const [scanOpen, setScanOpen] = useState(false)
 
   const learnings = stepLearnings(character, step)
   const reasons = useMemo(() => inferenceReasons(character), [character])
@@ -294,6 +299,44 @@ export function MeSetup() {
     setBlob('')
   }
 
+  /** Task 136 §3 — write the live-scanner review through the normal fact path. */
+  async function addScanItems(items: ScanItem[]) {
+    const ids = items.map((i) => i.factId).filter((id): id is string => Boolean(id))
+    const confidence = items.length ? items.reduce((n, i) => n + i.confidence, 0) / items.length : 0.9
+    let next = ids.length
+      ? applyFacts(character, ids, 'screenshot', 'setup:inventory', Math.max(0.5, Math.min(0.99, confidence)))
+      : character
+    let recipeNote = ''
+    const cookbooks = items.filter((i) => /cookbook/i.test(i.name))
+    if (cookbooks.length) {
+      try {
+        const doc = await loadRecipes()
+        const recipeIds: string[] = []
+        for (const cb of cookbooks) {
+          for (const recipe of recipesForCookbook(doc.recipes, cb.name)) {
+            recipeIds.push(`recipe:${recipe.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`)
+          }
+        }
+        const unique = [...new Set(recipeIds)]
+        if (unique.length) {
+          next = applyFacts(next, unique, 'screenshot', 'setup:inventory')
+          recipeNote = ` · ${unique.length} recipe${unique.length === 1 ? '' : 's'} unlocked`
+        }
+      } catch { /* recipes.json is optional here */ }
+    }
+    setCharacter(next)
+    setOutcome({
+      character: next,
+      text: items.map((i) => i.name).join('\n'),
+      confidence,
+      status: ids.length ? 'applied' : 'no-match',
+      matches: items.filter((i) => i.factId).map((i) => ({ id: i.factId as string, name: i.name })),
+      lines: [],
+      alsoMarked: [],
+      message: `Scanned ${items.length} item${items.length === 1 ? '' : 's'}${recipeNote}.`,
+    })
+  }
+
   function acceptLowConfidence() {
     if (!outcome) return
     const result = applyOcrRead(character, { text: outcome.text, confidence: 0.9 }, `setup:${step}`)
@@ -404,9 +447,14 @@ export function MeSetup() {
           <div className="setup-inventory">
             <p className="note">Key Items, Great Runes, Bell Bearings, Crystal Tears, Cookbooks, Spirit Ashes, Weapons, Armor, Talismans — multiple photos at once.</p>
             <div className="opts">
+              <button type="button" className="chip on" disabled={busy} onClick={() => setScanOpen(true)}>🎥 Scan with camera (live)</button>
               <button type="button" className="chip" disabled={busy} onClick={() => cameraRef.current?.click()}>📷 Take photo</button>
               <button type="button" className="chip" disabled={busy} onClick={() => fileRef.current?.click()}>Open screenshots</button>
             </div>
+            <p className="note">
+              Live scan: point the camera at the inventory and step the cursor one item at a time with the
+              D-pad (not L2/R2 page jumps). Hold steady, avoid glare; low-confidence rows are confirmed in Review.
+            </p>
             <textarea
               className="search"
               style={{ width: '100%', minHeight: 72, marginTop: 8, resize: 'vertical' }}
@@ -582,6 +630,13 @@ export function MeSetup() {
         <div className="kicker" style={{ marginTop: 12 }}>Build codes</div>
         <BuildCodeCard />
       </details>
+
+      {scanOpen && (
+        <InventoryScanOverlay
+          onClose={() => setScanOpen(false)}
+          onAdd={addScanItems}
+        />
+      )}
     </div>
   )
 }

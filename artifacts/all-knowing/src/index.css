@@ -2205,3 +2205,73 @@ html[data-reduce-motion='1'] *::after {
 .journal-row { display: grid; grid-template-columns: minmax(84px, auto) 1fr; gap: 4px 10px; align-items: baseline; padding-bottom: 6px; border-bottom: 1px solid var(--line-soft); }
 .journal-row time { color: var(--muted); font-size: 12px; white-space: nowrap; }
 .journal-row .note { grid-column: 2; }
+
+/* Task 136 §3 — live inventory scanner overlay. */
+.scan-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: #060504;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 14px 16px;
+  overflow: auto;
+}
+.scan-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  border-bottom: 1px solid var(--line-soft);
+  padding-bottom: 10px;
+}
+.scan-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  margin-top: 10px;
+  border: 1px solid var(--line);
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.scan-video { width: 100%; height: 100%; object-fit: contain; display: block; }
+.scan-guide {
+  position: absolute;
+  inset: 6% 8%;
+  border: 2px dashed rgba(212, 175, 55, 0.75);
+  border-radius: 6px;
+  pointer-events: none;
+}
+.scan-guide span {
+  position: absolute;
+  top: -12px;
+  left: 12px;
+  background: #060504;
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0 6px;
+}
+.scan-hud {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px 12px;
+  background: linear-gradient(transparent, rgba(6, 5, 4, 0.92) 30%);
+}
+.scan-tips { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; }
+.scan-live-list { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 3px; max-height: 26vh; overflow: auto; }
+.scan-live-list li { font-size: 13px; }
+.scan-live-list .ok { color: var(--gold); margin-right: 4px; }
+.scan-error { position: absolute; top: 12px; left: 12px; right: 12px; color: var(--danger, #c66); background: rgba(6, 5, 4, 0.85); padding: 6px 8px; }
+.scan-review { margin-top: 12px; }
+.scan-group { margin-bottom: 12px; }
+.scan-review-list { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.scan-review-list label { display: flex; align-items: baseline; gap: 8px; font-size: 14px; }
+.scan-review-list li.low label { color: var(--muted); }
+.scan-actions { margin-top: 10px; position: sticky; bottom: 0; background: #060504; padding-top: 8px; }

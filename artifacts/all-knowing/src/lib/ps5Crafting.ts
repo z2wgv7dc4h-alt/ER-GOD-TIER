@@ -26,6 +26,17 @@ export function craftableCookbookIndex(recipes: Recipe[]): Map<string, string[]>
 }
 
 /**
+ * Task 136 §3 — the reverse of `inferCookbooks`: holding a cookbook unlocks every
+ * recipe whose materials name it, so an inventory scan that finds a cookbook can
+ * mark those recipes.
+ */
+export function recipesForCookbook(recipes: Recipe[], cookbookName: string): Recipe[] {
+  const want = cookbookName.trim().toLowerCase()
+  if (!want) return []
+  return recipes.filter((r) => cookbooksForRecipe(r).some((b) => b.trim().toLowerCase() === want))
+}
+
+/**
  * Given the craftable item names visible in a crafting screenshot, return the
  * cookbook facts they imply and the recipe each came from.
  */
