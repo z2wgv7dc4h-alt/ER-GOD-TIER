@@ -17,6 +17,9 @@ import { loadSecrets, type WallSecret } from '../lib/secrets'
 import { loadDialogueOwners, linesBySpeaker } from '../lib/dialogueOwners'
 import { loadGameTextTable } from '../lib/gameText'
 import { toWeaponStatRow } from '../lib/weaponStats'
+import { allRecords, type EntityRecord } from '../lib/entityIndex'
+import { ensureEntityIndex, useEntityIndex } from '../lib/entityEnrich'
+import { useGuide, type GuideItem } from '../lib/guide'
 import { registerPeekCatalog } from '../peek/peekData'
 import { CATEGORIES, type AttributeKey, type CategoryId, type EntityStat, type LibraryEntity } from './model'
 
@@ -41,6 +44,10 @@ export type CatalogInput = {
   guides: GuideExcerpt[]
   bossCombat: CombatStats[]
   dialogue: DialogueSpeaker[]
+  /** Task 132 §4 — the enriched entity index (NPCs/locations/enemies/items). */
+  index?: EntityRecord[]
+  /** Task 132 §4 — the guide catalogue, for the Key Items / Materials category. */
+  guideItems?: GuideItem[]
 }
 
 export type LibraryCatalog = {
@@ -78,6 +85,8 @@ const FACT_PREFIX: Record<CategoryId, string> = {
   bosses: 'boss',
   npcs: 'npc',
   locations: 'region',
+  enemies: 'enemy',
+  materials: 'item',
   recipes: 'item',
   secrets: 'secret',
   guides: 'guide',
@@ -108,6 +117,7 @@ const ICON_KIND: Partial<Record<CategoryId, string>> = {
   bosses: 'boss',
   npcs: 'npc',
   locations: 'grace',
+  enemies: 'enemy',
 }
 
 /**
@@ -128,6 +138,8 @@ const CATALOG_KIND: Partial<Record<CategoryId, EntityKind>> = {
   bosses: 'boss',
   npcs: 'npc',
   locations: 'region',
+  enemies: 'enemy',
+  materials: 'item',
   mechanics: 'mechanic',
 }
 
@@ -495,31 +507,131 @@ function buildBosses(input: CatalogInput): LibraryEntity[] {
 // npcs, locations, and the ripped-pack categories
 // ---------------------------------------------------------------------------
 
-function buildNpcs(fan: FanapiData): LibraryEntity[] {
-  return fan.npcs.map((n) => {
+function buildNpcs(fan: FanapiData, index: EntityRecord[]): LibraryEntity[] {
+  const out: LibraryEntity[] = []
+  const seen = new Set<string>()
+  const push = (e: LibraryEntity) => {
+    if (seen.has(e.id)) return
+    seen.add(e.id)
+    out.push(e)
+  }
+  for (const n of fan.npcs) {
     const stats: EntityStat[] = []
     if (n.role) stats.push({ label: 'Role', value: n.role })
     if (n.location) stats.push({ label: 'Location', value: n.location })
-    return baseEntity('npcs', n.name, {
+    push(baseEntity('npcs', n.name, {
       subtype: n.role || 'NPC',
       region: n.location,
       stats,
       tags: [n.role].filter(Boolean) as string[],
       where: n.location,
-    })
-  })
+    }))
+  }
+  for (const rec of index) {
+    if (rec.kind !== 'npc') continue
+    const stats: EntityStat[] = []
+    if (rec.stats?.Role) stats.push({ label: 'Role', value: rec.stats.Role })
+    if (rec.stats?.Affiliation) stats.push({ label: 'Affiliation', value: rec.stats.Affiliation })
+    if (rec.location) stats.push({ label: 'Location', value: rec.location })
+    push(baseEntity('npcs', rec.name, {
+      id: rec.id,
+      factId: rec.id,
+      subtype: rec.stats?.Role || 'NPC',
+      region: rec.region || rec.location,
+      icon: rec.image || iconForEntity('npcs', rec.name),
+      stats,
+      tags: [rec.stats?.Role].filter(Boolean) as string[],
+      where: rec.location,
+      lore: rec.description,
+    }))
+  }
+  return out
 }
 
-function buildLocations(fan: FanapiData): LibraryEntity[] {
-  return fan.locations.map((l) =>
-    baseEntity('locations', l.name, {
+function buildLocations(fan: FanapiData, index: EntityRecord[]): LibraryEntity[] {
+  const out: LibraryEntity[] = []
+  const seen = new Set<string>()
+  const push = (e: LibraryEntity) => {
+    if (seen.has(e.id)) return
+    seen.add(e.id)
+    out.push(e)
+  }
+  for (const l of fan.locations) {
+    push(baseEntity('locations', l.name, {
       subtype: 'Location',
       region: l.region,
       stats: l.region ? [{ label: 'Region', value: l.region }] : undefined,
       tags: [l.region].filter(Boolean) as string[],
       where: l.region,
-    }),
-  )
+    }))
+  }
+  for (const rec of index) {
+    if (rec.kind !== 'region') continue
+    push(baseEntity('locations', rec.name, {
+      id: rec.id,
+      factId: rec.id,
+      subtype: rec.stats?.Type || 'Location',
+      region: rec.region || rec.location,
+      icon: rec.image || iconForEntity('locations', rec.name),
+      stats: rec.location ? [{ label: 'Region', value: rec.location }] : undefined,
+      tags: [rec.location].filter(Boolean) as string[],
+      where: rec.location,
+      lore: rec.description,
+    }))
+  }
+  return out
+}
+
+/**
+ * Task 132 §4 — the Enemies category, straight from the entity index's 2,390
+ * combat rows: HP, negation/resist, drops and the maps they spawn on.
+ */
+function buildEnemies(index: EntityRecord[]): LibraryEntity[] {
+  return index
+    .filter((rec) => rec.kind === 'enemy')
+    .map((rec) => {
+      const stats: EntityStat[] = []
+      if (rec.stats?.HP) stats.push({ label: 'HP', value: rec.stats.HP })
+      if (rec.stats?.Poise) stats.push({ label: 'Poise', value: rec.stats.Poise })
+      if (rec.stats?.Negation) stats.push({ label: 'Negation', value: rec.stats.Negation })
+      if (rec.stats?.['Status resist']) stats.push({ label: 'Status resist', value: rec.stats['Status resist'] })
+      if (rec.drops?.length) stats.push({ label: 'Drops', value: rec.drops.join(' · ') })
+      return baseEntity('enemies', rec.name, {
+        id: rec.id,
+        factId: rec.id,
+        subtype: 'Enemy',
+        region: rec.region,
+        icon: rec.image || iconForEntity('enemies', rec.name),
+        stats,
+        tags: [rec.region].filter(Boolean) as string[],
+        where: rec.location,
+        lore: rec.strategy || rec.description,
+      })
+    })
+}
+
+/** Guide categories that are key items / crafting materials, not gear. */
+const KEY_ITEM_CATEGORIES = new Set([
+  'key-item', 'cookbook', 'bell-bearing', 'crystal-tear', 'golden-seed', 'great-rune',
+  'larval-tear', 'map-fragment', 'memory-stone', 'remembrance', 'revered-spirit-ash',
+  'sacred-tear', 'scadutree-fragment', 'stonesword-key', 'tool', 'whetblade',
+])
+
+/** Task 132 §4 — Key Items / Materials from the guide catalogue's own categories. */
+function buildMaterials(guideItems: GuideItem[]): LibraryEntity[] {
+  return guideItems
+    .filter((g) => g.category && KEY_ITEM_CATEGORIES.has(g.category))
+    .map((g) =>
+      baseEntity('materials', g.name, {
+        subtype: g.category,
+        dlc: g.dlc,
+        campaign: campaignFlag(g.dlc),
+        stats: [{ label: 'How', value: g.how }].filter((s) => s.value),
+        tags: [g.category, g.world].filter(Boolean) as string[],
+        where: g.how,
+        lore: g.missable ? `${g.how} Missable.` : g.how,
+      }),
+    )
 }
 
 function buildRecipes(recipes: Recipe[]): LibraryEntity[] {
@@ -606,8 +718,10 @@ export function buildCatalog(input: CatalogInput): BuiltCatalog {
     ...buildSpirits(input.fan),
     ...buildItems(input.fan, input.acquisitions),
     ...buildBosses(input),
-    ...buildNpcs(input.fan),
-    ...buildLocations(input.fan),
+    ...buildEnemies(input.index ?? []),
+    ...buildNpcs(input.fan, input.index ?? []),
+    ...buildLocations(input.fan, input.index ?? []),
+    ...buildMaterials(input.guideItems ?? []),
     ...buildRecipes(input.recipes),
     ...buildSecrets(input.secrets),
     ...buildGuides(input.guides),
@@ -662,6 +776,10 @@ const EMPTY_INPUT: CatalogInput = {
 export function useLibraryCatalog(activeCategory: CategoryId): LibraryCatalog {
   const fan = useFanapiData()
   const { weapons: armoryWeapons, bosses: armoryBosses } = useArmory()
+  const { items: guideItems } = useGuide()
+  // Task 132 §4 — NPCs/locations/enemies/key items come from the enriched index.
+  ensureEntityIndex()
+  const { ready: indexReady, version: indexVersion } = useEntityIndex()
 
   const [weapons, setWeapons] = useState<Weapon[]>([])
   const [recipes, setRecipes] = useState<Recipe[]>([])
@@ -752,6 +870,8 @@ export function useLibraryCatalog(activeCategory: CategoryId): LibraryCatalog {
       guides,
       bossCombat,
       dialogue,
+      index: indexReady ? allRecords() : [],
+      guideItems,
     })
     const coreReady =
       weapons.length > 0 ||
@@ -767,10 +887,12 @@ export function useLibraryCatalog(activeCategory: CategoryId): LibraryCatalog {
       (activeCategory === 'recipes' && recipes.length === 0 && !settled.has('recipes')) ||
       (activeCategory === 'secrets' && secrets.length === 0 && !settled.has('secrets')) ||
       (activeCategory === 'guides' && guides.length === 0 && !settled.has('guides')) ||
-      (activeCategory === 'dialogue' && dialogue.length === 0 && !settled.has('dialogue'))
+      (activeCategory === 'dialogue' && dialogue.length === 0 && !settled.has('dialogue')) ||
+      (activeCategory === 'enemies' && !indexReady) ||
+      (activeCategory === 'materials' && guideItems.length === 0)
     const loading = built.byCategory[activeCategory].length === 0 && (!coreReady || lazyPending)
     return { ...built, loading }
-  }, [fan, armoryWeapons, armoryBosses, weapons, recipes, secrets, acquisitions, guides, bossCombat, dialogue, activeCategory, settled])
+  }, [fan, armoryWeapons, armoryBosses, weapons, recipes, secrets, acquisitions, guides, bossCombat, dialogue, guideItems, indexReady, indexVersion, activeCategory, settled])
 
   // Task 115: let peek cards show the same numeric rows the Library has.
   useEffect(() => {

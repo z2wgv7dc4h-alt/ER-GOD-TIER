@@ -58,6 +58,8 @@ const CATEGORY_ICON_NAME: Partial<Record<CategoryId, string>> = {
   items: 'Flask of Crimson Tears',
   bosses: 'Starscourge Radahn',
   npcs: 'Melina',
+  enemies: 'Godrick Soldier',
+  materials: 'Golden Seed',
   recipes: 'Missionary Cookbook 1',
   secrets: 'Stonesword Key',
 }
@@ -74,6 +76,8 @@ const GLYPH: Record<CategoryId, ReactNode> = {
   items: <path d="M10 3h4v4l3 4v7a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3v-7l3-4zM7 14h10" />,
   bosses: <path d="M4 17l2-9 4 4 2-6 2 6 4-4 2 9zM4 17h16" />,
   npcs: <path d="M12 4.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4zM5 20a7 7 0 0 1 14 0" />,
+  enemies: <path d="M6 8c0-3 3-5 6-5s6 2 6 5v5a6 6 0 0 1-12 0zM9 11h.01M15 11h.01M9 15c1 .8 5 .8 6 0M3 9l3 1M21 9l-3 1" />,
+  materials: <path d="M12 3c3 3 5 6 5 9a5 5 0 0 1-10 0c0-3 2-6 5-9zM12 12v9M9 18l3 3 3-3" />,
   locations: <path d="M12 21s7-6 7-11a7 7 0 1 0-14 0c0 5 7 11 7 11zM12 7.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z" />,
   recipes: <path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17a3 3 0 0 1 3-3h11" />,
   secrets: <path d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM11.5 11.5 20 20M17 17l2 2M14 14l2 2" />,
