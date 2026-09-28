@@ -61,7 +61,7 @@ drops / strategy fields remain in the table as information.
 
 | kind | entities | Desc | Location | Map | Coords | Image | Stats | Effect | HP+Neg+Loc | Drops | Strategy | Req+Scale+Loc | Desc+Loc |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| boss | 243 | 92.6% | 100% | 66.3% | · | 46.1% | 87.2% | · | 84.4% | 88.1% | 92.2% | · | · |
+| boss | 242 | 92.6% | 100% | 66.1% | · | 46.3% | 87.2% | · | 84.3% | 88.4% | 92.1% | · | · |
 | weapon | 419 | 97.9% | 100% | 0% | · | 73% | · | · | · | · | · | 100% | · |
 | shield | 69 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | 100% | · |
 | armor | 565 | 100% | 100% | 0% | · | 95.6% | 100% | · | · | · | · | · | 100% |
