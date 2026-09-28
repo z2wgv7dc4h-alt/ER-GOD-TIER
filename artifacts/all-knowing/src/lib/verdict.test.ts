@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { emptyCharacter } from '../data/seed'
-import { bestEquippedAr, SIDE_GRADE_BAND_PCT, UPGRADE_GAIN_PCT, verdictFromAr } from './verdict'
+import { SIDE_GRADE_BAND_PCT, UPGRADE_GAIN_PCT, verdictFromAr } from './verdict'
+import { bestEquippedAr } from './weaponVerdict'
 
 const base = { meets: true, requirement: '', currentBestAr: 100, currentName: 'Uchigatana' }
 

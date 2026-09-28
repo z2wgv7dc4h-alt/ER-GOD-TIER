@@ -10,52 +10,26 @@
  * See THIRD_PARTY_NOTICES.md.
  */
 import type { LoadoutSlot, Stats } from '../types'
+import {
+  AttackPowerType,
+  allAttributes,
+  allDamageTypes,
+  allStatusTypes,
+  damageTypeLabels,
+  statsToAttributes,
+  type Attribute,
+  type Attributes,
+} from './attackPower'
 
-export const allAttributes = ['str', 'dex', 'int', 'fai', 'arc'] as const
-export type Attribute = (typeof allAttributes)[number]
-export type Attributes = Record<Attribute, number>
-
-export const AttackPowerType = {
-  PHYSICAL: 0,
-  MAGIC: 1,
-  FIRE: 2,
-  LIGHTNING: 3,
-  HOLY: 4,
-  POISON: 5,
-  SCARLET_ROT: 6,
-  BLEED: 7,
-  FROST: 8,
-  SLEEP: 9,
-  MADNESS: 10,
-  DEATH_BLIGHT: 11,
-} as const
-export type AttackPowerType = (typeof AttackPowerType)[keyof typeof AttackPowerType]
-
-export const allDamageTypes: AttackPowerType[] = [
-  AttackPowerType.PHYSICAL,
-  AttackPowerType.MAGIC,
-  AttackPowerType.FIRE,
-  AttackPowerType.LIGHTNING,
-  AttackPowerType.HOLY,
-]
-
-export const allStatusTypes: AttackPowerType[] = [
-  AttackPowerType.POISON,
-  AttackPowerType.SCARLET_ROT,
-  AttackPowerType.BLEED,
-  AttackPowerType.FROST,
-  AttackPowerType.SLEEP,
-  AttackPowerType.MADNESS,
-  AttackPowerType.DEATH_BLIGHT,
-]
-
-export const damageTypeLabels: Record<number, string> = {
-  [AttackPowerType.PHYSICAL]: 'Physical',
-  [AttackPowerType.MAGIC]: 'Magic',
-  [AttackPowerType.FIRE]: 'Fire',
-  [AttackPowerType.LIGHTNING]: 'Lightning',
-  [AttackPowerType.HOLY]: 'Holy',
+export {
+  AttackPowerType,
+  allAttributes,
+  allDamageTypes,
+  allStatusTypes,
+  damageTypeLabels,
+  statsToAttributes,
 }
+export type { Attribute, Attributes }
 
 export type AttackElementCorrect = Partial<
   Record<AttackPowerType, Partial<Record<Attribute, number | true>>>
@@ -481,16 +455,6 @@ export function findWeapon(weapons: Weapon[], slot: LoadoutSlot): Weapon | undef
   const byBaseName = weapons.filter((w) => norm(w.weaponName) === name)
   if (!byBaseName.length) return undefined
   return pick(byBaseName)
-}
-
-export function statsToAttributes(stats: Stats): Attributes {
-  return {
-    str: stats.strength,
-    dex: stats.dexterity,
-    int: stats.intelligence,
-    fai: stats.faith,
-    arc: stats.arcane,
-  }
 }
 
 export type AttackRating =

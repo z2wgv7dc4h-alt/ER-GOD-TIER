@@ -4,6 +4,8 @@ import { attackRatingForSlot, findWeapon, loadWeapons, type Weapon } from '../li
 import { canonicalFactId } from '../lib/aliases'
 import { useArmory, type ArmoryBoss } from '../lib/armory'
 import {
+  BASE_HP_LABEL,
+  BASE_HP_NOTE,
   bestDamageType,
   combatByName,
   combatTargetFor,
@@ -150,9 +152,10 @@ export function BossFacts({
         <div className="lib-panel-block">
           <div className="kicker">Combat profile · enriched</div>
           <div className="lib-attack">
-            <span className="lib-attack-chip">HP <strong>{enrichedHp}</strong></span>
+            <span className="lib-attack-chip">{BASE_HP_LABEL} <strong>{enrichedHp}</strong></span>
             {enrichedPoise && <span className="lib-attack-chip">Poise <strong>{enrichedPoise}</strong></span>}
           </div>
+          <p className="note">{BASE_HP_NOTE}</p>
         </div>
       )}
 
@@ -168,15 +171,16 @@ export function BossFacts({
           <div className="kicker">Combat profile · NpcParam</div>
           <div className="lib-attack">
             {typeof combat.baseHp === 'number' && (
-              <span className="lib-attack-chip">HP <strong>{combat.baseHp}</strong></span>
+              <span className="lib-attack-chip">{BASE_HP_LABEL} <strong>{combat.baseHp}</strong></span>
             )}
             {combat.poise != null && (
               <span className="lib-attack-chip">Poise <strong>{combat.poise}</strong></span>
             )}
             {fext?.hp && !combat.baseHp && (
-              <span className="lib-attack-chip">HP <strong>{fext.hp}</strong></span>
+              <span className="lib-attack-chip">HP (listed) <strong>{fext.hp}</strong></span>
             )}
           </div>
+          <p className="note">{BASE_HP_NOTE}</p>
         </div>
       )}
 

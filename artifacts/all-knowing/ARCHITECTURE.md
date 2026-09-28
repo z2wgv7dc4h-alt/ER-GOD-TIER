@@ -1,4 +1,7 @@
-# All-Knowing architecture
+# All-Knowing architecture (kernel)
+
+> Current, full-app architecture is `docs/ARCHITECTURE.md` (Task 137). This file is
+> kept as the kernel-only note.
 
 ## Kernel
 

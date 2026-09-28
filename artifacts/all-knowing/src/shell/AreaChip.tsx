@@ -14,14 +14,20 @@ function norm(s: string): string {
   return s.toLowerCase().replace(/[^a-z0-9+]+/g, ' ').trim()
 }
 
-/** One row per grace name — the raw warp list carries a few duplicate names. */
+/**
+ * One row per grace. Dedupe on BOTH keys: two rows can share a display name
+ * (different warp ids) or share an id under two spellings, and either would
+ * otherwise render the same grace twice in the picker.
+ */
 const UNIQUE_GRACES: WarpGrace[] = (() => {
-  const seen = new Set<string>()
+  const seenId = new Set<string>()
+  const seenName = new Set<string>()
   const out: WarpGrace[] = []
   for (const g of warpGraces) {
     const key = norm(g.name)
-    if (seen.has(key)) continue
-    seen.add(key)
+    if (seenId.has(g.id) || seenName.has(key)) continue
+    seenId.add(g.id)
+    seenName.add(key)
     out.push(g)
   }
   return out
@@ -65,6 +71,9 @@ export function AreaPickerSheet({ onClose, inline = false }: { onClose: () => vo
       const where = rec.region || rec.location
       if (!where || !regionMatches(where, region)) continue
       if (seen.has(rec.id)) continue
+      // A row that names a grace already offered as a chip would read as the
+      // same thing twice; keep the pickable grace chip only.
+      if (UNIQUE_GRACES.some((g) => norm(g.name) === norm(rec.name))) continue
       seen.add(rec.id)
       out.push({ id: rec.id, name: rec.name, kind: rec.kind })
       if (out.length >= 12) break
@@ -93,11 +102,13 @@ export function AreaPickerSheet({ onClose, inline = false }: { onClose: () => vo
     const sortedAdjacent = [...adjacent].sort((a, b) => Number(have.has(a.id)) - Number(have.has(b.id)))
     const sameRegion = UNIQUE_GRACES.filter((g) => regionMatches(g.region, region))
     const picked: WarpGrace[] = []
+    const pickedIds = new Set<string>()
     const pickedNames = new Set<string>()
     const push = (g: WarpGrace | undefined) => {
       if (!g) return
       const n = norm(g.name)
-      if (pickedNames.has(n)) return
+      if (pickedIds.has(g.id) || pickedNames.has(n)) return
+      pickedIds.add(g.id)
       pickedNames.add(n)
       picked.push(g)
     }
@@ -105,19 +116,29 @@ export function AreaPickerSheet({ onClose, inline = false }: { onClose: () => vo
     sameRegion.filter((g) => !have.has(g.id)).forEach((g) => { if (picked.length < 6) push(g) })
     sameRegion.forEach((g) => { if (picked.length < 6) push(g) })
     const likely = picked.slice(0, 6)
-    // Never show the same grace name twice: a grace already suggested above is
-    // dropped from the region list (Task 126/127: dedupe the area picker).
-    const suggested = new Set(likely.map((g) => norm(g.name)))
-    const inRegion = sameRegion.filter((g) => !suggested.has(norm(g.name)))
+    // Never show the same grace twice: a grace already suggested above is
+    // dropped from the region list by id AND display name (Task 137 §1).
+    const suggestedIds = new Set(likely.map((g) => g.id))
+    const suggestedNames = new Set(likely.map((g) => norm(g.name)))
+    const inRegion = sameRegion.filter((g) => !suggestedIds.has(g.id) && !suggestedNames.has(norm(g.name)))
     return { likely, inRegion }
   }, [legs, region, discovered])
 
   const results = useMemo(() => {
     const n = norm(q)
     if (n.length < 2) return []
-    return UNIQUE_GRACES
-      .filter((g) => norm(g.name).includes(n) || g.aliases.some((a) => norm(a).includes(n)))
-      .slice(0, 8)
+    const seenId = new Set<string>()
+    const seenName = new Set<string>()
+    const out: WarpGrace[] = []
+    for (const g of UNIQUE_GRACES) {
+      if (!(norm(g.name).includes(n) || g.aliases.some((a) => norm(a).includes(n)))) continue
+      if (seenId.has(g.id) || seenName.has(norm(g.name))) continue
+      seenId.add(g.id)
+      seenName.add(norm(g.name))
+      out.push(g)
+      if (out.length >= 8) break
+    }
+    return out
   }, [q])
 
   function pick(g: WarpGrace) {

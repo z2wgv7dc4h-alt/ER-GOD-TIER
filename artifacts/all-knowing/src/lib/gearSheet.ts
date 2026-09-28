@@ -201,3 +201,63 @@ export function kindForEntity(entity: LibraryEntity): LoadoutSlot['kind'] {
 export function slotFromEntity(entity: LibraryEntity, slot: GearSlot): LoadoutSlot {
   return { id: entity.factId || entity.id, name: entity.name, kind: kindForEntity(entity), slot }
 }
+
+/**
+ * A forgiving name key: drop possessives and plural endings so the game/save
+ * spelling ("Carian Knight Shield") matches the catalogue ("Carian Knight's
+ * Shield"). Used only to resolve an already-equipped row, never to author data.
+ */
+export function looseGearName(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/['’]s\b/g, '')
+    .replace(/[^a-z0-9+]+/g, ' ')
+    .split(' ')
+    .filter(Boolean)
+    .map((w) => (w.length > 3 && w.endsWith('s') && !w.endsWith('ss') ? w.slice(0, -1) : w))
+    .join(' ')
+}
+
+function normGear(s: string): string {
+  return s.toLowerCase().replace(/[^a-z0-9+]+/g, ' ').trim()
+}
+
+/** The catalogue row for an equipped slot, or undefined when nothing matches. */
+export function matchEntityForSlot(entities: LibraryEntity[], slot: LoadoutSlot): LibraryEntity | undefined {
+  const byId = entities.find((e) => e.factId === slot.id || e.id === slot.id)
+  if (byId) return byId
+  const exact = entities.find((e) => normGear(e.name) === normGear(slot.name))
+  if (exact) return exact
+  const loose = looseGearName(slot.name)
+  return entities.find((e) => looseGearName(e.name) === loose)
+}
+
+/**
+ * A catalogue entity for an equipped slot that always resolves. A save dump or
+ * an OP kit can name a row the catalogue does not carry (a set, an unresolvable
+ * id); the gear sheet must still open its entity panel, so we fall back to a
+ * minimal entity built from the slot rather than doing nothing on tap.
+ */
+export function entityForSlot(entities: LibraryEntity[], slot: LoadoutSlot): LibraryEntity {
+  const hit = matchEntityForSlot(entities, slot)
+  if (hit) return hit
+  const category: CategoryId =
+    slot.kind === 'armor'
+      ? 'armor'
+      : slot.kind === 'talisman'
+        ? 'talismans'
+        : slot.kind === 'spell'
+          ? 'sorceries'
+          : slot.kind === 'shield'
+            ? 'shields'
+            : 'weapons'
+  const id = slot.id || `slot:${looseGearName(slot.name)}`
+  return {
+    id,
+    factId: id,
+    name: slot.name,
+    category,
+    subtype: slot.kind,
+    weaponName: slot.kind === 'armament' || slot.kind === 'shield' ? slot.name : undefined,
+  }
+}

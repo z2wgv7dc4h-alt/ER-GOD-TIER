@@ -267,7 +267,7 @@ export async function runGideonTool(name: string, args: Record<string, unknown>,
       const doc = await loadBossDrops().catch(() => null)
       const hit = doc ? matchBossDrops(String(args.name ?? ''), doc.bosses, 1)[0] : null
       return hit
-        ? { name: hit.name, hp: hit.hp, locations: hit.locations, drops: hit.drops, guide: (hit.sections ?? []).find((s) => /guide/i.test(s.heading))?.text?.slice(0, 700) }
+        ? { name: hit.name, listedHp: hit.hp, hpNote: 'Fextralife listed HP, not NpcParam base HP', locations: hit.locations, drops: hit.drops, guide: (hit.sections ?? []).find((s) => /guide/i.test(s.heading))?.text?.slice(0, 700) }
         : { error: 'no boss by that name' }
     }
     case 'guide': {
@@ -300,7 +300,7 @@ export async function runGideonTool(name: string, args: Record<string, unknown>,
       }
       // Task 132 §4 — fall back to the enriched enemy index (wiki-only enemies).
       const rec = searchRecordIds(String(args.name ?? ''), 'enemy', 1)[0]
-      if (rec) return { id: rec.id, name: rec.name, hp: rec.stats?.HP ?? null, stats: rec.stats ?? {}, location: rec.location ?? null, drops: rec.drops ?? [] }
+      if (rec) return { id: rec.id, name: rec.name, baseHp: rec.stats?.HP ?? null, stats: rec.stats ?? {}, location: rec.location ?? null, drops: rec.drops ?? [] }
       return { error: 'no enemy by that name' }
     }
     case 'find_item': {

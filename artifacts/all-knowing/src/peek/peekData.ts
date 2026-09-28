@@ -13,7 +13,7 @@ import { npcLocate } from '../knowledge/npcLocations'
 import { storylines } from '../knowledge/storylines'
 import { knownFactIds } from '../lib/infer'
 import type { EntityRecord } from '../lib/entityIndex'
-import { attributeStats, weaponAr, type LibraryEntity } from '../library/model'
+import { attributeStats, type LibraryEntity } from '../library/model'
 
 /**
  * Task 115 §1 — the data behind a peek card.
@@ -123,6 +123,13 @@ export type PeekEntityRow = {
 
 const registry = new Map<string, PeekEntityRow>()
 
+/**
+ * Task 137 §4 — the AR calculator registers an `arFor` callback with the
+ * catalogue; the peek card calls it lazily so this eagerly-imported module never
+ * imports the calculator itself.
+ */
+let peekArFor: ((weapon: Weapon, character: Character) => number) | null = null
+
 /** Register one catalogue row against its canonical entity id. */
 export function registerPeekRow(row: PeekEntityRow): void {
   const id = canonicalEntityId(row.factId)
@@ -133,7 +140,9 @@ export function registerPeekRow(row: PeekEntityRow): void {
 export function registerPeekCatalog(catalog: {
   entities: LibraryEntity[]
   weaponByName: Map<string, Weapon>
+  arFor?: (weapon: Weapon, character: Character) => number
 }): void {
+  if (catalog.arFor) peekArFor = catalog.arFor
   for (const entity of catalog.entities) {
     const weapon = entity.weaponName
       ? catalog.weaponByName.get(norm(entity.weaponName))
@@ -154,6 +163,14 @@ export function registerPeekCatalog(catalog: {
 }
 
 /** Test seam: drop every registered row. */
+/**
+ * Register the AR-at-stats callback without a full catalogue (used at boot and
+ * by tests). Task 137 §4.
+ */
+export function registerPeekAr(fn: (weapon: Weapon, character: Character) => number): void {
+  peekArFor = fn
+}
+
 export function clearPeekData(): void {
   registry.clear()
 }
@@ -199,8 +216,8 @@ function scalingText(scaling: Partial<Record<string, string>> | undefined): stri
 function weaponFacts(row: PeekEntityRow | undefined, character: Character | undefined): PeekFact[] {
   if (!row) return []
   const facts: PeekFact[] = []
-  if (row.weapon && character) {
-    facts.push(fact('Attack at my stats', String(weaponAr(row.weapon, character))))
+  if (row.weapon && character && peekArFor) {
+    facts.push(fact('Attack at my stats', String(peekArFor(row.weapon, character))))
   } else if (row.attack?.length) {
     facts.push(fact('Base attack', joinValues(row.attack.map((a) => `${a.label} ${Math.round(a.value)}`), 2)))
   }
@@ -221,8 +238,9 @@ function bossFacts(id: string, row: PeekEntityRow | undefined): PeekFact[] {
   const resist = edgesByRel(id, 'resists').map((e) => e.label)
   if (weak.length) facts.push(fact('Weak to', joinValues(weak, 3)))
   if (resist.length) facts.push(fact('Resists', joinValues(resist, 3)))
-  const hp = rowStat(row, 'HP')
-  if (hp) facts.push(fact('HP', hp))
+  // Task 137 §3 — HP is the NpcParam base value and is always labelled as such.
+  const hp = rowStat(row, 'Base HP') ?? rowStat(row, 'HP')
+  if (hp) facts.push(fact('Base HP', hp))
   const level = rowStat(row, 'Recommended level') ?? (row as { recommendedLevel?: string } | undefined)?.recommendedLevel
   if (level) facts.push(fact('Recommended level', level))
   else if (row?.stats?.length && !weak.length) {
@@ -312,7 +330,7 @@ function appendRecordFacts(facts: PeekFact[], kind: EntityKind, record: EntityRe
     have.add(label)
   }
   const stats = record.stats ?? {}
-  push('HP', stats.HP)
+  push(kind === 'boss' || kind === 'enemy' ? 'Base HP' : 'HP', stats.HP)
   push('Negation', stats.Negation)
   push('Poise', stats.Poise)
   push('Requirements', stats.Requirements)

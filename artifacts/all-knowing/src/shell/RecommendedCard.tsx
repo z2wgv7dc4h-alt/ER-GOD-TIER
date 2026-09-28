@@ -5,9 +5,9 @@ import { advise } from '../lib/advisor'
 import { regionMatches } from '../lib/areaHub'
 import { loadRegionLevels, type RegionLevel } from '../lib/regionLevels'
 import { useCoords } from '../lib/coords'
-import type { Character } from '../types'
 import { useWorkspace } from '../state'
 import { SeeAllButton, useRowReveal } from './rows'
+import { hasUnsetStats } from './setupState'
 import '../library/advisor.css'
 
 /**
@@ -18,11 +18,7 @@ import '../library/advisor.css'
  * call to action.
  */
 
-/** True for a character whose stats are the untouched default (all 10s or a demo/empty source). */
-export function hasUnsetStats(character: Character): boolean {
-  if (character.source === 'empty' || character.source === 'demo') return true
-  return Object.values(character.stats).every((v) => v === 10)
-}
+export { hasUnsetStats } from './setupState'
 
 export function RecommendedCard() {
   const w = useWorkspace()

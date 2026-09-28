@@ -6,8 +6,7 @@ import viteConfig from '../../vite.config'
 import {
   ENGINE_URL_PATTERN,
   PRECACHE_DATA,
-  SOURCED_DATA_CACHE,
-  SOURCED_MEDIA_CACHE,
+  SOURCED_OFFLINE_CACHE,
   pwaOptions,
 } from './pwa'
 
@@ -108,16 +107,26 @@ describe('service worker cache strategy', () => {
     }
   })
 
-  it('runtime-caches lazily-fetched sourced JSON with stale-while-revalidate', () => {
-    const rule = ruleFor('https://all-knowing.test/sourced/open/world-lots.json')
-    expect(rule?.handler).toBe('StaleWhileRevalidate')
-    expect(rule?.options?.cacheName).toBe(SOURCED_DATA_CACHE)
+  it('serves every sourced file cache-first from the dedicated offline bucket (Task 137 §2)', () => {
+    for (const url of [
+      'https://all-knowing.test/sourced/open/world-lots.json',
+      'https://all-knowing.test/sourced/wiki/pages-000.json',
+      'https://all-knowing.test/sourced/wiki/search-index.json',
+      'https://all-knowing.test/sourced/maps/m0-overworld.jpg',
+      'https://all-knowing.test/sourced/entity-index.json',
+    ]) {
+      const rule = ruleFor(url)
+      expect(rule?.handler, url).toBe('CacheFirst')
+      expect(rule?.options?.cacheName, url).toBe(SOURCED_OFFLINE_CACHE)
+    }
   })
 
-  it('runtime-caches sourced media (maps, icon packs) cache-first', () => {
-    const rule = ruleFor('https://all-knowing.test/sourced/maps/m0-overworld.jpg')
-    expect(rule?.handler).toBe('CacheFirst')
-    expect(rule?.options?.cacheName).toBe(SOURCED_MEDIA_CACHE)
+  it('keeps enough room in the offline bucket for the whole sourced tree', () => {
+    const rule = ruleFor('https://all-knowing.test/sourced/entity-index.json')
+    const expiry = (rule?.options?.expiration ?? {}) as { maxEntries?: number; maxAgeSeconds?: number }
+    // ~2,700 sourced files today; leave headroom.
+    expect(expiry.maxEntries ?? 0).toBeGreaterThanOrEqual(3000)
+    expect(expiry.maxAgeSeconds ?? 0).toBeGreaterThanOrEqual(60 * 60 * 24 * 180)
   })
 
   it('self-hosts fonts: no remote font rules, woff2 precached by the glob (Task 58)', () => {

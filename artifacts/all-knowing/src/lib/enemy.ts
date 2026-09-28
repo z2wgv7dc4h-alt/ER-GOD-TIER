@@ -9,7 +9,7 @@
  * Data: `public/sourced/npc-combat.json`.
  */
 import { useEffect, useState } from 'react'
-import { AttackPowerType } from './ar'
+import { AttackPowerType } from './attackPower'
 
 export type DamageType = 'physical' | 'magic' | 'fire' | 'lightning' | 'holy'
 
@@ -63,6 +63,29 @@ export type CombatStats = {
 
 /** A named boss row from `npc-combat.json` (Task 17). */
 export type BossCombat = CombatStats
+
+/**
+ * Task 137 §3 — HP is always labelled as the NpcParam *base* value. The HP bar a
+ * player faces is raised by area scaling and NG+, which the extracted data does
+ * not carry, so showing a bare "HP" would misrepresent it as the real number.
+ */
+export const BASE_HP_LABEL = 'Base HP'
+export const BASE_HP_NOTE =
+  'NpcParam base HP — the in-game bar is higher from area and NG+ scaling, not shown here.'
+
+export type HpVariant = { label: string; value: number }
+
+/**
+ * Display rows for a target's HP. Always includes the labelled base value; when
+ * an area/NG scaling row is supplied (it is not in the current extract) the
+ * scaled NG and NG+ values are appended so the real number is never implied.
+ */
+export function hpVariants(baseHp: number, scaling?: { ng?: number; ngPlus?: number } | null): HpVariant[] {
+  const out: HpVariant[] = [{ label: BASE_HP_LABEL, value: baseHp }]
+  if (scaling?.ng != null) out.push({ label: 'NG', value: scaling.ng })
+  if (scaling?.ngPlus != null) out.push({ label: 'NG+', value: scaling.ngPlus })
+  return out
+}
 
 /**
  * A regular (non-boss) field-enemy row from `enemy-combat.json` (Task 22).

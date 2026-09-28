@@ -866,11 +866,37 @@ export function AtlasWorkspace() {
           </div>
         ) : (
           <>
-            <div className="opts">
-              <button type="button" className={selectedState === 'true' ? 'chip on' : 'chip'} onClick={() => mark('true')}>Found</button>
-              <button type="button" className={selectedState === 'unknown' ? 'chip on' : 'chip'} onClick={() => mark('unknown')}>Unknown</button>
-              <button type="button" className={selectedState === 'false' ? 'chip on' : 'chip'} onClick={() => mark('false')}>Not there</button>
-            </div>
+            {selectedId && (
+              <div className="opts">
+                <button
+                  type="button"
+                  className={selectedState === 'true' ? 'chip on' : 'chip'}
+                  aria-pressed={selectedState === 'true'}
+                  disabled={selectedState === 'true'}
+                  onClick={() => mark('true')}
+                >
+                  Found
+                </button>
+                <button
+                  type="button"
+                  className={selectedState === 'unknown' ? 'chip on' : 'chip'}
+                  aria-pressed={selectedState === 'unknown'}
+                  disabled={selectedState === 'unknown'}
+                  onClick={() => mark('unknown')}
+                >
+                  Unknown
+                </button>
+                <button
+                  type="button"
+                  className={selectedState === 'false' ? 'chip on' : 'chip'}
+                  aria-pressed={selectedState === 'false'}
+                  disabled={selectedState === 'false'}
+                  onClick={() => mark('false')}
+                >
+                  Not there
+                </button>
+              </div>
+            )}
 
             {selectedId && <Thread id={selectedId} />}
           </>

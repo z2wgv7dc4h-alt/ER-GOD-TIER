@@ -47,6 +47,12 @@ describe('settings store (Task 112 §1)', () => {
     ).toEqual({ textSize: 'L', spoiler: 'full', landing: 'me', reduceMotion: true, haptics: false })
   })
 
+  it('keeps the "light" spoiler level instead of collapsing it to the default', () => {
+    expect(sanitizeSettings({ spoiler: 'light' }).spoiler).toBe('light')
+    setSettings({ spoiler: 'light' })
+    expect(getSettings().spoiler).toBe('light')
+  })
+
   it('persists a patch and notifies subscribers', () => {
     const cb = vi.fn()
     const unsubscribe = subscribeSettings(cb)

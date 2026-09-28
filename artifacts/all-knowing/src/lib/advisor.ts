@@ -9,7 +9,9 @@ import {
   type Attribute,
   type Weapon,
 } from './ar'
-import { primaryScaling } from './upgradeAdvice'
+import { primaryScaling } from './primaryScaling'
+import { ARCHETYPE_ATTRS, ARCHETYPE_LABELS, buildReason, detectArchetype, type Archetype, type BuildRead } from './archetype'
+import { GEAR_TAGS } from './gearTags'
 import { scalingLetter } from './weaponStats'
 import { buildHunt } from './buildHunt'
 import { opBuilds, type OpBuild } from '../knowledge/builds'
@@ -71,37 +73,13 @@ const TORCH_TYPE = 87
 const SHIELD_TYPES = new Set([65, 67, 69, 90])
 const BOW_TYPES = new Set([50, 51, 53, 55, 56])
 
-export type Archetype =
-  | 'strength'
-  | 'dexterity'
-  | 'quality'
-  | 'intelligence'
-  | 'faith'
-  | 'arcane'
-  | 'bleed'
-  | 'hybrid'
-
-export const ARCHETYPE_LABELS: Record<Archetype, string> = {
-  strength: 'Strength',
-  dexterity: 'Dexterity',
-  quality: 'Quality (Str/Dex)',
-  intelligence: 'Intelligence',
-  faith: 'Faith',
-  arcane: 'Arcane',
-  bleed: 'Bleed / Arcane',
-  hybrid: 'Int/Faith hybrid',
-}
-
-const ARCHETYPE_ATTRS: Record<Archetype, Attribute[]> = {
-  strength: ['str'],
-  dexterity: ['dex'],
-  quality: ['str', 'dex'],
-  intelligence: ['int'],
-  faith: ['fai'],
-  arcane: ['arc'],
-  bleed: ['arc', 'dex'],
-  hybrid: ['int', 'fai'],
-}
+// Task 137 §4 — the stat-only archetype model lives in `archetype.ts`, and the
+// authored gear table in `gearTags.ts`, so eager UI can read them without the
+// attack-rating calculator. Re-exported here for existing importers.
+export type { Archetype, BuildRead } from './archetype'
+export { ARCHETYPE_LABELS, ARCHETYPE_ATTRS } from './archetype'
+export { GEAR_TAGS } from './gearTags'
+export type { GearTag } from './gearTags'
 
 /** The class starting armament, for the "otherwise compare to…" fallback. */
 const STARTING_WEAPON: Record<string, string> = {
@@ -121,16 +99,6 @@ const STARTING_WEAPON: Record<string, string> = {
 
 const SCALING_RANK: Record<string, number> = { S: 6, A: 5, B: 4, C: 3, D: 2, E: 1, '–': 0, '-': 0 }
 const SCALING_FIT: Record<string, number> = { S: 1.5, A: 1.35, B: 1.2, C: 1.05, D: 0.9, E: 0.78, '–': 0.6, '-': 0.6 }
-
-export type BuildRead = {
-  archetype: Archetype
-  label: string
-  /** 0..1 — a heuristic, not a probability. */
-  confidence: number
-  reason: string
-  /** Offensive attributes, highest first. */
-  attributes: { attr: Attribute; value: number }[]
-}
 
 export type UpgradeRecommendation = {
   name: string
@@ -381,20 +349,7 @@ export function detectBuild(character: Character, weapons?: Weapon[]): BuildRead
   const primaries = new Set(equipped.map((w) => primaryScaling(w)).filter((a): a is Attribute => Boolean(a)))
   const hasBleedWeapon = equipped.some((w) => (w.attack[0]?.[AttackPowerType.BLEED] ?? 0) > 0)
 
-  const intAndFaith = attrs.int >= 20 && attrs.fai >= 20 && Math.abs(attrs.int - attrs.fai) <= 15
-  const qualitySpread =
-    attrs.str >= 20 && attrs.dex >= 20 && Math.abs(attrs.str - attrs.dex) <= 10 &&
-    (highest.attr === 'str' || highest.attr === 'dex')
-
-  let archetype: Archetype
-  if (hasBleedWeapon && (attrs.arc >= 15 || attrs.dex >= 20)) archetype = 'bleed'
-  else if (intAndFaith) archetype = 'hybrid'
-  else if (qualitySpread) archetype = 'quality'
-  else if (highest.attr === 'str') archetype = 'strength'
-  else if (highest.attr === 'dex') archetype = 'dexterity'
-  else if (highest.attr === 'int') archetype = 'intelligence'
-  else if (highest.attr === 'fai') archetype = 'faith'
-  else archetype = 'arcane'
+  const archetype = detectArchetype(character.stats, hasBleedWeapon)
 
   const primaryAttr = ARCHETYPE_ATTRS[archetype][0]
   const support = primaries.has(primaryAttr) ? 0.15 : 0
@@ -410,27 +365,6 @@ export function detectBuild(character: Character, weapons?: Weapon[]): BuildRead
     confidence: Math.round(confidence * 100) / 100,
     reason,
     attributes: ranked,
-  }
-}
-
-function buildReason(archetype: Archetype, attrs: Record<Attribute, number>): string {
-  switch (archetype) {
-    case 'bleed':
-      return `Arc ${attrs.arc} with a bleed weapon equipped — Hemorrhage is the plan.`
-    case 'hybrid':
-      return `Int ${attrs.int} / Fai ${attrs.fai} — one spread feeds both a catalyst and its incantations.`
-    case 'quality':
-      return `Str ${attrs.str} / Dex ${attrs.dex} — a level quality spread, so both scale.`
-    case 'strength':
-      return `Str ${attrs.str} is your highest offensive stat.`
-    case 'dexterity':
-      return `Dex ${attrs.dex} is your highest offensive stat.`
-    case 'intelligence':
-      return `Int ${attrs.int} is your highest offensive stat.`
-    case 'faith':
-      return `Fai ${attrs.fai} is your highest offensive stat.`
-    case 'arcane':
-      return `Arc ${attrs.arc} is your highest offensive stat, without a bleed weapon equipped.`
   }
 }
 
@@ -687,63 +621,6 @@ export function rankUpgrades(character: Character, build: BuildRead, opts: Advis
 // ---------------------------------------------------------------------------
 // 3. Gear picks
 // ---------------------------------------------------------------------------
-
-type GearTag = { name: string; kind: 'talisman' | 'armor'; why: string }
-
-/**
- * Authored archetype → gear tags. Names resolve through `loot.ts` / the
- * catalog; the table exists because "which talisman suits which build" is
- * domain knowledge, not something the regulation dump expresses.
- */
-export const GEAR_TAGS: Record<Archetype, GearTag[]> = {
-  strength: [
-    { name: 'Shard of Alexander', kind: 'talisman', why: 'Boosts the big skills and ashes a strength build actually uses.' },
-    { name: "Great-Jar's Arsenal", kind: 'talisman', why: 'More equip load so heavy armour does not force a fat roll.' },
-    { name: 'Claw Talisman', kind: 'talisman', why: 'Jump attacks are the colossal opener.' },
-    { name: 'Axe Talisman', kind: 'talisman', why: 'Charged attacks hit harder, which is how you trade.' },
-    { name: "Bull-Goat's Talisman", kind: 'talisman', why: 'Poise so slow swings finish through a hit.' },
-  ],
-  dexterity: [
-    { name: "Millicent's Prosthesis", kind: 'talisman', why: 'Dex builds land fast combos, so the successive-hit bonus is always up.' },
-    { name: 'Rotten Winged Sword Insignia', kind: 'talisman', why: 'Same ramp, bigger numbers, for a pure dex chain.' },
-    { name: 'Ritual Sword Talisman', kind: 'talisman', why: 'Rewards the clean, hit-and-run spacing dex wants.' },
-    { name: 'Spear Talisman', kind: 'talisman', why: 'Punishes the counter-hit window a fast weapon creates.' },
-  ],
-  quality: [
-    { name: 'Shard of Alexander', kind: 'talisman', why: 'Most quality kits live on their weapon skill.' },
-    { name: 'Axe Talisman', kind: 'talisman', why: 'A quality weapon usually wants the charged attack.' },
-    { name: 'Claw Talisman', kind: 'talisman', why: 'Jump attacks scale off both stats at once.' },
-  ],
-  intelligence: [
-    { name: 'Graven-Mass Talisman', kind: 'talisman', why: 'Raises sorcery damage, the whole point of an Int build.' },
-    { name: 'Godfrey Icon', kind: 'talisman', why: 'Charged spells and skills — Comet Azur, Dark Moon — hit harder.' },
-    { name: 'Magic Scorpion Charm', kind: 'talisman', why: 'More magic damage at the cost of physical defence.' },
-    { name: 'Ritual Sword Talisman', kind: 'talisman', why: 'Safe at range, so the full-health bonus stays on.' },
-  ],
-  faith: [
-    { name: "Flock's Canvas Talisman", kind: 'talisman', why: 'Raises incantation potency across the board.' },
-    { name: 'Fire Scorpion Charm', kind: 'talisman', why: 'For the fire incantations faith actually casts.' },
-    { name: 'Radagon Icon', kind: 'talisman', why: 'Faster casts; faith has the slowest animations.' },
-    { name: 'Ritual Sword Talisman', kind: 'talisman', why: 'Casters stay at range, so the bonus rarely drops.' },
-  ],
-  arcane: [
-    { name: "Lord of Blood's Exultation", kind: 'talisman', why: 'Arcane bleed pressure keeps the 20% damage window open.' },
-    { name: 'White Mask', kind: 'armor', why: 'Extra attack while bleed is proccing on anything nearby.' },
-    { name: "Millicent's Prosthesis", kind: 'talisman', why: 'Successive hits ramp the arcane status chains.' },
-  ],
-  bleed: [
-    { name: "Lord of Blood's Exultation", kind: 'talisman', why: 'Turns each Hemorrhage proc into a damage window.' },
-    { name: 'Rotten Winged Sword Insignia', kind: 'talisman', why: 'Multi-hit bleed chains ramp attack power.' },
-    { name: "Millicent's Prosthesis", kind: 'talisman', why: 'Dex/Arc successive hits stack with the insignia.' },
-    { name: 'White Mask', kind: 'armor', why: 'More attack while a bleed proc is live.' },
-  ],
-  hybrid: [
-    { name: 'Radagon Icon', kind: 'talisman', why: 'A hybrid casts both sides; faster is always better.' },
-    { name: 'Godfrey Icon', kind: 'talisman', why: 'Charged spells from either stat get the boost.' },
-    { name: 'Magic Scorpion Charm', kind: 'talisman', why: 'For the Int half of the spread.' },
-    { name: "Old Lord's Talisman", kind: 'talisman', why: 'Extends the buffs a hybrid shell leans on.' },
-  ],
-}
 
 export function pickGear(character: Character, build: BuildRead, opts: AdviseOptions = {}): GearPick[] {
   const reached = reachedRegions(character)

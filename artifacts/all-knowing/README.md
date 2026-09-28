@@ -16,6 +16,7 @@ The atlas is [egormagurin/EldenRingMap](https://github.com/egormagurin/EldenRing
 
 **Shell** — four sections: **Tarnished** (overview / update / profiles), **Journey** (now / map / quests), **Library** (search / builds / kit) and **Gideon**. A shared header carries the section tabs, command search and character chip; a phone gets four bottom tabs, desktop gets an optional Gideon dock. The old off-canvas Tarnished rail is gone. `#/journey/map` URL hashes keep reload and back working, and every old room still resolves through `setModule`.  
 **Reckoning** — interview, warp-list paste, on-device Tesseract, inference with undo.  
+**PS5 capture** — no save needed: the setup wizard reads the status screen (level, runes, attributes), the live camera scanner reads the inventory and equipment screens, and the map photo reader reads a photographed map / grace list into discoveries. All OCR runs on-device.  
 **Atlas** — plates or live engine, leftover / gate / hunt pins, phone job chips. Plates also carry our grounded EldenRingMap-pack pins (dungeons, merchants, night bosses, collectibles). Fails closed: if the embed fails it shows the plate and a banner, never a blank iframe. The live engine has marker **search**, per-category toggles (all/none) and hide-found/labels/icons; our NPC placements sit under a dedicated **NPCs** category that defaults off.  
 **Builds** — Clark AR, soft caps and a one-AR first paint with the active hunt (missing pieces ordered by the kit's route). **Library → Kit** holds the OP/PvP list, AR detail, matchup, broken-tricks tech and `akb1.` codes. Show on map targets the first pinnable missing piece.  
 **Goods paste** — paste an item list; one confident catalog/loot hit per line marks, anything else stays unknown (no OCR).  
@@ -24,9 +25,11 @@ The atlas is [egormagurin/EldenRingMap](https://github.com/egormagurin/EldenRing
 **Gideon** — router, chat + idle chips + command palette; the current beat · one gate · Show/Done dashboard is Journey → Now, and Gideon also docks on wide desktops. Quotes **verbatim dialogue** for a named speaker, answers **Medusa route** steps, and falls back to **placed-NPC maps**. Optional local LLM behind an env key.  
 **Companions** — where-is-it locator for eight NPCs, region “what did I miss here”, a Stormveil checklist, and a co-op mode that drops Mimic / Torrent advice.  
 **Vault** — profiles, packet copy/paste/QR, PWA offline shell.  
+**Offline everything** — Settings → Tarnished → Profiles → **Data & offline** downloads the whole `public/sourced/**` data plane (entity index, wiki pages + search index, open dumps, images) into a dedicated Cache Storage bucket with a files/MB progress bar. Resumable, removable, and the service worker serves `sourced/**` cache-first from it, so the wiki, search and Gideon's wiki answers work with no connection. Storage used/quota is shown and persistence is requested.  
+**Wiki corpus** — the full Fandom snapshot (4,939 pages) plus a prebuilt search index, wired into Library search, entity Lore tabs and Gideon.  
 **Alias plane** — every warp-list grace canonicalises to a slug: authored where one exists, else a name-derived stub (no invented pin).
 
-Live status and task history: `HANDOFF-CLAUDE.md`. Data inventory: `DATA.md`. Kernel: `ARCHITECTURE.md`.
+Live status and task history: `HANDOFF-CLAUDE.md`. Data inventory: `docs/DATA-CATALOG.md` (regenerate with `npm run data:catalog`). Current architecture: `docs/ARCHITECTURE.md` (kernel history in the root `ARCHITECTURE.md`).
 
 ---
 
@@ -48,6 +51,34 @@ npm run map:merge   # fold our NPCs + pack markers into the engine's feed
 `npm start:live` / `npm run map:live` is optional process-memory read for a player dot. Off by default. Read the section below before enabling it.
 
 Install from the browser menu when you want it on a phone. Fonts are self-hosted; the shell caches.
+
+---
+
+## Run it on the phone
+
+1. `npm run cert` once (see below) so the LAN dev server is HTTPS.
+2. `npm run dev` on the PC, then open `https://<PC LAN IP>:5173` on the phone and
+   accept the certificate warning once (secure context is required for the camera).
+3. Install it from the browser menu for the offline shell.
+4. Settings → Tarnished → Profiles → **Data & offline** → *Download everything for
+   offline* to take the wiki + search corpus with you.
+
+The live map is served same-origin at `/engine`, so no second process is needed
+until you want the PC save / player-dot reader (`npm run map:live`).
+
+---
+
+## Tooling & audits
+
+```bash
+npm run data:catalog     # regenerate docs/DATA-CATALOG.md (every source + consumer)
+npm run index:entities   # rebuild public/sourced/entity-index.json
+npm run data:offline     # rebuild public/sourced/offline-manifest.json
+npm run test:bundle      # build, then run the bundle-budget guards
+npm run audit:ui         # static UI audit (needs a running dev server)
+npm run crawl:ui         # click-everything crawl → .scratch/ui-crawl/<ts>/crawl.md
+npm run test:ocr         # the OCR/scanner suite (vitest.ocr.config.ts)
+```
 
 ---
 

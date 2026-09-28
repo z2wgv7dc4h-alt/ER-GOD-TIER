@@ -215,6 +215,11 @@
 .settings-list .settings-item-label .note { margin: 0; }
 .settings-list .settings-item-control { flex: none; display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
 
+/* Offline download progress (Task 137 §2). */
+.settings-progress { display: flex; flex-direction: column; gap: 4px; padding: 4px 0 8px; }
+.settings-progress-label { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; color: var(--muted); }
+.settings-progress .note { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
 /* ── Journey › Now goal-card overflow ─────────────────────────────────── */
 .lead-actions { align-items: center; }
 .now-more { position: relative; }

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { lazy, Suspense, useMemo, useState } from 'react'
 import { nextCompletionId, planRoute } from '../knowledge/endings'
 import { allLines, stillAvailable } from '../knowledge/storylines'
 import { applyFacts } from '../lib/infer'
@@ -18,8 +18,12 @@ import { WatchlistCard } from '../watch/WatchlistCard'
 import { AreaPrompt } from './AreaPrompt'
 import { ResumeCard } from './ResumeCard'
 import { SeeAllButton, useRowReveal } from './rows'
-import { RecommendedCard, hasUnsetStats } from './RecommendedCard'
+import { hasUnsetStats } from './setupState'
 import { Button, ListRow } from '../ui'
+
+// Task 137 §4 — the recommended card is the one eager consumer of the advisor +
+// attack-rating calculator, so it loads lazily and the main entry stays clean.
+const RecommendedCard = lazy(() => import('./RecommendedCard').then((m) => ({ default: m.RecommendedCard })))
 
 /**
  * Task 91 `journey/now`: the "working towards" dashboard. Task 126 reordered it
@@ -180,7 +184,9 @@ export function JourneyNow() {
             />
           </section>
         ) : (
-          <RecommendedCard />
+          <Suspense fallback={null}>
+            <RecommendedCard />
+          </Suspense>
         )}
 
         <BeforeYouGoCard />

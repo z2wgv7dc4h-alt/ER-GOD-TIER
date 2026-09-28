@@ -8,7 +8,8 @@ import { npcLocations, npcLocate } from '../knowledge/npcLocations'
 import { canonicalFactId } from './aliases'
 import { knownFactIds } from './infer'
 import { areaFromGraceId } from './areaContext'
-import { detectBuild, GEAR_TAGS } from './advisor'
+import { detectArchetype } from './archetype'
+import { GEAR_TAGS } from './gearTags'
 import { bandFor, type RegionLevel } from './regionLevels'
 import type { Character } from '../types'
 
@@ -79,8 +80,8 @@ export function areaBosses(character: Character, area: string | null | undefined
 
 export function areaLoot(character: Character, area: string | null | undefined): (Loot & { owned: boolean; goodForBuild: boolean })[] {
   const known = knownFactIds(character)
-  const build = detectBuild(character)
-  const goodNames = new Set(GEAR_TAGS[build.archetype].map((t) => norm(t.name)))
+  const archetype = detectArchetype(character.stats)
+  const goodNames = new Set(GEAR_TAGS[archetype].map((t) => norm(t.name)))
   return loot
     .filter((l) => regionMatches(l.region, area))
     .map((l) => ({

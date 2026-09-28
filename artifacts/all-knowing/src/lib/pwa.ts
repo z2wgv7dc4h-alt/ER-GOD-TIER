@@ -10,10 +10,11 @@
  * - The small, always-useful `sourced/` JSON (aliases, regulation, guide catalog,
  *   open coords/names, armory) is precached via `includeAssets` so the app is
  *   useful offline after the very first load, before Codex/Atlas have been opened.
- * - The rest of `/sourced/` (guide regions, larger open dumps, map plates, icon
- *   packs) is cached lazily at runtime: JSON stale-while-revalidate, media
- *   cache-first. This avoids forcing the full ~32 MB data plane (and the ~63 MB
- *   map tile pyramid the engine serves) onto a phone on first load.
+ * - The rest of `/sourced/` (guide regions, larger open dumps, wiki pages,
+ *   search chunks, map plates, icon packs) is cache-first into one dedicated
+ *   bucket (`SOURCED_OFFLINE_CACHE`). It fills lazily at runtime and can be
+ *   warmed whole by Settings → Data & offline, so the wiki/search/Gideon work
+ *   with no connection without forcing the full data plane onto first load.
  * - The EldenRingMap engine (`/engine/*` in dev, `127.0.0.1:8099` in prod) is
  *   deliberately NetworkOnly. Live save sync needs the engine, and Task 06's
  *   offline detection must keep seeing real failures instead of a cached response.
@@ -23,8 +24,13 @@
 
 import type { VitePWAOptions } from 'vite-plugin-pwa'
 
-export const SOURCED_DATA_CACHE = 'ak-sourced-data'
-export const SOURCED_MEDIA_CACHE = 'ak-sourced-media'
+/**
+ * Task 137 §2 — one dedicated bucket for the whole `sourced/**` data plane.
+ * The "Download everything for offline" action warms it, and the runtime caching
+ * rule below serves every sourced request cache-first from it, so the wiki,
+ * full-text search and Gideon's grounded answers work with no connection.
+ */
+export const SOURCED_OFFLINE_CACHE = 'ak-sourced-offline'
 
 /** The map engine must never be served from a cache. Matches dev proxy + prod base. */
 export const ENGINE_URL_PATTERN = /(\/engine\/)|(\/er-map\/)|(127\.0\.0\.1:8099)/
@@ -64,23 +70,18 @@ export const pwaOptions: Partial<VitePWAOptions> = {
         handler: 'NetworkOnly',
       },
       {
-        urlPattern: /\/sourced\/.*\.json(\?.*)?$/i,
-        handler: 'StaleWhileRevalidate',
-        options: {
-          cacheName: SOURCED_DATA_CACHE,
-          cacheableResponse: { statuses: [0, 200] },
-          // The text corpus alone is 36 tables; keep room for it plus the
-          // fanapi/checklists/open dumps that load lazily.
-          expiration: { maxEntries: 160, maxAgeSeconds: 60 * 60 * 24 * 30 },
-        },
-      },
-      {
+        // Every sourced file — JSON dumps, wiki pages, search chunks, map
+        // plates, images and icon packs — is cache-first from the dedicated
+        // offline bucket, so an offline device gets the wiki, search and
+        // Gideon's wiki answers straight from Cache Storage.
         urlPattern: /\/sourced\//,
         handler: 'CacheFirst',
         options: {
-          cacheName: SOURCED_MEDIA_CACHE,
+          cacheName: SOURCED_OFFLINE_CACHE,
           cacheableResponse: { statuses: [0, 200] },
-          expiration: { maxEntries: 300, maxAgeSeconds: 60 * 60 * 24 * 90 },
+          // The text corpus alone is 36 tables, and the whole sourced tree is
+          // ~2,700 files / ~83 MB; keep ample room and a long lifetime.
+          expiration: { maxEntries: 4000, maxAgeSeconds: 60 * 60 * 24 * 365 },
         },
       },
     ],

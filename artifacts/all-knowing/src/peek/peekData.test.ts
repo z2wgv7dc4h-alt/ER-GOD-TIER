@@ -3,7 +3,8 @@ import { emptyCharacter } from '../data/seed'
 import { registerEntityGraphData } from '../lib/entityGraph'
 import { autolinkMechanics, mechanicTermIds } from '../lib/glossary'
 import type { Weapon } from '../lib/ar'
-import { clearPeekData, peekInfo, registerPeekRow } from './peekData'
+import { weaponAr } from '../lib/weaponAr'
+import { clearPeekData, peekInfo, registerPeekAr, registerPeekRow } from './peekData'
 
 /**
  * Task 115 §3 — peek content per kind and glossary term detection. These are
@@ -42,6 +43,8 @@ function factValue(info: ReturnType<typeof peekInfo>, label: string): string | u
 
 beforeEach(() => {
   clearPeekData()
+  // The AR calculator registers itself lazily in the app; tests wire it directly.
+  registerPeekAr(weaponAr)
 })
 
 describe('peekInfo weapon facts (Task 115 §1)', () => {
@@ -121,12 +124,12 @@ describe('peekInfo boss facts', () => {
     registerPeekRow({
       factId: 'boss:margit',
       category: 'bosses',
-      stats: [{ label: 'HP', value: '4174' }],
+      stats: [{ label: 'Base HP', value: '4174' }],
     })
     const info = peekInfo('boss:margit', emptyCharacter)
     expect(factValue(info, 'Weak to')).toContain('Fire')
     expect(factValue(info, 'Resists')).toContain('Holy')
-    expect(factValue(info, 'HP')).toBe('4174')
+    expect(factValue(info, 'Base HP')).toBe('4174')
   })
 })
 

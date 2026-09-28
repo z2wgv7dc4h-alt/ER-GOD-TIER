@@ -1,5 +1,4 @@
 import type { Campaign, Character } from '../types'
-import { displayAttackRating, getWeaponAttack, statsToAttributes, type Weapon } from '../lib/ar'
 
 /**
  * Task 95 — the Library browser's data model.
@@ -306,24 +305,6 @@ export function sortEntities(
     if (cmp === 0) return a.name.localeCompare(b.name)
     return cmp * factor
   })
-}
-
-// ---------------------------------------------------------------------------
-// AR
-// ---------------------------------------------------------------------------
-
-export function weaponAr(weapon: Weapon, character: Character, upgradeLevel?: number): number {
-  const level = upgradeLevel ?? 0
-  const result = getWeaponAttack({
-    weapon,
-    attributes: statsToAttributes(character.stats),
-    upgradeLevel: level,
-  })
-  return displayAttackRating(result.attackPower)
-}
-
-export function weaponArAtMax(weapon: Weapon, character: Character): number {
-  return weaponAr(weapon, character, Math.max(0, weapon.attack.length - 1))
 }
 
 // ---------------------------------------------------------------------------

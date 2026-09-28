@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import { remembrances } from '../knowledge/remembrances'
-import { findWeapon, loadWeapons, type Weapon } from '../lib/ar'
+import type { Weapon } from '../lib/ar'
 import { areaFromFactId } from '../lib/areaContext'
 import { getEntity, type EntityKind } from '../lib/entityGraph'
 import { wikiPageForEntity } from '../lib/wikiSearch'
 import { applyFacts, denyFacts } from '../lib/infer'
 import { rankRemembrance, type RemembranceOption } from '../lib/remembranceChoice'
-import { gearVerdict, weaponVerdict, type Verdict } from '../lib/verdict'
+import { gearVerdict, type Verdict } from '../lib/verdict'
 import { useWorkspace } from '../state'
 import { EntityPanel } from './EntityPanel'
 import type { CategoryId, LibraryEntity } from './model'
@@ -50,15 +50,28 @@ export function EntityOverlay() {
   const w = useWorkspace()
   const { entityId, character, setCharacter } = w
   const [weapons, setWeapons] = useState<Weapon[] | null>(null)
+  const [weaponCalc, setWeaponCalc] = useState<{
+    findWeapon: typeof import('../lib/ar')['findWeapon']
+    weaponVerdict: typeof import('../lib/weaponVerdict')['weaponVerdict']
+  } | null>(null)
   const [wikiTitle, setWikiTitle] = useState<string | null>(null)
 
+  // Task 137 §4 — load the attack-rating calculator only when the open entity is
+  // actually a weapon/shield, so the main entry never imports it.
   useEffect(() => {
+    if (!entityId) return
+    const e = getEntity(entityId)
+    if (e.kind !== 'weapon' && e.kind !== 'shield') return
     let cancelled = false
-    void loadWeapons()
-      .then((rows) => { if (!cancelled) setWeapons(rows) })
+    void Promise.all([import('../lib/ar'), import('../lib/weaponVerdict')])
+      .then(([ar, wv]) => {
+        if (cancelled) return
+        setWeaponCalc({ findWeapon: ar.findWeapon, weaponVerdict: wv.weaponVerdict })
+        return ar.loadWeapons().then((rows) => { if (!cancelled) setWeapons(rows) })
+      })
       .catch(() => { /* no regulation: no verdict, the rest of the panel still works */ })
     return () => { cancelled = true }
-  }, [])
+  }, [entityId])
 
   // Task 133 §2 — a wiki-only page (`openEntity('wiki:<slug>')`) has no graph
   // record; show the real wiki title once the corpus manifest resolves.
@@ -91,10 +104,10 @@ export function EntityOverlay() {
       return gearVerdict(character, entity.name, entity.subtype)
     }
     if (entity.subtype !== 'weapon' && entity.subtype !== 'shield') return null
-    if (!weapons) return null
-    const weapon = findWeapon(weapons, { id: entityId, name: entity.name, kind: 'armament' })
-    return weapon ? weaponVerdict(character, weapons, weapon) : null
-  }, [entityId, entity, weapons, character])
+    if (!weapons || !weaponCalc) return null
+    const weapon = weaponCalc.findWeapon(weapons, { id: entityId, name: entity.name, kind: 'armament' })
+    return weapon ? weaponCalc.weaponVerdict(character, weapons, weapon) : null
+  }, [entityId, entity, weapons, weaponCalc, character])
 
   const remembrance = useMemo<{ remembrance: (typeof remembrances)[number]; options: RemembranceOption[] } | null>(() => {
     if (!entityId || !entity) return null
