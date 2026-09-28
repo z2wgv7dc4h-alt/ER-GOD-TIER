@@ -120,6 +120,10 @@ type Row = {
   regions: string[]
   fragmentPrecision: number
   fragmentRecall: number
+  decodeMs: number
+  detectMs: number
+  registerMs: number
+  graceMs: number
   ms: number
 }
 
@@ -186,6 +190,10 @@ describe('PS5 map photo eval (slow decode)', () => {
         regions: reg!.regions,
         fragmentPrecision: fr.precision,
         fragmentRecall: fr.recall,
+        decodeMs: decode,
+        detectMs: detect,
+        registerMs: register,
+        graceMs,
         ms: Date.now() - started,
       })
 
