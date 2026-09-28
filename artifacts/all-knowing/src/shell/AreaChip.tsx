@@ -83,7 +83,12 @@ export function AreaPickerSheet({ onClose, inline = false }: { onClose: () => vo
     sortedAdjacent.forEach(push)
     sameRegion.filter((g) => !have.has(g.id)).forEach((g) => { if (picked.length < 6) push(g) })
     sameRegion.forEach((g) => { if (picked.length < 6) push(g) })
-    return { likely: picked.slice(0, 6), inRegion: sameRegion }
+    const likely = picked.slice(0, 6)
+    // Never show the same grace name twice: a grace already suggested above is
+    // dropped from the region list (Task 126/127: dedupe the area picker).
+    const suggested = new Set(likely.map((g) => norm(g.name)))
+    const inRegion = sameRegion.filter((g) => !suggested.has(norm(g.name)))
+    return { likely, inRegion }
   }, [legs, region, discovered])
 
   const results = useMemo(() => {

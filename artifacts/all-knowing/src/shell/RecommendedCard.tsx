@@ -53,8 +53,31 @@ export function RecommendedCard() {
     return Boolean(area && regionMatches(region, area))
   }
 
-  const todos = advice.todo.filter((t) => inArea(t.factId ? byId.get(t.factId)?.region : undefined))
-  const upgrades = advice.upgrades.filter((u) => inArea(u.region))
+  // Dedupe by rendered key: the advisor can surface the same fact / weapon twice
+  // (Task 127 crawl: duplicate React keys `boss:morgott`, `quest:ranni:statue`).
+  const todos = (() => {
+    const seen = new Set<string>()
+    const out: typeof advice.todo = []
+    for (const t of advice.todo) {
+      if (!inArea(t.factId ? byId.get(t.factId)?.region : undefined)) continue
+      if (seen.has(t.id)) continue
+      seen.add(t.id)
+      out.push(t)
+    }
+    return out
+  })()
+  const upgrades = (() => {
+    const seen = new Set<string>()
+    const out: typeof advice.upgrades = []
+    for (const u of advice.upgrades) {
+      if (!inArea(u.region)) continue
+      const key = `${u.weaponName}-${u.upgrade}`
+      if (seen.has(key)) continue
+      seen.add(key)
+      out.push(u)
+    }
+    return out
+  })()
   const todoReveal = useRowReveal(todos.length)
   const upgradeReveal = useRowReveal(upgrades.length)
 
