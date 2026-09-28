@@ -1,6 +1,6 @@
 {
-  "deadData": 0,
-  "deadRenderer": 0,
+  "deadData": 23,
+  "deadRenderer": 1,
   "coverage": [
     {
       "kind": "armor",
@@ -213,5 +213,6 @@
       "unlinked": 0
     }
   ],
-  "generatedAt": "2026-09-28T14:24:42.121Z"
+  "generatedAt": "2026-09-28T14:24:42.121Z",
+  "_note": "Dead-link counts are the true pre-Task-138-§3 measurements (23 data ids, 1 renderer literal: wiki:<slug>, later reclassified as a virtual id). Unlinked-mention unlinked counts are post-wiring but pre-renderer-fix (Quest steps 577)."
 }
