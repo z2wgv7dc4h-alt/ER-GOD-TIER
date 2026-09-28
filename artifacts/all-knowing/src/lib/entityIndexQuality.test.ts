@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { DatabaseSync } from 'node:sqlite'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
@@ -207,7 +207,8 @@ describe('Task 133 §0 — talisman variants are separate collectibles, not fold
   const talismans = list.filter((record) => record.kind === 'talisman')
   const talismanNames = new Set(talismans.map((record) => norm(record.name)))
 
-  it('keeps every wiki DB talisman (including the +N variants) as its own talisman record', () => {
+  // The wiki DB is a gitignored local data drop (`data/raw/`); skip on checkouts without it.
+  it.skipIf(!existsSync(wikiTalismanDbPath))('keeps every wiki DB talisman (including the +N variants) as its own talisman record', () => {
     // `data/raw/er-mcp.db` is the DLC-inclusive authority: 156 talisman pages,
     // 38 of them `+N` variants that are distinct pickups with their own pages.
     const db = new DatabaseSync(wikiTalismanDbPath, { readOnly: true })
