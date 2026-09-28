@@ -4,6 +4,8 @@ import { areaLabel, isAreaStale, type AreaSignal } from '../lib/areaContext'
 import { regionMatches } from '../lib/areaHub'
 import { applyFacts } from '../lib/infer'
 import { currentRegion } from '../lib/leftovers'
+import { allRecords } from '../lib/entityIndex'
+import { ensureEntityIndex, useEntityIndex } from '../lib/entityEnrich'
 import { useWorkspace } from '../state'
 
 type Leg = { region: string; id: string; from: string; to: string; summary: string }
@@ -50,6 +52,25 @@ export function AreaPickerSheet({ onClose, inline = false }: { onClose: () => vo
 
   const region = w.currentArea?.region ?? currentRegion(w.character)
   const discovered = w.character.discoveredGraces
+  // Task 132 §4 — the Area hub also surfaces the NPCs, locations and enemies the
+  // enriched index places in the region.
+  ensureEntityIndex()
+  const { ready: indexReady } = useEntityIndex()
+  const local = useMemo(() => {
+    if (!region || !indexReady) return [] as { id: string; name: string; kind: string }[]
+    const out: { id: string; name: string; kind: string }[] = []
+    const seen = new Set<string>()
+    for (const rec of allRecords()) {
+      if (rec.kind !== 'npc' && rec.kind !== 'enemy' && rec.kind !== 'region') continue
+      const where = rec.region || rec.location
+      if (!where || !regionMatches(where, region)) continue
+      if (seen.has(rec.id)) continue
+      seen.add(rec.id)
+      out.push({ id: rec.id, name: rec.name, kind: rec.kind })
+      if (out.length >= 12) break
+    }
+    return out
+  }, [region, indexReady])
 
   const { likely, inRegion } = useMemo(() => {
     const have = new Set(discovered)
@@ -132,6 +153,18 @@ export function AreaPickerSheet({ onClose, inline = false }: { onClose: () => vo
               <button key={g.id} type="button" className="chip" onClick={() => pick(g)}>
                 {g.name}
               </button>
+            ))}
+          </div>
+        </>
+      )}
+      {region && local.length > 0 && (
+        <>
+          <div className="kicker">People &amp; foes in {region}</div>
+          <div className="opts">
+            {local.map((r) => (
+              <span key={r.id} className="chip" title={r.kind}>
+                {r.name}
+              </span>
             ))}
           </div>
         </>

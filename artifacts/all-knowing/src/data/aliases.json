@@ -429,7 +429,9 @@
   "kind": "boss",
   "fmgName": "Deathbird",
   "aliases": [
-   "deathbird"
+   "death bird",
+   "deathbird",
+   "deathbirds"
   ],
   "source": "hosted-bosses"
  },
@@ -461,6 +463,7 @@
   "kind": "boss",
   "fmgName": "Valiant Gargoyle",
   "aliases": [
+   "gargoyle",
    "valiant gargoyle",
    "valiant gargoyle duo",
    "valiant gargoyles"
@@ -634,8 +637,12 @@
   "kind": "boss",
   "fmgName": "Mad Pumpkin Head",
   "aliases": [
+   "headless gladiator",
    "mad pumpkin",
-   "mad pumpkin head"
+   "mad pumpkin head",
+   "mad pumpkin head boss",
+   "mad pumpkin head hammer mad pumpkin head flail",
+   "pumpkin head"
   ],
   "source": "hosted-bosses"
  },
@@ -1790,6 +1797,7 @@
   "fmgName": "Grafted Scion",
   "aliases": [
    "grafted scion",
+   "grafted scion boss",
    "grafted scions"
   ],
   "source": "hosted-bosses"
@@ -1800,6 +1808,7 @@
   "kind": "boss",
   "fmgName": "Morgott, the Omen King",
   "aliases": [
+   "lord of leyndell",
    "morgott",
    "morgott the omen king",
    "omen king"
@@ -1813,7 +1822,9 @@
   "fmgName": "Sir Gideon Ofnir, the All-Knowing",
   "aliases": [
    "gideon",
+   "gideon ofnir",
    "ofnir",
+   "sir gideon ofnir",
    "sir gideon ofnir the all knowing"
   ],
   "source": "hosted-bosses"
@@ -1824,11 +1835,18 @@
   "kind": "boss",
   "fmgName": "Godfrey, First Elden Lord",
   "aliases": [
+   "chieftain of the badlands",
    "godfrey",
    "godfrey first elden lord",
+   "godfrey first elden lord golden shade",
    "godfrey first elden lord hoarah loux",
+   "godfrey first elden lord leyndell royal capital",
+   "golden shade",
    "hoarah loux",
-   "hoarah loux warrior"
+   "hoarah loux chieftain of the badlands",
+   "hoarah loux warrior",
+   "lord godfrey",
+   "siege of castle morne"
   ],
   "source": "hosted-bosses"
  },
@@ -1839,7 +1857,8 @@
   "fmgName": "Astel, Naturalborn of the Void",
   "aliases": [
    "astel",
-   "astel naturalborn of the void"
+   "astel naturalborn of the void",
+   "naturalborn of the void"
   ],
   "source": "hosted-bosses"
  },
@@ -1860,6 +1879,7 @@
   "kind": "boss",
   "fmgName": "Lichdragon Fortissax",
   "aliases": [
+   "ancient dragon fortissax",
    "fortissax",
    "lichdragon",
    "lichdragon fortissax"
@@ -1874,7 +1894,8 @@
   "aliases": [
    "lord of blood",
    "mohg",
-   "mohg lord of blood"
+   "mohg lord of blood",
+   "mohg the omen"
   ],
   "source": "hosted-bosses"
  },
@@ -1920,7 +1941,8 @@
   "fmgName": "Red Wolf of Radagon",
   "aliases": [
    "red wolf",
-   "red wolf of radagon"
+   "red wolf of radagon",
+   "red wolf of the king consort"
   ],
   "source": "hosted-bosses"
  },
@@ -1930,6 +1952,8 @@
   "kind": "boss",
   "fmgName": "Rennala, Queen of the Full Moon",
   "aliases": [
+   "queen of the full moon",
+   "queen rennala",
    "rennala",
    "rennala queen of the full moon"
   ],
@@ -1952,8 +1976,12 @@
   "kind": "boss",
   "fmgName": "Malenia, Blade of Miquella",
   "aliases": [
+   "goddess of rot",
    "malenia",
-   "malenia blade of miquella"
+   "malenia blade of miquella",
+   "malenia goddess of rot",
+   "malenia the red queen",
+   "malenia the severed"
   ],
   "source": "hosted-bosses"
  },
@@ -1963,7 +1991,8 @@
   "kind": "boss",
   "fmgName": "Godskin Noble",
   "aliases": [
-   "godskin noble"
+   "godskin noble",
+   "godskin noble volcano manor"
   ],
   "source": "hosted-bosses"
  },
@@ -1973,7 +2002,9 @@
   "kind": "boss",
   "fmgName": "Rykard, Lord of Blasphemy",
   "aliases": [
+   "eveligne",
    "god devouring serpent",
+   "great serpent",
    "rykard",
    "rykard lord of blasphemy"
   ],
@@ -2064,7 +2095,9 @@
   "kind": "boss",
   "fmgName": "Fia's Champions",
   "aliases": [
-   "fia champions"
+   "fia champion",
+   "fia champions",
+   "fias champions"
   ],
   "source": "hosted-bosses"
  },
@@ -2075,7 +2108,11 @@
   "fmgName": "Divine Beast Dancing Lion",
   "aliases": [
    "dancing lion",
-   "divine beast dancing lion"
+   "divine beast",
+   "divine beast dancing lion",
+   "divine beast dancing lion rauh",
+   "sculpted keeper",
+   "sculpted keepers"
   ],
   "source": "hosted-bosses"
  },
@@ -2098,6 +2135,7 @@
   "kind": "boss",
   "fmgName": "Messmer the Impaler",
   "aliases": [
+   "base serpent messmer",
    "messmer",
    "messmer the impaler"
   ],
@@ -2121,8 +2159,10 @@
   "kind": "boss",
   "fmgName": "Midra, Lord of Frenzied Flame",
   "aliases": [
+   "feeble lord",
    "midra",
-   "midra lord of frenzied flame"
+   "midra lord of frenzied flame",
+   "sage midra"
   ],
   "source": "hosted-bosses"
  },
@@ -2133,7 +2173,8 @@
   "fmgName": "Bayle the Dread",
   "aliases": [
    "bayle",
-   "bayle the dread"
+   "bayle the dread",
+   "dreaded one"
   ],
   "source": "hosted-bosses"
  },
@@ -2176,9 +2217,13 @@
   "kind": "boss",
   "fmgName": "Elemer of the Briar",
   "aliases": [
+   "bell bearing hunter",
+   "bell bearing hunter dragonbarrow",
    "briar",
+   "condor knight",
    "elemer",
-   "elemer of the briar"
+   "elemer of the briar",
+   "rune hunter knight"
   ],
   "source": "hosted-bosses"
  },
@@ -2189,7 +2234,8 @@
   "fmgName": "Commander Niall",
   "aliases": [
    "commander niall",
-   "niall"
+   "niall",
+   "outland commander"
   ],
   "source": "hosted-bosses"
  },
@@ -2221,8 +2267,10 @@
   "kind": "boss",
   "fmgName": "Erdtree Burial Watchdog",
   "aliases": [
+   "burial tree watchdog",
    "burial watchdog",
-   "erdtree burial watchdog"
+   "erdtree burial watchdog",
+   "erdtree burial watchdog boss"
   ],
   "source": "hosted-bosses"
  },
@@ -2244,6 +2292,8 @@
   "fmgName": "Black Knife Assassin",
   "aliases": [
    "black knife assassin",
+   "black knife assassin boss",
+   "black knife assassin cloak",
    "black knife assassins"
   ],
   "source": "hosted-bosses"
@@ -2254,8 +2304,19 @@
   "kind": "boss",
   "fmgName": "Grave Warden Duelist",
   "aliases": [
+   "duelist",
+   "frenzied duelist",
+   "frenzied duelist boss",
+   "frenzied duelists",
+   "gladiator",
+   "gladiators",
    "grave warden",
-   "grave warden duelist"
+   "grave warden duelist",
+   "grave warden duelists",
+   "onestrike warrior",
+   "putrid duelist",
+   "putrid grave warden duelist",
+   "rotten duelist"
   ],
   "source": "hosted-bosses"
  },
@@ -2276,8 +2337,12 @@
   "kind": "boss",
   "fmgName": "Spiritcaller Snail",
   "aliases": [
+   "spirit caller snail",
+   "spirit caller snail boss",
    "spiritcaller",
-   "spiritcaller snail"
+   "spiritcaller snail",
+   "spiritcaller snail boss",
+   "spiritcaller snails"
   ],
   "source": "hosted-bosses"
  },
@@ -2320,8 +2385,10 @@
   "kind": "boss",
   "fmgName": "Perfumer Tricia & Misbegotten Warrior",
   "aliases": [
+   "pefumer eulalya",
    "perfumer tricia",
-   "perfumer tricia misbegotten warrior"
+   "perfumer tricia misbegotten warrior",
+   "tricia"
   ],
   "source": "hosted-bosses"
  },
@@ -2408,7 +2475,9 @@
   "kind": "boss",
   "fmgName": "Runebear",
   "aliases": [
-   "runebear"
+   "lesser runebear",
+   "runebear",
+   "runebear boss"
   ],
   "source": "hosted-bosses"
  },
@@ -2428,7 +2497,9 @@
   "kind": "boss",
   "fmgName": "Guardian Golem",
   "aliases": [
-   "guardian golem"
+   "golem archer",
+   "guardian golem",
+   "guardian golem crumbling"
   ],
   "source": "hosted-bosses"
  },
@@ -2438,8 +2509,12 @@
   "kind": "boss",
   "fmgName": "Cleanrot Knight",
   "aliases": [
+   "cleanrot",
    "cleanrot knight",
-   "cleanrot knights"
+   "cleanrot knight boss",
+   "cleanrot knight sickle cleanrot knight spear",
+   "cleanrot knights",
+   "wing knight"
   ],
   "source": "hosted-bosses"
  },
@@ -2495,7 +2570,14 @@
   "fmgName": "Crystalian Duo",
   "aliases": [
    "crystalian",
-   "crystalian duo"
+   "crystalian boss",
+   "crystalian duo",
+   "crystalian putrid",
+   "crystalians",
+   "putrid crystalian",
+   "putrid crystalian staff putrid crystalian ringblade putrid crystalian spear",
+   "putrid crystallian",
+   "putrid crystallian boss"
   ],
   "source": "hosted-bosses"
  },
@@ -2581,7 +2663,8 @@
   "fmgName": "Flying Dragon Agheel",
   "aliases": [
    "agheel",
-   "flying dragon agheel"
+   "flying dragon agheel",
+   "flying dragon of the hills"
   ],
   "source": "hosted-bosses"
  },
@@ -2592,7 +2675,9 @@
   "fmgName": "Bloodhound Knight Darriwil",
   "aliases": [
    "bloodhound knight",
+   "bloodhound knight boss",
    "bloodhound knight darriwil",
+   "bloodhound knights",
    "darriwil"
   ],
   "source": "hosted-bosses"
@@ -2626,7 +2711,9 @@
   "fmgName": "Tibia Mariner",
   "aliases": [
    "tibia mariner",
-   "tibia mariners"
+   "tibia mariner boss",
+   "tibia mariners",
+   "undead mariner"
   ],
   "source": "hosted-bosses"
  },
@@ -2637,7 +2724,10 @@
   "fmgName": "Erdtree Avatar",
   "aliases": [
    "erdtree avatar",
-   "erdtree avatars"
+   "erdtree avatar boss",
+   "erdtree avatars",
+   "putrid avatar",
+   "putrid avatar boss"
   ],
   "source": "hosted-bosses"
  },
@@ -2669,7 +2759,9 @@
   "kind": "boss",
   "fmgName": "Omenkiller",
   "aliases": [
+   "forsaken",
    "omenkiller",
+   "omenkiller boss",
    "omenkillers"
   ],
   "source": "hosted-bosses"
@@ -2691,7 +2783,8 @@
   "kind": "boss",
   "fmgName": "Onyx Lord",
   "aliases": [
-   "onyx lord"
+   "onyx lord",
+   "onyx lord boss"
   ],
   "source": "hosted-bosses"
  },
@@ -2702,6 +2795,7 @@
   "fmgName": "Glintstone Dragon Adula",
   "aliases": [
    "adula",
+   "adula the glintstone dragon",
    "glintstone dragon adula"
   ],
   "source": "hosted-bosses"
@@ -2724,7 +2818,9 @@
   "fmgName": "Fallingstar Beast",
   "aliases": [
    "fallingstar",
-   "fallingstar beast"
+   "fallingstar beast",
+   "fallingstar beast full grown",
+   "full grown fallingstar beast"
   ],
   "source": "hosted-bosses"
  },
@@ -2734,6 +2830,8 @@
   "kind": "boss",
   "fmgName": "Wormface",
   "aliases": [
+   "giant wormface",
+   "lesser wormface",
    "wormface"
   ],
   "source": "hosted-bosses"
@@ -2744,7 +2842,8 @@
   "kind": "boss",
   "fmgName": "Godskin Apostle",
   "aliases": [
-   "godskin apostle"
+   "godskin apostle",
+   "godskin apostle divine tower of caelid"
   ],
   "source": "hosted-bosses"
  },
@@ -2776,8 +2875,10 @@
   "kind": "boss",
   "fmgName": "Ulcerated Tree Spirit",
   "aliases": [
+   "putrid tree spirit boss",
    "ulcerated spirit",
-   "ulcerated tree spirit"
+   "ulcerated tree spirit",
+   "ulcerated tree spirit boss"
   ],
   "source": "hosted-bosses"
  },
@@ -2798,7 +2899,10 @@
   "kind": "boss",
   "fmgName": "Magma Wyrm",
   "aliases": [
-   "magma wyrm"
+   "great wyrm theodorix",
+   "magma wyrm",
+   "magma wyrm boss",
+   "magma wyrm makar"
   ],
   "source": "hosted-bosses"
  },
@@ -2819,7 +2923,9 @@
   "kind": "boss",
   "fmgName": "Commander O'Neil",
   "aliases": [
+   "battlefield commander",
    "commander o neil",
+   "commander o niel",
    "o neil",
    "oneil"
   ],
@@ -2872,7 +2978,8 @@
   "fmgName": "Borealis the Freezing Fog",
   "aliases": [
    "borealis",
-   "borealis the freezing fog"
+   "borealis the freezing fog",
+   "ice dragon"
   ],
   "source": "hosted-bosses"
  },
@@ -2926,7 +3033,8 @@
   "fmgName": "Dragonkin Soldier",
   "aliases": [
    "dragonkin",
-   "dragonkin soldier"
+   "dragonkin soldier",
+   "dragonkin soldier of nokstella"
   ],
   "source": "hosted-bosses"
  },
@@ -4046,9 +4154,12 @@
   "aliases": [
    "elden beast",
    "elden lord",
+   "king consort radagon",
+   "lord radagon",
    "radagon",
    "radagon of the golden order",
-   "radagon of the golden order elden beast"
+   "radagon of the golden order elden beast",
+   "second elden lord"
   ],
   "source": "npc-combat"
  },
@@ -4486,6 +4597,7 @@
   "kind": "boss",
   "fmgName": "Demi-Human Chief",
   "aliases": [
+   "demi human beastman",
    "demi human chief",
    "demi human chiefs"
   ],
@@ -5621,8 +5733,13 @@
   "kind": "grace",
   "fmgName": "Godrick the Grafted",
   "aliases": [
+   "godrick",
+   "godrick corpse",
    "godrick grace",
-   "godrick the grafted"
+   "godrick the golden",
+   "godrick the grafted",
+   "grafted monarch",
+   "lord of stormveil"
   ],
   "source": "hosted-graces"
  },
@@ -5632,7 +5749,10 @@
   "kind": "grace",
   "fmgName": "Margit, the Fell Omen",
   "aliases": [
-   "margit the fell omen"
+   "fell omen",
+   "margit",
+   "margit the fell omen",
+   "the fell omen"
   ],
   "source": "grace-stub"
  },
@@ -5927,6 +6047,7 @@
   "kind": "grace",
   "fmgName": "Nokstella, Eternal City",
   "aliases": [
+   "nokstella",
    "nokstella eternal city"
   ],
   "source": "grace-stub"
@@ -6184,6 +6305,8 @@
   "kind": "grace",
   "fmgName": "Maliketh, the Black Blade",
   "aliases": [
+   "beast clergyman",
+   "maliketh",
    "maliketh the black blade"
   ],
   "source": "grace-stub"
@@ -6194,7 +6317,10 @@
   "kind": "grace",
   "fmgName": "Dragonlord Placidusax",
   "aliases": [
-   "dragonlord placidusax"
+   "dragon king",
+   "dragonlord",
+   "dragonlord placidusax",
+   "placidusax"
   ],
   "source": "grace-stub"
  },
@@ -6429,6 +6555,10 @@
   "kind": "grace",
   "fmgName": "Rykard, Lord of Blasphemy",
   "aliases": [
+   "lord of blasphemy",
+   "lord of the volcano manor",
+   "praetor rykard",
+   "rykard",
    "rykard lord of blasphemy"
   ],
   "source": "grace-stub"
@@ -6439,6 +6569,7 @@
   "kind": "grace",
   "fmgName": "Temple of Eiglay",
   "aliases": [
+   "eiglay",
    "temple of eiglay"
   ],
   "source": "grace-stub"
@@ -6449,6 +6580,7 @@
   "kind": "grace",
   "fmgName": "Volcano Manor",
   "aliases": [
+   "prison town",
    "volcano manor"
   ],
   "source": "grace-stub"
@@ -6489,7 +6621,10 @@
   "kind": "grace",
   "fmgName": "Abductor Virgin",
   "aliases": [
-   "abductor virgin"
+   "abductor virgin",
+   "abductor virgin boss",
+   "abductor virgins",
+   "iron virgin"
   ],
   "source": "grace-stub"
  },
@@ -6509,7 +6644,8 @@
   "kind": "grace",
   "fmgName": "Cave of Knowledge",
   "aliases": [
-   "cave of knowledge"
+   "cave of knowledge",
+   "cave of knowledge grace"
   ],
   "source": "grace-stub"
  },
@@ -7142,7 +7278,8 @@
   "kind": "grace",
   "fmgName": "Academy Crystal Cave",
   "aliases": [
-   "academy crystal cave"
+   "academy crystal cave",
+   "academy crystal tunnel"
   ],
   "source": "grace-stub"
  },
@@ -7202,7 +7339,8 @@
   "kind": "grace",
   "fmgName": "Coastal Cave",
   "aliases": [
-   "coastal cave"
+   "coastal cave",
+   "dissenter cave"
   ],
   "source": "grace-stub"
  },
@@ -7723,6 +7861,7 @@
   "kind": "grace",
   "fmgName": "Stormhill Shack",
   "aliases": [
+   "scavenger shack",
    "stormhill",
    "stormhill shack"
   ],
@@ -7881,7 +8020,8 @@
   "fmgName": "Castle Morne Rampart",
   "aliases": [
    "castle morne",
-   "castle morne rampart"
+   "castle morne rampart",
+   "morne castle"
   ],
   "source": "hosted-graces"
  },
@@ -8190,6 +8330,7 @@
   "kind": "grace",
   "fmgName": "Village of the Albinaurics",
   "aliases": [
+   "albinauric village",
    "village of the albinaurics"
   ],
   "source": "grace-stub"
@@ -8260,6 +8401,7 @@
   "kind": "grace",
   "fmgName": "Ranni's Rise",
   "aliases": [
+   "ranni chamber",
    "ranni rise"
   ],
   "source": "grace-stub"
@@ -8464,7 +8606,8 @@
   "fmgName": "Academy Gate Town",
   "aliases": [
    "academy gate town",
-   "gate town"
+   "gate town",
+   "sunken town"
   ],
   "source": "hosted-graces"
  },
@@ -8474,6 +8617,8 @@
   "kind": "grace",
   "fmgName": "Church of Vows",
   "aliases": [
+   "absolution",
+   "basin of atonement",
    "church of vows",
    "vows"
   ],
@@ -8707,6 +8852,7 @@
   "kind": "grace",
   "fmgName": "Primeval Sorcerer Azur",
   "aliases": [
+   "azur",
    "primeval sorcerer azur"
   ],
   "source": "grace-stub"
@@ -8717,6 +8863,7 @@
   "kind": "grace",
   "fmgName": "Altus Plateau",
   "aliases": [
+   "altus",
    "altus plateau"
   ],
   "source": "grace-stub"
@@ -8909,7 +9056,8 @@
   "kind": "grace",
   "fmgName": "Smoldering Church",
   "aliases": [
-   "smoldering church"
+   "smoldering church",
+   "smouldering church"
   ],
   "source": "hosted-graces"
  },
@@ -8999,7 +9147,8 @@
   "kind": "grace",
   "fmgName": "Deep Siofra Well",
   "aliases": [
-   "deep siofra well"
+   "deep siofra well",
+   "siofra deep river well"
   ],
   "source": "grace-stub"
  },
@@ -9160,6 +9309,11 @@
   "kind": "grace",
   "fmgName": "Starscourge Radahn",
   "aliases": [
+   "general radahn",
+   "promised consort radahn",
+   "radahn",
+   "radahn consort of miquella",
+   "red lion general",
    "starscourge radahn"
   ],
   "source": "grace-stub"
@@ -9170,6 +9324,7 @@
   "kind": "grace",
   "fmgName": "Lenne's Rise",
   "aliases": [
+   "lenne",
    "lenne rise"
   ],
   "source": "grace-stub"
@@ -9210,6 +9365,7 @@
   "kind": "grace",
   "fmgName": "Ordina, Liturgical Town",
   "aliases": [
+   "ordina",
    "ordina liturgical town"
   ],
   "source": "grace-stub"
@@ -9220,6 +9376,7 @@
   "kind": "grace",
   "fmgName": "Zamor Ruins",
   "aliases": [
+   "town of zamor",
    "zamor",
    "zamor ruins"
   ],
@@ -9241,7 +9398,8 @@
   "kind": "grace",
   "fmgName": "Consecrated Snowfield",
   "aliases": [
-   "consecrated snowfield"
+   "consecrated snowfield",
+   "snowfield"
   ],
   "source": "grace-stub"
  },
@@ -9362,7 +9520,8 @@
   "kind": "grace",
   "fmgName": "Fire Giant",
   "aliases": [
-   "fire giant"
+   "fire giant",
+   "fire giants"
   ],
   "source": "grace-stub"
  },
@@ -9434,7 +9593,8 @@
   "kind": "grace",
   "fmgName": "Cerulean Coast",
   "aliases": [
-   "cerulean coast"
+   "cerulean coast",
+   "finger ruins of rhia grace"
   ],
   "source": "grace-stub"
  },
@@ -9444,7 +9604,8 @@
   "kind": "grace",
   "fmgName": "Charo's Hidden Grave",
   "aliases": [
-   "charo hidden grave"
+   "charo hidden grave",
+   "hidden grave of charo"
   ],
   "source": "grace-stub"
  },
@@ -9485,7 +9646,8 @@
   "fmgName": "Abyssal Woods",
   "aliases": [
    "abandoned church",
-   "abyssal woods"
+   "abyssal woods",
+   "church ruins"
   ],
   "source": "hosted-graces"
  },
@@ -9556,6 +9718,7 @@
   "kind": "grace",
   "fmgName": "Rest of the Dread Dragon",
   "aliases": [
+   "rest of the dead dragon",
    "rest of the dread dragon"
   ],
   "source": "grace-stub"
@@ -9816,7 +9979,8 @@
   "kind": "grace",
   "fmgName": "Cathedral of Manus Metyr",
   "aliases": [
-   "cathedral of manus metyr"
+   "cathedral of manus metyr",
+   "manus metyr"
   ],
   "source": "grace-stub"
  },
@@ -9876,7 +10040,9 @@
   "kind": "hunt",
   "fmgName": "Alecto, Black Knife Ringleader",
   "aliases": [
-   "alecto black knife ringleader"
+   "alecto",
+   "alecto black knife ringleader",
+   "black knife ringleader alecto"
   ],
   "source": "hunts"
  },
@@ -9886,7 +10052,8 @@
   "kind": "hunt",
   "fmgName": "Ancient Dragon-Man",
   "aliases": [
-   "ancient dragon man"
+   "ancient dragon man",
+   "ancient dragon man invader"
   ],
   "source": "hunts"
  },
@@ -9916,7 +10083,8 @@
   "kind": "hunt",
   "fmgName": "Battlemage Hugues",
   "aliases": [
-   "battlemage hugues"
+   "battlemage hugues",
+   "battlemage hugues ashes"
   ],
   "source": "hunts"
  },
@@ -9926,7 +10094,12 @@
   "kind": "hunt",
   "fmgName": "Beastman of Farum Azula",
   "aliases": [
-   "beastman of farum azula"
+   "azula beastman",
+   "azula beastmen",
+   "beastman",
+   "beastman of farum azula",
+   "beastman of farum azula boss",
+   "beastmen of farum azula"
   ],
   "source": "hunts"
  },
@@ -9986,7 +10159,8 @@
   "kind": "hunt",
   "fmgName": "Chief Bloodfiend",
   "aliases": [
-   "chief bloodfiend"
+   "chief bloodfiend",
+   "chief purple fiend"
   ],
   "source": "hunts"
  },
@@ -10006,7 +10180,8 @@
   "kind": "hunt",
   "fmgName": "Commander Gaius",
   "aliases": [
-   "commander gaius"
+   "commander gaius",
+   "gaius"
   ],
   "source": "hunts"
  },
@@ -10026,7 +10201,11 @@
   "kind": "hunt",
   "fmgName": "Crucible Knight",
   "aliases": [
-   "crucible knight"
+   "crucible axe knight",
+   "crucible knight",
+   "crucible knight boss",
+   "crucible tree knight",
+   "tanith knight"
   ],
   "source": "hunts"
  },
@@ -10096,7 +10275,9 @@
   "kind": "hunt",
   "fmgName": "Death Knight",
   "aliases": [
-   "death knight"
+   "death knight",
+   "death knight longhaft axe",
+   "death knights"
   ],
   "source": "hunts"
  },
@@ -10146,7 +10327,8 @@
   "kind": "hunt",
   "fmgName": "Demi-Human Queen Marigga",
   "aliases": [
-   "demi human queen marigga"
+   "demi human queen marigga",
+   "marigga"
   ],
   "source": "hunts"
  },
@@ -10156,7 +10338,8 @@
   "kind": "hunt",
   "fmgName": "Demi-Human Swordmaster Onze",
   "aliases": [
-   "demi human swordmaster onze"
+   "demi human swordmaster onze",
+   "onze"
   ],
   "source": "hunts"
  },
@@ -10166,7 +10349,8 @@
   "kind": "hunt",
   "fmgName": "Draconic Tree Sentinel",
   "aliases": [
-   "draconic tree sentinel"
+   "draconic tree sentinel",
+   "draconic tree sentinel boss"
   ],
   "source": "hunts"
  },
@@ -10176,6 +10360,7 @@
   "kind": "hunt",
   "fmgName": "Dryleaf Dane",
   "aliases": [
+   "dane",
    "dryleaf dane"
   ],
   "source": "hunts"
@@ -10226,7 +10411,8 @@
   "kind": "hunt",
   "fmgName": "Flying Dragon Greyll",
   "aliases": [
-   "flying dragon greyll"
+   "flying dragon greyll",
+   "greyll"
   ],
   "source": "hunts"
  },
@@ -10256,7 +10442,9 @@
   "kind": "hunt",
   "fmgName": "Glintstone Dragon Smarag",
   "aliases": [
-   "glintstone dragon smarag"
+   "glintstone dragon smarag",
+   "smarag",
+   "smarag the glintstone dragon"
   ],
   "source": "hunts"
  },
@@ -10286,7 +10474,9 @@
   "kind": "hunt",
   "fmgName": "Golden Hippopotamus",
   "aliases": [
-   "golden hippopotamus"
+   "golden hippopotamus",
+   "hippopotamus",
+   "juvenile golden hippopotamus"
   ],
   "source": "hunts"
  },
@@ -10306,6 +10496,8 @@
   "kind": "hunt",
   "fmgName": "Jori, Elder Inquisitor",
   "aliases": [
+   "elder inquisitor",
+   "jori",
    "jori elder inquisitor"
   ],
   "source": "hunts"
@@ -10316,7 +10508,12 @@
   "kind": "hunt",
   "fmgName": "Kindred of Rot(x2)",
   "aliases": [
-   "kindred of rot"
+   "kindred of rot",
+   "kindred of rot scarlet",
+   "larva of rot",
+   "pest",
+   "pests",
+   "scarlet pest"
   ],
   "source": "hunts"
  },
@@ -10386,6 +10583,7 @@
   "kind": "hunt",
   "fmgName": "Necromancer Garris",
   "aliases": [
+   "garris",
    "necromancer garris"
   ],
   "source": "hunts"
@@ -10426,7 +10624,9 @@
   "kind": "hunt",
   "fmgName": "Patches",
   "aliases": [
-   "patches"
+   "patches",
+   "patches npc",
+   "patches the untethered"
   ],
   "source": "hunts"
  },
@@ -10496,7 +10696,8 @@
   "kind": "hunt",
   "fmgName": "Red Bear",
   "aliases": [
-   "red bear"
+   "red bear",
+   "red bear boss"
   ],
   "source": "hunts"
  },
@@ -10506,6 +10707,7 @@
   "kind": "hunt",
   "fmgName": "Romina, Saint of the Bud",
   "aliases": [
+   "romina",
    "romina saint of the bud"
   ],
   "source": "hunts"
@@ -10526,7 +10728,8 @@
   "kind": "hunt",
   "fmgName": "Royal Revenant",
   "aliases": [
-   "royal revenant"
+   "royal revenant",
+   "royal revenant boss"
   ],
   "source": "hunts"
  },
@@ -10587,7 +10790,8 @@
   "fmgName": "Sanguine Noble",
   "aliases": [
    "sanguine noble",
-   "sanguine noble invader"
+   "sanguine noble invader",
+   "sanguine nobles"
   ],
   "source": "hunts"
  },
@@ -10640,7 +10844,10 @@
   "kind": "invader",
   "fmgName": "White Mask Varré",
   "aliases": [
+   "varr",
+   "varre",
    "varre invasion",
+   "white faced varr",
    "white mask varr",
    "white mask varre"
   ],
@@ -10665,7 +10872,10 @@
   "fmgName": "Festering Fingerprint Vyke",
   "aliases": [
    "festering fingerprint vyke",
-   "vyke"
+   "roundtable knight vyke",
+   "vyke",
+   "vyke lord contender",
+   "vyke the dragonspear"
   ],
   "source": "paramdex-npc"
  },
@@ -10688,7 +10898,9 @@
   "aliases": [
    "defiler",
    "dung eater",
-   "dung eater invasion"
+   "dung eater invasion",
+   "loathsome dung eater",
+   "the loathsome dung eater"
   ],
   "source": "paramdex-npc"
  },
@@ -10757,7 +10969,8 @@
   "fmgName": "Ensha of the Royal Remains",
   "aliases": [
    "ensha",
-   "ensha of the royal remains"
+   "ensha of the royal remains",
+   "ensha the soulless king"
   ],
   "source": "paramdex-npc"
  },
@@ -10779,6 +10992,7 @@
   "fmgName": "Bloody Finger Nerijus",
   "aliases": [
    "bloody finger nerijus",
+   "bloody hunter nerijus",
    "nerijus"
   ],
   "source": "paramdex-npc"
@@ -10835,6 +11049,7 @@
   "kind": "invader",
   "fmgName": "Millicent",
   "aliases": [
+   "milicent",
    "millicent",
    "millicent invader"
   ],
@@ -10924,6 +11139,7 @@
   "fmgName": "Vargram the Raging Wolf",
   "aliases": [
    "vargram",
+   "vargram the bloody wolf",
    "vargram the raging wolf"
   ],
   "source": "paramdex-npc"
@@ -10956,6 +11172,7 @@
   "kind": "invader",
   "fmgName": "Maleigh Marais, Shaded Castle Castellan",
   "aliases": [
+   "lord of the shaded castle",
    "maleigh marais",
    "maleigh marais shaded castle castellan",
    "marais"
@@ -11059,7 +11276,8 @@
   "aliases": [
    "edgar revenger",
    "edgar the revenger",
-   "revenger"
+   "revenger",
+   "the revenger"
   ],
   "source": "paramdex-npc"
  },
@@ -11125,6 +11343,7 @@
   "kind": "item",
   "fmgName": "Millicent's Prosthesis",
   "aliases": [
+   "milicent prosthesis",
    "millicent prosthesis"
   ],
   "source": "names"
@@ -11525,25 +11744,23 @@
  },
  {
   "engineId": "goods:8105",
-  "slug": "item:dusk-medallion",
+  "slug": "item:dectus-medallion-left",
   "kind": "item",
   "fmgName": "Dectus Medallion (Left)",
   "aliases": [
-   "dectus",
    "dectus medallion",
-   "grand lift of dectus"
+   "dectus medallion left"
   ],
   "source": "names"
  },
  {
   "engineId": "goods:8106",
-  "slug": "item:dusk-medallion",
+  "slug": "item:dectus-medallion-right",
   "kind": "item",
   "fmgName": "Dectus Medallion (Right)",
   "aliases": [
-   "dectus",
    "dectus medallion",
-   "grand lift of dectus"
+   "dectus medallion right"
   ],
   "source": "names"
  },
@@ -11727,7 +11944,8 @@
   "fmgName": "Lord of Blood's Favor",
   "aliases": [
    "blood favor",
-   "lord of blood favor"
+   "lord of blood favor",
+   "lord of blood favor dry"
   ],
   "source": "names"
  },
@@ -11916,6 +12134,7 @@
   "aliases": [
    "millicent needle",
    "unalloyed gold needle",
+   "unalloyed gold needle snapped",
    "unalloyed needle"
   ],
   "source": "names"
@@ -12194,7 +12413,9 @@
   "kind": "item",
   "fmgName": "Blade of Calling",
   "aliases": [
-   "blade of calling"
+   "bc blade of calling",
+   "blade of calling",
+   "boc blade of calling"
   ],
   "source": "names"
  },
@@ -12215,6 +12436,7 @@
   "kind": "item",
   "fmgName": "Bolt of Gransax",
   "aliases": [
+   "bog bolt of gransax",
    "bolt of gransax",
    "gransax"
   ],
@@ -12227,6 +12449,8 @@
   "fmgName": "Sword of Milos",
   "aliases": [
    "milos",
+   "sm sword of milos",
+   "som sword of milos",
    "sword of milos"
   ],
   "source": "names"

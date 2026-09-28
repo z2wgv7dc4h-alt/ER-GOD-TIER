@@ -30,6 +30,8 @@ const bossPins = read('public/sourced/open/boss-pins.json')
 const engineMarkers = read('public/sourced/open/engine-markers.json').markers ?? []
 const npcCombat = read('public/sourced/npc-combat.json')
 const enemyCombat = read('public/sourced/enemy-combat.json')
+const wikiBosses = read('public/sourced/open/wiki-db/boss.json').records ?? []
+const graceXyz = read('public/sourced/open/grace-xyz.json')
 
 // ---------------------------------------------------------------------------
 // Name / id plane
@@ -245,6 +247,7 @@ const REGION_HINTS = [
   [/mohgwyn/i, 'Mohgwyn Dynasty Mausoleum'],
   [/gravesite/i, 'Gravesite Plain'],
   [/scadu altus|moorth|rauh base|rauh ruins/i, 'Scadu Altus'],
+  [/rauh/i, 'Ancient Ruins of Rauh'],
   [/scaduview|scadutree|shadow keep/i, 'Scaduview'],
   [/ancient ruins of rauh/i, 'Ancient Ruins of Rauh'],
   [/cerulean/i, 'Cerulean Coast'],
@@ -723,6 +726,70 @@ for (const record of encounters.values()) {
   const fallback = entityBossById.get(record.id)?.region
   if (fallback && fallback !== 'The Lands Between') record.region = fallback
 }
+
+// Task 132 §2 — close the remaining "The Lands Between" placeholders. A region
+// another source carries for the same name wins; else the dominant region of the
+// boss's engine map/area group (grace-xyz majorRegion, ≥60% agreement) is used.
+const sourceRegionByName = new Map()
+const rememberRegion = (name, region) => {
+  const key = norm(name)
+  if (key && region && region !== 'The Lands Between' && !sourceRegionByName.has(key)) sourceRegionByName.set(key, region)
+}
+for (const row of checklistBosses) rememberRegion(row.name, row.region || regionFromText(row.location))
+for (const row of fanBosses) rememberRegion(row.name, row.region || regionFromText(row.location))
+for (const row of armoryBosses) rememberRegion(row.name, row.region || regionFromText(row.location))
+for (const row of fextBosses) rememberRegion(row.name, regionFromText((row.locations ?? []).join(', ')))
+for (const row of wikiBosses) rememberRegion(row.title, row.region || regionFromText(row.location))
+
+const areaVotes = new Map()
+const gridVotes = new Map()
+for (const g of graceXyz) {
+  const label = g.majorRegion || g.subRegion
+  if (!label) continue
+  const area = areaVotes.get(g.areaNo) ?? new Map()
+  area.set(label, (area.get(label) ?? 0) + 1)
+  areaVotes.set(g.areaNo, area)
+  const gridKey = `${g.areaNo}|${g.gridX}|${g.gridZ}`
+  const grid = gridVotes.get(gridKey) ?? new Map()
+  grid.set(label, (grid.get(label) ?? 0) + 1)
+  gridVotes.set(gridKey, grid)
+}
+const topOf = (bucket) => {
+  if (!bucket) return null
+  const [top] = [...bucket.entries()].sort((a, b) => b[1] - a[1])[0]
+  return top ? top[0] : null
+}
+const gridRegion = (areaNo, gridX, gridZ) => topOf(gridVotes.get(`${areaNo}|${gridX}|${gridZ}`))
+/** The nearest grace-xyz row in the same area, by the engine world x/z. */
+const nearestGraceRegion = (row) => {
+  let best = null
+  let bestDist = Infinity
+  for (const g of graceXyz) {
+    if (g.areaNo !== row.areaNo) continue
+    const dx = g.x - row.x
+    const dz = g.z - row.z
+    const dist = dx * dx + dz * dz
+    if (dist < bestDist) { bestDist = dist; best = g }
+  }
+  if (!best || bestDist > 2500) return null
+  return best.majorRegion || best.subRegion || null
+}
+const bossListByName = new Map()
+for (const row of bossList) if (!bossListByName.has(norm(row.vanillaPlaceName))) bossListByName.set(norm(row.vanillaPlaceName), row)
+const remaining = []
+for (const record of encounters.values()) {
+  if (record.region !== 'The Lands Between') continue
+  const row = bossListByName.get(norm(record.name))
+  const fallback =
+    sourceRegionByName.get(norm(record.name)) ??
+    (row ? gridRegion(row.areaNo, row.gridX, row.gridZ) : null) ??
+    (row ? nearestGraceRegion(row) : null) ??
+    (row ? topOf(areaVotes.get(row.areaNo)) : null) ??
+    entityBossById.get(record.id)?.region
+  if (fallback && fallback !== 'The Lands Between') record.region = fallback
+  else remaining.push(record.name)
+}
+if (remaining.length) console.log(`placeholder regions still unresolved: ${remaining.length} (${remaining.join(', ')})`)
 
 // ---------------------------------------------------------------------------
 // Sort + write

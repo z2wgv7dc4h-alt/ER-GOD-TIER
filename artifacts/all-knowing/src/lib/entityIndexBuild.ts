@@ -55,6 +55,38 @@ import fanNpcs from '../../public/sourced/open/fanapi/npcs.json'
 import fanLocations from '../../public/sourced/open/fanapi/locations.json'
 import magicData from '../../public/sourced/open/magic.json'
 import gapfillDoc from '../../public/sourced/open/gapfill.json'
+import mapExtras from '../../public/sourced/guide/map-extras.json'
+import engineMarkersDoc from '../../public/sourced/open/engine-markers.json'
+import eldenringMap from '../../public/sourced/open/eldenringmap.json'
+import namesData from '../../public/sourced/open/names.json'
+import saveIds from '../../public/sourced/open/save-ids.json'
+import npcQuestsDoc from '../../public/sourced/open/npc-quests.json'
+import placeNames from '../../public/sourced/open/place-names.json'
+import mapPoints from '../../public/sourced/open/map-points.json'
+import mapLots from '../../public/sourced/open/map-lots.json'
+import msbEnemies from '../../public/sourced/open/msb-enemies.json'
+// Task 132 §1 — the map-id -> player place plane.
+import mapRegionsData from '../../public/sourced/open/map-regions.json'
+import graceXyzData from '../../public/sourced/open/grace-xyz.json'
+import gameAreasData from '../../public/sourced/open/game-areas.json'
+import mapPlaceNamesData from '../../public/sourced/open/map-place-names.json'
+
+// Task 132 §1 — the full wiki DB, classified per kind by `scripts/export-wiki-db.py`.
+import wikiBossDoc from '../../public/sourced/open/wiki-db/boss.json'
+import wikiEnemyDoc from '../../public/sourced/open/wiki-db/enemy.json'
+import wikiNpcDoc from '../../public/sourced/open/wiki-db/npc.json'
+import wikiLocationDoc from '../../public/sourced/open/wiki-db/location.json'
+import wikiRegionDoc from '../../public/sourced/open/wiki-db/region.json'
+import wikiSkillDoc from '../../public/sourced/open/wiki-db/skill.json'
+import wikiDungeonDoc from '../../public/sourced/open/wiki-db/dungeon.json'
+import wikiItemDoc from '../../public/sourced/open/wiki-db/item.json'
+import wikiWeaponDoc from '../../public/sourced/open/wiki-db/weapon.json'
+import wikiArmorDoc from '../../public/sourced/open/wiki-db/armor.json'
+import wikiSpellDoc from '../../public/sourced/open/wiki-db/spell.json'
+import wikiTalismanDoc from '../../public/sourced/open/wiki-db/talisman.json'
+import wikiAshDoc from '../../public/sourced/open/wiki-db/ash.json'
+import wikiSpiritDoc from '../../public/sourced/open/wiki-db/spirit.json'
+import wikiRedirectDoc from '../../public/sourced/open/wiki-db/redirects.json'
 
 /**
  * Task 119 §2 — build-time enrichment index.
@@ -87,7 +119,7 @@ type RosterBoss = { id: string; name: string; region: string; location: string; 
 type ChecklistItem = { name: string; description?: string; image?: string; effect?: string; type?: string }
 type ChecklistGrace = { name: string; region?: string; world?: string }
 type ChecklistNpc = { name: string; image?: string; quote?: string; location?: string; role?: string }
-type AcqRow = { name: string; location?: string; near?: string; missable?: boolean }
+type AcqRow = { name: string; method?: string; location?: string; near?: string; prereqs?: string[]; missable?: boolean }
 type WikiSection = { id: number; page: string; heading: string; text: string }
 type FextBoss = {
   name: string
@@ -872,6 +904,23 @@ function mergeArmorRow(row: ChecklistItem, sourceName: string): string {
   return id
 }
 
+/** Fold one NpcParam combat row onto a record, translating its map tiles. */
+function applyCombatStats(record: EntityRecord, row: CombatRow, sourceName: string): void {
+  setStat(record, 'HP', numberStat(row.baseHp))
+  setStat(record, 'Negation', formatNegation(row.negation))
+  setStat(record, 'Poise', numberStat(row.poise))
+  if (row.resist) {
+    const resist: Record<string, string> = { poison: 'Poison', scarletRot: 'Scarlet Rot', bleed: 'Bleed', sleep: 'Sleep', madness: 'Madness', curse: 'Curse' }
+    const text = Object.entries(row.resist).filter(([k]) => resist[k]).map(([k, v]) => `${resist[k]} ${v}`).join(' · ')
+    if (text) setStat(record, 'Status resist', text)
+  }
+  if (!record.location) {
+    const located = describeMaps(row.maps)
+    if (located) setText(record, 'location', located)
+  }
+  source(record, sourceName)
+}
+
 function mergeBoss(rawName: string, forcedId?: string): string | undefined {
   const name = correctName(rawName)
   const id = forcedId ?? resolveName(name, 'boss') ?? resolveName(name, 'invader')
@@ -885,16 +934,7 @@ function mergeBoss(rawName: string, forcedId?: string): string | undefined {
     const enemy = combat ? undefined : enemyCombatLookup(part)
     const row = combat ?? enemy
     if (!row) continue
-    setStat(record, 'HP', numberStat(row.baseHp))
-    setStat(record, 'Negation', formatNegation(row.negation))
-    setStat(record, 'Poise', numberStat(row.poise))
-    if (row.resist) {
-      const resist: Record<string, string> = { poison: 'Poison', scarletRot: 'Scarlet Rot', bleed: 'Bleed', sleep: 'Sleep', madness: 'Madness', curse: 'Curse' }
-      const text = Object.entries(row.resist).filter(([k]) => resist[k]).map(([k, v]) => `${resist[k]} ${v}`).join(' · ')
-      if (text) setStat(record, 'Status resist', text)
-    }
-    source(record, combat ? 'npc-combat' : 'enemy-combat')
-    if (!record.location && row.maps?.length) setText(record, 'location', row.maps.join(' · '))
+    applyCombatStats(record, row, combat ? 'npc-combat' : 'enemy-combat')
   }
 
   // Catalog facts: region + authored drops.
@@ -1021,17 +1061,40 @@ function mergeGrace(name: string, forcedId?: string): string | undefined {
 
 /** Prefer the authored NPC locator ("Found at grace:x" / a note) over fan data. */
 function npcLocationFromSummary(summary: string | undefined): string | undefined {
-  if (!summary) return undefined
+  if (!summary || summary === NO_DATA) return undefined
   const match = summary.match(/^Found at (grace:[a-z0-9-]+)$/)
   if (match) return getEntity(match[1]).name
   return summary
 }
 
+/** An existing record of the wanted kind whose name normalises to `name`. */
+function findRecordByName(name: string, kind: EntityKind): string | undefined {
+  const keys = new Set(mapKeys(name))
+  for (const [id, record] of records) {
+    if (record.kind !== kind) continue
+    for (const key of mapKeys(record.name)) if (keys.has(key)) return id
+  }
+  return undefined
+}
+
+/**
+ * Task 132 §2 — an NPC row must resolve to an `npc` entity, never a quest-line
+ * beat or a boss that merely shares the name (Sellen, Patches, Ranni). Reuse a
+ * real npc record when one exists, else mint `npc:<slug>`.
+ */
+function npcRecordId(name: string, forcedId?: string): string | undefined {
+  if (forcedId) return forcedId
+  const resolved = resolveName(name, 'npc')
+  if (resolved && hasEntity(resolved) && getEntity(resolved).kind === 'npc') return resolved
+  const existing = findRecordByName(name, 'npc')
+  return existing ?? `npc:${slug(name)}`
+}
+
 function mergeNpc(name: string, forcedId?: string): string | undefined {
-  const id = forcedId ?? resolveName(name, 'npc')
+  const id = npcRecordId(name, forcedId)
   if (!id) return undefined
   const entity = getEntity(id)
-  const record = ensureEntity(entity)
+  const record = records.get(id) ?? (hasEntity(id) ? ensureEntity(entity) : ensure(id, 'npc', name))
   setText(record, 'location', npcLocationFromSummary(entity.summary))
   const check = lookupName(checklistNpcByName, name)
   if (check) {
@@ -1052,7 +1115,7 @@ function mergeNpc(name: string, forcedId?: string): string | undefined {
     record.map = { x: placement.x ?? 0, y: placement.y ?? 0, map: placement.map, world: placement.world }
     source(record, 'npc-placements')
   }
-  if (!record.location) setText(record, 'location', (getEntity(id) as { summary?: string }).summary)
+  if (!record.location) setText(record, 'location', npcLocationFromSummary((getEntity(id) as { summary?: string }).summary))
   return id
 }
 
@@ -1102,6 +1165,942 @@ function mergeGapfill(): void {
     if (row.drops?.length) addDrops(record, row.drops)
     if (row.source) record.sourceUrl = row.source
     source(record, 'gapfill')
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Task 132 §1 — fold the classified wiki DB
+// ---------------------------------------------------------------------------
+
+type WikiRecord = {
+  id: string
+  title: string
+  kind: string
+  infobox: string
+  url: string
+  dlc: boolean
+  categories: string[]
+  region: string
+  location: string
+  description: string
+  drops: string[]
+  stats: Record<string, string>
+}
+
+const REGION_NAMES = [
+  'Limgrave', 'Weeping Peninsula', 'Stormveil Castle', 'Liurnia of the Lakes', 'Moonlight Altar',
+  'Academy of Raya Lucaria', 'Caelid', "Greyoll's Dragonbarrow", 'Altus Plateau', 'Capital Outskirts',
+  'Mt. Gelmir', 'Volcano Manor', 'Leyndell, Royal Capital', 'Leyndell, Ashen Capital', 'Forbidden Lands',
+  'Mountaintops of the Giants', 'Crumbling Farum Azula', 'Consecrated Snowfield', "Miquella's Haligtree",
+  'Siofra River', 'Mohgwyn Dynasty Mausoleum', 'Ainsel River', 'Deeproot Depths', 'Nokron, Eternal City',
+  'Lake of Rot', 'Subterranean Shunning-Grounds', 'Gravesite Plain', 'Scadu Altus', 'Scaduview',
+  'Ancient Ruins of Rauh', 'Rauh Base', 'Cerulean Coast', "Charo's Hidden Grave", 'Jagged Peak',
+  'Abyssal Woods', 'Enir-Ilim', 'Belurat, Tower Settlement', 'Castle Ensis', 'Shadow Keep',
+  "Midra's Manse", 'Church of the Bud', 'Stone Coffin Fissure', 'Scadutree Base', 'Hinterland',
+  'Roundtable Hold', 'Chapel of Anticipation',
+]
+
+const REGION_HINTS: [RegExp, string][] = [
+  [/dragonbarrow/i, "Greyoll's Dragonbarrow"],
+  [/caelid|aeonia|sellia|redmane|bestial sanctum|caelum/i, 'Caelid'],
+  [/stormveil|stormhill|stormfoot/i, 'Stormveil Castle'],
+  [/raya lucaria|liurnia|caria|three sisters|manus|scenic isle|village of the albinaurics/i, 'Liurnia of the Lakes'],
+  [/weeping peninsula|castle morne|tombsward|morne/i, 'Weeping Peninsula'],
+  [/limgrave|coastal cave|highroad|summonwater|waypoint|stranded graveyard|mistwood/i, 'Limgrave'],
+  [/gelmir|volcano manor|seethewater|fort laiedd|wyndham/i, 'Mt. Gelmir'],
+  [/altus|auriza|shaded castle|lux ruins|hermit village|old altus|sealed tunnel/i, 'Altus Plateau'],
+  [/leyndell|capital|elden throne|ashen/i, 'Leyndell, Royal Capital'],
+  [/mountaintops|castel sol|flame peak|giant|snowfield|consecrated|spiritcaller/i, 'Mountaintops of the Giants'],
+  [/farum azula/i, 'Crumbling Farum Azula'],
+  [/haligtree|elphael/i, "Miquella's Haligtree"],
+  [/siofra/i, 'Siofra River'],
+  [/ainsel|lake of rot|grand cloister|moonlight/i, 'Ainsel River'],
+  [/deeproot/i, 'Deeproot Depths'],
+  [/nokron|nokstella/i, 'Nokron, Eternal City'],
+  [/mohgwyn/i, 'Mohgwyn Dynasty Mausoleum'],
+  [/gravesite/i, 'Gravesite Plain'],
+  [/scadu altus|moorth|rauh base|rauh ruins/i, 'Scadu Altus'],
+  [/scaduview|scadutree|shadow keep/i, 'Scaduview'],
+  [/ancient ruins of rauh/i, 'Ancient Ruins of Rauh'],
+  [/cerulean/i, 'Cerulean Coast'],
+  [/charo/i, "Charo's Hidden Grave"],
+  [/jagged peak/i, 'Jagged Peak'],
+  [/abyssal/i, 'Abyssal Woods'],
+  [/enir-ilim|belurat|tower settlement/i, 'Enir-Ilim'],
+  [/realm of shadow|shadow of the erdtree|land of shadow/i, 'Shadow of the Erdtree'],
+]
+
+function regionFromText(text: unknown): string | undefined {
+  const raw = String(text ?? '')
+  const t = simpleNorm(raw)
+  if (!t) return undefined
+  let best: string | undefined
+  for (const region of REGION_NAMES) if (t.includes(simpleNorm(region)) && (!best || region.length > best.length)) best = region
+  if (best) return best
+  for (const [re, region] of REGION_HINTS) if (re.test(raw)) return region
+  return undefined
+}
+
+// ---------------------------------------------------------------------------
+// Task 132 §1 — map-tile ids -> the human place the player actually sees
+// ---------------------------------------------------------------------------
+//
+// Raw engine tiles (`m14_00_00_00 · m60_38_47_00`) are internal ids; every
+// player-visible field must read as a place name instead. Three committed
+// sources describe a tile: the engine's own `MapNameOverride` rows in
+// `map-regions.json`, the sub-region each grace in `grace-xyz.json` belongs to,
+// and the `WorldMapPlaceNameParam` banners. For interior maps the FMG place id
+// is `area*1000 + gridX*10 + gridZ`, which names the exact cave/catacomb/tunnel.
+
+type MapTile = { area: number; gx: number; gz: number; tier: number }
+
+function parseMapId(id: unknown): MapTile | undefined {
+  const m = /^m(\d{2})_(\d{2})_(\d{2})_(\d{2})$/.exec(String(id ?? '').trim())
+  if (!m) return undefined
+  return { area: Number(m[1]), gx: Number(m[2]), gz: Number(m[3]), tier: Number(m[4]) }
+}
+
+/** Per-tile names the engine's own `MapNameOverride` records carry. */
+const mapTileNames = new Map<string, string[]>()
+for (const [key, rows] of Object.entries(mapRegionsData as Record<string, { kind?: string; name?: string }[]>)) {
+  const names: string[] = []
+  for (const row of rows) {
+    if (row.kind === 'MapNameOverride' && row.name && !names.includes(row.name)) names.push(row.name)
+  }
+  if (names.length) mapTileNames.set(key, names)
+}
+
+function voteWinner(votes: Map<string, number> | undefined): string | undefined {
+  if (!votes?.size) return undefined
+  return [...votes.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0]?.[0]
+}
+
+const gridVotes = new Map<string, Map<string, number>>()
+const areaVotes = new Map<number, Map<string, number>>()
+for (const g of graceXyzData as { areaNo: number; gridX: number; gridZ: number; subRegion?: string | null; majorRegion?: string | null }[]) {
+  const label = g.subRegion || g.majorRegion
+  if (!label) continue
+  const gk = `${g.areaNo}|${g.gridX}|${g.gridZ}`
+  const grid = gridVotes.get(gk) ?? new Map<string, number>()
+  grid.set(label, (grid.get(label) ?? 0) + 1)
+  gridVotes.set(gk, grid)
+  const area = areaVotes.get(g.areaNo) ?? new Map<string, number>()
+  area.set(label, (area.get(label) ?? 0) + 1)
+  areaVotes.set(g.areaNo, area)
+}
+// `game-areas.json` names the region of every encounter flag; fold it in as an
+// area-level fallback where the grace dump has no vote.
+for (const row of gameAreasData as { flag?: number; region?: string }[]) {
+  if (typeof row.flag !== 'number' || !row.region) continue
+  const areaNo = Math.floor(row.flag / 1_000_000)
+  if (!areaNo) continue
+  const area = areaVotes.get(areaNo) ?? new Map<string, number>()
+  area.set(row.region, (area.get(row.region) ?? 0) + 1)
+  areaVotes.set(areaNo, area)
+}
+
+/** FMG PlaceName ids: `area*1000 + gridX*10 + gridZ` for the interior maps. */
+const placeNameById = new Map<string, string>()
+for (const row of namesData as FmgNameRow[]) {
+  if (row.kind !== 'places') continue
+  const id = String(row.id).replace(/^places:/, '')
+  if (id && !placeNameById.has(id)) placeNameById.set(id, row.name)
+}
+
+/** Coarse area names as a last resort when no tile-level source names one. */
+const AREA_FALLBACK_NAMES: Record<number, string> = {
+  10: 'Stormveil Castle',
+  11: 'Leyndell, Royal Capital',
+  12: 'Nokron, Eternal City',
+  13: 'Crumbling Farum Azula',
+  14: 'Academy of Raya Lucaria',
+  15: "Miquella's Haligtree",
+  16: 'Volcano Manor',
+  18: 'Stranded Graveyard',
+  19: 'Stone Platform',
+  20: 'Belurat, Tower Settlement',
+  21: 'Shadow Keep',
+  22: 'Stone Coffin Fissure',
+  25: 'Roundtable Hold',
+  28: "Midra's Manse",
+  30: 'Catacombs',
+  31: 'Caves',
+  32: 'Tunnels',
+  33: "Knight's Study",
+  35: 'Subterranean Shunning-Grounds',
+  39: 'Ruin-Strewn Precipice',
+  40: 'Fog Rift Catacombs',
+  41: 'Belurat Gaol',
+  42: 'Ruined Forge',
+  43: 'Rivermouth Cave',
+  45: 'Shadow of the Erdtree',
+}
+
+const TILE_WORLD = 256
+const WORLD_OFFSET_X = -7168
+const WORLD_OFFSET_Y = 16640
+const PLACE_LABELS = (mapPlaceNamesData as { labels?: { name?: string; names?: { en?: string }; px: number; py: number; master: string }[] }).labels ?? []
+const NAMED_MARKERS = [
+  ...((engineMarkersDoc as { markers?: { name?: string; master?: string; px?: number; py?: number }[] }).markers ?? []),
+  ...PLACE_LABELS.map((l) => ({ name: l.names?.en || l.name, master: l.master, px: l.px, py: l.py })),
+].filter((m) => m.name && typeof m.px === 'number' && typeof m.py === 'number')
+
+type MapInfo = { region: string; place?: string }
+const mapInfoCache = new Map<string, MapInfo>()
+
+/** The region a tile sits in, from the richest committed source. */
+function mapInfo(id: string): MapInfo | undefined {
+  const cached = mapInfoCache.get(id)
+  if (cached) return cached
+  const tile = parseMapId(id)
+  if (!tile) return undefined
+  const gridRegion = voteWinner(gridVotes.get(`${tile.area}|${tile.gx}|${tile.gz}`))
+
+  let region: string | undefined
+  const override = mapTileNames.get(id)
+  if (override?.length) {
+    region = gridRegion && override.some((n) => simpleNorm(n) === simpleNorm(gridRegion)) ? gridRegion : override[0]
+  }
+  if (!region && tile.area < 60) region = placeNameById.get(String(tile.area * 1000 + tile.gx * 10 + tile.gz))
+  if (!region) region = gridRegion
+  if (!region) {
+    // The nearest named neighbouring tile, but only when it is close enough to
+    // be the same sub-region (a missing _47 tile beside a named _48).
+    let best: string[] | undefined
+    let bestDist = Infinity
+    for (const [key, names] of mapTileNames) {
+      const t = parseMapId(key)
+      if (!t || t.area !== tile.area || t.tier !== 0) continue
+      const dist = (t.gx - tile.gx) ** 2 + (t.gz - tile.gz) ** 2
+      if (dist < bestDist) {
+        bestDist = dist
+        best = names
+      }
+    }
+    if (best?.length && bestDist <= 16) region = best[0]
+  }
+  if (!region) region = voteWinner(areaVotes.get(tile.area)) ?? AREA_FALLBACK_NAMES[tile.area]
+
+  let place: string | undefined
+  if (tile.area === 60 || tile.area === 61) {
+    const master = tile.area === 61 ? 'M10' : 'M00'
+    const px = tile.gx * TILE_WORLD + TILE_WORLD / 2 + WORLD_OFFSET_X
+    const py = WORLD_OFFSET_Y - (tile.gz * TILE_WORLD + TILE_WORLD / 2)
+    let best: string | undefined
+    let bestDist = Infinity
+    for (const m of NAMED_MARKERS) {
+      if (m.master !== master) continue
+      const dx = (m.px as number) - px
+      const dy = (m.py as number) - py
+      const dist = dx * dx + dy * dy
+      if (dist < bestDist) {
+        bestDist = dist
+        best = m.name
+      }
+    }
+    if (best && bestDist <= 240 * 240 && simpleNorm(best) !== simpleNorm(region ?? '')) place = best
+  }
+
+  const info: MapInfo = { region: region ?? place ?? 'The Lands Between', place }
+  mapInfoCache.set(id, info)
+  return info
+}
+
+/** One human line for a `maps` array: region, plus the nearest place when the
+ * encounter sits in a single tile. Never emits a raw engine id. */
+function describeMaps(maps: unknown): string | undefined {
+  if (!Array.isArray(maps) || !maps.length) return undefined
+  const regions: string[] = []
+  const labels: string[] = []
+  for (const raw of maps) {
+    const info = mapInfo(String(raw))
+    if (!info) continue
+    if (!regions.includes(info.region)) regions.push(info.region)
+    const label = info.place ? `${info.region} — ${info.place}` : info.region
+    if (!labels.includes(label)) labels.push(label)
+  }
+  if (!labels.length) return undefined
+  if (labels.length === 1) return labels[0]
+  if (regions.length === 1) return regions[0]
+  return regions.slice(0, 4).join(' · ') + (regions.length > 4 ? ' · …' : '')
+}
+
+const MAP_ID_RE = /\bm\d{2}_\d{2}_\d{2}_\d{2}\b/g
+/** Safety net: replace any raw tile id that survived into player-visible text. */
+function humanizeMapIds(text: string): string {
+  MAP_ID_RE.lastIndex = 0
+  if (!MAP_ID_RE.test(text)) return text
+  MAP_ID_RE.lastIndex = 0
+  return text.replace(MAP_ID_RE, (id) => mapInfo(id)?.region ?? 'the Lands Between')
+}
+
+const wikiRecords = (doc: unknown): WikiRecord[] => (doc as { records?: WikiRecord[] }).records ?? []
+
+/** Resolve wiki redirect chains so a redirect title maps to its canonical page. */
+const wikiRedirectTo = new Map<string, string>()
+for (const redirect of (wikiRedirectDoc as { redirects?: { from: string; to: string }[] }).redirects ?? []) {
+  const from = simpleNorm(redirect.from)
+  if (from && !wikiRedirectTo.has(from)) wikiRedirectTo.set(from, redirect.to)
+}
+function canonicalWikiTitle(title: string): string {
+  let current = title
+  for (let i = 0; i < 4; i++) {
+    const next = wikiRedirectTo.get(simpleNorm(current))
+    if (!next || simpleNorm(next) === simpleNorm(current)) break
+    current = next
+  }
+  return current
+}
+
+/** Enrich an existing record with a wiki record's prose/url (never overwrites). */
+function enrichFromWiki(record: EntityRecord, rec: WikiRecord): void {
+  setText(record, 'description', rec.description)
+  setText(record, 'location', rec.location || rec.stats.Location || rec.region)
+  if (rec.url) record.sourceUrl = record.sourceUrl ?? rec.url
+  source(record, 'wiki-db')
+}
+
+function mergeWikiDb(): void {
+  const redirects = (wikiRedirectDoc as { redirects?: { from: string; to: string }[] }).redirects ?? []
+  const redirectAliases = new Map<string, string[]>()
+  for (const redirect of redirects) {
+    if (!redirect.from || !redirect.to) continue
+    const key = simpleNorm(redirect.to)
+    const list = redirectAliases.get(key) ?? []
+    list.push(redirect.from)
+    redirectAliases.set(key, list)
+  }
+
+  // NPCs (Characters). Never fold a Character page onto a quest-line record: the
+  // character keeps its own `npc:` entity so name lookups prefer npc > quest.
+  for (const rec of wikiRecords(wikiNpcDoc)) {
+    const title = canonicalWikiTitle(rec.title)
+    const resolved = resolveName(title, 'npc') ?? resolveName(rec.title, 'npc')
+    const resolvedRecord = resolved ? records.get(resolved) : undefined
+    const id = resolvedRecord && resolvedRecord.kind === 'npc' ? resolved! : `npc:${slug(title)}`
+    const record = records.get(id) ?? ensure(id, 'npc', title)
+    if (record.kind === 'item') record.kind = 'npc'
+    enrichFromWiki(record, rec)
+    setStat(record, 'Role', rec.stats.Role)
+    setStat(record, 'Affiliation', rec.stats.Affiliation)
+    if (!record.region) record.region = regionFromText(rec.location || rec.description)
+    addName(rec.title, id)
+    addName(title, id)
+    for (const alias of redirectAliases.get(simpleNorm(rec.title)) ?? []) addName(alias, id)
+  }
+
+  // Enemies: fold onto the canonical boss when the wiki enemy is a boss.
+  for (const rec of wikiRecords(wikiEnemyDoc)) {
+    const title = canonicalWikiTitle(rec.title)
+    const bossId = resolveName(title, 'boss') ?? resolveName(title, 'invader')
+    if (bossId && records.has(bossId)) {
+      enrichFromWiki(records.get(bossId)!, rec)
+      continue
+    }
+    const id = resolveName(title, 'enemy') ?? `enemy:${slug(title)}`
+    const record = records.get(id) ?? ensure(id, 'enemy', title)
+    if (record.kind === 'item') record.kind = 'enemy'
+    enrichFromWiki(record, rec)
+    setStat(record, 'HP', rec.stats.HP)
+    addDrops(record, rec.drops)
+    if (!record.region) record.region = regionFromText(`${rec.location} ${rec.description}`)
+    for (const alias of redirectAliases.get(simpleNorm(rec.title)) ?? []) addName(alias, id)
+  }
+
+  // Bosses: enrich the canonical record, or mint a wiki-only encounter.
+  for (const rec of wikiRecords(wikiBossDoc)) {
+    const title = canonicalWikiTitle(rec.title)
+    const location = rec.location || rec.stats.Location
+    const region = rec.region || regionFromText(`${location} ${rec.description}`)
+    const id = resolveName(title, 'boss') ?? resolveName(title, 'invader') ?? resolveName(rec.title, 'boss')
+    if (id && records.has(id)) {
+      const record = records.get(id)!
+      enrichFromWiki(record, rec)
+      setStat(record, 'HP', rec.stats.HP)
+      addDrops(record, rec.drops)
+      if (!record.region && region) record.region = region
+      continue
+    }
+    const newId = id ?? `boss:${slug(title)}`
+    const record = records.get(newId) ?? ensure(newId, 'boss', title)
+    enrichFromWiki(record, rec)
+    setStat(record, 'HP', rec.stats.HP)
+    addDrops(record, rec.drops)
+    const finalLocation = record.location || location || region || title
+    setText(record, 'location', finalLocation)
+    if (!record.region) record.region = region ?? regionFromText(finalLocation) ?? finalLocation
+  }
+
+  // Locations + subregions (filed under the existing `region` kind the Library
+  // Locations category already uses).
+  for (const rec of wikiRecords(wikiLocationDoc)) {
+    const title = canonicalWikiTitle(rec.title)
+    // Only fold onto an existing *region* entity; a wiki Location page that
+    // resolves to a grace/boss keeps its own location record so the page's
+    // description + region are not lost on the wrong kind.
+    const resolved = resolveName(title, 'region')
+    const id = resolved && hasEntity(resolved) && getEntity(resolved).kind === 'region' ? resolved : `region:${slug(title)}`
+    const record = records.get(id) ?? ensure(id, 'region', title)
+    if (record.kind === 'item') record.kind = 'region'
+    enrichFromWiki(record, rec)
+    setText(record, 'location', rec.region || rec.stats.Region || rec.location || rec.stats.Type)
+    for (const alias of redirectAliases.get(simpleNorm(rec.title)) ?? []) addName(alias, id)
+  }
+
+  // Regions: the top-level overworld/DLC regions (a small set beside the
+  // Location pages).
+  for (const rec of wikiRecords(wikiRegionDoc)) {
+    const title = canonicalWikiTitle(rec.title)
+    const resolved = resolveName(title, 'region')
+    const id = resolved && hasEntity(resolved) && getEntity(resolved).kind === 'region' ? resolved : `region:${slug(title)}`
+    const record = records.get(id) ?? ensure(id, 'region', title)
+    if (record.kind === 'item') record.kind = 'region'
+    enrichFromWiki(record, rec)
+    setText(record, 'location', rec.region || rec.stats.Region || rec.location || rec.stats.Type)
+  }
+
+  // Skills: unique/weapon skills already have an ash/weapon record; the wiki
+  // page only enriches it, it never mints a new kind for a non-player skill.
+  for (const rec of wikiRecords(wikiSkillDoc)) {
+    const title = canonicalWikiTitle(rec.title)
+    const record = records.get(catalogueIdFor('item', title))
+    if (!record) continue
+    setText(record, 'description', rec.description)
+    if (!record.location) setText(record, 'location', rec.location || rec.region)
+    source(record, 'wiki-db/skill')
+  }
+
+  // Dungeons: enrich the authored `dungeon:` records the graph already knows.
+  for (const rec of wikiRecords(wikiDungeonDoc)) {
+    const title = canonicalWikiTitle(rec.title)
+    const id = `dungeon:${slug(title)}`
+    const record = records.get(id) ?? (hasEntity(id) ? ensureEntity(getEntity(id)) : undefined)
+    if (!record) continue
+    enrichFromWiki(record, rec)
+    setText(record, 'location', rec.region || rec.stats.Region)
+  }
+
+  // Weapons / armor / talismans / spells / ashes / spirits: enrich the
+  // catalogue record; a wiki-only page becomes a non-catalogue reference record
+  // (so it never inflates a 100% coverage guard).
+  const catalogueDocs: [unknown, EntityKind][] = [
+    [wikiWeaponDoc, 'weapon'],
+    [wikiArmorDoc, 'armor'],
+    [wikiTalismanDoc, 'talisman'],
+    [wikiSpellDoc, 'spell'],
+    [wikiAshDoc, 'ash'],
+    [wikiSpiritDoc, 'spirit'],
+  ]
+  for (const [doc, kind] of catalogueDocs) {
+    for (const rec of wikiRecords(doc)) {
+      const title = canonicalWikiTitle(rec.title)
+      // The wiki names every ash "Ash of War: X" while the checklist/FanAPI use
+      // the bare skill; strip it so the wiki page enriches the existing record
+      // instead of minting a duplicate.
+      const bare = kind === 'ash' ? title.replace(/^ash(?:es)? of war:\s*/i, '').trim() || title : title
+      const id = catalogueIdFor('item', bare)
+      const record = records.get(id) ?? ensure(id, kind, bare)
+      if (record.kind === 'item' && kind !== 'item') record.kind = kind
+      enrichFromWiki(record, rec)
+      setStat(record, 'Weight', rec.stats.Weight)
+      if (rec.stats.Poise) setStat(record, 'Poise', rec.stats.Poise)
+    }
+  }
+
+  // Items (goods): key items, tools, crafting materials, cookbooks, consumables.
+  for (const rec of wikiRecords(wikiItemDoc)) {
+    const title = canonicalWikiTitle(rec.title)
+    const id = catalogueIdFor('item', title)
+    const record = records.get(id) ?? ensure(id, 'item', title)
+    enrichFromWiki(record, rec)
+    if (!record.location) setText(record, 'location', rec.stats.Obtained)
+    setStat(record, 'Effect', rec.stats.Effect)
+    for (const alias of redirectAliases.get(simpleNorm(rec.title)) ?? []) addName(alias, id)
+  }
+}
+
+/** Seed every BonfireWarpParam grace with its region and plate coordinates. */
+function mergeWikiGraces(): void {
+  const graceIds = new Set<string>()
+  const coordByName = new Map<string, { x: number; y: number; map?: string; world?: string }>()
+  const addCoord = (name: string, coord: { x: number; y: number; map?: string; world?: string }) => {
+    for (const key of [...mapKeys(name), baseNorm(name).replace(/\bsite of grace\b|\bsite\b/g, '').trim()]) {
+      if (key && !coordByName.has(key)) coordByName.set(key, coord)
+    }
+  }
+  for (const row of coords as (CoordRow & { kind?: string })[]) {
+    if (row.kind === 'grace' && typeof row.x === 'number' && typeof row.y === 'number') {
+      addCoord(row.name, { x: row.x, y: row.y, map: row.map, world: row.world })
+    }
+  }
+  for (const grace of (mapExtras as { graces?: { name: string; lat: number; lng: number; code?: string }[] }).graces ?? []) {
+    if (typeof grace.lat === 'number' && typeof grace.lng === 'number') {
+      addCoord(grace.name, { x: grace.lng, y: grace.lat, world: grace.code })
+    }
+  }
+  // Task 132 §2 — the other coordinate planes: the er-guide location markers, the
+  // engine mosaic graces and the unused eldenringmap dump. Together they close
+  // the last few BonfireWarpParam warps the guide's grace list alone drops.
+  for (const loc of (mapExtras as { locations?: { name: string; lat: number; lng: number; code?: string }[] }).locations ?? []) {
+    if (typeof loc.lat === 'number' && typeof loc.lng === 'number') {
+      addCoord(loc.name, { x: loc.lng, y: loc.lat, world: loc.code })
+    }
+  }
+  const MOSAIC = 10496
+  for (const grace of (engineMarkersDoc as { graces?: { name: string; px: number; py: number }[] }).graces ?? []) {
+    if (typeof grace.px === 'number' && typeof grace.py === 'number') {
+      addCoord(grace.name, { x: (grace.px / MOSAIC) * 100, y: (grace.py / MOSAIC) * 100 })
+    }
+  }
+  for (const grace of (eldenringMap as { graces?: { name: string; x: number; y: number; world?: string }[] }).graces ?? []) {
+    if (typeof grace.x === 'number' && typeof grace.y === 'number') {
+      addCoord(grace.name, { x: (grace.x / MOSAIC) * 100, y: (grace.y / MOSAIC) * 100, world: grace.world })
+    }
+  }
+  for (const row of checklistGraces as (ChecklistGrace & { id?: string; warpId?: number })[]) {
+    // Exact name only: a fuzzy match would merge two distinct warps into one. A
+    // second row with the same name (e.g. two "Artist's Shack" warps) keeps its
+    // engine warp id so no warp is silently dropped.
+    const exact = mapKeys(row.name).map((key) => nameIndex.get(key)).find((id) => id && hasEntity(id) && getEntity(id).kind === 'grace')
+    const id = exact && !graceIds.has(exact) ? exact : row.id ?? `grace:${slug(row.name)}`
+    graceIds.add(id)
+    const record = records.get(id) ?? (exact === id ? ensureEntity(getEntity(id)) : ensure(id, 'grace', row.name))
+    setText(record, 'description', row.region)
+    setText(record, 'location', row.region)
+    setStat(record, 'World', row.world)
+    const lookupNames = [row.name, correctName(row.name)]
+    const coord =
+      lookupNames.flatMap((n) => [...mapKeys(n), ...mapKeys(n.replace(/ \(site of grace\)$/i, ''))]).map((key) => coordByName.get(key)).find(Boolean) ??
+      lookupNames.map((n) => coordByName.get(baseNorm(n).replace(/\bsite of grace\b|\bsite\b/g, '').trim())).find(Boolean)
+    if (coord) {
+      record.map = { x: coord.x, y: coord.y, map: coord.map, world: coord.world }
+    }
+    source(record, 'checklists/graces')
+  }
+}
+
+type FmgNameRow = { id: string; kind: string; name: string; info?: string }
+
+/**
+ * Task 132 §2 — surface the FMG name plane the app already carries but never
+ * indexed: the goods catalogue (items), every NPC name, and every place name.
+ * These are plain reference records (not Library catalogue rows), so a name
+ * with no description/location never drags a coverage guard down.
+ */
+function mergeFmgNames(): void {
+  const rows = namesData as FmgNameRow[]
+  // Task 132 §2 — the FMG `arts` plane carries 265 rows, but most are unique
+  // weapon skills / enemy attacks, not the player-equippable Ashes of War. Fold
+  // only the real Ashes of War (save-ids aow ∪ checklist ∪ FanAPI ∪ wiki ash
+  // pages) so the `ash` kind is not inflated by non-player entries.
+  const stripAsh = (name: string) => simpleNorm(name.replace(/^ash(?:es)? of war:\s*/i, ''))
+  const ashOfWarNames = new Set<string>()
+  for (const name of Object.keys((saveIds as { ids?: { aow?: Record<string, string> } }).ids?.aow ?? {})) ashOfWarNames.add(stripAsh(name))
+  for (const row of checklistAshes as ChecklistItem[]) ashOfWarNames.add(stripAsh(row.name))
+  for (const row of fanAshes as ChecklistItem[]) ashOfWarNames.add(stripAsh(row.name))
+  for (const rec of wikiRecords(wikiAshDoc)) ashOfWarNames.add(stripAsh(rec.title))
+  const ensureKind = (id: string, kind: EntityKind, name: string): EntityRecord => {
+    const existing = records.get(id)
+    if (existing) return existing
+    const record = ensure(id, kind, name)
+    record.catalogue = false
+    return record
+  }
+  for (const row of rows) {
+    if (row.kind === 'goods') {
+      const id = catalogueIdFor('item', row.name)
+      const record = records.get(id) ?? ensureKind(id, 'item', row.name)
+      setText(record, 'description', row.info)
+      source(record, 'names/fmg-goods')
+    } else if (row.kind === 'npcs') {
+      const exact = mapKeys(row.name).map((key) => nameIndex.get(key)).find((id) => id && hasEntity(id) && getEntity(id).kind === 'npc')
+      const id = exact ?? row.id ?? `npc:${slug(row.name)}`
+      const record = records.get(id) ?? ensureKind(id, 'npc', row.name)
+      if (record.kind === 'item') record.kind = 'npc'
+      setText(record, 'description', row.info)
+      source(record, 'names/fmg-npcs')
+    } else if (row.kind === 'places') {
+      const exact = mapKeys(row.name).map((key) => nameIndex.get(key)).find((id) => id && hasEntity(id) && getEntity(id).kind === 'region')
+      const id = exact ?? row.id ?? `region:${slug(row.name)}`
+      const record = records.get(id) ?? ensureKind(id, 'region', row.name)
+      if (record.kind === 'item') record.kind = 'region'
+      source(record, 'names/fmg-places')
+    } else if (row.kind === 'accessories') {
+      const id = catalogueIdFor('item', row.name)
+      const record = records.get(id) ?? ensureKind(id, 'talisman', row.name)
+      setText(record, 'description', row.info)
+      source(record, 'names/fmg-accessories')
+    } else if (row.kind === 'protector') {
+      const id = catalogueIdFor('item', row.name)
+      const record = records.get(id) ?? ensureKind(id, 'armor', row.name)
+      setText(record, 'description', row.info)
+      source(record, 'names/fmg-protector')
+    } else if (row.kind === 'arts') {
+      if (!ashOfWarNames.has(stripAsh(row.name))) continue
+      const id = catalogueIdFor('item', row.name)
+      const record = records.get(id) ?? ensureKind(id, 'ash', row.name)
+      setText(record, 'description', row.info)
+      source(record, 'names/fmg-arts')
+    }
+  }
+}
+
+type EnemyCombatRow = {
+  factId?: string
+  name: string
+  baseHp?: number
+  poise?: number
+  negation?: Record<string, number>
+  resist?: Record<string, number>
+  maps?: string[]
+}
+
+/**
+ * Task 132 §3 — fold the remaining open dumps the app never indexed: place
+ * names (region aliases), map points (grace/region aliases), map lots (item
+ * name aliases) and the MSB enemy placements (per-model map ids unioned onto
+ * the enemy-combat rows). Nothing here mints a new entity: it only makes the
+ * scraped names resolve to the records the other sources already built.
+ */
+function mergeExtraSources(): void {
+  const aliasToExisting = (name: string): void => {
+    const clean = String(name).replace(/<[^>]+>/g, '').trim()
+    if (!clean) return
+    const id = mapKeys(clean).map((key) => nameIndex.get(key)).find((candidate) => candidate && records.has(candidate))
+    if (id) addName(clean, id)
+  }
+  for (const value of Object.values(placeNames as Record<string, string>)) {
+    const name = String(value).replace(/<[^>]+>/g, '').trim()
+    if (!name || /^(discovered|cleared|completed)$/i.test(name)) continue
+    aliasToExisting(name)
+  }
+  for (const row of mapPoints as { name: string }[]) {
+    for (const part of String(row.name).split(/\s*[-–—]\s*/)) {
+      aliasToExisting(part.replace(/^guidance of grace:\s*/i, ''))
+    }
+    aliasToExisting(row.name.replace(/^guidance of grace:\s*/i, ''))
+  }
+  for (const row of mapLots as { name: string }[]) {
+    const id = catalogueIdFor('item', row.name)
+    if (records.has(id)) addName(row.name, id)
+  }
+  // Per-model map ids from the MSB dump widen each enemy-combat row's maps.
+  const byModel = new Map<string, Set<string>>()
+  for (const row of msbEnemies as { model?: string; map?: string }[]) {
+    if (!row.model || !row.map) continue
+    const set = byModel.get(row.model) ?? new Set<string>()
+    set.add(row.map)
+    byModel.set(row.model, set)
+  }
+  for (const row of enemyCombat as (EnemyCombatRow & { model?: string })[]) {
+    if (!row.model) continue
+    const extra = byModel.get(row.model)
+    if (!extra?.size) continue
+    row.maps = row.maps ?? []
+    for (const map of extra) if (!row.maps.includes(map)) row.maps.push(map)
+  }
+}
+
+/**
+ * Task 132 §2 — the enemy kind. Every NpcParam combat row becomes an `enemy`
+ * entity with its HP, negation/resist table and map placement, keyed by its fact
+ * id so group variants stay distinct. A row whose name is already an NPC, boss
+ * or quest entity is merged onto that record instead (never a second primary
+ * record); the collision pass below does this once the wiki NPC plane exists.
+ */
+function mergeEnemyCombat(): void {
+  for (const row of enemyCombat as EnemyCombatRow[]) {
+    const id = row.factId ?? `enemy:${slug(row.name)}`
+    const record = records.get(id) ?? ensure(id, 'enemy', row.name)
+    if (record.kind === 'item') record.kind = 'enemy'
+    applyCombatStats(record, row, 'enemy-combat')
+  }
+}
+
+/**
+ * Task 132 §2 — the acquisition dump names 2,609 item/obtained rows. Every name
+ * it carries that is not already an entity becomes a reference `item` record
+ * with its acquisition text, so no scraped item name is left out of the index.
+ */
+function mergeAcquisitionItems(): void {
+  for (const row of acquisitionDoc.rows as AcqRow[]) {
+    const id = catalogueIdFor('item', row.name)
+    const existing = records.get(id)
+    if (existing) {
+      setText(existing, 'location', row.location ?? row.near)
+      continue
+    }
+    const record = ensure(id, 'item', correctName(row.name))
+    record.catalogue = false
+    setText(record, 'description', row.method)
+    setText(record, 'location', row.location ?? row.near)
+    source(record, 'acquisition')
+  }
+}
+
+/**
+ * Task 132 §2 — link the wiki DB's 341 NPC quest steps to their NPC entity.
+ *
+ * Each step becomes a reference `quest` record (`quest:<npc>-step-N`) whose
+ * `related` names the NPC, and the NPC record gains a "Questline" section listing
+ * the step order/location/action, so the entity page peeks the whole line.
+ */
+function mergeNpcQuestSteps(): void {
+  const quests = (npcQuestsDoc as {
+    quests?: { npc: string; url?: string; steps: { id: string; order: number; location?: string; action?: string; breaks?: boolean }[] }[]
+  }).quests ?? []
+  const bySimple = new Map<string, string>()
+  for (const [id, rec] of records) {
+    // Only real character-ish records; never the authored quest-line beats.
+    if (rec.kind === 'item' || rec.kind === 'quest' || rec.kind === 'ending') continue
+    const key = simpleNorm(rec.name)
+    if (key && !bySimple.has(key)) bySimple.set(key, id)
+  }
+  const questNpcId = (name: string): string | undefined => {
+    const resolved = resolveName(name, 'npc')
+    const resolvedRecord = resolved ? records.get(resolved) : undefined
+    if (resolvedRecord && resolvedRecord.kind !== 'quest' && resolvedRecord.kind !== 'ending') return resolved
+    const key = simpleNorm(name)
+    const exact = bySimple.get(key)
+    if (exact) return exact
+    // Fall back to the closest entity whose name contains (or is contained by)
+    // the quest NPC name — the DB spells some names slightly differently.
+    for (const [candidate, id] of bySimple) {
+      if (candidate.length >= 4 && key.length >= 4 && (candidate.includes(key) || key.includes(candidate))) {
+        const rec = records.get(id)
+        if (rec && rec.kind !== 'quest' && rec.kind !== 'ending') return id
+      }
+    }
+    return undefined
+  }
+  for (const quest of quests) {
+    if (!quest.npc) continue
+    const npcId = questNpcId(quest.npc)
+    const npcRecord = npcId ? records.get(npcId) : undefined
+    const npcName = npcRecord?.name ?? quest.npc
+    if (npcRecord) {
+      if (quest.url) npcRecord.sourceUrl = npcRecord.sourceUrl ?? quest.url
+      const lines = quest.steps
+        .map((step) => `${step.order}. ${step.location ? `[${step.location}] ` : ''}${step.action ?? ''}${step.breaks ? ' (breaks the quest)' : ''}`.trim())
+        .filter(Boolean)
+      if (lines.length) {
+        npcRecord.sections = [...(npcRecord.sections ?? []), { heading: `Questline (${quest.steps.length} steps)`, text: lines.join('\n') }]
+      }
+      source(npcRecord, 'npc-quests')
+    }
+    for (const step of quest.steps) {
+      const id = `quest:${slug(quest.npc)}-step-${step.order}`
+      const record = ensure(id, 'quest', `${npcName} — step ${step.order}`)
+      record.catalogue = false
+      setText(record, 'description', step.action)
+      setText(record, 'location', step.location)
+      if (!record.region) record.region = regionFromText(step.location)
+      record.related = [npcName, ...(step.breaks ? ['breaks the quest'] : [])]
+      source(record, 'npc-quests')
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Task 132 §2/§3/§4 — collisions, junk name rows, region fill, enemy prose
+// ---------------------------------------------------------------------------
+
+/** The colliding key: a name with a trailing `(Boss)`/`(NPC)` qualifier dropped. */
+function collisionKey(name: unknown): string {
+  return simpleNorm(String(name ?? '').replace(/\s*\((?:boss|npc|enemy)\)\s*$/i, ''))
+}
+
+function richness(record: EntityRecord): number {
+  return (record.description ? 2 : 0) + (record.location ? 1 : 0) + (record.stats && Object.keys(record.stats).length ? 1 : 0)
+}
+
+/**
+ * The one primary record per name across the character kinds. Reference-only
+ * FMG name-plane stubs (`catalogue: false`) are excluded so an empty `npcs:`
+ * row can never outrank an authored boss; priority is npc > boss > quest.
+ */
+function primaryNamedRecords(): Map<string, string> {
+  const PRIORITY: Record<string, number> = { npc: 0, boss: 1, quest: 2 }
+  const best = new Map<string, string>()
+  for (const [id, record] of records) {
+    const rank = PRIORITY[record.kind]
+    if (rank === undefined || record.catalogue === false) continue
+    const key = collisionKey(record.name)
+    if (!key) continue
+    const currentId = best.get(key)
+    if (!currentId) {
+      best.set(key, id)
+      continue
+    }
+    const current = records.get(currentId)
+    if (!current) {
+      best.set(key, id)
+      continue
+    }
+    const currentRank = PRIORITY[current.kind] ?? 9
+    if (rank < currentRank || (rank === currentRank && richness(record) > richness(current))) best.set(key, id)
+  }
+  return best
+}
+
+/**
+ * Task 132 §2 — an enemy (NpcParam) row whose name is already an NPC, boss or
+ * quest entity merges onto that record as combat stats. The duplicate `enemy:`
+ * primary row is removed and its name aliased to the winner.
+ */
+function resolveEnemyCollisions(): void {
+  const best = primaryNamedRecords()
+  const primaryIds = new Set(best.values())
+  const targetFor = (name: string): string | undefined => {
+    const direct = best.get(collisionKey(name))
+    if (direct) return direct
+    // A wiki Character title can differ from the authored npc display name
+    // ("Blaidd the Half-Wolf" vs "Blaidd"); the name plane carries the alias.
+    for (const key of mapKeys(name)) {
+      const viaIndex = nameIndex.get(key)
+      if (viaIndex && primaryIds.has(viaIndex)) return viaIndex
+    }
+    return undefined
+  }
+  for (const row of enemyCombat as CombatRow[]) {
+    const targetId = targetFor(row.name)
+    if (!targetId) continue
+    const target = records.get(targetId)
+    if (target) applyCombatStats(target, row, 'enemy-combat')
+  }
+  for (const [targetId] of best) {
+    const target = records.get(targetId)
+    if (!target || usableEnemyDescription(target.description, target.name)) continue
+    const key = collisionKey(target.name)
+    for (const record of records.values()) {
+      if (record.id === targetId || collisionKey(record.name) !== key) continue
+      if (usableEnemyDescription(record.description, record.name)) {
+        setText(target, 'description', record.description)
+        break
+      }
+    }
+    if (!target.location) {
+      for (const record of records.values()) {
+        if (record.id === targetId || collisionKey(record.name) !== key || !record.location) continue
+        setText(target, 'location', record.location)
+        break
+      }
+    }
+  }
+  for (const [id, record] of [...records]) {
+    if (record.kind !== 'enemy') continue
+    const targetId = targetFor(record.name)
+    if (!targetId || targetId === id) continue
+    const target = records.get(targetId)
+    if (!target) continue
+    addName(record.name, targetId)
+    records.delete(id)
+  }
+}
+
+/** A name-plane row that carries no fact of its own. */
+function isFmgEmpty(record: EntityRecord): boolean {
+  if (!(record.sources ?? []).some((s) => s.startsWith('names/fmg'))) return false
+  return (
+    !record.description &&
+    !record.location &&
+    !record.strategy &&
+    !record.map &&
+    !record.drops?.length &&
+    !(record.stats && Object.keys(record.stats).length) &&
+    !record.sections?.length
+  )
+}
+
+/**
+ * Task 132 §3 — the FMG name plane is a search aid, not a fact source. An empty
+ * row that duplicates a real record is aliased onto it and dropped; an empty
+ * place row with no real location is junk and dropped outright.
+ */
+function cleanupFmgDuplicates(): void {
+  const keep = new Map<string, EntityRecord>()
+  for (const record of records.values()) {
+    if (isFmgEmpty(record)) continue
+    const key = baseNorm(record.name)
+    if (!key) continue
+    const existing = keep.get(key)
+    if (!existing || richness(record) > richness(existing) || (existing.kind === 'region' && record.kind !== 'region')) keep.set(key, record)
+  }
+  for (const [id, record] of [...records]) {
+    if (!isFmgEmpty(record)) continue
+    const keeper = keep.get(baseNorm(record.name))
+    if (keeper && keeper.id !== id) {
+      addName(record.name, keeper.id)
+      records.delete(id)
+    } else if (record.kind === 'region') {
+      records.delete(id)
+    }
+  }
+}
+
+/**
+ * Task 132 §3 — regions carry the graces inside them and a parent region so no
+ * location page is an empty shell. Guarded by the coverage test at ≥95%.
+ */
+function enrichRegions(): void {
+  const gracesByRegion = new Map<string, string[]>()
+  for (const grace of checklistGraces as ChecklistGrace[]) {
+    if (!grace.region) continue
+    const key = baseNorm(grace.region)
+    const list = gracesByRegion.get(key) ?? []
+    if (!list.includes(grace.name)) list.push(grace.name)
+    gracesByRegion.set(key, list)
+  }
+  for (const record of records.values()) {
+    if (record.kind !== 'region') continue
+    const graces = gracesByRegion.get(baseNorm(record.name)) ?? []
+    if (graces.length) {
+      record.sections = record.sections ?? []
+      if (!record.sections.some((s) => /sites? of grace|graces/i.test(s.heading))) {
+        record.sections.push({ heading: `Sites of Grace (${graces.length})`, text: excerpt(graces.slice(0, 12).join(' · ')) })
+        source(record, 'checklists/graces')
+      }
+    }
+    if (!record.location) {
+      const parent = regionFromText(record.name) ?? regionFromText(record.description)
+      setText(record, 'location', parent && baseNorm(parent) !== baseNorm(record.name) ? parent : 'The Lands Between')
+    }
+  }
+}
+
+/** A wiki/enemy description that says something beyond the name. */
+function usableEnemyDescription(text: string | undefined, name: string): boolean {
+  if (!text) return false
+  const t = text.trim()
+  if (t.length < 20) return false
+  if (simpleNorm(t) === simpleNorm(name)) return false
+  if (!/^[A-Z0-9"'(]/.test(t)) return false
+  if (/^(the\s+)?is\s/i.test(t)) return false
+  // A bare "X are enemies in Elden Ring." is the extraction's lead sentence, not
+  // a description; a longer entry that continues into real prose is kept.
+  if (/(are|is)\s+(an?\s+)?(enemies|enemy|adversar\w*|wildlife)/i.test(t) && t.length < 80) return false
+  return true
+}
+
+/**
+ * Task 132 §4 — every enemy needs a description that is not just its name. Use
+ * the wiki page prose when the extractor recovered real text, else a grounded
+ * line built from where it is found and its own HP/status table.
+ */
+function fillEnemyDescriptions(): void {
+  for (const record of records.values()) {
+    if (record.kind !== 'enemy') continue
+    if (usableEnemyDescription(record.description, record.name)) continue
+    const base = record.name.replace(/\s*\((?:boss|npc|enemy)\)\s*$/i, '').trim()
+    const where = record.location || record.region
+    let text = where
+      ? `${base} is a hostile creature encountered in ${where}.`
+      : `${base} is a hostile creature encountered in the Lands Between.`
+    const bits: string[] = []
+    if (record.stats?.HP) bits.push(`HP ${record.stats.HP}`)
+    if (record.stats?.['Status resist']) bits.push(`status resistances of ${record.stats['Status resist']}`)
+    if (bits.length) text += ` It has ${bits.join(' and ')}.`
+    record.description = text
   }
 }
 
@@ -1221,6 +2220,9 @@ export function buildEntityIndex(): EntityIndexBuildResult {
 
   for (const row of checklistGraces as ChecklistGrace[]) if (!mergeGrace(row.name)) bump('checklists/graces')
   for (const entity of entityList) if (entity.kind === 'grace') mergeGrace(entity.name, entity.id)
+  // Task 132 §2 — seed every BonfireWarpParam grace (418), not just the ones the
+  // graph already named, with region + plate coords.
+  mergeWikiGraces()
 
   // Backfill short graph ids (e.g. `item:lion-s-claw`) from a longer checklist
   // name (`Ash of War: Lion's Claw`) that resolves to a different canonical id.
@@ -1347,9 +2349,28 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     mergeDungeon(row)
   }
 
+  // Task 132 §2 — the FMG name plane and the enemy-combat rows, then the
+  // classified wiki DB, before the lowest-priority gap-fill, so a grounded fact
+  // is never overwritten by a hand-noted gap.
+  mergeExtraSources()
+  mergeEnemyCombat()
+  mergeFmgNames()
+  mergeAcquisitionItems()
+  mergeWikiDb()
+  mergeNpcQuestSteps()
+
+  // Task 132 §2/§3/§4 — once every source has landed: dissolve enemy/NPC name
+  // collisions, drop the empty FMG name-plane rows, give regions their graces
+  // and every enemy a real description.
+  cleanupFmgDuplicates()
+  resolveEnemyCollisions()
+  enrichRegions()
+
   // Task 124 §2 — the sourced gap-fill, applied last so every field is a
   // lowest-priority fallback. `setText`/`setStat` only write when absent.
   mergeGapfill()
+
+  fillEnemyDescriptions()
 
   // Related labels from the graph edges + a wiki Summary fallback for anything
   // still without a description.
@@ -1387,12 +2408,16 @@ function edgeLabels(id: string): string[] {
 }
 
 function prune(record: EntityRecord): void {
+  // Last-ditch guard: no raw engine tile id may reach a player-visible field.
+  if (record.description) record.description = humanizeMapIds(record.description)
+  if (record.location) record.location = humanizeMapIds(record.location)
+  if (record.strategy) record.strategy = humanizeMapIds(record.strategy)
   if (record.description && record.description.length > EXCERPT) record.description = excerpt(record.description)
   if (record.location && record.location.length > EXCERPT) record.location = excerpt(record.location)
   if (record.strategy && record.strategy.length > EXCERPT) record.strategy = excerpt(record.strategy)
   if (record.drops) record.drops = record.drops.filter((d) => d && d.length <= 120).slice(0, 12)
   if (record.sections) {
-    record.sections = record.sections.map((s) => ({ heading: s.heading.slice(0, 80), text: excerpt(s.text) })).slice(0, 4)
+    record.sections = record.sections.map((s) => ({ heading: s.heading.slice(0, 80), text: excerpt(humanizeMapIds(s.text)) })).slice(0, 4)
   }
 }
 

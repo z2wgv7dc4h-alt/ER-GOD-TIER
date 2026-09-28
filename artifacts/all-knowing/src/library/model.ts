@@ -24,6 +24,8 @@ export type CategoryId =
   | 'bosses'
   | 'npcs'
   | 'locations'
+  | 'enemies'
+  | 'materials'
   | 'recipes'
   | 'secrets'
   | 'guides'
@@ -49,8 +51,10 @@ export const CATEGORIES: CategoryMeta[] = [
   { id: 'spirits', label: 'Spirit Ashes', mono: 'SA' },
   { id: 'items', label: 'Items', mono: 'I' },
   { id: 'bosses', label: 'Bosses', mono: 'B' },
+  { id: 'enemies', label: 'Enemies', mono: 'E' },
   { id: 'npcs', label: 'NPCs', mono: 'N' },
   { id: 'locations', label: 'Locations', mono: 'L' },
+  { id: 'materials', label: 'Key Items / Materials', mono: 'K' },
   { id: 'recipes', label: 'Recipes', mono: 'R' },
   { id: 'secrets', label: 'Secrets', mono: 'Se' },
   { id: 'guides', label: 'Guides', mono: 'G' },

@@ -119,6 +119,28 @@ export function allRecords(): EntityRecord[] {
   return records ? [...records.values()] : []
 }
 
+/**
+ * Task 132 §4 — substring search over the loaded enrichment index, so Gideon and
+ * the command palette can resolve the kinds the authored graph does not carry
+ * (wiki NPCs, locations, enemies, the full item plane). Empty before the one
+ * fetch settles.
+ */
+export function searchRecordIds(query: string, kind?: string, limit = 12): EntityRecord[] {
+  if (!records) return []
+  const q = query.trim().toLowerCase()
+  if (q.length < 3) return []
+  const out: EntityRecord[] = []
+  for (const record of records.values()) {
+    if (kind && record.kind !== kind) continue
+    if (record.name.toLowerCase().includes(q)) out.push(record)
+  }
+  // Task 132 §2 — a name shared by an NPC and an enemy resolves to the NPC.
+  out.sort((a, b) => (NAME_PRIORITY[a.kind] ?? 5) - (NAME_PRIORITY[b.kind] ?? 5))
+  return out.slice(0, limit)
+}
+
+const NAME_PRIORITY: Record<string, number> = { npc: 0, boss: 1, quest: 2, enemy: 3 }
+
 /** Test seam: drop the cached index. */
 export function clearEntityIndex(): void {
   records = null

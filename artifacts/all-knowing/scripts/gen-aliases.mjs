@@ -265,6 +265,51 @@ for (const [slug, list] of paramBySlug) {
   }
 }
 
+// Wiki redirects (Task 132 §1): each `from` title is a real wiki alias of its
+// `to` page. Fold them onto the alias row whose fmgName matches the target, so
+// the 2,730 redirects become searchable aliases on the canonical entity.
+let redirects = []
+try {
+  redirects = read('public/sourced/open/wiki-db/redirects.json').redirects ?? []
+} catch {
+  redirects = []
+}
+if (redirects.length) {
+  const rowByTarget = new Map()
+  const addTarget = (name, row) => {
+    if (!name) return
+    for (const key of [rawNorm(name), norm(name)]) if (key && !rowByTarget.has(key)) rowByTarget.set(key, row)
+  }
+  for (const row of rows) {
+    addTarget(row.fmgName, row)
+    addTarget(row.slug.includes(':') ? row.slug.split(':').slice(1).join(':') : row.slug, row)
+    for (const alias of row.aliases) addTarget(alias, row)
+  }
+  // Resolve redirect chains (a redirect may point at another redirect).
+  const toByFrom = new Map(redirects.map((r) => [rawNorm(r.from), r.to]))
+  const resolveTarget = (title, depth = 0) => {
+    if (depth > 4) return title
+    const next = toByFrom.get(rawNorm(title))
+    return next && rawNorm(next) !== rawNorm(title) ? resolveTarget(next, depth + 1) : title
+  }
+  let attached = 0
+  for (const redirect of redirects) {
+    const target = resolveTarget(redirect.to)
+    const row = rowByTarget.get(rawNorm(target)) ?? rowByTarget.get(norm(target))
+    if (!row) continue
+    // Keep parentheticals (rawNorm) so a disambiguation redirect like
+    // "SM (Sword of Milos)" becomes "sm sword of milos", not the bare, ambiguous
+    // "sm" that would substring-match every "smithing" query at runtime.
+    const alias = rawNorm(redirect.from)
+    if (alias.length >= 3 && !row.aliases.includes(alias)) {
+      row.aliases.push(alias)
+      row.aliases.sort()
+      attached++
+    }
+  }
+  console.log(`wiki redirect aliases attached: ${attached}/${redirects.length}`)
+}
+
 // Authored-only facts (quests, regions, uncovered items/graces/bosses): the
 // generated index still carries their names/aliases so every category resolves.
 const covered = new Set(rows.map((r) => r.slug))

@@ -4,6 +4,7 @@ import { bossRoster } from './bossRoster'
 import type { Character } from '../types'
 import { canonicalFactId } from './aliases'
 import { getEntity, type EntityKind } from './entityGraph'
+import { allRecords, searchRecordIds } from './entityIndex'
 import { applyFacts, knownFactIds } from './infer'
 import { nextMoves } from './links'
 import { lockoutWarningsFor, type LockWarning } from './lockWarnings'
@@ -98,6 +99,18 @@ export function nearMeTargets(currentArea: string | null | undefined, character:
     seen.add(b.id)
     out.push(targetOf(b.id, b.region))
   }
+  // Task 132 §4 — NPCs, locations and enemies in the same area, from the
+  // enriched index (the authored graph only carries graces/bosses).
+  for (const rec of allRecords()) {
+    if (rec.kind !== 'npc' && rec.kind !== 'enemy' && rec.kind !== 'region') continue
+    const where = rec.region || rec.location
+    if (!sameArea(area, where)) continue
+    const canonical = canonicalFactId(rec.id)
+    if (known.has(canonical) || seen.has(canonical) || seen.has(rec.id)) continue
+    seen.add(rec.id)
+    out.push({ id: rec.id, name: rec.name, kind: rec.kind as EntityKind, region: rec.region ?? where })
+    if (out.length >= limit) break
+  }
   return out.slice(0, limit)
 }
 
@@ -130,6 +143,16 @@ export function fuzzyLogTargets(query: string, limit = 8): QuickTarget[] {
     seen.add(target.id)
     out.push(target)
     if (out.length >= limit) break
+  }
+  // Task 132 §4 — the index carries the wiki NPCs/locations/enemies and the full
+  // item plane the omnibox resolver does not.
+  if (out.length < limit) {
+    for (const rec of searchRecordIds(q, undefined, 16)) {
+      if (!TRACKABLE.has(rec.kind as EntityKind) || seen.has(rec.id)) continue
+      seen.add(rec.id)
+      out.push({ id: rec.id, name: rec.name, kind: rec.kind as EntityKind, region: rec.region })
+      if (out.length >= limit) break
+    }
   }
   return out
 }

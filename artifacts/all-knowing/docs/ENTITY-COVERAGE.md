@@ -33,6 +33,9 @@ drops / strategy fields remain in the table as information.
 | spirit: description + location | ≥ 100% | 100% | PASS |
 | item: description + location (all items) | ≥ 100% | 100% | PASS |
 | grace: coords | ≥ 100% | 100% | PASS |
+| npc: description (characters) | ≥ 95% | 99% | PASS |
+| region: description + location (locations) | ≥ 95% | 98.1% | PASS |
+| enemy: description + location (enemies) | ≥ 95% | 99.5% | PASS |
 
 ## Before (no enrichment index)
 
@@ -58,21 +61,21 @@ drops / strategy fields remain in the table as information.
 
 | kind | entities | Desc | Location | Map | Coords | Image | Stats | Effect | HP+Neg+Loc | Drops | Strategy | Req+Scale+Loc | Desc+Loc |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| boss | 237 | 91.6% | 100% | 67.9% | · | 47.3% | 87.3% | · | 86.5% | 87.3% | 94.5% | · | · |
-| weapon | 419 | 73% | 100% | 0% | · | 73% | · | · | · | · | · | 100% | · |
+| boss | 242 | 92.6% | 100% | 66.1% | · | 46.3% | 87.2% | · | 84.3% | 88.4% | 92.1% | · | · |
+| weapon | 419 | 97.9% | 100% | 0% | · | 73% | · | · | · | · | · | 100% | · |
 | shield | 69 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | 100% | · |
 | armor | 565 | 100% | 100% | 0% | · | 95.6% | 100% | · | · | · | · | · | 100% |
 | talisman | 88 | 100% | 100% | 0% | · | 98.9% | · | 98.9% | · | · | · | · | 100% |
 | spell | 167 | 100% | 100% | 0% | · | 99.4% | · | — | · | · | · | · | 100% |
 | ash | 86 | 100% | 100% | 0% | · | 88.4% | · | · | · | · | · | · | 100% |
 | spirit | 63 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | · | 100% |
-| item | 441 | 100% | 100% | 0% | · | 91.6% | 99.5% | · | · | · | · | · | 100% |
+| item | 439 | 100% | 100% | 0% | · | 91.6% | 100% | · | · | · | · | · | 100% |
 | material | 3 | 100% | 100% | 0% | · | 66.7% | · | · | · | · | · | · | · |
-| npc | 8 | 87.5% | 100% | 37.5% | · | 87.5% | 75% | · | · | · | · | · | · |
-| grace | 50 | 100% | 100% | · | 100% | · | · | · | · | · | · | · | · |
-| dungeon | 119 | 84.9% | 100% | 100% | · | 99.2% | · | · | · | · | · | · | · |
-| region | 10 | 80% | 60% | 20% | · | · | · | · | · | · | · | · | · |
-| enemy | 0 | — | — | — | — | — | — | — | — | — | — | — | — |
+| npc | 99 | 99% | 78.8% | 3% | · | 9.1% | 76.8% | · | · | · | · | · | · |
+| grace | 420 | 100% | 100% | · | 100% | · | · | · | · | · | · | · | · |
+| dungeon | 119 | 90.8% | 100% | 100% | · | 99.2% | · | · | · | · | · | · | · |
+| region | 312 | 100% | 98.1% | 0.6% | · | · | · | · | · | · | · | · | · |
+| enemy | 2390 | 99.9% | 99.6% | 0% | · | 0% | 97.9% | · | 95% | 3.9% | 0% | · | · |
 
 ## Spot checks
 
@@ -93,6 +96,8 @@ The ten records Task 119 names, printed straight from the built index.
 **Poise:** 80
 
 **Status resist:** Poison 154 · Scarlet Rot 154 · Bleed 154 · Sleep 999 · Madness 999 · Curse 999
+
+**Affiliation:** Golden Order
 
 **Drops:** 12,000 Runes · Talisman Pouch · 16,800 Runes · Viridian Amber Medallion 1
 
@@ -116,7 +121,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Status resist:** Poison 542 · Scarlet Rot 542 · Bleed 154 · Sleep 252 · Madness 999 · Curse 999
 
-**Drops:** Malenia's Great Rune · Remembrance of the Rot Goddess · 480,000 Runes
+**Drops:** Malenia's Great Rune · Remembrance of the Rot Goddess · 480,000 Runes · * Malenia's Great Rune
 
 **Strategy:** Health: 33,251 HP (Phase 1: 18,473 , Phase 2: 14,778 ) Defense : 123 Stance : 80 Parryable : Yes, but 3 parries are required per stance break Is vulnerable to a critical hit after being stance broken or parried Damage: Standard , Slash , Pierce (Phase 1), Standard , Slash , Pierce , Holy (Phase 2) Inflicts: Scarlet Rot (Phase 2) Drops 480,000, Malenia's Great Rune , Remembrance of the Rot Goddess Negations (or Absorptions) Standard : 10 Slash : 10 Strike : 10 Pierce : 10 Magic : 20 Fire : 0 (in water: 10 ) Lightning : 20 (in water: 10 ) Holy : 40 The negation numbers are the&#160;% of your dam…
 
@@ -220,6 +225,8 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Effect:** Greatly raises attributes, but also increases damage taken
 
+**Weight:** 0.8
+
 **Related:** Fort Faroth
 
 ### Iron Fist Alexander (`npc:alexander`)
@@ -238,12 +245,138 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Coords:** 35.11, 69.03
 
+**World:** overworld
+
 **Related:** The First Step · Limgrave · Gatefront
 
 
 ## Remaining misses (guard fields, by name)
 
-_None._
+### npc — description (characters) (0/99)
+
+- Blaidd
+- Boc the Seamster
+- Hyetta
+- Igon
+- Irina
+- Iron Fist Alexander
+- Millicent
+- Roderika
+- Dark Moon Ring
+- Two Fingers Prayerbook
+- Abandoned Merchant
+- Alexander, Warrior Jar
+- Ancient Dragon Gransax
+- Ancient Dragon Knight
+- Arbor Sentinel
+- Aseo
+- Asimi, Silver Tear
+- Aureliette
+- Bearded Ancient Dynasty Statue
+- Bernahl's Finger Maiden
+- Birac
+- Black Moon
+- Blind Swordsman
+- Blood Star
+- Boc's Mother
+- Castellan Edgar
+- Castellan Jerren
+- Chair-Crypt Mummies
+- Charo
+- Colossal Dragon
+- Crescent Moon
+- D, Beholder of Death
+- Daedicar
+- Dolores the Sleeping Arrow
+- Elphael Needle Statue
+- Ensha (lord)
+- Fell God
+- Finger Reader Crone
+- Finger Reader Enia
+- Fire Knight Queelign
+- Flame Guardian
+- Forager Brood
+- Formless Mother
+- Gaea
+- Gloam-Eyed Queen
+- God of Vengeance
+- Godwyn the Golden
+- Grandmother
+- Great Horned Tragoth
+- Greater Potentate
+- Horned Giant
+- Hornsent Grandam
+- Host of Fingers
+- Lacrima
+- Leonard
+- Lobo
+- Melina
+- Miquella of the Haligtree
+- Moore
+- Nanaya
+- Nomadic Merchant (Altus Plateau)
+- Nomadic Merchant (Caelid Highway North)
+- Nomadic Merchant (Eastern Limgrave)
+- Nomadic Merchant (Liurnia Lake Shore)
+- Nomadic Merchant (Mt. Gelmir)
+- Nomadic Merchant (Northern Limgrave)
+- Nomadic Merchant (Northern Liurnia)
+- Nomadic Merchant (Southern Caelid)
+- Nomadic Merchant (Weeping Peninsula)
+- Nomadic Merchant (Western Limgrave)
+- Old Albus
+- Old Knight Istvan
+- Painter Spirit
+- Phillia, Towering Little Sister
+- Primeval Sorcerer Azur
+- Primeval Sorcerer Lusat
+- Puppet Master
+- Queen Marika the Eternal
+- Rauh Goddess Statue
+- Redeemer Guilbert
+- Reeling Rico
+- Rya the Scout
+- Serosh
+- Serpent-God
+- Sir Neidhardt
+- Smithing Master Hewg
+- Snowy Crone
+- Spellmachinist Rabbath
+- Storm Lord
+- Stranded Souls
+- Sun
+- Swordhand of Night Anna
+- Traveling Perfumer
+- Twinbird
+- Usher of Death, Rosus
+- Vyke's Finger Maiden
+- War Counselor Iji
+- Winged Serpents
+- Yuri
+
+### region — description + location (locations) (306/312)
+
+- Crumbling Farum Azula
+- Miquella’s Haligtree
+- Bonny Gaol
+- Lands Between
+- Sea of Fog
+- Sites of Grace
+
+### enemy — description + location (enemies) (2379/2390)
+
+- Avionette Soldier
+- Boar
+- Catapult
+- Deer
+- Flamespitter
+- Giant Land Octopus
+- Large Inquisitor
+- Man-Fly
+- Rotmound
+- Slug
+- Umibozu
+
 
 ## Unmatched rows per source
 
@@ -255,12 +388,12 @@ dropped silently.
 | --- | --- |
 | acquisition | 2148 |
 | shops | 348 |
-| checklists/graces | 222 |
+| checklists/graces | 221 |
 | fanapi/locations | 76 |
 | checklists/locations | 65 |
 | recipes | 64 |
-| checklists/npcs | 11 |
-| fanapi/npcs | 11 |
+| checklists/npcs | 10 |
+| fanapi/npcs | 10 |
 | checklists/bosses | 1 |
 | fanapi/bosses | 1 |
 | armory-bosses | 1 |

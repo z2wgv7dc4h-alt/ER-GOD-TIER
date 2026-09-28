@@ -336,6 +336,12 @@ function buildIndex(): Index {
   const byName = new Map<string, string>()
   const idAlias = new Map<string, string>()
 
+  // Task 132 §2 — when two kinds share a display name, the character kinds win
+  // in the order npc > boss > quest > enemy, so e.g. "Patches" opens the NPC
+  // (with combat stats merged in) rather than a bare invader row.
+  const NAME_PRIORITY: Record<string, number> = { npc: 0, boss: 1, quest: 2, enemy: 3 }
+  const namePriority = (kind: EntityKind): number => NAME_PRIORITY[kind] ?? 5
+
   const addEntity = (entity: EntitySummary, aliases: string[] = [], registerName = true) => {
     const existing = entities.get(entity.id)
     if (!existing) entities.set(entity.id, entity)
@@ -345,7 +351,14 @@ function buildIndex(): Index {
     if (!registerName) return
     for (const raw of [entity.name, ...aliases]) {
       const n = normalize(raw)
-      if (n && !byName.has(n)) byName.set(n, entity.id)
+      if (!n) continue
+      const owner = byName.get(n)
+      if (!owner) {
+        byName.set(n, entity.id)
+        continue
+      }
+      const existingOwner = entities.get(owner)
+      if (existingOwner && namePriority(entity.kind) < namePriority(existingOwner.kind)) byName.set(n, entity.id)
     }
   }
 
