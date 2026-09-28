@@ -396,7 +396,10 @@ export class InventoryStabilizer {
       if (nameSimilarity(c.name, name) >= this.similarity) return true
       return isFragment(c.name, name) || isFragment(name, c.name)
     })
-    const score = nameScore(name)
+    // A spelling that matches the catalogue's own name is canonical; prefer it
+    // over an OCR near-miss even when the miss has a couple more letters.
+    const canonicalBonus = resolved && normalizeItemName(resolved.name) === normalizeItemName(name) ? 10 : 0
+    const score = nameScore(name) + canonicalBonus
     if (!match) {
       this.clusters.push({
         key: normalizeItemName(name),
