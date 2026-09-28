@@ -1,12 +1,13 @@
-import { gideonBaseUrl, gideonKey, gideonModel } from './muse'
+import { gideonBaseUrl, gideonKey, gideonModel, gideonProviderId, supportsGideonVision } from './muse'
 import type { EquipmentRead } from './equipmentOcr'
 
 /**
  * Read a character/equipment screen with Muse vision. OCR can read the numbers
  * but not the equipment icons; Muse is multimodal, so we send the image and ask
  * for the level, the eight attributes and the equipped gear names as schema-
- * constrained JSON. Returns null with no key or on any failure, so the caller
- * falls back to Tesseract + `parseEquipmentText`.
+ * constrained JSON. Returns null with no key or on any failure (and for a
+ * provider with no image input, e.g. DeepSeek chat), so the caller falls back to
+ * Tesseract + `parseEquipmentText`.
  */
 const SCHEMA = {
   type: 'json_schema',
@@ -42,6 +43,10 @@ const PROMPT =
 export async function readCharacterScreen(imageDataUrl: string, timeoutMs = 45000): Promise<EquipmentRead | null> {
   const key = gideonKey()
   if (!key) return null
+  if (!supportsGideonVision()) {
+    console.info(`[gideon] ${gideonProviderId()} has no image input — using on-device OCR for this screen.`)
+    return null
+  }
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), timeoutMs)
   try {

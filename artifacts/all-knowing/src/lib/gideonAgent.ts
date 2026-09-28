@@ -1,6 +1,13 @@
 import type { Character } from '../types'
 import { GIDEON_TOOLS, runGideonTool, type ToolContext } from './gideonTools'
-import { callGideonChat, callGideonResponses, type AgentMessage, type AgentTool, type ChatMessage } from './muse'
+import {
+  callGideonChat,
+  callGideonResponses,
+  supportsGideonResponses,
+  type AgentMessage,
+  type AgentTool,
+  type ChatMessage,
+} from './muse'
 import { buildGrounding, gideonMessages, validateGideonAct, type Grounding } from './gideonLlm'
 import type { AreaSignal } from './areaContext'
 import type { GideonAct, GideonMemory } from './gideon'
@@ -141,12 +148,15 @@ export async function askGideonAgent(
   area?: AreaSignal | null,
 ): Promise<GideonAct | null> {
   const grounding = buildGrounding(question, character, memory, area)
-  // Responses first (reasoning continuity); Chat Completions as fallback.
-  try {
-    const act = await viaResponses(question, character, memory, history, grounding, area)
-    if (act) return act
-  } catch (e) {
-    console.warn('[gideon] Responses path unavailable; using Chat Completions.', e)
+  // Meta Responses first (reasoning continuity); everything else runs the
+  // Chat Completions loop (DeepSeek has no `/responses` endpoint).
+  if (supportsGideonResponses()) {
+    try {
+      const act = await viaResponses(question, character, memory, history, grounding, area)
+      if (act) return act
+    } catch (e) {
+      console.warn('[gideon] Responses path unavailable; using Chat Completions.', e)
+    }
   }
   return viaChat(question, character, memory, history, grounding, area)
 }
