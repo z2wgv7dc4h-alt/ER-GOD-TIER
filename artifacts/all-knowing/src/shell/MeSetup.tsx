@@ -4,6 +4,9 @@ import { GoodsPaste } from '../GoodsPaste'
 import { PacketBar } from '../QoL'
 import { applyAnswers, applyFacts, denyFacts } from '../lib/infer'
 import { parseEquipmentText } from '../lib/equipmentOcr'
+import { headerToLoadout } from '../lib/ps5Equipment'
+import { analyzeEquipmentImage, analyzeStatusImage, loadBrowserWeaponCatalogue } from '../lib/ps5Capture'
+import { bonusExplanation } from '../lib/statBoostGear'
 import { matchArmors, matchSpells, matchTalismans, useFanapiData } from '../lib/fanapiData'
 import type { GuideItem } from '../lib/guide'
 import { useGuide } from '../lib/guide'
@@ -44,6 +47,11 @@ const STAT_KEYS = [
 const CLASSES: StartingClass[] = [
   'unknown', 'vagabond', 'warrior', 'hero', 'bandit', 'astrologer', 'prophet', 'samurai', 'prisoner', 'confessor', 'wretch', 'heavy-knight', 'idus-knight',
 ]
+
+/** Task 134 capture advice, shown on every screenshot step. */
+const CAPTURE_TIP =
+  'Phone photo of the TV: hold straight-on, fill the frame with the menu, avoid lamp glare, tap to focus. ' +
+  'A tilted or glared shot still reads — matching is fuzzy.'
 
 function norm(s: string) {
   return s.toLowerCase().replace(/[^a-z0-9+]+/g, ' ').trim()
@@ -188,6 +196,37 @@ export function MeSetup() {
     let next = character
     try {
       for (const image of images) {
+        // Task 134: the Status screen prints talisman bonuses, so read it through
+        // the label-anchored PS5 pipeline and store the corrected base spread.
+        if (step === 'status') {
+          const result = await analyzeStatusImage(image)
+          const base = result.baseStats ?? next.stats
+          next = {
+            ...next,
+            source: next.source === 'save' ? next.source : 'reckon',
+            name: result.name ?? next.name,
+            level: result.level ?? next.level,
+            stats: base,
+            baseStats: result.baseStats ?? next.baseStats,
+            statBonus: result.bonus.gear?.length
+              ? { source: result.bonus.gear.map((g) => g.name).join(' + '), deltas: result.bonus.deltas ?? {} }
+              : next.statBonus,
+            runesHeld: result.runesHeld ?? next.runesHeld,
+          }
+          setCharacter(next)
+          const bonus = bonusExplanation(result.bonus)
+          setOutcome({
+            character: next,
+            text: '',
+            confidence: result.confidence,
+            status: 'applied',
+            matches: [],
+            lines: [],
+            alsoMarked: [],
+            message: `Status read: Lv ${result.level ?? '?'} · ${Object.keys(result.displayedStats).length}/8 stats${bonus ? ` · showing base stats — ${bonus}.` : ''}`,
+          })
+          continue
+        }
         const read = await readImage(image)
         if (step === 'equipment') {
           const parsed = parseEquipmentText(read.text)
@@ -205,12 +244,20 @@ export function MeSetup() {
             stats: { ...next.stats, ...stats },
             loadout,
           }
+          // Task 134: parse the header (slot + affinity/base/upgrade) so even
+          // icon-only captures fill the Gear sheet's selected slot.
+          const ps5 = await analyzeEquipmentImage(image, await loadBrowserWeaponCatalogue())
+          const row = headerToLoadout(ps5.header)
+          if (row) next = { ...next, loadout: [row, ...next.loadout.filter((l) => l.id !== row.id)] }
           if (gear.length) {
             const g = applyOcrRead(next, { text: gear.join('\n'), confidence: 0.9 }, `setup:${step}`)
             if (g.status === 'applied') next = g.character
           }
           setCharacter(next)
-          setOutcome({ ...applyOcrRead(next, read, `setup:${step}`), status: 'applied', message: `Equipment read: Lv ${level ?? '?'} · ${Object.keys(stats).length} stats · ${gear.length} gear` })
+          const itemNote = ps5.header.item
+            ? `${ps5.header.slot ?? 'Slot'}: ${ps5.header.item.affinity ? `${ps5.header.item.affinity} ` : ''}${ps5.header.item.base}${ps5.header.item.upgrade ? `+${ps5.header.item.upgrade}` : ''}`
+            : 'no item line'
+          setOutcome({ ...applyOcrRead(next, read, `setup:${step}`), status: 'applied', message: `Equipment read: Lv ${level ?? '?'} · ${Object.keys(stats).length} stats · ${itemNote}` })
           continue
         }
         let result = applyOcrRead(next, read, `setup:${step}`)
@@ -312,6 +359,7 @@ export function MeSetup() {
               <button type="button" className="chip" disabled={busy} onClick={() => cameraRef.current?.click()}>📷 Photo of the status screen</button>
               <button type="button" className="chip" disabled={busy} onClick={() => fileRef.current?.click()}>Open screenshot</button>
             </div>
+            <p className="note">{CAPTURE_TIP}</p>
             <div className="setup-row">
               <label>Level <input className="search" inputMode="numeric" value={character.level} onChange={(e) => setCharacter({ ...character, level: Math.max(1, Math.min(713, Number(e.target.value) || 1)) })} /></label>
               <label>Class
@@ -345,6 +393,7 @@ export function MeSetup() {
               <button type="button" className="chip" disabled={busy} onClick={() => cameraRef.current?.click()}>📷 Equipment screen</button>
               <button type="button" className="chip" disabled={busy} onClick={() => fileRef.current?.click()}>Open screenshot</button>
             </div>
+            <p className="note">{CAPTURE_TIP}</p>
             <p className="note">
               {equipment.length ? `On file: ${equipment.map((s) => s.name).join(' · ')}` : 'No loadout yet — a photo or the Gear sheet fills it in.'}
             </p>

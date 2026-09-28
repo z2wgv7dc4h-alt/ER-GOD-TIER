@@ -1,0 +1,209 @@
+{
+  "_note": "Real PS5 captures from the user: phone photos of a TV (perspective skew, glare, moire, right edge cropped). Ground truth read by Claude from the images. Only fields that are legible in the photo are listed.",
+  "status-photo-01.jpg": {
+    "screen": "status",
+    "name": "UrMumMyToilet",
+    "level": 87,
+    "runesHeld": 45381,
+    "runesNeeded": 45723,
+    "displayedStats": {
+      "vigor": 64,
+      "mind": 14,
+      "endurance": 27,
+      "strength": 21,
+      "dexterity": 23,
+      "intelligence": 9,
+      "faith": 15,
+      "arcane": 13
+    },
+    "_statsNote": "Displayed stats sum to 186 => level 107, but Level reads 87. The +20 is exactly Radagon's Soreseal (+5 Vig/End/Str/Dex), so the Status screen shows stats INCLUDING talisman bonuses. Base stats are therefore vigor 59, mind 14, endurance 22, strength 16, dexterity 18, intelligence 9, faith 15, arcane 13 (sum 166 => level 87).",
+    "expectedBaseStats": {
+      "vigor": 59,
+      "mind": 14,
+      "endurance": 22,
+      "strength": 16,
+      "dexterity": 18,
+      "intelligence": 9,
+      "faith": 15,
+      "arcane": 13
+    },
+    "inferredTalisman": "Radagon's Soreseal"
+  },
+  "equipment-photo-01.jpg": {
+    "screen": "equipment",
+    "selectedSlot": "Right Hand Armament 1",
+    "selectedItem": {
+      "name": "Reed Great Katana",
+      "affinity": "Blood",
+      "upgrade": 14,
+      "displayName": "Blood Reed Great Katana+14",
+      "weaponType": "Great Katana",
+      "damageType": "Slash/Pierce",
+      "skill": "Lion's Claw",
+      "passive": "Causes blood loss buildup"
+    },
+    "gridCounts": {
+      "arrows": 25,
+      "fireArrows": 36,
+      "bolts1": 70,
+      "bolts2": 99,
+      "crimsonFlask": 10,
+      "ceruleanFlask": 2,
+      "throwingKnives": 30,
+      "slot23Count": 1,
+      "pots": 13
+    },
+    "_gridNote": "Other slots are icon-only (two axes, a shield-like offhand, armor set with red-plumed helm, four talismans, quick items). Identifying them needs icon matching against the item image index, not OCR."
+  },
+  "_inventoryNote": "Inventory pages print ONLY the highlighted item's name (list header + right panel). Every other cell is an icon (+ stack count for goods). Reading a full inventory from photos therefore needs per-cell icon matching restricted to the page's category, with OCR only for the header name, the tab title and stack counts. Counts are read left-to-right, top-to-bottom, skipping empty cells.",
+  "inventory-spirit-ashes-01.jpg": {
+    "screen": "inventory",
+    "tab": "Ashes",
+    "category": "spirit",
+    "selectedItem": "Putrid Corpse Ashes",
+    "selectedEffectPrefix": "Summons four pu",
+    "iconCellCount": 14,
+    "counts": []
+  },
+  "inventory-bolstering-01.jpg": {
+    "screen": "inventory",
+    "tab": "Bolstering Materials",
+    "category": "material",
+    "selectedItem": "Grave Glovewort [1]",
+    "selectedHeld": 1,
+    "selectedEffect": "Strengthen ashes to +1",
+    "iconCellCount": 19,
+    "countsInOrder": [
+      3,
+      27,
+      12,
+      7,
+      5,
+      4,
+      1,
+      2,
+      1,
+      8,
+      7,
+      3,
+      5,
+      10,
+      7,
+      7,
+      5,
+      1,
+      1
+    ],
+    "_countsNote": "Row groups: 8 smithing-stone cells, then 5 Grave Glovewort cells (selected [1] first), then 5 darker glovewort cells, then 1 large glovewort. Exact stone/glovewort grades per cell must come from icon matching; only counts and the selected name are ground truth."
+  },
+  "inventory-key-items-01.jpg": {
+    "screen": "inventory",
+    "tab": "Key Items",
+    "category": "key-item",
+    "selectedItem": "Holy-Shrouding Cracked Tear",
+    "selectedEffectPrefix": "Temporarily boo",
+    "iconCellCount": 20,
+    "countsInOrder": [
+      14,
+      5,
+      3,
+      2,
+      3,
+      11,
+      2
+    ]
+  },
+  "inventory-sorceries-01.jpg": {
+    "screen": "inventory",
+    "tab": "Sorceries",
+    "category": "sorcery",
+    "selectedItem": "Ambush Shard",
+    "selectedType": "Sorcery",
+    "selectedRequirement": {
+      "intelligence": 23
+    },
+    "requirementUnmet": true,
+    "iconCellCount": 15,
+    "cellsMarkedUnusable": 15,
+    "_note": "Every sorcery cell carries the red X 'cannot use' badge (player Int 9 < requirements); the required Int number is drawn in red. The badge is a cheap cross-check against the character's stats."
+  },
+  "inventory-ashes-of-war-01.jpg": {
+    "screen": "inventory",
+    "tab": "Ashes of War",
+    "category": "ash-of-war",
+    "selectedItem": "Ash of War: Spinning Slash",
+    "selectedAffinity": "Keen",
+    "iconCellCount": 17
+  },
+  "crafting-all-items-01.jpg": {
+    "screen": "item-crafting",
+    "tab": "All Items",
+    "selectedItem": "Preserving Boluses",
+    "iconCellCount": 25,
+    "allCountsX1": true,
+    "_note": "Crafting list shows only recipes the player has unlocked (i.e. cookbooks owned). Every cell reads x1 (craftable quantity). Identify cells by icon matching against craftable items; map each craftable to the cookbook(s) that unlock it (recipes.json) to infer owned cookbooks. The right panel lists required materials (icons + partial names, cropped)."
+  },
+  "equipment-talisman-list-01.jpg": {
+    "screen": "equipment-picker",
+    "slot": "Talisman 1",
+    "selectedItem": "Green Turtle Talisman",
+    "iconCellCount": 19,
+    "equippedBadgeCells": [
+      3,
+      5,
+      13
+    ],
+    "_note": "The slot picker lists EVERY owned talisman, not just equipped ones. Equipped talismans carry a small crossed-swords badge at the top-left of the cell (3 visible here; cells numbered 1-based in reading order). One photo = the whole owned talisman set; identify cells by icon matching restricted to talismans."
+  },
+  "inventory-tools-01.jpg": {
+    "screen": "inventory",
+    "tab": "Tools",
+    "category": "tool",
+    "selectedItem": "Blue Cipher Ring",
+    "iconCellCount": 21,
+    "countsInOrder": [
+      1,
+      1,
+      3,
+      1,
+      4,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      110,
+      8
+    ],
+    "rows": {
+      "goldenRunes": 7,
+      "remembrances": 5,
+      "multiplayer": 5,
+      "multiplayerRow2": 4
+    },
+    "_note": "Row 3 holds 5 REMEMBRANCES (x1 each). Each held remembrance => that boss is defeated and the remembrance not yet traded at Enia/Finger Reader. Identify each by icon matching against the remembrance set, add boss-defeated facts with reason \"holds Remembrance of X\" (after confirmation). Golden runes: 7 stacks. Row 4-5: multiplayer items (stack 110 and 8); small badge top-left on 4 cells marks items registered to the pouch/quick slots."
+  },
+  "map-overworld-01.jpg": {
+    "screen": "world-map",
+    "world": "overworld",
+    "visibleBanners": [
+      "Liurnia of the Lakes",
+      "Limgrave",
+      "Caelid"
+    ],
+    "revealedRegions": [
+      "Limgrave",
+      "Weeping Peninsula",
+      "Liurnia of the Lakes (south/east)",
+      "Caelid",
+      "Dragonbarrow (partial)"
+    ],
+    "unrevealedVisible": [
+      "Altus Plateau (plain parchment, no detail)"
+    ],
+    "graceIconsVisible": "many (~100+ gold grace icons)",
+    "_note": "Detailed painted terrain = map fragment owned; plain parchment/cloud = not revealed. Gold circular icons are discovered Sites of Grace. Register the photo to the app's own overworld map (feature matching / homography against M00 tiles or the static plate) using the coastline/region shapes, then snap each detected grace icon to the nearest known grace coordinate (grace-xyz / entity-index graces) within a tolerance. Photo is angled and cropped (left edge cut)."
+  }
+}

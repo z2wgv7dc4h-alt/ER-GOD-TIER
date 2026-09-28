@@ -727,12 +727,17 @@ export function StatEdit() {
   // Task 107 §4: the level is derived from the stat sum (sum − 79 for every
   // class). Editing a stat moves the level with it; a hand-typed level that
   // disagrees is kept but flagged rather than silently contradicting the stats.
-  const derived = levelFromStats(character.stats)
+  // Task 134: the Status screen prints stats with talisman/helm bonuses included,
+  // so the check runs against the stored *base* spread (falling back to `stats`)
+  // and the bonus is named instead of raising a false mismatch.
+  const baseStats = character.baseStats ?? character.stats
+  const derived = levelFromStats(baseStats)
   const mismatched = character.level !== derived
+  const bonusSource = character.statBonus?.source
   function setStat(key: keyof Stats, raw: string) {
     const n = Math.max(1, Math.min(99, Number(raw) || 1))
-    const stats = { ...character.stats, [key]: n }
-    setCharacter({ ...character, stats, level: levelFromStats(stats) })
+    const nextBase = { ...(character.baseStats ?? character.stats), [key]: n }
+    setCharacter({ ...character, stats: nextBase, baseStats: nextBase, level: levelFromStats(nextBase) })
   }
   function setLevel(raw: string) {
     const n = Math.max(1, Math.min(713, Number(raw) || 1))
@@ -763,8 +768,13 @@ export function StatEdit() {
           </label>
           {mismatched && (
             <p className="warn stat-level-warn" role="status">
-              Stats sum to {statsTotal(character.stats)} — that is Lv {derived}. The level field says{' '}
+              Stats sum to {statsTotal(baseStats)} — that is Lv {derived}. The level field says{' '}
               {character.level}; change a stat or fix the level.
+            </p>
+          )}
+          {bonusSource && (
+            <p className="note" role="status">
+              Showing base stats — your Status screen included bonuses from {bonusSource}.
             </p>
           )}
           <div className="stats">

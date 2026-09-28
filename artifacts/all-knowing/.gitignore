@@ -75,3 +75,6 @@ vendor/elden-ring-map/**/__pycache__/
 *.sln
 *.sw?
 .env.local
+
+# Tesseract language model downloaded on first Node OCR run (Task 134)
+eng.traineddata
