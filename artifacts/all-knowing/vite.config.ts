@@ -56,27 +56,44 @@ function mapEngine(): Plugin {
       return fallback
     }
   }
-  const markers = (readJson('markers.json', { markers: [] }) as { markers?: unknown[] }).markers ?? []
-  const items = (readJson('items.json', { markers: [] }) as { markers?: unknown[] }).markers ?? []
-  const pieces = (readJson('pieces.json', { markers: [] }) as { markers?: unknown[] }).markers ?? []
-  const all = [...markers, ...items, ...pieces]
-  const markerDoc = JSON.stringify({ locales: ['en', 'ru'], markers: all })
-  // Task 120: the map's place-name labels. Prefer the generated dump from
-  // `npm run map:setup`; fall back to the small committed copy so a fresh
-  // checkout (which has no tiles/markers either) still renders the banners.
-  const placeNames =
-    readPath(path.join(dataDir, 'place-names.json'), null) ??
-    readPath(path.join(root, 'public', 'sourced', 'open', 'map-place-names.json'), { labels: [] })
-  const placeNameDoc = JSON.stringify(placeNames)
-  const stateDoc = JSON.stringify({
-    savePath: '',
-    characters: [],
-    activeSlot: null,
-    markerCount: all.length,
-    live: { enabled: false, status: 'off' },
-    checked: {},
-    at: Date.now(),
-  })
+  // The generated data is re-read whenever a source file changes (checked by mtime on
+  // each request), so regenerating markers/labels never needs a dev-server restart.
+  const committedPlaceNames = path.join(root, 'public', 'sourced', 'open', 'map-place-names.json')
+  const sources = ['markers.json', 'items.json', 'pieces.json', 'place-names.json']
+    .map((f) => path.join(dataDir, f))
+    .concat(committedPlaceNames)
+  const signature = () =>
+    sources.map((f) => { try { return fs.statSync(f).mtimeMs } catch { return 0 } }).join('|')
+  let loadedSig = ''
+  let markerDoc = ''
+  let placeNameDoc = ''
+  let stateDoc = ''
+  const docs = () => {
+    const sig = signature()
+    if (sig === loadedSig) return
+    loadedSig = sig
+    const markers = (readJson('markers.json', { markers: [] }) as { markers?: unknown[] }).markers ?? []
+    const items = (readJson('items.json', { markers: [] }) as { markers?: unknown[] }).markers ?? []
+    const pieces = (readJson('pieces.json', { markers: [] }) as { markers?: unknown[] }).markers ?? []
+    const all = [...markers, ...items, ...pieces]
+    markerDoc = JSON.stringify({ locales: ['en', 'ru'], markers: all })
+    // Task 120: the map's place-name labels. Prefer the generated dump from
+    // `npm run map:setup`; fall back to the small committed copy so a fresh
+    // checkout (which has no tiles/markers either) still renders the banners.
+    const placeNames =
+      readPath(path.join(dataDir, 'place-names.json'), null) ??
+      readPath(committedPlaceNames, { labels: [] })
+    placeNameDoc = JSON.stringify(placeNames)
+    stateDoc = JSON.stringify({
+      savePath: '',
+      characters: [],
+      activeSlot: null,
+      markerCount: all.length,
+      live: { enabled: false, status: 'off' },
+      checked: {},
+      at: Date.now(),
+    })
+  }
 
   const handler = (req: any, res: any, next: () => void) => {
     const url = new URL(req.url, 'http://localhost')
@@ -85,6 +102,7 @@ function mapEngine(): Plugin {
     let rest = p.slice('/engine'.length) || '/'
 
     if (rest.startsWith('/api/')) {
+      docs()
       if (rest === '/api/markers') {
         res.setHeader('Content-Type', 'application/json; charset=utf-8')
         return res.end(markerDoc)
