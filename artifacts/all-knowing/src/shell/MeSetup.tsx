@@ -16,6 +16,7 @@ import type { GuideItem } from '../lib/guide'
 import { useGuide } from '../lib/guide'
 import { hasGideonKey } from '../lib/muse'
 import { readCharacterScreen } from '../lib/museVision'
+import { confirmLikelyInference, likelyInferences, rejectLikelyInference } from '../lib/likelyInferences'
 import { applyOcrRead, matchBulkLines, readImage, type OcrOutcome } from '../lib/ocr'
 import {
   bossGroups,
@@ -177,6 +178,7 @@ export function MeSetup() {
 
   const learnings = stepLearnings(character, step)
   const reasons = useMemo(() => inferenceReasons(character), [character])
+  const likely = useMemo(() => likelyInferences(character, 3), [character])
   const meters = useMemo(() => completeness(character), [character])
 
   function goto(next: SetupStepId) {
@@ -686,6 +688,25 @@ export function MeSetup() {
                     <span className="note"> — {r.why}</span>
                   </span>
                   <button type="button" className="chip" onClick={() => setCharacter(removeInferredFact(character, r.fact))}>remove</button>
+                </li>
+              ))}
+            </ul>
+
+            <div className="kicker" style={{ marginTop: 14 }}>Probably done — confirm?</div>
+            {likely.length === 0 && (
+              <p className="note">Nothing to confirm — no likely-but-unproven main-path bosses for this character.</p>
+            )}
+            <ul className="list setup-inferred">
+              {likely.map((l) => (
+                <li key={l.id}>
+                  <span>
+                    <strong>{l.label}</strong>
+                    <span className="note"> — {l.why}</span>
+                  </span>
+                  <span className="opts">
+                    <button type="button" className="chip on" onClick={() => setCharacter(confirmLikelyInference(character, l.factId))}>Yes</button>
+                    <button type="button" className="chip" onClick={() => setCharacter(rejectLikelyInference(character, l.factId))}>No</button>
+                  </span>
                 </li>
               ))}
             </ul>
