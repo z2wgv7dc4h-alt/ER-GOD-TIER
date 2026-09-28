@@ -10,7 +10,7 @@ import { factState, useWorkspace } from './state'
  * `setModule` / `setSelectedMarkerId` contract Gideon acts use. When the data
  * holds no edge for an entity, it says so plainly instead of hiding.
  */
-export function Related({ id, title = 'Related' }: { id: string; title?: string }) {
+export function Related({ id, title = 'Connections' }: { id: string; title?: string }) {
   const { character, openEntity } = useWorkspace()
   const result = relatedFor(id)
 
@@ -45,6 +45,7 @@ export function Related({ id, title = 'Related' }: { id: string; title?: string 
                   type="button"
                   className={known ? 'chip on' : 'chip'}
                   title={link.note || `Open in ${link.module}`}
+                  aria-label={`${link.label} (${group.title})`}
                   onClick={() => open(link)}
                 >
                   {link.label}
@@ -62,7 +63,7 @@ export function Related({ id, title = 'Related' }: { id: string; title?: string 
  * Task 93: the same `Related` graph, folded behind a `Related (N)` disclosure so
  * a long chip list cannot become a wall. Reuses `relatedFor`, no new edges.
  */
-export function RelatedCollapsible({ id, title = 'Related' }: { id: string; title?: string }) {
+export function RelatedCollapsible({ id, title = 'Connections' }: { id: string; title?: string }) {
   const [open, setOpen] = useState(false)
   const result = relatedFor(id)
   if (!result.hasAny) return null

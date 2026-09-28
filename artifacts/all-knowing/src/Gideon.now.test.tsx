@@ -49,14 +49,12 @@ describe('Journey → Now panel (Task 84/91)', () => {
     expect(html).not.toMatch(/Iron Fist Alexander/)
   })
 
-  it('renders the one-line open / locked archive link', () => {
-    expect(html).toMatch(/\d+ open · \d+ locked/)
+  it('renders the one-line questline availability link', () => {
+    expect(html).toMatch(/\d+ questlines available · \d+ closed off/)
   })
 
-  it('hides Show on map on the current beat when it has no existing pin', () => {
-    // item:fingerslayer has no loot row / grace coord, so the beat itself gets no
-    // Show control. The Task 92 leftovers card is a separate section, excluded here.
+  it('gives the current goal card one primary Show on map action', () => {
     const lead = html.slice(html.indexOf('now-lead'), html.indexOf('</section>', html.indexOf('now-lead')))
-    expect(lead).not.toContain('Show on map')
+    expect(lead).toContain('Show on map')
   })
 })

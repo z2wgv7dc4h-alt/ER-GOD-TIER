@@ -49,7 +49,7 @@ describe('quick log UI (Task 99)', () => {
         onCancel={() => {}}
       />,
     )
-    expect(html).toContain('This can lock a line')
+    expect(html).toContain('This can lock a questline')
     expect(html).toContain('Millicent')
     expect(html).toContain('Challenge Millicent at Elphael (red sign)')
   })

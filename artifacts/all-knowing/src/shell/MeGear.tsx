@@ -138,9 +138,9 @@ export function MeGear() {
               const ar = slot && meta.group === 'armament' ? arFor(slot) : null
               return (
                 <div key={meta.id} className={slot ? 'gear-slot filled' : 'gear-slot'}>
-                  <div className="gear-slot-label">{meta.label}</div>
                   {slot ? (
                     <>
+                      <div className="gear-slot-label">{meta.label}</div>
                       <button type="button" className="gear-item" onClick={() => entity && setSelected(entity)}>
                         <strong>{slot.name}</strong>
                         {slot.upgrade ? <span className="note"> +{slot.upgrade}</span> : null}
@@ -161,13 +161,19 @@ export function MeGear() {
                         )}
                       </div>
                       <div className="opts">
-                        <button type="button" className="chip" onClick={() => { setPickerSlot(meta.id); setPickerQuery('') }}>Change</button>
-                        <button type="button" className="chip" onClick={() => setCharacter({ ...character, loadout: clearSlot(character.loadout, meta.id, slot) })}>Clear</button>
+                        <button type="button" className="chip" aria-label={`Change ${meta.label}`} onClick={() => { setPickerSlot(meta.id); setPickerQuery('') }}>Change</button>
+                        <button type="button" className="chip" aria-label={`Clear ${meta.label}`} onClick={() => setCharacter({ ...character, loadout: clearSlot(character.loadout, meta.id, slot) })}>Clear</button>
                       </div>
                     </>
                   ) : (
-                    <button type="button" className="gear-empty" onClick={() => { setPickerSlot(meta.id); setPickerQuery('') }}>
-                      + Equip
+                    <button
+                      type="button"
+                      className="gear-empty"
+                      aria-label={`Equip ${meta.label}`}
+                      onClick={() => { setPickerSlot(meta.id); setPickerQuery('') }}
+                    >
+                      <span className="gear-empty-name">{meta.label}</span>
+                      <span className="gear-empty-cta">Equip</span>
                     </button>
                   )}
                 </div>

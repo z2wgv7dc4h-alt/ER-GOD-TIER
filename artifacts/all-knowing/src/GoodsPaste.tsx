@@ -29,7 +29,7 @@ export function GoodsPaste() {
     <div className="goods-paste">
       <div className="kicker">Paste item names</div>
       <p className="note">
-        One per line. A line is marked only when it is one confident hit; anything else stays unknown.
+        One per line. An entry is marked only when it is one confident hit; anything else stays unknown.
       </p>
       <textarea
         className="search"

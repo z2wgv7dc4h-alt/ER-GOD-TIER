@@ -25,6 +25,9 @@ export function BeforeYouGoCard() {
   const advice = useMemo(() => beforeYouGo(character, 'here', areas), [character, areas])
   const open = useRowReveal(advice.open.length)
 
+  // Render nothing when there is no area and nothing open — no empty advice card.
+  if (!advice.region && advice.open.length === 0) return null
+
   return (
     <section className="panel before-you-go">
       <div className="kicker">Before you leave this area</div>

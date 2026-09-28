@@ -590,12 +590,27 @@ export function buildCatalog(input: CatalogInput): BuiltCatalog {
     ...buildMechanics(),
     ...buildDialogue(input.dialogue),
   ]
+  // Task 126 §3 — the raw FanAPI/guide dumps carry duplicate rows (identical
+  // names, occasionally a differing region). React keys and the compare tray use
+  // `id`, so collapse duplicates by id here, keeping the first record and
+  // unioning tags so no tag is lost.
+  const deduped: LibraryEntity[] = []
+  const seen = new Map<string, LibraryEntity>()
+  for (const e of entities) {
+    const prev = seen.get(e.id)
+    if (prev) {
+      if (e.tags?.length) prev.tags = [...new Set([...(prev.tags ?? []), ...e.tags])]
+      continue
+    }
+    seen.set(e.id, e)
+    deduped.push(e)
+  }
   const byCategory = Object.fromEntries(CATEGORIES.map((c) => [c.id, [] as LibraryEntity[]])) as Record<CategoryId, LibraryEntity[]>
-  for (const e of entities) byCategory[e.category].push(e)
+  for (const e of deduped) byCategory[e.category].push(e)
   for (const list of Object.values(byCategory)) {
     list.sort((a, b) => a.name.localeCompare(b.name))
   }
-  return { entities, byCategory, weaponByName }
+  return { entities: deduped, byCategory, weaponByName }
 }
 
 const EMPTY_INPUT: CatalogInput = {

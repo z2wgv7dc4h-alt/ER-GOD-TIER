@@ -1,0 +1,279 @@
+/* Task 126 — design system layer.
+   Imported after index.css so these rules win by source order. The goal is
+   hierarchy: one filled primary per card, outline secondary, text ghost; chips
+   are small sentence-case filters; sub-tabs are a segmented control; cards use a
+   subtle fill instead of a gold border. */
+
+/* ── Buttons ───────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  text-align: center;
+  cursor: pointer;
+}
+.btn:hover { border-color: var(--gold-dim); }
+.btn:disabled { opacity: 0.5; cursor: default; }
+
+.btn--primary {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #14110c;
+  font-weight: 600;
+}
+.btn--primary:hover { background: #dcb43a; border-color: #dcb43a; }
+
+.btn--secondary { border-color: var(--gold-dim); color: var(--gold); }
+.btn--secondary:hover { background: rgba(201, 162, 39, 0.1); }
+
+.btn--ghost {
+  min-height: 40px;
+  min-width: 40px;
+  padding: 8px 10px;
+  border-color: transparent;
+  color: var(--gold);
+}
+.btn--ghost:hover { background: rgba(201, 162, 39, 0.08); }
+
+.btn--small { min-height: 36px; padding: 6px 12px; font-size: 13px; }
+.btn--danger { border-color: var(--danger); color: var(--danger); }
+
+/* ── Cards ─────────────────────────────────────────────────────────────── */
+.card-ui {
+  background: var(--bg-raised);
+  border: 1px solid var(--line-soft);
+  border-radius: 6px;
+  padding: 16px;
+}
+.card-ui > .card-ui-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.card-ui .card-ui-title { font-family: var(--font-display); font-size: 18px; margin: 2px 0 2px; }
+.card-ui .card-ui-sub { color: var(--muted); font-size: 13px; margin: 0; }
+.card-ui .card-ui-body { margin-top: 10px; }
+.card-ui .card-ui-foot { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+/* ── Chips: sentence case, small visual, 40px box for touch ────────────── */
+.chip {
+  border-radius: 999px;
+  padding: 6px 12px;
+  min-height: 40px;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: var(--ink);
+}
+.chip.on { color: var(--gold); border-color: var(--gold-dim); background: rgba(201, 162, 39, 0.1); }
+.chip.warn { color: var(--danger); }
+
+/* ── Segmented controls (section + sub tabs) ───────────────────────────── */
+.section-tabs,
+.subtabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: var(--bg-raised);
+}
+.section-tabs button,
+.subtabs button {
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  padding: 8px 14px;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  white-space: nowrap;
+}
+.section-tabs button:hover,
+.subtabs button:hover { color: var(--ink); }
+.section-tabs button.active,
+.subtabs button.active {
+  background: var(--gold);
+  border: 0;
+  color: #14110c;
+  font-weight: 600;
+}
+.subtabs { max-width: 100%; overflow-x: auto; }
+
+/* ── Kickers: stop shouting. Only used where a real label helps. ───────── */
+.kicker {
+  color: var(--gold-dim);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
+.gear-slot-label,
+.stat label,
+.gear-row em,
+.related-label,
+.command-subhead,
+.help-groups li em,
+.char-card .label,
+.stat-edit .stats label { text-transform: none; letter-spacing: 0.01em; }
+
+/* ── Panels / groups: subtle fill, lighter borders ─────────────────────── */
+.panel,
+.me-card,
+.gear-group,
+.quest-line,
+.now-cards .panel,
+.setup-step {
+  border-color: var(--line-soft);
+  border-radius: 6px;
+}
+.codex-head,
+.codex-summary {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 15px;
+}
+.ribbon-toggle { text-transform: none; letter-spacing: 0.01em; font-size: 13px; }
+
+/* ── List rows: whole row tappable ─────────────────────────────────────── */
+.list-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 4px;
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--line-soft);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.list-row:hover { color: var(--gold); }
+.list-row .list-row-main { flex: 1; min-width: 0; }
+.list-row .list-row-title { display: block; font-size: 15px; }
+.list-row .list-row-sub { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; }
+.list-row .list-row-trail { flex: none; color: var(--muted); font-size: 13px; white-space: nowrap; }
+.list-row .list-row-chevron { flex: none; color: var(--gold-dim); }
+
+/* ── Empty state: one line + one action ────────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  color: var(--muted);
+  font-size: 14px;
+  padding: 4px 0;
+}
+
+/* ── Journal / recent rows ─────────────────────────────────────────────── */
+.recent-item { text-transform: none; letter-spacing: 0.01em; }
+
+/* Empty gear slot: the row itself is the tap target. */
+.gear-empty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  flex: 1;
+  min-height: 44px;
+  padding: 10px 12px;
+  background: transparent;
+  border: 1px dashed var(--line);
+  border-radius: 4px;
+  color: var(--muted);
+  text-align: left;
+}
+.gear-empty:hover { border-color: var(--gold-dim); color: var(--ink); }
+.gear-empty-name { color: inherit; font-size: 14px; }
+.gear-empty-cta { color: var(--gold); font-size: 13px; }
+
+/* ── Settings list: label left, control right ──────────────────────────── */
+.settings-list { display: flex; flex-direction: column; }
+.settings-list .settings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line-soft);
+}
+.settings-list .settings-item:first-child { border-top: 0; }
+.settings-list .settings-item-label { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.settings-list .settings-item-label strong { font-weight: 600; font-size: 14px; }
+.settings-list .settings-item-label .note { margin: 0; }
+.settings-list .settings-item-control { flex: none; display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+
+/* ── Journey › Now goal-card overflow ─────────────────────────────────── */
+.lead-actions { align-items: center; }
+.now-more { position: relative; }
+.now-more-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 180px;
+  padding: 10px;
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+}
+
+/* ── Journey › Quests groups + endings ────────────────────────────────── */
+.quests-page { display: flex; flex-direction: column; gap: 12px; }
+.quest-group { margin-top: 10px; border-top: 1px solid var(--line-soft); padding-top: 8px; }
+.quest-group > summary { cursor: pointer; }
+.quest-route-card .medusa-route { margin: 0; }
+.medusa-meter { margin-top: 8px; }
+.quest-line-top { align-items: center; }
+.quest-line .chip.warn { justify-self: flex-start; }
+.ending-list { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.ending-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+.ending-list li .note { margin: 0; }
+
+/* ── Build / PvP kit cards: name · bracket · one-line pitch ───────────── */
+.kit-card { border-color: var(--line-soft); border-radius: 6px; background: var(--bg-raised); }
+.kit-card > summary {
+  flex-wrap: wrap;
+  white-space: normal;
+  overflow: visible;
+  align-items: baseline;
+  row-gap: 2px;
+}
+.kit-card > summary strong { flex: 1 1 auto; min-width: 0; }
+.kit-card > summary .dim { flex: none; }
+.kit-pitch {
+  flex-basis: 100%;
+  width: 100%;
+  min-width: 0;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+@media (max-width: 700px) {
+  /* The phone shell is the bottom tab bar; the desktop section tabs must stay
+     hidden (the design-system rule above would otherwise re-show them). */
+  .section-tabs { display: none; }
+  .subtabs { width: 100%; }
+  .btn { min-height: 44px; }
+  .chip { min-height: 40px; padding: 8px 12px; font-size: 13px; }
+}

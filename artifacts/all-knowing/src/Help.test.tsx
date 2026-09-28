@@ -45,7 +45,7 @@ describe('HelpSheet', () => {
       'fanapi is reference, not ar',
       'in-repo regulation',
       'co-op & goods paste',
-      'atlas never goes blank',
+      'the map never goes blank',
     ]) {
       expect(lower, phrase).toContain(phrase)
     }

@@ -20,6 +20,7 @@ import { loadRegionLevels, type RegionLevel } from '../lib/regionLevels'
 import { loadSecrets, type WallSecret } from '../lib/secrets'
 import { useWorkspace } from '../state'
 import { AreaPrompt } from './AreaPrompt'
+import { AreaPickerSheet } from './AreaChip'
 
 function Bar({ label, have, total }: { label: string; have: number; total: number }) {
   const pct = total > 0 ? Math.min(100, Math.round((have / total) * 100)) : 0
@@ -99,13 +100,10 @@ export function JourneyArea() {
   if (!area) {
     return (
       <div className="area-hub">
-        <section className="panel">
-          <div className="kicker">Area</div>
-          <h2>No area set</h2>
-          <p className="note">
-            Tap the 📍 chip in the header to say where you are. The area page fills in from there.
-          </p>
-          <button type="button" className="chip" onClick={() => w.go('journey', 'map')}>Open the map</button>
+        <section className="panel area-pick">
+          <div className="kicker">Where are you?</div>
+          <p className="note">Pick the nearest grace and the area page fills in from there.</p>
+          <AreaPickerSheet inline onClose={() => {}} />
         </section>
       </div>
     )
@@ -126,7 +124,7 @@ export function JourneyArea() {
             {verdict === 'under' ? 'under-levelled' : verdict === 'over' ? 'over-levelled' : 'right for this area'}
           </p>
         ) : (
-          <p className="note">No level band for this area yet.</p>
+          <p className="note">No level band on file.</p>
         )}
         <div className="opts">
           <button type="button" className="chip on" onClick={showOnMap}>Show area on map</button>

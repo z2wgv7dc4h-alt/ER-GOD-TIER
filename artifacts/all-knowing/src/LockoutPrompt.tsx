@@ -19,11 +19,11 @@ export function LockoutPrompt({
       className="lockout-overlay"
       role="dialog"
       aria-modal="true"
-      aria-label="This can lock a line"
+      aria-label="This can lock a questline"
       onClick={onCancel}
     >
       <div className="lockout-sheet" onClick={(e) => e.stopPropagation()}>
-        <div className="kicker">This can lock a line</div>
+        <div className="kicker">This can lock a questline</div>
         <p className="note">Marking this done forecloses:</p>
         <ul className="list">
           {warnings.map((w) => (

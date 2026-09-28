@@ -28,8 +28,8 @@ export function beforeYouGo(character: Character, query: string, areas: RegionLe
   let advice: string
   if (!band) {
     advice = open.length
-      ? `I do not have a level band for ${region ?? 'this spot'}. Still open here: ${open.map((o) => o.name).join(', ')}.`
-      : `I do not have a level band for ${region ?? 'this spot'} yet, and nothing in the data is still open here.`
+      ? `No level band on file for ${region ?? 'this spot'}. Still open here: ${open.map((o) => o.name).join(', ')}.`
+      : `Nothing in the data is still open in ${region ?? 'this area'}.`
   } else if (status === 'under') {
     advice = `${region} is a Lv ${band.levelMin}-${band.levelMax} area (weapons +${band.upgradeMin ?? '?'}-+${band.upgradeMax ?? '?'}); you are Lv ${level}, so you are under-levelled — do the open items first: ${open.map((o) => o.name).join(', ') || 'nothing tracked'}.`
   } else if (status === 'over') {

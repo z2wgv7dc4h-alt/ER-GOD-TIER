@@ -48,9 +48,20 @@ export function OpKitPanel({
             <summary>
               <strong>{b.name}</strong>{' '}
               <em className="dim">{b.tag} · Lv {b.level}</em>
+              <span className="kit-pitch note">{b.why}</span>
             </summary>
             <div className="kit-detail">
-              <p className="note">{b.why}</p>
+              <div className="kicker">Stats</div>
+              <p className="note">{planLine(b.stats as unknown as Record<string, number>)}</p>
+              <div className="kicker">Gear</div>
+              <ul className="list">
+                {b.kit.slice(0, 8).map((slot) => (
+                  <li key={slot.id} style={{ cursor: 'default' }}>
+                    <span>{slot.kind}</span>
+                    <span>{slot.name}{slot.upgrade ? ` +${slot.upgrade}` : ''}</span>
+                  </li>
+                ))}
+              </ul>
               <div className="kicker">Level plan</div>
               <div className="opts">
                 {plans.map((p) => (
@@ -85,7 +96,7 @@ export function OpKitPanel({
                     <li key={p.factId} style={{ cursor: 'default' }}>
                       <span>{p.name}</span>
                       {p.pin && onShowOnMap ? (
-                        <button type="button" className="chip" onClick={() => onShowOnMap(p.factId)}>
+                        <button type="button" className="chip" aria-label={`Show ${p.name} on map`} onClick={() => onShowOnMap(p.factId)}>
                           Show on map
                         </button>
                       ) : (
@@ -128,15 +139,9 @@ function PvpLoadoutBlock({ build }: { build: PvpBuild }) {
   const l = build.loadout
   return (
     <div className="kit-detail">
-      <p className="note">{build.why}</p>
-      <p className="note"><strong>Playstyle.</strong> {build.playstyle}</p>
-      <div className="kicker">Combos</div>
-      <ul className="list">
-        {build.combos.map((c) => (
-          <li key={c} style={{ cursor: 'default' }}>{c}</li>
-        ))}
-      </ul>
-      <div className="kicker">Loadout</div>
+      <div className="kicker">Stats</div>
+      <p className="note">{planLine(build.stats as unknown as Record<string, number>)}</p>
+      <div className="kicker">Gear</div>
       <ul className="list">
         <li style={{ cursor: 'default' }}><span>Right hand</span><span>{l.weapons.join(', ')}</span></li>
         <li style={{ cursor: 'default' }}><span>Left hand</span><span>{l.offhand.join(', ') || '—'}</span></li>
@@ -145,13 +150,23 @@ function PvpLoadoutBlock({ build }: { build: PvpBuild }) {
         <li style={{ cursor: 'default' }}><span>Spells</span><span>{l.spells.join(', ')}</span></li>
         <li style={{ cursor: 'default' }}><span>Consumables</span><span>{l.consumables.join(', ')}</span></li>
       </ul>
+      <div className="kicker">How to play</div>
+      <p className="note">{build.playstyle}</p>
+      <div className="kicker">Combos</div>
+      <ul className="list">
+        {build.combos.map((c) => (
+          <li key={c} style={{ cursor: 'default' }}>{c}</li>
+        ))}
+      </ul>
       <div className="kicker">Buff order</div>
       <ol className="list">
         {build.buffOrder.map((step) => (
           <li key={step} style={{ cursor: 'default' }}>{step}</li>
         ))}
       </ol>
-      <p className="note"><strong>Beats.</strong> {build.beats} <strong>Loses to.</strong> {build.losesTo}</p>
+      <div className="kicker">Beats / Loses to</div>
+      <p className="note"><strong>Beats.</strong> {build.beats}</p>
+      <p className="note"><strong>Loses to.</strong> {build.losesTo}</p>
       <p className="note">
         Patch {build.patch ?? 'unknown'} · source: {build.source}
       </p>
@@ -199,6 +214,7 @@ export function PvpBuildPanel({
             <summary>
               <strong>{b.name}</strong>{' '}
               <em className="dim">{b.bracket} · {b.mode} · {b.tag}</em>
+              <span className="kit-pitch note">{b.why}</span>
             </summary>
             <PvpLoadoutBlock build={b} />
             <button

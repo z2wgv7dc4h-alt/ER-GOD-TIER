@@ -198,9 +198,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
               onShowOnMap={showOnMap}
             />
             <p className="note" style={{ marginTop: 8 }}>
-              Kits set stats and a shopping list. They do not invent AR. The level plan projects each kit to
-              Lv 40/60/100/150 (points always sum to the level); the route reuses the build-hunt pins.
-              Locations are in the Codex and Gideon.
+              Kits set stats and a shopping list; each level plan projects the kit to Lv 40/60/100/150.
             </p>
           </KitGroup>
           )}
@@ -209,7 +207,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
           <>
           <KitGroup title="PvP builds · patch 1.17" count={pvpBuilds.length} defaultOpen>
             <p className="note">
-              Invade and duel builds for RL30–150; stat spreads are target spreads, not extracted numbers.
+              Invade and duel builds for RL30–150.
             </p>
             <details className="kit-sources">
               <summary>Sources</summary>

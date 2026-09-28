@@ -49,16 +49,18 @@ export function MedusaRoute({
         <div className="kicker">
           100% route · {actIds.length} acts · {steps ? `${steps.length} steps` : `${medusaChapters.length} chapters`}
         </div>
-        {collapsedByDefault && !bodyOpen && (
-          <button type="button" className="chip see-all" onClick={() => setBodyOpen(true)}>
-            See all ({medusaChapters.length})
+        {collapsedByDefault && (
+          <button type="button" className="chip see-all" onClick={() => setBodyOpen((v) => !v)}>
+            {bodyOpen ? 'Hide' : 'Show route'}
           </button>
         )}
-        {collapsedByDefault && bodyOpen && (
-          <button type="button" className="chip see-all" onClick={() => setBodyOpen(false)}>
-            Hide
-          </button>
-        )}
+      </div>
+      <div className="meter medusa-meter">
+        <label>
+          <span>Completion</span>
+          <span>{done.known}/{done.catalog} · {pct}%</span>
+        </label>
+        <div className="bar"><span style={{ width: `${pct}%` }} /></div>
       </div>
       {bodyOpen && (
         <>
@@ -68,13 +70,6 @@ export function MedusaRoute({
       <p className="note" style={{ margin: '0 0 6px' }}>
         Current chapter: <strong>{chapter.name}</strong> — {chapter.goal}
       </p>
-      <div className="meter">
-        <label>
-          <span>Completion</span>
-          <span>{done.known}/{done.catalog} · {pct}%</span>
-        </label>
-        <div className="bar"><span style={{ width: `${pct}%` }} /></div>
-      </div>
 
       <div className="kicker" style={{ marginTop: 12 }}>Next steps</div>
       {chapterSteps.length > 0 ? (

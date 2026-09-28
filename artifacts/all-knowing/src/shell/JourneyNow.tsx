@@ -6,27 +6,26 @@ import { beatPin } from '../lib/beatPins'
 import { useCoords } from '../lib/coords'
 import { gideonHeader } from '../lib/gideonHeader'
 import { leftoverPins } from '../lib/leftoverPins'
-import { labelOf } from '../lib/links'
+import { leftovers as missedLoot } from '../lib/leftovers'
 import { lockoutWarningsFor, type LockWarning } from '../lib/lockWarnings'
-import { targetModule } from '../lib/related'
 import { BeforeYouGoCard } from '../BeforeYouGoCard'
 import { LockoutPrompt } from '../LockoutPrompt'
 import { MedusaRoute } from '../MedusaRoute'
 import { RelatedCollapsible } from '../Related'
-import { NextMoves } from '../Thread'
 import { useWorkspace } from '../state'
 import { WatchlistCard } from '../watch/WatchlistCard'
 import { AreaPrompt } from './AreaPrompt'
 import { ResumeCard } from './ResumeCard'
 import { SeeAllButton, useRowReveal } from './rows'
 import { WorldRibbon } from './WorldRibbon'
-import { RecommendedCard } from './RecommendedCard'
+import { RecommendedCard, hasUnsetStats } from './RecommendedCard'
+import { Button, ListRow } from '../ui'
 
 /**
- * Task 91 `journey/now`: the "working towards" dashboard that used to sit on top
- * of the Gideon chat, reordered by the Task 100 playtest fix: lead, Recommended,
- * Before you leave, Leftovers, Next moves, then the 100% route collapsed last.
- * Every list caps at three rows behind a "See all (N)" control.
+ * Task 91 `journey/now`: the "working towards" dashboard. Task 126 reordered it
+ * around a single current-goal card (one primary action, one overflow), then
+ * Recommended, Before you leave, Missed nearby, Watchlist and the collapsed
+ * 100% route — each rendered only when it has something to say.
  */
 export function JourneyNow() {
   const w = useWorkspace()
@@ -47,15 +46,33 @@ export function JourneyNow() {
   const nextTotal = plan ? Math.max(0, plan.available.length - 1) : 0
   const nextReveal = useRowReveal(nextTotal)
   const nextSteps = plan ? plan.available.slice(1, 1 + nextReveal.visible) : []
-  // Task 92 row 3: the same leftover pins the Atlas draws, counted here so the
-  // player can see how much is still outstanding before opening the map.
-  const [near, setNear] = useState(false)
-  const outstanding = useMemo(
-    () => leftoverPins(w.character, coords, near && w.currentArea ? { region: w.currentArea.region } : {}),
-    [w.character, coords, near, w.currentArea],
-  )
-  const leftovers = useRowReveal(outstanding.length)
+  const outstanding = useMemo(() => leftoverPins(w.character, coords, {}), [w.character, coords])
+  // "Missed nearby" combines the resolved map pins with any still-missable loot
+  // the data knows about, deduped by id, so the card is only shown when there is
+  // genuinely something to list.
+  const missed = useMemo(() => {
+    const rows = outstanding.map((o) => ({
+      id: o.id,
+      name: o.name,
+      sub: `${o.kind}${o.region ? ` · ${o.region}` : ''}`,
+      target: o.id,
+    }))
+    const seen = new Set(rows.map((r) => r.id))
+    for (const e of missedLoot(w.character)) {
+      if (seen.has(e.id)) continue
+      seen.add(e.id)
+      rows.push({
+        id: e.id,
+        name: e.name,
+        sub: `${e.kind}${e.region ? ` · ${e.region}` : ''}`,
+        target: e.grace ?? e.id,
+      })
+    }
+    return rows
+  }, [outstanding, w.character])
+  const leftovers = useRowReveal(missed.length)
   const [lockPending, setLockPending] = useState<{ ids: string[]; warnings: LockWarning[] } | null>(null)
+  const unset = hasUnsetStats(w.character)
 
   function persistGoal(id?: string) {
     if (!id || w.character.answers.gideonGoal === id) return
@@ -86,167 +103,111 @@ export function JourneyNow() {
       <ResumeCard />
       <div className="now-cards">
         <AreaPrompt className="panel area-prompt" />
+
         <section className="panel now-lead">
           <div className="kicker">
             {header.goal ? `Working towards · ${header.goal}` : 'Main path'}
           </div>
           {header.beat ? (
             <>
-              <div className="kicker" style={{ marginTop: 6 }}>Now</div>
-              <h3 className="now-beat" aria-label="Current beat">{header.beat}</h3>
+              <h3 className="now-beat" aria-label="Current step">{header.beat}</h3>
               {header.gate && <p className="note" style={{ margin: '4px 0 0' }}>Gate ahead: {header.gate}</p>}
-              <div className="opts" style={{ marginTop: 10 }}>
-                {showPin && (
-                  <button
-                    type="button"
-                    className="chip on"
+              <div className="opts lead-actions" style={{ marginTop: 10 }}>
+                {header.factId && (
+                  <Button
+                    variant="primary"
                     onClick={() => {
-                      w.setSelectedMarkerId(showPin.id)
+                      w.setSelectedMarkerId(showPin?.id ?? header.factId!)
                       w.setModule('map')
                     }}
                   >
                     Show on map
-                  </button>
+                  </Button>
                 )}
-                {plan?.current && (
-                  <button type="button" className="chip" onClick={doneNow}>Done</button>
-                )}
-                {blitzLine && (
-                  <button
-                    type="button"
-                    className={goalLine?.kind === 'blitz' ? 'chip on' : 'chip'}
-                    title="Chase the shortest Lord route"
-                    onClick={() => persistGoal(blitzLine.id)}
-                  >
-                    Blitz
-                  </button>
-                )}
-                <button type="button" className="chip" onClick={() => w.go('gideon')}>Ask Gideon</button>
-                {header.factId && (
-                  <button
-                    type="button"
-                    className="chip"
-                    onClick={() => {
-                      w.setSelectedMarkerId(header.factId!)
-                      w.setModule(targetModule(header.factId!))
-                    }}
-                  >
-                    Open {labelOf(header.factId)}
-                  </button>
-                )}
+                {plan?.current && <Button variant="secondary" onClick={doneNow}>Mark done</Button>}
+                <NowMore blitzLineId={blitzLine?.id} goalLineKind={goalLine?.kind} onPersistGoal={persistGoal} factId={header.factId} />
               </div>
 
               {nextSteps.length > 0 && (
                 <div className="now-steps">
-                  <div className="kicker">Next</div>
+                  <div className="kicker" style={{ marginTop: 12 }}>Next steps</div>
                   {nextSteps.map((s) => (
-                    <button
+                    <ListRow
                       key={s.id}
-                      type="button"
-                      className="quest"
+                      title={s.do}
+                      subtitle={s.detail}
+                      chevron
                       onClick={() => {
                         if (!s.factId) return
                         w.setSelectedMarkerId(s.factId)
                         w.setModule(s.module ?? 'map')
                       }}
-                    >
-                      <strong>{s.do}</strong>
-                      <div className="note">{s.detail}</div>
-                    </button>
+                    />
                   ))}
                   <SeeAllButton total={nextTotal} expanded={nextReveal.expanded} onToggle={nextReveal.toggle} />
                 </div>
               )}
-
-              {header.factId && <RelatedCollapsible id={header.factId} />}
             </>
           ) : (
-            <p className="note">No beat yet. Ask what is still available.</p>
+            <p className="note">No step yet. Ask what is still available.</p>
           )}
 
-          <button
-            type="button"
-            className="chip"
+          <Button
+            variant="ghost"
+            small
             style={{ marginTop: 8 }}
             onClick={() => w.go('journey', 'quests')}
           >
-            {openCount} open · {lockedCount} locked
-          </button>
+            {openCount} questlines available · {lockedCount} closed off
+          </Button>
         </section>
-        <RecommendedCard />
 
-        <WatchlistCard />
+        {unset ? (
+          <section className="panel">
+            <ListRow
+              title="Set up your character"
+              subtitle="Recommended weapons and to-dos need your stats and gear."
+              chevron
+              onClick={() => w.go('me', 'setup')}
+            />
+          </section>
+        ) : (
+          <RecommendedCard />
+        )}
 
         <BeforeYouGoCard />
 
-        <section className="panel leftover-card">
-          <div className="kicker">Leftovers nearby</div>
-          <h3 className="now-beat" aria-label="Leftover count">
-            {outstanding.length} still outstanding here
-          </h3>
-          {outstanding.length > 0 && (
-            <ul className="now-rows">
-              {outstanding.slice(0, leftovers.visible).map((o) => (
-                <li key={o.id}>
-                  <button
-                    type="button"
-                    className="quest"
-                    onClick={() => {
-                      w.setSelectedMarkerId(o.id)
-                      w.setModule('map')
-                    }}
-                  >
-                    <strong>{o.name}</strong>
-                    <div className="note">{o.kind}{o.region ? ` · ${o.region}` : ''}</div>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-          <SeeAllButton total={outstanding.length} expanded={leftovers.expanded} onToggle={leftovers.toggle} />
-          <p className="note">
-            Same layer as the Atlas. Nothing is marked until you collect it.
-          </p>
-          <div className="opts" style={{ marginTop: 10 }}>
-            <button
-              type="button"
-              className={near ? 'chip on' : 'chip'}
-              aria-pressed={near}
-              disabled={!w.currentArea}
-              onClick={() => setNear((v) => !v)}
-            >
-              Near me
-            </button>
-            <button
-              type="button"
-              className={w.showLeftovers ? 'chip on' : 'chip'}
-              aria-pressed={w.showLeftovers}
+        {missed.length > 0 && (
+          <section className="panel leftover-card">
+            <div className="kicker">Missed nearby</div>
+            {missed.slice(0, leftovers.visible).map((o) => (
+              <ListRow
+                key={o.id}
+                title={o.name}
+                subtitle={o.sub}
+                chevron
+                onClick={() => {
+                  w.setSelectedMarkerId(o.target)
+                  w.setModule('map')
+                }}
+              />
+            ))}
+            <SeeAllButton total={missed.length} expanded={leftovers.expanded} onToggle={leftovers.toggle} />
+            <Button
+              variant="ghost"
+              small
+              style={{ marginTop: 8 }}
               onClick={() => {
                 if (!w.showLeftovers) w.toggleLeftovers()
                 w.go('journey', 'map')
               }}
             >
-              Show on map
-            </button>
-          </div>
-        </section>
+              Show all on map
+            </Button>
+          </section>
+        )}
 
-        <section className="panel">
-          <div className="kicker">Next moves</div>
-          <p className="note">
-            Every item links into the map or the quest graph — nothing here changes your run on its own.
-          </p>
-          <NextMoves
-            onOpen={(id) => {
-              w.setSelectedMarkerId(id)
-              w.setModule('map')
-            }}
-          />
-          <div className="opts" style={{ marginTop: 12 }}>
-            <button type="button" className="chip" onClick={() => w.go('journey', 'map')}>Open the map</button>
-            <button type="button" className="chip" onClick={() => w.go('journey', 'quests')}>Open Quests</button>
-          </div>
-        </section>
+        <WatchlistCard />
 
         <MedusaRoute compact collapsedByDefault />
       </div>
@@ -257,6 +218,53 @@ export function JourneyNow() {
           onCancel={() => setLockPending(null)}
           onConfirm={confirmLock}
         />
+      )}
+    </div>
+  )
+}
+
+/** The goal card overflow: Fastest route · Ask Gideon · Connections. */
+function NowMore({
+  blitzLineId,
+  goalLineKind,
+  onPersistGoal,
+  factId,
+}: {
+  blitzLineId?: string
+  goalLineKind?: string
+  onPersistGoal: (id?: string) => void
+  factId: string | null | undefined
+}) {
+  const w = useWorkspace()
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="now-more">
+      <Button
+        variant="ghost"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label="More goal actions"
+        onClick={() => setOpen((v) => !v)}
+      >
+        ⋯
+      </Button>
+      {open && (
+        <div className="now-more-menu panel" role="menu">
+          {blitzLineId && (
+            <button
+              type="button"
+              role="menuitem"
+              className={goalLineKind === 'blitz' ? 'chip on' : 'chip'}
+              onClick={() => { onPersistGoal(blitzLineId); setOpen(false) }}
+            >
+              Fastest route
+            </button>
+          )}
+          <button type="button" role="menuitem" className="chip" onClick={() => { w.go('gideon'); setOpen(false) }}>
+            Ask Gideon
+          </button>
+          {factId && <RelatedCollapsible id={factId} title="Connections" />}
+        </div>
       )}
     </div>
   )

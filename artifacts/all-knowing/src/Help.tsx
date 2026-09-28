@@ -82,7 +82,7 @@ export function HelpSheet({ onClose }: { onClose: () => void }) {
           the search, <kbd>?</kbd> opens this help, and <kbd>g</kbd> toggles the Gideon dock.
         </p>
         <p className="note">
-          <strong>Lockout confirm.</strong> Ticking a beat that would foreclose a line you have
+          <strong>Lockout confirm.</strong> Ticking a beat that would foreclose a questline you have
           already started opens a lockout confirm first — nothing is applied until you agree.
         </p>
         <p className="note">
@@ -102,10 +102,10 @@ export function HelpSheet({ onClose }: { onClose: () => void }) {
         <p className="note">
           <strong>Co-op &amp; goods paste.</strong> The co-op toggle (Tarnished → Profiles, or the
           interview) drops Mimic / Torrent advice. Tarnished → Update also has a goods-paste box:
-          a line marks only when it is one confident name, anything else stays unknown.
+          an entry marks only when it is one confident name, anything else stays unknown.
         </p>
         <p className="note">
-          <strong>Atlas never goes blank.</strong> If the map engine is down or the embed fails, you
+          <strong>The map never goes blank.</strong> If the map engine is down or the embed fails, you
           get the static plate and a banner that says why — never a silent empty iframe.
         </p>
         <p className="note">

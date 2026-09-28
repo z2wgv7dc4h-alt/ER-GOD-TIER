@@ -17,7 +17,8 @@ vi.mock('../state', async (importOriginal) => {
 // MeUpdate lazy-loads Reckon; the screenshot/receipts UI is not under test here.
 vi.mock('../Reckon', () => ({ ReckonWorkspace: () => null }))
 
-import { demoCharacter } from '../data/seed'
+import { demoCharacter, emptyCharacter } from '../data/seed'
+import { applyFacts } from '../lib/infer'
 import type { Character, ModuleId, Section, Sub } from '../types'
 import { BuildWorkspace, BuildKits, PvpWorkspace } from '../Build'
 import { Guides } from '../library/Guides'
@@ -107,8 +108,10 @@ describe('Task 92 coverage: every feature has a home', () => {
   })
 
   it('row 3 — leftover count + show on map on Journey › Now', () => {
-    const html = render(<JourneyNow />, { section: 'journey', sub: 'now' })
-    expect(html).toContain('Leftovers nearby')
+    // A character standing at a Limgrave grace has real outstanding loot there.
+    const character = applyFacts(emptyCharacter, ['grace:first-step'], 'answer', 'coverage')
+    const html = render(<JourneyNow />, { section: 'journey', sub: 'now', character })
+    expect(html).toContain('Missed nearby')
     expect(html).toContain('Show on map')
   })
 

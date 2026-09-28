@@ -40,31 +40,46 @@ function matchesCard(card: MechanicCard, q: string): boolean {
   return haystack.toLowerCase().includes(q)
 }
 
+function firstSentence(text: string): string {
+  const match = text.trim().match(/^(.+?[.!?])(\s|$)/)
+  return match ? match[1] : text.trim()
+}
+
 function MechanicsSection({ query }: { query: string }) {
   const q = query.trim().toLowerCase()
-  const [limit, setLimit] = useState(12)
+  const [limit, setLimit] = useState(6)
   const cards = useMemo(() => mechanics.filter((m) => matchesCard(m, q)), [q])
   if (cards.length === 0) return null
   const shown = cards.slice(0, limit)
   return (
     <Collapsed title="Mechanics" count={cards.length} defaultOpen>
       <div className="codex-grid">
-        {shown.map((m) => (
-          <article className="card" key={m.id}>
-            <div className="kicker">{m.category}</div>
-            <h3>
-              <EntityLink id={m.id}>{m.title}</EntityLink>
-            </h3>
-            <p className="note">{m.body}</p>
-            {m.numbers.length > 0 && (
-              <ul className="list" style={{ marginTop: 6 }}>
-                {m.numbers.map((n) => (
-                  <li key={n} style={{ cursor: 'default' }}>{n}</li>
-                ))}
-              </ul>
-            )}
-          </article>
-        ))}
+        {shown.map((m) => {
+          const lead = firstSentence(m.body)
+          const hasMore = lead.length < m.body.trim().length
+          return (
+            <article className="card" key={m.id}>
+              <div className="kicker">{m.category}</div>
+              <h3>
+                <EntityLink id={m.id}>{m.title}</EntityLink>
+              </h3>
+              <p className="note">{lead}</p>
+              {hasMore && (
+                <details className="codex-more">
+                  <summary className="kicker" aria-label={`More about ${m.title}`}>More</summary>
+                  <p className="note">{m.body}</p>
+                  {m.numbers.length > 0 && (
+                    <ul className="list" style={{ marginTop: 6 }}>
+                      {m.numbers.map((n) => (
+                        <li key={n} style={{ cursor: 'default' }}>{n}</li>
+                      ))}
+                    </ul>
+                  )}
+                </details>
+              )}
+            </article>
+          )
+        })}
       </div>
       <ShowMore total={cards.length} shown={limit} onMore={() => setLimit((n) => n + 12)} />
     </Collapsed>

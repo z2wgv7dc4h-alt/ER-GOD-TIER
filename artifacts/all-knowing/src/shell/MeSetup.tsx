@@ -264,14 +264,6 @@ export function MeSetup() {
         <ProgressDots step={step} onPick={goto} />
       </header>
 
-      <div className="opts setup-jump">
-        {setupSteps.map((s) => (
-          <button key={s.id} type="button" className={s.id === step ? 'chip on' : 'chip'} onClick={() => goto(s.id)}>
-            {s.label}
-          </button>
-        ))}
-      </div>
-
       <section className="panel setup-step">
         <div className="kicker">Step {setupSteps.findIndex((s) => s.id === step) + 1} of {setupSteps.length}</div>
         <h3 style={{ fontFamily: 'var(--font-display)', margin: '4px 0 6px' }}>{setupSteps.find((s) => s.id === step)?.label}</h3>

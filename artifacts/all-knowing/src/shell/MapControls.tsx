@@ -6,9 +6,27 @@ import { useWorkspace } from '../state'
  * job/layer chips that used to live in the topbar are rendered here for
  * `journey/map`; CSS hides them under 700px where the Atlas' own phone job bar
  * (Task 69) takes over.
+ *
+ * Task 126 §3 — the plate-only filters (missing, leftovers, locks, heat,
+ * Watchlist, and the pin kinds) are hidden while the live engine iframe is up:
+ * the engine owns its own pin set, so those toggles would do nothing. Only
+ * `follow`, which the host forwards to the engine over postMessage, stays.
  */
 export function MapControls() {
   const w = useWorkspace()
+  const engineUp = w.engineStatus === 'live' || (w.engineStatus === 'connecting' && w.engineMarkers.length > 0)
+
+  if (engineUp) {
+    return (
+      <div className="toggles map-controls" role="group" aria-label="Map filters">
+        <button className={w.follow ? 'chip on' : 'chip'} aria-pressed={w.follow} onClick={() => w.toggleFollow()}>
+          follow
+        </button>
+        <span className="note">Layers are filtered inside the live map.</span>
+      </div>
+    )
+  }
+
   return (
     <div className="toggles map-controls" role="group" aria-label="Map filters">
       <button className={w.missingOnly ? 'chip on' : 'chip'} onClick={() => w.setMissingOnly(!w.missingOnly)}>
