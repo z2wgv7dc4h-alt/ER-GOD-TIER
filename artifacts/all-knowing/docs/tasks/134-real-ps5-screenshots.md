@@ -44,8 +44,19 @@ Read the existing pipeline first: `src/lib/ocr.ts`, `src/lib/equipmentOcr.ts`, `
   headless; if WASM OCR is too slow for CI, mark those tests `slow` but runnable via `npm run test:ocr`) and
   compare with `ground-truth.json`: all Status numbers exact; base stats + talisman inference exact; equipment
   header parsed exactly; grid counts ≥ 6/9 correct; icon matches reported (accuracy printed, not yet gated).
-- Add `docs/PS5-CAPTURE-TIPS.md` + an in-app tip on the Setup screenshot steps: shoot straight-on, fill the frame,
-  avoid glare, or use the PS5 Share button → PS App to send real screenshots (much cleaner than a photo).
+- Add `docs/PS5-CAPTURE-TIPS.md` + a short in-app tip on the Setup screenshot steps for **phone photos of the TV**
+  (the only supported capture method — do NOT suggest the PS App / Share button): hold the phone straight-on,
+  fill the frame with the menu, avoid lamp glare, tap to focus.
 
 NEVER read .env files. `npx tsc -b`, `npm test`, `npm run lint`, `npm run build` pass; commit after each section.
 Report: extracted values vs ground truth for both fixtures, icon-match accuracy, timings.
+
+## 4. Inventory pages (5 more fixtures added mid-task: `inventory-*.jpg`)
+Inventory pages print ONLY the highlighted item's name; every other cell is an icon + optional stack count. Read:
+the tab title (Ashes / Bolstering Materials / Key Items / Sorceries / Ashes of War / …) → item category; the
+highlighted item name (list header, cross-checked with the right-panel title); the cell grid (count cells, read stack
+counts in reading order); and identify every cell by **icon matching restricted to that category** (top-3 +
+confidence, never auto-apply low confidence). Use the red ✗ "cannot use" badge / red requirement numbers as a
+cross-check against the character's stats. Owned items found this way go into `collectedItems` (after the
+confirmation step). Ground truth is in `ground-truth.json`; tests assert tab, selected name, cell count and counts
+order; icon accuracy is printed.
