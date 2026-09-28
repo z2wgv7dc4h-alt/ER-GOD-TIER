@@ -81,8 +81,8 @@ describe('the eight lockable lines exist and are wiki-grade', () => {
 
   it('makes the Millicent Elphael aid/betray steps terminal and mutually exclusive', () => {
     const millicent = lineOf('millicent')
-    const aid = millicent.steps.find((s) => s.id === 'm6')!
-    const betray = millicent.steps.find((s) => s.id === 'm7')!
+    const aid = millicent.steps.find((s) => s.factId === 'quest:millicent:aid')!
+    const betray = millicent.steps.find((s) => s.factId === 'quest:millicent:betrayed')!
     expect(aid.factId).toBe('quest:millicent:aid')
     expect(betray.factId).toBe('quest:millicent:betrayed')
     expect(aid.grants).toContain('item:rotten-winged-sword-insignia')

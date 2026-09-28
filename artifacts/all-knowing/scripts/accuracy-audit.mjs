@@ -552,18 +552,20 @@ if (duplicateNames.length) {
   lines.push('')
 }
 
-// Task 140 §2 — the missables/lockout review is authored in
-// docs/lockout-review.md and appended here so the accuracy report is one file.
-try {
-  const review = fs.readFileSync(path.join(root, 'docs/lockout-review.md'), 'utf8').trim()
-  if (review) {
-    lines.push('---')
-    lines.push('')
-    lines.push(review)
-    lines.push('')
+// Task 140 §2/§3 — the missables/lockout and questline reviews are authored in
+// separate markdown files and appended here so the accuracy report is one file.
+for (const rel of ['docs/lockout-review.md', 'docs/questline-review.md']) {
+  try {
+    const review = fs.readFileSync(path.join(root, rel), 'utf8').trim()
+    if (review) {
+      lines.push('---')
+      lines.push('')
+      lines.push(review)
+      lines.push('')
+    }
+  } catch {
+    // that section is not authored yet.
   }
-} catch {
-  // §2 not authored yet.
 }
 
 fs.mkdirSync(path.dirname(reportPath), { recursive: true })
