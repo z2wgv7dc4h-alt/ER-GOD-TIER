@@ -21,6 +21,7 @@ import { EntityLink } from './EntityLink'
 import { Thread } from './Thread'
 import { factState, useWorkspace, type FactState } from './state'
 import { useCoords } from './lib/coords'
+import { placeLabelsForWorld, usePlaceNames } from './lib/placeNames'
 import { useEnginePins } from './lib/engineMarkers'
 import { layerOrder } from './lib/nav'
 import { resolveSelection } from './lib/atlasSelection'
@@ -139,6 +140,7 @@ export function AtlasWorkspace() {
   const [artReady, setArtReady] = useState(false)
   useEffect(() => { setArtReady(false) }, [world])
   const coords = useCoords()
+  const placeNameDoc = usePlaceNames()
   const enginePins = useEnginePins(world, !engineLive)
   // Task 111 §1/§2: session result pins and vault-backed custom notes.
   const results = useResultPins()
@@ -312,6 +314,13 @@ export function AtlasWorkspace() {
     return out
   }, [allPins])
 
+  // Task 120: the committed place names for this plate, drawn under the pins.
+  const placeLabels = useMemo(
+    () => placeLabelsForWorld(placeNameDoc, world),
+    [placeNameDoc, world],
+  )
+  const placeNameSize = plate ? vw / 120 : 2
+
   // ── Task 111 overlays ────────────────────────────────────────────────
   // §4: undone density per region.
   const heat = useMemo(
@@ -442,6 +451,29 @@ export function AtlasWorkspace() {
             <text x={8 * k} y={8 * k} fill="#8a7018" fontSize={3 * k} fontFamily="Cinzel">
               {worldMeta?.label}
             </text>
+            {/* Task 120: committed region names as an overlay under the pins. */}
+            {(!plate || artReady) && placeLabels.map((l) => {
+              const p = plate ? { x: (l.x / 100) * vw, y: (l.y / 100) * vh } : { x: l.x, y: l.y }
+              return (
+                <text
+                  key={l.id}
+                  className="atlas-place-name"
+                  x={p.x}
+                  y={p.y}
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fontFamily="Georgia, 'Times New Roman', serif"
+                  fontSize={l.tier === 0 ? placeNameSize : placeNameSize * 0.72}
+                  fill="#2f2718"
+                  stroke="#efe3c7"
+                  strokeWidth={placeNameSize * 0.16}
+                  strokeOpacity={0.82}
+                  style={{ paintOrder: 'stroke', fontVariantCaps: 'small-caps', pointerEvents: 'none' }}
+                >
+                  {l.name}
+                </text>
+              )
+            })}
             {!plate && (
               <>
             <path d="M8,72 C18,70 22,58 20,46 C16,34 24,22 38,18 C52,14 58,28 70,22 C82,16 90,28 88,42 C86,58 78,70 62,74 C40,78 18,76 8,72 Z" fill="none" stroke="#3a3120" strokeWidth="0.35" />

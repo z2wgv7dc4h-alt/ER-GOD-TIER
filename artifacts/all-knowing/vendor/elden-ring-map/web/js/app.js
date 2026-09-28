@@ -106,6 +106,8 @@ const state = {
   byId: new Map(),
   manifest: null,
   master: 'M00',
+  // Task 120: region/place-name labels drawn under the pins on the canvas.
+  placeNames: [],
   enabled: new Set(Object.keys(CATS).filter((k) => !OFF_BY_DEFAULT.has(k))),
   found: new Set(),
   checked: {},
@@ -248,13 +250,15 @@ async function boot() {
     document.getElementById('app').classList.add('embed');
   }
 
-  const [manifest, markerDoc, iconDoc, saveDoc] = await Promise.all([
+  const [manifest, markerDoc, iconDoc, saveDoc, placeDoc] = await Promise.all([
     fetch('tiles/manifest.json').then((r) => r.json()).catch(() => null),
     fetch('api/markers').then((r) => r.json()).catch(() => ({ markers: [] })),
     fetch('icons/index.json').then((r) => r.json()).catch(() => null),
     fetch('api/saves').then((r) => r.json()).catch(() => ({ current: null, saves: [] })),
+    fetch('api/place-names').then((r) => r.json()).catch(() => ({ labels: [] })),
   ]);
   state.icons = iconDoc && iconDoc.icons ? iconDoc.icons : null;
+  state.placeNames = (placeDoc && placeDoc.labels) || [];
 
   state.manifest = manifest;
   state.markers = (markerDoc.markers || []).filter((m) => m.px != null);
@@ -345,6 +349,8 @@ function initMap(masterId) {
     drawOverlay: drawMarkers,
     onClick: handleClick,
     onHover: handleHover,
+    placeNames: state.placeNames,
+    labelConfig: () => ({ show: state.showLabels, master: state.master, lang: I18n.lang }),
   });
   map.fit();
 

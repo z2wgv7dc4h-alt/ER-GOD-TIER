@@ -37,6 +37,12 @@ class TileMap {
     this.onClick = opts.onClick || (() => {});
     this.onHover = opts.onHover || (() => {});
 
+    // Task 120: flat place-name labels (all masters) plus a getter for the
+    // current {show, master, lang}. The caller owns the state; this class owns
+    // the tier/zoom gate and the collision culling.
+    this.placeNames = opts.placeNames || [];
+    this.labelConfig = opts.labelConfig || (() => ({ show: true, master: null, lang: 'en' }));
+
     this._raf = null;
     this._bind();
     this.resize();
@@ -208,7 +214,60 @@ class TileMap {
       }
     }
 
+    this.drawPlaceNames(ctx);
     this.drawOverlay(ctx, this);
+  }
+
+  /**
+   * Place-name labels (Task 120).
+   *
+   * The world-map tiles carry the scroll/ribbon banner art but no glyphs; the
+   * game draws the names on top from WorldMapPlaceNameParam. Those are region
+   * banners, so they sit under the pins. Tier 0 is always shown; later tiers
+   * appear as the map zooms in. Labels that would overlap an already-placed
+   * (higher-priority) label are culled.
+   */
+  drawPlaceNames(ctx) {
+    const cfg = this.labelConfig() || {};
+    if (!cfg.show || !this.placeNames.length) return;
+    const r = this.canvas.getBoundingClientRect();
+    const candidates = [];
+    for (const l of this.placeNames) {
+      if (cfg.master && l.master !== cfg.master) continue;
+      if (this.scale + 1e-9 < (l.minZoom ?? 0)) continue;
+      const name = (l.names && (l.names[cfg.lang] || l.names.en)) || l.name || '';
+      if (!name) continue;
+      const [sx, sy] = this.toScreen(l.px, l.py);
+      if (sx < -80 || sy < -40 || sx > r.width + 80 || sy > r.height + 40) continue;
+      candidates.push({ sx, sy, name, tier: l.tier ?? 0 });
+    }
+    // Highest priority first: major region banners (tier 0) win a contested
+    // spot; minor locations only draw where they do not overlap one already down.
+    candidates.sort((a, b) => a.tier - b.tier);
+
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    if ('fontVariantCaps' in ctx) ctx.fontVariantCaps = 'small-caps';
+    const placed = [];
+    for (const c of candidates) {
+      const major = c.tier === 0;
+      const size = Math.round(Math.max(11, Math.min(34, (major ? 17 : 13) * (0.65 + this.scale))));
+      ctx.font = `600 ${size}px Georgia, "Times New Roman", serif`;
+      const w = ctx.measureText(c.name).width;
+      const h = size * 1.25;
+      const box = { x0: c.sx - w / 2 - 4, y0: c.sy - h / 2 - 2, x1: c.sx + w / 2 + 4, y1: c.sy + h / 2 + 2 };
+      if (placed.some((p) => !(box.x1 < p.x0 || box.x0 > p.x1 || box.y1 < p.y0 || box.y0 > p.y1))) continue;
+      placed.push(box);
+      // Dark ink on the light ribbon, with a parchment halo so it survives the
+      // busier parts of the art - the in-game banners are dark-on-light.
+      ctx.lineWidth = Math.max(2, size * 0.16);
+      ctx.strokeStyle = 'rgba(238, 227, 199, 0.82)';
+      ctx.strokeText(c.name, c.sx, c.sy);
+      ctx.fillStyle = major ? '#2f2718' : '#3c3323';
+      ctx.fillText(c.name, c.sx, c.sy);
+    }
+    ctx.restore();
   }
 
   /** While a tile loads, upscale its parent so panning never flashes empty. */
