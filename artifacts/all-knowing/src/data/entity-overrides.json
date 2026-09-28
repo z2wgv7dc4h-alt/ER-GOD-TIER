@@ -1,0 +1,18 @@
+{
+  "_doc": "Task 119 manual name -> canonical id fixes for the entity enrichment index. This only corrects name matching against data the repo already ships; it must never introduce game data.",
+  "aliases": {
+    "great horned tragoth": "boss:great-horned-targoth",
+    "god-devouring serpent rykard lord of blasphemy": "hunt:god-devouring-serpent-rykard-lord-of-blasphemy",
+    "rykard lord of blasphemy": "boss:rykard",
+    "radahn consort of miquella": "boss:consort",
+    "promised consort radahn": "boss:consort",
+    "malenia blade of miquella": "boss:malenia",
+    "malenia goddess of rot": "boss:malenia",
+    "godfrey first elden lord": "boss:godfrey",
+    "hoarah loux": "boss:godfrey",
+    "radagon of the golden order": "boss:radagon",
+    "elden beast": "boss:radagon",
+    "golden hippopotamus": "hunt:golden-hippopotamus"
+  },
+  "skip": []
+}

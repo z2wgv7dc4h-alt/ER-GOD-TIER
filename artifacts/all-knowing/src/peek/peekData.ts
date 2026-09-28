@@ -12,6 +12,7 @@ import { mechanicById, mechanicSummary } from '../knowledge/mechanics'
 import { npcLocate } from '../knowledge/npcLocations'
 import { storylines } from '../knowledge/storylines'
 import { knownFactIds } from '../lib/infer'
+import type { EntityRecord } from '../lib/entityIndex'
 import { attributeStats, weaponAr, type LibraryEntity } from '../library/model'
 
 /**
@@ -301,8 +302,31 @@ function effectiveKind(kind: EntityKind, row: PeekEntityRow | undefined): Entity
   }
 }
 
+/** Append the enriched record's fields, without shadowing an existing fact. */
+function appendRecordFacts(facts: PeekFact[], kind: EntityKind, record: EntityRecord | undefined): void {
+  if (!record) return
+  const have = new Set(facts.map((f) => f.label))
+  const push = (label: string, value: string | undefined, ok?: boolean) => {
+    if (!value || have.has(label)) return
+    facts.push(fact(label, value, ok))
+    have.add(label)
+  }
+  const stats = record.stats ?? {}
+  push('HP', stats.HP)
+  push('Negation', stats.Negation)
+  push('Poise', stats.Poise)
+  push('Requirements', stats.Requirements)
+  push('Scaling', stats.Scaling)
+  push('Base damage', stats['Base damage'])
+  push('Weight', stats.Weight)
+  push('Effect', stats.Effect)
+  if (record.drops?.length) push(kind === 'boss' || kind === 'enemy' ? 'Drops' : 'Dropped by', joinValues(record.drops, 3))
+  if (record.location) push(kind === 'boss' || kind === 'enemy' ? 'Arena' : 'Found at', record.location)
+  if (record.map && kind === 'grace') push('Coords', `${record.map.x}, ${record.map.y}`)
+}
+
 /** The compact card content for any entity id. */
-export function peekInfo(id: string, character?: Character): PeekInfo {
+export function peekInfo(id: string, character?: Character, record?: EntityRecord): PeekInfo {
   const canonical = canonicalEntityId(id)
   const entity = getEntity(canonical)
   const row = registry.get(canonical)
@@ -342,17 +366,22 @@ export function peekInfo(id: string, character?: Character): PeekInfo {
     facts = locationFacts(canonical)
   }
 
+  appendRecordFacts(facts, kind, record)
+
   if (!facts.length && entity.summary && entity.summary !== 'No data for this entity yet.') {
     facts = [fact('', entity.summary)]
   }
+  if (!facts.length && record?.description) facts = [fact('', record.description)]
+
+  const enrichedSummary = summary && summary !== 'No data for this entity yet.' ? summary : record?.description || record?.strategy
 
   return {
     id: canonical,
     name: entity.name,
     kind,
     kindLabel: kindLabel(kind),
-    icon: entity.icon,
-    summary: summary && summary !== 'No data for this entity yet.' ? summary : undefined,
+    icon: entity.icon ?? record?.image,
+    summary: enrichedSummary || undefined,
     status: { state: info.state, label: STATUS_LABELS[info.state], why: info.why },
     facts: facts.slice(0, 6),
   }

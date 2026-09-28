@@ -22,6 +22,7 @@ import { SectionSkeleton, DockSkeleton } from './shell/Skeletons'
 import { SubTabs } from './shell/SubTabs'
 import { TabBar } from './shell/TabBar'
 import { SettingsEffects } from './settings/SettingsEffects'
+import { ensureEntityIndex } from './lib/entityEnrich'
 import { WorkspaceProvider, useWorkspace } from './state'
 
 // Each room is a separate chunk, loaded only when its section/sub is opened.
@@ -124,6 +125,12 @@ function AppShell() {
     setLogSeed(seed)
     setLogOpen(true)
   }
+
+  // Task 119: warm the enriched entity index once, so peek cards, entity pages
+  // and Gideon all read the same records without a per-screen "No data" flash.
+  useEffect(() => {
+    ensureEntityIndex()
+  }, [])
 
   // Phone search opens the command palette full-width.
   useEffect(() => {

@@ -19,6 +19,7 @@ import { loadGameTextTable } from './gameText'
 import { quoteFor } from './dialogueQuote'
 import { advise, planRespec } from './advisor'
 import { edges, entityName, getEntity, status } from './entityGraph'
+import { enrichmentFor } from './entityEnrich'
 import { summarize } from './infer'
 import { findLine, stillAvailable, survey } from '../knowledge/storylines'
 import { opBuilds } from '../knowledge/builds'
@@ -316,6 +317,7 @@ export async function runGideonTool(name: string, args: Record<string, unknown>,
     case 'get_entity': {
       const entity = getEntity(String(args.id ?? ''))
       const st = status(entity.id, ctx.character)
+      const enriched = enrichmentFor(entity.id)
       return {
         id: entity.id,
         kind: entity.kind,
@@ -323,6 +325,17 @@ export async function runGideonTool(name: string, args: Record<string, unknown>,
         summary: entity.summary,
         status: st.state,
         why: st.why,
+        enriched: enriched
+          ? {
+              description: enriched.description,
+              location: enriched.location,
+              map: enriched.map,
+              stats: enriched.stats,
+              drops: enriched.drops,
+              strategy: enriched.strategy,
+              sources: enriched.sources,
+            }
+          : undefined,
         edges: edges(entity.id)
           .slice(0, 12)
           .map((e) => ({ rel: e.rel, to: e.to, label: e.label, name: entityName(e.to) })),

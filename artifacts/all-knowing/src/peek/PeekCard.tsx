@@ -13,6 +13,7 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 import { useWorkspaceOptional } from '../state'
+import { useEnrichment, useEntityIndex } from '../lib/entityEnrich'
 import { peekInfo, type PeekInfo } from './peekData'
 import { closePeek, getPeek, openPeek, peekHost, subscribePeek, type PeekTarget } from './peekStore'
 import './peek.css'
@@ -143,7 +144,10 @@ export function PeekLayer({ selfKey }: { selfKey: string }) {
 
 export function PeekCard({ target, onClose }: { target: PeekTarget; onClose: () => void }) {
   const w = useWorkspaceOptional()
-  const info = useMemo(() => peekInfo(target.id, w?.character), [target.id, w?.character])
+  const record = useEnrichment(target.id)
+  const { ready } = useEntityIndex()
+  const info = useMemo(() => peekInfo(target.id, w?.character, record), [target.id, w?.character, record])
+  const pending = !ready && info.facts.length === 0 && !info.summary
   const cardRef = useRef<HTMLDivElement>(null)
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null)
 
@@ -236,7 +240,15 @@ export function PeekCard({ target, onClose }: { target: PeekTarget; onClose: () 
         {info.status.why ? ` — ${info.status.why}` : ''}
       </div>
 
-      {info.facts.length > 0 && (
+      {pending && (
+        <div className="peek-skeleton" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </div>
+      )}
+
+      {!pending && info.facts.length > 0 && (
         <dl className="peek-facts">
           {info.facts.map((f, i) => (
             <div key={`${f.label}-${i}`} className="peek-fact">
@@ -249,7 +261,7 @@ export function PeekCard({ target, onClose }: { target: PeekTarget; onClose: () 
         </dl>
       )}
 
-      {info.summary && <p className="peek-summary">{info.summary}</p>}
+      {!pending && info.summary && <p className="peek-summary">{info.summary}</p>}
 
       <footer className="peek-actions">
         <button type="button" className="chip on" onClick={open}>

@@ -1,0 +1,759 @@
+{
+  "kinds": [
+    {
+      "kind": "ash",
+      "total": 4,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 4,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 4,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 4,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 4,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 4,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 4,
+          "pct": 0
+        },
+        "descriptionLocation": {
+          "count": 0,
+          "total": 4,
+          "pct": 0
+        }
+      }
+    },
+    {
+      "kind": "boss",
+      "total": 160,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 160,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 160,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 160,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 160,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 160,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 160,
+          "pct": 0
+        },
+        "hp": {
+          "count": 0,
+          "total": 160,
+          "pct": 0
+        },
+        "negation": {
+          "count": 0,
+          "total": 160,
+          "pct": 0
+        },
+        "drops": {
+          "count": 0,
+          "total": 160,
+          "pct": 0
+        },
+        "strategy": {
+          "count": 0,
+          "total": 160,
+          "pct": 0
+        },
+        "hpNegationLocation": {
+          "count": 0,
+          "total": 160,
+          "pct": 0
+        }
+      }
+    },
+    {
+      "kind": "build",
+      "total": 28,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 28,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 28,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 28,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 28,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 28,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 28,
+          "pct": 0
+        }
+      }
+    },
+    {
+      "kind": "dungeon",
+      "total": 119,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 119,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 119,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 119,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 119,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 119,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 119,
+          "pct": 0
+        }
+      }
+    },
+    {
+      "kind": "ending",
+      "total": 5,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 5,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 5,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 5,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 5,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 5,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 5,
+          "pct": 0
+        }
+      }
+    },
+    {
+      "kind": "gate",
+      "total": 10,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 10,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 10,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 10,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 10,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 10,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 10,
+          "pct": 0
+        }
+      }
+    },
+    {
+      "kind": "grace",
+      "total": 50,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 50,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 50,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 50,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 50,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 50,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 50,
+          "pct": 0
+        }
+      }
+    },
+    {
+      "kind": "item",
+      "total": 99,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 99,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 99,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 99,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 99,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 99,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 99,
+          "pct": 0
+        },
+        "descriptionLocation": {
+          "count": 0,
+          "total": 99,
+          "pct": 0
+        }
+      }
+    },
+    {
+      "kind": "material",
+      "total": 3,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 3,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 3,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 3,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 3,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 3,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 3,
+          "pct": 0
+        },
+        "descriptionLocation": {
+          "count": 0,
+          "total": 3,
+          "pct": 0
+        }
+      }
+    },
+    {
+      "kind": "mechanic",
+      "total": 65,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 65,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 65,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 65,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 65,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 65,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 65,
+          "pct": 0
+        }
+      }
+    },
+    {
+      "kind": "merchant",
+      "total": 106,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 106,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 106,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 106,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 106,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 106,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 106,
+          "pct": 0
+        }
+      }
+    },
+    {
+      "kind": "npc",
+      "total": 8,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 8,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 8,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 8,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 8,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 8,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 8,
+          "pct": 0
+        },
+        "descriptionLocation": {
+          "count": 0,
+          "total": 8,
+          "pct": 0
+        }
+      }
+    },
+    {
+      "kind": "quest",
+      "total": 176,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 176,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 176,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 176,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 176,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 176,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 176,
+          "pct": 0
+        }
+      }
+    },
+    {
+      "kind": "region",
+      "total": 10,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 10,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 10,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 10,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 10,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 10,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 10,
+          "pct": 0
+        }
+      }
+    },
+    {
+      "kind": "spell",
+      "total": 20,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 20,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 20,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 20,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 20,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 20,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 20,
+          "pct": 0
+        },
+        "descriptionLocation": {
+          "count": 0,
+          "total": 20,
+          "pct": 0
+        }
+      }
+    },
+    {
+      "kind": "spirit",
+      "total": 3,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 3,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 3,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 3,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 3,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 3,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 3,
+          "pct": 0
+        },
+        "descriptionLocation": {
+          "count": 0,
+          "total": 3,
+          "pct": 0
+        }
+      }
+    },
+    {
+      "kind": "talisman",
+      "total": 28,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 28,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 28,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 28,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 28,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 28,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 28,
+          "pct": 0
+        },
+        "effect": {
+          "count": 0,
+          "total": 28,
+          "pct": 0
+        },
+        "descriptionLocation": {
+          "count": 0,
+          "total": 28,
+          "pct": 0
+        }
+      }
+    },
+    {
+      "kind": "weapon",
+      "total": 62,
+      "fields": {
+        "description": {
+          "count": 0,
+          "total": 62,
+          "pct": 0
+        },
+        "location": {
+          "count": 0,
+          "total": 62,
+          "pct": 0
+        },
+        "map": {
+          "count": 0,
+          "total": 62,
+          "pct": 0
+        },
+        "image": {
+          "count": 0,
+          "total": 62,
+          "pct": 0
+        },
+        "stats": {
+          "count": 0,
+          "total": 62,
+          "pct": 0
+        },
+        "related": {
+          "count": 0,
+          "total": 62,
+          "pct": 0
+        },
+        "requirements": {
+          "count": 0,
+          "total": 62,
+          "pct": 0
+        },
+        "scaling": {
+          "count": 0,
+          "total": 62,
+          "pct": 0
+        },
+        "baseDamage": {
+          "count": 0,
+          "total": 62,
+          "pct": 0
+        },
+        "weight": {
+          "count": 0,
+          "total": 62,
+          "pct": 0
+        },
+        "requirementsScalingLocation": {
+          "count": 0,
+          "total": 62,
+          "pct": 0
+        }
+      }
+    }
+  ],
+  "overall": {
+    "records": {
+      "count": 0,
+      "total": 956,
+      "pct": 0
+    },
+    "description": {
+      "count": 0,
+      "total": 956,
+      "pct": 0
+    },
+    "location": {
+      "count": 0,
+      "total": 956,
+      "pct": 0
+    }
+  }
+}

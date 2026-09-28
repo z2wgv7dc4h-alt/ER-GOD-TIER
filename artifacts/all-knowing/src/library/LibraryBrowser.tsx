@@ -5,6 +5,8 @@ import { areaFromFactId } from '../lib/areaContext'
 import { fanImage, normalizeName } from '../lib/fanImage'
 import { applyFacts, denyFacts } from '../lib/infer'
 import { weaponVerdict, type Verdict } from '../lib/verdict'
+import { useEnrichment } from '../lib/entityEnrich'
+import type { EntityRecord } from '../lib/entityIndex'
 import { useLibraryCatalog } from './catalog'
 import { CompareTray } from './CompareTray'
 import { EntityPanel } from './EntityPanel'
@@ -151,10 +153,13 @@ function activeFilterCount(filter: LibraryFilter): number {
   return n
 }
 
-function cardStats(entity: LibraryEntity): string[] {
+function cardStats(entity: LibraryEntity, record?: EntityRecord): string[] {
   const out: string[] = []
   if (entity.weight !== undefined) out.push(`${entity.weight} wt`)
-  for (const stat of entity.stats ?? []) {
+  const stats = entity.stats?.length
+    ? entity.stats
+    : Object.entries(record?.stats ?? {}).map(([label, value]) => ({ label, value }))
+  for (const stat of stats) {
     out.push(`${stat.label}: ${stat.value}`)
     if (out.length >= 2) break
   }
@@ -227,11 +232,13 @@ function EntityCard({
   verdict?: Verdict | null
   onOpen: () => void
 }) {
+  const record = useEnrichment(entity.factId)
   const owned = isOwned(entity, character)
   const met = meetsRequirements(entity, character)
   // The verdict badge already says "Needs …" for an unmet weapon; avoid a twin.
   const unmet = met === false && !verdict ? unmetBadge(entity, character) : null
-  const stats = cardStats(entity)
+  const stats = cardStats(entity, record)
+  const icon = entity.icon ?? record?.image
   return (
     <button
       type="button"
@@ -239,8 +246,8 @@ function EntityCard({
       onClick={onOpen}
     >
       <span className="lib-card-thumb">
-        {entity.icon ? (
-          <img src={entity.icon} alt="" loading="lazy" decoding="async" />
+        {icon ? (
+          <img src={icon} alt="" loading="lazy" decoding="async" />
         ) : (
           <CategoryGlyph id={entity.category} className="lib-card-glyph" size={20} />
         )}
