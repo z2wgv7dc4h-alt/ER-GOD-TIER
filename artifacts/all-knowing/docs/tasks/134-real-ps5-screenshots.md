@@ -60,3 +60,11 @@ confidence, never auto-apply low confidence). Use the red ✗ "cannot use" badge
 cross-check against the character's stats. Owned items found this way go into `collectedItems` (after the
 confirmation step). Ground truth is in `ground-truth.json`; tests assert tab, selected name, cell count and counts
 order; icon accuracy is printed.
+
+## 5. Picker + crafting pages (fixtures `equipment-talisman-list-01.jpg`, `crafting-all-items-01.jpg`)
+- **Equipment slot picker** (e.g. "Talisman 1" → list): shows EVERY owned item of that slot's class, with a small
+  crossed-swords badge on equipped cells. One photo = the full owned talisman (or armor/weapon) set + which are
+  equipped. Detect the badge; identify cells by icon matching restricted to the slot class.
+- **Item Crafting** list: only unlocked recipes appear, so craftable items → owned cookbooks (via `recipes.json`
+  recipe → cookbook). Add inferred cookbooks as facts with source "crafting screenshot" and reason.
+Tests assert selected names, cell counts and badge positions from `ground-truth.json`.
