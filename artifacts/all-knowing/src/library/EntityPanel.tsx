@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import type { Remembrance } from '../knowledge/remembrances'
 import { getEntity, status, type EntityKind, type EntityState } from '../lib/entityGraph'
+import { useEnrichment, useEntityIndex } from '../lib/entityEnrich'
 import type { RemembranceOption } from '../lib/remembranceChoice'
 import type { Verdict } from '../lib/verdict'
 import { Related } from '../Related'
@@ -105,6 +106,15 @@ const ATTR_LABELS: Record<AttributeKey, string> = {
   arc: 'Arc',
 }
 
+function DetailedExcerpt({ heading, text }: { heading: string; text: string }) {
+  return (
+    <div className="lib-panel-block">
+      <div className="kicker">{heading}</div>
+      <WikiText className="note" text={text} />
+    </div>
+  )
+}
+
 function RequirementRow({ attr, value, character }: { attr: AttributeKey; value: number; character: Character }) {
   const met = attributeStats(character)[attr] >= value
   return (
@@ -140,10 +150,20 @@ export function EntityPanel({
 }: EntityPanelProps) {
   const [tab, setTab] = useState<Tab>('stats')
   const statusFactId = factId ?? entity.factId
+  // Task 119 §3: read the enriched record first; skeleton (not "No data") while
+  // the one index fetch is still in flight.
+  const record = useEnrichment(statusFactId)
+  const { ready: indexReady } = useEntityIndex()
   const panelKindValue = panelKind(entity, statusFactId, kind)
   const isBoss = panelKindValue === 'boss' || panelKindValue === 'enemy'
   const isNpc = panelKindValue === 'npc' || panelKindValue === 'merchant'
   const isGrace = panelKindValue === 'grace'
+  const BOSS_LABELS = new Set(['hp', 'negation', 'poise', 'status resist', 'weak to', 'resists', 'drops', 'arena'])
+  const enrichedStats = Object.entries(record?.stats ?? {}).filter(([label]) => {
+    if (isBoss && BOSS_LABELS.has(label.toLowerCase())) return false
+    return !(entity.stats ?? []).some((s) => s.label.toLowerCase() === label.toLowerCase())
+  })
+  const recordSections = record?.sections ?? []
   const isOwnedValue = owned ?? isOwned(entity, character)
   const metValue = requirementsMet === undefined ? meetsRequirements(entity, character) : requirementsMet
   const requirementEntries = Object.entries(entity.requirements ?? {}) as [AttributeKey, number][]
@@ -311,21 +331,51 @@ export function EntityPanel({
               </div>
             )}
 
-            {!isBoss && requirementEntries.length === 0 && !entity.attack?.length && !entity.stats?.length && !ar && entity.weight === undefined && (
-              <p className="note">No structured stats in the data for this entry.</p>
+            {enrichedStats.length > 0 && (
+              <div className="lib-panel-block">
+                <div className="kicker">Enriched facts</div>
+                <dl className="lib-stat-grid">
+                  {enrichedStats.map(([label, value]) => (
+                    <div key={label} className="lib-stat">
+                      <dt>{label}</dt>
+                      <dd>{value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            )}
+
+            {!isBoss && requirementEntries.length === 0 && !entity.attack?.length && !entity.stats?.length && !ar && entity.weight === undefined && enrichedStats.length === 0 && (
+              indexReady ? (
+                <p className="note">No structured stats in the data for this entry.</p>
+              ) : (
+                <p className="note lib-skeleton-note">Loading reference data…</p>
+              )
             )}
           </div>
         )}
 
         {tab === 'where' && (
           <div className="lib-panel-where">
-            {entity.where && <WikiText className="note" text={entity.where} />}
+            {(entity.where || record?.location) && <WikiText className="note" text={(entity.where || record!.location)!} />}
             {entity.region && (
               <p className="note">
                 <strong>Region:</strong> {entity.region}
               </p>
             )}
-            {!entity.where && !entity.region && <p className="note">No acquisition text in the data for this entry.</p>}
+            {record?.map && (
+              <p className="note">
+                <strong>Coords:</strong> {record.map.x}, {record.map.y}
+                {record.map.map ? ` · ${record.map.map}` : ''}
+              </p>
+            )}
+            {!entity.where && !record?.location && !entity.region && !record?.map && (
+              indexReady ? (
+                <p className="note">No acquisition text in the data for this entry.</p>
+              ) : (
+                <p className="note lib-skeleton-note">Loading location data…</p>
+              )
+            )}
             {onShowOnMap && (
               <div className="opts">
                 <button type="button" className="chip" onClick={onShowOnMap}>
@@ -338,12 +388,26 @@ export function EntityPanel({
 
         {tab === 'lore' && (
           <div className="lib-panel-lore">
-            {entity.lore ? (
+            {(entity.lore || record?.description) && (
               <SpoilerGate factId={statusFactId}>
-                <WikiText className="note lib-lore-text" text={entity.lore} />
+                <WikiText className="note lib-lore-text" text={(entity.lore || record!.description)!} />
               </SpoilerGate>
-            ) : (
-              <p className="note">No lore text in the data for this entry.</p>
+            )}
+            {record?.strategy && record.strategy !== record.description && (
+              <DetailedExcerpt heading="Strategy" text={record.strategy} />
+            )}
+            {recordSections
+              .filter((section) => section.text && section.text !== record?.description && section.text !== record?.strategy)
+              .slice(0, 3)
+              .map((section) => (
+                <DetailedExcerpt key={`${section.heading}-${section.text.slice(0, 12)}`} heading={section.heading} text={section.text} />
+              ))}
+            {!entity.lore && !record?.description && !record?.strategy && recordSections.length === 0 && (
+              indexReady ? (
+                <p className="note">No lore text in the data for this entry.</p>
+              ) : (
+                <p className="note lib-skeleton-note">Loading lore data…</p>
+              )
             )}
           </div>
         )}

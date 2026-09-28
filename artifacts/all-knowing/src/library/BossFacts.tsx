@@ -15,6 +15,7 @@ import {
   type CombatStats,
 } from '../lib/enemy'
 import { loadBossDrops, type FextBoss } from '../lib/bosses'
+import { useEnrichment } from '../lib/entityEnrich'
 import { bandFor, loadRegionLevels, type RegionLevel } from '../lib/regionLevels'
 import type { Character } from '../types'
 
@@ -60,6 +61,7 @@ export function BossFacts({
 }) {
   const { targets } = useCombatTargets()
   const { bosses: armoryBosses } = useArmory()
+  const record = useEnrichment(factId)
   const [fext, setFext] = useState<FextBoss | null>(null)
   const [areas, setAreas] = useState<RegionLevel[]>([])
   const [weapons, setWeapons] = useState<Weapon[]>([])
@@ -134,10 +136,33 @@ export function BossFacts({
     [combat],
   )
 
-  if (!combat && !fext && !armory) return null
+  if (!combat && !fext && !armory && !record) return null
+  const enrichedHp = !combat && record?.stats?.HP
+  const enrichedNegation = !combat && record?.stats?.Negation
+  const enrichedPoise = !combat && record?.stats?.Poise
+  const enrichedDrops = !fext?.drops?.length ? record?.drops ?? [] : []
+  const enrichedStrategy = !strategy && record?.strategy ? record.strategy : null
+  const enrichedLocation = !armory?.region && !fext?.locations?.length ? record?.location : undefined
 
   return (
     <>
+      {enrichedHp && (
+        <div className="lib-panel-block">
+          <div className="kicker">Combat profile · enriched</div>
+          <div className="lib-attack">
+            <span className="lib-attack-chip">HP <strong>{enrichedHp}</strong></span>
+            {enrichedPoise && <span className="lib-attack-chip">Poise <strong>{enrichedPoise}</strong></span>}
+          </div>
+        </div>
+      )}
+
+      {enrichedNegation && (
+        <div className="lib-panel-block">
+          <div className="kicker">Damage negation</div>
+          <p className="note">{enrichedNegation}</p>
+        </div>
+      )}
+
       {combat && (
         <div className="lib-panel-block">
           <div className="kicker">Combat profile · NpcParam</div>
@@ -205,10 +230,10 @@ export function BossFacts({
         </div>
       )}
 
-      {strategy && (
+      {(strategy || enrichedStrategy) && (
         <div className="lib-panel-block">
-          <div className="kicker">Strategy · {strategy.heading}</div>
-          <p className="note">{strategy.text}</p>
+          <div className="kicker">Strategy · {strategy?.heading ?? 'Guide'}</div>
+          <p className="note">{strategy?.text ?? enrichedStrategy}</p>
           {fext?.url && (
             <p className="note">
               <a className="ext" href={fext.url} target="_blank" rel="noreferrer">Full fight guide</a>
@@ -217,18 +242,18 @@ export function BossFacts({
         </div>
       )}
 
-      {fext && fext.drops.length > 0 && (
+      {(fext?.drops?.length || enrichedDrops.length > 0) && (
         <div className="lib-panel-block">
           <div className="kicker">Drops</div>
           <div className="lib-scaling">
-            {fext.drops.map((d) => (
+            {(fext?.drops ?? enrichedDrops).map((d) => (
               <span key={d} className="lib-scaling-chip">{d}</span>
             ))}
           </div>
         </div>
       )}
 
-      {(armory || fext?.locations?.length) && (
+      {(armory || fext?.locations?.length || enrichedLocation) && (
         <div className="lib-panel-block">
           <div className="kicker">Arena</div>
           <p className="note">
@@ -236,7 +261,7 @@ export function BossFacts({
             {armory?.parryable ? 'Parryable' : armory?.parryable === false ? 'Not parryable' : ''}
             {armory?.notes ? `${armory.parryable != null ? ' · ' : ''}${armory.notes}` : ''}
           </p>
-          {fext?.locations?.length ? <p className="note">{fext.locations.join(' · ')}</p> : null}
+          {fext?.locations?.length ? <p className="note">{fext.locations.join(' · ')}</p> : enrichedLocation ? <p className="note">{enrichedLocation}</p> : null}
         </div>
       )}
 

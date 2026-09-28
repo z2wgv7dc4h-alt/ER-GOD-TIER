@@ -14,6 +14,7 @@ import type { Character } from '../types'
 import { canonicalFactId } from './aliases'
 import { linkIndex, linkify } from './interlink'
 import { iconFor } from './sourcePack'
+import { getRecord } from './entityIndex'
 
 /**
  * Task 97 — the one entity graph.
@@ -714,12 +715,37 @@ export function entityName(id: string): string {
   return idx.entities.get(canonical)?.name ?? (canonical.replace(/^[a-z]+:/, '').replace(/-/g, ' ') || canonical)
 }
 
-/** One resolved entity for any id, with a stub when the data holds no row. */
+/**
+ * One resolved entity for any id, with a stub when the data holds no row.
+ *
+ * Task 119 §3: once the enrichment index has loaded, the enriched record's
+ * description/location stand in for a missing/empty summary and its image for a
+ * missing icon. It is still synchronous — before the index settles this returns
+ * exactly what the graph has, and consumers that must show a skeleton use
+ * `useEnrichment` instead.
+ */
 export function getEntity(factId: string, name?: string): EntitySummary {
   const idx = ensureIndex()
   const id = canonicalEntityId(factId, name)
   const found = idx.entities.get(id)
-  if (found) return found
+  const record = getRecord(id)
+  if (found) {
+    if (!record) return found
+    const summary =
+      found.summary && found.summary !== 'No data for this entity yet.'
+        ? found.summary
+        : record.description || record.location || found.summary
+    return { ...found, summary, icon: found.icon ?? record.image }
+  }
+  if (record) {
+    return {
+      id,
+      kind: record.kind as EntityKind,
+      name: record.name || name || id,
+      icon: record.image,
+      summary: record.description || record.location || 'No data for this entity yet.',
+    }
+  }
   const fallbackName = name ?? (id.replace(/^[a-z]+:/, '').replace(/-/g, ' ') || id)
   return { id, kind: prefixKind(id), name: fallbackName, summary: 'No data for this entity yet.' }
 }

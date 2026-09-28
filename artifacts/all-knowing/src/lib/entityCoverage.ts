@@ -1,0 +1,145 @@
+import { allEntities, type EntityKind } from './entityGraph'
+import type { EntityRecord } from './entityIndex'
+
+/**
+ * Task 119 §1/§4 — coverage measurement over the entity graph.
+ *
+ * For every entity the graph knows, by kind, report the share that now carries a
+ * description, acquisition/location text, map coords, an image, kind-appropriate
+ * stats, boss drops, a strategy/wiki excerpt and related links. The guard test
+ * (`entityCoverage.test.ts`) asserts the per-kind minimums from the task; the
+ * `scripts/entity-coverage.mjs` script writes the same numbers into
+ * `docs/ENTITY-COVERAGE.md` alongside the before snapshot.
+ */
+
+export type FieldCoverage = { count: number; total: number; pct: number }
+
+export type KindCoverage = {
+  kind: EntityKind
+  total: number
+  fields: Record<string, FieldCoverage>
+}
+
+export type CoverageReport = {
+  kinds: KindCoverage[]
+  overall: Record<string, FieldCoverage>
+}
+
+function field(count: number, total: number): FieldCoverage {
+  return { count, total, pct: total ? Math.round((count / total) * 1000) / 10 : 100 }
+}
+
+function has(record: EntityRecord | undefined, key: string): boolean {
+  const value = record?.[key as 'description']
+  return typeof value === 'string' && value.length > 0
+}
+
+function stat(record: EntityRecord | undefined, label: string): boolean {
+  const value = record?.stats?.[label]
+  return typeof value === 'string' && value.length > 0
+}
+
+function drops(record: EntityRecord | undefined): boolean {
+  return Boolean(record?.drops && record.drops.length)
+}
+
+/** The guard combos the task names, per kind. */
+export const GUARD_MINIMUMS: { kind: EntityKind; field: string; min: number; label: string }[] = [
+  { kind: 'boss', field: 'hpNegationLocation', min: 95, label: 'HP + negation + location' },
+  { kind: 'boss', field: 'drops', min: 90, label: 'drops' },
+  { kind: 'boss', field: 'strategy', min: 90, label: 'strategy/wiki section' },
+  { kind: 'weapon', field: 'requirementsScalingLocation', min: 98, label: 'requirements + scaling + location' },
+  { kind: 'armor', field: 'descriptionLocation', min: 95, label: 'description + location' },
+  { kind: 'talisman', field: 'descriptionLocation', min: 95, label: 'description + location' },
+  { kind: 'spell', field: 'descriptionLocation', min: 95, label: 'description + location' },
+  { kind: 'ash', field: 'descriptionLocation', min: 95, label: 'description + location' },
+  { kind: 'spirit', field: 'descriptionLocation', min: 95, label: 'description + location' },
+  { kind: 'grace', field: 'map', min: 98, label: 'coords' },
+]
+
+function fieldsFor(kind: EntityKind, records: (EntityRecord | undefined)[]): Record<string, FieldCoverage> {
+  const total = records.length
+  const count = (test: (record: EntityRecord | undefined) => boolean) => records.filter(test).length
+  const out: Record<string, FieldCoverage> = {
+    description: field(count((r) => has(r, 'description')), total),
+    location: field(count((r) => has(r, 'location')), total),
+    map: field(count((r) => Boolean(r?.map)), total),
+    image: field(count((r) => has(r, 'image')), total),
+    stats: field(count((r) => Boolean(r?.stats && Object.keys(r.stats).length)), total),
+    related: field(count((r) => Boolean(r?.related && r.related.length)), total),
+  }
+  switch (kind) {
+    case 'boss':
+    case 'enemy':
+      out.hp = field(count((r) => stat(r, 'HP')), total)
+      out.negation = field(count((r) => stat(r, 'Negation')), total)
+      out.drops = field(count(drops), total)
+      out.strategy = field(count((r) => has(r, 'strategy')), total)
+      out.hpNegationLocation = field(count((r) => stat(r, 'HP') && stat(r, 'Negation') && has(r, 'location')), total)
+      break
+    case 'weapon':
+    case 'shield':
+      out.requirements = field(count((r) => stat(r, 'Requirements')), total)
+      out.scaling = field(count((r) => stat(r, 'Scaling')), total)
+      out.baseDamage = field(count((r) => stat(r, 'Base damage')), total)
+      out.weight = field(count((r) => stat(r, 'Weight')), total)
+      out.requirementsScalingLocation = field(
+        count((r) => stat(r, 'Requirements') && stat(r, 'Scaling') && has(r, 'location')),
+        total,
+      )
+      break
+    case 'armor':
+      out.negations = field(count((r) => stat(r, 'Negation')), total)
+      out.poise = field(count((r) => stat(r, 'Poise')), total)
+      out.weight = field(count((r) => stat(r, 'Weight')), total)
+      break
+    case 'talisman':
+      out.effect = field(count((r) => stat(r, 'Effect')), total)
+      break
+    default:
+      break
+  }
+  if (['armor', 'talisman', 'spell', 'ash', 'spirit', 'item', 'material', 'npc'].includes(kind)) {
+    out.descriptionLocation = field(count((r) => has(r, 'description') && has(r, 'location')), total)
+  }
+  return out
+}
+
+export function computeEntityCoverage(
+  records: Record<string, EntityRecord> | Map<string, EntityRecord>,
+): CoverageReport {
+  const lookup = records instanceof Map ? records : new Map(Object.entries(records))
+  const byKind = new Map<EntityKind, (EntityRecord | undefined)[]>()
+  for (const entity of allEntities()) {
+    const list = byKind.get(entity.kind) ?? []
+    list.push(lookup.get(entity.id))
+    byKind.set(entity.kind, list)
+  }
+
+  const kinds: KindCoverage[] = [...byKind.entries()]
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([kind, list]) => ({ kind, total: list.length, fields: fieldsFor(kind, list) }))
+
+  const overall: Record<string, FieldCoverage> = {}
+  const all = [...lookup.values()]
+  const withRecord = all.filter(Boolean)
+  overall.records = field(withRecord.length, allEntities().length)
+  overall.description = field(withRecord.filter((r) => has(r, 'description')).length, allEntities().length)
+  overall.location = field(withRecord.filter((r) => has(r, 'location')).length, allEntities().length)
+  return { kinds, overall }
+}
+
+/** True when a report satisfies every task minimum. */
+export function violations(report: CoverageReport): string[] {
+  const out: string[] = []
+  for (const guard of GUARD_MINIMUMS) {
+    const kind = report.kinds.find((k) => k.kind === guard.kind)
+    if (!kind || kind.total === 0) continue
+    const value = kind.fields[guard.field]
+    if (!value) continue
+    if (value.pct < guard.min) {
+      out.push(`${guard.kind} ${guard.label}: ${value.pct}% < ${guard.min}%`)
+    }
+  }
+  return out
+}
