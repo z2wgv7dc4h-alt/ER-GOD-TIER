@@ -19,6 +19,7 @@ import {
   locationToHash,
   locationToModule,
   moduleToLocation,
+  preserveQuery,
 } from './lib/sections'
 import {
   activeProfile,
@@ -283,7 +284,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   // Hash routing: the URL is `#/section/sub` (plus the Task 97 `?e=` entity
   // param), so reloads and the back button work.
   useEffect(() => {
-    const hash = buildEntityHash(locationToHash(section, sub), entityId)
+    const base = locationToHash(section, sub)
+    const hash = preserveQuery(base, buildEntityHash(base, entityId), window.location.hash)
     if (window.location.hash !== hash) window.location.hash = hash
   }, [section, sub, entityId])
 

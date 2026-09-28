@@ -15,6 +15,7 @@ import { canonicalFactId } from './aliases'
 import { linkIndex, linkify } from './interlink'
 import { iconFor } from './sourcePack'
 import { allRecords, getEntityIndexVersion, getRecord } from './entityIndex'
+import bossRoster from '../data/bosses.json'
 
 /**
  * Task 97 — the one entity graph.
@@ -433,6 +434,11 @@ function buildIndex(): Index {
   }
   for (const b of dungeonBosses) {
     addEntity({ id: b.id, kind: 'boss', name: b.name, summary: 'Dungeon boss' })
+  }
+  // Task 130: the canonical boss roster registers every encounter's fact id so
+  // Setup, progress, the Area hub and the Library share one boss authority.
+  for (const b of bossRoster as { id: string; name: string; region: string }[]) {
+    addEntity({ id: b.id, kind: 'boss', name: b.name, summary: b.region })
   }
   for (const b of opBuilds) {
     addEntity({ id: b.id, kind: 'build', name: b.name, summary: b.why }, [b.tag])

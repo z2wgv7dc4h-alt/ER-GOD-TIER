@@ -168,6 +168,20 @@ Codex fetches it, `src/knowledge/completion.ts` derives `fieldHunts` from it, an
 `src/lib/sl2/facts.ts` reads its flags directly. There is no separate `hunt-flags.json` copy
 (deleted in Task 37 — it could drift). See `docs/research/hunt-data-cleanup.md`.
 
+## Boss roster (Task 130, generated)
+
+`scripts/build-boss-roster.mjs` merges every boss dataset the repo ships —
+`hunts.json`, `hosted-bosses.json`/`boss-list.json`, engine markers,
+`bosses-fextralife.json`, `checklists/bosses.json`, `armory-bosses.json`,
+FanAPI, `dungeons.json`, `npc-combat.json`/`enemy-combat.json` and the entity
+index — into `src/data/bosses.json`: one record per boss **encounter** (a boss
+fought in two places is two records), keyed by the canonical fact id shared with
+the entity graph. Each record carries campaign (base/DLC), region, location +
+nearest grace, tier (`great-rune`/`remembrance`/`major`/`field`/`dungeon`/
+`evergaol`/`mini`), required-for-ending, drops, map coords and HP. The script
+prints the per-campaign/tier counts, the source rows that failed to join and the
+Fextralife cross-check. Regenerate with `node scripts/build-boss-roster.mjs`
+
 ## Item / boss images (generated)
 
 - `public/sourced/images/<category>/<id>.webp` — 2,244 FanAPI thumbnails (160 px WebP,

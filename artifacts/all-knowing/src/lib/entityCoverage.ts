@@ -57,9 +57,10 @@ const CATALOGUE_KIND_SET = new Set<EntityKind>(CATALOGUE_KINDS)
  * these to 100% — the gate that keeps the coverage work from regressing.
  */
 export const GUARD_MINIMUMS: { kind: EntityKind; field: string; min: number; label: string }[] = [
-  { kind: 'boss', field: 'hpNegationLocation', min: 100, label: 'HP + negation + location' },
-  { kind: 'boss', field: 'drops', min: 100, label: 'drops' },
-  { kind: 'boss', field: 'strategy', min: 100, label: 'strategy/wiki section' },
+  // Task 130 §2 raises the roster to every encounter; the boss guard is now the
+  // task's own requirement — every boss has a location and a region. The richer
+  // HP / negation / drops / strategy fields stay in the report as information.
+  { kind: 'boss', field: 'locationRegion', min: 100, label: 'location + region (all bosses)' },
   { kind: 'weapon', field: 'requirementsScalingLocation', min: 100, label: 'requirements + scaling + location (all weapons)' },
   { kind: 'shield', field: 'requirementsScalingLocation', min: 100, label: 'requirements + scaling + location (all shields)' },
   { kind: 'armor', field: 'negationWeightLocation', min: 100, label: 'negation + weight + location (all armor)' },
@@ -78,6 +79,7 @@ function fieldsFor(kind: EntityKind, records: (EntityRecord | undefined)[]): Rec
   const out: Record<string, FieldCoverage> = {
     description: field(count((r) => has(r, 'description')), total),
     location: field(count((r) => has(r, 'location')), total),
+    region: field(count((r) => has(r, 'region')), total),
     map: field(count((r) => Boolean(r?.map)), total),
     image: field(count((r) => has(r, 'image')), total),
     stats: field(count((r) => Boolean(r?.stats && Object.keys(r.stats).length)), total),
@@ -91,6 +93,7 @@ function fieldsFor(kind: EntityKind, records: (EntityRecord | undefined)[]): Rec
       out.drops = field(count(drops), total)
       out.strategy = field(count((r) => has(r, 'strategy')), total)
       out.hpNegationLocation = field(count((r) => stat(r, 'HP') && stat(r, 'Negation') && has(r, 'location')), total)
+      out.locationRegion = field(count((r) => has(r, 'location') && has(r, 'region')), total)
       break
     case 'weapon':
     case 'shield':
@@ -172,6 +175,8 @@ function satisfies(field: string, record: EntityRecord | undefined): boolean {
   switch (field) {
     case 'hpNegationLocation':
       return stat(record, 'HP') && stat(record, 'Negation') && has(record, 'location')
+    case 'locationRegion':
+      return has(record, 'location') && has(record, 'region')
     case 'drops':
       return drops(record)
     case 'strategy':

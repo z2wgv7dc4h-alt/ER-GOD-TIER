@@ -178,10 +178,13 @@ build. Extra reference records outside the catalogue (e.g. the search-only
 Task 124 closed the last gaps by (1) folding source typos/diacritics/possessives
 onto one canonical name, (2) recovering negation tables from Fextralife combat
 prose, and (3) applying \`public/sourced/open/gapfill.json\` — one wiki-sourced
-record per entity — as the lowest-priority enrichment source. Every guard below
-is now **100%**.
+record per entity — as the lowest-priority enrichment source. Task 130 then
+expanded the boss roster to every encounter (base + Shadow of the Erdtree) and
+registered it in the entity graph; the boss guard is now the task's own
+requirement — **100% location + region** — while the richer HP / negation /
+drops / strategy fields remain in the table as information.
 
-## Minimums (Task 119 §4, extended Task 123 §3; raised to 100% by Task 124 §4)
+## Minimums (Task 130 §2: 100% location + region for every boss)
 
 ${renderGuards(after, guards ?? [])}
 

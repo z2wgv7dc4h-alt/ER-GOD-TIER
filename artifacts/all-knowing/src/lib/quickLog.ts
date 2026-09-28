@@ -1,5 +1,6 @@
-import { facts, normalize } from '../knowledge/catalog'
+import { normalize } from '../knowledge/catalog'
 import { warpGraces } from '../knowledge/graces'
+import { bossRoster } from './bossRoster'
 import type { Character } from '../types'
 import { canonicalFactId } from './aliases'
 import { getEntity, type EntityKind } from './entityGraph'
@@ -90,11 +91,12 @@ export function nearMeTargets(currentArea: string | null | undefined, character:
     if (known.has(canonicalFactId(g.id))) continue
     out.push(targetOf(g.id, g.region))
   }
-  for (const f of facts) {
-    if (f.kind !== 'boss') continue
-    if (!sameArea(area, f.region)) continue
-    if (known.has(canonicalFactId(f.id))) continue
-    out.push(targetOf(f.id, f.region))
+  const seen = new Set<string>()
+  for (const b of bossRoster) {
+    if (!sameArea(area, b.region)) continue
+    if (known.has(canonicalFactId(b.id)) || seen.has(b.id)) continue
+    seen.add(b.id)
+    out.push(targetOf(b.id, b.region))
   }
   return out.slice(0, limit)
 }

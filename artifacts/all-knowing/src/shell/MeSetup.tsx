@@ -14,7 +14,6 @@ import {
   bossGroups,
   completeness,
   inferenceReasons,
-  isMajorBoss,
   nextSetupStep,
   previousSetupStep,
   questLineGroups,
@@ -26,6 +25,7 @@ import {
   withSetupStep,
   type SetupStepId,
 } from '../lib/setupWizard'
+import { bossRoster, isRosterMajor, TIER_LABEL, type BossEncounter } from '../lib/bossRoster'
 import { factState, useWorkspace } from '../state'
 import type { LoadoutSlot, StartingClass } from '../types'
 import { SaveDrop } from './MeUpdate'
@@ -156,6 +156,8 @@ export function MeSetup() {
   const [error, setError] = useState('')
   const [outcome, setOutcome] = useState<OcrOutcome | null>(null)
   const [blob, setBlob] = useState('')
+  const [bossQuery, setBossQuery] = useState('')
+  const [openRegions, setOpenRegions] = useState<Record<string, boolean>>({})
 
   const learnings = stepLearnings(character, step)
   const reasons = useMemo(() => inferenceReasons(character), [character])
@@ -254,6 +256,41 @@ export function MeSetup() {
 
   const equipment = character.loadout
 
+  // Task 130 §2 — the full roster is ~290 encounters. The step keeps the major
+  // fights as tiles and collapses the rest per region, with a search box and a
+  // "mark all in this region" action, so it stays fast.
+  const bossQ = bossQuery.trim().toLowerCase()
+  const bossMatches = bossQ
+    ? bossRoster.filter((b) => `${b.name} ${b.region} ${b.location} ${b.tier}`.toLowerCase().includes(bossQ))
+    : null
+
+  function bossRow(b: BossEncounter, showRegion = false) {
+    const state = factState(character, b.id)
+    const major = isRosterMajor(b.tier)
+    return (
+      <div key={`${b.id}:${b.location}`} className={major ? 'setup-boss major' : 'setup-boss'}>
+        <span className="setup-boss-name">
+          {b.name}
+          {showRegion && <em className="note"> · {b.region}</em>}
+          <span className="note">
+            {' '}· {TIER_LABEL[b.tier]}
+            {b.location ? ` · ${b.location}` : ''}
+            {b.grace ? ` · ${b.grace}` : ''}
+          </span>
+        </span>
+        <span className="opts">
+          <button type="button" className={state === 'true' ? 'chip on' : 'chip'} onClick={() => setCharacter(applyFacts(character, [b.id], 'answer', 'setup:bosses'))}>yes</button>
+          <button type="button" className={state === 'false' ? 'chip on' : 'chip'} onClick={() => setCharacter(denyFacts(character, [b.id], 'setup:bosses'))}>no</button>
+          <button type="button" className={state === 'unknown' ? 'chip on' : 'chip'} onClick={() => setCharacter(removeInferredFact(character, b.id))}>not sure</button>
+        </span>
+      </div>
+    )
+  }
+
+  function markRegion(rows: BossEncounter[]) {
+    setCharacter(applyFacts(character, [...new Set(rows.map((r) => r.id))], 'answer', 'setup:bosses'))
+  }
+
   return (
     <div className="me-setup">
       <header className="setup-head">
@@ -349,27 +386,54 @@ export function MeSetup() {
 
         {step === 'bosses' && (
           <div className="setup-bosses">
-            {bossGroups().map((group) => (
-              <div key={group.region} className="setup-region">
-                <div className="kicker">{group.region}</div>
-                <div className="setup-boss-list">
-                  {group.bosses.map((b) => {
-                    const state = factState(character, b.id)
-                    const major = isMajorBoss(b.id)
-                    return (
-                      <div key={b.id} className={major ? 'setup-boss major' : 'setup-boss'}>
-                        <span className="setup-boss-name">{b.name}</span>
-                        <span className="opts">
-                          <button type="button" className={state === 'true' ? 'chip on' : 'chip'} onClick={() => setCharacter(applyFacts(character, [b.id], 'answer', 'setup:bosses'))}>yes</button>
-                          <button type="button" className={state === 'false' ? 'chip on' : 'chip'} onClick={() => setCharacter(denyFacts(character, [b.id], 'setup:bosses'))}>no</button>
-                          <button type="button" className={state === 'unknown' ? 'chip on' : 'chip'} onClick={() => setCharacter(removeInferredFact(character, b.id))}>not sure</button>
-                        </span>
-                      </div>
-                    )
-                  })}
-                </div>
+            <div className="opts" style={{ marginBottom: 8 }}>
+              <input
+                className="search"
+                type="search"
+                placeholder={`Search ${bossRoster.length} boss encounters…`}
+                aria-label="Search bosses"
+                value={bossQuery}
+                onChange={(e) => setBossQuery(e.target.value)}
+              />
+            </div>
+            {bossMatches ? (
+              <div className="setup-region">
+                <div className="kicker">{bossMatches.length} match{bossMatches.length === 1 ? '' : 'es'}</div>
+                <div className="setup-boss-list">{bossMatches.map((b) => bossRow(b, true))}</div>
               </div>
-            ))}
+            ) : (
+              bossGroups().map((group) => {
+                const all = [...group.major, ...group.rest]
+                const done = all.filter((b) => factState(character, b.id) === 'true').length
+                const open = Boolean(openRegions[group.region])
+                return (
+                  <div key={group.region} className="setup-region">
+                    <div className="kicker">
+                      {group.region} · {done}/{all.length}
+                      {group.campaign === 'sote' ? ' · DLC' : ''}
+                    </div>
+                    {group.major.length > 0 && <div className="setup-boss-list">{group.major.map((b) => bossRow(b))}</div>}
+                    {group.rest.length > 0 && (
+                      <>
+                        <div className="opts" style={{ margin: '4px 0' }}>
+                          <button type="button" className="chip" onClick={() => markRegion(all)}>
+                            Mark all in this region
+                          </button>
+                        </div>
+                        <details
+                          className="setup-questline"
+                          open={open}
+                          onToggle={(e) => setOpenRegions((prev) => ({ ...prev, [group.region]: (e.target as HTMLDetailsElement).open }))}
+                        >
+                          <summary>{group.rest.length} more in {group.region}</summary>
+                          {open && <div className="setup-boss-list">{group.rest.map((b) => bossRow(b))}</div>}
+                        </details>
+                      </>
+                    )}
+                  </div>
+                )
+              })
+            )}
             <div className="kicker" style={{ marginTop: 12 }}>NPC questlines</div>
             {questLineGroups().map((group) => (
               <details key={group.line} className="setup-questline">

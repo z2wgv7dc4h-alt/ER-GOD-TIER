@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { facts } from '../knowledge/catalog'
 import { mechanics } from '../knowledge/mechanics'
 import { registerEntityGraphData, type EntityKind } from '../lib/entityGraph'
+import { bossRoster, TIER_LABEL } from '../lib/bossRoster'
 import { catalogueIdFor } from '../lib/catalogueIds'
 import { loadWeapons, type Weapon } from '../lib/ar'
 import { useArmory, type ArmoryBoss, type ArmoryWeapon } from '../lib/armory'
@@ -428,6 +429,29 @@ function buildBosses(input: CatalogInput): LibraryEntity[] {
       if (!cur.region && b.region) cur.region = b.region
     } else {
       seeds.set(key, { name: b.name, region: b.region, type: b.type, notes: b.notes, parryable: b.parryable, drops: [] })
+    }
+  }
+
+  // Task 130 §2 — the canonical roster backs the Bosses category: every
+  // encounter's boss appears even when FanAPI/armory never listed it, and the
+  // roster's region / location / HP / drops fill any gap.
+  for (const b of bossRoster) {
+    const key = norm(b.name)
+    const cur = seeds.get(key)
+    if (cur) {
+      if (!cur.region && b.region) cur.region = b.region
+      if (!cur.location) cur.location = b.grace ? `${b.location} · ${b.grace}` : b.location
+      if (!cur.hp && b.hp != null) cur.hp = String(b.hp)
+      if (b.drops.length) cur.drops = [...new Set([...cur.drops, ...b.drops])]
+    } else {
+      seeds.set(key, {
+        name: b.name,
+        region: b.region,
+        location: b.grace ? `${b.location} · ${b.grace}` : b.location,
+        hp: b.hp == null ? undefined : String(b.hp),
+        drops: b.drops,
+        type: TIER_LABEL[b.tier],
+      })
     }
   }
 

@@ -1,5 +1,6 @@
 import { markers } from '../data/seed'
 import { facts } from '../knowledge/catalog'
+import { bossRoster } from './bossRoster'
 import { flaskUpgrades, mapFragments, scadutreeFragments } from '../knowledge/collectibles'
 import { warpGraces } from '../knowledge/graces'
 import { loot } from '../knowledge/loot'
@@ -56,7 +57,7 @@ export function completionCategories(character: Character): CompletionCategory[]
     markers.filter((m) => m.kind === kind).map((m) => ({ id: m.id, name: m.name }))
 
   return [
-    category('bosses', 'Bosses', markerRows('boss'), true),
+    category('bosses', 'Bosses', bossRoster.map((b) => ({ id: b.id, name: b.name })), true),
     category('graces', 'Graces', warpGraces.map((g) => ({ id: g.id, name: g.name })), true),
     category('items', 'Items', markerRows('item'), true),
     category(

@@ -1,5 +1,6 @@
-import { facts, byId } from '../knowledge/catalog'
+import { byId } from '../knowledge/catalog'
 import { warpGraces } from '../knowledge/graces'
+import { bossRoster } from './bossRoster'
 import { loot, type Loot } from '../knowledge/loot'
 import { dungeons, dungeonPlan } from '../knowledge/dungeons'
 import { gates, gateState } from '../knowledge/gates'
@@ -65,10 +66,15 @@ export function areaGraces(character: Character, area: string | null | undefined
 
 export function areaBosses(character: Character, area: string | null | undefined) {
   const known = knownFactIds(character)
-  return facts
-    .filter((f) => f.kind === 'boss' && regionMatches(f.region, area))
-    .map((f) => ({ id: f.id, name: f.name, region: f.region, done: isKnown(known, f.id) }))
-    .sort((a, b) => Number(a.done) - Number(b.done) || a.name.localeCompare(b.name))
+  const seen = new Set<string>()
+  const out: { id: string; name: string; region: string; done: boolean }[] = []
+  for (const b of bossRoster) {
+    if (!regionMatches(b.region, area)) continue
+    if (seen.has(b.id)) continue
+    seen.add(b.id)
+    out.push({ id: b.id, name: b.name, region: b.region, done: isKnown(known, b.id) })
+  }
+  return out.sort((a, b) => Number(a.done) - Number(b.done) || a.name.localeCompare(b.name))
 }
 
 export function areaLoot(character: Character, area: string | null | undefined): (Loot & { owned: boolean; goodForBuild: boolean })[] {

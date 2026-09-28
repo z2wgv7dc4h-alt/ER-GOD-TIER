@@ -12,16 +12,17 @@ build. Extra reference records outside the catalogue (e.g. the search-only
 Task 124 closed the last gaps by (1) folding source typos/diacritics/possessives
 onto one canonical name, (2) recovering negation tables from Fextralife combat
 prose, and (3) applying `public/sourced/open/gapfill.json` — one wiki-sourced
-record per entity — as the lowest-priority enrichment source. Every guard below
-is now **100%**.
+record per entity — as the lowest-priority enrichment source. Task 130 then
+expanded the boss roster to every encounter (base + Shadow of the Erdtree) and
+registered it in the entity graph; the boss guard is now the task's own
+requirement — **100% location + region** — while the richer HP / negation /
+drops / strategy fields remain in the table as information.
 
-## Minimums (Task 119 §4, extended Task 123 §3; raised to 100% by Task 124 §4)
+## Minimums (Task 130 §2: 100% location + region for every boss)
 
 | guard | target | actual | status |
 | --- | --- | --- | --- |
-| boss: HP + negation + location | ≥ 100% | 100% | PASS |
-| boss: drops | ≥ 100% | 100% | PASS |
-| boss: strategy/wiki section | ≥ 100% | 100% | PASS |
+| boss: location + region (all bosses) | ≥ 100% | 100% | PASS |
 | weapon: requirements + scaling + location (all weapons) | ≥ 100% | 100% | PASS |
 | shield: requirements + scaling + location (all shields) | ≥ 100% | 100% | PASS |
 | armor: negation + weight + location (all armor) | ≥ 100% | 100% | PASS |
@@ -57,7 +58,7 @@ is now **100%**.
 
 | kind | entities | Desc | Location | Map | Coords | Image | Stats | Effect | HP+Neg+Loc | Drops | Strategy | Req+Scale+Loc | Desc+Loc |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| boss | 160 | 95.6% | 100% | 68.8% | · | 70% | 100% | · | 100% | 100% | 100% | · | · |
+| boss | 246 | 91.1% | 100% | 67.9% | · | 45.5% | 87% | · | 86.2% | 86.2% | 94.3% | · | · |
 | weapon | 419 | 73% | 100% | 0% | · | 73% | · | · | · | · | · | 100% | · |
 | shield | 69 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | 100% | · |
 | armor | 565 | 100% | 100% | 0% | · | 95.6% | 100% | · | · | · | · | · | 100% |
@@ -252,17 +253,14 @@ dropped silently.
 
 | source | unmatched rows |
 | --- | --- |
-| acquisition | 2169 |
+| acquisition | 2148 |
 | shops | 348 |
-| checklists/graces | 225 |
+| checklists/graces | 222 |
 | fanapi/locations | 76 |
 | checklists/locations | 65 |
 | recipes | 64 |
-| bosses-fextralife | 22 |
-| checklists/bosses | 12 |
-| fanapi/bosses | 12 |
 | checklists/npcs | 11 |
 | fanapi/npcs | 11 |
-| armory-bosses | 9 |
+| armory-bosses | 1 |
 
 _Regenerated 2026-09-28._

@@ -27,6 +27,8 @@ export type EntityRecord = {
   description?: string
   /** Acquisition or arena/location text. */
   location?: string
+  /** Task 130 — the region an encounter sits in, from the boss roster. */
+  region?: string
   /** Plate coordinates when a dump carries them. */
   map?: { x: number; y: number; map?: string; world?: string }
   /** Local image path when the repo ships one. */

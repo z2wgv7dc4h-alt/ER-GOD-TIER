@@ -8,6 +8,7 @@ import type { EntityRecord } from './entityIndex'
 import generatedAliases from '../data/aliases.json'
 import overridesJson from '../data/entity-overrides.json'
 import dungeonsData from '../data/dungeons.json'
+import bossRoster from '../data/bosses.json'
 import imageIndex from '../data/image-index.json'
 
 import checklistBosses from '../../public/sourced/checklists/bosses.json'
@@ -82,6 +83,7 @@ type ChecklistWeapon = {
   weight?: number
 }
 type ChecklistBoss = { name: string; region?: string; location?: string; drops?: string[] }
+type RosterBoss = { id: string; name: string; region: string; location: string; drops: string[]; hp: number | null }
 type ChecklistItem = { name: string; description?: string; image?: string; effect?: string; type?: string }
 type ChecklistGrace = { name: string; region?: string; world?: string }
 type ChecklistNpc = { name: string; image?: string; quote?: string; location?: string; role?: string }
@@ -1244,6 +1246,27 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   for (const row of fextDoc.bosses as FextBoss[]) if (!mergeBoss(row.name)) bump('bosses-fextralife')
   for (const row of armoryBosses as ChecklistBoss[]) if (!mergeBoss(row.name)) bump('armory-bosses')
   for (const entity of entityList) if (entity.kind === 'boss' || entity.kind === 'enemy') mergeBoss(entity.name, entity.id)
+
+  // Task 130 — the canonical boss roster is the lowest-priority boss source: a
+  // record is only created when the graph already knows the id, but region,
+  // location, HP and drops fill any field the other datasets left empty.
+  for (const row of bossRoster as RosterBoss[]) {
+    const record = records.get(row.id)
+    if (!record) continue
+    if (!record.region) record.region = row.region
+    setText(record, 'location', row.location)
+    if (row.hp != null) setStat(record, 'HP', row.hp)
+    addDrops(record, row.drops)
+    source(record, 'boss-roster')
+  }
+  // Every boss/enemy needs a region for the Task 130 guard: the authored
+  // catalog fact region first, then the record's own location text.
+  const factRegion = new Map<string, string>()
+  for (const f of facts) if (f.region) factRegion.set(f.id, f.region)
+  for (const [id, record] of records) {
+    if (record.kind !== 'boss' && record.kind !== 'enemy') continue
+    if (!record.region) record.region = factRegion.get(id) ?? record.location
+  }
 
   // Acquisition rows that name an entity the graph knows (location/missable).
   // Catalogue rows already carry their location from `itemLocationFallback`; do

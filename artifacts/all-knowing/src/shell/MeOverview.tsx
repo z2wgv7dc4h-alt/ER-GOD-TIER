@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { markers } from '../data/seed'
+import { bossFactCount, defeatedEncounterCount } from '../lib/bossRoster'
 import { scadutreeFragments } from '../knowledge/collectibles'
 import { canonicalHunts } from '../knowledge/completion'
 import { warpGraces } from '../knowledge/graces'
@@ -132,9 +133,9 @@ export function MeOverview() {
     character.discoveredGraces.length === 0 &&
     character.collectedItems.length === 0
   const graces = new Set(character.discoveredGraces)
-  const bosses = new Set(character.defeatedBosses)
+  const bossesHave = defeatedEncounterCount(character.defeatedBosses)
   const items = new Set(character.collectedItems)
-  const totalBosses = markers.filter((m) => m.kind === 'boss').length
+  const totalBosses = bossFactCount
   const totalItems = markers.filter((m) => m.kind === 'item').length
   const fragmentIds = scadutreeFragments.map((f) => f.id)
   const fragmentsHave = fragmentIds.filter((id) => character.collectedItems.includes(id)).length
@@ -174,7 +175,7 @@ export function MeOverview() {
       >
         <div className="meters">
           <Meter label="Graces" have={graces.size} total={warpGraces.length} />
-          <Meter label="Bosses" have={bosses.size} total={totalBosses} />
+          <Meter label="Bosses" have={bossesHave} total={totalBosses} />
           <Meter label="Items found" have={items.size} total={totalItems} />
           <Meter label="Fragments" have={fragmentsHave} total={fragmentIds.length} />
           <Meter label="Field hunts" have={huntsHave} total={huntIds.length} />
