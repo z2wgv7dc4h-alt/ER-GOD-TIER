@@ -1,0 +1,28 @@
+{
+  "source": "teoucsb82/elden-ring-mcp (wiki snapshot DB)",
+  "kinds": {
+    "armor": 680,
+    "ash": 112,
+    "boss": 110,
+    "class": 17,
+    "dungeon": 63,
+    "enemy": 171,
+    "faction": 53,
+    "gesture": 48,
+    "item": 974,
+    "location": 307,
+    "lore": 115,
+    "mechanic": 4,
+    "nightreign": 14,
+    "npc": 166,
+    "object": 29,
+    "region": 5,
+    "skill": 191,
+    "spell": 213,
+    "spirit": 73,
+    "talisman": 156,
+    "weapon": 498
+  },
+  "skipped": 940,
+  "redirects": 2730
+}
