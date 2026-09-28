@@ -197,7 +197,7 @@ ${deadTable(rendererDeadResolved)}
 
 ### What the 23 + 1 were, and how they were fixed
 
-- **11 quest-state facts** referenced by `storylines.ts` / `gates.ts` / `inferChains.ts`
+- **11 quest-state facts** referenced by \`storylines.ts\` / \`gates.ts\` / \`inferChains.ts\`
   but never registered: \`quest:varre:met\`, \`quest:varre:cloth\`, \`quest:varre:killed\`,
   \`quest:frenzy:taken\`, \`quest:rogier:knifeprint\`, \`quest:fia:killed\`, \`quest:rya:killed\`,
   \`quest:yura:killed\`, \`quest:gowry:killed\`, \`quest:d:killed\`, \`quest:thops:killed\`.
