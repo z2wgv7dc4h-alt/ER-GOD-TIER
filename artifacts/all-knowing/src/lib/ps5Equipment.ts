@@ -229,6 +229,18 @@ export function extractEquipmentHeader(words: OcrWord[], catalogue: WeaponCatalo
   return { slot, item, skill, weaponType: item?.weaponType, lines: itemIndex >= 0 ? lines.slice(0, itemIndex + 1) : lines.slice(0, 6) }
 }
 
+/** Map a header slot label to the Gear-sheet slot id. */
+export function slotToGearSlot(label: string | undefined): LoadoutSlot['slot'] | undefined {
+  if (!label) return undefined
+  const map: Record<string, LoadoutSlot['slot']> = {
+    'Right Hand Armament 1': 'right-1', 'Right Hand Armament 2': 'right-2', 'Right Hand Armament 3': 'right-3',
+    'Left Hand Armament 1': 'left-1', 'Left Hand Armament 2': 'left-2', 'Left Hand Armament 3': 'left-3',
+    Head: 'head', 'Chest Armor': 'chest', Arms: 'arms', Legs: 'legs',
+    'Talisman 1': 'talisman-1', 'Talisman 2': 'talisman-2', 'Talisman 3': 'talisman-3', 'Talisman 4': 'talisman-4',
+  }
+  return map[label]
+}
+
 /** Turn the parsed header into the Gear-sheet loadout row for the slot. */
 export function headerToLoadout(header: EquipmentHeader, slot = header.slot): LoadoutSlot | undefined {
   if (!header.item) return undefined
@@ -236,12 +248,14 @@ export function headerToLoadout(header: EquipmentHeader, slot = header.slot): Lo
   let kind: LoadoutSlot['kind'] = 'armament'
   if (type === 'Sacred Seal' || type === 'Glintstone Staff' || type === 'Glinstone Staff') kind = 'catalyst'
   else if (type === 'Thrusting Shield') kind = 'shield'
+  const gearSlot = slotToGearSlot(slot)
   return {
     id: `ps5-${normalizeWeapon(slot ?? 'slot')}`,
     name: header.item.base,
     kind,
     affinity: header.item.affinity,
     upgrade: header.item.upgrade,
+    slot: gearSlot,
   }
 }
 

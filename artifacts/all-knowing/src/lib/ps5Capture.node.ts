@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { decodeGrayPng, encodeGrayPng } from './pngGray'
-import { adaptiveThreshold, gaussianBlur, invert, upscale, type GrayImage } from './ps5Image'
+import { ps5PreprocessLadder, upscale, type GrayImage } from './ps5Image'
 import { parseTsvWords, type OcrWord } from './ps5Ocr'
 import { extractStatus, interpretStatus, mergeStatusReads, type StatusInterpretation, type StatusRead } from './ps5Status'
 import {
@@ -78,8 +78,7 @@ export async function statusFromPhoto(worker: NodeOcrWorker, imagePath: string):
 }
 
 function preprocessLadder(gray: GrayImage): GrayImage[] {
-  const smooth = gaussianBlur(invert(gray), 2)
-  return [adaptiveThreshold(smooth, 101, 12), adaptiveThreshold(smooth, 51, 8), adaptiveThreshold(smooth, 151, 15)]
+  return ps5PreprocessLadder(gray)
 }
 
 export type EquipmentPhotoResult = {

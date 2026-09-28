@@ -382,6 +382,16 @@ export function resizeGray(img: GrayImage, size: number): Uint8Array {
   return out
 }
 
+/**
+ * The preprocessing ladder the Status/Equipment pipeline uses in both Node and the
+ * browser: dark-on-light, smoothed, local-thresholded at three window sizes. The
+ * extraction step votes across the variants, so no single window can lose a field.
+ */
+export function ps5PreprocessLadder(gray: GrayImage): GrayImage[] {
+  const smooth = gaussianBlur(invert(gray), 2)
+  return [adaptiveThreshold(smooth, 101, 12), adaptiveThreshold(smooth, 51, 8), adaptiveThreshold(smooth, 151, 15)]
+}
+
 export type PreprocessVariant = { id: string; image: GrayImage }
 
 /**

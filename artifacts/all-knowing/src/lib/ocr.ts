@@ -191,7 +191,11 @@ export function applyOcrRead(
 }
 
 type TesseractWorker = {
-  recognize: (image: Blob | string) => Promise<{ data: { text: string; confidence: number } }>
+  recognize: (
+    image: Blob | string | HTMLCanvasElement,
+    options?: Record<string, unknown>,
+    output?: Record<string, unknown>,
+  ) => Promise<{ data: { text: string; confidence: number; tsv?: string | null } }>
   terminate: () => Promise<unknown>
 }
 
@@ -241,6 +245,24 @@ export async function readImage(image: Blob | string): Promise<OcrRead> {
  */
 export async function readImageText(file: Blob | string): Promise<string> {
   return (await readImage(file)).text
+}
+
+/**
+ * Task 134: the labelled-word read the PS5 pipeline needs. Requests Tesseract's TSV
+ * so the Status/Equipment extractors can anchor on label positions instead of a
+ * fixed crop.
+ */
+export async function readImageTsv(
+  image: Blob | string | HTMLCanvasElement,
+  psm = '6',
+): Promise<{ text: string; confidence: number; tsv: string }> {
+  const worker = await getWorker()
+  const { data } = await worker.recognize(image, { tessedit_pageseg_mode: psm }, { text: true, tsv: true })
+  return {
+    text: data.text || '',
+    confidence: clamp01((data.confidence || 0) / 100),
+    tsv: data.tsv || '',
+  }
 }
 
 export function hintForShot(kind: string) {
