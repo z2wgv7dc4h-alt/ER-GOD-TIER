@@ -5,7 +5,7 @@ import { flaskUpgrades, mapFragments, scadutreeFragments } from '../knowledge/co
 import { warpGraces } from '../knowledge/graces'
 import { loot } from '../knowledge/loot'
 import { canonicalFactId } from './aliases'
-import { knownFactIds } from './infer'
+import { resolvedFactIds } from './infer'
 import type { Character } from '../types'
 
 /**
@@ -45,7 +45,7 @@ function dedupe(rows: CompletionRow[]): CompletionRow[] {
  * rows still missing for this character.
  */
 export function completionCategories(character: Character): CompletionCategory[] {
-  const known = knownFactIds(character)
+  const known = resolvedFactIds(character)
 
   const category = (id: string, label: string, rows: CompletionRow[], pinned = false): CompletionCategory => {
     const unique = dedupe(rows)

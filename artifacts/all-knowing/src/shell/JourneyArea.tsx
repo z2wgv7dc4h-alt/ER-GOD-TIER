@@ -16,7 +16,8 @@ import {
   regionMatches,
 } from '../lib/areaHub'
 import { dungeonsInRegion } from '../lib/dungeons'
-import { useGatheringNodes } from '../lib/gatheringNodes'
+import { useEntityIndex } from '../lib/entityIndex'
+import { gatheringNodeMaterial, useGatheringNodes } from '../lib/gatheringNodes'
 import { loadRegionLevels, type RegionLevel } from '../lib/regionLevels'
 import { loadSecrets, type WallSecret } from '../lib/secrets'
 import { useWorkspace } from '../state'
@@ -53,6 +54,8 @@ export function JourneyArea() {
   const [bands, setBands] = useState<RegionLevel[]>([])
   const [secrets, setSecrets] = useState<WallSecret[]>([])
   const nodes = useGatheringNodes()
+  // Task 144 §3 — the wiki/placement NPC records arrive with the entity index.
+  const { version: indexVersion } = useEntityIndex()
 
   useEffect(() => {
     let cancelled = false
@@ -65,7 +68,7 @@ export function JourneyArea() {
   const graces = useMemo(() => areaGraces(character, area), [character, area])
   const bosses = useMemo(() => areaBosses(character, area), [character, area])
   const regionDungeons = useMemo(() => dungeonsInRegion(area), [area])
-  const npcs = useMemo(() => areaNpcs(character, area), [character, area])
+  const npcs = useMemo(() => areaNpcs(character, area), [character, area, indexVersion])
   const lootRows = useMemo(() => areaLoot(character, area), [character, area])
   const dontMiss = useMemo(() => areaDontMiss(character, area), [character, area])
 
@@ -83,7 +86,11 @@ export function JourneyArea() {
     const counts = new Map<string, number>()
     for (const node of nodes) {
       if (!regionMatches(node.region, area)) continue
-      counts.set(node.model, (counts.get(node.model) ?? 0) + 1)
+      // Task 144 §3 — never print a raw AEG asset code. Only a node whose model
+      // maps to a real material is listed; unnamed ones are omitted.
+      const material = gatheringNodeMaterial(node.model)
+      if (!material) continue
+      counts.set(material, (counts.get(material) ?? 0) + 1)
     }
     return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6)
   }, [nodes, area])
@@ -200,13 +207,20 @@ export function JourneyArea() {
       <section className="panel">
         <div className="kicker">NPCs here now</div>
         {npcs.length === 0 ? (
-          <p className="note">Nobody tracked at a grace in this area.</p>
+          <p className="note">No NPCs mapped to this area.</p>
         ) : (
           <ul className="area-list">
             {npcs.map((n) => (
               <li key={n.id}>
                 <EntityLink id={n.id} />
-                <div className="note">At <EntityLink id={n.graceId}>{n.graceName}</EntityLink>{n.note ? ` · ${n.note}` : ''}</div>
+                <div className="note">
+                  {n.graceId ? (
+                    <>At <EntityLink id={n.graceId}>{n.graceName}</EntityLink></>
+                  ) : (
+                    n.note ?? 'In this area.'
+                  )}
+                  {n.graceId && n.note ? ` · ${n.note}` : ''}
+                </div>
               </li>
             ))}
           </ul>
@@ -249,15 +263,17 @@ export function JourneyArea() {
         <div className="kicker">Farm here</div>
         {farm.length > 0 ? (
           <ul className="area-list">
-            {farm.map(([model, count]) => (
-              <li key={model}>
-                <EntityLink id="mechanic:upgrades">{model}</EntityLink> <span className="note">×{count} gathering nodes</span>
+            {farm.map(([material, count]) => (
+              <li key={material}>
+                <strong>{material}</strong> <span className="note">×{count} gathering nodes</span>
               </li>
             ))}
           </ul>
         ) : (
           <p className="note">
-            {nodes.length === 0 ? 'Gathering-node data loads here.' : 'No gathering nodes mapped to this area.'}
+            {nodes.length === 0
+              ? 'Gathering-node data loads here.'
+              : 'No named gathering nodes mapped to this area.'}
           </p>
         )}
         <ul className="area-list">

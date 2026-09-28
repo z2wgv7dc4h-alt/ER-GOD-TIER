@@ -1,5 +1,5 @@
 import { canonicalFactId } from '../lib/aliases'
-import { knownFactIds } from '../lib/infer'
+import { resolvedFactIds } from '../lib/infer'
 import type { Character, ModuleId } from '../types'
 import { warpGraces } from './graces'
 
@@ -60,11 +60,11 @@ export type DungeonPlan = {
 }
 
 export function stepKnown(character: Character, step: DungeonStep): boolean {
-  return knownFactIds(character).has(canonicalFactId(step.factId))
+  return resolvedFactIds(character).has(canonicalFactId(step.factId))
 }
 
 export function dungeonPlan(character: Character, dungeon: Dungeon): DungeonPlan {
-  const have = knownFactIds(character)
+  const have = resolvedFactIds(character)
   const done = dungeon.steps.filter((s) => have.has(canonicalFactId(s.factId)))
   const todo = dungeon.steps.filter((s) => !have.has(canonicalFactId(s.factId)))
   return { done, current: todo[0], todo, total: dungeon.steps.length }

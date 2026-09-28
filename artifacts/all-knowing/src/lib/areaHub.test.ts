@@ -39,12 +39,14 @@ describe('level-band verdict', () => {
 describe('completion counts for a region', () => {
   it('counts graces, bosses, items and dungeons for Stormveil', () => {
     const c = areaCompletion(demoCharacter, 'Stormveil')
-    expect(c.graces).toEqual({ have: 0, total: 3 })
+    // Task 144 §3 — inference applies: defeating Margit proves Castleward Tunnel
+    // was reached, so that grace counts as done even though it is not logged.
+    expect(c.graces).toEqual({ have: 1, total: 3 })
     expect(c.bosses).toEqual({ have: 2, total: 2 })
     // Brick Hammer is a Stormveil drop; Rogier's Rapier comes from Roundtable Hold.
     expect(c.items).toEqual({ have: 0, total: 4 })
     expect(c.dungeons).toEqual({ have: 0, total: 1 })
-    expect(c.done).toBe(2)
+    expect(c.done).toBe(3)
     expect(c.total).toBe(10)
   })
 

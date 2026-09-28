@@ -1,4 +1,4 @@
-import { knownFactIds } from '../lib/infer'
+import { resolvedFactIds } from '../lib/infer'
 import { generatedAliases } from '../lib/aliases'
 import type { Character } from '../types'
 import { facts } from './catalog'
@@ -108,7 +108,7 @@ function matchesNpc(row: NpcLocation, id: string): boolean {
 export function npcLocate(character: Character, npcId: string): NpcLocateHit | null {
   const id = npcId.toLowerCase().trim()
   if (!id) return null
-  const known = knownFactIds(character)
+  const known = resolvedFactIds(character)
   const forNpc = rows.filter((r) => matchesNpc(r, id))
   if (!forNpc.length) return null
 

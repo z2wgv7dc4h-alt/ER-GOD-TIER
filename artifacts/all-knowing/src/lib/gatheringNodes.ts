@@ -130,6 +130,20 @@ export function buildGatheringNodes(rows: any[], regions: GraceRegion[]): Gather
   return out
 }
 
+/**
+ * Task 144 §3 — the material a gathering node yields, when the data names one.
+ *
+ * The dump has no item/material field, only an AEG model code (see the file
+ * header), and the project rule is explicit: do not invent material names for
+ * AEG codes. Until a real model→material table exists this returns undefined,
+ * and the Area hub omits unnamed nodes rather than printing a raw asset code.
+ */
+const NODE_MATERIAL_BY_MODEL: Readonly<Record<string, string>> = {}
+
+export function gatheringNodeMaterial(model: string): string | undefined {
+  return NODE_MATERIAL_BY_MODEL[model]
+}
+
 export function matchGatheringNodes(text: string, nodes: GatheringNode[], limit = 12): GatheringNode[] {
   const n = text.toLowerCase().replace(/[^a-z0-9+]+/g, ' ').trim()
   if (n.length < 3) return []

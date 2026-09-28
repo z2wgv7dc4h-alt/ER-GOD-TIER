@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { byId } from '../knowledge/catalog'
 import { loadWeapons, type Weapon } from '../lib/ar'
-import { advise } from '../lib/advisor'
+import { advise, strongerUpgrades } from '../lib/advisor'
 import { regionMatches } from '../lib/areaHub'
 import { loadRegionLevels, type RegionLevel } from '../lib/regionLevels'
 import { useCoords } from '../lib/coords'
@@ -62,10 +62,12 @@ export function RecommendedCard() {
     }
     return out
   })()
+  // Task 144 §3 — same stronger-only rule as Library › Builds: a weapon that is
+  // weaker than the current kit (−5.1%) is never an upgrade.
   const upgrades = (() => {
     const seen = new Set<string>()
     const out: typeof advice.upgrades = []
-    for (const u of advice.upgrades) {
+    for (const u of strongerUpgrades(advice.upgrades)) {
       if (!inArea(u.region)) continue
       const key = `${u.weaponName}-${u.upgrade}`
       if (seen.has(key)) continue
@@ -129,7 +131,7 @@ export function RecommendedCard() {
         <div>
           <div className="kicker">Upgrades</div>
           {upgrades.length === 0 ? (
-            <p className="note">{weapons ? 'Nothing beats your current kit on-build.' : 'Loading regulation data…'}</p>
+            <p className="note">{weapons ? 'Nothing stronger reachable yet.' : 'Loading regulation data…'}</p>
           ) : (
             <ul className="now-rows">
               {upgrades.slice(0, upgradeReveal.visible).map((u) => (

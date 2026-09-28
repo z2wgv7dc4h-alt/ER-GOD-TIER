@@ -5,8 +5,9 @@ import { loot, type Loot } from '../knowledge/loot'
 import { dungeons, dungeonPlan } from '../knowledge/dungeons'
 import { gates, gateState } from '../knowledge/gates'
 import { npcLocations, npcLocate } from '../knowledge/npcLocations'
+import { allRecords } from './entityIndex'
 import { canonicalFactId } from './aliases'
-import { knownFactIds } from './infer'
+import { resolvedFactIds } from './infer'
 import { areaFromGraceId } from './areaContext'
 import { detectArchetype } from './archetype'
 import { GEAR_TAGS } from './gearTags'
@@ -59,14 +60,14 @@ function isKnown(known: Set<string>, id: string): boolean {
 }
 
 export function areaGraces(character: Character, area: string | null | undefined) {
-  const known = knownFactIds(character)
+  const known = resolvedFactIds(character)
   return warpGraces
     .filter((g) => regionMatches(g.region, area))
     .map((g) => ({ id: g.id, name: g.name, region: g.region, done: isKnown(known, g.id) }))
 }
 
 export function areaBosses(character: Character, area: string | null | undefined) {
-  const known = knownFactIds(character)
+  const known = resolvedFactIds(character)
   const seen = new Set<string>()
   const out: { id: string; name: string; region: string; done: boolean }[] = []
   for (const b of bossRoster) {
@@ -79,7 +80,7 @@ export function areaBosses(character: Character, area: string | null | undefined
 }
 
 export function areaLoot(character: Character, area: string | null | undefined): (Loot & { owned: boolean; goodForBuild: boolean })[] {
-  const known = knownFactIds(character)
+  const known = resolvedFactIds(character)
   const archetype = detectArchetype(character.stats)
   const goodNames = new Set(GEAR_TAGS[archetype].map((t) => norm(t.name)))
   return loot
@@ -112,9 +113,11 @@ export function areaDungeons(character: Character, area: string | null | undefin
     })
 }
 
-export function areaNpcs(character: Character, area: string | null | undefined) {
+export type AreaNpc = { id: string; name: string; graceId?: string; graceName?: string; note?: string }
+
+export function areaNpcs(character: Character, area: string | null | undefined): AreaNpc[] {
   const seen = new Set<string>()
-  const out: { id: string; name: string; graceId: string; graceName: string; note?: string }[] = []
+  const out: AreaNpc[] = []
   for (const row of npcLocations) {
     if (seen.has(row.npc)) continue
     seen.add(row.npc)
@@ -124,13 +127,24 @@ export function areaNpcs(character: Character, area: string | null | undefined) 
     if (!regionMatches(graceArea?.region, area)) continue
     out.push({ id: `npc:${row.npc}`, name: hit.name, graceId: hit.graceId, graceName: hit.graceName, note: hit.note })
   }
+  // Task 144 §3 — the wiki/placement NPC records, so an area lists everyone who
+  // is there, not only NPCs whose authored stage happens to point at a grace.
+  const names = new Set(out.map((o) => norm(o.name)))
+  for (const rec of allRecords()) {
+    if (rec.kind !== 'npc' && rec.kind !== 'merchant') continue
+    if (!regionMatches(rec.region || rec.location, area)) continue
+    const key = norm(rec.name)
+    if (names.has(key)) continue
+    names.add(key)
+    out.push({ id: rec.id, name: rec.name, note: rec.location })
+  }
   return out.sort((a, b) => a.name.localeCompare(b.name))
 }
 
 export type DontMiss = { id: string; name: string; why: string; kind: 'missable' | 'gate' }
 
 export function areaDontMiss(character: Character, area: string | null | undefined): DontMiss[] {
-  const known = knownFactIds(character)
+  const known = resolvedFactIds(character)
   const out: DontMiss[] = []
 
   // Loot rows the data already flags missable and that belong to this area.
@@ -140,13 +154,21 @@ export function areaDontMiss(character: Character, area: string | null | undefin
     out.push({ id: l.id, name: l.name, why: l.how, kind: 'missable' })
   }
 
-  // World-state gates whose trigger, approach, or locked content sits here.
+  // World-state gates whose trigger, approach, or a concrete loss sits here.
+  // Task 144 §3 — a quest-beat consequence spans many areas and must not drag a
+  // gate into an area it is not actually about (e.g. Seluvis's potion showed at
+  // Stormveil because Nepheli's crowning fact is regioned there).
   for (const gate of gates) {
     if (gateState(character, gate) === 'fired') continue
-    const touches = [...gate.triggerFacts, ...gate.approachingWhen, ...gate.locks.map((l) => l.factId)].some((id) =>
+    const triggerTouch = [...gate.triggerFacts, ...gate.approachingWhen].some((id) =>
       regionMatches(byId.get(canonicalFactId(id))?.region, area),
     )
-    if (!touches) continue
+    const lossTouch = gate.locks.some((l) => {
+      const fact = byId.get(canonicalFactId(l.factId))
+      if (!fact || fact.kind === 'quest') return false
+      return regionMatches(fact.region, area)
+    })
+    if (!triggerTouch && !lossTouch) continue
     const names = gate.locks.map((l) => l.name).join(', ')
     out.push({ id: gate.id, name: gate.name, why: names ? `Continuing locks: ${names}` : 'A point of no return touches this area.', kind: 'gate' })
   }
