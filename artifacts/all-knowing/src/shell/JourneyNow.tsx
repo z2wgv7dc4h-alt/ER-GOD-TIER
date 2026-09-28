@@ -1,12 +1,15 @@
 import { lazy, Suspense, useMemo, useState } from 'react'
 import { nextCompletionId, planRoute } from '../knowledge/endings'
 import { allLines, stillAvailable } from '../knowledge/storylines'
+import { byId } from '../knowledge/catalog'
 import { applyFacts } from '../lib/infer'
+import { regionMatches } from '../lib/areaHub'
 import { beatPin } from '../lib/beatPins'
 import { useCoords } from '../lib/coords'
 import { gideonHeader } from '../lib/gideonHeader'
 import { leftoverPins } from '../lib/leftoverPins'
 import { leftovers as missedLoot } from '../lib/leftovers'
+import { regionLeftovers } from '../lib/regionLeftovers'
 import { confirmLikelyInference, likelyInferences, rejectLikelyInference } from '../lib/likelyInferences'
 import { lockoutWarningsFor, type LockWarning } from '../lib/lockWarnings'
 import { suggestedNextArea } from '../lib/worldState'
@@ -80,6 +83,16 @@ export function JourneyNow() {
   const [lockPending, setLockPending] = useState<{ ids: string[]; warnings: LockWarning[] } | null>(null)
   const unset = hasUnsetStats(w.character)
   const suggested = useMemo(() => suggestedNextArea(w.character), [w.character])
+  // Task 144 §3 — the goal can be in another region. When it is, Now leads with
+  // what is actually relevant *here* and shows the goal step second, with its
+  // region and route.
+  const area = w.currentArea?.region ?? null
+  const goalRegion = header.factId ? byId.get(header.factId)?.region : undefined
+  const goalElsewhere = Boolean(area && goalRegion && !regionMatches(goalRegion, area))
+  const here = useMemo(
+    () => (area ? regionLeftovers(w.character, area, 4) : null),
+    [area, w.character],
+  )
   // "Mark done" works from the explicit goal plan when there is one, and from
   // the header beat's fact otherwise — so it sits next to "Show on map" instead
   // of disappearing whenever no goal is pinned.
@@ -112,6 +125,35 @@ export function JourneyNow() {
       <div className="now-cards">
         <AreaPrompt className="panel area-prompt" />
 
+        {goalElsewhere && area && here && (
+          <section className="panel now-lead now-here">
+            <div className="kicker">In {area}</div>
+            {here.items.length ? (
+              <>
+                <h3 className="now-beat">{here.items[0].name}</h3>
+                {here.items.length > 1 && (
+                  <div className="now-steps">
+                    {here.items.slice(1, 4).map((s) => (
+                      <ListRow
+                        key={s.id}
+                        title={s.name}
+                        subtitle={s.source}
+                        chevron
+                        onClick={() => {
+                          w.setSelectedMarkerId(s.id)
+                          w.setModule('map')
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <p className="note">Nothing tracked open here — continue the main path.</p>
+            )}
+          </section>
+        )}
+
         <section className="panel now-lead">
           <div className="kicker">
             {header.goal ? `Working towards · ${header.goal}` : 'Main path'}
@@ -119,6 +161,12 @@ export function JourneyNow() {
           {header.beat ? (
             <>
               <h3 className="now-beat" aria-label="Current step">{header.beat}</h3>
+              {goalElsewhere && goalRegion && (
+                <p className="note" style={{ margin: '4px 0 0' }}>
+                  Goal region: <strong>{goalRegion}</strong>
+                  {suggested ? ` · route: ${suggested}` : ''}
+                </p>
+              )}
               {header.gate && <p className="note" style={{ margin: '4px 0 0' }}>Gate ahead: {header.gate}</p>}
               <div className="opts lead-actions" style={{ marginTop: 10 }}>
                 {header.factId && (
