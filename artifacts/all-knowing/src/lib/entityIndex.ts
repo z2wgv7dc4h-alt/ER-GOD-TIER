@@ -49,6 +49,8 @@ export type EntityRecord = {
   catalogue?: boolean
   /** Contributing datasets, for provenance. */
   sources: string[]
+  /** Task 124 §2 — the wiki page a `gapfill` field was read from, when any. */
+  sourceUrl?: string
 }
 
 let records: Map<string, EntityRecord> | null = null

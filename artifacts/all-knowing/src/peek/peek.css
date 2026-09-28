@@ -168,6 +168,7 @@
   color: inherit;
   border-bottom: 1px dotted var(--gold-dim);
   cursor: help;
+  position: relative;
 }
 
 .term:focus-visible {
@@ -179,5 +180,23 @@
 @media (pointer: coarse) {
   .term {
     border-bottom-style: solid;
+  }
+}
+
+/*
+ * Task 124 §5 — the inline definition chips must offer a ≥40px touch target.
+ * `display: inline-block` + a 40px min box gives the element itself the hit
+ * area (a pseudo-element would not change `getBoundingClientRect`), while the
+ * font size is untouched. Desktop/pointer-fine prose keeps the tight chip.
+ */
+@media (max-width: 500px), (pointer: coarse) {
+  .term {
+    display: inline-block;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0 8px;
+    line-height: 40px;
+    text-align: center;
+    vertical-align: middle;
   }
 }

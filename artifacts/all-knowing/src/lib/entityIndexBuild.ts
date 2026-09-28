@@ -53,6 +53,7 @@ import fanItems from '../../public/sourced/open/fanapi/items.json'
 import fanNpcs from '../../public/sourced/open/fanapi/npcs.json'
 import fanLocations from '../../public/sourced/open/fanapi/locations.json'
 import magicData from '../../public/sourced/open/magic.json'
+import gapfillDoc from '../../public/sourced/open/gapfill.json'
 
 /**
  * Task 119 §2 — build-time enrichment index.
@@ -113,7 +114,20 @@ type RegWeapon = {
   attack?: [number, number][]
 }
 
-const overrides = overridesJson as { aliases?: Record<string, string>; skip?: string[] }
+const overrides = overridesJson as {
+  aliases?: Record<string, string>
+  typos?: Record<string, string>
+  skip?: string[]
+}
+
+// Task 124 §1 — source typo / spelling variants folded onto one canonical name.
+const typoMap = new Map<string, string>()
+for (const [from, to] of Object.entries(overrides.typos ?? {})) typoMap.set(simpleNorm(from), to)
+
+/** Correct a known source typo/inflection to the canonical spelling, else return it. */
+function correctName(name: string): string {
+  return typoMap.get(simpleNorm(name)) ?? name
+}
 
 const ATTR_LABELS: Record<string, string> = { str: 'Str', dex: 'Dex', int: 'Int', fai: 'Fai', arc: 'Arc' }
 const DAMAGE_LABELS: Record<number, string> = { 0: 'Physical', 1: 'Magic', 2: 'Fire', 3: 'Lightning', 4: 'Holy' }
@@ -132,12 +146,34 @@ export type EntityIndexBuildResult = {
 // Name plane
 // ---------------------------------------------------------------------------
 
+/** Task 124 §1 — strip diacritics so "Great Épée" keys as "great epee". */
+function fold(value: string): string {
+  return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+}
+
 function simpleNorm(value: unknown): string {
-  return String(value ?? '')
+  return fold(String(value ?? ''))
     .toLowerCase()
     .replace(/[\u2019'`"]/g, '')
     .replace(/[^a-z0-9+]+/g, ' ')
     .trim()
+}
+
+/** Task 124 §1 — the spelling with a possessive `'s` dropped. */
+function possNorm(value: unknown): string {
+  return simpleNorm(fold(String(value ?? '')).replace(/[\u2019']s\b/gi, ''))
+}
+
+/**
+ * Every key a name should be filed/found under: the plain spelling and, when it
+ * carries a possessive, the collapsed one. Indexing both (rather than changing
+ * the norm) keeps "Giants Gravepost" from being lost when only one side uses the
+ * apostrophe.
+ */
+function mapKeys(value: unknown): string[] {
+  const plain = simpleNorm(value)
+  const poss = possNorm(value)
+  return poss && poss !== plain ? [plain, poss] : [plain]
 }
 
 function stripParens(value: string): string {
@@ -149,7 +185,7 @@ function baseNorm(value: unknown): string {
 }
 
 function tokens(value: string): string[] {
-  return baseNorm(value).split(' ').filter(Boolean)
+  return possNorm(stripParens(value)).split(' ').filter(Boolean)
 }
 
 function jaccard(a: string, b: string): number {
@@ -203,8 +239,7 @@ function slug(name: string): string {
 
 const nameIndex = new Map<string, string>()
 function addName(name: unknown, id: string): void {
-  const key = simpleNorm(name)
-  if (key && !nameIndex.has(key)) nameIndex.set(key, id)
+  for (const key of mapKeys(name)) if (key && !nameIndex.has(key)) nameIndex.set(key, id)
 }
 
 for (const entity of allEntities()) addName(entity.name, entity.id)
@@ -233,7 +268,7 @@ function fuzzyEntity(name: string): string | undefined {
 
 /** Resolve a source name to a canonical graph id, or null when nothing matches. */
 function resolveName(name: string, prefix: string): string | undefined {
-  const direct = nameIndex.get(simpleNorm(name)) ?? nameIndex.get(baseNorm(name))
+  const direct = mapKeys(name).map((key) => nameIndex.get(key)).find(Boolean)
   if (direct && hasEntity(direct)) return direct
   const candidate = canonicalEntityId(`${prefix}:${slug(name)}`, name)
   if (hasEntity(candidate)) return candidate
@@ -342,7 +377,9 @@ function numberStat(value: unknown): string | undefined {
 
 const checklistByName = <T extends { name: string }>(rows: T[]): Map<string, T> => {
   const map = new Map<string, T>()
-  for (const row of rows) if (!map.has(simpleNorm(row.name))) map.set(simpleNorm(row.name), row)
+  for (const row of rows) {
+    for (const key of mapKeys(row.name)) if (!map.has(key)) map.set(key, row)
+  }
   return map
 }
 
@@ -398,6 +435,12 @@ function itemLocationFallback(name: string): string | undefined {
   if (!/^ash(?:es)? of war:/i.test(name)) {
     candidates.push(`Ash of War: ${name}`, `Ashes of War: ${name}`)
   }
+  // Spirit ashes: the catalogue names them "Battlemage Hugues Ashes" while the
+  // acquisition dump uses "Battlemage Hugues (Spirit Ash)".
+  if (/ ashes$/i.test(name)) {
+    const base = name.replace(/ ashes$/i, '')
+    candidates.push(base, `${base} (Spirit Ash)`, `${base} Spirit Ash`)
+  }
   for (const candidate of candidates) {
     const acq = acqFuzzy(candidate)
     const acqText = acq?.location ?? acq?.near
@@ -445,7 +488,7 @@ function deplural(key: string): string {
 }
 
 function lookupName<T>(map: Map<string, T>, name: string): T | undefined {
-  const keys = [simpleNorm(name), baseNorm(name)]
+  const keys = mapKeys(name)
   for (const key of keys) {
     const hit = map.get(key)
     if (hit) return hit
@@ -469,7 +512,16 @@ function lookupWiki(name: string): WikiSection[] | undefined {
       best = rows
     }
   }
-  return best
+  if (best) return best
+  // Task 124 §1 — a distinctive single-token page ("Vyke") matches a longer
+  // source name that contains it ("Festering Fingerprint Vyke").
+  const wanted = new Set(tokens(name))
+  for (const [key, rows] of wikiByPage) {
+    const keyTokens = tokens(key)
+    if (keyTokens.length !== 1 || keyTokens[0].length < 4 || !wanted.has(keyTokens[0])) continue
+    return rows
+  }
+  return undefined
 }
 
 const npcCombatByFact = new Map<string, CombatRow>()
@@ -477,9 +529,39 @@ const npcCombatByName = checklistByName(npcCombat as CombatRow[])
 for (const row of npcCombat as CombatRow[]) if (row.factId && !npcCombatByFact.has(row.factId)) npcCombatByFact.set(row.factId, row)
 
 const enemyCombatByName = new Map<string, CombatRow>()
+const enemyCombatTokenKeys: { tokens: Set<string>; tokenList: string[]; row: CombatRow }[] = []
+const singular = (token: string): string => (token.length > 3 && token.endsWith('s') && !token.endsWith('ss') ? token.slice(0, -1) : token)
 for (const row of enemyCombat as CombatRow[]) {
-  const key = simpleNorm(stripParens(row.name))
-  if (key && !enemyCombatByName.has(key)) enemyCombatByName.set(key, row)
+  for (const key of mapKeys(stripParens(row.name))) if (key && !enemyCombatByName.has(key)) enemyCombatByName.set(key, row)
+  const tokenList = tokens(row.name).map(singular)
+  if (tokenList.length) enemyCombatTokenKeys.push({ tokens: new Set(tokenList), tokenList, row })
+}
+
+/**
+ * Task 124 §1 — an enemy row whose name is the same set of words in another
+ * order ("Carian Knight Bols (Boss)" for "Bols, Carian Knight") or a superset
+ * ("Fia's Champion 1" for "Fia's Champions"). Requires a two-word overlap so a
+ * generic single-word coinage never matches the wrong row.
+ */
+function enemyCombatLookup(name: string): CombatRow | undefined {
+  const direct =
+    mapKeys(stripParens(name)).map((key) => enemyCombatByName.get(key)).find(Boolean) ?? lookupName(enemyCombatByName, name)
+  if (direct) return direct
+  const want = new Set(tokens(name).map(singular))
+  if (!want.size) return undefined
+  let best: CombatRow | undefined
+  let bestScore = 1
+  for (const candidate of enemyCombatTokenKeys) {
+    const [small, large] = want.size <= candidate.tokens.size ? [want, candidate.tokens] : [candidate.tokens, want]
+    let subset = true
+    for (const token of small) if (!large.has(token)) { subset = false; break }
+    if (!subset) continue
+    if (small.size > bestScore) {
+      bestScore = small.size
+      best = candidate.row
+    }
+  }
+  return best
 }
 
 const coordsByName = checklistByName(coords as CoordRow[])
@@ -490,23 +572,29 @@ const placementByName = checklistByName(npcPlacements)
 
 const wikiByPage = new Map<string, WikiSection[]>()
 for (const section of wikiDoc.sections as WikiSection[]) {
-  const key = simpleNorm(section.page)
-  const list = wikiByPage.get(key) ?? []
-  list.push(section)
-  wikiByPage.set(key, list)
+  for (const key of mapKeys(section.page)) {
+    const list = wikiByPage.get(key) ?? []
+    list.push(section)
+    wikiByPage.set(key, list)
+  }
 }
 
 const regRows = new Map<string, RegWeapon[]>()
 for (const row of regulation.weapons as RegWeapon[]) {
-  const key = simpleNorm(row.weaponName)
-  const list = regRows.get(key) ?? []
-  list.push(row)
-  regRows.set(key, list)
+  for (const key of mapKeys(row.weaponName)) {
+    const list = regRows.get(key) ?? []
+    list.push(row)
+    regRows.set(key, list)
+  }
 }
 const scalingTiers = (regulation.scalingTiers as [number, string][]).slice().sort((a, b) => b[0] - a[0])
 
 function regFor(name: string): RegWeapon | undefined {
-  const rows = regRows.get(simpleNorm(name)) ?? regRows.get(baseNorm(name))
+  let rows: RegWeapon[] | undefined
+  for (const key of [...mapKeys(name), baseNorm(name)]) {
+    rows = regRows.get(key)
+    if (rows?.length) break
+  }
   if (!rows?.length) return undefined
   return (
     rows.find((r) => r.affinityId === 0) ??
@@ -551,6 +639,33 @@ function formatNegation(negation?: Record<string, number>): string | undefined {
   if (!negation) return undefined
   const label: Record<string, string> = { physical: 'Physical', magic: 'Magic', fire: 'Fire', lightning: 'Lightning', holy: 'Holy' }
   const parts = Object.entries(negation).filter(([, v]) => typeof v === 'number').map(([k, v]) => `${label[k] ?? k} ${v}`)
+  return parts.length ? parts.join(' · ') : undefined
+}
+
+/**
+ * Task 124 §1 — recover the negation table from Fextralife combat prose of the
+ * form "Negations (or Absorptions) Standard : 0 Slash : -10 … Holy : 0". The
+ * `Standard` anchor keeps it from matching the NPC "Defenses Physical : …"
+ * block, which uses a different scale.
+ */
+const STRATEGY_NEGATION_ORDER: [string, RegExp][] = [
+  ['Standard', /Standard\s*:\s*(-?\d+)/i],
+  ['Slash', /Slash\s*:\s*(-?\d+)/i],
+  ['Strike', /Strike\s*:\s*(-?\d+)/i],
+  ['Pierce', /Pierce\s*:\s*(-?\d+)/i],
+  ['Magic', /Magic\s*:\s*(-?\d+)/i],
+  ['Fire', /Fire\s*:\s*(-?\d+)/i],
+  ['Lightning', /Lightning\s*:\s*(-?\d+)/i],
+  ['Holy', /Holy\s*:\s*(-?\d+)/i],
+]
+
+function negationFromStrategy(text: string | undefined): string | undefined {
+  if (!text || !/Standard\s*:/i.test(text)) return undefined
+  const parts: string[] = []
+  for (const [label, re] of STRATEGY_NEGATION_ORDER) {
+    const match = re.exec(text)
+    if (match) parts.push(`${label} ${match[1]}`)
+  }
   return parts.length ? parts.join(' · ') : undefined
 }
 
@@ -645,7 +760,8 @@ function collectSections(
 // Per-kind merge passes
 // ---------------------------------------------------------------------------
 
-function mergeWeapon(name: string, kind: 'weapon' | 'shield', forcedId?: string): string {
+function mergeWeapon(rawName: string, kind: 'weapon' | 'shield', forcedId?: string): string {
+  const name = correctName(rawName)
   const id = forcedId ?? catalogueIdFor('item', name)
   const reg = regFor(name)
   const checklist = lookupName(checklistWeaponByName, name) ?? lookupName(checklistShieldByName, name)
@@ -696,13 +812,14 @@ function formatAttackFromChecklist(attack: unknown): string | undefined {
 }
 
 function mergeSimple(
-  name: string,
+  rawName: string,
   prefix: string,
   kind: EntityKind,
   checklist: { description?: string; image?: string; effect?: string; effects?: unknown } | undefined,
   sourceName: string,
   forcedId?: string,
 ): string {
+  const name = correctName(rawName)
   const id = forcedId ?? catalogueIdFor(prefix, name)
   const record = ensureCatalogue(id, kind, name)
   if (checklist) {
@@ -732,8 +849,9 @@ type ArmorChecklistRow = {
 
 /** Task 123 §1/§2 — one armor record from either checklist or FanAPI shape. */
 function mergeArmorRow(row: ChecklistItem, sourceName: string): string {
-  const id = catalogueIdFor('item', row.name)
-  const record = ensureCatalogue(id, 'armor', row.name)
+  const name = correctName(row.name)
+  const id = catalogueIdFor('item', name)
+  const record = ensureCatalogue(id, 'armor', name)
   setText(record, 'description', row.description)
   if (row.image && !record.image) record.image = row.image
   const armor = row as unknown as ArmorChecklistRow
@@ -743,7 +861,7 @@ function mergeArmorRow(row: ChecklistItem, sourceName: string): string {
   source(record, sourceName)
   setLocationFromSummary(record, id)
   if (!record.location) {
-    const loc = itemLocationFallback(row.name)
+    const loc = itemLocationFallback(name)
     if (loc) {
       setText(record, 'location', loc)
       source(record, 'acquisition')
@@ -752,7 +870,8 @@ function mergeArmorRow(row: ChecklistItem, sourceName: string): string {
   return id
 }
 
-function mergeBoss(name: string, forcedId?: string): string | undefined {
+function mergeBoss(rawName: string, forcedId?: string): string | undefined {
+  const name = correctName(rawName)
   const id = forcedId ?? resolveName(name, 'boss') ?? resolveName(name, 'invader')
   if (!id) return undefined
   const record = ensureEntity(getEntity(id))
@@ -761,7 +880,7 @@ function mergeBoss(name: string, forcedId?: string): string | undefined {
   // NpcParam combat (core bosses) then the wider enemy dump.
   for (const part of parts) {
     const combat = npcCombatByFact.get(id) ?? lookupName(npcCombatByName, part)
-    const enemy = combat ? undefined : (enemyCombatByName.get(simpleNorm(stripParens(part))) ?? lookupName(enemyCombatByName, part))
+    const enemy = combat ? undefined : enemyCombatLookup(part)
     const row = combat ?? enemy
     if (!row) continue
     setStat(record, 'HP', numberStat(row.baseHp))
@@ -829,6 +948,17 @@ function mergeBoss(name: string, forcedId?: string): string | undefined {
   }
   setText(record, 'strategy', strategy.text)
   if (!record.strategy && record.sections?.length) setText(record, 'strategy', record.sections[0].text)
+  // Task 124 §1 — the Fextralife combat prose carries the negation table for
+  // bosses the structured combat dump omits; recover it rather than leave the
+  // guard field blank.
+  if (!record.stats?.Negation) {
+    const text = [record.strategy, ...(record.sections ?? []).map((s) => s.text)].filter(Boolean).join('\n')
+    const recovered = negationFromStrategy(text)
+    if (recovered) {
+      setStat(record, 'Negation', recovered)
+      source(record, 'bosses-fextralife')
+    }
+  }
   if (!record.description) setText(record, 'description', byId.get(id)?.note)
 
   const coord = coordFor(name)
@@ -924,6 +1054,55 @@ function mergeNpc(name: string, forcedId?: string): string | undefined {
   return id
 }
 
+type GapfillRecord = {
+  name: string
+  prefix?: string
+  kind?: EntityKind
+  location?: string
+  description?: string
+  strategy?: string
+  hp?: string
+  negation?: string
+  drops?: string[]
+  requirements?: string
+  scaling?: string
+  weight?: string
+  source: string
+}
+
+/**
+ * Task 124 §2 — fold `public/sourced/open/gapfill.json` into the index. Every
+ * record was read from a wiki page and carries that page's URL; the build only
+ * fills fields the other datasets left empty, so gapfill is the lowest-priority
+ * source and can never overwrite grounded data.
+ */
+function mergeGapfill(): void {
+  const rows = (gapfillDoc as { records?: GapfillRecord[] }).records ?? []
+  for (const row of rows) {
+    const name = correctName(row.name)
+    const prefix = row.prefix ?? 'item'
+    const kind = (row.kind ?? 'item') as EntityKind
+    const id =
+      prefix === 'boss'
+        ? resolveName(name, 'boss') ?? resolveName(name, 'invader')
+        : catalogueIdFor(prefix, name)
+    if (!id) continue
+    const record = records.get(id) ?? (prefix === 'boss' ? ensure(id, kind, name) : ensureCatalogue(id, kind, name))
+    if (kind !== 'item' && record.kind === 'item') record.kind = kind
+    setText(record, 'location', row.location)
+    setText(record, 'description', row.description)
+    setText(record, 'strategy', row.strategy)
+    setStat(record, 'HP', row.hp)
+    setStat(record, 'Negation', row.negation)
+    setStat(record, 'Requirements', row.requirements)
+    setStat(record, 'Scaling', row.scaling)
+    setStat(record, 'Weight', row.weight)
+    if (row.drops?.length) addDrops(record, row.drops)
+    if (row.source) record.sourceUrl = row.source
+    source(record, 'gapfill')
+  }
+}
+
 function mergeDungeon(row: { id?: string; name: string; region?: string; x?: number; y?: number; bosses?: string[] }): void {
   const id = `dungeon:${row.id ?? slug(row.name)}`
   if (!hasEntity(id)) return
@@ -1003,7 +1182,7 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   for (const row of magicData as { name: string }[]) {
     const match = /^\[(Incantation|Sorcery)\]\s*(.+)$/.exec(row.name)
     if (!match) continue
-    const spellName = match[2].trim()
+    const spellName = correctName(match[2].trim())
     const id = catalogueIdFor('item', spellName)
     if (records.has(id)) continue
     const record = ensure(id, 'spell', spellName)
@@ -1021,7 +1200,10 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     const short = row.name.replace(/^ash(?:es)? of war:\s*/i, '').trim() || row.name
     mergeSimple(short, 'item', 'ash', row, 'checklists/ashes')
   }
-  for (const row of fanAshes as ChecklistItem[]) mergeSimple(row.name, 'item', 'ash', row, 'fanapi/ashes')
+  for (const row of fanAshes as ChecklistItem[]) {
+    const short = row.name.replace(/^ash(?:es)? of war:\s*/i, '').trim() || row.name
+    mergeSimple(short, 'item', 'ash', row, 'fanapi/ashes')
+  }
   for (const row of checklistSpirits as ChecklistItem[]) mergeSimple(row.name, 'item', 'spirit', row, 'checklists/spirits')
   for (const row of fanSpirits as ChecklistItem[]) mergeSimple(row.name, 'item', 'spirit', row, 'fanapi/spirits')
   for (const row of checklistItems as ChecklistItem[]) mergeSimple(row.name, 'item', 'item', row, 'checklists/items')
@@ -1141,6 +1323,10 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   for (const row of dungeonsData as unknown as { id?: string; name: string; region?: string; x?: number; y?: number }[]) {
     mergeDungeon(row)
   }
+
+  // Task 124 §2 — the sourced gap-fill, applied last so every field is a
+  // lowest-priority fallback. `setText`/`setStat` only write when absent.
+  mergeGapfill()
 
   // Related labels from the graph edges + a wiki Summary fallback for anything
   // still without a description.

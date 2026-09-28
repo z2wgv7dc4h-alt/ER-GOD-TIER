@@ -52,21 +52,24 @@ function drops(record: EntityRecord | undefined): boolean {
 export const CATALOGUE_KINDS: EntityKind[] = ['weapon', 'shield', 'armor', 'talisman', 'spell', 'ash', 'spirit', 'item']
 const CATALOGUE_KIND_SET = new Set<EntityKind>(CATALOGUE_KINDS)
 
-/** The guard combos the task names, per kind. */
+/**
+ * The guard combos the task names, per kind. Task 124 §4 raises every one of
+ * these to 100% — the gate that keeps the coverage work from regressing.
+ */
 export const GUARD_MINIMUMS: { kind: EntityKind; field: string; min: number; label: string }[] = [
-  { kind: 'boss', field: 'hpNegationLocation', min: 95, label: 'HP + negation + location' },
-  { kind: 'boss', field: 'drops', min: 90, label: 'drops' },
-  { kind: 'boss', field: 'strategy', min: 90, label: 'strategy/wiki section' },
-  { kind: 'weapon', field: 'requirementsScalingLocation', min: 95, label: 'requirements + scaling + location (all weapons)' },
-  { kind: 'shield', field: 'requirementsScalingLocation', min: 95, label: 'requirements + scaling + location (all shields)' },
-  { kind: 'armor', field: 'negationWeightLocation', min: 95, label: 'negation + weight + location (all armor)' },
-  { kind: 'armor', field: 'descriptionLocation', min: 95, label: 'description + location' },
-  { kind: 'talisman', field: 'descriptionLocation', min: 95, label: 'description + location' },
-  { kind: 'spell', field: 'descriptionLocation', min: 95, label: 'description + location' },
-  { kind: 'ash', field: 'descriptionLocation', min: 95, label: 'description + location' },
-  { kind: 'spirit', field: 'descriptionLocation', min: 95, label: 'description + location' },
-  { kind: 'item', field: 'descriptionLocation', min: 85, label: 'description + location (all items)' },
-  { kind: 'grace', field: 'map', min: 98, label: 'coords' },
+  { kind: 'boss', field: 'hpNegationLocation', min: 100, label: 'HP + negation + location' },
+  { kind: 'boss', field: 'drops', min: 100, label: 'drops' },
+  { kind: 'boss', field: 'strategy', min: 100, label: 'strategy/wiki section' },
+  { kind: 'weapon', field: 'requirementsScalingLocation', min: 100, label: 'requirements + scaling + location (all weapons)' },
+  { kind: 'shield', field: 'requirementsScalingLocation', min: 100, label: 'requirements + scaling + location (all shields)' },
+  { kind: 'armor', field: 'negationWeightLocation', min: 100, label: 'negation + weight + location (all armor)' },
+  { kind: 'armor', field: 'descriptionLocation', min: 100, label: 'description + location' },
+  { kind: 'talisman', field: 'descriptionLocation', min: 100, label: 'description + location' },
+  { kind: 'spell', field: 'descriptionLocation', min: 100, label: 'description + location' },
+  { kind: 'ash', field: 'descriptionLocation', min: 100, label: 'description + location' },
+  { kind: 'spirit', field: 'descriptionLocation', min: 100, label: 'description + location' },
+  { kind: 'item', field: 'descriptionLocation', min: 100, label: 'description + location (all items)' },
+  { kind: 'grace', field: 'map', min: 100, label: 'coords' },
 ]
 
 function fieldsFor(kind: EntityKind, records: (EntityRecord | undefined)[]): Record<string, FieldCoverage> {

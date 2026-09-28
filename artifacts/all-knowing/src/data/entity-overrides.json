@@ -1,5 +1,6 @@
 {
   "_doc": "Task 119 manual name -> canonical id fixes for the entity enrichment index. This only corrects name matching against data the repo already ships; it must never introduce game data.",
+  "_typos_doc": "Task 124 §1 name-normalisation table. Source spellings (checklist/fanapi/armory/regulation) that differ only by a typo, diacritic or misplaced apostrophe are folded onto one canonical (ASCII) spelling so the rows join the data already in the repo. Never adds game data.",
   "aliases": {
     "great horned tragoth": "boss:great-horned-targoth",
     "god-devouring serpent rykard lord of blasphemy": "hunt:god-devouring-serpent-rykard-lord-of-blasphemy",
@@ -13,6 +14,22 @@
     "radagon of the golden order": "boss:radagon",
     "elden beast": "boss:radagon",
     "golden hippopotamus": "hunt:golden-hippopotamus"
+  },
+  "typos": {
+    "great épée": "Great Epee",
+    "varré's bouquet": "Varre's Bouquet",
+    "prince of death's star": "Prince of Death's Staff",
+    "godksin noble robe": "Godskin Noble Robe",
+    "ekzyke's decay": "Ekzykes's Decay",
+    "ezykes's decay": "Ekzykes's Decay",
+    "gurrang's beast claw": "Gurranq's Beast Claw",
+    "terra magicus": "Terra Magica",
+    "aspect of the crucible: breath": "Aspects of the Crucible: Breath",
+    "nightmaiden & swordtress puppets": "Nightmaiden & Swordstress Puppets",
+    "great horned targoth": "Great Horned Tragoth",
+    "sancrified whetblade": "Sanctified Whetblade",
+    "numen'srune": "Numen's Rune",
+    "ashes of war: golden vow": "Golden Vow"
   },
   "skip": []
 }

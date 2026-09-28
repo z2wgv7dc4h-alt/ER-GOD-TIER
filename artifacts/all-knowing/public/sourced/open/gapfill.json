@@ -1,0 +1,398 @@
+{
+  "_doc": "Task 124 §2 — sourced gap-fill for entities whose guard fields the repo datasets do not carry. One record per entity, applied by scripts/build-entity-index.mjs (via src/lib/entityIndexBuild.ts) as the LOWEST-priority enrichment source: a field is only written when the merged record does not already have it. Facts were read from the Elden Ring wikis; `source` is the page each record was taken from. Do not add a record without a source URL.",
+  "records": [
+    {
+      "name": "Knight Leontiel",
+      "prefix": "boss",
+      "kind": "boss",
+      "hp": "4,000",
+      "negation": "Physical 0 · Magic 0 · Fire 0 · Lightning -25 · Holy 0",
+      "drops": ["Leontiel's Greatsword", "Leontiel Set"],
+      "location": "Wailing Dunes, Caelid — north of the Starscourge Radahn arena toward the War-Dead Catacombs.",
+      "strategy": "Leontiel is a mid-to-late-game melee invader with high poise from her plate set. She chains delayed greatsword swings into her unique skill, Muleta: in the muleta stance she flourishes the red cloth, gains evasion on the follow-up, then answers with either a slashing light finish or a thrusting heavy finish. Do not panic-roll into the flourish or chase the sidestep; break her poise with jump attacks, charged heavies or stance skills.",
+      "source": "https://eldenring.wiki.fextralife.com/Knight+Leontiel",
+      "note": "Neither wiki lists damage negation/absorptions for Leontiel; the standard NPC-invader profile used by the repo's enemy-combat dump is applied."
+    },
+    {
+      "name": "Millicent's Sisters",
+      "prefix": "boss",
+      "kind": "boss",
+      "hp": "Polyanna 5,533 · Amy 5,533 · Maureen 5,533 · Mary 5,681",
+      "negation": "Physical 0 · Magic 0 · Fire 0 · Lightning -25 · Holy 0",
+      "drops": ["Rotten Winged Sword Insignia", "Millicent's Prosthesis", "Unalloyed Gold Needle"],
+      "location": "Elphael, Brace of the Haligtree — the sisters ambush during Millicent's questline's endgame.",
+      "strategy": "A collective of four NPC invaders: Polyanna (Blade of Calling), Maureen (Treespear), Amy (twin Flowing Curved Swords) and Mary (Halo Scythe, inflicts Hemorrhage). All cast Pest Threads and are immune to Scarlet Rot but weak to Poison, Hemorrhage and Fire, with low poise. Split their aggro immediately; Millicent can only weather one or two sisters, so use Shabriri's Woe and a shield to draw them.",
+      "source": "https://eldenring.fandom.com/wiki/Millicent%27s_Sisters",
+      "note": "Neither wiki lists damage negation/absorptions for the sisters; the standard NPC-invader profile is applied. HP listed per member."
+    },
+    {
+      "name": "Messmer Soldier Shield",
+      "prefix": "item",
+      "kind": "weapon",
+      "location": "2.00% drop from shield-wielding Messmer Soldiers in camps across Gravesite Plain and Scadu Altus, and inside Castle Ensis and Shadow Keep.",
+      "source": "https://eldenring.wiki.fextralife.com/Messmer+Soldier+Shield"
+    },
+    {
+      "name": "Reed Great Katana",
+      "prefix": "item",
+      "kind": "weapon",
+      "location": "On a corpse in a meditating position atop the white rock structure north of the Fort Faroth site of grace, Dragonbarrow.",
+      "source": "https://eldenring.wiki.fextralife.com/Reed+Great+Katana"
+    },
+    {
+      "name": "Ritual Thrusting Shield",
+      "prefix": "item",
+      "kind": "weapon",
+      "location": "In the main entrance of the Caelid Colosseum behind the giant jar; the corpse is near the door in the nearby bleachers.",
+      "source": "https://eldenring.wiki.fextralife.com/Ritual+Thrusting+Shield"
+    },
+    {
+      "name": "Silver Grooved Shield",
+      "prefix": "item",
+      "kind": "weapon",
+      "location": "North of the Bellum Church site of grace, at a Nomadic Merchant's camp (also the Idus Knight's starting shield).",
+      "source": "https://eldenring.wiki.fextralife.com/Silver+Grooved+Shield"
+    },
+    {
+      "name": "Winged Spear",
+      "prefix": "item",
+      "kind": "weapon",
+      "requirements": "Str 10 · Dex 10",
+      "scaling": "Str D · Dex C",
+      "location": "Unobtainable in the release game — starting equipment of the Enchanted Knight class only in the closed network test.",
+      "source": "https://eldenring.wiki.fextralife.com/Winged+Spear"
+    },
+    {
+      "name": "Unarmed",
+      "prefix": "item",
+      "kind": "weapon",
+      "location": "Innate — the default bare-fist strikes and kicks used when no weapon is equipped; no acquisition.",
+      "source": "https://eldenring.fandom.com/wiki/Unarmed"
+    },
+    {
+      "name": "Champion Gauntlets",
+      "prefix": "item",
+      "kind": "armor",
+      "location": "Starting armwear of the Hero origin; also sold by the Nomadic Merchant in southern Caelid.",
+      "source": "https://eldenring.wiki.fextralife.com/Champion+Gauntlets",
+      "note": "Fextralife treats 'Champion Gauntlets' as the Champion Bracers of the Hero set."
+    },
+    {
+      "name": "Jar",
+      "prefix": "item",
+      "kind": "armor",
+      "location": "Given by Iron Fist Alexander in Mt. Gelmir near the Seethewater Terminus as his questline progresses.",
+      "source": "https://eldenring.wiki.fextralife.com/Jar"
+    },
+    {
+      "name": "Nox Monk Bracelets",
+      "prefix": "item",
+      "kind": "armor",
+      "location": "Dropped by Nox Monk, Nox Swordstress and Nightmaiden enemies in Nokron and Nokstella, Eternal City.",
+      "source": "https://eldenring.wiki.fextralife.com/Nox+Monk+Bracelets"
+    },
+    {
+      "name": "Nox Monk Greaves",
+      "prefix": "item",
+      "kind": "armor",
+      "location": "Dropped by Nox Monk, Nox Swordstress and Nightmaiden enemies in Nokron and Nokstella, Eternal City.",
+      "source": "https://eldenring.wiki.fextralife.com/Nox+Monk+Greaves"
+    },
+    {
+      "name": "Two-Headed Turtle Talisman",
+      "prefix": "item",
+      "kind": "talisman",
+      "description": "A talisman in the shape of a two-headed green turtle that greatly raises stamina recovery speed; a stronger Green Turtle Talisman that cannot be equipped together with it.",
+      "location": "Inside a cave beneath a waterfall guarded by enemies, just east of Rivermouth Cave.",
+      "source": "https://eldenring.wiki.fextralife.com/Two-Headed+Turtle+Talisman"
+    },
+    {
+      "name": "Terra Magica",
+      "prefix": "item",
+      "kind": "spell",
+      "location": "In a chest at the top of the tower reached after completing the Academy Crystal Cave dungeon and taking the elevator behind the Crystalian bosses.",
+      "source": "https://eldenring.wiki.fextralife.com/Terra+Magica"
+    },
+    {
+      "name": "Banished Knight Oleg",
+      "prefix": "item",
+      "kind": "spirit",
+      "location": "In Fringefolk Hero's Grave — use two Stonesword Keys on the double imp seal by the Stranded Graveyard grace; the Ulcerated Tree Spirit boss drops it.",
+      "source": "https://eldenring.wiki.fextralife.com/Banished+Knight+Oleg"
+    },
+
+    {
+      "name": "Beastlure Pot",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Crafted with the Nomadic Warrior's Cookbook [5] from Beast Blood, Hefty Beast Bone and an empty Ritual Pot.",
+      "source": "https://eldenring.wiki.fextralife.com/Beastlure+Pot"
+    },
+    {
+      "name": "Blood-tainted Excrement",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Grows in Mohgwyn Palace and is dropped by the Rotten Giant Crows of the new dynasty.",
+      "source": "https://eldenring.wiki.fextralife.com/Blood-Tainted_Excrement"
+    },
+    {
+      "name": "Crab Eggs",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Looted from large crabs and corpses around Limgrave, Siofra River, Nokron and the Shadow Keep.",
+      "source": "https://eldenring.wiki.fextralife.com/Crab_Eggs"
+    },
+    {
+      "name": "Deserter's Cookbook [1]",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Unobtainable cut content — a Closed Network Test cookbook later split into the Nomadic Warrior's Cookbooks.",
+      "source": "https://eldenring.wiki.fextralife.com/Deserter%27s+Cookbook+%281%29"
+    },
+    {
+      "name": "Deserter's Cookbook [2]",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Unobtainable cut content — a Closed Network Test cookbook later split into the Nomadic Warrior's Cookbooks.",
+      "source": "https://eldenring.wiki.fextralife.com/Deserter%27s+Cookbook+%282%29"
+    },
+    {
+      "name": "Drawstring Holy Grease",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Crafted with the Missionary's Cookbook [4]; also found in the Mountaintops of the Giants and Nokstella.",
+      "source": "https://eldenring.wiki.fextralife.com/Drawstring+Holy+Grease"
+    },
+    {
+      "name": "Drawstring Lightning Grease",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Crafted with the Ancient Dragon Apostle's Cookbook [1]; two are on a corpse at the Limgrave/Caelid border.",
+      "source": "https://eldenring.wiki.fextralife.com/Drawstring+Lightning+Grease"
+    },
+    {
+      "name": "Drawstring Magic Grease",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Crafted with the Glintstone Craftsman's Cookbook [5] from Root Resin, Crystal Bud and String.",
+      "source": "https://eldenring.wiki.fextralife.com/Drawstring+Magic+Grease"
+    },
+    {
+      "name": "Drawstring Rot Grease",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Crafted with the Nomadic Warrior's Cookbook [22] from Root Resin, String and Aeonian Butterfly.",
+      "source": "https://eldenring.wiki.fextralife.com/Drawstring+Rot+Grease"
+    },
+    {
+      "name": "Duelist's Furled Finger",
+      "prefix": "item",
+      "kind": "item",
+      "location": "In the northernmost part of Limgrave, on a burnt corpse next to the Frustrated Spirit.",
+      "source": "https://eldenring.wiki.fextralife.com/Duelist's+Furled+Finger"
+    },
+    {
+      "name": "Explosive Stone Clump",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Chance to drop from Miner enemies.",
+      "source": "https://eldenring.wiki.fextralife.com/Explosive+Stone+Clump"
+    },
+    {
+      "name": "Flight Pinion",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Dropped by Eagles, Guillemots and Warhawks; also looted from corpses in Belurat Tower Settlement and Castle Ensis.",
+      "source": "https://eldenring.wiki.fextralife.com/Flight_Pinion"
+    },
+    {
+      "name": "Formic Rock",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Found near Ainsel River and wherever giant ants live; dropped by Giant Ants and their Queen.",
+      "source": "https://eldenring.wiki.fextralife.com/Formic_Rock"
+    },
+    {
+      "name": "Four-toed Fowl Foot",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Dropped by Guillemots and Eagles; farmed near the Cathedral of Dragon Communion and Impassable Greatbridge.",
+      "source": "https://eldenring.wiki.fextralife.com/Four-Toed_Fowl_Foot"
+    },
+    {
+      "name": "Frenzied Cookbook",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Found on a body in one of the houses of the Frenzied Flame Village in Liurnia of the Lakes.",
+      "source": "https://eldenring.wiki.fextralife.com/Frenzied%27s_Cookbook_(1)"
+    },
+    {
+      "name": "Giantsflame Fire Pot",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Crafted with the Armorer's Cookbook [7] from Fire Blossom x2 and an empty Ritual Pot.",
+      "source": "https://eldenring.wiki.fextralife.com/Giantsflame+Fire+Pot"
+    },
+    {
+      "name": "Gold Firefly",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Found near bodies of water close to Minor Erdtrees, in Limgrave, the Weeping Peninsula and Altus Plateau.",
+      "source": "https://eldenring.wiki.fextralife.com/Gold_Firefly"
+    },
+    {
+      "name": "Great Dragonfly Head",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Dropped by Giant Dragonflies; also found at Dragon-Burnt Ruins, Tower of Return and Auriza Hero's Grave.",
+      "source": "https://eldenring.wiki.fextralife.com/Great_Dragonfly_Head"
+    },
+    {
+      "name": "Great Ghost Glovewort",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Found in chests in Ainsel River, Night's Sacred Ground, Nokstella and the Mohgwyn Dynasty Mausoleum.",
+      "source": "https://eldenring.wiki.fextralife.com/Great+Ghost+Glovewort"
+    },
+    {
+      "name": "Great Grave Glovewort",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Found in the Consecrated Snowfield, Giant-Conquering Hero's Grave, Crumbling Farum Azula and Elphael.",
+      "source": "https://eldenring.wiki.fextralife.com/Great+Grave+Glovewort"
+    },
+    {
+      "name": "Human Bone Shard",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Dropped by Skeletons, Necromancers, Celebrants and Tibia Mariners — those who live in death.",
+      "source": "https://eldenring.wiki.fextralife.com/Human_Bone_Shard"
+    },
+    {
+      "name": "Large Glintstone Scrap",
+      "prefix": "item",
+      "kind": "item",
+      "location": "In a hut guarded by Rotten Strays in Limgrave Tunnels, and on a corpse behind the shack in Morne Tunnel.",
+      "source": "https://eldenring.wiki.fextralife.com/Large+Glintstone+Scrap"
+    },
+    {
+      "name": "Living Jar Shard",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Found by killing Living Jars; also looted from a body in Jarburg.",
+      "source": "https://eldenring.wiki.fextralife.com/Living_Jar_Shard"
+    },
+    {
+      "name": "Moon Egg",
+      "prefix": "item",
+      "kind": "item",
+      "location": "One in Mirage Rise, three in Fort Laiedd, two southwest of the Smoldering Wall grace; also sold by Pidia, Carian Servant.",
+      "source": "https://eldenring.wiki.fextralife.com/Moon+Egg"
+    },
+    {
+      "name": "Note: Demi-human Mobs",
+      "prefix": "item",
+      "kind": "item",
+      "description": "A note sold by a nomadic merchant imparting knowledge in brief; it warns that demi-human mobs will cower in fear after their chief is slain.",
+      "source": "https://eldenring.wiki.fextralife.com/Note:+Demi-human+Mobs"
+    },
+    {
+      "name": "Poison Spraymist",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Crafted with the Perfumer's Cookbook [2], found on a rooftop corpse at the Shaded Castle in Altus Plateau.",
+      "source": "https://eldenring.wiki.fextralife.com/Poison+Spraymist"
+    },
+    {
+      "name": "Rancor Pot",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Crafted with the Nomadic Warrior's Cookbook [9] from Grave Violet, Human Bone Shard and an empty Cracked Pot.",
+      "source": "https://eldenring.wiki.fextralife.com/Rancor+Pot"
+    },
+    {
+      "name": "Remembrance Of Hoarah Loux",
+      "prefix": "item",
+      "kind": "item",
+      "description": "Remembrance of Hoarah Loux, the warrior, hewn into the Erdtree; its power can be unlocked by the Finger Reader or it can be used to gain runes.",
+      "source": "https://eldenring.wiki.fextralife.com/Remembrance+of+Hoarah+Loux"
+    },
+    {
+      "name": "Rot Grease",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Crafted with the Nomadic Warrior's Cookbook [22]; also found in Sellia Crystal Tunnel and the Shaded Castle.",
+      "source": "https://eldenring.wiki.fextralife.com/Rot+Grease"
+    },
+    {
+      "name": "Rot Pot",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Crafted with the Nomadic Warrior's Cookbook [22] from Toxic Mushroom, Faded Erdleaf Flower, Aeonian Butterfly and a Ritual Pot.",
+      "source": "https://eldenring.wiki.fextralife.com/Rot+Pot"
+    },
+    {
+      "name": "Ruptured Crystal Tear",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Dropped by the Erdtree Avatar in Liurnia of the Lakes and the Putrid Avatar at the Consecrated Snowfield Minor Erdtree.",
+      "source": "https://eldenring.wiki.fextralife.com/Ruptured+Crystal+Tear"
+    },
+    {
+      "name": "Silver Firefly",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Spawns inside caves in Limgrave, the Weeping Peninsula and Liurnia, and in Siofra River and Ainsel River.",
+      "source": "https://eldenring.wiki.fextralife.com/Silver+Firefly"
+    },
+    {
+      "name": "Silver Tear Husk",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Respawns in Nokron and Nokstella, Eternal City; looted from a body near the cliff edge in Nokron.",
+      "source": "https://eldenring.wiki.fextralife.com/Silver+Tear+Husk"
+    },
+    {
+      "name": "Spark Aromatic",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Crafted with the Perfumer's Cookbook [1] from Altus Bloom and Miranda Powder.",
+      "source": "https://eldenring.wiki.fextralife.com/Spark+Aromatic"
+    },
+    {
+      "name": "Tarnished's Furled Finger",
+      "prefix": "item",
+      "kind": "item",
+      "location": "At the Stranded Graveyard site of grace, on a corpse to the right of the lift entrance alongside a Finger Severer.",
+      "source": "https://eldenring.wiki.fextralife.com/Tarnished's+Furled+Finger"
+    },
+    {
+      "name": "Uplifting Aromatic",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Crafted with the Perfumer's Cookbook [1] from Altus Bloom, Budding Cave Moss, Silver Tear Husk and Arteria Leaf.",
+      "source": "https://eldenring.wiki.fextralife.com/Uplifting+Aromatic"
+    },
+    {
+      "name": "Volcanic Stone",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Grows in Mt. Gelmir and is dropped by Man-Serpents and Abnormal Stone Clusters.",
+      "source": "https://eldenring.wiki.fextralife.com/Volcanic+Stone"
+    },
+    {
+      "name": "Wraith Calling Bell",
+      "prefix": "item",
+      "kind": "item",
+      "location": "In a chest in an underground room of the Laskyar Ruins in Liurnia of the Lakes, down the steps in the northwest section.",
+      "source": "https://eldenring.wiki.fextralife.com/Wraith+Calling+Bell"
+    },
+    {
+      "name": "Yellow Ember",
+      "prefix": "item",
+      "kind": "item",
+      "location": "Found in lands afflicted by frenzy — the Weeping Peninsula, Liurnia of the Lakes and the Subterranean Shunning-Grounds.",
+      "source": "https://eldenring.wiki.fextralife.com/Yellow_Ember"
+    }
+  ]
+}
