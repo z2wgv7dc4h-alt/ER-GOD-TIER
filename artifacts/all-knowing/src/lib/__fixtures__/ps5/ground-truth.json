@@ -184,5 +184,26 @@
       "multiplayerRow2": 4
     },
     "_note": "Row 3 holds 5 REMEMBRANCES (x1 each). Each held remembrance => that boss is defeated and the remembrance not yet traded at Enia/Finger Reader. Identify each by icon matching against the remembrance set, add boss-defeated facts with reason \"holds Remembrance of X\" (after confirmation). Golden runes: 7 stacks. Row 4-5: multiplayer items (stack 110 and 8); small badge top-left on 4 cells marks items registered to the pouch/quick slots."
+  },
+  "map-overworld-01.jpg": {
+    "screen": "world-map",
+    "world": "overworld",
+    "visibleBanners": [
+      "Liurnia of the Lakes",
+      "Limgrave",
+      "Caelid"
+    ],
+    "revealedRegions": [
+      "Limgrave",
+      "Weeping Peninsula",
+      "Liurnia of the Lakes (south/east)",
+      "Caelid",
+      "Dragonbarrow (partial)"
+    ],
+    "unrevealedVisible": [
+      "Altus Plateau (plain parchment, no detail)"
+    ],
+    "graceIconsVisible": "many (~100+ gold grace icons)",
+    "_note": "Detailed painted terrain = map fragment owned; plain parchment/cloud = not revealed. Gold circular icons are discovered Sites of Grace. Register the photo to the app's own overworld map (feature matching / homography against M00 tiles or the static plate) using the coastline/region shapes, then snap each detected grace icon to the nearest known grace coordinate (grace-xyz / entity-index graces) within a tolerance. Photo is angled and cropped (left edge cut)."
   }
 }

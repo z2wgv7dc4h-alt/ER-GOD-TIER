@@ -74,3 +74,10 @@ The Tools page shows held remembrances (row of x1 cells). Each held remembrance 
 defeated (and not yet traded). Icon-match against the remembrance set and add boss-defeated facts (reason "holds
 Remembrance of X", confidence from the match) through the normal confirm + inference path, so gates/quests update.
 Great Runes on the Key Items page likewise ⇒ shardbearer defeated.
+
+## 7. World map photo ⇒ graces discovered + fragments owned (fixture `map-overworld-01.jpg`)
+Register the photo to the app's own overworld map (ORB/feature matching + RANSAC homography against a downscaled
+M00 tile pyramid or the static plate — pure JS, no new deps), then: (a) detect gold grace icons (colour + circular
+blob) and snap each to the nearest known grace coordinate within tolerance → discovered graces; (b) per region,
+classify painted-terrain vs plain parchment/cloud → map fragments owned. Everything goes through the confirm +
+inference path. Report registration error and grace precision/recall on the fixture (ground truth: regions listed).
