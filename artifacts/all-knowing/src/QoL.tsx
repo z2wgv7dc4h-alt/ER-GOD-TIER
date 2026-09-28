@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { matchMany } from './knowledge/catalog'
 import { groupHits, searchSync, type SearchHit } from './lib/search'
 import { flattenHits, moveActive, resolvePaletteKey } from './lib/palette'
+import { searchWiki, wikiSnippet, type WikiSearchHit } from './lib/wikiSearch'
 import { classify, type OmniboxCommand, type OmniboxTarget } from './lib/omnibox'
 import { EntityLink } from './EntityLink'
 import { WikiText } from './WikiText'
@@ -301,6 +302,7 @@ type PaletteRow =
   | { kind: 'log'; verb: string; targets: OmniboxTarget[]; factIds: string[] }
   | { kind: 'command'; command: OmniboxCommand }
   | { kind: 'entity'; hit: SearchHit }
+  | { kind: 'wiki'; hit: WikiSearchHit }
 
 /**
  * Task 99 — the omnibox results. The classifier decides the shape, then the rows
@@ -318,13 +320,27 @@ export function CommandHits({
   const result = useMemo(() => classify(q), [q])
   // Live entity hits, debounced, from the existing `searchSync`/`groupHits`.
   const sections = useMemo(() => (q.length >= LIVE_SEARCH_MIN ? groupHits(searchSync(q)) : []), [q])
+  // Task 133 §3 — full-text wiki section hits, the same engine the Library uses.
+  const [wikiHits, setWikiHits] = useState<WikiSearchHit[]>([])
+  useEffect(() => {
+    if (q.length < 3) {
+      setWikiHits([])
+      return
+    }
+    let cancelled = false
+    void searchWiki(q, 5)
+      .then((found) => { if (!cancelled) setWikiHits(found) })
+      .catch(() => { if (!cancelled) setWikiHits([]) })
+    return () => { cancelled = true }
+  }, [q])
   const rows = useMemo<PaletteRow[]>(() => {
     const out: PaletteRow[] = []
     if (result.kind === 'log') out.push({ kind: 'log', verb: result.verb, targets: result.targets, factIds: result.factIds })
     if (result.kind === 'command') out.push({ kind: 'command', command: result.command })
     for (const hit of flattenHits(sections)) out.push({ kind: 'entity', hit })
+    for (const hit of wikiHits) out.push({ kind: 'wiki', hit })
     return out
-  }, [result, sections])
+  }, [result, sections, wikiHits])
 
   const question = result.kind === 'question' ? result.text : ''
   const [answer, setAnswer] = useState<GideonAct | null>(null)
@@ -378,6 +394,13 @@ export function CommandHits({
       w.go(row.command.section, row.command.sub ?? undefined)
       return
     }
+    if (row.kind === 'wiki') {
+      // Task 133 §3 — a wiki section hit opens its entity (or wiki-only page).
+      w.openEntity(row.hit.entityId)
+      w.setQuery('')
+      onCloseSearch?.()
+      return
+    }
     // Task 97: a real entity hit opens the universal panel overlay.
     w.openEntity(row.hit.id)
     w.setQuery('')
@@ -417,6 +440,7 @@ export function CommandHits({
     // boss-pin data), so the source keeps the row key unique even if the id is not.
     if (row.kind === 'entity') return `e:${row.hit.source}:${row.hit.id}`
     if (row.kind === 'command') return `c:${row.command.id}`
+    if (row.kind === 'wiki') return `w:${row.hit.pageId}:${row.hit.heading}`
     return 'do:log'
   }
   const activeKey = rows[active] ? keyOf(rows[active]) : ''
@@ -441,6 +465,23 @@ export function CommandHits({
           </header>
           <div className="note">{row.hit.detail}</div>
         </EntityLink>
+      )
+    }
+    if (row.kind === 'wiki') {
+      return (
+        <button
+          key={`w:${row.hit.pageId}:${row.hit.heading}`}
+          type="button"
+          className={cls}
+          aria-current={isActive ? 'true' : undefined}
+          onClick={() => choose(row)}
+        >
+          <header>
+            <strong>{row.hit.title}</strong>
+            <span className="note">{row.hit.heading ? ` · ${row.hit.heading}` : ' · wiki'}</span>
+          </header>
+          <div className="note">{wikiSnippet(row.hit.markdown, q)}</div>
+        </button>
       )
     }
     if (row.kind === 'command') {
@@ -477,7 +518,8 @@ export function CommandHits({
 
   // Task 108 §6: the three top-level groups are always labelled Do · Things ·
   // Ask; entity hits live under Things, grouped by kind inside.
-  const doRows = rows.filter((r) => r.kind !== 'entity')
+  const doRows = rows.filter((r) => r.kind !== 'entity' && r.kind !== 'wiki')
+  const wikiRows = rows.filter((r) => r.kind === 'wiki')
   const entityCount = sections.reduce((n, s) => n + s.hits.length, 0)
   return (
     <div className="command-hits" ref={listRef}>
@@ -502,6 +544,12 @@ export function CommandHits({
           <p className="note">No matching things.</p>
         )}
       </section>
+      {wikiRows.length > 0 && (
+        <section className="command-group command-wiki">
+          <div className="kicker">Wiki · {wikiRows.length}</div>
+          {wikiRows.map(renderRow)}
+        </section>
+      )}
       <section className="command-group command-ask">
         <div className="kicker">Ask · Gideon</div>
         {question ? (

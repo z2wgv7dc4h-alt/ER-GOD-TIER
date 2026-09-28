@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { mechanics, type MechanicCard } from '../knowledge/mechanics'
 import { GuidesSection } from '../PackData'
 import { RecipesSection, SecretsSection, WikiTextSection } from '../CodexData'
@@ -13,8 +13,10 @@ import { flaskUpgrades, mapFragments, scadutreeFragments } from '../knowledge/co
 import { applyFacts } from '../lib/infer'
 import { useGuide } from '../lib/guide'
 import { sectionMeta } from '../lib/sections'
+import { listWikiPages, type WikiPageRow } from '../lib/wikiSearch'
 import { useWorkspace } from '../state'
 import { Card, Chip } from '../ui'
+import { WikiSearchResults } from './WikiSearchResults'
 
 /**
  * Task 117 — Library › Guides.
@@ -282,6 +284,90 @@ function ProgressionSection({ query }: { query: string }) {
   )
 }
 
+const WIKI_KINDS = [
+  { id: 'faction', label: 'Factions' },
+  { id: 'lore', label: 'Lore' },
+  { id: 'mechanic', label: 'Mechanics' },
+  { id: 'region', label: 'Locations' },
+  { id: 'npc', label: 'Characters' },
+  { id: 'boss', label: 'Bosses' },
+  { id: 'enemy', label: 'Enemies' },
+  { id: 'dungeon', label: 'Dungeons' },
+  { id: 'item', label: 'Items' },
+  { id: 'spell', label: 'Spells' },
+]
+
+/**
+ * Task 133 §3 — "Search the wiki" plus browse-by-category. Full-text search is
+ * the exported corpus; the categories are the wiki's own kind classification.
+ */
+function WikiBrowser() {
+  const w = useWorkspace()
+  const [q, setQ] = useState('')
+  const [kind, setKind] = useState<string | null>(null)
+  const [pages, setPages] = useState<WikiPageRow[]>([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (!kind) {
+      setPages([])
+      return
+    }
+    let cancelled = false
+    setLoading(true)
+    void listWikiPages(kind).then((rows) => {
+      if (cancelled) return
+      setPages(rows.slice(0, 80))
+      setLoading(false)
+    })
+    return () => { cancelled = true }
+  }, [kind])
+
+  return (
+    <Card title="Search the wiki" subtitle="Every word of the Fandom snapshot — factions, lore, mechanics, locations and more.">
+      <div className="opts">
+        <input
+          className="search wiki-search-box"
+          type="search"
+          value={q}
+          placeholder="e.g. frenzied flame proscription, how to get to Mohgwyn…"
+          aria-label="Search the wiki"
+          onChange={(e) => setQ(e.target.value)}
+        />
+      </div>
+      <div className="opts">
+        {WIKI_KINDS.map((option) => (
+          <Chip key={option.id} on={kind === option.id} onClick={() => setKind(kind === option.id ? null : option.id)}>
+            {option.label}
+          </Chip>
+        ))}
+      </div>
+      {q.trim().length >= 3 ? (
+        <WikiSearchResults query={q} onPick={(id) => w.openEntity(id)} heading="Wiki search" />
+      ) : kind ? (
+        <div className="wiki-browse">
+          {loading ? (
+            <p className="note">Loading…</p>
+          ) : pages.length ? (
+            pages.map((page) => (
+              <button key={page.id} type="button" className="wiki-result" onClick={() => w.openEntity(page.entityId)}>
+                <header>
+                  <strong>{page.title}</strong>
+                  <span className="note"> · {page.sections} sections</span>
+                </header>
+              </button>
+            ))
+          ) : (
+            <p className="note">No pages in this category.</p>
+          )}
+        </div>
+      ) : (
+        <p className="note">Type a question, or pick a category to browse.</p>
+      )}
+    </Card>
+  )
+}
+
 export function Guides() {
   const { query } = useWorkspace()
   const [corpus, setCorpus] = useState<Corpus | null>(null)
@@ -310,6 +396,8 @@ export function Guides() {
           </div>
         </Card>
       )}
+
+      {!searching && <WikiBrowser />}
 
       <MechanicsSection query={searching ? query : ''} />
 

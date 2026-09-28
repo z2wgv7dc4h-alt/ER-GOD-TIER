@@ -132,6 +132,21 @@ export function loadWikiChunk(name: string): Promise<Record<string, WikiCorpusPa
   return promise
 }
 
+export type WikiPageRow = WikiPageMeta & { id: string }
+
+/** All wiki pages of a kind (or every page), sorted by title. For browse-by-category. */
+export async function listWikiPages(kind?: string): Promise<WikiPageRow[]> {
+  const doc = await loadWikiManifest()
+  if (!doc) return []
+  const rows: WikiPageRow[] = []
+  for (const [id, meta] of Object.entries(doc.pages)) {
+    if (kind && meta.kind !== kind) continue
+    rows.push({ id, ...meta })
+  }
+  rows.sort((a, b) => a.title.localeCompare(b.title))
+  return rows
+}
+
 /** The page a canonical entity id links to, when the wiki has one. */
 export async function wikiPageForEntity(entityId: string): Promise<{ meta: WikiPageMeta; page: WikiCorpusPage } | null> {
   const doc = await loadWikiManifest()

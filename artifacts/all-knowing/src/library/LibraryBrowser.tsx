@@ -11,6 +11,7 @@ import { useLibraryCatalog } from './catalog'
 import { CompareTray } from './CompareTray'
 import { EntityPanel } from './EntityPanel'
 import { GatheringNodes } from './GatheringNodes'
+import { WikiSearchResults } from './WikiSearchResults'
 import { Term } from '../peek/Term'
 import {
   attributeStats,
@@ -768,6 +769,13 @@ export function LibraryBrowser() {
               </span>
             )}
           </div>
+
+          {/* Task 133 §3 — full-text wiki results alongside the category rows. */}
+          {q.trim().length >= 3 && (
+            <div className="lib-wiki">
+              <WikiSearchResults query={q} onPick={(id) => w.openEntity(id)} />
+            </div>
+          )}
 
           <div className="lib-results">
             {showSkeleton ? (

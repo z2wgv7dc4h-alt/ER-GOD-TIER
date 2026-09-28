@@ -4,6 +4,7 @@ import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 import {
   bucketFor,
   clearWikiCache,
+  listWikiPages,
   rankPostings,
   searchWiki,
   stem,
@@ -94,6 +95,12 @@ describe('Task 133 §1/§3 — full-text search over the exported corpus', () =>
   it('links a known entity to its wiki page', async () => {
     const found = await wikiPageForEntity('boss:margit')
     expect(found?.meta.title).toMatch(/Margit/)
+  })
+
+  it('lists pages by category for browse', async () => {
+    const factions = await listWikiPages('faction')
+    expect(factions.length).toBeGreaterThan(10)
+    expect(factions.every((page) => page.kind === 'faction')).toBe(true)
   })
 
   it('builds a plain snippet with markup removed', () => {

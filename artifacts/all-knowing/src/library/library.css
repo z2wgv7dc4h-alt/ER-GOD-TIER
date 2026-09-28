@@ -1008,3 +1008,41 @@
   cursor: pointer;
   text-decoration: underline dotted;
 }
+
+/* --- Task 133 §3 — wiki search results ------------------------------- */
+.wiki-results,
+.wiki-browse {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.wiki-result {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--panel, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.12));
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  color: inherit;
+}
+
+.wiki-result header {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.wiki-result mark,
+.wiki-markdown mark {
+  background: var(--accent, #d4b483);
+  color: #1a1408;
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+.wiki-search-box {
+  width: 100%;
+}
