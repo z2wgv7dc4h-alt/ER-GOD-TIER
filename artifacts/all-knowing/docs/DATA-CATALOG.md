@@ -598,20 +598,20 @@ Entity kinds where the application’s entity graph (`public/sourced/entity-inde
 
 | kind | app records | richest source | source records | gap | note |
 | --- | --- | --- | --- | --- | --- |
-| weapon | 442 | names.json kind=weapon (FMG rows) | 3722 | **+3280** | Typed DB weapons: 480 (79 shields); EquipParamWeapon names: 3529. |
-| shield | 69 | data/raw/er-mcp.db weapons (shield types) | 79 | **+10** | DB weapon rows whose weapon_type contains "shield". |
+| weapon | 442 | names.json kind=weapon (FMG rows) | 3722 | **+3280** | App is the deduped base-weapon catalogue; the 3722 FMG rows are upgrade/affinity variants of those bases. Typed DB weapons: 480 (79 shields); EquipParamWeapon names: 3529. |
+| shield | 69 | data/raw/er-mcp.db weapons (shield types) | 79 | **+10** | App shield rows are the FanAPI catalogue (69); the DB count includes upgrade variants of the same shields. |
 | armor | 775 | data/raw/er-mcp.db armor | 680 | -95 | FMG protector rows: 788; save-ids armor: 729. |
 | talisman | 158 | data/raw/er-mcp.db talismans | 156 | -2 | FMG accessory rows: 157; save-ids talisman: 154. |
-| spell | 223 | public/sourced/open/magic.json | 317 | **+94** | DB spells: 213; FanAPI spells: 169. |
-| ash | 124 | public/sourced/open/save-ids.json ids.aow | 116 | -8 | FanAPI/checklist ashes: 90; FMG arts rows: 265. |
+| spell | 223 | public/sourced/open/magic.json | 317 | **+94** | App covers the player catalogue; magic.json's extra rows are duplicated/non-player spell ids. DB spells: 213; FanAPI spells: 169. |
+| ash | 124 | public/sourced/open/save-ids.json ids.aow | 116 | -8 | Player Ashes of War only; the 265 FMG arts rows include non-player/unique weapon skills. FanAPI/checklist ashes: 90. |
 | spirit | 79 | public/sourced/checklists/spirits.json | 64 | -15 | FanAPI spirits: 64. |
-| item | 2054 | data/raw/er-mcp.db acquisition | 2609 | **+555** | guide items: 2490; FMG goods: 2221; DB Infobox Item pages: 1789. |
+| item | 2054 | data/raw/er-mcp.db acquisition | 2609 | **+555** | App covers all goods; the acquisition count is rows not items (multi-location + non-item rows). guide items: 2490; FMG goods: 2221; DB Infobox Item pages: 1789. |
 | boss | 242 | public/sourced/open/boss-xyz.json / checklists/bosses.json | 215 | -27 | hosted-bosses: 215; hunts: 207; DB bosses: 165; Fextralife: 163. |
 | npc | 580 | names.json kind=npcs / DB Infobox Character | 482 | -98 | DB Infobox Character pages: 198; dialogue speakers: 95; FanAPI npcs: 55. |
 | location/region | 1300 | DB Infobox Location | 496 | -804 | checklists locations: 177; FMG places: 1006. |
 | grace | 420 | checklists/graces.json (BonfireWarpParam) | 418 | -2 | Every warp row. |
 | dungeon | 119 | src/data/dungeons.json | 119 | 0 | DB dungeon+evergaol pages: 56. |
 | quest | 517 | data/raw/er-mcp.db quests (steps) | 341 | -176 | Step rows across 68 NPCs. |
-| enemy | 0 | public/sourced/enemy-combat.json | 2271 | **+2271** | MSB placements: 8827; no enemy entities in the index. |
+| enemy | 2390 | public/sourced/open/msb-enemies.json | 8827 | **+6437** | App seeds every one of the 2271 enemy-combat NpcParam rows; the MSB dump is per-placement instances, not distinct enemies. |
 
 _Regenerated 2026-09-28._
