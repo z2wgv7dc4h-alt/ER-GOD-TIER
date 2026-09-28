@@ -59,6 +59,7 @@ import mapExtras from '../../public/sourced/guide/map-extras.json'
 import engineMarkersDoc from '../../public/sourced/open/engine-markers.json'
 import eldenringMap from '../../public/sourced/open/eldenringmap.json'
 import namesData from '../../public/sourced/open/names.json'
+import saveIds from '../../public/sourced/open/save-ids.json'
 
 // Task 132 §1 — the full wiki DB, classified per kind by `scripts/export-wiki-db.py`.
 import wikiBossDoc from '../../public/sourced/open/wiki-db/boss.json'
@@ -1325,8 +1326,12 @@ function mergeWikiDb(): void {
   for (const [doc, kind] of catalogueDocs) {
     for (const rec of wikiRecords(doc)) {
       const title = canonicalWikiTitle(rec.title)
-      const id = catalogueIdFor('item', title)
-      const record = records.get(id) ?? ensure(id, kind, title)
+      // The wiki names every ash "Ash of War: X" while the checklist/FanAPI use
+      // the bare skill; strip it so the wiki page enriches the existing record
+      // instead of minting a duplicate.
+      const bare = kind === 'ash' ? title.replace(/^ash(?:es)? of war:\s*/i, '').trim() || title : title
+      const id = catalogueIdFor('item', bare)
+      const record = records.get(id) ?? ensure(id, kind, bare)
       if (record.kind === 'item' && kind !== 'item') record.kind = kind
       enrichFromWiki(record, rec)
       setStat(record, 'Weight', rec.stats.Weight)
@@ -1416,6 +1421,16 @@ type FmgNameRow = { id: string; kind: string; name: string; info?: string }
  */
 function mergeFmgNames(): void {
   const rows = namesData as FmgNameRow[]
+  // Task 132 §2 — the FMG `arts` plane carries 265 rows, but most are unique
+  // weapon skills / enemy attacks, not the player-equippable Ashes of War. Fold
+  // only the real Ashes of War (save-ids aow ∪ checklist ∪ FanAPI ∪ wiki ash
+  // pages) so the `ash` kind is not inflated by non-player entries.
+  const stripAsh = (name: string) => simpleNorm(name.replace(/^ash(?:es)? of war:\s*/i, ''))
+  const ashOfWarNames = new Set<string>()
+  for (const name of Object.keys((saveIds as { ids?: { aow?: Record<string, string> } }).ids?.aow ?? {})) ashOfWarNames.add(stripAsh(name))
+  for (const row of checklistAshes as ChecklistItem[]) ashOfWarNames.add(stripAsh(row.name))
+  for (const row of fanAshes as ChecklistItem[]) ashOfWarNames.add(stripAsh(row.name))
+  for (const rec of wikiRecords(wikiAshDoc)) ashOfWarNames.add(stripAsh(rec.title))
   const ensureKind = (id: string, kind: EntityKind, name: string): EntityRecord => {
     const existing = records.get(id)
     if (existing) return existing
@@ -1453,6 +1468,7 @@ function mergeFmgNames(): void {
       setText(record, 'description', row.info)
       source(record, 'names/fmg-protector')
     } else if (row.kind === 'arts') {
+      if (!ashOfWarNames.has(stripAsh(row.name))) continue
       const id = catalogueIdFor('item', row.name)
       const record = records.get(id) ?? ensureKind(id, 'ash', row.name)
       setText(record, 'description', row.info)
