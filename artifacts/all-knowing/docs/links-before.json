@@ -1,0 +1,217 @@
+{
+  "deadData": 0,
+  "deadRenderer": 0,
+  "coverage": [
+    {
+      "kind": "armor",
+      "total": 768,
+      "fields": {
+        "source": {
+          "have": 544,
+          "pct": 70.8
+        }
+      }
+    },
+    {
+      "kind": "ash",
+      "total": 124,
+      "fields": {
+        "source": {
+          "have": 90,
+          "pct": 72.6
+        }
+      }
+    },
+    {
+      "kind": "boss",
+      "total": 242,
+      "fields": {
+        "drops": {
+          "have": 206,
+          "pct": 85.1
+        },
+        "location": {
+          "have": 236,
+          "pct": 97.5
+        }
+      }
+    },
+    {
+      "kind": "dungeon",
+      "total": 119,
+      "fields": {
+        "contents": {
+          "have": 102,
+          "pct": 85.7
+        }
+      }
+    },
+    {
+      "kind": "grace",
+      "total": 416,
+      "fields": {
+        "region": {
+          "have": 378,
+          "pct": 90.9
+        }
+      }
+    },
+    {
+      "kind": "item",
+      "total": 1203,
+      "fields": {
+        "source": {
+          "have": 880,
+          "pct": 73.2
+        }
+      }
+    },
+    {
+      "kind": "material",
+      "total": 3,
+      "fields": {
+        "source": {
+          "have": 3,
+          "pct": 100
+        }
+      }
+    },
+    {
+      "kind": "merchant",
+      "total": 106,
+      "fields": {
+        "stock": {
+          "have": 106,
+          "pct": 100
+        }
+      }
+    },
+    {
+      "kind": "npc",
+      "total": 221,
+      "fields": {
+        "location": {
+          "have": 144,
+          "pct": 65.2
+        }
+      }
+    },
+    {
+      "kind": "quest",
+      "total": 467,
+      "fields": {
+        "location": {
+          "have": 319,
+          "pct": 68.3
+        }
+      }
+    },
+    {
+      "kind": "region",
+      "total": 312,
+      "fields": {
+        "contents": {
+          "have": 99,
+          "pct": 31.7
+        }
+      }
+    },
+    {
+      "kind": "remembrance",
+      "total": 25,
+      "fields": {
+        "boss": {
+          "have": 25,
+          "pct": 100
+        },
+        "trades": {
+          "have": 25,
+          "pct": 100
+        }
+      }
+    },
+    {
+      "kind": "shield",
+      "total": 67,
+      "fields": {
+        "source": {
+          "have": 56,
+          "pct": 83.6
+        }
+      }
+    },
+    {
+      "kind": "spell",
+      "total": 224,
+      "fields": {
+        "source": {
+          "have": 211,
+          "pct": 94.2
+        }
+      }
+    },
+    {
+      "kind": "spirit",
+      "total": 79,
+      "fields": {
+        "source": {
+          "have": 69,
+          "pct": 87.3
+        }
+      }
+    },
+    {
+      "kind": "talisman",
+      "total": 158,
+      "fields": {
+        "source": {
+          "have": 145,
+          "pct": 91.8
+        }
+      }
+    },
+    {
+      "kind": "weapon",
+      "total": 443,
+      "fields": {
+        "source": {
+          "have": 377,
+          "pct": 85.1
+        }
+      }
+    }
+  ],
+  "surfaces": [
+    {
+      "name": "entity descriptions",
+      "samples": 400,
+      "linkable": 1262,
+      "unlinked": 0
+    },
+    {
+      "name": "wiki sections",
+      "samples": 400,
+      "linkable": 1584,
+      "unlinked": 0
+    },
+    {
+      "name": "acquisition text",
+      "samples": 400,
+      "linkable": 1539,
+      "unlinked": 0
+    },
+    {
+      "name": "quest step actions",
+      "samples": 193,
+      "linkable": 577,
+      "unlinked": 577
+    },
+    {
+      "name": "mechanics bodies",
+      "samples": 60,
+      "linkable": 182,
+      "unlinked": 0
+    }
+  ],
+  "generatedAt": "2026-09-28T14:24:42.121Z"
+}

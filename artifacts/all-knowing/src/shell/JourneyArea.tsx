@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { EntityLink } from '../EntityLink'
+import { WikiText } from '../WikiText'
 import { facts } from '../knowledge/catalog'
 import { warpGraces } from '../knowledge/graces'
 import { areaLabel } from '../lib/areaContext'
@@ -149,7 +150,7 @@ export function JourneyArea() {
             {dontMiss.map((d) => (
               <li key={`${d.kind}:${d.id}`}>
                 <EntityLink id={d.id} />
-                <div className="note">{d.why}</div>
+                <WikiText className="note" text={d.why} />
               </li>
             ))}
           </ul>
@@ -223,7 +224,7 @@ export function JourneyArea() {
                 <span aria-hidden>{l.owned ? '✓' : '○'}</span> <EntityLink id={l.id}>{l.name}</EntityLink>
                 {l.goodForBuild && <span className="chip on">good for my build</span>}
                 {l.missable && <span className="chip warn">missable</span>}
-                <div className="note">{l.how}</div>
+                <WikiText className="note" text={l.how} />
               </li>
             ))}
           </ul>
