@@ -14,6 +14,7 @@
     "crawl:ui": "node scripts/ui-crawl.mjs",
     "index:entities": "node scripts/build-entity-index.mjs",
     "coverage:entities": "node scripts/entity-coverage.mjs",
+    "data:catalog": "node scripts/data-catalog.mjs",
     "preview": "vite preview",
     "map": "node vendor/elden-ring-map/server/index.js",
     "map:live": "node vendor/elden-ring-map/server/index.js --live-memory",

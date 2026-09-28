@@ -4,6 +4,23 @@ Every screen and task should be judged against this document. The app is a **sec
 game**: the player glances at it between fights, often one-handed on a phone, usually with one
 specific question. The cost of answering must be one search or two taps.
 
+## Before you start
+
+Read `docs/DATA-CATALOG.md` (regenerate with `npm run data:catalog`) before
+touching data or answering "we don't have X". It lists **every** source in the
+tree — `public/sourced/**`, `src/data/**`, `src/knowledge/*.ts`, the
+`vendor/elden-ring-map/data` inputs, and every table in the `data/raw/er-mcp.db`
+wiki dump — with record counts, entity kinds, consumers and a **UNUSED** flag.
+
+- **Never report data as missing** without checking every catalog source. The
+  47 MB wiki DB holds 4,939 pages, 21,885 sections, 2,730 redirects and typed
+  weapon/armor/spell/talisman/boss/acquisition/quest tables that the app does
+  not yet fully use.
+- When you add or correct data, **cite which sources you checked** (file paths,
+  table names) in the commit/PR notes, and update the catalog if you add a source.
+- The `Gaps` section is the ordered list of entity kinds where the app tracks
+  fewer records than a source already in the repo.
+
 ## 1. The moments (what the player is doing → what they need → where the app answers)
 
 | # | Moment in the game | The question | App answer |

@@ -7,14 +7,14 @@ snapshot). We take only two tables the app does not already have in better shape
                     prerequisites, missable)
   * quests       -> NPC quest steps (order, location, action, breaks)
 
-Download the DB first (it is gitignored scratch):
+Download the DB first (it is gitignored raw data — see data/raw/README.md):
 
-    curl -L -o .scratch/er-mcp.db \
+    curl -L -o data/raw/er-mcp.db \
       https://github.com/teoucsb82/elden-ring-mcp/releases/download/data-2026.09.21/elden-ring.db
 
 Then:
 
-    python scripts/export-mcp-db.py [--db .scratch/er-mcp.db]
+    python scripts/export-mcp-db.py [--db data/raw/er-mcp.db]
 
 Emits public/sourced/open/acquisition.json and public/sourced/open/npc-quests.json.
 """
@@ -31,7 +31,7 @@ SOURCE = "teoucsb82/elden-ring-mcp (wiki snapshot DB)"
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--db", default=os.path.join(ROOT, ".scratch", "er-mcp.db"))
+    ap.add_argument("--db", default=os.path.join(ROOT, "data", "raw", "er-mcp.db"))
     args = ap.parse_args()
     if not os.path.isfile(args.db):
         raise SystemExit(f"DB not found: {args.db} (download the release asset first)")

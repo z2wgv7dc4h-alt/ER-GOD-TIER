@@ -16,6 +16,13 @@ dist-ssr
 # Keep this INSIDE the repo, not system temp - see docs/tasks/*.md for why.
 .scratch/
 
+# Raw data drops that are too large to commit (e.g. the 47 MB Fandom-wiki
+# SQLite snapshot). Keep the DB here, not in the throwaway .scratch/ folder;
+# see data/raw/README.md for what belongs and how it was produced.
+# The directory is kept (with a README) so a fresh clone shows where drops go.
+data/raw/*
+!data/raw/README.md
+
 # Vendored map engine (vendor/elden-ring-map) is committed source, but its
 # generated output comes from the user's own game install and must never be
 # committed: map tile pyramids, extracted icon sprites, and marker/param dumps.

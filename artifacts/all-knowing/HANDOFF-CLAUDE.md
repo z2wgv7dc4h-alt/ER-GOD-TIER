@@ -4,6 +4,22 @@ You are continuing **All-Knowing**, a local-first PWA meant to be the best Elden
 
 This file is the briefing. Code contracts are also in `HANDOFF.md`. Data inventory is `DATA.md`. Do not throw away the kernel.
 
+## Before you start
+
+Read **`docs/DATA-CATALOG.md`** first (regenerate with `npm run data:catalog`).
+It is the generated census of every data source in the tree: `public/sourced/**`,
+`src/data/**`, `src/knowledge/*.ts` exports, `vendor/elden-ring-map/data`, and
+**every table** in the `data/raw/er-mcp.db` wiki dump (4,939 pages / 21,885
+sections), each with record counts, entity kinds, the `src`/`scripts` modules
+that consume it, and an **UNUSED** flag.
+
+- **Never report data as missing without checking every catalog source.** The
+  wiki DB is the richest source and its typed tables are largely unmined.
+- **Cite which sources you checked** (paths/tables) whenever you claim coverage
+  or a gap, and update the catalog when you add a source.
+- The catalog's **Gaps** section lists entity kinds where the app uses fewer
+  records than a source already in the repo.
+
 ---
 
 ## 0. Latest (2026-09-23)
