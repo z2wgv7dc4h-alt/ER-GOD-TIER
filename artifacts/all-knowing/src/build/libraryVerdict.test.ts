@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { decodeRegulationData, type Weapon } from '../lib/ar'
-import { weaponVerdict } from '../lib/verdict'
+import { weaponVerdict } from '../lib/weaponVerdict'
 import { emptyCharacter } from '../data/seed'
 import type { Character } from '../types'
 

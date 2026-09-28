@@ -2,7 +2,7 @@ import { facts } from '../knowledge/catalog'
 import { loot } from '../knowledge/loot'
 import type { Remembrance } from '../knowledge/remembrances'
 import { canonicalFactId } from './aliases'
-import { ARCHETYPE_LABELS, detectBuild, type Archetype } from './advisor'
+import { ARCHETYPE_LABELS, detectArchetype, type Archetype } from './archetype'
 import { knownFactIds } from './infer'
 import type { Character } from '../types'
 
@@ -68,7 +68,7 @@ export function rankRemembrance(
   remembrance: Remembrance,
   archetype?: Archetype,
 ): RemembranceOption[] {
-  const build = archetype ?? detectBuild(character).archetype
+  const build = archetype ?? detectArchetype(character.stats)
   const known = knownFactIds(character)
   const remembranceKnown = known.has(canonicalFactId(remembrance.id))
 

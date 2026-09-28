@@ -9,7 +9,7 @@
  * Data: `public/sourced/npc-combat.json`.
  */
 import { useEffect, useState } from 'react'
-import { AttackPowerType } from './ar'
+import { AttackPowerType } from './attackPower'
 
 export type DamageType = 'physical' | 'magic' | 'fire' | 'lightning' | 'holy'
 

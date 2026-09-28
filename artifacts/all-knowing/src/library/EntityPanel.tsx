@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { lazy, Suspense, useMemo, useState } from 'react'
 import type { Remembrance } from '../knowledge/remembrances'
 import { getEntity, status, type EntityKind, type EntityState } from '../lib/entityGraph'
 import { useEnrichment, useEntityIndex } from '../lib/entityEnrich'
@@ -7,11 +7,15 @@ import type { Verdict } from '../lib/verdict'
 import { Related } from '../Related'
 import { Spoiler, SpoilerGate } from '../settings/Spoiler'
 import { WikiText } from '../WikiText'
-import { BossPrepCard } from '../combat/BossPrepCard'
 import { Term } from '../peek/Term'
 import type { Character } from '../types'
-import { BossFacts } from './BossFacts'
 import { WikiTab } from './WikiTab'
+
+// Task 137 §4 — the combat cards are the panel's only attack-rating consumers;
+// load them lazily so the eagerly-mounted entity overlay does not pull the
+// calculator into the main entry chunk.
+const BossFacts = lazy(() => import('./BossFacts').then((m) => ({ default: m.BossFacts })))
+const BossPrepCard = lazy(() => import('../combat/BossPrepCard').then((m) => ({ default: m.BossPrepCard })))
 import { attributeStats, isOwned, meetsRequirements, type AttributeKey, type CategoryId, type LibraryEntity } from './model'
 
 const STATUS_LABELS: Record<EntityState, string> = {
@@ -219,17 +223,23 @@ export function EntityPanel({
         {tab === 'stats' && (
           <div className="lib-panel-stats">
             {isBoss && (
-              <BossFacts
-                factId={statusFactId}
-                name={entity.name}
-                region={entity.region}
-                character={character}
-              />
+              <Suspense fallback={null}>
+                <BossFacts
+                  factId={statusFactId}
+                  name={entity.name}
+                  region={entity.region}
+                  character={character}
+                />
+              </Suspense>
             )}
 
             {/* Task 107 §10: the Task 105 combat toolkit — best weapon, status
                 procs, spirit ashes, buffs and the recommended-level verdict. */}
-            {isBoss && <BossPrepCard bossId={statusFactId} character={character} />}
+            {isBoss && (
+              <Suspense fallback={null}>
+                <BossPrepCard bossId={statusFactId} character={character} />
+              </Suspense>
+            )}
 
             {!isBoss && (requirementEntries.length > 0 || metValue !== null) && (
               <div className="lib-panel-block">

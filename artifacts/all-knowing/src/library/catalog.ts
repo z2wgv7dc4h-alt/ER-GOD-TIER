@@ -5,6 +5,7 @@ import { registerEntityGraphData, type EntityKind } from '../lib/entityGraph'
 import { bossRoster, TIER_LABEL } from '../lib/bossRoster'
 import { catalogueIdFor } from '../lib/catalogueIds'
 import { loadWeapons, type Weapon } from '../lib/ar'
+import { weaponAr } from '../lib/weaponAr'
 import { useArmory, type ArmoryBoss, type ArmoryWeapon } from '../lib/armory'
 import { BASE_HP_LABEL, loadBossCombat, type CombatStats } from '../lib/enemy'
 import { useFanapiData, type FanapiData } from '../lib/fanapiData'
@@ -918,7 +919,7 @@ export function useLibraryCatalog(activeCategory: CategoryId, preload = false): 
 
   // Task 115: let peek cards show the same numeric rows the Library has.
   useEffect(() => {
-    registerPeekCatalog({ entities: catalog.entities, weaponByName: catalog.weaponByName })
+    registerPeekCatalog({ entities: catalog.entities, weaponByName: catalog.weaponByName, arFor: weaponAr })
   }, [catalog])
 
   // Task 122 §C: register every Library catalogue entity in the shared graph so

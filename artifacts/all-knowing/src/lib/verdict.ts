@@ -1,12 +1,5 @@
-import {
-  attackRatingForSlot,
-  displayAttackRating,
-  getWeaponAttack,
-  statsToAttributes,
-  type Attribute,
-  type Weapon,
-} from './ar'
-import { ARCHETYPE_LABELS, detectBuild, GEAR_TAGS } from './advisor'
+import { ARCHETYPE_LABELS, detectArchetype } from './archetype'
+import { GEAR_TAGS } from './gearTags'
 import type { Character } from '../types'
 
 /**
@@ -17,6 +10,10 @@ import type { Character } from '../types'
  * and must fall that far behind to be "not for you"; anything between is a
  * side-grade. A weapon whose requirements are not met is always "not for you",
  * regardless of AR.
+ *
+ * Task 137 §4 — the AR-dependent weapon verdict was moved to `weaponVerdict.ts`
+ * so this module (imported by the eagerly-mounted entity overlay) no longer
+ * drags the attack-rating calculator into the main entry chunk.
  */
 
 export type VerdictKind = 'upgrade' | 'side-grade' | 'not-for-you' | 'usable'
@@ -29,8 +26,6 @@ export type Verdict = {
   /** Percent gain over the best equipped armament (undefined when nothing equipped). */
   gainPct?: number
 }
-
-const ATTR_LABELS: Record<Attribute, string> = { str: 'STR', dex: 'DEX', int: 'INT', fai: 'FAI', arc: 'ARC' }
 
 /** AR must exceed the current best by this much to count as a real upgrade. */
 export const UPGRADE_GAIN_PCT = 5
@@ -68,29 +63,6 @@ export function verdictFromAr(input: VerdictInput): Verdict {
   return { kind: 'side-grade', line: `Side-grade: about even with${over} at your stats.`, meets: true, gainPct }
 }
 
-function requirementOf(character: Character, weapon: Weapon): { meets: boolean; requirement: string } {
-  const attrs = statsToAttributes(character.stats)
-  const missing = (Object.entries(weapon.requirements) as [Attribute, number][])
-    .filter(([a, req]) => attrs[a] < (req ?? 0))
-    .map(([a, req]) => `${req} ${ATTR_LABELS[a]} (you have ${attrs[a]})`)
-  return { meets: missing.length === 0, requirement: missing.length ? `needs ${missing.join(', ')}` : '' }
-}
-
-/** The best AR across the character's equipped armaments at their current upgrades. */
-export function bestEquippedAr(character: Character, weapons: Weapon[]): { ar: number; name?: string } {
-  let best = 0
-  let name: string | undefined
-  for (const slot of character.loadout) {
-    if (slot.kind !== 'armament') continue
-    const rating = attackRatingForSlot(weapons, slot, character.stats, false)
-    if (rating.status === 'ok' && rating.total > best) {
-      best = rating.total
-      name = slot.name
-    }
-  }
-  return { ar: best, name }
-}
-
 const normName = (s: string) => s.toLowerCase().replace(/['’`]/g, '').replace(/[^a-z0-9]+/g, ' ').trim()
 
 /**
@@ -99,42 +71,12 @@ const normName = (s: string) => s.toLowerCase().replace(/['’`]/g, '').replace(
  * AR comparison for armor, so this never invents a number.
  */
 export function gearVerdict(character: Character, name: string, kind: 'armor' | 'talisman'): Verdict {
-  const build = detectBuild(character)
-  const match = GEAR_TAGS[build.archetype].find((g) => g.kind === kind && normName(g.name) === normName(name))
+  const archetype = detectArchetype(character.stats)
+  const match = GEAR_TAGS[archetype].find((g) => g.kind === kind && normName(g.name) === normName(name))
   if (match) return { kind: 'upgrade', line: `For you: ${match.why}`, meets: true }
   return {
     kind: 'side-grade',
-    line: `Side-grade: not a standout pick for a ${ARCHETYPE_LABELS[build.archetype]} build.`,
+    line: `Side-grade: not a standout pick for a ${ARCHETYPE_LABELS[archetype]} build.`,
     meets: true,
   }
-}
-
-/**
- * Verdict for one candidate weapon at the character's stats. The candidate is
- * rated at its own max upgrade so the sentence answers "is this worth building
- * toward", not "is the +0 I just picked up better".
- */
-export function weaponVerdict(character: Character, weapons: Weapon[], weapon: Weapon): Verdict {
-  const { meets, requirement } = requirementOf(character, weapon)
-  const attrs = statsToAttributes(character.stats)
-  const upgrade = Math.max(0, weapon.attack.length - 1)
-  const result = getWeaponAttack({ weapon, attributes: attrs, upgradeLevel: upgrade })
-  const candidateAr = displayAttackRating(result.attackPower)
-  const current = bestEquippedAr(character, weapons)
-  // Task 110 §5: with nothing equipped there is no baseline to call something
-  // an upgrade. The requirements are the whole answer — "Usable" or "Needs …".
-  if (meets && current.ar <= 0) {
-    return {
-      kind: 'usable',
-      line: 'Usable: your stats meet its requirements and nothing better is equipped yet.',
-      meets: true,
-    }
-  }
-  return verdictFromAr({
-    meets,
-    requirement,
-    candidateAr,
-    currentBestAr: current.ar,
-    currentName: current.name,
-  })
 }

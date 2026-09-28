@@ -4,7 +4,8 @@ import { regionMatches } from '../lib/areaHub'
 import { areaFromFactId } from '../lib/areaContext'
 import { fanImage, normalizeName } from '../lib/fanImage'
 import { applyFacts, denyFacts } from '../lib/infer'
-import { weaponVerdict, type Verdict } from '../lib/verdict'
+import { weaponVerdict } from '../lib/weaponVerdict'
+import type { Verdict } from '../lib/verdict'
 import { useEnrichment } from '../lib/entityEnrich'
 import type { EntityRecord } from '../lib/entityIndex'
 import { useLibraryCatalog } from './catalog'
@@ -12,6 +13,7 @@ import { CompareTray } from './CompareTray'
 import { EntityPanel } from './EntityPanel'
 import { GatheringNodes } from './GatheringNodes'
 import { WikiSearchResults } from './WikiSearchResults'
+import { weaponAr, weaponArAtMax } from '../lib/weaponAr'
 import { Term } from '../peek/Term'
 import {
   attributeStats,
@@ -26,8 +28,6 @@ import {
   removeFromCompare,
   sortEntities,
   subtypesOf,
-  weaponAr,
-  weaponArAtMax,
   type AttributeKey,
   type CategoryId,
   type LibraryEntity,
