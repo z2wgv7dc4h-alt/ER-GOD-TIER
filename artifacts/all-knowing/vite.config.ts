@@ -49,11 +49,25 @@ function mapEngine(): Plugin {
       return fallback
     }
   }
+  const readPath = (f: string, fallback: unknown) => {
+    try {
+      return JSON.parse(fs.readFileSync(f, 'utf8'))
+    } catch {
+      return fallback
+    }
+  }
   const markers = (readJson('markers.json', { markers: [] }) as { markers?: unknown[] }).markers ?? []
   const items = (readJson('items.json', { markers: [] }) as { markers?: unknown[] }).markers ?? []
   const pieces = (readJson('pieces.json', { markers: [] }) as { markers?: unknown[] }).markers ?? []
   const all = [...markers, ...items, ...pieces]
   const markerDoc = JSON.stringify({ locales: ['en', 'ru'], markers: all })
+  // Task 120: the map's place-name labels. Prefer the generated dump from
+  // `npm run map:setup`; fall back to the small committed copy so a fresh
+  // checkout (which has no tiles/markers either) still renders the banners.
+  const placeNames =
+    readPath(path.join(dataDir, 'place-names.json'), null) ??
+    readPath(path.join(root, 'public', 'sourced', 'open', 'map-place-names.json'), { labels: [] })
+  const placeNameDoc = JSON.stringify(placeNames)
   const stateDoc = JSON.stringify({
     savePath: '',
     characters: [],
@@ -74,6 +88,10 @@ function mapEngine(): Plugin {
       if (rest === '/api/markers') {
         res.setHeader('Content-Type', 'application/json; charset=utf-8')
         return res.end(markerDoc)
+      }
+      if (rest === '/api/place-names') {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
+        return res.end(placeNameDoc)
       }
       if (rest === '/api/events') {
         res.writeHead(200, {

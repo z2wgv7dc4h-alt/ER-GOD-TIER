@@ -1,0 +1,152 @@
+{
+ "generatedBy": "vendor/elden-ring-map/tools/extract_place_names.py",
+ "source": "WorldMapPlaceNameParam + PlaceName FMG",
+ "masterPx": 10496,
+ "locales": [
+  "en",
+  "ru"
+ ],
+ "tierMinZoom": {
+  "0": 0.0,
+  "1": 0.7,
+  "2": 1.2,
+  "3": 1.8
+ },
+ "labels": [
+  {
+   "id": "place:8000800",
+   "textId": 8000800,
+   "piece": 8,
+   "tier": 0,
+   "minZoom": 0.0,
+   "world": "overworld",
+   "master": "M00",
+   "px": 3014.4,
+   "py": 1816.3,
+   "names": {
+    "en": "Altus Plateau",
+    "ru": "Плато Альтус"
+   }
+  },
+  {
+   "id": "place:8000900",
+   "textId": 8000900,
+   "piece": 9,
+   "tier": 0,
+   "minZoom": 0.0,
+   "world": "overworld",
+   "master": "M00",
+   "px": 5504.0,
+   "py": 7514.2,
+   "names": {
+    "en": "Caelid",
+    "ru": "Звёздные пустоши"
+   }
+  },
+  {
+   "id": "place:8000000",
+   "textId": 8000000,
+   "piece": 0,
+   "tier": 0,
+   "minZoom": 0.0,
+   "world": "overworld",
+   "master": "M00",
+   "px": 2580.7,
+   "py": 6877.0,
+   "names": {
+    "en": "Limgrave",
+    "ru": "Замогилье"
+   }
+  },
+  {
+   "id": "place:8000400",
+   "textId": 8000400,
+   "piece": 4,
+   "tier": 0,
+   "minZoom": 0.0,
+   "world": "overworld",
+   "master": "M00",
+   "px": 3336.7,
+   "py": 4639.5,
+   "names": {
+    "en": "Liurnia of the Lakes",
+    "ru": "Озёрная Лиурния"
+   }
+  },
+  {
+   "id": "place:8001200",
+   "textId": 8001200,
+   "piece": 12,
+   "tier": 0,
+   "minZoom": 0.0,
+   "world": "overworld",
+   "master": "M00",
+   "px": 6760.6,
+   "py": 3392.8,
+   "names": {
+    "en": "Mountaintops of the Giants",
+    "ru": "Вершины великанов"
+   }
+  },
+  {
+   "id": "place:8010000",
+   "textId": 8010000,
+   "piece": 100,
+   "tier": 0,
+   "minZoom": 0.0,
+   "world": "underground",
+   "master": "M01",
+   "px": 1797.2,
+   "py": 3702.1,
+   "names": {
+    "en": "Ainsel River",
+    "ru": "Река Ансель"
+   }
+  },
+  {
+   "id": "place:8010400",
+   "textId": 8010400,
+   "piece": 104,
+   "tier": 0,
+   "minZoom": 0.0,
+   "world": "underground",
+   "master": "M01",
+   "px": 4199.2,
+   "py": 2261.6,
+   "names": {
+    "en": "Deeproot Depths",
+    "ru": "Низовье Глубокого Корня"
+   }
+  },
+  {
+   "id": "place:8010200",
+   "textId": 8010200,
+   "piece": 102,
+   "tier": 0,
+   "minZoom": 0.0,
+   "world": "underground",
+   "master": "M01",
+   "px": 5395.0,
+   "py": 5698.7,
+   "names": {
+    "en": "Siofra River",
+    "ru": "Река Сиофра"
+   }
+  },
+  {
+   "id": "place:8020000",
+   "textId": 8020000,
+   "piece": 1000,
+   "tier": 0,
+   "minZoom": 0.0,
+   "world": "shadow",
+   "master": "M10",
+   "px": 3865.4,
+   "py": 6676.4,
+   "names": {
+    "en": "Realm of Shadow",
+    "ru": "Царство теней"
+   }
+  }
+ ]
+}
