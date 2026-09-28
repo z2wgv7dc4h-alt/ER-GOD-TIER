@@ -39,6 +39,42 @@ const PNG_SIG = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])
 
 /** Decode an 8-bit PNG (grayscale, RGB, gray+alpha or RGBA) into a GrayImage. */
 export function decodeGrayPng(buf: Buffer): GrayImage {
+  const png = decodePngRaw(buf)
+  const { width, height, channels, data } = png
+  const out = new Uint8Array(width * height)
+  for (let p = 0, i = 0; i < out.length; i++, p += channels) {
+    if (channels === 1) out[i] = data[p]
+    else if (channels === 2) out[i] = data[p]
+    else if (channels === 3) out[i] = (0.299 * data[p] + 0.587 * data[p + 1] + 0.114 * data[p + 2]) | 0
+    else out[i] = (0.299 * data[p] + 0.587 * data[p + 1] + 0.114 * data[p + 2]) | 0
+  }
+  return { width, height, data: out }
+}
+
+export type RgbaImage = { width: number; height: number; rgba: Uint8ClampedArray }
+
+/** Decode an 8-bit PNG into packed RGBA (used by the map colour detection). */
+export function decodePngRgba(buf: Buffer): RgbaImage {
+  const { width, height, channels, data } = decodePngRaw(buf)
+  const rgba = new Uint8ClampedArray(width * height * 4)
+  for (let p = 0, q = 0; q < rgba.length; q += 4, p += channels) {
+    if (channels === 1) {
+      rgba[q] = rgba[q + 1] = rgba[q + 2] = data[p]
+    } else if (channels === 2) {
+      rgba[q] = rgba[q + 1] = rgba[q + 2] = data[p]
+    } else {
+      rgba[q] = data[p]
+      rgba[q + 1] = data[p + 1]
+      rgba[q + 2] = data[p + 2]
+    }
+    rgba[q + 3] = 255
+  }
+  return { width, height, rgba }
+}
+
+type RawPng = { width: number; height: number; channels: number; data: Uint8Array }
+
+function decodePngRaw(buf: Buffer): RawPng {
   if (buf.length < 8 || buf.readUInt32BE(0) !== 0x89504e47) throw new Error('not a PNG')
   let off = 8
   const idat: Buffer[] = []
@@ -68,7 +104,7 @@ export function decodeGrayPng(buf: Buffer): GrayImage {
   if (!channels) throw new Error(`unsupported PNG color type ${colorType}`)
   const raw = inflateSync(Buffer.concat(idat))
   const stride = width * channels
-  const out = new Uint8Array(width * height)
+  const out = new Uint8Array(width * height * channels)
   let prev = new Uint8Array(stride)
   for (let y = 0; y < height; y++) {
     const filter = raw[y * (stride + 1)]
@@ -91,15 +127,10 @@ export function decodeGrayPng(buf: Buffer): GrayImage {
       }
       cur[x] = v
     }
-    for (let x = 0; x < width; x++) {
-      if (channels === 1) out[y * width + x] = cur[x]
-      else if (channels === 2) out[y * width + x] = cur[x * 2]
-      else if (channels === 3) out[y * width + x] = (0.299 * cur[x * 3] + 0.587 * cur[x * 3 + 1] + 0.114 * cur[x * 3 + 2]) | 0
-      else out[y * width + x] = (0.299 * cur[x * 4] + 0.587 * cur[x * 4 + 1] + 0.114 * cur[x * 4 + 2]) | 0
-    }
+    out.set(cur, y * stride)
     prev = cur
   }
-  return { width, height, data: out }
+  return { width, height, channels, data: out }
 }
 
 /** Encode a GrayImage as an 8-bit grayscale PNG (filter 0) for Tesseract. */

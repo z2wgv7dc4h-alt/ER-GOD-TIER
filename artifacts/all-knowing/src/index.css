@@ -1673,6 +1673,19 @@ body { overflow: hidden; overscroll-behavior: none; }
 .setup-quest-beats li { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .setup-outcome { margin-top: 12px; }
 .setup-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.setup-map { margin-top: 10px; }
+.setup-map-frame { position: relative; max-width: 640px; border: 1px solid var(--line); background: #000; overflow: hidden; }
+.setup-map-frame img { display: block; width: 100%; height: auto; }
+.setup-map-blob {
+  position: absolute; transform: translate(-50%, -50%);
+  border: 2px solid rgba(201, 162, 39, 0.75); border-radius: 50%;
+  pointer-events: none;
+}
+.setup-map-grace {
+  position: absolute; transform: translate(-50%, -50%);
+  border: 2px solid #6ee7a8; border-radius: 50%;
+  box-shadow: 0 0 6px rgba(110, 231, 168, 0.8); pointer-events: none;
+}
 
 .gear-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .gear-load { display: flex; align-items: center; gap: 8px; }
