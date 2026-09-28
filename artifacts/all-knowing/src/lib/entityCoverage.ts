@@ -48,7 +48,8 @@ export const GUARD_MINIMUMS: { kind: EntityKind; field: string; min: number; lab
   { kind: 'boss', field: 'hpNegationLocation', min: 95, label: 'HP + negation + location' },
   { kind: 'boss', field: 'drops', min: 90, label: 'drops' },
   { kind: 'boss', field: 'strategy', min: 90, label: 'strategy/wiki section' },
-  { kind: 'weapon', field: 'requirementsScalingLocation', min: 98, label: 'requirements + scaling + location' },
+  { kind: 'weapon', field: 'requirementsScalingLocation', min: 95, label: 'requirements + scaling + location (all weapons)' },
+  { kind: 'armor', field: 'negationWeightLocation', min: 95, label: 'negation + weight + location (all armor)' },
   { kind: 'armor', field: 'descriptionLocation', min: 95, label: 'description + location' },
   { kind: 'talisman', field: 'descriptionLocation', min: 95, label: 'description + location' },
   { kind: 'spell', field: 'descriptionLocation', min: 95, label: 'description + location' },
@@ -92,6 +93,10 @@ function fieldsFor(kind: EntityKind, records: (EntityRecord | undefined)[]): Rec
       out.negations = field(count((r) => stat(r, 'Negation')), total)
       out.poise = field(count((r) => stat(r, 'Poise')), total)
       out.weight = field(count((r) => stat(r, 'Weight')), total)
+      out.negationWeightLocation = field(
+        count((r) => stat(r, 'Negation') && stat(r, 'Weight') && has(r, 'location')),
+        total,
+      )
       break
     case 'talisman':
       out.effect = field(count((r) => stat(r, 'Effect')), total)
@@ -110,22 +115,37 @@ export function computeEntityCoverage(
 ): CoverageReport {
   const lookup = records instanceof Map ? records : new Map(Object.entries(records))
   const byKind = new Map<EntityKind, (EntityRecord | undefined)[]>()
+  const seen = new Set<string>()
+
+  // Task 122 §C: measure the *full* set. Walk every graph entity first, then add
+  // every enrichment record the graph does not already know (e.g. the 560 armor
+  // rows) so the minimums cover the whole index, not just the curated subset.
   for (const entity of allEntities()) {
+    seen.add(entity.id)
     const list = byKind.get(entity.kind) ?? []
     list.push(lookup.get(entity.id))
     byKind.set(entity.kind, list)
+  }
+  for (const [id, record] of lookup) {
+    if (seen.has(id)) continue
+    seen.add(id)
+    const kind = record.kind as EntityKind
+    const list = byKind.get(kind) ?? []
+    list.push(record)
+    byKind.set(kind, list)
   }
 
   const kinds: KindCoverage[] = [...byKind.entries()]
     .sort((a, b) => a[0].localeCompare(b[0]))
     .map(([kind, list]) => ({ kind, total: list.length, fields: fieldsFor(kind, list) }))
 
-  const overall: Record<string, FieldCoverage> = {}
+  const total = seen.size
   const all = [...lookup.values()]
   const withRecord = all.filter(Boolean)
-  overall.records = field(withRecord.length, allEntities().length)
-  overall.description = field(withRecord.filter((r) => has(r, 'description')).length, allEntities().length)
-  overall.location = field(withRecord.filter((r) => has(r, 'location')).length, allEntities().length)
+  const overall: Record<string, FieldCoverage> = {}
+  overall.records = field(withRecord.length, total)
+  overall.description = field(withRecord.filter((r) => has(r, 'description')).length, total)
+  overall.location = field(withRecord.filter((r) => has(r, 'location')).length, total)
   return { kinds, overall }
 }
 

@@ -14,7 +14,7 @@ import type { Character } from '../types'
 import { canonicalFactId } from './aliases'
 import { linkIndex, linkify } from './interlink'
 import { iconFor } from './sourcePack'
-import { getRecord } from './entityIndex'
+import { allRecords, getEntityIndexVersion, getRecord } from './entityIndex'
 
 /**
  * Task 97 — the one entity graph.
@@ -155,12 +155,27 @@ export type ShopRow = {
   item: string
 }
 
+/**
+ * An entity the caller already knows about (the Library catalogue builds one
+ * per row). Task 122 §C folds these into the graph so every Library/Gear/Build
+ * name resolves as a real entity, not a stub.
+ */
+export type RegisteredEntity = {
+  id: string
+  kind: EntityKind
+  name: string
+  summary?: string
+  icon?: string
+  aliases?: string[]
+}
+
 export type EntityGraphSupplement = {
   bossCombat?: CombatRow[]
   enemyCombat?: CombatRow[]
   recipes?: RecipeRow[]
   acquisitions?: AcquisitionRow[]
   shops?: ShopRow[]
+  entities?: RegisteredEntity[]
 }
 
 let supplement: EntityGraphSupplement = {}
@@ -174,6 +189,7 @@ export function registerEntityGraphData(data: EntityGraphSupplement): void {
     recipes: data.recipes ?? supplement.recipes ?? [],
     acquisitions: data.acquisitions ?? supplement.acquisitions ?? [],
     shops: data.shops ?? supplement.shops ?? [],
+    entities: data.entities ?? supplement.entities ?? [],
   }
   version++
 }
@@ -286,11 +302,16 @@ type Index = {
 
 let cachedIndex: Index | null = null
 let cachedVersion = -1
+let cachedEnrichVersion = -1
 
 function ensureIndex(): Index {
-  if (cachedIndex && cachedVersion === version) return cachedIndex
+  // Task 122 §C: the enrichment index is a second source of entities, so the
+  // cache keys on both the supplement version and the index version.
+  const enrichVersion = getEntityIndexVersion()
+  if (cachedIndex && cachedVersion === version && cachedEnrichVersion === enrichVersion) return cachedIndex
   cachedIndex = buildIndex()
   cachedVersion = version
+  cachedEnrichVersion = enrichVersion
   return cachedIndex
 }
 
@@ -434,6 +455,32 @@ function buildIndex(): Index {
   // mechanic name or alias can never shadow a real item/boss/grace.
   for (const m of mechanics) {
     addEntity({ id: m.id, kind: 'mechanic', name: m.title, summary: m.body }, m.aliases)
+  }
+
+  // --- Library catalogue registration (Task 122 §C) ------------------------
+  // The Library builder hands the graph one row per catalogue entity. Add them
+  // after the authored data so a real fact id + name always wins, but before the
+  // enrichment index so the index can still upgrade an `item:` row's kind.
+  for (const e of supplement.entities ?? []) {
+    addEntity(
+      { id: e.id, kind: e.kind, name: e.name, icon: e.icon, summary: e.summary ?? '' },
+      e.aliases ?? [],
+    )
+  }
+
+  // --- enrichment index registration (Task 122 §C) -------------------------
+  // `public/sourced/entity-index.json` carries one record per canonical entity,
+  // including every armor piece the graph previously lacked. Once the index has
+  // been installed by `entityEnrich.ts`, register each record as a graph entity
+  // so `hasEntity`, search, Related edges and the coverage guard all see it.
+  for (const record of allRecords()) {
+    addEntity({
+      id: record.id,
+      kind: record.kind as EntityKind,
+      name: record.name,
+      icon: record.image,
+      summary: record.description || record.location || '',
+    })
   }
 
   // --- async supplements ---------------------------------------------------

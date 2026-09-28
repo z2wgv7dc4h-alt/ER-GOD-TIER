@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { facts } from '../knowledge/catalog'
 import { mechanics } from '../knowledge/mechanics'
-import { canonicalEntityId, registerEntityGraphData } from '../lib/entityGraph'
+import { canonicalEntityId, registerEntityGraphData, type EntityKind } from '../lib/entityGraph'
 import { loadWeapons, type Weapon } from '../lib/ar'
 import { useArmory, type ArmoryBoss, type ArmoryWeapon } from '../lib/armory'
 import { loadBossCombat, type CombatStats } from '../lib/enemy'
@@ -110,6 +110,27 @@ const ICON_KIND: Partial<Record<CategoryId, string>> = {
   bosses: 'boss',
   npcs: 'npc',
   locations: 'grace',
+}
+
+/**
+ * Task 122 §C: which catalogue rows are real graph entities, and their kind.
+ * Prose surfaces (recipes, secrets, guides, dialogue) are not "names of things"
+ * and are deliberately left out.
+ */
+const CATALOG_KIND: Partial<Record<CategoryId, EntityKind>> = {
+  weapons: 'weapon',
+  shields: 'shield',
+  armor: 'armor',
+  talismans: 'talisman',
+  sorceries: 'spell',
+  incantations: 'spell',
+  ashes: 'ash',
+  spirits: 'spirit',
+  items: 'item',
+  bosses: 'boss',
+  npcs: 'npc',
+  locations: 'region',
+  mechanics: 'mechanic',
 }
 
 function iconForEntity(category: CategoryId, name: string): string | undefined {
@@ -718,6 +739,23 @@ export function useLibraryCatalog(activeCategory: CategoryId): LibraryCatalog {
   // Task 115: let peek cards show the same numeric rows the Library has.
   useEffect(() => {
     registerPeekCatalog({ entities: catalog.entities, weaponByName: catalog.weaponByName })
+  }, [catalog])
+
+  // Task 122 §C: register every Library catalogue entity in the shared graph so
+  // a name that lives only in the browser (armor, extra weapons/talismans, …)
+  // gets a peek card and an entity page like any authored fact.
+  useEffect(() => {
+    registerEntityGraphData({
+      entities: catalog.entities
+        .filter((e) => CATALOG_KIND[e.category])
+        .map((e) => ({
+          id: e.factId || e.id,
+          kind: CATALOG_KIND[e.category] as EntityKind,
+          name: e.name,
+          summary: e.lore || e.where || e.region || e.subtype,
+          icon: e.icon,
+        })),
+    })
   }, [catalog])
 
   return catalog

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { WikiText } from './WikiText'
+import { PAGE_SIZE, ShowMore } from './ShowMore'
 import {
   erclItems,
   loadErcl,
@@ -165,6 +166,7 @@ export function NpcPlacementSection({ query, preloaded }: { query: string; prelo
 /** Boss drops from the Fextralife scrape (base + SotE). */
 export function BossDropsSection({ query, preloaded, browse = false }: { query: string; preloaded?: FextBoss[]; browse?: boolean }) {
   const [rows, setRows] = useState<FextBoss[] | null>(preloaded ?? null)
+  const [limit, setLimit] = useState(PAGE_SIZE)
   const q = query.trim()
   const show = browse || q.length >= 3
   useEffect(() => {
@@ -177,7 +179,7 @@ export function BossDropsSection({ query, preloaded, browse = false }: { query: 
   }, [show, rows])
   const data = preloaded ?? rows
   if (!show || !data) return null
-  const matched = browse ? data.slice(0, 12) : matchBossDrops(q, data)
+  const matched = browse ? data.slice(0, limit) : matchBossDrops(q, data)
   // A boss can have more than one scraped row; collapse them so the name key
   // stays unique instead of rendering the same card twice.
   const seenNames = new Set<string>()
@@ -199,6 +201,7 @@ export function BossDropsSection({ query, preloaded, browse = false }: { query: 
           </article>
         ))}
       </div>
+      {browse && <ShowMore total={data.length} shown={limit} onMore={() => setLimit((n) => n + PAGE_SIZE)} />}
     </>
   )
 }
@@ -206,6 +209,7 @@ export function BossDropsSection({ query, preloaded, browse = false }: { query: 
 /** Fextralife guide excerpts matching the query. */
 export function GuidesSection({ query, preloaded, browse = false }: { query: string; preloaded?: GuideExcerpt[]; browse?: boolean }) {
   const [rows, setRows] = useState<GuideExcerpt[] | null>(preloaded ?? null)
+  const [limit, setLimit] = useState(PAGE_SIZE)
   const q = query.trim()
   const show = browse || q.length >= 3
   useEffect(() => {
@@ -218,7 +222,7 @@ export function GuidesSection({ query, preloaded, browse = false }: { query: str
   }, [show, rows])
   const data = preloaded ?? rows
   if (!show || !data) return null
-  const hits = browse ? data.slice(0, 12) : matchGuides(q, data)
+  const hits = browse ? data.slice(0, limit) : matchGuides(q, data)
   if (hits.length === 0) return null
   return (
     <>
@@ -231,6 +235,7 @@ export function GuidesSection({ query, preloaded, browse = false }: { query: str
           </article>
         ))}
       </div>
+      {browse && <ShowMore total={data.length} shown={limit} onMore={() => setLimit((n) => n + PAGE_SIZE)} />}
     </>
   )
 }
@@ -238,6 +243,7 @@ export function GuidesSection({ query, preloaded, browse = false }: { query: str
 /** Meta builds + status/strat excerpts (Fextralife). */
 export function MetaBuildsSection({ query, preloaded, browse = false }: { query: string; preloaded?: MetaExcerpt[]; browse?: boolean }) {
   const [rows, setRows] = useState<MetaExcerpt[] | null>(preloaded ?? null)
+  const [limit, setLimit] = useState(PAGE_SIZE)
   const q = query.trim()
   const show = browse || q.length >= 3
   useEffect(() => {
@@ -250,7 +256,7 @@ export function MetaBuildsSection({ query, preloaded, browse = false }: { query:
   }, [show, rows])
   const data = preloaded ?? rows
   if (!show || !data) return null
-  const hits = browse ? data.slice(0, 12) : matchMeta(q, data)
+  const hits = browse ? data.slice(0, limit) : matchMeta(q, data)
   if (hits.length === 0) return null
   return (
     <>
@@ -263,6 +269,7 @@ export function MetaBuildsSection({ query, preloaded, browse = false }: { query:
           </article>
         ))}
       </div>
+      {browse && <ShowMore total={data.length} shown={limit} onMore={() => setLimit((n) => n + PAGE_SIZE)} />}
     </>
   )
 }

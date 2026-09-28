@@ -5,6 +5,7 @@ import { RecipesSection, SecretsSection, WikiTextSection } from '../CodexData'
 import { DialogueHits, DialogueBySpeaker } from '../Dialogue'
 import { DungeonChecklist } from '../Dungeon'
 import { EntityLink } from '../EntityLink'
+import { ShowMore } from '../ShowMore'
 import { achievementProgress } from '../lib/achievements'
 import { blessingLine, blessingProgress } from '../lib/blessings'
 import { conditionalUnlocks, stockForVendor } from '../knowledge/merchantConditions'
@@ -41,13 +42,14 @@ function matchesCard(card: MechanicCard, q: string): boolean {
 
 function MechanicsSection({ query }: { query: string }) {
   const q = query.trim().toLowerCase()
+  const [limit, setLimit] = useState(12)
   const cards = useMemo(() => mechanics.filter((m) => matchesCard(m, q)), [q])
   if (cards.length === 0) return null
+  const shown = cards.slice(0, limit)
   return (
-    <>
-      <h3 className="codex-head">Mechanics · {cards.length} cards</h3>
+    <Collapsed title="Mechanics" count={cards.length} defaultOpen>
       <div className="codex-grid">
-        {cards.map((m) => (
+        {shown.map((m) => (
           <article className="card" key={m.id}>
             <div className="kicker">{m.category}</div>
             <h3>
@@ -64,7 +66,8 @@ function MechanicsSection({ query }: { query: string }) {
           </article>
         ))}
       </div>
-    </>
+      <ShowMore total={cards.length} shown={limit} onMore={() => setLimit((n) => n + 12)} />
+    </Collapsed>
   )
 }
 

@@ -209,11 +209,33 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
           <>
           <KitGroup title="PvP builds · patch 1.17" count={pvpBuilds.length} defaultOpen>
             <p className="note">
-              PvP is its own game: poise, stance and invade-vs-host asymmetry matter more than raw damage,
-              and skills/status are scaled separately against players. Brackets are RL30-50, RL60-90, RL125
-              and RL150. Stat spreads are exact — points always sum to the bracket level — but they are
-              target spreads, not extracted numbers. See docs/research/op-builds-pvp-tricks-sources.md.
+              Invade and duel builds for RL30–150; stat spreads are target spreads, not extracted numbers.
             </p>
+            <details className="kit-sources">
+              <summary>Sources</summary>
+              <ul className="list">
+                <li>
+                  <a href="https://eldenring.wiki.fextralife.com/PvP_Builds" target="_blank" rel="noreferrer">
+                    PvP Builds index
+                  </a>
+                </li>
+                <li>
+                  <a href="https://eldenring.wiki.fextralife.com/PvP" target="_blank" rel="noreferrer">
+                    PvP rules &amp; status scaling
+                  </a>
+                </li>
+                <li>
+                  <a href="https://eldenring.wiki.fextralife.com/Poise" target="_blank" rel="noreferrer">
+                    Poise breakpoints
+                  </a>
+                </li>
+                <li>
+                  <a href="https://eldenring.wiki.fextralife.com/Patch+Notes" target="_blank" rel="noreferrer">
+                    Patch notes (1.17)
+                  </a>
+                </li>
+              </ul>
+            </details>
             <PvpBuildPanel character={character} setCharacter={setCharacter} />
           </KitGroup>
 

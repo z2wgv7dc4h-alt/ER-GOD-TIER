@@ -1,13 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
-import { hasSeenHelp, markHelpSeen, SHORTCUT_GROUPS } from './lib/shortcuts'
+import { SHORTCUT_GROUPS } from './lib/shortcuts'
 import { useWorkspace } from './state'
 
 /**
  * Reachable help surface for every real shortcut/gesture in the app.
  *
- * Opens from the `?` key (handled in `useHotkeys`), this button, or the
- * first-visit hint. The button is always visible, so it also works on phones
- * where there is no keyboard.
+ * Opens from the `?` key (handled in `useHotkeys`), this button, or the header
+ * menu. The button is always visible, so it also works on phones where there is
+ * no keyboard.
  */
 export function Help() {
   const { helpOpen, setHelpOpen } = useWorkspace()
@@ -26,40 +25,6 @@ export function Help() {
 
       {helpOpen && <HelpSheet onClose={() => setHelpOpen(false)} />}
     </>
-  )
-}
-
-/**
- * Task 93: the first-visit hint lives in normal flow above the sub-tabs, so it
- * can never cover them. It retires after the first section/sub change.
- */
-export function FirstVisitHint() {
-  const { section, sub } = useWorkspace()
-  const [hint, setHint] = useState(() => !hasSeenHelp())
-  const initial = useRef(`${section}/${sub}`)
-
-  useEffect(() => {
-    if (!hint || `${section}/${sub}` === initial.current) return
-    setHint(false)
-    markHelpSeen()
-  }, [section, sub, hint])
-
-  if (!hint) return null
-  return (
-    <div className="help-hint" role="status">
-      <span>
-        New here? Press <kbd>?</kbd> — or open the <strong>⋯</strong> menu and tap{' '}
-        <strong>Help</strong> — for every shortcut.
-      </span>
-      <button
-        type="button"
-        className="help-hint-x"
-        aria-label="Dismiss hint"
-        onClick={() => { setHint(false); markHelpSeen() }}
-      >
-        ×
-      </button>
-    </div>
   )
 }
 

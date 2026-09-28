@@ -8,7 +8,6 @@ import {
 import { mergeCharacter } from './lib/merge'
 import { CommandHits, useClipboardShots, useHotkeys } from './QoL'
 import { QuickLog } from './QuickLog'
-import { FirstVisitHint } from './Help'
 import { EntityOverlay } from './library/EntityOverlay'
 import { GlanceMode } from './shell/GlanceMode'
 import { Header } from './shell/Header'
@@ -183,7 +182,6 @@ function AppShell() {
       />
       <div className="shell-body">
         <main className="workspace">
-          <FirstVisitHint />
           <SubTabs />
           {w.section === 'journey' && w.sub === 'map' && <MapControls />}
           <CommandHits onLog={(ids) => openLog(ids)} onCloseSearch={() => setSearchOpen(false)} />
