@@ -195,11 +195,28 @@ ${deadTable(dataDead)}
 
 ${deadTable(rendererDeadResolved)}
 
+### What the 23 + 1 were, and how they were fixed
+
+- **11 quest-state facts** referenced by `storylines.ts` / `gates.ts` / `inferChains.ts`
+  but never registered: \`quest:varre:met\`, \`quest:varre:cloth\`, \`quest:varre:killed\`,
+  \`quest:frenzy:taken\`, \`quest:rogier:knifeprint\`, \`quest:fia:killed\`, \`quest:rya:killed\`,
+  \`quest:yura:killed\`, \`quest:gowry:killed\`, \`quest:d:killed\`, \`quest:thops:killed\`.
+  \`entityGraph\` now registers every storyline grant / lockout / requirement that has no
+  row yet (name-registered off, so the glossary is not polluted).
+- **1 renderer literal** \`wiki:<slug>\` in \`library/EntityOverlay.tsx\` is a *virtual*
+  wiki-page id with no graph record by design; the scan now excludes that namespace.
+
 ## Edge coverage per kind
 
 Percent of each kind that carries the edge the Usage Model promises (only edges
 the data can actually supply are measured). Guards below are a regression
 tripwire at the achieved level, not a wish list.
+
+Before Task 138 §3 the graph carried only catalog-derived edges (boss location
+21.7%, grace region 5.8%; the catalogue kinds and NPCs mostly at 0%). The
+enrichment index's own \`region\` / \`location\` / \`drops\` fields are now folded
+into the graph, and remembrance→boss edges come from the authored remembrance
+table. The table below is the current traversal; the guards snapshot it.
 
 ${guardTable(coverage, audit.GUARD_MINIMUMS)}
 

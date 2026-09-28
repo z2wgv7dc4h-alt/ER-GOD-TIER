@@ -9,8 +9,8 @@ An id in the data or in a renderer literal that resolves to no entity record.
 
 | metric | before | after |
 | --- | --- | --- |
-| data ids unresolved | 0 | 0 |
-| renderer literals unresolved | 0 | 0 |
+| data ids unresolved | 23 | 0 |
+| renderer literals unresolved | 1 | 0 |
 
 ### Unresolved data ids
 
