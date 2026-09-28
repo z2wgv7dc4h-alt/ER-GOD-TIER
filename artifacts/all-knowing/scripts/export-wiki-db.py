@@ -19,12 +19,25 @@ Outputs:
 The `<kind>.json` records carry the raw infobox field map plus a cleaned
 description, region/location, drops and stats, so `entityIndexBuild.ts` can fold
 them field-by-field without re-parsing wikitext.
+
+Task 133 §1 adds the full readable/searchable corpus (`export_wiki_corpus`,
+called at the end of `main`):
+
+    public/sourced/wiki/manifest.json             page metadata + entityId -> page
+    public/sourced/wiki/pages-000.json ...        every page, chunked
+    public/sourced/wiki/search-index.json         search meta (bucket map)
+    public/sourced/wiki/search-<bucket>.json      term -> [pageId, section, tf]
+
+The corpus keeps the prose as plain text and rewrites wiki links to
+`[[entityId|label]]` markers for the in-app reader (`src/lib/wikiSearch.ts`).
 """
 import argparse
 import json
 import os
 import re
 import sqlite3
+import sys
+import unicodedata
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_DIR = os.path.join(ROOT, "public", "sourced", "open", "wiki-db")
@@ -323,6 +336,330 @@ def main():
         print(f"  {kind:12s} {count}")
     print(f"  redirects    {len(redirects)}")
     print(f"  skipped (no app kind) {skipped}")
+
+    # Task 133 §1 — also write the full readable/searchable corpus.
+    export_wiki_corpus(args.db)
+
+
+# ===========================================================================
+# Task 133 §1 — the full readable/searchable corpus under public/sourced/wiki/
+# ===========================================================================
+
+CORPUS_DIR = os.path.join(ROOT, "public", "sourced", "wiki")
+PAGE_CHUNK = 120
+SEARCH_BUDGET = 3 * 1024 * 1024  # task: chunk the index when it exceeds 3 MB
+
+CORPUS_INFOBOX_KIND = {
+    "lore": "lore", "faction": "faction", "mechanic": "mechanic", "location": "region",
+    "subregion": "region", "region": "region", "character": "npc", "enemy": "enemy",
+    "boss": "boss", "item": "item", "weapon": "weapon", "armor": "armor", "spell": "spell",
+    "dungeon": "dungeon", "evergaol": "dungeon", "legacy dungeon": "dungeon",
+    "legacy_dungeon": "dungeon", "class": "class", "object": "object", "school": "concept",
+    "game": "concept", "effect": "concept", "glitch": "concept", "company": "concept",
+    "real person": "concept", "playerrole": "concept", "book": "lore", "trophy": "trophy",
+    "patch notes": "patch", "empty": "concept",
+}
+CORPUS_CATEGORY_KIND = [
+    ("lore", "lore"), ("faction", "faction"), ("mechanic", "mechanic"), ("concept", "concept"),
+    ("location", "region"), ("subregion", "region"), ("characters", "npc"), ("npc", "npc"),
+    ("boss", "boss"), ("enemy", "enemy"), ("dungeon", "dungeon"), ("weapon", "weapon"),
+    ("armor", "armor"), ("spell", "spell"), ("item", "item"),
+]
+
+CORPUS_STOPWORDS = {
+    "a", "an", "and", "are", "as", "at", "be", "but", "by", "for", "from", "has", "have",
+    "he", "her", "his", "i", "if", "in", "into", "is", "it", "its", "me", "my", "no", "not",
+    "of", "on", "or", "our", "so", "that", "the", "their", "them", "then", "there", "these",
+    "they", "this", "to", "up", "was", "we", "were", "will", "with", "you", "your",
+}
+
+# When several entities share a name, the character/boss record is the useful
+# wiki link ("Ranni the Witch" -> the NPC, not the quest line).
+CORPUS_NAME_PRIORITY = {
+    "npc": 0, "merchant": 1, "boss": 1, "hunt": 1, "invader": 2, "dungeon": 2,
+    "mechanic": 2, "region": 6, "grace": 6, "line": 4, "quest": 5, "ending": 5,
+    "gate": 5, "build": 5, "damage": 4, "enemy": 7,
+}
+CORPUS_DEFAULT_PRIORITY = 3
+
+
+def corpus_norm(value):
+    text = unicodedata.normalize("NFD", str(value or ""))
+    text = "".join(ch for ch in text if not unicodedata.combining(ch))
+    text = re.sub(r"[\u2019'`\"]", "", text.lower())
+    return re.sub(r"[^a-z0-9+]+", " ", text).strip()
+
+
+def corpus_slug(value):
+    return re.sub(r"[^a-z0-9]+", "-", str(value or "").lower()).strip("-")
+
+
+def corpus_load(path, default):
+    try:
+        with open(path, "r", encoding="utf-8") as handle:
+            return json.load(handle)
+    except (OSError, ValueError):
+        return default
+
+
+def corpus_priority(entity_id):
+    return CORPUS_NAME_PRIORITY.get(entity_id.split(":", 1)[0], CORPUS_DEFAULT_PRIORITY)
+
+
+def corpus_stem(token):
+    if token.endswith("ies") and len(token) > 4:
+        return token[:-3] + "y"
+    if token.endswith("es") and len(token) > 4:
+        return token[:-2]
+    if token.endswith("s") and not token.endswith("ss") and len(token) > 3:
+        return token[:-1]
+    if token.endswith("ing") and len(token) > 5:
+        return token[:-3]
+    if token.endswith("ed") and len(token) > 4:
+        return token[:-2]
+    return token
+
+
+def corpus_tokenize(text):
+    text = unicodedata.normalize("NFD", str(text or "").lower())
+    text = "".join(ch for ch in text if not unicodedata.combining(ch))
+    out = []
+    for raw in re.findall(r"[a-z0-9']+", text):
+        token = raw.replace("'", "")
+        if len(token) < 2 or token in CORPUS_STOPWORDS:
+            continue
+        out.append(corpus_stem(token))
+    return out
+
+
+def corpus_bucket(term):
+    return term[0] if term and re.match(r"[a-z0-9]", term[0]) else "_"
+
+
+def export_wiki_corpus(db_path):
+    """Write the Task 133 §1 corpus. See the module docstring addendum."""
+    sourced = os.path.join(ROOT, "public", "sourced")
+    entity_index = corpus_load(os.path.join(sourced, "entity-index.json"), {})
+    aliases = corpus_load(os.path.join(sourced, "aliases.json"), [])
+    redirects_doc = corpus_load(os.path.join(sourced, "open", "wiki-db", "redirects.json"), {})
+
+    by_name = {}
+
+    def add_name(name, entity_id):
+        key = corpus_norm(name)
+        if not key or not entity_id:
+            return
+        ids = by_name.setdefault(key, [])
+        if entity_id not in ids:
+            ids.append(entity_id)
+
+    for record in (entity_index.get("records") or {}).values():
+        add_name(record.get("name"), record.get("id"))
+    for row in aliases:
+        for name in [row.get("fmgName")] + list(row.get("aliases") or []):
+            add_name(name, row.get("slug"))
+
+    redirect_to = {}
+    for row in redirects_doc.get("redirects") or []:
+        key = corpus_norm(row.get("from"))
+        if key and key not in redirect_to:
+            redirect_to[key] = row.get("to")
+
+    def canonical_title(title):
+        current = title or ""
+        for _ in range(4):
+            nxt = redirect_to.get(corpus_norm(current))
+            if not nxt or corpus_norm(nxt) == corpus_norm(current):
+                break
+            current = nxt
+        return current
+
+    def entities_for(title):
+        found = []
+        for candidate in (canonical_title(title), title):
+            for entity_id in by_name.get(corpus_norm(candidate), []):
+                if entity_id not in found:
+                    found.append(entity_id)
+        found.sort(key=lambda entity_id: (corpus_priority(entity_id), str(entity_id)))
+        return found
+
+    def entity_for(title):
+        found = entities_for(title)
+        return found[0] if found else None
+
+    wiki_link = re.compile(r"\[\[([^\]|#]+)(?:#[^\]|]+)?(?:\|([^\]]+))?\]\]")
+    ref = re.compile(r"<ref[^>]*>.*?</ref>", re.I | re.S)
+    ref_self = re.compile(r"<ref[^>]*/>", re.I)
+    comment = re.compile(r"<!--.*?-->", re.S)
+    tag = re.compile(r"<[^>]+>")
+    template = re.compile(r"\{\{[^{}]*\}\}")
+    ext_link = re.compile(r"\[https?://\S+\s+([^\]]+)\]")
+    ext_link_bare = re.compile(r"\[https?://\S+\]")
+
+    def clean_markdown(text):
+        if not text:
+            return ""
+        text = comment.sub(" ", text)
+        text = ref.sub(" ", text)
+        text = ref_self.sub(" ", text)
+        text = tag.sub(" ", text)
+        text = template.sub(" ", text)
+
+        def link(match):
+            target = (match.group(1) or "").strip()
+            label = (match.group(2) or target).strip()
+            entity_id = entity_for(target)
+            return "[[%s|%s]]" % (entity_id, label) if entity_id else label
+
+        text = wiki_link.sub(link, text)
+        text = ext_link.sub(r"\1", text)
+        text = ext_link_bare.sub(" ", text)
+        text = text.replace("'''", "").replace("''", "")
+        text = re.sub(r"==+", "", text)
+        text = re.sub(r"^\s*[*#:;]+\s*", "", text, flags=re.M)
+        text = re.sub(r"[ \t]+", " ", text)
+        text = re.sub(r"\n{3,}", "\n\n", text)
+        return text.strip()
+
+    def infer_kind(title, wikitext):
+        match = re.search(r"\{\{\s*Infobox\s*([A-Za-z_ ]+)", wikitext or "")
+        if match and match.group(1).strip().lower() in CORPUS_INFOBOX_KIND:
+            return CORPUS_INFOBOX_KIND[match.group(1).strip().lower()]
+        lowered = (wikitext or "").lower()
+        for needle, kind in CORPUS_CATEGORY_KIND:
+            if "[[category:%s" % needle in lowered:
+                return kind
+        return "lore"
+
+    connection = sqlite3.connect(db_path)
+    cursor = connection.cursor()
+
+    page_kind = {}
+    for page_id, _, name in cursor.execute("select page_id, type, name from entities"):
+        page_kind[page_id] = (page_kind.get(page_id) or "").lower() or None
+
+    sections_by_page = {}
+    for section_id, page_id, ord_, heading, markdown in cursor.execute(
+        "select id, page_id, ord, heading, markdown from sections order by page_id, ord"
+    ):
+        cleaned = clean_markdown(markdown)
+        if not heading and not cleaned:
+            continue
+        sections_by_page.setdefault(page_id, []).append(
+            {"heading": (heading or "").strip(), "markdown": cleaned}
+        )
+
+    pages = []
+    entity_to_page = {}
+    for page_id, title, url, wikitext in cursor.execute(
+        "select id, title, url, wikitext from pages order by id"
+    ):
+        title = (title or "").strip()
+        if not title:
+            continue
+        entity_ids = entities_for(title)
+        entity_id = entity_ids[0] if entity_ids else None
+        if entity_id:
+            kind = (entity_id.split(":", 1)[0] or "wiki").lower()
+        else:
+            kind = page_kind.get(page_id) or infer_kind(title, wikitext)
+            entity_id = "wiki:%s" % corpus_slug(title)
+            entity_ids = [entity_id]
+            if kind not in CORPUS_INFOBOX_KIND.values():
+                kind = "lore"
+        pages.append({
+            "id": page_id,
+            "title": title,
+            "entityId": entity_id,
+            "kind": kind,
+            "url": url or "",
+            "sections": sections_by_page.get(page_id, []),
+        })
+        for eid in entity_ids:
+            entity_to_page.setdefault(eid, page_id)
+
+    os.makedirs(CORPUS_DIR, exist_ok=True)
+    for stale in os.listdir(CORPUS_DIR):
+        if stale.startswith(("pages-", "search-")) and stale.endswith(".json"):
+            os.remove(os.path.join(CORPUS_DIR, stale))
+
+    manifest_pages = {}
+    chunks = []
+    for index in range(0, len(pages), PAGE_CHUNK):
+        chunk_pages = pages[index:index + PAGE_CHUNK]
+        name = "pages-%03d.json" % (index // PAGE_CHUNK)
+        chunks.append(name)
+        for page in chunk_pages:
+            manifest_pages[str(page["id"])] = {
+                "title": page["title"],
+                "entityId": page["entityId"],
+                "kind": page["kind"],
+                "url": page["url"],
+                "chunk": name,
+                "sections": len(page["sections"]),
+            }
+        with open(os.path.join(CORPUS_DIR, name), "w", encoding="utf-8") as handle:
+            json.dump({"chunk": name, "pages": chunk_pages}, handle, ensure_ascii=False, separators=(",", ":"))
+
+    with open(os.path.join(CORPUS_DIR, "manifest.json"), "w", encoding="utf-8") as handle:
+        json.dump({
+            "generatedAt": None,
+            "pageCount": len(pages),
+            "chunks": chunks,
+            "pages": manifest_pages,
+            "byEntity": entity_to_page,
+        }, handle, ensure_ascii=False, separators=(",", ":"))
+
+    docs = 0
+    postings = {}
+    for page in pages:
+        for section_index, section in enumerate(page["sections"]):
+            docs += 1
+            key = (page["id"], section_index)
+            weights = {}
+            for term in corpus_tokenize(section["markdown"]):
+                weights[term] = weights.get(term, 0) + 1
+            for term in set(corpus_tokenize(section["heading"])):
+                weights[term] = weights.get(term, 0) + 3
+            for term in set(corpus_tokenize(page["title"])):
+                weights[term] = weights.get(term, 0) + 4
+            for term, weight in weights.items():
+                postings.setdefault(term, {})[key] = weight
+
+    buckets = {}
+    for term in sorted(postings):
+        buckets.setdefault(corpus_bucket(term), {})[term] = [
+            [page, ord_, weight] for (page, ord_), weight in sorted(postings[term].items())
+        ]
+
+    total = sum(
+        len(json.dumps(bucket, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
+        for bucket in buckets.values()
+    )
+    if total <= SEARCH_BUDGET:
+        terms = {term: rows for bucket in buckets.values() for term, rows in bucket.items()}
+        with open(os.path.join(CORPUS_DIR, "search-index.json"), "w", encoding="utf-8") as handle:
+            json.dump({"generatedAt": None, "docs": docs, "pages": len(pages), "single": True, "terms": terms}, handle, ensure_ascii=False, separators=(",", ":"))
+    else:
+        bucket_files = {}
+        for name in sorted(buckets):
+            filename = "search-%s.json" % name
+            bucket_files[name] = filename
+            with open(os.path.join(CORPUS_DIR, filename), "w", encoding="utf-8") as handle:
+                json.dump(buckets[name], handle, ensure_ascii=False, separators=(",", ":"))
+        with open(os.path.join(CORPUS_DIR, "search-index.json"), "w", encoding="utf-8") as handle:
+            json.dump({
+                "generatedAt": None,
+                "docs": docs,
+                "pages": len(pages),
+                "buckets": bucket_files,
+                "terms": sum(len(bucket) for bucket in buckets.values()),
+            }, handle, ensure_ascii=False, separators=(",", ":"))
+
+    wiki_only = sum(1 for page in pages if str(page["entityId"]).startswith("wiki:"))
+    print("wiki corpus: %d pages, %d sections, %d chunks" % (len(pages), docs, len(chunks)))
+    print("  entity-linked pages: %d (ids: %d), wiki-only: %d" % (len(pages) - wiki_only, len(entity_to_page), wiki_only))
+    print("  search index: %s" % ("single file" if total <= SEARCH_BUDGET else "%d buckets, %.1f MB" % (len(buckets), total / 1024 / 1024)))
 
 
 if __name__ == "__main__":
