@@ -155,6 +155,9 @@ export type SnappedGrace = {
   name: string
   region: string
   confidence: number
+  /** Detected photo-centre (for the overlay). */
+  photoX: number
+  photoY: number
   /** Detected photo-centre projected into reference plate pixels. */
   mapX: number
   mapY: number
@@ -205,6 +208,8 @@ export function snapGraces(blobs: GraceBlob[], H: Homography, ref: MapReference,
       name: nearest.g.name,
       region: nearest.g.region,
       confidence,
+      photoX: blob.x,
+      photoY: blob.y,
       mapX: rx,
       mapY: ry,
       distancePercent: nearest.d,

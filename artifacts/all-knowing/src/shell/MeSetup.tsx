@@ -6,6 +6,7 @@ import { applyAnswers, applyFacts, denyFacts } from '../lib/infer'
 import { parseEquipmentText } from '../lib/equipmentOcr'
 import { headerToLoadout } from '../lib/ps5Equipment'
 import { analyzeEquipmentImage, analyzeStatusImage, loadBrowserWeaponCatalogue } from '../lib/ps5Capture'
+import { analyzeMapPhoto, loadBrowserMapReferences, mapPhotoFromImage, type MapAnalysis } from '../lib/ps5MapCapture'
 import { bonusExplanation } from '../lib/statBoostGear'
 import { matchArmors, matchSpells, matchTalismans, useFanapiData } from '../lib/fanapiData'
 import type { GuideItem } from '../lib/guide'
@@ -164,6 +165,8 @@ export function MeSetup() {
   const [error, setError] = useState('')
   const [outcome, setOutcome] = useState<OcrOutcome | null>(null)
   const [blob, setBlob] = useState('')
+  const [mapAnalysis, setMapAnalysis] = useState<MapAnalysis | null>(null)
+  const [mapPreview, setMapPreview] = useState('')
   const [bossQuery, setBossQuery] = useState('')
   const [openRegions, setOpenRegions] = useState<Record<string, boolean>>({})
 
@@ -224,6 +227,30 @@ export function MeSetup() {
             lines: [],
             alsoMarked: [],
             message: `Status read: Lv ${result.level ?? '?'} · ${Object.keys(result.displayedStats).length}/8 stats${bonus ? ` · showing base stats — ${bonus}.` : ''}`,
+          })
+          continue
+        }
+        if (step === 'graces') {
+          const dataUrl = await fileToDataUrl(image)
+          const refs = await loadBrowserMapReferences()
+          const photo = await mapPhotoFromImage(dataUrl)
+          const analysis = analyzeMapPhoto(photo, refs)
+          setMapPreview(dataUrl)
+          setMapAnalysis(analysis)
+          const reg = analysis.registration
+          const regions = [...new Set(analysis.graces.map((g) => g.region))]
+          const fragments = analysis.fragments.filter((f) => f.revealed).length
+          setOutcome({
+            character: next,
+            text: '',
+            confidence: reg?.confidence ?? 0,
+            status: 'applied',
+            matches: [],
+            lines: [],
+            alsoMarked: [],
+            message: reg
+              ? `Map read: ${reg.world} · ${reg.inliers} matches, ${reg.error.toFixed(1)}px error · ${analysis.graces.length} graces${regions.length ? ` in ${regions.slice(0, 3).join(', ')}` : ''} · ${fragments} fragments — confirm below.`
+              : 'Could not register that map photo — hold the phone straight-on, fill the frame with the map and avoid glare.',
           })
           continue
         }
@@ -299,6 +326,28 @@ export function MeSetup() {
     const result = applyOcrRead(character, { text: outcome.text, confidence: 0.9 }, `setup:${step}`)
     if (result.status === 'applied') setCharacter(result.character)
     setOutcome(result)
+  }
+
+  /** Confirm a registered map photo: graces + revealed fragments through the normal path. */
+  function confirmMap() {
+    if (!mapAnalysis?.registration) return
+    const graceIds = mapAnalysis.graces.map((g) => g.graceId)
+    const fragmentIds = mapAnalysis.fragments.filter((f) => f.revealed).map((f) => f.fragmentId)
+    const confidence = Math.max(0.5, mapAnalysis.registration.confidence)
+    const next = applyFacts(character, [...graceIds, ...fragmentIds], 'screenshot', 'setup:graces', confidence)
+    setCharacter(next)
+    setOutcome({
+      character: next,
+      text: '',
+      confidence,
+      status: 'applied',
+      matches: [],
+      lines: [],
+      alsoMarked: [],
+      message: `Added ${graceIds.length} graces and ${fragmentIds.length} map fragments. Regions are inferred from there.`,
+    })
+    setMapAnalysis(null)
+    setMapPreview('')
   }
 
   const equipment = character.loadout
@@ -424,11 +473,61 @@ export function MeSetup() {
 
         {step === 'graces' && (
           <div className="setup-graces">
-            <p className="note">A warp list or an open map with gold grace icons. Only the pins you can actually see count.</p>
+            <p className="note">A photo of the open world map (or the underground map). The app matches the coastline and terrain, then reads the gold grace icons and the painted regions.</p>
             <div className="opts">
-              <button type="button" className="chip" disabled={busy} onClick={() => cameraRef.current?.click()}>📷 Map or warp list</button>
-              <button type="button" className="chip" disabled={busy} onClick={() => fileRef.current?.click()}>Open screenshots</button>
+              <button type="button" className="chip" disabled={busy} onClick={() => cameraRef.current?.click()}>📷 Map photo</button>
+              <button type="button" className="chip" disabled={busy} onClick={() => fileRef.current?.click()}>Open screenshot</button>
             </div>
+            <p className="note">{CAPTURE_TIP}</p>
+            {mapPreview && mapAnalysis && (
+              <div className="setup-map">
+                <div className="setup-map-frame">
+                  <img src={mapPreview} alt="Map photo with detected graces" />
+                  {mapAnalysis.blobs.map((b, i) => (
+                    <span
+                      key={`blob-${i}`}
+                      className="setup-map-blob"
+                      style={{
+                        left: `${(b.x / mapAnalysis.width) * 100}%`,
+                        top: `${(b.y / mapAnalysis.height) * 100}%`,
+                        width: `${(b.radius * 2 / mapAnalysis.width) * 100}%`,
+                      }}
+                    />
+                  ))}
+                  {mapAnalysis.graces.map((g, i) => (
+                    <span
+                      key={`grace-${i}`}
+                      className="setup-map-grace"
+                      title={`${g.name} · ${g.region} (${(g.confidence * 100).toFixed(0)}%)`}
+                      style={{
+                        left: `${(g.photoX / mapAnalysis.width) * 100}%`,
+                        top: `${(g.photoY / mapAnalysis.height) * 100}%`,
+                        width: `${(24 / mapAnalysis.width) * 100}%`,
+                      }}
+                    />
+                  ))}
+                </div>
+                {mapAnalysis.registration ? (
+                  <>
+                    <p className="note">
+                      {mapAnalysis.graces.length} graces found
+                      {mapAnalysis.graces.length > 0 && ` in ${[...new Set(mapAnalysis.graces.map((g) => g.region))].slice(0, 4).join(', ')}`}
+                      {' · '}{mapAnalysis.fragments.filter((f) => f.revealed).length} map fragments revealed
+                      {' · '}{mapAnalysis.registration.inliers} matches, {mapAnalysis.registration.error.toFixed(1)}px error
+                      {' · '}{mapAnalysis.registration.world} ({mapAnalysis.ms} ms)
+                    </p>
+                    <div className="opts">
+                      <button type="button" className="chip on" onClick={confirmMap}>
+                        Add {mapAnalysis.graces.length} graces + {mapAnalysis.fragments.filter((f) => f.revealed).length} fragments
+                      </button>
+                      <button type="button" className="chip" onClick={() => { setMapAnalysis(null); setMapPreview('') }}>Discard</button>
+                    </div>
+                  </>
+                ) : (
+                  <p className="note">No trustworthy registration — try again straight-on with the whole map in frame.</p>
+                )}
+              </div>
+            )}
             <p className="note">Known graces: {character.discoveredGraces.length}</p>
           </div>
         )}
