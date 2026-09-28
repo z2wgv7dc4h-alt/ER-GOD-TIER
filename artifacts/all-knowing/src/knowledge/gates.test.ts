@@ -137,7 +137,8 @@ describe('every gate reports a state from the fixture', () => {
     'gate:forge': 'open',
     'gate:maliketh': 'open',
     'gate:sealing-tree': 'open',
-    'gate:ranni-ending': 'open',
+    // Task 140 §2: the Seluvis lock is one beat from the Radahn/festival fixture.
+    'gate:ranni-ending': 'approaching',
     'gate:frenzy': 'open',
     'gate:dung-eater-curse': 'open',
     'gate:seluvis-potion': 'open',
@@ -220,6 +221,27 @@ describe('gate answer from Gideon', () => {
     // Fire Giant is the one-beat-away signal; the burn flag itself is the trigger.
     expect(gateForStep({ factId: 'boss:fire-giant', grants: [] })?.gate.id).toBe('gate:forge')
     expect(gateForStep({ factId: 'quest:erdtree-burned', grants: [] })?.kind).toBe('fires')
+  })
+})
+
+describe('Task 140 §2 — lockout review fixes', () => {
+  it('does not lock Rya or Tanith resolutions that unlock after Rykard', () => {
+    const volcano = gates.find((g) => g.id === 'gate:volcano-host')!
+    const ids = volcano.locks.map((l) => l.factId)
+    expect(ids).toContain('quest:rya:amnion')
+    expect(ids).toContain('quest:tanith:targets')
+    expect(ids).not.toContain('quest:rya:concluded')
+    expect(ids).not.toContain('quest:tanith:concluded')
+  })
+
+  it('fires the Ranni / Seluvis gate at the Fingerslayer hand-in, not the Dark Moon Ring', () => {
+    const gate = gates.find((g) => g.id === 'gate:ranni-ending')!
+    expect(gate.triggerFacts).toContain('item:fingerslayer')
+    expect(gate.locks.map((l) => l.factId)).toContain('item:magic-scorpion-charm')
+    const blade = applyFacts(emptyCharacter, ['item:fingerslayer'], 'answer', 'blade')
+    expect(gateState(blade, gate)).toBe('fired')
+    // The golden fixture (Radahn dead, blade NOT handed in) is only approaching.
+    expect(gateState(fixture, gate)).toBe('approaching')
   })
 })
 

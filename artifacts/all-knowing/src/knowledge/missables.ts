@@ -53,5 +53,20 @@ export const missables = [
     "id": "talisman-flock-s-canvas-talisman",
     "lockedBy": "Not completing Millicent's questline to either conclusion",
     "note": "From Gowry's corpse after Millicent's questline concludes (either path)."
+  },
+  {
+    "id": "talisman-magic-scorpion-charm",
+    "lockedBy": "Giving Ranni the Fingerslayer Blade (Seluvis's line closes)",
+    "note": "Sold by Preceptor Seluvis after the Amber Starlight step. The wiki is explicit that Seluvis is found dead once Ranni has the Fingerslayer Blade, so buy it before the Nokron hand-in. Permanent for the run; the pickup is recoverable on NG+."
+  },
+  {
+    "id": "spirit-ancient-dragon-florissax",
+    "lockedBy": "Approaching the Shadow Keep entrance before starting Thiollier's quest",
+    "note": "Coming too close to the Shadow Keep entrance locks the first step of Thiollier's line and forfeits the Spirit Ash of Ancient Dragon Florissax. Do the Moore/Black Syrup hand-in and Thiollier's first talk before you climb toward the Keep. Permanent for the run; recoverable on NG+."
+  },
+  {
+    "id": "item-black-syrup",
+    "lockedBy": "Miquella's Great Rune breaking (approaching Shadow Keep)",
+    "note": "Moore gives the Black Syrup for Thiollier only before Miquella's Great Rune breaks; after that his fate branch replaces the gift. Talk to Moore and Thiollier at the Pillars of the Cross before the Keep. Permanent for the run; recoverable on NG+."
   }
 ] as const

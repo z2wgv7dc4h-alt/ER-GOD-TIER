@@ -552,6 +552,20 @@ if (duplicateNames.length) {
   lines.push('')
 }
 
+// Task 140 §2 — the missables/lockout review is authored in
+// docs/lockout-review.md and appended here so the accuracy report is one file.
+try {
+  const review = fs.readFileSync(path.join(root, 'docs/lockout-review.md'), 'utf8').trim()
+  if (review) {
+    lines.push('---')
+    lines.push('')
+    lines.push(review)
+    lines.push('')
+  }
+} catch {
+  // §2 not authored yet.
+}
+
 fs.mkdirSync(path.dirname(reportPath), { recursive: true })
 fs.writeFileSync(reportPath, lines.join('\n'))
 console.log(`accuracy-audit: ${comparisons.length} comparisons, ${errors.length} wiki-wins errors (${pct(metrics.sampled.errorRate)})`)
