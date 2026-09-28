@@ -297,8 +297,11 @@ if (redirects.length) {
     const target = resolveTarget(redirect.to)
     const row = rowByTarget.get(rawNorm(target)) ?? rowByTarget.get(norm(target))
     if (!row) continue
-    const alias = norm(redirect.from)
-    if (alias && !row.aliases.includes(alias)) {
+    // Keep parentheticals (rawNorm) so a disambiguation redirect like
+    // "SM (Sword of Milos)" becomes "sm sword of milos", not the bare, ambiguous
+    // "sm" that would substring-match every "smithing" query at runtime.
+    const alias = rawNorm(redirect.from)
+    if (alias.length >= 3 && !row.aliases.includes(alias)) {
       row.aliases.push(alias)
       row.aliases.sort()
       attached++

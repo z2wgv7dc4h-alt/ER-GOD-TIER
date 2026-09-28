@@ -58,21 +58,21 @@ drops / strategy fields remain in the table as information.
 
 | kind | entities | Desc | Location | Map | Coords | Image | Stats | Effect | HP+Neg+Loc | Drops | Strategy | Req+Scale+Loc | Desc+Loc |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| boss | 237 | 91.6% | 100% | 67.9% | · | 47.3% | 87.3% | · | 86.5% | 87.3% | 94.5% | · | · |
-| weapon | 419 | 73% | 100% | 0% | · | 73% | · | · | · | · | · | 100% | · |
+| boss | 243 | 92.6% | 100% | 66.3% | · | 46.1% | 87.2% | · | 84.4% | 88.1% | 92.2% | · | · |
+| weapon | 419 | 97.9% | 100% | 0% | · | 73% | · | · | · | · | · | 100% | · |
 | shield | 69 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | 100% | · |
 | armor | 565 | 100% | 100% | 0% | · | 95.6% | 100% | · | · | · | · | · | 100% |
 | talisman | 88 | 100% | 100% | 0% | · | 98.9% | · | 98.9% | · | · | · | · | 100% |
 | spell | 167 | 100% | 100% | 0% | · | 99.4% | · | — | · | · | · | · | 100% |
 | ash | 86 | 100% | 100% | 0% | · | 88.4% | · | · | · | · | · | · | 100% |
 | spirit | 63 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | · | 100% |
-| item | 441 | 100% | 100% | 0% | · | 91.6% | 99.5% | · | · | · | · | · | 100% |
+| item | 439 | 100% | 100% | 0% | · | 91.6% | 100% | · | · | · | · | · | 100% |
 | material | 3 | 100% | 100% | 0% | · | 66.7% | · | · | · | · | · | · | · |
-| npc | 8 | 87.5% | 100% | 37.5% | · | 87.5% | 75% | · | · | · | · | · | · |
-| grace | 50 | 100% | 100% | · | 100% | · | · | · | · | · | · | · | · |
-| dungeon | 119 | 84.9% | 100% | 100% | · | 99.2% | · | · | · | · | · | · | · |
-| region | 10 | 80% | 60% | 20% | · | · | · | · | · | · | · | · | · |
-| enemy | 0 | — | — | — | — | — | — | — | — | — | — | — | — |
+| npc | 580 | 16.9% | 13.4% | 0.5% | · | 1.6% | 13.1% | · | · | · | · | · | · |
+| grace | 420 | 100% | 100% | · | 100% | · | · | · | · | · | · | · | · |
+| dungeon | 119 | 95.8% | 100% | 100% | · | 99.2% | · | · | · | · | · | · | · |
+| region | 1157 | 14.6% | 14.3% | 0.2% | · | · | · | · | · | · | · | · | · |
+| enemy | 2390 | 99.9% | 99.6% | 0% | · | 0% | 97.9% | · | 95% | 3.9% | 0% | · | · |
 
 ## Spot checks
 
@@ -93,6 +93,8 @@ The ten records Task 119 names, printed straight from the built index.
 **Poise:** 80
 
 **Status resist:** Poison 154 · Scarlet Rot 154 · Bleed 154 · Sleep 999 · Madness 999 · Curse 999
+
+**Affiliation:** Golden Order
 
 **Drops:** 12,000 Runes · Talisman Pouch · 16,800 Runes · Viridian Amber Medallion 1
 
@@ -116,7 +118,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Status resist:** Poison 542 · Scarlet Rot 542 · Bleed 154 · Sleep 252 · Madness 999 · Curse 999
 
-**Drops:** Malenia's Great Rune · Remembrance of the Rot Goddess · 480,000 Runes
+**Drops:** Malenia's Great Rune · Remembrance of the Rot Goddess · 480,000 Runes · * Malenia's Great Rune
 
 **Strategy:** Health: 33,251 HP (Phase 1: 18,473 , Phase 2: 14,778 ) Defense : 123 Stance : 80 Parryable : Yes, but 3 parries are required per stance break Is vulnerable to a critical hit after being stance broken or parried Damage: Standard , Slash , Pierce (Phase 1), Standard , Slash , Pierce , Holy (Phase 2) Inflicts: Scarlet Rot (Phase 2) Drops 480,000, Malenia's Great Rune , Remembrance of the Rot Goddess Negations (or Absorptions) Standard : 10 Slash : 10 Strike : 10 Pierce : 10 Magic : 20 Fire : 0 (in water: 10 ) Lightning : 20 (in water: 10 ) Holy : 40 The negation numbers are the&#160;% of your dam…
 
@@ -220,6 +222,8 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Effect:** Greatly raises attributes, but also increases damage taken
 
+**Weight:** 0.8
+
 **Related:** Fort Faroth
 
 ### Iron Fist Alexander (`npc:alexander`)
@@ -238,6 +242,8 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Coords:** 35.11, 69.03
 
+**World:** overworld
+
 **Related:** The First Step · Limgrave · Gatefront
 
 
@@ -255,12 +261,12 @@ dropped silently.
 | --- | --- |
 | acquisition | 2148 |
 | shops | 348 |
-| checklists/graces | 222 |
+| checklists/graces | 221 |
 | fanapi/locations | 76 |
 | checklists/locations | 65 |
 | recipes | 64 |
-| checklists/npcs | 11 |
-| fanapi/npcs | 11 |
+| checklists/npcs | 10 |
+| fanapi/npcs | 10 |
 | checklists/bosses | 1 |
 | fanapi/bosses | 1 |
 | armory-bosses | 1 |

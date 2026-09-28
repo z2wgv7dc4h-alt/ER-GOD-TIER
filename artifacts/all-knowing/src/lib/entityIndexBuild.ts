@@ -56,6 +56,8 @@ import fanLocations from '../../public/sourced/open/fanapi/locations.json'
 import magicData from '../../public/sourced/open/magic.json'
 import gapfillDoc from '../../public/sourced/open/gapfill.json'
 import mapExtras from '../../public/sourced/guide/map-extras.json'
+import engineMarkersDoc from '../../public/sourced/open/engine-markers.json'
+import eldenringMap from '../../public/sourced/open/eldenringmap.json'
 import namesData from '../../public/sourced/open/names.json'
 
 // Task 132 §1 — the full wiki DB, classified per kind by `scripts/export-wiki-db.py`.
@@ -104,7 +106,7 @@ type RosterBoss = { id: string; name: string; region: string; location: string; 
 type ChecklistItem = { name: string; description?: string; image?: string; effect?: string; type?: string }
 type ChecklistGrace = { name: string; region?: string; world?: string }
 type ChecklistNpc = { name: string; image?: string; quote?: string; location?: string; role?: string }
-type AcqRow = { name: string; location?: string; near?: string; missable?: boolean }
+type AcqRow = { name: string; method?: string; location?: string; near?: string; prereqs?: string[]; missable?: boolean }
 type WikiSection = { id: number; page: string; heading: string; text: string }
 type FextBoss = {
   name: string
@@ -1363,6 +1365,25 @@ function mergeWikiGraces(): void {
       addCoord(grace.name, { x: grace.lng, y: grace.lat, world: grace.code })
     }
   }
+  // Task 132 §2 — the other coordinate planes: the er-guide location markers, the
+  // engine mosaic graces and the unused eldenringmap dump. Together they close
+  // the last few BonfireWarpParam warps the guide's grace list alone drops.
+  for (const loc of (mapExtras as { locations?: { name: string; lat: number; lng: number; code?: string }[] }).locations ?? []) {
+    if (typeof loc.lat === 'number' && typeof loc.lng === 'number') {
+      addCoord(loc.name, { x: loc.lng, y: loc.lat, world: loc.code })
+    }
+  }
+  const MOSAIC = 10496
+  for (const grace of (engineMarkersDoc as { graces?: { name: string; px: number; py: number }[] }).graces ?? []) {
+    if (typeof grace.px === 'number' && typeof grace.py === 'number') {
+      addCoord(grace.name, { x: (grace.px / MOSAIC) * 100, y: (grace.py / MOSAIC) * 100 })
+    }
+  }
+  for (const grace of (eldenringMap as { graces?: { name: string; x: number; y: number; world?: string }[] }).graces ?? []) {
+    if (typeof grace.x === 'number' && typeof grace.y === 'number') {
+      addCoord(grace.name, { x: (grace.x / MOSAIC) * 100, y: (grace.y / MOSAIC) * 100, world: grace.world })
+    }
+  }
   for (const row of checklistGraces as (ChecklistGrace & { id?: string; warpId?: number })[]) {
     // Exact name only: a fuzzy match would merge two distinct warps into one. A
     // second row with the same name (e.g. two "Artist's Shack" warps) keeps its
@@ -1374,9 +1395,10 @@ function mergeWikiGraces(): void {
     setText(record, 'description', row.region)
     setText(record, 'location', row.region)
     setStat(record, 'World', row.world)
+    const lookupNames = [row.name, correctName(row.name)]
     const coord =
-      [...mapKeys(row.name), ...mapKeys(row.name.replace(/ \(site of grace\)$/i, ''))].map((key) => coordByName.get(key)).find(Boolean) ??
-      coordByName.get(baseNorm(row.name).replace(/\bsite of grace\b|\bsite\b/g, '').trim())
+      lookupNames.flatMap((n) => [...mapKeys(n), ...mapKeys(n.replace(/ \(site of grace\)$/i, ''))]).map((key) => coordByName.get(key)).find(Boolean) ??
+      lookupNames.map((n) => coordByName.get(baseNorm(n).replace(/\bsite of grace\b|\bsite\b/g, '').trim())).find(Boolean)
     if (coord) {
       record.map = { x: coord.x, y: coord.y, map: coord.map, world: coord.world }
     }
