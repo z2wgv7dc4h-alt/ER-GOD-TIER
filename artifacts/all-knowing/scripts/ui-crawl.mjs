@@ -4,8 +4,8 @@
  *
  * Drives the already-running dev server (http://localhost:5173, override with
  * AUDIT_URL/CRAWL_URL) through every section / sub-view, the header menu, the
- * quick-log sheet, the area picker and an entity page — on phone (375x812) and
- * desktop (1440x900) — clicking every visible interactive element and recording
+ * quick-log sheet, the area picker and an entity page — on phone (390x844) and
+ * desktop (1280x800) — clicking every visible interactive element and recording
  * what happened.
  *
  * It never starts a server and never downloads a browser: it launches the
@@ -49,9 +49,9 @@ const DRY = process.env.CRAWL_DRY === '1'
 const RUNS = [
   {
     name: 'phone',
-    label: 'phone 375\u00d7812',
+    label: 'phone 390\u00d7844',
     context: {
-      viewport: { width: 375, height: 812 },
+      viewport: { width: 390, height: 844 },
       isMobile: true,
       hasTouch: true,
       deviceScaleFactor: 2,
@@ -59,8 +59,8 @@ const RUNS = [
   },
   {
     name: 'desktop',
-    label: 'desktop 1440\u00d7900',
-    context: { viewport: { width: 1440, height: 900 } },
+    label: 'desktop 1280\u00d7800',
+    context: { viewport: { width: 1280, height: 800 } },
   },
 ]
 
