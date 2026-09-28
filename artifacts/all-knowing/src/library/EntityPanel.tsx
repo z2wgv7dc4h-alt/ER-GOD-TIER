@@ -16,24 +16,79 @@ import { WikiTab } from './WikiTab'
 // calculator into the main entry chunk.
 const BossFacts = lazy(() => import('./BossFacts').then((m) => ({ default: m.BossFacts })))
 const BossPrepCard = lazy(() => import('../combat/BossPrepCard').then((m) => ({ default: m.BossPrepCard })))
+// Task 144 §1 — the kind-specific body (location/grace/NPC/boss) is its own
+// chunk so the eager panel keeps the shared shell only.
+const EntityKinds = lazy(() => import('./EntityKinds'))
+import { knownFactIds } from '../lib/infer'
+import type { EntityRecord } from '../lib/entityIndex'
 import { attributeStats, isOwned, meetsRequirements, type AttributeKey, type CategoryId, type LibraryEntity } from './model'
 
-const STATUS_LABELS: Record<EntityState, string> = {
-  done: 'Done',
-  owned: 'Owned',
-  available: 'Available',
-  ahead: 'Ahead of you',
-  locked: 'Locked',
-  missed: 'Missed',
-  unknown: 'Unknown',
+/**
+ * Task 144 §1 — the status line fits the kind. A region is not "Owned", a grace
+ * is "Discovered", a boss is "Defeated / Not yet / Can't reach yet", an item
+ * says where to get it, and an NPC shows the current quest step.
+ */
+function kindStatus(
+  kind: EntityKind,
+  info: { state: EntityState; why: string },
+  entity: LibraryEntity,
+  record: EntityRecord | undefined,
+  character: Character,
+): { label: string; why: string } {
+  const bossLike = kind === 'boss' || kind === 'enemy'
+  if (bossLike) {
+    if (info.state === 'done' || info.state === 'owned') return { label: 'Defeated', why: info.why }
+    if (info.state === 'locked' || info.state === 'missed' || info.state === 'ahead') {
+      return { label: "Can't reach yet", why: info.why }
+    }
+    if (info.state === 'unknown') return { label: 'Unknown', why: info.why }
+    return { label: 'Not yet', why: entity.region ? `In ${entity.region}.` : info.why }
+  }
+  if (kind === 'grace') {
+    if (info.state === 'done' || info.state === 'owned') return { label: 'Discovered', why: entity.region ? `In ${entity.region}.` : info.why }
+    if (info.state === 'locked' || info.state === 'missed') return { label: 'Missed', why: info.why }
+    return { label: 'Not yet', why: entity.region ? `In ${entity.region}.` : info.why }
+  }
+  if (kind === 'npc' || kind === 'merchant') {
+    const known = knownFactIds(character)
+    const steps = record?.questSteps ?? []
+    const next = steps.find((s) => !(s.entityId && known.has(s.entityId)))
+    if (next) return { label: `Quest step ${next.order}`, why: next.title }
+    if (steps.length) return { label: 'Questline complete', why: steps[steps.length - 1]?.title ?? '' }
+    return { label: record?.stats?.Role ?? entity.subtype ?? 'NPC', why: entity.where || record?.location || 'No tracked quest steps.' }
+  }
+  if (kind === 'region' || kind === 'dungeon') {
+    return { label: 'Area', why: entity.region ? `In ${entity.region}.` : info.why }
+  }
+  // item-shaped: weapons, armor, talismans, spells, ashes, spirits, items…
+  if (info.state === 'owned' || info.state === 'done') return { label: 'Owned', why: info.why }
+  if (info.state === 'locked' || info.state === 'missed' || info.state === 'ahead') {
+    return { label: info.state === 'missed' ? 'Missed' : 'Not yet', why: info.why }
+  }
+  const where = entity.where || record?.location
+  if (where) return { label: 'Where to get', why: where }
+  return { label: info.state === 'unknown' ? 'Unknown' : 'Not owned', why: info.why }
 }
 
-function EntityStatusStrip({ factId, character }: { factId: string; character: Character }) {
+function EntityStatusStrip({
+  factId,
+  character,
+  kind,
+  entity,
+  record,
+}: {
+  factId: string
+  character: Character
+  kind: EntityKind
+  entity: LibraryEntity
+  record: EntityRecord | undefined
+}) {
   const info = useMemo(() => status(factId, character), [factId, character])
+  const line = useMemo(() => kindStatus(kind, info, entity, record, character), [kind, info, entity, record, character])
   return (
-    <div className={`entity-status ${info.state}`} title={info.why}>
-      <span className="entity-status-state">{STATUS_LABELS[info.state]}</span>
-      <span className="entity-status-why">{info.why}</span>
+    <div className={`entity-status ${info.state} kind-${kind}`} title={info.why}>
+      <span className="entity-status-state">{line.label}</span>
+      <span className="entity-status-why">{line.why}</span>
     </div>
   )
 }
@@ -165,6 +220,8 @@ export function EntityPanel({
   const isBoss = panelKindValue === 'boss' || panelKindValue === 'enemy'
   const isNpc = panelKindValue === 'npc' || panelKindValue === 'merchant'
   const isGrace = panelKindValue === 'grace'
+  // Task 144 §1 — a region/dungeon is not ownable; it gets its own actions.
+  const isLocation = panelKindValue === 'region' || panelKindValue === 'dungeon'
   const BOSS_LABELS = new Set(['hp', 'negation', 'poise', 'status resist', 'weak to', 'resists', 'drops', 'arena'])
   const enrichedStats = Object.entries(record?.stats ?? {}).filter(([label]) => {
     if (isBoss && BOSS_LABELS.has(label.toLowerCase())) return false
@@ -187,7 +244,11 @@ export function EntityPanel({
             {entity.dlc ? ' · DLC' : ''}
           </div>
           <h2><Spoiler factId={statusFactId}>{entity.name}</Spoiler></h2>
-          {isOwnedValue && <span className="lib-owned-badge">Owned ✓</span>}
+          {isOwnedValue && (
+            <span className="lib-owned-badge">
+              {panelKindValue === 'grace' ? 'Discovered ✓' : panelKindValue === 'region' || panelKindValue === 'dungeon' ? 'Visited ✓' : 'Owned ✓'}
+            </span>
+          )}
         </div>
         {onClose && (
           <button type="button" className="chip lib-panel-close" onClick={onClose} aria-label="Close details">
@@ -196,7 +257,7 @@ export function EntityPanel({
         )}
       </header>
 
-      <EntityStatusStrip factId={statusFactId} character={character} />
+      <EntityStatusStrip factId={statusFactId} character={character} kind={panelKindValue} entity={entity} record={record} />
 
       {verdict && (
         <p className={`entity-verdict ${verdict.kind}`} role="status">
@@ -240,6 +301,18 @@ export function EntityPanel({
                 <BossPrepCard bossId={statusFactId} character={character} />
               </Suspense>
             )}
+
+            {/* Task 144 §1 — the body that fits the kind. NPC quest steps come
+                before the numeric/combat rows, so combat stats stay last. */}
+            <Suspense fallback={null}>
+              <EntityKinds
+                kind={panelKindValue}
+                entity={entity}
+                record={record}
+                character={character}
+                onShowWiki={() => setTab('wiki')}
+              />
+            </Suspense>
 
             {!isBoss && (requirementEntries.length > 0 || metValue !== null) && (
               <div className="lib-panel-block">
@@ -504,7 +577,22 @@ export function EntityPanel({
           </>
         )}
 
-        {!isBoss && !isNpc && !isGrace && (
+        {isLocation && (
+          <>
+            {onShowOnMap && (
+              <button type="button" className="chip" onClick={onShowOnMap}>
+                Show on map
+              </button>
+            )}
+            {onAskGideon && (
+              <button type="button" className="chip" onClick={onAskGideon}>
+                Ask Gideon
+              </button>
+            )}
+          </>
+        )}
+
+        {!isBoss && !isNpc && !isGrace && !isLocation && (
           <>
             {onOwnedChange && (
               <button type="button" className={isOwnedValue ? 'chip on' : 'chip'} onClick={() => onOwnedChange(!isOwnedValue)}>

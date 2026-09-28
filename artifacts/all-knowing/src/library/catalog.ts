@@ -22,6 +22,7 @@ import { allRecords, type EntityRecord } from '../lib/entityIndex'
 import { ensureEntityIndex, useEntityIndex } from '../lib/entityEnrich'
 import { useGuide, type GuideItem } from '../lib/guide'
 import { registerPeekCatalog } from '../peek/peekData'
+import { canonicalName } from '../lib/canonicalNames'
 import { CATEGORIES, type AttributeKey, type CategoryId, type EntityStat, type LibraryEntity } from './model'
 
 /**
@@ -225,10 +226,11 @@ function weaponEntity(
     }
   }
   const tags = [seed.subtype, seed.skill].filter(Boolean) as string[]
+  const name = canonicalName(seed.name)
   return {
-    id: `${category}:${slug(seed.name)}`,
-    factId: factIdFor(category, seed.name),
-    name: seed.name,
+    id: `${category}:${slug(name)}`,
+    factId: factIdFor(category, name),
+    name,
     category,
     subtype: seed.subtype ?? (category === 'shields' ? 'Shield' : 'Weapon'),
     region: undefined,
@@ -321,7 +323,8 @@ function buildWeapons(input: CatalogInput): { weapons: LibraryEntity[]; shields:
 // simple fanapi-backed categories
 // ---------------------------------------------------------------------------
 
-function baseEntity(category: CategoryId, name: string, extra: Partial<LibraryEntity> = {}): LibraryEntity {
+function baseEntity(category: CategoryId, rawName: string, extra: Partial<LibraryEntity> = {}): LibraryEntity {
+  const name = canonicalName(rawName)
   return {
     id: `${category}:${slug(name)}`,
     factId: factIdFor(category, name),

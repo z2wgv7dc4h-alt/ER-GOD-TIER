@@ -349,11 +349,17 @@ export function parseDeepLink(hash: string): DeepLink | null {
   }
 }
 
-export function buildDeepLink(cat: CategoryId | null, id?: string | null, q?: string | null): string {
+/**
+ * Build a Library deep link. Task 144 §1: an open entity overlay's `?e=` param
+ * is passed through and preserved, so navigating within the browser never drops
+ * a deep-linked entity page.
+ */
+export function buildDeepLink(cat: CategoryId | null, id?: string | null, q?: string | null, e?: string | null): string {
   const params = new URLSearchParams()
   if (cat) params.set('cat', cat)
   if (id) params.set('id', id)
   if (q) params.set('q', q)
+  if (e) params.set('e', e)
   const query = params.toString()
   return `#/library/search${query ? `?${query}` : ''}`
 }

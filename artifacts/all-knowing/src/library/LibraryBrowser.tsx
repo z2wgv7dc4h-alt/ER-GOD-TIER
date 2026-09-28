@@ -7,6 +7,7 @@ import { applyFacts, denyFacts } from '../lib/infer'
 import { weaponVerdict } from '../lib/weaponVerdict'
 import type { Verdict } from '../lib/verdict'
 import { useEnrichment } from '../lib/entityEnrich'
+import { parseEntityHash } from '../lib/entityHash'
 import type { EntityRecord } from '../lib/entityIndex'
 import { useLibraryCatalog } from './catalog'
 import { CompareTray } from './CompareTray'
@@ -160,11 +161,21 @@ function activeFilterCount(filter: LibraryFilter): number {
 
 function cardStats(entity: LibraryEntity, record?: EntityRecord): string[] {
   const out: string[] = []
-  if (entity.weight !== undefined) out.push(`${entity.weight} wt`)
   const stats = entity.stats?.length
     ? entity.stats
     : Object.entries(record?.stats ?? {}).map(([label, value]) => ({ label, value }))
+  // Task 144 §1: weight is rendered once. An enriched "Weight" stat row next to
+  // the `3 wt` chip used to read "3 wt · Weight: 3".
+  const weightStat = stats.find((s) => s.label.trim().toLowerCase() === 'weight')
+  const weight =
+    entity.weight !== undefined
+      ? entity.weight
+      : weightStat
+        ? Number.parseFloat(weightStat.value)
+        : undefined
+  if (weight !== undefined && Number.isFinite(weight)) out.push(`${weight} wt`)
   for (const stat of stats) {
+    if (stat.label.trim().toLowerCase() === 'weight') continue
     out.push(`${stat.label}: ${stat.value}`)
     if (out.length >= 2) break
   }
@@ -323,7 +334,10 @@ export function LibraryBrowser() {
   }, [])
 
   useEffect(() => {
-    const next = buildDeepLink(cat, selectedId, q || null)
+    // Task 144 §1 — keep any open entity overlay's `?e=` when the Library writes
+    // its own cat/id/q deep link, so the writer never drops a deep-linked page.
+    const entity = parseEntityHash(window.location.hash)
+    const next = buildDeepLink(cat, selectedId, q || null, entity)
     if (window.location.hash !== next) {
       window.history.replaceState(null, '', next)
     }

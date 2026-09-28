@@ -35,6 +35,17 @@ export type WikiCorpusPage = {
   sections: WikiCorpusSection[]
 }
 
+/**
+ * Task 144 §1 — wiki navigation pages (disambiguation, "list of …" indexes,
+ * categories, redirects) are not entities. They must never be returned as a
+ * search hit or opened as a catalogue row: the row has to be a real thing.
+ */
+const NAVIGATIONAL_TITLE = /\(disambiguation\)|^list of\b|\blist$|\(list\)|^category:|\bindex$/i
+
+export function isNavigationalWikiPage(meta: Pick<WikiPageMeta, 'title' | 'entityId'>): boolean {
+  return NAVIGATIONAL_TITLE.test(meta.title) || /-disambiguation$/i.test(meta.entityId)
+}
+
 export type WikiSearchHit = {
   pageId: string
   entityId: string
@@ -142,6 +153,7 @@ export async function listWikiPages(kind?: string): Promise<WikiPageRow[]> {
   const rows: WikiPageRow[] = []
   for (const [id, meta] of Object.entries(doc.pages)) {
     if (kind && meta.kind !== kind) continue
+    if (isNavigationalWikiPage(meta)) continue
     rows.push({ id, ...meta })
   }
   rows.sort((a, b) => a.title.localeCompare(b.title))
@@ -283,6 +295,8 @@ export async function searchWiki(query: string, limit = 8): Promise<WikiSearchHi
   for (const candidate of candidates) {
     const pageMeta = doc.pages[candidate.pageId]
     if (!pageMeta) continue
+    // A disambiguation / list / index page is navigation, never a result.
+    if (isNavigationalWikiPage(pageMeta)) continue
     let page = pageCache.get(candidate.pageId)
     if (!page) {
       const chunk = await loadWikiChunk(pageMeta.chunk)

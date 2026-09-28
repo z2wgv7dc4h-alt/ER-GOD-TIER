@@ -88,8 +88,8 @@ describe('EntityPanel kind-specific actions (Task 103 §4)', () => {
   })
 })
 
-describe('EntityPanel status wording (Task 103 §5)', () => {
-  it('reads "Ahead of you" for a not-yet-reached prerequisite', () => {
+describe('EntityPanel status wording (Task 144 §1)', () => {
+  it('reads "Can’t reach yet" with the reason for an unreachable boss', () => {
     const html = renderToStaticMarkup(
       <EntityPanel
         entity={entity({ id: 'bosses:margit', factId: 'boss:margit', name: 'Margit, the Fell Omen', category: 'bosses', subtype: 'Great Enemy' })}
@@ -97,8 +97,8 @@ describe('EntityPanel status wording (Task 103 §5)', () => {
         character={emptyCharacter}
       />,
     )
-    expect(html).toContain('Ahead of you')
+    expect(html).toContain('Can&#x27;t reach yet')
     expect(html).toContain('reach Castleward Tunnel')
-    expect(html).not.toContain('Needs Castleward Tunnel first')
+    expect(html).not.toContain('Ahead of you')
   })
 })
