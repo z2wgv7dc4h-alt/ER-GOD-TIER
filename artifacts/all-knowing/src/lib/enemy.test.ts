@@ -2,6 +2,8 @@ import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { AttackPowerType } from './ar'
 import {
+  BASE_HP_LABEL,
+  BASE_HP_NOTE,
   bestDamageType,
   weaknessLine,
   bossTarget,
@@ -9,6 +11,7 @@ import {
   effectiveDamage,
   enemyTarget,
   enemyTargetNames,
+  hpVariants,
   negationText,
 } from './enemy'
 import type { BossCombat, EnemyCombat } from './enemy'
@@ -112,5 +115,22 @@ describe('regular enemy combat table (Task 22 extract)', () => {
     expect(names.every((n) => !n.includes('(Boss)'))).toBe(true)
     expect(new Set(names).size).toBe(names.length)
     expect(names.length).toBeLessThan(regularEnemies.length)
+  })
+})
+
+describe('base HP labelling (Task 137 §3)', () => {
+  it('always names the NpcParam value "Base HP"', () => {
+    expect(BASE_HP_LABEL).toBe('Base HP')
+    expect(BASE_HP_NOTE).toMatch(/base HP/i)
+    expect(hpVariants(4174)).toEqual([{ label: 'Base HP', value: 4174 }])
+  })
+
+  it('appends NG / NG+ rows only when an area scaling value is known', () => {
+    expect(hpVariants(4174, { ng: 4382, ngPlus: 5010 })).toEqual([
+      { label: 'Base HP', value: 4174 },
+      { label: 'NG', value: 4382 },
+      { label: 'NG+', value: 5010 },
+    ])
+    expect(hpVariants(4174, {})).toHaveLength(1)
   })
 })

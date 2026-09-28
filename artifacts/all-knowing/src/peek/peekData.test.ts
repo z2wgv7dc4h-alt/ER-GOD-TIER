@@ -121,12 +121,12 @@ describe('peekInfo boss facts', () => {
     registerPeekRow({
       factId: 'boss:margit',
       category: 'bosses',
-      stats: [{ label: 'HP', value: '4174' }],
+      stats: [{ label: 'Base HP', value: '4174' }],
     })
     const info = peekInfo('boss:margit', emptyCharacter)
     expect(factValue(info, 'Weak to')).toContain('Fire')
     expect(factValue(info, 'Resists')).toContain('Holy')
-    expect(factValue(info, 'HP')).toBe('4174')
+    expect(factValue(info, 'Base HP')).toBe('4174')
   })
 })
 

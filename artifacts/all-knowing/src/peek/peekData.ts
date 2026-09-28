@@ -221,8 +221,9 @@ function bossFacts(id: string, row: PeekEntityRow | undefined): PeekFact[] {
   const resist = edgesByRel(id, 'resists').map((e) => e.label)
   if (weak.length) facts.push(fact('Weak to', joinValues(weak, 3)))
   if (resist.length) facts.push(fact('Resists', joinValues(resist, 3)))
-  const hp = rowStat(row, 'HP')
-  if (hp) facts.push(fact('HP', hp))
+  // Task 137 §3 — HP is the NpcParam base value and is always labelled as such.
+  const hp = rowStat(row, 'Base HP') ?? rowStat(row, 'HP')
+  if (hp) facts.push(fact('Base HP', hp))
   const level = rowStat(row, 'Recommended level') ?? (row as { recommendedLevel?: string } | undefined)?.recommendedLevel
   if (level) facts.push(fact('Recommended level', level))
   else if (row?.stats?.length && !weak.length) {
@@ -312,7 +313,7 @@ function appendRecordFacts(facts: PeekFact[], kind: EntityKind, record: EntityRe
     have.add(label)
   }
   const stats = record.stats ?? {}
-  push('HP', stats.HP)
+  push(kind === 'boss' || kind === 'enemy' ? 'Base HP' : 'HP', stats.HP)
   push('Negation', stats.Negation)
   push('Poise', stats.Poise)
   push('Requirements', stats.Requirements)

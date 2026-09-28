@@ -5,6 +5,7 @@ import { loot as lootRows } from '../knowledge/loot'
 import { merchants } from '../knowledge/merchants'
 import { catalogueIdFor } from './catalogueIds'
 import { normalizeName } from './fanImage'
+import { itemEntityNameSet, matchWikiStepToBeat } from './questStepMatch'
 import type { EntityRecord, QuestStepEntry } from './entityIndex'
 import generatedAliases from '../data/aliases.json'
 import overridesJson from '../data/entity-overrides.json'
@@ -1874,6 +1875,13 @@ function mergeNpcQuestSteps(): void {
     }
     return undefined
   }
+  // Task 137 §3 — the item/thing names the matcher treats as an item signal.
+  const itemEntities = (() => {
+    const itemKinds = new Set(['item', 'weapon', 'armor', 'talisman', 'spell', 'ash', 'spirit', 'material'])
+    const names: string[] = []
+    for (const rec of records.values()) if (itemKinds.has(rec.kind)) names.push(rec.name)
+    return itemEntityNameSet(names)
+  })()
   // Task 133 §0 — the authored `storylines.ts` line that owns each NPC, so its
   // beats define the order and identity of the merged step list.
   const lineByName = new Map<string, (typeof allLines)[number]>()
@@ -1901,27 +1909,15 @@ function mergeNpcQuestSteps(): void {
       // merged list carries the wiki location/action without a second list.
       for (const step of line.steps) {
         const beatId = step.factId && records.has(step.factId) ? step.factId : undefined
-        let best = -1
-        let bestScore = 0.5
-        const beatTokens = new Set(tokens(`${step.do} ${step.detail}`))
-        quest.steps.forEach((ws, i) => {
-          if (used.has(i)) return
-          // Containment (not Jaccard): the wiki action is a long walkthrough, so
-          // overlap is measured against the authored beat's shorter token set.
-          const stepTokens = new Set(tokens(`${ws.location ?? ''} ${ws.action ?? ''}`))
-          let hit = 0
-          for (const token of beatTokens) if (stepTokens.has(token)) hit++
-          const containment = beatTokens.size ? hit / beatTokens.size : 0
-          const locationHit =
-            ws.location && simpleNorm(`${step.do} ${step.detail}`).includes(simpleNorm(ws.location)) ? 0.25 : 0
-          const score = containment + locationHit
-          if (score > bestScore) {
-            bestScore = score
-            best = i
-          }
-        })
-        const ws = best >= 0 ? quest.steps[best] : undefined
-        if (ws) used.add(best)
+        // Task 137 §3 — only attach a wiki step on a location or item signal;
+        // token overlap alone is no longer enough to claim a beat.
+        const match = matchWikiStepToBeat(
+          { do: step.do, detail: step.detail, region: beatId ? records.get(beatId)?.region : undefined },
+          quest.steps,
+          { entityNames: itemEntities, used },
+        )
+        const ws = match ? quest.steps[match.index] : undefined
+        if (match) used.add(match.index)
         if (beatId && beatId.startsWith('quest:') && ws) {
           const beat = records.get(beatId)!
           setText(beat, 'description', ws.action)

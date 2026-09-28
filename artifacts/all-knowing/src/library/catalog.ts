@@ -6,7 +6,7 @@ import { bossRoster, TIER_LABEL } from '../lib/bossRoster'
 import { catalogueIdFor } from '../lib/catalogueIds'
 import { loadWeapons, type Weapon } from '../lib/ar'
 import { useArmory, type ArmoryBoss, type ArmoryWeapon } from '../lib/armory'
-import { loadBossCombat, type CombatStats } from '../lib/enemy'
+import { BASE_HP_LABEL, loadBossCombat, type CombatStats } from '../lib/enemy'
 import { useFanapiData, type FanapiData } from '../lib/fanapiData'
 import { fanImage, normalizeName as norm } from '../lib/fanImage'
 import { iconFor } from '../lib/sourcePack'
@@ -477,7 +477,10 @@ function buildBosses(input: CatalogInput): LibraryEntity[] {
   for (const seed of seeds.values()) {
     const combat = combatByName.get(norm(seed.name))
     const stats: EntityStat[] = []
-    if (seed.hp) stats.push({ label: 'HP', value: seed.hp })
+    // Task 137 §3 — the authoritative HP is the NpcParam base HP, clearly
+    // labelled. A fan/roster HP is only a fallback and is marked as listed.
+    if (combat) stats.push({ label: BASE_HP_LABEL, value: String(combat.baseHp) })
+    else if (seed.hp) stats.push({ label: 'HP (listed)', value: seed.hp })
     if (seed.location) stats.push({ label: 'Location', value: seed.location })
     if (seed.drops.length) stats.push({ label: 'Drops', value: seed.drops.join(' · ') })
     if (combat) {

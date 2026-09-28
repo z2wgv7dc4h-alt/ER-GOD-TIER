@@ -82,7 +82,7 @@ export function BossPrepCard({ bossId, character: characterProp }: { bossId?: st
             <h3>{prep.name}</h3>
             <p className="note">
               {prep.region ? `${prep.region} · ` : ''}
-              {prep.hp} HP
+              {prep.hp} base HP
               {prep.poise != null ? ` · ${prep.poise} poise` : ''}
             </p>
           </section>
