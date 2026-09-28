@@ -205,5 +205,39 @@
     ],
     "graceIconsVisible": "many (~100+ gold grace icons)",
     "_note": "Detailed painted terrain = map fragment owned; plain parchment/cloud = not revealed. Gold circular icons are discovered Sites of Grace. Register the photo to the app's own overworld map (feature matching / homography against M00 tiles or the static plate) using the coastline/region shapes, then snap each detected grace icon to the nearest known grace coordinate (grace-xyz / entity-index graces) within a tolerance. Photo is angled and cropped (left edge cut)."
+  },
+  "map-overworld-north-01.jpg": {
+    "screen": "world-map",
+    "world": "overworld",
+    "visibleBanners": [
+      "Liurnia of the Lakes",
+      "Limgrave (bottom edge)"
+    ],
+    "revealedRegions": [
+      "Liurnia of the Lakes",
+      "Altus Plateau",
+      "Leyndell, Royal Capital",
+      "Mt. Gelmir (partial, dark)",
+      "Mountaintops of the Giants (partial, snow)",
+      "Caelid (partial)"
+    ],
+    "unrevealed": [
+      "north-west and north-east beyond Mountaintops (grey fog)"
+    ],
+    "graceIconsVisible": "many",
+    "_note": "Northern view; grey fog = unexplored/unrevealed. Same registration + grace snapping as map-overworld-01."
+  },
+  "map-underground-01.jpg": {
+    "screen": "world-map",
+    "world": "underground",
+    "visibleBanners": [
+      "Ainsel River"
+    ],
+    "revealedUndergroundRegions": [
+      "Ainsel River (with graces)",
+      "Siofra River (with graces)"
+    ],
+    "graceIconsVisible": "~16 (Ainsel ~5, Siofra ~11)",
+    "_note": "Underground layer (R3 Show above ground): revealed underground pockets drawn over a darkened overworld. Register against the M01 (underground) tiles, snap grace icons to underground grace coordinates."
   }
 }
