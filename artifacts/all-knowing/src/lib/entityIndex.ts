@@ -17,6 +17,28 @@ import { useSyncExternalStore } from 'react'
 
 export type EntityRecordMap = Map<string, EntityRecord>
 
+/** Task 133 §0 — one folded `+N` upgrade level of a base item. */
+export type UpgradeLevel = {
+  level: number
+  name: string
+  effect?: string
+}
+
+/**
+ * Task 133 §0 — one beat of an NPC's merged quest line. Authored `storylines.ts`
+ * beats are preferred; a matched wiki step attaches its location/action, and
+ * unmatched wiki steps are appended in order.
+ */
+export type QuestStepEntry = {
+  order: number
+  title: string
+  source: 'authored' | 'wiki'
+  location?: string
+  text?: string
+  breaks?: boolean
+  entityId?: string
+}
+
 export type EntityRecord = {
   /** Canonical `kind:slug` id. */
   id: string
@@ -29,6 +51,10 @@ export type EntityRecord = {
   location?: string
   /** Task 130 — the region an encounter sits in, from the boss roster. */
   region?: string
+  /** Task 133 §0 — folded `+1 … +N` levels of an upgradeable item. */
+  upgradeLevels?: UpgradeLevel[]
+  /** Task 133 §0 — the merged, ordered wiki + authored quest step list. */
+  questSteps?: QuestStepEntry[]
   /** Plate coordinates when a dump carries them. */
   map?: { x: number; y: number; map?: string; world?: string }
   /** Local image path when the repo ships one. */

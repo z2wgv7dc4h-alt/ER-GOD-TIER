@@ -33,9 +33,9 @@ drops / strategy fields remain in the table as information.
 | spirit: description + location | ≥ 100% | 100% | PASS |
 | item: description + location (all items) | ≥ 100% | 100% | PASS |
 | grace: coords | ≥ 100% | 100% | PASS |
-| npc: description (characters) | ≥ 95% | 99% | PASS |
-| region: description + location (locations) | ≥ 95% | 98.1% | PASS |
-| enemy: description + location (enemies) | ≥ 95% | 99.5% | PASS |
+| npc: description (characters) | ≥ 95% | 99.5% | PASS |
+| region: description + location (locations) | ≥ 95% | 99.4% | PASS |
+| enemy: description + location (enemies) | ≥ 95% | 99.3% | PASS |
 
 ## Before (no enrichment index)
 
@@ -61,21 +61,21 @@ drops / strategy fields remain in the table as information.
 
 | kind | entities | Desc | Location | Map | Coords | Image | Stats | Effect | HP+Neg+Loc | Drops | Strategy | Req+Scale+Loc | Desc+Loc |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| boss | 242 | 92.6% | 100% | 66.1% | · | 46.3% | 87.2% | · | 84.3% | 88.4% | 92.1% | · | · |
-| weapon | 419 | 97.9% | 100% | 0% | · | 73% | · | · | · | · | · | 100% | · |
+| boss | 242 | 92.6% | 100% | 66.1% | · | 46.3% | 87.2% | · | 84.7% | 88.4% | 92.1% | · | · |
+| weapon | 418 | 97.8% | 100% | 0% | · | 73% | · | · | · | · | · | 100% | · |
 | shield | 69 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | 100% | · |
 | armor | 565 | 100% | 100% | 0% | · | 95.6% | 100% | · | · | · | · | · | 100% |
 | talisman | 88 | 100% | 100% | 0% | · | 98.9% | · | 98.9% | · | · | · | · | 100% |
 | spell | 167 | 100% | 100% | 0% | · | 99.4% | · | — | · | · | · | · | 100% |
 | ash | 86 | 100% | 100% | 0% | · | 88.4% | · | · | · | · | · | · | 100% |
 | spirit | 63 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | · | 100% |
-| item | 439 | 100% | 100% | 0% | · | 91.6% | 100% | · | · | · | · | · | 100% |
+| item | 441 | 100% | 100% | 0% | · | 91.6% | 100% | · | · | · | · | · | 100% |
 | material | 3 | 100% | 100% | 0% | · | 66.7% | · | · | · | · | · | · | · |
-| npc | 99 | 99% | 78.8% | 3% | · | 9.1% | 76.8% | · | · | · | · | · | · |
-| grace | 420 | 100% | 100% | · | 100% | · | · | · | · | · | · | · | · |
+| npc | 188 | 99.5% | 82.4% | 9% | · | 28.2% | 85.6% | · | · | · | · | · | · |
+| grace | 416 | 100% | 100% | · | 100% | · | · | · | · | · | · | · | · |
 | dungeon | 119 | 90.8% | 100% | 100% | · | 99.2% | · | · | · | · | · | · | · |
-| region | 312 | 100% | 98.1% | 0.6% | · | · | · | · | · | · | · | · | · |
-| enemy | 2390 | 99.9% | 99.6% | 0% | · | 0% | 97.9% | · | 95% | 3.9% | 0% | · | · |
+| region | 312 | 99.4% | 99.7% | 0.6% | · | · | · | · | · | · | · | · | · |
+| enemy | 1312 | 100% | 99.3% | 0% | · | 0% | 96.3% | · | 91.2% | 7.2% | 0% | · | · |
 
 ## Spot checks
 
@@ -97,11 +97,9 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Status resist:** Poison 154 · Scarlet Rot 154 · Bleed 154 · Sleep 999 · Madness 999 · Curse 999
 
-**Affiliation:** Golden Order
-
 **Drops:** 12,000 Runes · Talisman Pouch · 16,800 Runes · Viridian Amber Medallion 1
 
-**Strategy:** Health: 4,174 HP Defense: 103 Stance : 80 Parryable : Yes, but 2 parries are required per stance break Is vulnerable to a critical hit after being stance broken or parried Damage: Standard , Strike , Pierce , Holy Drops 12,000, Talisman Pouch (NG only) Negations (or Absorptions) Standard : 0 Slash : -10 Strike : 0 Pierce : 0 Magic : 0 Fire : 0 Lightning : 0 Holy : 40 The negation numbers are the&#160;% of your damage that gets blocked. For example, if a negation is 60, 40% of that damage by that type will go through and 60% will be negated. Bigger number = less damage.
+**Strategy:** Health: 4,174 HP Defense: 103 Stance: 80 Parryable: Yes, but 2 parries are required per stance break Is vulnerable to a critical hit after being stance broken or parried Damage: Standard, Strike, Pierce, Holy Drops 12,000, Talisman Pouch (NG only) Negations (or Absorptions) Standard: 0 Slash: -10 Strike: 0 Pierce: 0 Magic: 0 Fire: 0 Lightning: 0 Holy: 40 The negation numbers are the&#160;% of your damage that gets blocked. For example, if a negation is 60, 40% of that damage by that type will go through and 60% will be negated. Bigger number = less damage.
 
 **Related:** Rampart Tower · Castleward Tunnel · Godrick the Grafted
 
@@ -123,7 +121,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Drops:** Malenia's Great Rune · Remembrance of the Rot Goddess · 480,000 Runes · * Malenia's Great Rune
 
-**Strategy:** Health: 33,251 HP (Phase 1: 18,473 , Phase 2: 14,778 ) Defense : 123 Stance : 80 Parryable : Yes, but 3 parries are required per stance break Is vulnerable to a critical hit after being stance broken or parried Damage: Standard , Slash , Pierce (Phase 1), Standard , Slash , Pierce , Holy (Phase 2) Inflicts: Scarlet Rot (Phase 2) Drops 480,000, Malenia's Great Rune , Remembrance of the Rot Goddess Negations (or Absorptions) Standard : 10 Slash : 10 Strike : 10 Pierce : 10 Magic : 20 Fire : 0 (in water: 10 ) Lightning : 20 (in water: 10 ) Holy : 40 The negation numbers are the&#160;% of your dam…
+**Strategy:** Health: 33,251 HP (Phase 1: 18,473, Phase 2: 14,778 ) Defense: 123 Stance: 80 Parryable: Yes, but 3 parries are required per stance break Is vulnerable to a critical hit after being stance broken or parried Damage: Standard, Slash, Pierce (Phase 1), Standard, Slash, Pierce, Holy (Phase 2) Inflicts: Scarlet Rot (Phase 2) Drops 480,000, Malenia's Great Rune, Remembrance of the Rot Goddess Negations (or Absorptions) Standard: 10 Slash: 10 Strike: 10 Pierce: 10 Magic: 20 Fire: 0 (in water: 10 ) Lightning: 20 (in water: 10 ) Holy: 40 The negation numbers are the&#160;% of your dam…
 
 **Related:** Drainage Channel · Malenia's Great Rune · Remembrance of the Rot Goddess · Elphael · Rivers of Blood
 
@@ -145,7 +143,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Drops:** Radahn's Great Rune · Remembrance of the Starscourge · 70,000 Runes · Remembrance of the Starscourge, Radahn's Great Rune
 
-**Strategy:** Health: 9,572 HP Defense: 113 Stance : 200 Parryable : No Is vulnerable to a critical hit after being stance broken Damage: Standard , Pierce , Magic Drops 70,000, Remembrance of the Starscourge , Radahn's Great Rune Negations (or Absorptions) Standard : 10 Slash : 10 Strike : 10 Pierce : 0 Magic : 20 Fire : 20 Lightning : 20 Holy : 40 The negation numbers are the&#160;% of your damage that gets blocked. For example, if a negation is 60, 40% of that damage by that type will go through and 60% will be negated. Bigger number = less damage.
+**Strategy:** Health: 9,572 HP Defense: 113 Stance: 200 Parryable: No Is vulnerable to a critical hit after being stance broken Damage: Standard, Pierce, Magic Drops 70,000, Remembrance of the Starscourge, Radahn's Great Rune Negations (or Absorptions) Standard: 10 Slash: 10 Strike: 10 Pierce: 0 Magic: 20 Fire: 20 Lightning: 20 Holy: 40 The negation numbers are the&#160;% of your damage that gets blocked. For example, if a negation is 60, 40% of that damage by that type will go through and 60% will be negated. Bigger number = less damage.
 
 **Related:** Deeproot Depths · Ranni — Radahn festival opened Nokron · Radahn's Great Rune · Remembrance of the Starscourge · Caelid · Age of Stars
 
@@ -167,13 +165,13 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Drops:** Godrick's Great Rune · Remembrance of the Grafted · Godrick's Great Rune, Remembrance of the Grafted · 20,000 Runes
 
-**Strategy:** Health: 6,080 HP Defense: 105 Stance : 105 Parryable : No Is vulnerable to a critical hit after being stance broken Has increased defense during phase transition His Stormcaller attack deflects throwable items like arrows and pots. Damage: Standard , Strike (phase 1) Standard , Fire , Strike (phase 2) Drops 20,000, Godrick's Great Rune , Remembrance of the Grafted Negations (or Absorptions) Standard : 0 Slash : 0 Strike : 0 Pierce : 0 Magic : 20 Fire : 20 Lightning : 20 Holy : 40 The negation numbers are the&#160;% of your damage that gets blocked.
+**Strategy:** Health: 6,080 HP Defense: 105 Stance: 105 Parryable: No Is vulnerable to a critical hit after being stance broken Has increased defense during phase transition His Stormcaller attack deflects throwable items like arrows and pots. Damage: Standard, Strike (phase 1) Standard, Fire, Strike (phase 2) Drops 20,000, Godrick's Great Rune, Remembrance of the Grafted Negations (or Absorptions) Standard: 0 Slash: 0 Strike: 0 Pierce: 0 Magic: 20 Fire: 20 Lightning: 20 Holy: 40 The negation numbers are the&#160;% of your damage that gets blocked.
 
 **Related:** Liurnia of the Lakes · Limgrave Tower Bridge · Margit, the Fell Omen · Godrick's Great Rune · Remembrance of the Grafted · Elden Lord (default)
 
 ### Moonveil (`item:moonveil`)
 
-**Description:** Katana forged of glintstone. Masterpiece of a Sellian wordsmith.  Light enwreathes the blade when sheathed, explaining its Moonveil moniker.
+**Description:** Katana forged of glintstone. Masterpiece of a Sellian wordsmith. Light enwreathes the blade when sheathed, explaining its Moonveil moniker.
 
 **Location:** To get the Moonveil Katana, you need to defeat the Magma Wyrm boss inside Gael Tunnel, located on the border between Limgrave and Caelid.
 
@@ -191,7 +189,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 ### Rivers of Blood (`item:rivers-of-blood`)
 
-**Description:** Weapon of Okina, swordsman from the Land of Reeds. A cursed weapon that has felled countless men.  When Mohg, the Lord of Blood, first felt Okina's sword, and madness, upon his flesh, he had a proposal, to offer Okina the life of a demon, whose thirst would never go unsated.
+**Description:** Weapon of Okina, swordsman from the Land of Reeds. A cursed weapon that has felled countless men. When Mohg, the Lord of Blood, first felt Okina's sword, and madness, upon his flesh, he had a proposal, to offer Okina the life of a demon, whose thirst would never go unsated.
 
 **Location:** Drop from Bloody Finger Okina (invader)
 
@@ -252,7 +250,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 ## Remaining misses (guard fields, by name)
 
-### npc — description (characters) (0/99)
+### npc — description (characters) (0/188)
 
 - Blaidd
 - Boc the Seamster
@@ -262,10 +260,10 @@ The ten records Task 119 names, printed straight from the built index.
 - Iron Fist Alexander
 - Millicent
 - Roderika
-- Dark Moon Ring
-- Two Fingers Prayerbook
 - Abandoned Merchant
+- Albus
 - Alexander, Warrior Jar
+- Anastasia, Tarnished-Eater
 - Ancient Dragon Gransax
 - Ancient Dragon Knight
 - Arbor Sentinel
@@ -276,44 +274,97 @@ The ten records Task 119 names, printed straight from the built index.
 - Bernahl's Finger Maiden
 - Birac
 - Black Moon
+- Blackguard Big Boggart
 - Blind Swordsman
 - Blood Star
+- Bloodhunter Raz
+- Bloody Finger Hunter Yura
 - Boc's Mother
+- Boc the Seamster
+- Brother Corhyn
 - Castellan Edgar
 - Castellan Jerren
 - Chair-Crypt Mummies
 - Charo
 - Colossal Dragon
 - Crescent Moon
+- Cuckoo
 - D, Beholder of Death
+- D, Hunter Of The Dead
 - Daedicar
+- Dark Moon
+- Death (outer god)
 - Dolores the Sleeping Arrow
+- Dragon Communion Priestess
+- Dryleaf Dane
+- Dung Eater
 - Elphael Needle Statue
+- Enia
 - Ensha (lord)
+- Ensha Of The Royal Remains
 - Fell God
+- Fia
+- Fia, Deathbed Companion
+- Finger Maiden Therolina
 - Finger Reader Crone
 - Finger Reader Enia
 - Fire Knight Queelign
 - Flame Guardian
 - Forager Brood
 - Formless Mother
+- Frustrated Spirit
 - Gaea
+- Gatekeeper Gostoc
+- Gideon Ofnir
 - Gloam-Eyed Queen
+- Gnarrl
 - God of Vengeance
 - Godwyn the Golden
+- Goldmask
+- Gowry
 - Grandmother
 - Great Horned Tragoth
+- Great Jar
 - Greater Potentate
+- Gurranq, Beast Clergyman
+- Hermit Merchant (Ainsel River)
+- Hermit Merchant (Altus Plateau)
+- Hermit Merchant (Mountaintops of the Giants)
 - Horned Giant
 - Hornsent Grandam
+- Hornsent (NPC)
 - Host of Fingers
+- Imprisoned Merchant
+- Isolated Merchant (Dragonbarrow)
+- Isolated Merchant (Liurnia of the Lakes)
+- Isolated Merchant (Weeping Peninsula)
+- Jar-Bairn
+- Jolán, Swordhand of Night
+- Kenneth Haight
+- Knight Bernahl
+- Knight Diallos
 - Lacrima
+- Lanya
+- Latenna
+- Latenna the Albinauric
 - Leonard
+- Lightseeker Hyetta
 - Lobo
+- Margit, the Fell Omen
 - Melina
+- Merchant Kalé
+- Milos
 - Miquella of the Haligtree
+- Miranda
+- Miriel, Pastor Of Vows
+- Moon
 - Moore
+- Nameless White Mask
 - Nanaya
+- Needle Knight Leda
+- Nepheli Loux
+- Nepheli Loux, Warrior
+- Night
 - Nomadic Merchant (Altus Plateau)
 - Nomadic Merchant (Caelid Highway North)
 - Nomadic Merchant (Eastern Limgrave)
@@ -327,49 +378,79 @@ The ten records Task 119 names, printed straight from the built index.
 - Old Albus
 - Old Knight Istvan
 - Painter Spirit
+- Palm Reader
+- Patches
 - Phillia, Towering Little Sister
+- Pidia, Carian Servant
+- Preceptor Seluvis
 - Primeval Sorcerer Azur
 - Primeval Sorcerer Lusat
 - Puppet Master
+- Queen Marika
 - Queen Marika the Eternal
+- Ranni The Witch
 - Rauh Goddess Statue
 - Redeemer Guilbert
+- Redmane Freyja
 - Reeling Rico
+- Renna
+- Revenger
+- Rot (outer god)
+- Rya
 - Rya the Scout
+- Sage Gowry
+- Sanguine Noble (invader)
+- Sanguine Noble Nataan
 - Serosh
 - Serpent-God
+- Shabriri
+- Sir Ansbach
+- Sir Gideon Ofnir, the All-Knowing
 - Sir Neidhardt
 - Smithing Master Hewg
 - Snowy Crone
+- Sorcerer Rogier
+- Sorcerer Thops
+- Sorceress Sellen
 - Spellmachinist Rabbath
+- St. Trina
 - Storm Lord
 - Stranded Souls
 - Sun
 - Swordhand of Night Anna
+- Tanith
+- Tanith, Volcano Manor Proprietress
+- The Great-jar
+- The Tarnished (Protagonist)
+- Thiollier
+- Thops
+- Three Fingers
+- Torrent
 - Traveling Perfumer
+- Twin Maiden Husks
 - Twinbird
+- Two Fingers
 - Usher of Death, Rosus
+- Volcano Manor Apparition
+- Vyke
 - Vyke's Finger Maiden
 - War Counselor Iji
+- White-faced Varré
+- White Mask Varré
 - Winged Serpents
+- Witch-hunter Jerren
 - Yuri
 
-### region — description + location (locations) (306/312)
+### region — description + location (locations) (310/312)
 
-- Crumbling Farum Azula
+- (unresolved)
 - Miquella’s Haligtree
-- Bonny Gaol
-- Lands Between
-- Sea of Fog
-- Sites of Grace
 
-### enemy — description + location (enemies) (2379/2390)
+### enemy — description + location (enemies) (1303/1312)
 
 - Avionette Soldier
 - Boar
-- Catapult
 - Deer
-- Flamespitter
 - Giant Land Octopus
 - Large Inquisitor
 - Man-Fly
@@ -392,8 +473,6 @@ dropped silently.
 | fanapi/locations | 76 |
 | checklists/locations | 65 |
 | recipes | 64 |
-| checklists/npcs | 10 |
-| fanapi/npcs | 10 |
 | checklists/bosses | 1 |
 | fanapi/bosses | 1 |
 | armory-bosses | 1 |

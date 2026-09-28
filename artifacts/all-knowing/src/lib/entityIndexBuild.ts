@@ -1,10 +1,11 @@
 import { allEntities, canonicalEntityId, edges, entityName, getEntity, hasEntity, type EntityKind } from './entityGraph'
+import { allLines } from '../knowledge/storylines'
 import { byId, facts } from '../knowledge/catalog'
 import { loot as lootRows } from '../knowledge/loot'
 import { merchants } from '../knowledge/merchants'
 import { catalogueIdFor } from './catalogueIds'
 import { normalizeName } from './fanImage'
-import type { EntityRecord } from './entityIndex'
+import type { EntityRecord, QuestStepEntry } from './entityIndex'
 import generatedAliases from '../data/aliases.json'
 import overridesJson from '../data/entity-overrides.json'
 import dungeonsData from '../data/dungeons.json'
@@ -1873,6 +1874,16 @@ function mergeNpcQuestSteps(): void {
     }
     return undefined
   }
+  // Task 133 §0 — the authored `storylines.ts` line that owns each NPC, so its
+  // beats define the order and identity of the merged step list.
+  const lineByName = new Map<string, (typeof allLines)[number]>()
+  for (const line of allLines) {
+    lineByName.set(simpleNorm(line.name), line)
+    for (const alias of line.aliases ?? []) {
+      const key = simpleNorm(alias)
+      if (key && !lineByName.has(key)) lineByName.set(key, line)
+    }
+  }
   for (const quest of quests) {
     if (!quest.npc) continue
     const npcId = questNpcId(quest.npc)
@@ -1880,23 +1891,85 @@ function mergeNpcQuestSteps(): void {
     const npcName = npcRecord?.name ?? quest.npc
     if (npcRecord) {
       if (quest.url) npcRecord.sourceUrl = npcRecord.sourceUrl ?? quest.url
-      const lines = quest.steps
-        .map((step) => `${step.order}. ${step.location ? `[${step.location}] ` : ''}${step.action ?? ''}${step.breaks ? ' (breaks the quest)' : ''}`.trim())
-        .filter(Boolean)
-      if (lines.length) {
-        npcRecord.sections = [...(npcRecord.sections ?? []), { heading: `Questline (${quest.steps.length} steps)`, text: lines.join('\n') }]
-      }
       source(npcRecord, 'npc-quests')
     }
-    for (const step of quest.steps) {
+    const line = lineByName.get(simpleNorm(quest.npc)) ?? lineByName.get(simpleNorm(npcName))
+    const merged: QuestStepEntry[] = []
+    const used = new Set<number>()
+    if (line?.steps?.length) {
+      // Prefer the authored beats; attach the best-matching wiki step so the
+      // merged list carries the wiki location/action without a second list.
+      for (const step of line.steps) {
+        const beatId = step.factId && records.has(step.factId) ? step.factId : undefined
+        let best = -1
+        let bestScore = 0.5
+        const beatTokens = new Set(tokens(`${step.do} ${step.detail}`))
+        quest.steps.forEach((ws, i) => {
+          if (used.has(i)) return
+          // Containment (not Jaccard): the wiki action is a long walkthrough, so
+          // overlap is measured against the authored beat's shorter token set.
+          const stepTokens = new Set(tokens(`${ws.location ?? ''} ${ws.action ?? ''}`))
+          let hit = 0
+          for (const token of beatTokens) if (stepTokens.has(token)) hit++
+          const containment = beatTokens.size ? hit / beatTokens.size : 0
+          const locationHit =
+            ws.location && simpleNorm(`${step.do} ${step.detail}`).includes(simpleNorm(ws.location)) ? 0.25 : 0
+          const score = containment + locationHit
+          if (score > bestScore) {
+            bestScore = score
+            best = i
+          }
+        })
+        const ws = best >= 0 ? quest.steps[best] : undefined
+        if (ws) used.add(best)
+        if (beatId && beatId.startsWith('quest:') && ws) {
+          const beat = records.get(beatId)!
+          setText(beat, 'description', ws.action)
+          setText(beat, 'location', ws.location)
+          if (!beat.region) beat.region = regionFromText(ws.location)
+          beat.related = [npcName, ...(ws.breaks ? ['breaks the quest'] : [])]
+          beat.sections = [...(beat.sections ?? []), { heading: `Wiki: ${ws.location || 'step'}`, text: excerpt(ws.action ?? '') }]
+          source(beat, 'npc-quests')
+        }
+        merged.push({
+          order: merged.length + 1,
+          title: step.do,
+          source: ws ? 'wiki' : 'authored',
+          location: ws?.location,
+          text: excerpt(ws?.action ?? step.detail ?? ''),
+          breaks: ws?.breaks,
+          entityId: beatId,
+        })
+      }
+    }
+    // Unmatched wiki steps keep their own reference record, in order.
+    quest.steps.forEach((step, i) => {
+      if (used.has(i)) return
       const id = `quest:${slug(quest.npc)}-step-${step.order}`
-      const record = ensure(id, 'quest', `${npcName} — step ${step.order}`)
+      const record = ensure(id, 'quest', `${npcName} — ${step.location || `step ${step.order}`}`)
       record.catalogue = false
       setText(record, 'description', step.action)
       setText(record, 'location', step.location)
       if (!record.region) record.region = regionFromText(step.location)
       record.related = [npcName, ...(step.breaks ? ['breaks the quest'] : [])]
       source(record, 'npc-quests')
+      merged.push({
+        order: merged.length + 1,
+        title: `${npcName} — ${step.location || `step ${step.order}`}`,
+        source: 'wiki',
+        location: step.location,
+        text: excerpt(step.action ?? ''),
+        breaks: step.breaks,
+        entityId: id,
+      })
+    })
+    if (npcRecord && merged.length) {
+      npcRecord.sections = (npcRecord.sections ?? []).filter((s) => !/^questline/i.test(s.heading))
+      npcRecord.sections.push({
+        heading: `Questline (${merged.length} steps)`,
+        text: merged.map((s) => `${s.order}. ${s.location ? `[${s.location}] ` : ''}${s.title}${s.breaks ? ' (breaks the quest)' : ''}`).join('\n'),
+      })
+      npcRecord.questSteps = merged
     }
   }
 }
@@ -2364,6 +2437,11 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   // and every enemy a real description.
   cleanupFmgDuplicates()
   resolveEnemyCollisions()
+  // Task 133 §0 — fold `+N` upgrades, collapse duplicate primaries (enemies
+  // above all) and merge boss-encounter enemy rows onto their boss.
+  foldUpgrades()
+  dedupePrimary()
+  mergeBossEncounterEnemies()
   enrichRegions()
 
   // Task 124 §2 — the sourced gap-fill, applied last so every field is a
@@ -2407,17 +2485,220 @@ function edgeLabels(id: string): string[] {
   return out
 }
 
+/**
+ * Task 133 §0 — drop the wiki's Nightreign boilerplate (the wiki mixes the
+ * separate game `Elden Ring: Nightreign` into many lead sentences). Trailing
+ * clauses that mention it are removed; when the whole sentence is Nightreign
+ * only, it goes. The base-game half of a shared sentence is kept.
+ */
+function stripNightreign(text: string): string {
+  let t = text
+  // "… in Elden Ring and Elden Ring Nightreign." -> "… in Elden Ring."
+  t = t.replace(/\s+and\s+Elden Ring Nightreign/gi, '')
+  // "… in Elden Ring and <clause> Nightreign." -> "… in Elden Ring."
+  t = t.replace(/\s+and\s+[^.]*?Nightreign[^.]*?\./gi, '.')
+  // Standalone trailing sentences about Nightreign.
+  t = t.replace(/\s*(?:They|It)\s+(?:also\s+)?(?:are|is|appear|appears|appears? as)[^.]*Nightreign[^.]*\./gi, '')
+  // Anything left: drop the sentence that names it.
+  t = t
+    .split(/(?<=[.!?])\s+/)
+    .filter((sentence) => !/nightreign/i.test(sentence))
+    .join(' ')
+  return t.replace(/\s+([.,;:!?])/g, '$1').replace(/\s{2,}/g, ' ').trim()
+}
+
+/**
+ * Task 133 §0 — every player-visible field is stored as plain text. Wiki
+ * templates, refs, HTML tags, `'''bold'''`/`''italic''`/`**bold**`, `==headings==`
+ * and `[[links]]` are stripped while keeping the readable label.
+ */
+export function cleanProse(text: string): string {
+  let t = text
+  t = t.replace(/<!--[\s\S]*?-->/g, ' ')
+  t = t.replace(/<ref[^>]*\/>/gi, ' ').replace(/<ref[^>]*>[\s\S]*?<\/ref>/gi, ' ')
+  t = t.replace(/<[^>]+>/g, ' ')
+  t = t.replace(/\{\{[^{}]*\}\}/g, ' ')
+  t = t.replace(/\[\[(?:[^\]|]*\|)?([^\]]+)\]\]/g, '$1')
+  t = t.replace(/\[https?:\/\/[^\s\]]+\s+([^\]]+)\]/g, '$1')
+  t = t.replace(/\[https?:\/\/[^\s\]]+\]/g, ' ')
+  t = t.replace(/\[\[|\]\]/g, '')
+  t = t.replace(/'''/g, '').replace(/\*\*/g, '').replace(/==+/g, '')
+  t = t.replace(/\bISBN[^,;]*/gi, ' ')
+  t = stripNightreign(t)
+  return t.replace(/\s+([.,;:!?])/g, '$1').replace(/\s{2,}/g, ' ').trim()
+}
+
 function prune(record: EntityRecord): void {
-  // Last-ditch guard: no raw engine tile id may reach a player-visible field.
-  if (record.description) record.description = humanizeMapIds(record.description)
-  if (record.location) record.location = humanizeMapIds(record.location)
-  if (record.strategy) record.strategy = humanizeMapIds(record.strategy)
+  // Task 133 §0 — strip wiki markup / Nightreign boilerplate first, then the
+  // raw-tile guard and truncation.
+  if (record.name) record.name = cleanProse(record.name)
+  if (record.description) record.description = humanizeMapIds(cleanProse(record.description))
+  if (record.location) record.location = humanizeMapIds(cleanProse(record.location))
+  if (record.strategy) record.strategy = humanizeMapIds(cleanProse(record.strategy))
   if (record.description && record.description.length > EXCERPT) record.description = excerpt(record.description)
   if (record.location && record.location.length > EXCERPT) record.location = excerpt(record.location)
   if (record.strategy && record.strategy.length > EXCERPT) record.strategy = excerpt(record.strategy)
-  if (record.drops) record.drops = record.drops.filter((d) => d && d.length <= 120).slice(0, 12)
+  if (record.drops) record.drops = record.drops.filter((d) => d && d.length <= 120).map(cleanProse).slice(0, 12)
+  if (record.related) record.related = record.related.map(cleanProse).filter(Boolean)
+  if (record.stats) for (const [label, value] of Object.entries(record.stats)) record.stats[label] = cleanProse(value)
   if (record.sections) {
-    record.sections = record.sections.map((s) => ({ heading: s.heading.slice(0, 80), text: excerpt(humanizeMapIds(s.text)) })).slice(0, 4)
+    record.sections = record.sections
+      .map((s) => ({ heading: cleanProse(s.heading).slice(0, 80), text: excerpt(humanizeMapIds(cleanProse(s.text))) }))
+      .filter((s) => s.heading || s.text)
+      .slice(0, 4)
+  }
+  if (record.upgradeLevels) {
+    for (const level of record.upgradeLevels) if (level.effect) level.effect = cleanProse(level.effect)
+  }
+  if (record.questSteps) {
+    for (const step of record.questSteps) {
+      step.title = cleanProse(step.title)
+      if (step.text) step.text = cleanProse(step.text)
+      if (step.location) step.location = cleanProse(step.location)
+    }
+  }
+}
+
+/**
+ * Task 133 §0 — `+1 … +N` upgrade rows (spirit ashes, flasks, talismans) are
+ * folded into their base entity as an `upgradeLevels` table instead of shipping
+ * as separate items. Every base already exists (checklist/FanAPI/acquisition).
+ */
+function foldUpgrades(): void {
+  const pattern = /^(.*?)\s+\+(\d+)$/
+  for (const record of [...records.values()]) {
+    const match = pattern.exec(record.name)
+    if (!match) continue
+    const baseName = match[1].trim()
+    const level = Number(match[2])
+    if (!baseName || !Number.isFinite(level)) continue
+    let baseId: string | undefined = records.get(catalogueIdFor('item', baseName)) ? catalogueIdFor('item', baseName) : undefined
+    if (!baseId) {
+      for (const key of mapKeys(baseName)) {
+        const candidate = nameIndex.get(key)
+        if (candidate && records.has(candidate)) {
+          baseId = candidate
+          break
+        }
+      }
+    }
+    const base = baseId ? records.get(baseId) : undefined
+    if (!base || base.id === record.id) continue
+    base.upgradeLevels = base.upgradeLevels ?? []
+    if (!base.upgradeLevels.some((row) => row.level === level && row.name === record.name)) {
+      base.upgradeLevels.push({ level, name: record.name, effect: record.description })
+    }
+    addName(record.name, base.id)
+    records.delete(record.id)
+  }
+  for (const record of records.values()) if (record.upgradeLevels) record.upgradeLevels.sort((a, b) => a.level - b.level)
+}
+
+/** How many player-visible fields a record carries (merge tie-break). */
+function filled(record: EntityRecord): number {
+  return (
+    (record.description ? 2 : 0) +
+    (record.location ? 1 : 0) +
+    (record.map ? 1 : 0) +
+    (record.drops?.length ? 1 : 0) +
+    (record.sections?.length ? 1 : 0) +
+    (record.stats && Object.keys(record.stats).length ? 1 : 0) +
+    (record.upgradeLevels?.length ? 1 : 0) +
+    (record.questSteps?.length ? 1 : 0)
+  )
+}
+
+function mergeRecords(keep: EntityRecord, drop: EntityRecord): void {
+  if (!keep.description && drop.description) keep.description = drop.description
+  if (!keep.location && drop.location) keep.location = drop.location
+  if (!keep.region && drop.region) keep.region = drop.region
+  if (!keep.map && drop.map) keep.map = drop.map
+  addDrops(keep, drop.drops)
+  if (drop.sections?.length) {
+    keep.sections = keep.sections ?? []
+    for (const section of drop.sections) {
+      if (!keep.sections.some((s) => s.heading === section.heading && s.text === section.text)) keep.sections.push(section)
+    }
+  }
+  if (drop.stats) keep.stats = { ...drop.stats, ...(keep.stats ?? {}) }
+  if (drop.upgradeLevels?.length) {
+    keep.upgradeLevels = keep.upgradeLevels ?? []
+    for (const row of drop.upgradeLevels) if (!keep.upgradeLevels.some((r) => r.level === row.level && r.name === row.name)) keep.upgradeLevels.push(row)
+  }
+  if (!keep.questSteps?.length && drop.questSteps?.length) keep.questSteps = drop.questSteps
+  for (const sourceName of drop.sources ?? []) if (!keep.sources.includes(sourceName)) keep.sources.push(sourceName)
+  addName(drop.name, keep.id)
+}
+
+/**
+ * Task 133 §0 — one primary record per normalised name + location per kind. The
+ * enemy plane carried 500+ NpcParam rows that share a name and placement; the
+ * grace/weapon planes a handful of synonym rows. The richest (most fields, and
+ * a graph entity where one exists) wins.
+ */
+function dedupePrimary(): void {
+  const groups = new Map<string, EntityRecord[]>()
+  for (const record of records.values()) {
+    if (record.catalogue === false) continue
+    const key = `${record.kind}|${simpleNorm(record.name)}|${simpleNorm(record.location)}`
+    if (!key) continue
+    const list = groups.get(key) ?? []
+    list.push(record)
+    groups.set(key, list)
+  }
+  for (const list of groups.values()) {
+    if (list.length < 2) continue
+    list.sort(
+      (a, b) =>
+        Number(canonicalEntityId(b.id) === b.id) - Number(canonicalEntityId(a.id) === a.id) ||
+        Number(hasEntity(b.id)) - Number(hasEntity(a.id)) ||
+        filled(b) - filled(a) ||
+        (b.sources?.length ?? 0) - (a.sources?.length ?? 0) ||
+        a.id.localeCompare(b.id),
+    )
+    const keep = list[0]
+    for (let i = 1; i < list.length; i++) {
+      mergeRecords(keep, list[i])
+      records.delete(list[i].id)
+    }
+  }
+}
+
+/**
+ * Task 133 §0 — an enemy that is really a boss encounter (`X (Boss)`) merges its
+ * combat profile into the named boss record instead of standing as a second
+ * primary creature.
+ */
+function mergeBossEncounterEnemies(): void {
+  const bossByBase = new Map<string, string>()
+  for (const [id, record] of records) {
+    if (record.kind !== 'boss') continue
+    const key = baseNorm(record.name)
+    if (key && !bossByBase.has(key)) bossByBase.set(key, id)
+  }
+  const prefixMatch = (base: string): string | undefined => {
+    let best: string | undefined
+    let bestLen = 0
+    for (const [key, bossId] of bossByBase) {
+      if (key.startsWith(`${base} `) || base.startsWith(`${key} `)) {
+        const len = Math.min(key.length, base.length)
+        if (len > bestLen) {
+          bestLen = len
+          best = bossId
+        }
+      }
+    }
+    return best
+  }
+  for (const [id, record] of [...records]) {
+    if (record.kind !== 'enemy' || !/\(boss\)\s*$/i.test(record.name)) continue
+    const base = baseNorm(record.name)
+    const target = bossByBase.get(base) ?? prefixMatch(base)
+    if (!target || target === id) continue
+    const boss = records.get(target)
+    if (!boss) continue
+    mergeRecords(boss, record)
+    records.delete(id)
   }
 }
 

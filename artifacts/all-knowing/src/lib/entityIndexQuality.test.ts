@@ -32,6 +32,8 @@ function playerText(record: EntityRecord): string[] {
   if (record.stats) out.push(...Object.values(record.stats))
   if (record.related) out.push(...record.related)
   if (record.sections) for (const section of record.sections) out.push(section.heading, section.text)
+  if (record.upgradeLevels) for (const level of record.upgradeLevels) out.push(level.name, level.effect)
+  if (record.questSteps) for (const step of record.questSteps) out.push(step.title, step.text, step.location)
   return out.filter((value): value is string => typeof value === 'string')
 }
 
@@ -136,5 +138,70 @@ describe('Task 132 §4 — enemies carry a real description, not just their name
   it('never leaves an enemy description equal to its name', () => {
     const nameOnly = enemies.filter((record) => record.description && norm(record.description) === norm(record.name))
     expect(nameOnly.map((record) => record.id)).toEqual([])
+  })
+})
+
+describe('Task 133 §0 — wiki markup and Nightreign boilerplate are stripped', () => {
+  it('has no wiki/markdown bold marker in player text', () => {
+    const offenders: string[] = []
+    for (const record of list) {
+      for (const text of playerText(record)) {
+        if (text.includes('**') || text.includes("'''") || text.includes('[[')) offenders.push(`${record.id}: ${text.slice(0, 80)}`)
+      }
+    }
+    expect(offenders, offenders.slice(0, 20).join('\n')).toEqual([])
+  })
+
+  it('never mentions the other game, Nightreign', () => {
+    const offenders: string[] = []
+    for (const record of list) {
+      for (const text of playerText(record)) {
+        if (/nightreign/i.test(text)) offenders.push(`${record.id}: ${text.slice(0, 80)}`)
+      }
+    }
+    expect(offenders, offenders.slice(0, 20).join('\n')).toEqual([])
+  })
+
+  it('has no two primary records of one kind on the same name + location', () => {
+    const seen = new Map<string, string>()
+    const offenders: string[] = []
+    for (const record of list) {
+      if (record.catalogue === false) continue
+      const key = `${record.kind}|${norm(record.name)}|${norm(record.location)}`
+      const previous = seen.get(key)
+      if (previous) offenders.push(`${key} -> ${previous} vs ${record.id}`)
+      else seen.set(key, record.id)
+    }
+    expect(offenders, offenders.slice(0, 20).join('\n')).toEqual([])
+  })
+})
+
+describe('Task 133 §0 — upgrade rows and quest steps are folded', () => {
+  it('keeps no standalone +N upgrade record', () => {
+    expect(list.filter((record) => /\s\+\d+$/.test(record.name)).map((record) => record.id)).toEqual([])
+  })
+
+  it('folds the +N levels onto the base entity as an upgrade table', () => {
+    const upgraded = list.filter((record) => record.upgradeLevels?.length)
+    expect(upgraded.length).toBeGreaterThan(50)
+    const ashes = list.find((record) => record.id === 'item:kindred-of-rot-ashes')
+    expect(ashes?.upgradeLevels?.length).toBe(10)
+    expect(ashes!.upgradeLevels!.map((level) => level.level)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+  })
+
+  it('merges an NPC quest into one ordered step list', () => {
+    const sellen = list.find((record) => record.questSteps?.some((step) => /Sellen/i.test(step.title)))
+    expect(sellen, 'no record carries a merged Sellen quest line').toBeTruthy()
+    const steps = sellen!.questSteps!
+    expect(steps.length).toBeGreaterThanOrEqual(7)
+    expect(steps.some((step) => step.source === 'authored')).toBe(true)
+    expect(steps.map((step) => step.order)).toEqual(steps.map((_, index) => index + 1))
+  })
+})
+
+describe('Task 133 §0 — a boss-encounter enemy merges into the boss', () => {
+  it('leaves no enemy row for a named boss encounter', () => {
+    expect(list.find((record) => record.kind === 'enemy' && norm(record.name) === 'promised consort radahn boss')).toBeUndefined()
+    expect(list.find((record) => record.kind === 'enemy' && norm(record.name) === 'nox swordstress boss')).toBeUndefined()
   })
 })
