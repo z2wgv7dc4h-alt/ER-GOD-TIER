@@ -2,11 +2,17 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { gideonModel, hasGideonKey } from '../lib/muse'
 import { testGideonConnection, type ConnectionResult } from './gideonTest'
 import {
-  browserCacheLookup,
-  cachedDatasetIds,
-  DATASETS,
-  downloadEverything,
+  downloadEverythingForOffline,
+  formatBytes,
+  loadOfflineManifest,
+  offlineStorageEstimate,
+  removeOfflineData,
+  requestPersistentStorage,
+  type OfflineManifest,
+  type OfflineProgress,
+  type StorageEstimate,
 } from './dataFreshness'
+import { SOURCED_OFFLINE_CACHE } from '../lib/pwa'
 import { LANDING_SECTIONS, setSettings, type TextSize, type SpoilerLevel } from './store'
 import { useSettings } from './useSettings'
 import { Button, Chip } from '../ui'
@@ -100,17 +106,31 @@ function GideonTest() {
 }
 
 function DataFreshness() {
-  const [cached, setCached] = useState<string[] | null>(null)
+  const [manifest, setManifest] = useState<OfflineManifest | null>(null)
+  const [cachedCount, setCachedCount] = useState<number | null>(null)
+  const [estimate, setEstimate] = useState<StorageEstimate | null>(null)
+  const [progress, setProgress] = useState<OfflineProgress | null>(null)
   const [busy, setBusy] = useState(false)
   const [note, setNote] = useState('')
 
   async function refresh() {
-    const lookup = browserCacheLookup()
-    if (!lookup) {
-      setCached([])
+    const doc = await loadOfflineManifest()
+    setManifest(doc)
+    setEstimate(await offlineStorageEstimate())
+    if (!doc) {
+      setCachedCount(null)
       return
     }
-    setCached(await cachedDatasetIds(lookup))
+    const lookup = typeof caches !== 'undefined' ? await caches.open(SOURCED_OFFLINE_CACHE) : null
+    if (!lookup) {
+      setCachedCount(0)
+      return
+    }
+    let cached = 0
+    for (const file of doc.files) {
+      if (await lookup.match(file.path)) cached += 1
+    }
+    setCachedCount(cached)
   }
 
   useEffect(() => {
@@ -120,24 +140,86 @@ function DataFreshness() {
   async function downloadAll() {
     setBusy(true)
     setNote('')
-    const result = await downloadEverything()
-    await refresh()
-    setBusy(false)
-    setNote(
-      result.failed.length
-        ? `Cached ${result.downloaded}; ${result.failed.length} unavailable.`
-        : `Cached ${result.downloaded} dataset files for offline.`,
-    )
+    setProgress(null)
+    try {
+      await requestPersistentStorage()
+      const result = await downloadEverythingForOffline((p) => setProgress(p))
+      await refresh()
+      const mb = formatBytes(result.bytes)
+      setNote(
+        result.failed.length
+          ? `Saved ${result.downloaded} files (${mb}); ${result.failed.length} unavailable — tap again to retry.`
+          : result.skipped === result.total
+            ? `All ${result.total} files already offline (${mb} this run).`
+            : `Saved ${result.downloaded} files (${mb}) for offline.`,
+      )
+    } finally {
+      setBusy(false)
+      setProgress(null)
+    }
   }
 
-  const allCached = cached !== null && cached.length === DATASETS.length
+  async function removeAll() {
+    setBusy(true)
+    setNote('')
+    try {
+      const ok = await removeOfflineData()
+      await refresh()
+      setNote(ok ? 'Offline data removed.' : 'Nothing to remove.')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const total = manifest?.fileCount ?? 0
+  const totalMb = formatBytes(manifest?.totalBytes ?? 0)
+  const haveAll = cachedCount !== null && total > 0 && cachedCount >= total
+  const pct = progress && progress.total > 0 ? Math.round((progress.done / progress.total) * 100) : 0
+
   return (
-    <SettingItem label="Offline data" hint={`${cached?.length ?? 0} of ${DATASETS.length} datasets cached on this device.`}>
-      <Button variant={allCached ? 'ghost' : 'primary'} small disabled={busy} onClick={() => void downloadAll()}>
-        {busy ? 'Downloading…' : allCached ? 'Refresh offline data' : 'Download all for offline'}
-      </Button>
-      {note && <span className="note" role="status">{note}</span>}
-    </SettingItem>
+    <>
+      <SettingItem
+        label="Offline data"
+        hint={
+          manifest
+            ? `${cachedCount ?? 0} of ${total} files cached · ${totalMb} total`
+            : 'Manifest not installed in this build.'
+        }
+      >
+        <Button
+          variant={haveAll ? 'ghost' : 'primary'}
+          small
+          disabled={busy || !manifest}
+          onClick={() => void downloadAll()}
+        >
+          {busy ? 'Downloading…' : haveAll ? 'Refresh offline data' : 'Download everything for offline'}
+        </Button>
+        {total > 0 && (
+          <Button variant="secondary" small disabled={busy || !cachedCount} onClick={() => void removeAll()}>
+            Remove offline data
+          </Button>
+        )}
+      </SettingItem>
+
+      {busy && progress && (
+        <div className="settings-progress" role="status" aria-live="polite">
+          <div className="settings-progress-label">
+            <span>
+              {progress.done} / {progress.total} files · {formatBytes(progress.bytes)} / {formatBytes(progress.totalBytes)}
+            </span>
+            <span>{pct}%</span>
+          </div>
+          <div className="bar"><span style={{ width: `${pct}%` }} /></div>
+          <span className="note">{progress.current}</span>
+        </div>
+      )}
+      {!busy && note && <p className="note" role="status">{note}</p>}
+      {estimate && (
+        <p className="note">
+          Storage used {formatBytes(estimate.usage)} of {formatBytes(estimate.quota)} available to this site.
+        </p>
+      )}
+    </>
   )
 }
 
