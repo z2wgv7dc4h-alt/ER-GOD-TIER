@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { Character } from '../types'
 import {
+  CATEGORIES,
   COMPARE_CAP,
   addToCompare,
   applyFilters,
@@ -127,6 +128,14 @@ describe('Library model — deep links', () => {
     const hash = buildDeepLink('bosses', 'boss:margit')
     expect(hash).toBe('#/library/search?cat=bosses&id=boss%3Amargit')
     expect(parseDeepLink(hash)).toEqual({ cat: 'bosses', id: 'boss:margit', q: null })
+  })
+
+  it('round-trips a deep link for every category (Task 130 §4)', () => {
+    for (const category of CATEGORIES) {
+      const hash = buildDeepLink(category.id)
+      expect(hash).toBe(`#/library/search?cat=${category.id}`)
+      expect(parseDeepLink(hash), category.id).toEqual({ cat: category.id, id: null, q: null })
+    }
   })
 })
 

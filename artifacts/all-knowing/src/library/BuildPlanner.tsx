@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { opBuilds } from '../knowledge/builds'
 import { pvpBuilds } from '../knowledge/pvp'
 import { loadWeapons, type Weapon } from '../lib/ar'
-import { advise, planRespec } from '../lib/advisor'
+import { advise, planRespec, strongerUpgrades } from '../lib/advisor'
 import { useArmory } from '../lib/armory'
 import { useGearInfo } from '../build/useGearInfo'
 import { equipLoad } from '../lib/gearSheet'
@@ -119,6 +119,10 @@ export function BuildPlanner() {
     [w.character, targetId, weapons, coords],
   )
 
+  // Task 130 §3 — only genuine upgrades: a weapon that is weaker than the kit
+  // (negative gain) is never listed as "stronger".
+  const stronger = useMemo(() => strongerUpgrades(advice.upgrades), [advice.upgrades])
+
   const customDeltas = useMemo(
     () =>
       (Object.keys(w.character.stats) as StatKey[])
@@ -227,25 +231,25 @@ export function BuildPlanner() {
       </BuildSection>
 
       <BuildSection title="Stronger for your build" defaultOpen>
-        {advice.upgrades.length === 0 ? (
+        {stronger.length === 0 ? (
           <p className="note">
-            {weapons ? 'No reachable on-build weapon beats what you have at these stats.' : 'Loading weapon data…'}
+            {weapons ? 'Nothing stronger reachable yet. The Later finds below are worth keeping an eye on.' : 'Loading weapon data…'}
           </p>
         ) : (
           <>
             <ul className="advisor-list">
-              {advice.upgrades.slice(0, OPEN_UPGRADES).map(upgradeRow)}
+              {stronger.slice(0, OPEN_UPGRADES).map(upgradeRow)}
             </ul>
             {/* Task 118 §3 — the section stays short: the top picks inline, the
                 rest one tap away, so Builds fits in the four-screen budget. */}
-            {advice.upgrades.length > OPEN_UPGRADES && (
+            {stronger.length > OPEN_UPGRADES && (
               <details className="advisor-more">
                 <summary className="advisor-more-summary">
-                  {advice.upgrades.length - OPEN_UPGRADES} more on-build upgrade
-                  {advice.upgrades.length - OPEN_UPGRADES === 1 ? '' : 's'}
+                  {stronger.length - OPEN_UPGRADES} more on-build upgrade
+                  {stronger.length - OPEN_UPGRADES === 1 ? '' : 's'}
                 </summary>
                 <ul className="advisor-list">
-                  {advice.upgrades.slice(OPEN_UPGRADES).map(upgradeRow)}
+                  {stronger.slice(OPEN_UPGRADES).map(upgradeRow)}
                 </ul>
               </details>
             )}

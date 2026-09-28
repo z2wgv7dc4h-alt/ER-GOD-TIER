@@ -1,0 +1,6986 @@
+[
+  {
+    "id": "boss:rennala",
+    "name": "Rennala, Queen of the Full Moon",
+    "campaign": "base",
+    "region": "Academy of Raya Lucaria",
+    "location": "Liurnia of the Lakes",
+    "grace": "Debate Parlor",
+    "tier": "great-rune",
+    "requiredForEnding": false,
+    "drops": [
+      "40,000 Runes",
+      "Great Rune of the Unborn",
+      "Remembrance of the Full Moon Queen",
+      "Rennala's Great Rune"
+    ],
+    "coords": {
+      "x": 17.9,
+      "y": 45.93,
+      "map": null
+    },
+    "hp": 1703,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:red-wolf",
+    "name": "Red Wolf of Radagon",
+    "campaign": "base",
+    "region": "Academy of Raya Lucaria",
+    "location": "Liurnia of the Lakes",
+    "grace": "Schoolhouse Classroom",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "14,000 Runes",
+      "14000 Runes",
+      "Memory Stone"
+    ],
+    "coords": {
+      "x": 18.67,
+      "y": 47.83,
+      "map": null
+    },
+    "hp": 973,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:astel",
+    "name": "Astel, Naturalborn of the Void",
+    "campaign": "base",
+    "region": "Ainsel River",
+    "location": "Grand Cloister",
+    "grace": "Grand Cloister",
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "120,000 Runes",
+      "120000 Runes",
+      "80,000 Runes",
+      "Meteorite of Astel",
+      "Remembrance of the Naturalborn"
+    ],
+    "coords": {
+      "x": 14.9,
+      "y": 58.51,
+      "map": null
+    },
+    "hp": 2708,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:dragonkin-nokstella",
+    "name": "Dragonkin Soldier of Nokstella",
+    "campaign": "base",
+    "region": "Ainsel River",
+    "location": "Ainsel River",
+    "grace": "Ainsel River Downstream",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "12,000 Runes",
+      "12000 Runes",
+      "Frozen Lightning Spear"
+    ],
+    "coords": {
+      "x": 20.8,
+      "y": 42.65,
+      "map": null
+    },
+    "hp": 2239,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:dragonkin-soldier",
+    "name": "Dragonkin Soldier",
+    "campaign": "base",
+    "region": "Ainsel River",
+    "location": "Siofra River",
+    "grace": "Worshippers' Woods",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "16,000 Runes",
+      "16000 Runes",
+      "58,000 Runes",
+      "Dragon Halberd",
+      "Dragonscale Blade"
+    ],
+    "coords": {
+      "x": 20.5,
+      "y": 46.14,
+      "map": null
+    },
+    "hp": 2239,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:godfrey",
+    "name": "Hoarah Loux, Warrior",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Leyndell, Ashen Capital.",
+    "grace": null,
+    "tier": "remembrance",
+    "requiredForEnding": true,
+    "drops": [
+      "300000 Runes",
+      "Remembrance of Hoarah Loux"
+    ],
+    "coords": {
+      "x": 39.23,
+      "y": 5.83,
+      "map": "m11_05_00_00"
+    },
+    "hp": 1721,
+    "sources": [
+      "checklists/bosses"
+    ]
+  },
+  {
+    "id": "boss:lansseax",
+    "name": "Ancient Dragon Lansseax",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Rampartside Path",
+    "grace": "Perfumer's Grotto",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "60,000 Runes",
+      "60.000 Runes",
+      "Lansseax's Glaive"
+    ],
+    "coords": {
+      "x": 33.37,
+      "y": 31.33,
+      "map": "m60_41_52_00"
+    },
+    "hp": 1876,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:crystalian-duo",
+    "name": "Crystalian Duo",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Altus Tunnel",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "1800 Runes",
+      "3,000 Runes",
+      "3,300 Runes",
+      "3000 Runes",
+      "3300 Runes",
+      "7000 Runes",
+      "9,000 Runes",
+      "Crystal Release",
+      "Crystal Torrent",
+      "Smithing-Stone Miner's Bell Bearing (1)",
+      "Somberstone Miner's Bell Bearing (2)"
+    ],
+    "coords": {
+      "x": 15,
+      "y": 110.76,
+      "map": "m32_02_00_00"
+    },
+    "hp": 352,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:divine-bridge-golem",
+    "name": "Divine Bridge Golem",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Lyendell, Royal Capital",
+    "grace": "Divine Tower of West Altus Gate",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "2992 Runes"
+    ],
+    "coords": {
+      "x": 38.8,
+      "y": 34.45,
+      "map": null
+    },
+    "hp": null,
+    "sources": [
+      "checklists/bosses"
+    ]
+  },
+  {
+    "id": "boss:elemer",
+    "name": "Elemer of the Briar",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "The Shaded Castle",
+    "grace": "Shaded Castle Inner Gate",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "24,000 Runes",
+      "Briar Greatshield",
+      "Marais Executioner's Sword"
+    ],
+    "coords": {
+      "x": 27.54,
+      "y": 25.07,
+      "map": "m60_39_54_00"
+    },
+    "hp": 1507,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:perfumer-tricia",
+    "name": "Misbegotten Warrior / Perfumer Tricia",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Altus Plateau",
+    "grace": "Unsightly Catacombs",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 20.8,
+      "y": 30.68,
+      "map": null
+    },
+    "hp": 184,
+    "sources": [
+      "engine-markers"
+    ]
+  },
+  {
+    "id": "boss:perfumer-tricia",
+    "name": "Perfumer Tricia & Misbegotten Warrior",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Unsightly Catacombs",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "9,400 Runes",
+      "9400 Runes",
+      "Perfumer Tricia Ashes"
+    ],
+    "coords": {
+      "x": 8.09,
+      "y": 618.3,
+      "map": "m30_12_00_00"
+    },
+    "hp": 184,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:godefroy",
+    "name": "Godefroy the Grafted",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Golden Lineage Evergaol",
+    "grace": "Altus Plateau",
+    "tier": "evergaol",
+    "requiredForEnding": false,
+    "drops": [
+      "26,000 Runes",
+      "26,000 Runes (NG)",
+      "Godfrey Icon"
+    ],
+    "coords": {
+      "x": 27.61,
+      "y": 36.19,
+      "map": "m60_39_50_00"
+    },
+    "hp": 3354,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:godfrey-the-grafted",
+    "name": "Godfrey The Grafted",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Golden Lineage Evergaol",
+    "grace": null,
+    "tier": "evergaol",
+    "requiredForEnding": false,
+    "drops": [
+      "26,000 Runes",
+      "Godfrey Icon",
+      "Other Drops"
+    ],
+    "coords": null,
+    "hp": null,
+    "sources": [
+      "checklists/bosses"
+    ]
+  },
+  {
+    "id": "invader:sanguine-noble",
+    "name": "Sanguine Noble",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Writheblood Ruins",
+    "grace": "Bridge of Iniquity",
+    "tier": "dungeon",
+    "requiredForEnding": false,
+    "drops": [
+      "8,800 Runes"
+    ],
+    "coords": {
+      "x": 29.6,
+      "y": 27.37,
+      "map": "m60_40_53_00"
+    },
+    "hp": 582,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:stonedigger-troll",
+    "name": "Stonedigger Troll",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Old Altus Tunnel",
+    "grace": "Limgrave Tunnels",
+    "tier": "dungeon",
+    "requiredForEnding": false,
+    "drops": [
+      "1,800 Runes",
+      "9,600 Runes",
+      "Great Club",
+      "Roar Medallion"
+    ],
+    "coords": {
+      "x": 35.61,
+      "y": 67.09,
+      "map": null
+    },
+    "hp": 1135,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:ancient-hero-zamor",
+    "name": "Ancient Hero of Zamor",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Sainted Hero's Grave",
+    "grace": "Fourth Church of Marika",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "20,000 Runes",
+      "5,400 Runes",
+      "83,000 Runes",
+      "Ancient Dragon Knight Kristoff Ashes",
+      "Radagon's Scarseal",
+      "Zamor Armor",
+      "Zamor Bracelets",
+      "Zamor Curved Sword",
+      "Zamor Legwraps",
+      "Zamor Mask"
+    ],
+    "coords": {
+      "x": 34.15,
+      "y": 75.79,
+      "map": "m60_42_33_00"
+    },
+    "hp": 1418,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:black-knife-assassin",
+    "name": "Black Knife Assassin",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Sage's Cave",
+    "grace": "Deathtouched Catacombs",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "1, 600 Runes",
+      "1,600 Runes",
+      "10,800 Runes",
+      "11,339 Runes",
+      "4,200 Runes",
+      "9,000 Runes",
+      "?? Runes",
+      "Assassin's Cerulean Dagger",
+      "Assassin's Crimson Dagger",
+      "Black Knife",
+      "Black Knifeprint",
+      "Concealing Veil",
+      "Sage's Cave"
+    ],
+    "coords": {
+      "x": 30.98,
+      "y": 30.42,
+      "map": "m60_40_52_00"
+    },
+    "hp": 731,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:black-knife-assassin",
+    "name": "Black Knife Assassin",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Sainted Hero's Grave",
+    "grace": "Deathtouched Catacombs",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "1, 600 Runes",
+      "1,600 Runes",
+      "10,800 Runes",
+      "11,339 Runes",
+      "4,200 Runes",
+      "9,000 Runes",
+      "?? Runes",
+      "Assassin's Cerulean Dagger",
+      "Assassin's Crimson Dagger",
+      "Black Knife",
+      "Black Knifeprint",
+      "Concealing Veil",
+      "Sage's Cave"
+    ],
+    "coords": {
+      "x": 30.98,
+      "y": 30.42,
+      "map": "m60_40_52_00"
+    },
+    "hp": 731,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:demi-human-queen-gilika",
+    "name": "Demi-Human Queen Gilika",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Lux Ruins",
+    "grace": "Altus Plateau",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "8,500 Runes"
+    ],
+    "coords": {
+      "x": 25.3,
+      "y": 32.92,
+      "map": "m60_38_51_00"
+    },
+    "hp": 1222,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:erdtree-burial-watchdog",
+    "name": "Erdtree Burial Watchdog",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Wyndham Catacombs",
+    "grace": "Stormfoot Catacombs",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "1,300 Runes",
+      "12,000 Runes",
+      "2,400 Runes",
+      "3,200 Runes",
+      "7,400 Runes",
+      "Demi-Human Ashes",
+      "Glovewort Picker's Bell Bearing (1)",
+      "Kaiden Sellsword Ashes",
+      "Mad Pumpkin Head Ashes",
+      "Noble Sorcerer Ashes"
+    ],
+    "coords": {
+      "x": 42.36,
+      "y": 75.88,
+      "map": null
+    },
+    "hp": 1052,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:fallingstar-beast",
+    "name": "Fallingstar Beast",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Starfall Crater",
+    "grace": "Sellia Crystal Tunnel",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "11,000 Runes",
+      "170,000 Runes",
+      "7,600 Runes",
+      "Gravitational Missile",
+      "Gravity Stone Chunk",
+      "Gravity Stone Chunk x 4",
+      "Gravity Stone Fan",
+      "Smithing Stone (6)",
+      "Smithing Stone (7)",
+      "Smithing Stone (7) x 5",
+      "Somber Smithing Stone (5)",
+      "Somber Smithing Stone (6)",
+      "Somberstone Miner's Bell Bearing (1)"
+    ],
+    "coords": {
+      "x": 33.33,
+      "y": 34.33,
+      "map": "m60_41_50_00"
+    },
+    "hp": 1893,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:godskin-apostle",
+    "name": "Godskin Apostle",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Dominula, Windmill Village",
+    "grace": "Windmill Village",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "14,000 Runes",
+      "70,000 Runes",
+      "70k Runes",
+      "94,000 Runes",
+      "Black Flame Ritual",
+      "Godskin Apostle Bracers",
+      "Godskin Apostle Hood",
+      "Godskin Apostle Robe",
+      "Godskin Apostle Set",
+      "Godskin Apostle Trousers",
+      "Godskin Peeler",
+      "Godskin Swaddling Cloth",
+      "Scouring Black Flame"
+    ],
+    "coords": {
+      "x": 35.03,
+      "y": 23.54,
+      "map": "m60_42_55_00"
+    },
+    "hp": 2033,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:necromancer-garris",
+    "name": "Necromancer Garris",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Sage's Cave",
+    "grace": "Sage's Cave",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "0 Runes",
+      "9,000 Runes",
+      "Family Heads"
+    ],
+    "coords": {
+      "x": 24.2,
+      "y": 30.92,
+      "map": null
+    },
+    "hp": 3202,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:nights-cavalry",
+    "name": "Night's Cavalry",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Altus Highway Junction",
+    "grace": "Agheel Lake North",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "10,000 Runes",
+      "10000 Runes",
+      "2,400 Runes",
+      "2400 Runes",
+      "3,400 Runes",
+      "3400 Runes",
+      "36000 Runes",
+      "42000 Runes",
+      "5,600 Runes",
+      "5600 Runes",
+      "8,500 Runes",
+      "84000 Runes",
+      "8500 Runes",
+      "Ash of War: Barricade Shield",
+      "Ash of War: Giant Hunt",
+      "Ash of War: Ice Spear",
+      "Ash of War: Phantom Slash",
+      "Ash of War: Poison Moth Flight",
+      "Ash of War: Repeating Thrust",
+      "Ash of War: Shared Order",
+      "Ash of War:Bloodhound's Step",
+      "Night's Calvary Set",
+      "Nightrider Flail",
+      "Nightrider Glaive"
+    ],
+    "coords": {
+      "x": 38.44,
+      "y": 67.98,
+      "map": "m60_43_37_00"
+    },
+    "hp": 1006,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:omenkiller",
+    "name": "Omenkiller",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Perfumer's Grotto",
+    "grace": "Village of the Albinaurics",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "4,900 Runes",
+      "4900 Runes",
+      "8400 Runes",
+      "Crucible Knot Talisman",
+      "Great Omenkiller Cleaver"
+    ],
+    "coords": {
+      "x": 17.94,
+      "y": 55.05,
+      "map": "m60_35_42_00"
+    },
+    "hp": 429,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:tibia-mariner",
+    "name": "Tibia Mariner",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Wyndham Ruins",
+    "grace": "Summonwater Village Outskirts",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "2400 Runes",
+      "4700 Runes",
+      "Deathroot",
+      "Helphen's Steeple",
+      "Skeletal Bandit Ashes",
+      "Skeletal Militiaman Ashes",
+      "Tibia's Cookbook",
+      "Tibia's Summons"
+    ],
+    "coords": {
+      "x": 42.35,
+      "y": 62.18,
+      "map": "m60_45_39_10"
+    },
+    "hp": 1918,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:tree-sentinel",
+    "name": "Tree Sentinel",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Limgrave",
+    "grace": "The First Step",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "120,000 Runes",
+      "16000 Runes (NG+1)",
+      "20,000 Runes",
+      "28,080 Runes",
+      "3,200 Runes",
+      "3200 Runes",
+      "50,000 Runes",
+      "Blessing of Marika",
+      "Erdtree Greatshield",
+      "Golden Halberd",
+      "Hero's Rune (1)",
+      "Hero's Rune [1]"
+    ],
+    "coords": {
+      "x": 35.25,
+      "y": 69.07,
+      "map": "m60_42_36_00"
+    },
+    "hp": 1745,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:wormface",
+    "name": "Wormface",
+    "campaign": "base",
+    "region": "Altus Plateau",
+    "location": "Minor Erdtree",
+    "grace": "Bower of Bounty",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "10,000 Runes",
+      "10000 Runes",
+      "2,937 Runes",
+      "6,812 Runes",
+      "Crimsonspill Crystal Tear",
+      "Larval Tear",
+      "Speckled Hardtear"
+    ],
+    "coords": {
+      "x": 32.19,
+      "y": 27.77,
+      "map": "m60_41_53_00"
+    },
+    "hp": 621,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:radahn",
+    "name": "Starscourge Radahn",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Wailing Dunes",
+    "grace": "Chamber Outside the Plaza",
+    "tier": "great-rune",
+    "requiredForEnding": false,
+    "drops": [
+      "70,000 Runes",
+      "Radahn's Great Rune",
+      "Remembrance of the Starscourge",
+      "Remembrance of the Starscourge, Radahn's Great Rune"
+    ],
+    "coords": {
+      "x": 59.28,
+      "y": 64.84,
+      "map": "m60_52_38_00"
+    },
+    "hp": 2585,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:azash-pride-of-the-redmanes",
+    "name": "Azash, Pride of the Redmanes",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Caelid",
+    "grace": "Redmane Castle Plaza",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 58.04,
+      "y": 69.05,
+      "map": "m60_51_36_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:commander-oneil",
+    "name": "Commander O'Neil",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Swamp of Aeonia",
+    "grace": "Inner Aeonia",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "12,000 Runes",
+      "Commander's Standard",
+      "Unalloyed Gold Needle"
+    ],
+    "coords": {
+      "x": 52.2,
+      "y": 64.15,
+      "map": "m60_49_38_00"
+    },
+    "hp": 2834,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:death-rite-bird",
+    "name": "Death Rite Bird",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Southern Aeonia Swamp Bank",
+    "grace": "Gate Town North",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "15,000 Runes",
+      "18,000 Runes",
+      "220,000 Runes",
+      "230,000 Runes",
+      "7,800 Runes",
+      "77,000 Runes",
+      "Ancient Death Rancor",
+      "Ash of War: Ghostflame Call",
+      "Death Ritual Spear",
+      "Death' Poker",
+      "Death's Poker",
+      "Explosive Ghostflame"
+    ],
+    "coords": {
+      "x": 20.06,
+      "y": 47.18,
+      "map": "m60_36_45_00"
+    },
+    "hp": 2447,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:ekzykes",
+    "name": "Decaying Ekzykes",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Church of the Plague",
+    "grace": "Caelid Highway South",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "38,000 Runes",
+      "Dragon Heart"
+    ],
+    "coords": {
+      "x": 49.54,
+      "y": 67.48,
+      "map": "m60_48_37_00"
+    },
+    "hp": 5753,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:misbegotten-warrior",
+    "name": "Misbegotten Warrior",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Redmane Castle",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "Iron Greatsword",
+      "Multilayered Ring of Light",
+      "Pearldrake Talisman +2",
+      "Perfumer Tricia (ash)",
+      "Ruins Greatsword"
+    ],
+    "coords": {
+      "x": -140.41,
+      "y": -25.03,
+      "map": "m30_16_00_00"
+    },
+    "hp": 664,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:nox-swordstress-and-nox-monk",
+    "name": "Nox Swordstress and Nox Monk",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Sellia, Town of Sorcery",
+    "grace": "Sellia Backstreets",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "6,400 Runes",
+      "Nox Flowing Sword"
+    ],
+    "coords": null,
+    "hp": 339,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:putrid-crystalian-ringblade-putrid-crystalian-spear-putrid-crystalian-staff",
+    "name": "Putrid Crystalian (Ringblade) & Putrid Crystalian (Spear) & Putrid Crystalian (Staff)",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Sellia Hideaway",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "Crystal Torrent",
+      "Rotten Crystal Spear",
+      "Rotten Crystal Staff"
+    ],
+    "coords": null,
+    "hp": 698,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:putrid-crystalians",
+    "name": "Putrid Crystalians",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Sellia Hideaway",
+    "grace": "Sellia Hideaway",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "7,100 Runes",
+      "Crystal Torrent"
+    ],
+    "coords": null,
+    "hp": 3358,
+    "sources": [
+      "bosses-fextralife"
+    ]
+  },
+  {
+    "id": "boss:cemetery-shade",
+    "name": "Cemetery Shade",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Caelid Catacombs",
+    "grace": "Tombsward Catacombs",
+    "tier": "dungeon",
+    "requiredForEnding": false,
+    "drops": [
+      "2,200 Runes",
+      "2200 Runes",
+      "3,500 Runes",
+      "6,800 Runes",
+      "Kindred of Rot Ashes",
+      "Lhutel the Headless",
+      "Twinsage Sorcerer Ashes",
+      "xx Runes"
+    ],
+    "coords": {
+      "x": 37.83,
+      "y": 76.2,
+      "map": null
+    },
+    "hp": 305,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:frenzied-duelist",
+    "name": "Frenzied Duelist",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Gaol Cave",
+    "grace": "Gaol Cave",
+    "tier": "dungeon",
+    "requiredForEnding": false,
+    "drops": [
+      "6,700 Runes",
+      "6700 Runes",
+      "Putrid Corpse Ashes"
+    ],
+    "coords": {
+      "x": 46,
+      "y": 64.09,
+      "map": null
+    },
+    "hp": 3079,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:magma-wyrm",
+    "name": "Magma Wyrm",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Gael Tunnel",
+    "grace": "Gael Tunnel Entrance",
+    "tier": "dungeon",
+    "requiredForEnding": false,
+    "drops": [
+      "19,000 Runes",
+      "5,044 Runes",
+      "7,500 Runes",
+      "7,718 Runes",
+      "7500 Runes",
+      "Ancient Dragon Smithing Stone",
+      "Dragon Heart",
+      "Moonveil"
+    ],
+    "coords": {
+      "x": 18.31,
+      "y": 28.81,
+      "map": "m60_35_53_00"
+    },
+    "hp": 2968,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:erdtree-burial-watchdog",
+    "name": "Erdtree Burial Watchdog",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Minor Erdtree Catacombs",
+    "grace": "Stormfoot Catacombs",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "1,300 Runes",
+      "12,000 Runes",
+      "2,400 Runes",
+      "3,200 Runes",
+      "7,400 Runes",
+      "Demi-Human Ashes",
+      "Glovewort Picker's Bell Bearing (1)",
+      "Kaiden Sellsword Ashes",
+      "Mad Pumpkin Head Ashes",
+      "Noble Sorcerer Ashes"
+    ],
+    "coords": {
+      "x": 42.36,
+      "y": 75.88,
+      "map": null
+    },
+    "hp": 1052,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:fallingstar-beast",
+    "name": "Fallingstar Beast",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Sellia Crystal Tunnel",
+    "grace": "Sellia Crystal Tunnel",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "11,000 Runes",
+      "170,000 Runes",
+      "7,600 Runes",
+      "Gravitational Missile",
+      "Gravity Stone Chunk",
+      "Gravity Stone Chunk x 4",
+      "Gravity Stone Fan",
+      "Smithing Stone (6)",
+      "Smithing Stone (7)",
+      "Smithing Stone (7) x 5",
+      "Somber Smithing Stone (5)",
+      "Somber Smithing Stone (6)",
+      "Somberstone Miner's Bell Bearing (1)"
+    ],
+    "coords": {
+      "x": 33.33,
+      "y": 34.33,
+      "map": "m60_41_50_00"
+    },
+    "hp": 1893,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:mad-pumpkin-head",
+    "name": "Mad Pumpkin Head",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Caelem Ruins",
+    "grace": "Agheel Lake South",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "1,100 Runes",
+      "291 Runes",
+      "6,300 Runes",
+      "6300 Runes",
+      "Pumpkin Helm",
+      "Sanctuary Stone"
+    ],
+    "coords": {
+      "x": 40.41,
+      "y": 69.22,
+      "map": "m60_44_36_10"
+    },
+    "hp": 582,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:nights-cavalry",
+    "name": "Night's Cavalry",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Caelid Highway South",
+    "grace": "Agheel Lake North",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "10,000 Runes",
+      "10000 Runes",
+      "2,400 Runes",
+      "2400 Runes",
+      "3,400 Runes",
+      "3400 Runes",
+      "36000 Runes",
+      "42000 Runes",
+      "5,600 Runes",
+      "5600 Runes",
+      "8,500 Runes",
+      "84000 Runes",
+      "8500 Runes",
+      "Ash of War: Barricade Shield",
+      "Ash of War: Giant Hunt",
+      "Ash of War: Ice Spear",
+      "Ash of War: Phantom Slash",
+      "Ash of War: Poison Moth Flight",
+      "Ash of War: Repeating Thrust",
+      "Ash of War: Shared Order",
+      "Ash of War:Bloodhound's Step",
+      "Night's Calvary Set",
+      "Nightrider Flail",
+      "Nightrider Glaive"
+    ],
+    "coords": {
+      "x": 38.44,
+      "y": 67.98,
+      "map": "m60_43_37_00"
+    },
+    "hp": 1006,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:nox-duo",
+    "name": "Nox Duo",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Caelid",
+    "grace": null,
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": null,
+    "hp": null,
+    "sources": [
+      "armory-bosses"
+    ]
+  },
+  {
+    "id": "boss:putrid-avatar",
+    "name": "Putrid Avatar",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Caelid",
+    "grace": "Minor Erdtree Catacombs",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "160,000 Runes",
+      "27,090 Runes",
+      "9,600 Runes",
+      "91,000 Runes",
+      "Flame-Shrouding Cracked Tear",
+      "Greenburst Crystal Tear",
+      "Lord's Rune",
+      "Opaline Hardtear",
+      "Rotten Staff",
+      "Ruptured Crystal Tear",
+      "Stonebarb Cracked Tear",
+      "Thorny Cracked Tear"
+    ],
+    "coords": {
+      "x": 46.59,
+      "y": 58.78,
+      "map": null
+    },
+    "hp": 1745,
+    "sources": [
+      "engine-markers"
+    ]
+  },
+  {
+    "id": "boss:putrid-avatar",
+    "name": "Putrid Avatar",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Minor Erdtree",
+    "grace": "Minor Erdtree Catacombs",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "160,000 Runes",
+      "27,090 Runes",
+      "9,600 Runes",
+      "91,000 Runes",
+      "Flame-Shrouding Cracked Tear",
+      "Greenburst Crystal Tear",
+      "Lord's Rune",
+      "Opaline Hardtear",
+      "Rotten Staff",
+      "Ruptured Crystal Tear",
+      "Stonebarb Cracked Tear",
+      "Thorny Cracked Tear"
+    ],
+    "coords": {
+      "x": 46.59,
+      "y": 58.78,
+      "map": "m60_47_40_00"
+    },
+    "hp": 1745,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:redmane-combo-crucible-knight",
+    "name": "Redmane Combo (Misbegotten)",
+    "campaign": "base",
+    "region": "Caelid",
+    "location": "Caelid",
+    "grace": null,
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": null,
+    "hp": null,
+    "sources": [
+      "armory-bosses"
+    ]
+  },
+  {
+    "id": "boss:grave-warden-duelist",
+    "name": "Grave Warden Duelist",
+    "campaign": "base",
+    "region": "Capital Outskirts",
+    "location": "Auriza Side Tomb",
+    "grace": "Murkwater Catacombs",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "1,700 Runes",
+      "15,000 Runes",
+      "Banished Knight Engvall Ashes",
+      "Soldjars of Fortune Ashes"
+    ],
+    "coords": {
+      "x": 37.61,
+      "y": 63.7,
+      "map": null
+    },
+    "hp": 1280,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:bell-bearing-hunter",
+    "name": "Bell Bearing Hunter",
+    "campaign": "base",
+    "region": "Capital Outskirts",
+    "location": "Hermit Merchant's Shack",
+    "grace": "Warmaster's Shack",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "2,700 Runes",
+      "20,000 Runes",
+      "2700 Runes",
+      "50,000 Runes",
+      "6,000 Runes",
+      "Bone Peddler's Bell Bearing",
+      "Gravity Stone Peddler's Bell Bearing",
+      "Meat Peddler's Bell Bearing",
+      "Medicine Peddler's Bell Bearing"
+    ],
+    "coords": {
+      "x": 35.47,
+      "y": 63.77,
+      "map": "m60_42_38_00"
+    },
+    "hp": 1507,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:crucible-ordovis",
+    "name": "Crucible Knight Ordovis",
+    "campaign": "base",
+    "region": "Capital Outskirts",
+    "location": "Auriza Hero's Grave",
+    "grace": "Auriza Hero's Grave",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "28,000 Runes",
+      "28000 Runes",
+      "Crucible Axe Armor",
+      "Crucible Axe Helm",
+      "Crucible Gauntlets",
+      "Crucible Greaves",
+      "Ordovis's Greatsword"
+    ],
+    "coords": {
+      "x": -107.99,
+      "y": 761.45,
+      "map": "m30_10_00_00"
+    },
+    "hp": 840,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:deathbird",
+    "name": "Deathbird",
+    "campaign": "base",
+    "region": "Capital Outskirts",
+    "location": "Limgrave",
+    "grace": "Warmaster's Shack",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "2,800 Runes",
+      "29,000 Runes",
+      "3,900 Runes",
+      "6,600 Runes",
+      "Blue-Feathered Branchsword",
+      "Red-Feathered Branchsword",
+      "Sacrifical Axe",
+      "Sacrificial Axe",
+      "Twinbird Kite Shield"
+    ],
+    "coords": {
+      "x": 36.57,
+      "y": 64.11,
+      "map": "m60_42_38_00"
+    },
+    "hp": 2079,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:draconic-tree-sentinel",
+    "name": "Draconic Tree Sentinel",
+    "campaign": "base",
+    "region": "Capital Outskirts",
+    "location": "Capital Rampart",
+    "grace": "Auriza Hero's Grave",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "28,080 Runes",
+      "50,000 Runes",
+      "Dragon Greatclaw",
+      "Dragonclaw Shield",
+      "Malformed Dragon Set"
+    ],
+    "coords": {
+      "x": 42.95,
+      "y": 30.07,
+      "map": null
+    },
+    "hp": 8398,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:onyx-lord",
+    "name": "Onyx Lord",
+    "campaign": "base",
+    "region": "Capital Outskirts",
+    "location": "Sealed Tunnel",
+    "grace": "Behind Caria Manor",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "16,000 Runes",
+      "16000 Runes",
+      "3,600 Runes",
+      "Meteorite",
+      "Onyx Lord's Greatsword"
+    ],
+    "coords": {
+      "x": 21.89,
+      "y": 35.26,
+      "map": "m60_36_50_00"
+    },
+    "hp": 755,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:astel",
+    "name": "Astel, Naturalborn of the Void",
+    "campaign": "base",
+    "region": "Consecrated Snowfield",
+    "location": "Yelough Anix Tunnel",
+    "grace": "Grand Cloister",
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "120,000 Runes",
+      "120000 Runes",
+      "80,000 Runes",
+      "Meteorite of Astel",
+      "Remembrance of the Naturalborn"
+    ],
+    "coords": {
+      "x": 14.9,
+      "y": 58.51,
+      "map": null
+    },
+    "hp": 2708,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:death-rite-bird",
+    "name": "Death Rite Bird",
+    "campaign": "base",
+    "region": "Consecrated Snowfield",
+    "location": "Mountaintops of the Giants",
+    "grace": "Gate Town North",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "15,000 Runes",
+      "18,000 Runes",
+      "220,000 Runes",
+      "230,000 Runes",
+      "7,800 Runes",
+      "77,000 Runes",
+      "Ancient Death Rancor",
+      "Ash of War: Ghostflame Call",
+      "Death Ritual Spear",
+      "Death' Poker",
+      "Death's Poker",
+      "Explosive Ghostflame"
+    ],
+    "coords": {
+      "x": 20.06,
+      "y": 47.18,
+      "map": "m60_36_45_00"
+    },
+    "hp": 2447,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:theodorix",
+    "name": "Great Wyrm Theodorix",
+    "campaign": "base",
+    "region": "Consecrated Snowfield",
+    "location": "Mountaintops of the Giants",
+    "grace": "Cave of the Forlorn",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "180,000 Runes",
+      "Dragon Heart",
+      "Dragon Heart x3"
+    ],
+    "coords": {
+      "x": 54.99,
+      "y": 20.61,
+      "map": "m60_50_56_00"
+    },
+    "hp": 3561,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:putrid-grave-warden-duelist",
+    "name": "Putrid Grave Warden Duelist",
+    "campaign": "base",
+    "region": "Consecrated Snowfield",
+    "location": "Consecrated Snowfield Catacombs",
+    "grace": "Consecrated Snowfield Catacombs",
+    "tier": "dungeon",
+    "requiredForEnding": false,
+    "drops": [
+      "78,000 Runes",
+      "Great Grave Glovewort",
+      "Rotten Gravekeeper Cloak"
+    ],
+    "coords": {
+      "x": 55.53,
+      "y": 24.7,
+      "map": null
+    },
+    "hp": 8800,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:misbegotten-crusader",
+    "name": "Misbegotten Crusader",
+    "campaign": "base",
+    "region": "Consecrated Snowfield",
+    "location": "Cave of the Forlorn",
+    "grace": "Cave of the Forlorn",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "93,000 Runes",
+      "93000 Runes",
+      "Golden Order Greatsword",
+      "Multilayered Ring of Light"
+    ],
+    "coords": {
+      "x": 54.66,
+      "y": 19.66,
+      "map": null
+    },
+    "hp": 664,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:nights-cavalry",
+    "name": "Night's Cavalry",
+    "campaign": "base",
+    "region": "Consecrated Snowfield",
+    "location": "Inner Consecrated Snowfield",
+    "grace": "Agheel Lake North",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "10,000 Runes",
+      "10000 Runes",
+      "2,400 Runes",
+      "2400 Runes",
+      "3,400 Runes",
+      "3400 Runes",
+      "36000 Runes",
+      "42000 Runes",
+      "5,600 Runes",
+      "5600 Runes",
+      "8,500 Runes",
+      "84000 Runes",
+      "8500 Runes",
+      "Ash of War: Barricade Shield",
+      "Ash of War: Giant Hunt",
+      "Ash of War: Ice Spear",
+      "Ash of War: Phantom Slash",
+      "Ash of War: Poison Moth Flight",
+      "Ash of War: Repeating Thrust",
+      "Ash of War: Shared Order",
+      "Ash of War:Bloodhound's Step",
+      "Night's Calvary Set",
+      "Nightrider Flail",
+      "Nightrider Glaive"
+    ],
+    "coords": {
+      "x": 38.44,
+      "y": 67.98,
+      "map": "m60_43_37_00"
+    },
+    "hp": 1006,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:stray-mimic-tear",
+    "name": "Stray Mimic Tear",
+    "campaign": "base",
+    "region": "Consecrated Snowfield",
+    "location": "Hidden Path to the Haligtree",
+    "grace": null,
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "Blackflame Monk Amon",
+      "Deathroot"
+    ],
+    "coords": {
+      "x": -88.65,
+      "y": 1276.79,
+      "map": "m30_20_00_00"
+    },
+    "hp": 1551,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:placidusax",
+    "name": "Dragonlord Placidusax",
+    "campaign": "base",
+    "region": "Crumbling Farum Azula",
+    "location": "Beside the Great Bridge",
+    "grace": "Beside the Great Bridge",
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "280,000 Runes",
+      "280000 Runes",
+      "Remembrance of the Dragonlord"
+    ],
+    "coords": {
+      "x": 81.02,
+      "y": 42.93,
+      "map": null
+    },
+    "hp": 3782,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:maliketh",
+    "name": "Maliketh, the Black Blade",
+    "campaign": "base",
+    "region": "Crumbling Farum Azula",
+    "location": "Crumbling Farum Azula",
+    "grace": "Beside the Great Bridge",
+    "tier": "remembrance",
+    "requiredForEnding": true,
+    "drops": [
+      "220,000 Runes",
+      "N/A",
+      "Other Drops",
+      "Remembrance of the Black Blade"
+    ],
+    "coords": {
+      "x": 83.38,
+      "y": 42.99,
+      "map": null
+    },
+    "hp": 2444,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:beastmen-of-farum-azula",
+    "name": "Beastmen of Farum Azula",
+    "campaign": "base",
+    "region": "Crumbling Farum Azula",
+    "location": "Crumbling Farum Azula",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 36.15,
+      "y": 104.71,
+      "map": "m31_10_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:godskin-duo",
+    "name": "Godskin Duo",
+    "campaign": "base",
+    "region": "Crumbling Farum Azula",
+    "location": "Dragon Temple Altar",
+    "grace": "Dragon Temple Transept",
+    "tier": "major",
+    "requiredForEnding": true,
+    "drops": [
+      "170,000 Runes",
+      "170000 Runes",
+      "Ash of War: Black Flame Tornado",
+      "Smithing-Stone Miner's Bell Bearing (4)",
+      "Smithing-Stone Miner's Bell Bearing [4]"
+    ],
+    "coords": {
+      "x": 80.84,
+      "y": 42.2,
+      "map": null
+    },
+    "hp": 2033,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:fortissax",
+    "name": "Lichdragon Fortissax",
+    "campaign": "base",
+    "region": "Deeproot Depths",
+    "location": "Deeproot Depths",
+    "grace": "Prince of Death's Throne",
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "90,000 Runes",
+      "90000 Runes",
+      "Remembrance of the Lichdragon"
+    ],
+    "coords": {
+      "x": 41.75,
+      "y": 30.38,
+      "map": null
+    },
+    "hp": 3128,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:fia-s-champion-sorcerer-rogier-lionel-the-lionhearted",
+    "name": "Fia's Champion & Sorcerer Rogier & Lionel the Lionhearted",
+    "campaign": "base",
+    "region": "Deeproot Depths",
+    "location": "Deeproot Depths",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "40,000 Runes",
+      "40000 Runes",
+      "Fia's Mist"
+    ],
+    "coords": null,
+    "hp": 1551,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:siluria",
+    "name": "Crucible Knight Siluria",
+    "campaign": "base",
+    "region": "Deeproot Depths",
+    "location": "Nokron, Eternal City",
+    "grace": "The Nameless Eternal City",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "25,000 Runes",
+      "Siluria's Tree"
+    ],
+    "coords": {
+      "x": -908,
+      "y": 99.5,
+      "map": "m12_03_00_00"
+    },
+    "hp": 840,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:black-blade-kindred",
+    "name": "Black Blade Kindred",
+    "campaign": "base",
+    "region": "Forbidden Lands",
+    "location": "Mountaintops of the Giants",
+    "grace": "Bestial Sanctum",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "60,000 Runes",
+      "88,000 Runes",
+      "Gargoyle's Black Axe",
+      "Gargoyle's Black Blades",
+      "Gargoyle's Black Halberd",
+      "Gargoyle's Blackblade"
+    ],
+    "coords": {
+      "x": 57.19,
+      "y": 52.62,
+      "map": "m60_51_43_00"
+    },
+    "hp": 1745,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:nights-cavalry",
+    "name": "Night's Cavalry",
+    "campaign": "base",
+    "region": "Forbidden Lands",
+    "location": "Forbidden Lands",
+    "grace": "Agheel Lake North",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "10,000 Runes",
+      "10000 Runes",
+      "2,400 Runes",
+      "2400 Runes",
+      "3,400 Runes",
+      "3400 Runes",
+      "36000 Runes",
+      "42000 Runes",
+      "5,600 Runes",
+      "5600 Runes",
+      "8,500 Runes",
+      "84000 Runes",
+      "8500 Runes",
+      "Ash of War: Barricade Shield",
+      "Ash of War: Giant Hunt",
+      "Ash of War: Ice Spear",
+      "Ash of War: Phantom Slash",
+      "Ash of War: Poison Moth Flight",
+      "Ash of War: Repeating Thrust",
+      "Ash of War: Shared Order",
+      "Ash of War:Bloodhound's Step",
+      "Night's Calvary Set",
+      "Nightrider Flail",
+      "Nightrider Glaive"
+    ],
+    "coords": {
+      "x": 38.44,
+      "y": 67.98,
+      "map": "m60_43_37_00"
+    },
+    "hp": 1006,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:flying-dragon-greyll",
+    "name": "Flying Dragon Greyll",
+    "campaign": "base",
+    "region": "Greyoll's Dragonbarrow",
+    "location": "Greyoll's Dragonbarrow",
+    "grace": "Farum Greatbridge",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "80,000 Runes",
+      "Dragon Heart"
+    ],
+    "coords": {
+      "x": 58.7,
+      "y": 56.29,
+      "map": null
+    },
+    "hp": 11550,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:battlemage-hugues",
+    "name": "Battlemage Hugues",
+    "campaign": "base",
+    "region": "Greyoll's Dragonbarrow",
+    "location": "Sellia Evergaol",
+    "grace": "Dragonbarrow West",
+    "tier": "evergaol",
+    "requiredForEnding": false,
+    "drops": [
+      "7,800 Runes",
+      "Battlemage Hugues Ashes"
+    ],
+    "coords": {
+      "x": 51.6,
+      "y": 62.28,
+      "map": "m60_49_39_00"
+    },
+    "hp": 4095,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:beastman-of-farum-azula",
+    "name": "Beastman of Farum Azula",
+    "campaign": "base",
+    "region": "Greyoll's Dragonbarrow",
+    "location": "Dragonbarrow Cave",
+    "grace": "Groveside Cave",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "1,000 Runes",
+      "1000 Runes",
+      "65,000 Runes",
+      "Flamedrake Talisman",
+      "Flamedrake Talisman +2",
+      "Flamedrake Talisman 2"
+    ],
+    "coords": {
+      "x": 34.21,
+      "y": 66.3,
+      "map": null
+    },
+    "hp": 1417,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:bell-bearing-hunter",
+    "name": "Bell Bearing Hunter",
+    "campaign": "base",
+    "region": "Greyoll's Dragonbarrow",
+    "location": "Isolated Merchant's Shack",
+    "grace": "Warmaster's Shack",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "2,700 Runes",
+      "20,000 Runes",
+      "2700 Runes",
+      "50,000 Runes",
+      "6,000 Runes",
+      "Bone Peddler's Bell Bearing",
+      "Gravity Stone Peddler's Bell Bearing",
+      "Meat Peddler's Bell Bearing",
+      "Medicine Peddler's Bell Bearing"
+    ],
+    "coords": {
+      "x": 35.47,
+      "y": 63.77,
+      "map": "m60_42_38_00"
+    },
+    "hp": 1507,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:black-blade-kindred",
+    "name": "Black Blade Kindred",
+    "campaign": "base",
+    "region": "Greyoll's Dragonbarrow",
+    "location": "Bestial Sanctum",
+    "grace": "Bestial Sanctum",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "60,000 Runes",
+      "88,000 Runes",
+      "Gargoyle's Black Axe",
+      "Gargoyle's Black Blades",
+      "Gargoyle's Black Halberd",
+      "Gargoyle's Blackblade"
+    ],
+    "coords": {
+      "x": 57.19,
+      "y": 52.62,
+      "map": "m60_51_43_00"
+    },
+    "hp": 1745,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:cleanrot-knight",
+    "name": "Cleanrot Knight",
+    "campaign": "base",
+    "region": "Greyoll's Dragonbarrow",
+    "location": "Abandoned Cave",
+    "grace": "Stillwater Cave",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "3,300 Runes",
+      "7,000 Runes",
+      "Cleanrot Knight's Sword",
+      "Gold Scarab",
+      "Winged Sword Insignia"
+    ],
+    "coords": {
+      "x": 28.98,
+      "y": 61.34,
+      "map": null
+    },
+    "hp": 437,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:godskin-apostle",
+    "name": "Godskin Apostle",
+    "campaign": "base",
+    "region": "Greyoll's Dragonbarrow",
+    "location": "Divine Tower of Caelid",
+    "grace": "Windmill Village",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "14,000 Runes",
+      "70,000 Runes",
+      "70k Runes",
+      "94,000 Runes",
+      "Black Flame Ritual",
+      "Godskin Apostle Bracers",
+      "Godskin Apostle Hood",
+      "Godskin Apostle Robe",
+      "Godskin Apostle Set",
+      "Godskin Apostle Trousers",
+      "Godskin Peeler",
+      "Godskin Swaddling Cloth",
+      "Scouring Black Flame"
+    ],
+    "coords": {
+      "x": 35.03,
+      "y": 23.54,
+      "map": "m60_42_55_00"
+    },
+    "hp": 2033,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:nights-cavalry",
+    "name": "Night's Cavalry",
+    "campaign": "base",
+    "region": "Greyoll's Dragonbarrow",
+    "location": "Lenne's Rise",
+    "grace": "Agheel Lake North",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "10,000 Runes",
+      "10000 Runes",
+      "2,400 Runes",
+      "2400 Runes",
+      "3,400 Runes",
+      "3400 Runes",
+      "36000 Runes",
+      "42000 Runes",
+      "5,600 Runes",
+      "5600 Runes",
+      "8,500 Runes",
+      "84000 Runes",
+      "8500 Runes",
+      "Ash of War: Barricade Shield",
+      "Ash of War: Giant Hunt",
+      "Ash of War: Ice Spear",
+      "Ash of War: Phantom Slash",
+      "Ash of War: Poison Moth Flight",
+      "Ash of War: Repeating Thrust",
+      "Ash of War: Shared Order",
+      "Ash of War:Bloodhound's Step",
+      "Night's Calvary Set",
+      "Nightrider Flail",
+      "Nightrider Glaive"
+    ],
+    "coords": {
+      "x": 38.44,
+      "y": 67.98,
+      "map": "m60_43_37_00"
+    },
+    "hp": 1006,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:putrid-tree-spirit",
+    "name": "Putrid Tree Spirit",
+    "campaign": "base",
+    "region": "Greyoll's Dragonbarrow",
+    "location": "War-Dead Catacombs",
+    "grace": "War-Dead Catacombs",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "11,193 Runes",
+      "26,460 Runes",
+      "64,000 Runes",
+      "67,200 Runes",
+      "67,200 Runes ",
+      "Golden Seed",
+      "Redmane Knight Ogha Ashes",
+      "Redmane Knight Ogha Spirit Ashes"
+    ],
+    "coords": {
+      "x": 58.54,
+      "y": 58.17,
+      "map": null
+    },
+    "hp": 2713,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:radagon",
+    "name": "Radagon of the Golden Order / Elden Beast",
+    "campaign": "base",
+    "region": "Leyndell, Ashen Capital",
+    "location": "Fractured Marika",
+    "grace": null,
+    "tier": "remembrance",
+    "requiredForEnding": true,
+    "drops": [
+      "500000 Runes",
+      "Elden Remembrance",
+      "N/A"
+    ],
+    "coords": {
+      "x": 213.86,
+      "y": -719.98,
+      "map": "m19_00_00_00"
+    },
+    "hp": 1893,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:godfrey-golden",
+    "name": "Godfrey, First Elden Lord (golden shade)",
+    "campaign": "base",
+    "region": "Leyndell, Ashen Capital",
+    "location": "Elden Throne",
+    "grace": "West Capital Rampart",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "80,000 Runes",
+      "Talisman Pouch"
+    ],
+    "coords": null,
+    "hp": 1721,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:gideon",
+    "name": "Sir Gideon Ofnir, the All-Knowing",
+    "campaign": "base",
+    "region": "Leyndell, Ashen Capital",
+    "location": "Erdtree Sanctuary",
+    "grace": "Erdtree Sanctuary",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "150,000 Runes",
+      "180,000 Runes",
+      "All-Knowing Armor",
+      "All-Knowing Gauntlets",
+      "All-Knowing Greaves",
+      "All-Knowing Helm",
+      "All-Knowing Set",
+      "Scepter of the All-Knowing"
+    ],
+    "coords": {
+      "x": 41.58,
+      "y": 35.32,
+      "map": null
+    },
+    "hp": 1551,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:morgott",
+    "name": "Morgott, the Omen King",
+    "campaign": "base",
+    "region": "Leyndell, Royal Capital",
+    "location": "Elden Throne",
+    "grace": "Queen's Bedchamber",
+    "tier": "great-rune",
+    "requiredForEnding": true,
+    "drops": [
+      "120,000 Runes",
+      "Morgott's Great Rune",
+      "Remembrance of the Omen King",
+      "Talisman Pouch"
+    ],
+    "coords": {
+      "x": 43.48,
+      "y": 35.97,
+      "map": null
+    },
+    "hp": 2521,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:fell-twin-x2",
+    "name": "Fell Twin(x2)",
+    "campaign": "base",
+    "region": "Leyndell, Royal Capital",
+    "location": "Divine Tower of East Altus",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "29,000 Runes",
+      "Omenkiller Rollo"
+    ],
+    "coords": null,
+    "hp": null,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:godfrey-golden",
+    "name": "Godfrey, First Elden Lord (golden shade)",
+    "campaign": "base",
+    "region": "Leyndell, Royal Capital",
+    "location": "Erdtree Sanctuary",
+    "grace": "West Capital Rampart",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "80,000 Runes",
+      "Talisman Pouch"
+    ],
+    "coords": null,
+    "hp": 1721,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:mohg-omen",
+    "name": "Mohg, the Omen",
+    "campaign": "base",
+    "region": "Leyndell, Royal Capital",
+    "location": "Cathedral of the Forsaken",
+    "grace": "Forsaken Depths",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "100,000 Runes",
+      "Bloodflame Talons"
+    ],
+    "coords": {
+      "x": 43.55,
+      "y": 32.4,
+      "map": null
+    },
+    "hp": 2553,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:esgar-priest-of-blood",
+    "name": "Esgar, Priest of Blood",
+    "campaign": "base",
+    "region": "Leyndell, Royal Capital",
+    "location": "Leyndell Catacombs",
+    "grace": "Leyndell Catacombs",
+    "tier": "dungeon",
+    "requiredForEnding": false,
+    "drops": [
+      "30,000 Runes",
+      "30000 Runes",
+      "Lord of Blood's Exultation"
+    ],
+    "coords": {
+      "x": 40.9,
+      "y": 34.56,
+      "map": null
+    },
+    "hp": 7682,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:beast-of-farum-azula",
+    "name": "Beast Of Farum Azula",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Groveside Cave",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "1000 Runes",
+      "Flamedrake Talisman"
+    ],
+    "coords": null,
+    "hp": null,
+    "sources": [
+      "checklists/bosses"
+    ]
+  },
+  {
+    "id": "boss:burial-tree-watchdog",
+    "name": "Burial Tree Watchdog",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Limgrave, Stormfoot Catacombs",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "800 Runes",
+      "Ash of War: Glintsword Arch"
+    ],
+    "coords": null,
+    "hp": null,
+    "sources": [
+      "checklists/bosses"
+    ]
+  },
+  {
+    "id": "boss:demi-human-chiefs",
+    "name": "Demi-Human Chiefs",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Coastal Cave",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "1,200 Runes",
+      "900 Runes",
+      "Sewing Needle",
+      "Tailoring Tools"
+    ],
+    "coords": {
+      "x": 30.94,
+      "y": -29.33,
+      "map": "m31_15_00_00"
+    },
+    "hp": 534,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:adula",
+    "name": "Glintstone Dragon Adula",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Limgrave",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "120,000 Runes",
+      "3x Dragon Heart",
+      "Adula's Moonblade",
+      "Dragon Heart",
+      "No Runes"
+    ],
+    "coords": {
+      "x": 16.82,
+      "y": 55.28,
+      "map": null
+    },
+    "hp": 1639,
+    "sources": [
+      "engine-markers"
+    ]
+  },
+  {
+    "id": "boss:grave-warden-duelist",
+    "name": "Grave Warden Duelist",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Murkwater Catacombs",
+    "grace": "Murkwater Catacombs",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "1,700 Runes",
+      "15,000 Runes",
+      "Banished Knight Engvall Ashes",
+      "Soldjars of Fortune Ashes"
+    ],
+    "coords": {
+      "x": 37.61,
+      "y": 63.7,
+      "map": null
+    },
+    "hp": 1280,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:lion-guardian",
+    "name": "Lion Guardian",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Stormveil Castle",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "2350"
+    ],
+    "coords": null,
+    "hp": null,
+    "sources": [
+      "checklists/bosses"
+    ]
+  },
+  {
+    "id": "hunt:soldier-of-godrick",
+    "name": "Soldier of Godrick",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Stranded Graveyard",
+    "grace": "Stranded Graveyard",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "2000 Runes (NG+1)",
+      "400 Runes"
+    ],
+    "coords": {
+      "x": 36.38,
+      "y": 70.09,
+      "map": null
+    },
+    "hp": 384,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:darriwil",
+    "name": "Bloodhound Knight Darriwil",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Forlorn Hound Evergaol",
+    "grace": "Agheel Lake South",
+    "tier": "evergaol",
+    "requiredForEnding": false,
+    "drops": [
+      "1,900 Runes",
+      "1900 Runes",
+      "3,600 Runes",
+      "Bloodhound's Fang",
+      "Cerulean Amber Medallion"
+    ],
+    "coords": {
+      "x": 40.08,
+      "y": 73.26,
+      "map": "m60_44_35_00"
+    },
+    "hp": 438,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:crucible-knight",
+    "name": "Crucible Knight",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Stormhill Evergaol",
+    "grace": "Stormhill Shack",
+    "tier": "evergaol",
+    "requiredForEnding": false,
+    "drops": [
+      "1500 Runes",
+      "2100 Runes",
+      "Aspects of the Crucible: Horns",
+      "Aspects of the Crucible: Tail"
+    ],
+    "coords": {
+      "x": 34.58,
+      "y": 66.46,
+      "map": "m60_42_37_00"
+    },
+    "hp": 840,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:guardian-golem",
+    "name": "Guardian Golem",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Highroad Cave",
+    "grace": "Highroad Cave",
+    "tier": "dungeon",
+    "requiredForEnding": false,
+    "drops": [
+      "1,700 Runes",
+      "1700 Runes",
+      "Blue Dancer Charm"
+    ],
+    "coords": {
+      "x": 38.51,
+      "y": 60.78,
+      "map": null
+    },
+    "hp": 5236,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:stonedigger-troll",
+    "name": "Stonedigger Troll",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Limgrave Tunnels",
+    "grace": "Limgrave Tunnels",
+    "tier": "dungeon",
+    "requiredForEnding": false,
+    "drops": [
+      "1,800 Runes",
+      "9,600 Runes",
+      "Great Club",
+      "Roar Medallion"
+    ],
+    "coords": {
+      "x": 35.61,
+      "y": 67.09,
+      "map": null
+    },
+    "hp": 1135,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:beastman-of-farum-azula",
+    "name": "Beastman of Farum Azula",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Groveside Cave",
+    "grace": "Groveside Cave",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "1,000 Runes",
+      "1000 Runes",
+      "65,000 Runes",
+      "Flamedrake Talisman",
+      "Flamedrake Talisman +2",
+      "Flamedrake Talisman 2"
+    ],
+    "coords": {
+      "x": 34.21,
+      "y": 66.3,
+      "map": null
+    },
+    "hp": 1417,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:bell-bearing-hunter",
+    "name": "Bell Bearing Hunter",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Limgrave",
+    "grace": "Deathtouched Catacombs",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "2,700 Runes",
+      "20,000 Runes",
+      "2700 Runes",
+      "50,000 Runes",
+      "6,000 Runes",
+      "Bone Peddler's Bell Bearing",
+      "Gravity Stone Peddler's Bell Bearing",
+      "Meat Peddler's Bell Bearing",
+      "Medicine Peddler's Bell Bearing"
+    ],
+    "coords": {
+      "x": 35.48,
+      "y": 63.78,
+      "map": null
+    },
+    "hp": 1507,
+    "sources": [
+      "engine-markers"
+    ]
+  },
+  {
+    "id": "boss:bell-bearing-hunter",
+    "name": "Bell Bearing Hunter",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Warmaster's Shack",
+    "grace": "Warmaster's Shack",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "2,700 Runes",
+      "20,000 Runes",
+      "2700 Runes",
+      "50,000 Runes",
+      "6,000 Runes",
+      "Bone Peddler's Bell Bearing",
+      "Gravity Stone Peddler's Bell Bearing",
+      "Meat Peddler's Bell Bearing",
+      "Medicine Peddler's Bell Bearing"
+    ],
+    "coords": {
+      "x": 35.47,
+      "y": 63.77,
+      "map": "m60_42_38_00"
+    },
+    "hp": 1507,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:black-knife-assassin",
+    "name": "Black Knife Assassin",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Deathtouched Catacombs",
+    "grace": "Deathtouched Catacombs",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "1, 600 Runes",
+      "1,600 Runes",
+      "10,800 Runes",
+      "11,339 Runes",
+      "4,200 Runes",
+      "9,000 Runes",
+      "?? Runes",
+      "Assassin's Cerulean Dagger",
+      "Assassin's Crimson Dagger",
+      "Black Knife",
+      "Black Knifeprint",
+      "Concealing Veil",
+      "Sage's Cave"
+    ],
+    "coords": {
+      "x": 30.98,
+      "y": 30.42,
+      "map": "m60_40_52_00"
+    },
+    "hp": 731,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:deathbird",
+    "name": "Deathbird",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Limgrave",
+    "grace": "Warmaster's Shack",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "2,800 Runes",
+      "29,000 Runes",
+      "3,900 Runes",
+      "6,600 Runes",
+      "Blue-Feathered Branchsword",
+      "Red-Feathered Branchsword",
+      "Sacrifical Axe",
+      "Sacrificial Axe",
+      "Twinbird Kite Shield"
+    ],
+    "coords": {
+      "x": 36.57,
+      "y": 64.11,
+      "map": "m60_42_38_00"
+    },
+    "hp": 2079,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:erdtree-avatar",
+    "name": "Erdtree Avatar",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Limgrave",
+    "grace": null,
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "10,062 Runes",
+      "10,621 Runes",
+      "3,600 Runes",
+      "5,800 Runes",
+      "70,000 Runes",
+      "9,600 Runes",
+      "Cerulean Crystal Tear",
+      "Crimson Bubbletear",
+      "Crimsonburst Crystal Tear",
+      "Flame-Shrouding Cracked Tear",
+      "Greenburst Crystal Tear",
+      "Holy-Shrouding Cracked Tear",
+      "Lightning-Shrouding Cracked Tear",
+      "Lord's Rune",
+      "Magic-Shrouding Cracked Tear",
+      "Opaline Bubbletear",
+      "Ruptured Crystal Tear",
+      "Staff of the Avatar"
+    ],
+    "coords": {
+      "x": 13.83,
+      "y": 52.16,
+      "map": null
+    },
+    "hp": 1745,
+    "sources": [
+      "engine-markers"
+    ]
+  },
+  {
+    "id": "boss:erdtree-burial-watchdog",
+    "name": "Erdtree Burial Watchdog",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Stormfoot Catacombs",
+    "grace": "Stormfoot Catacombs",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "1,300 Runes",
+      "12,000 Runes",
+      "2,400 Runes",
+      "3,200 Runes",
+      "7,400 Runes",
+      "Demi-Human Ashes",
+      "Glovewort Picker's Bell Bearing (1)",
+      "Kaiden Sellsword Ashes",
+      "Mad Pumpkin Head Ashes",
+      "Noble Sorcerer Ashes"
+    ],
+    "coords": {
+      "x": 42.36,
+      "y": 75.88,
+      "map": null
+    },
+    "hp": 1052,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:agheel",
+    "name": "Flying Dragon Agheel",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Agheel Lake",
+    "grace": "Agheel Lake North",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "5,000 Runes",
+      "5000 Runes",
+      "Dragon Heart"
+    ],
+    "coords": {
+      "x": 37.1,
+      "y": 68.89,
+      "map": "m60_43_36_00"
+    },
+    "hp": 1639,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:mad-pumpkin-head",
+    "name": "Mad Pumpkin Head",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Waypoint Ruins",
+    "grace": "Agheel Lake South",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "1,100 Runes",
+      "291 Runes",
+      "6,300 Runes",
+      "6300 Runes",
+      "Pumpkin Helm",
+      "Sanctuary Stone"
+    ],
+    "coords": {
+      "x": 40.41,
+      "y": 69.22,
+      "map": "m60_44_36_10"
+    },
+    "hp": 582,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:nights-cavalry",
+    "name": "Night's Cavalry",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Limgrave",
+    "grace": "Agheel Lake North",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "10,000 Runes",
+      "10000 Runes",
+      "2,400 Runes",
+      "2400 Runes",
+      "3,400 Runes",
+      "3400 Runes",
+      "36000 Runes",
+      "42000 Runes",
+      "5,600 Runes",
+      "5600 Runes",
+      "8,500 Runes",
+      "84000 Runes",
+      "8500 Runes",
+      "Ash of War: Barricade Shield",
+      "Ash of War: Giant Hunt",
+      "Ash of War: Ice Spear",
+      "Ash of War: Phantom Slash",
+      "Ash of War: Poison Moth Flight",
+      "Ash of War: Repeating Thrust",
+      "Ash of War: Shared Order",
+      "Ash of War:Bloodhound's Step",
+      "Night's Calvary Set",
+      "Nightrider Flail",
+      "Nightrider Glaive"
+    ],
+    "coords": {
+      "x": 38.44,
+      "y": 67.98,
+      "map": "m60_43_37_00"
+    },
+    "hp": 1006,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:patches",
+    "name": "Patches",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Murkwater Cave",
+    "grace": "Limgrave Tunnels",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "Ballista Bolt",
+      "Buckler",
+      "Bull-Goat Gauntlets",
+      "Bull-Goat Helm",
+      "Calm Down!",
+      "Parrying Dagger"
+    ],
+    "coords": {
+      "x": 36.47,
+      "y": 66.66,
+      "map": null
+    },
+    "hp": 1551,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:tibia-mariner",
+    "name": "Tibia Mariner",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Summonwater Village",
+    "grace": "Summonwater Village Outskirts",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "2400 Runes",
+      "4700 Runes",
+      "Deathroot",
+      "Helphen's Steeple",
+      "Skeletal Bandit Ashes",
+      "Skeletal Militiaman Ashes",
+      "Tibia's Cookbook",
+      "Tibia's Summons"
+    ],
+    "coords": {
+      "x": 42.35,
+      "y": 62.18,
+      "map": "m60_45_39_10"
+    },
+    "hp": 1918,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:ulcerated-tree-spirit",
+    "name": "Ulcerated Tree Spirit",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Fringefolk Hero's Grave",
+    "grace": "Stranded Graveyard",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "15,000 Runes",
+      "18,000 Runes",
+      "48,000 Runes",
+      "Banished Knight Oleg",
+      "Cerulean Hidden Tear",
+      "Glovewort Picker's Bell Bearing (2)",
+      "Golden Seed",
+      "Leaden Hardtear"
+    ],
+    "coords": {
+      "x": 22.85,
+      "y": 26.31,
+      "map": "m60_37_54_00"
+    },
+    "hp": 2713,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:rick-soldier-of-godrick",
+    "name": "Rick (Soldier of Godrick)",
+    "campaign": "base",
+    "region": "Limgrave",
+    "location": "Limgrave",
+    "grace": null,
+    "tier": "mini",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": null,
+    "hp": null,
+    "sources": [
+      "armory-bosses"
+    ]
+  },
+  {
+    "id": "boss:lansseax",
+    "name": "Ancient Dragon Lansseax",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Liurnia of the Lakes",
+    "grace": "Ruin-Strewn Precipice",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "60,000 Runes",
+      "60.000 Runes",
+      "Lansseax's Glaive"
+    ],
+    "coords": {
+      "x": 24.11,
+      "y": 32.65,
+      "map": null
+    },
+    "hp": 1876,
+    "sources": [
+      "engine-markers"
+    ]
+  },
+  {
+    "id": "boss:crucible-ordovis",
+    "name": "Crucible Knight Ordovis / Crucible Knight",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Liurnia of the Lakes",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 41.65,
+      "y": 29.65,
+      "map": null
+    },
+    "hp": 840,
+    "sources": [
+      "engine-markers"
+    ]
+  },
+  {
+    "id": "hunt:crystalian-spear-crystalian-ringblade",
+    "name": "Crystalian (Ringblade) / Crystalian (Spear)",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Liurnia of the Lakes",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 33.46,
+      "y": 30.82,
+      "map": null
+    },
+    "hp": null,
+    "sources": [
+      "engine-markers"
+    ]
+  },
+  {
+    "id": "boss:crystalian-duo",
+    "name": "Crystalian Duo",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Academy Crystal Cave",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "1800 Runes",
+      "3,000 Runes",
+      "3,300 Runes",
+      "3000 Runes",
+      "3300 Runes",
+      "7000 Runes",
+      "9,000 Runes",
+      "Crystal Release",
+      "Crystal Torrent",
+      "Smithing-Stone Miner's Bell Bearing (1)",
+      "Somberstone Miner's Bell Bearing (2)"
+    ],
+    "coords": {
+      "x": 15,
+      "y": 110.76,
+      "map": "m32_02_00_00"
+    },
+    "hp": 352,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:crystalian-duo",
+    "name": "Crystalian Duo",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Raya Lucaria Crystal Tunnel",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "1800 Runes",
+      "3,000 Runes",
+      "3,300 Runes",
+      "3000 Runes",
+      "3300 Runes",
+      "7000 Runes",
+      "9,000 Runes",
+      "Crystal Release",
+      "Crystal Torrent",
+      "Smithing-Stone Miner's Bell Bearing (1)",
+      "Somberstone Miner's Bell Bearing (2)"
+    ],
+    "coords": {
+      "x": 15,
+      "y": 110.76,
+      "map": "m32_02_00_00"
+    },
+    "hp": 352,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:crystalians",
+    "name": "Crystalians",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Raya Lucaria Crystal Tunnel, Academy Crystal Cave, Altus Tunnel",
+    "grace": "Raya Lucaria Crystal Tunnel",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "1800 Runes",
+      "3,000 Runes",
+      "3,300 Runes",
+      "3000 Runes",
+      "3300 Runes",
+      "7000 Runes",
+      "9,000 Runes",
+      "Crystal Release",
+      "Crystal Torrent",
+      "Smithing-Stone Miner's Bell Bearing (1)",
+      "Somberstone Miner's Bell Bearing (2)"
+    ],
+    "coords": null,
+    "hp": 1595,
+    "sources": [
+      "bosses-fextralife"
+    ]
+  },
+  {
+    "id": "hunt:glintstone-dragon-smarag",
+    "name": "Glintstone Dragon Smarag",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Temple Quarter",
+    "grace": "Crystalline Woods",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "14,000 Runes",
+      "14,699 Runes",
+      "Dragon Heart"
+    ],
+    "coords": {
+      "x": 15.36,
+      "y": 47.06,
+      "map": "m60_34_45_00"
+    },
+    "hp": 1639,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:magma-wyrm-makar",
+    "name": "Magma Wyrm Makar",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Ruin-Strewn Precipice",
+    "grace": "Ruin-Strewn Precipice Overlook",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "24,000 Runes",
+      "24000 Runes",
+      "72000 Runes",
+      "Dragon Heart",
+      "Magma Wyrm's Scalesword"
+    ],
+    "coords": {
+      "x": 22.62,
+      "y": 34.35,
+      "map": null
+    },
+    "hp": 2968,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:royal-knight-loretta",
+    "name": "Royal Knight Loretta",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Caria Manor",
+    "grace": "Manor Upper Level",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "10,000 Runes",
+      "Ash of War: Loretta's Slash",
+      "Loretta's Greatbow"
+    ],
+    "coords": {
+      "x": 17.99,
+      "y": 34.41,
+      "map": "m60_35_50_00"
+    },
+    "hp": 1860,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:spiritcaller-snail",
+    "name": "Spiritcaller Snail",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Road's End Catacombs",
+    "grace": "Village of the Albinaurics (Site of Grace)",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "170000 Runes",
+      "3,000 Runes",
+      "3000 Runes",
+      "70,000 Runes",
+      "Ash of War: Black Flame Tornado",
+      "Black Flame Ritual",
+      "Glintstone Sorcerer Ashes",
+      "Godskin Swaddling Cloth",
+      "Haligdrake Talisman +1",
+      "Smithing-Stone Miner's Bell Bearing [4]"
+    ],
+    "coords": {
+      "x": 14.28,
+      "y": 52.21,
+      "map": null
+    },
+    "hp": 380,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:adan-theif-of-fire",
+    "name": "Adan, Theif of Fire",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Liurnia of the Lakes",
+    "grace": null,
+    "tier": "evergaol",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": null,
+    "hp": null,
+    "sources": [
+      "armory-bosses"
+    ]
+  },
+  {
+    "id": "hunt:adan-thief-of-fire",
+    "name": "Adan, Thief of Fire",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Malefactor's Evergaol",
+    "grace": "Liurnia Lake Shore",
+    "tier": "evergaol",
+    "requiredForEnding": false,
+    "drops": [
+      "3,800 Runes",
+      "3.800 Runes",
+      "Flame of the Fell God"
+    ],
+    "coords": null,
+    "hp": 3758,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:darriwil",
+    "name": "Bloodhound Knight Darriwil",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Lakeside Crystal Cave",
+    "grace": "Agheel Lake South",
+    "tier": "evergaol",
+    "requiredForEnding": false,
+    "drops": [
+      "1,900 Runes",
+      "1900 Runes",
+      "3,600 Runes",
+      "Bloodhound's Fang",
+      "Cerulean Amber Medallion"
+    ],
+    "coords": {
+      "x": 40.08,
+      "y": 73.26,
+      "map": "m60_44_35_00"
+    },
+    "hp": 438,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:bols-carian-knight",
+    "name": "Bols, Carian Knight",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Cuckoo's Evergaol",
+    "grace": "Revenger's Shack",
+    "tier": "evergaol",
+    "requiredForEnding": false,
+    "drops": [
+      "4,600 Runes",
+      "Greatblade Phalanx"
+    ],
+    "coords": {
+      "x": 12.92,
+      "y": 47.84,
+      "map": "m60_33_45_00"
+    },
+    "hp": 5109,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:onyx-lord",
+    "name": "Onyx Lord",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Royal Grave Evergaol",
+    "grace": "Behind Caria Manor",
+    "tier": "evergaol",
+    "requiredForEnding": false,
+    "drops": [
+      "16,000 Runes",
+      "16000 Runes",
+      "3,600 Runes",
+      "Meteorite",
+      "Onyx Lord's Greatsword"
+    ],
+    "coords": {
+      "x": 21.89,
+      "y": 35.26,
+      "map": "m60_36_50_00"
+    },
+    "hp": 755,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:cemetery-shade",
+    "name": "Cemetery Shade",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Black Knife Catacombs",
+    "grace": "Tombsward Catacombs",
+    "tier": "dungeon",
+    "requiredForEnding": false,
+    "drops": [
+      "2,200 Runes",
+      "2200 Runes",
+      "3,500 Runes",
+      "6,800 Runes",
+      "Kindred of Rot Ashes",
+      "Lhutel the Headless",
+      "Twinsage Sorcerer Ashes",
+      "xx Runes"
+    ],
+    "coords": {
+      "x": 37.83,
+      "y": 76.2,
+      "map": null
+    },
+    "hp": 305,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:bell-bearing-hunter",
+    "name": "Bell Bearing Hunter",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Church of Vows",
+    "grace": "Warmaster's Shack",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "2,700 Runes",
+      "20,000 Runes",
+      "2700 Runes",
+      "50,000 Runes",
+      "6,000 Runes",
+      "Bone Peddler's Bell Bearing",
+      "Gravity Stone Peddler's Bell Bearing",
+      "Meat Peddler's Bell Bearing",
+      "Medicine Peddler's Bell Bearing"
+    ],
+    "coords": {
+      "x": 35.47,
+      "y": 63.77,
+      "map": "m60_42_38_00"
+    },
+    "hp": 1507,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:bell-bearing-hunter",
+    "name": "Bell Bearing Hunter",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Liurnia of the Lakes",
+    "grace": "Raya Lucaria Crystal Tunnel",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "2,700 Runes",
+      "20,000 Runes",
+      "2700 Runes",
+      "50,000 Runes",
+      "6,000 Runes",
+      "Bone Peddler's Bell Bearing",
+      "Gravity Stone Peddler's Bell Bearing",
+      "Meat Peddler's Bell Bearing",
+      "Medicine Peddler's Bell Bearing"
+    ],
+    "coords": {
+      "x": 22.71,
+      "y": 45.03,
+      "map": null
+    },
+    "hp": 1507,
+    "sources": [
+      "engine-markers"
+    ]
+  },
+  {
+    "id": "boss:black-knife-assassin",
+    "name": "Black Knife Assassin",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Black Knife Catacombs",
+    "grace": "Deathtouched Catacombs",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "1, 600 Runes",
+      "1,600 Runes",
+      "10,800 Runes",
+      "11,339 Runes",
+      "4,200 Runes",
+      "9,000 Runes",
+      "?? Runes",
+      "Assassin's Cerulean Dagger",
+      "Assassin's Crimson Dagger",
+      "Black Knife",
+      "Black Knifeprint",
+      "Concealing Veil",
+      "Sage's Cave"
+    ],
+    "coords": {
+      "x": 30.98,
+      "y": 30.42,
+      "map": "m60_40_52_00"
+    },
+    "hp": 731,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:cleanrot-knight",
+    "name": "Cleanrot Knight",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Stillwater Cave",
+    "grace": "Stillwater Cave",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "3,300 Runes",
+      "7,000 Runes",
+      "Cleanrot Knight's Sword",
+      "Gold Scarab",
+      "Winged Sword Insignia"
+    ],
+    "coords": {
+      "x": 28.98,
+      "y": 61.34,
+      "map": null
+    },
+    "hp": 437,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:deathbird",
+    "name": "Deathbird",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Scenic Isle",
+    "grace": "Warmaster's Shack",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "2,800 Runes",
+      "29,000 Runes",
+      "3,900 Runes",
+      "6,600 Runes",
+      "Blue-Feathered Branchsword",
+      "Red-Feathered Branchsword",
+      "Sacrifical Axe",
+      "Sacrificial Axe",
+      "Twinbird Kite Shield"
+    ],
+    "coords": {
+      "x": 36.57,
+      "y": 64.11,
+      "map": "m60_42_38_00"
+    },
+    "hp": 2079,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:erdtree-avatar",
+    "name": "Erdtree Avatar",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Converted Tower",
+    "grace": "Tombsward Catacombs",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "10,062 Runes",
+      "10,621 Runes",
+      "3,600 Runes",
+      "5,800 Runes",
+      "70,000 Runes",
+      "9,600 Runes",
+      "Cerulean Crystal Tear",
+      "Crimson Bubbletear",
+      "Crimsonburst Crystal Tear",
+      "Flame-Shrouding Cracked Tear",
+      "Greenburst Crystal Tear",
+      "Holy-Shrouding Cracked Tear",
+      "Lightning-Shrouding Cracked Tear",
+      "Lord's Rune",
+      "Magic-Shrouding Cracked Tear",
+      "Opaline Bubbletear",
+      "Ruptured Crystal Tear",
+      "Staff of the Avatar"
+    ],
+    "coords": {
+      "x": 37.27,
+      "y": 76.65,
+      "map": "m60_43_33_00"
+    },
+    "hp": 1745,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:erdtree-avatar",
+    "name": "Erdtree Avatar",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Mausoleum Compound",
+    "grace": "Tombsward Catacombs",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "10,062 Runes",
+      "10,621 Runes",
+      "3,600 Runes",
+      "5,800 Runes",
+      "70,000 Runes",
+      "9,600 Runes",
+      "Cerulean Crystal Tear",
+      "Crimson Bubbletear",
+      "Crimsonburst Crystal Tear",
+      "Flame-Shrouding Cracked Tear",
+      "Greenburst Crystal Tear",
+      "Holy-Shrouding Cracked Tear",
+      "Lightning-Shrouding Cracked Tear",
+      "Lord's Rune",
+      "Magic-Shrouding Cracked Tear",
+      "Opaline Bubbletear",
+      "Ruptured Crystal Tear",
+      "Staff of the Avatar"
+    ],
+    "coords": {
+      "x": 37.27,
+      "y": 76.65,
+      "map": "m60_43_33_00"
+    },
+    "hp": 1745,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:erdtree-burial-watchdog",
+    "name": "Erdtree Burial Watchdog",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Cliffbottom Catacombs",
+    "grace": "Stormfoot Catacombs",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "1,300 Runes",
+      "12,000 Runes",
+      "2,400 Runes",
+      "3,200 Runes",
+      "7,400 Runes",
+      "Demi-Human Ashes",
+      "Glovewort Picker's Bell Bearing (1)",
+      "Kaiden Sellsword Ashes",
+      "Mad Pumpkin Head Ashes",
+      "Noble Sorcerer Ashes"
+    ],
+    "coords": {
+      "x": 42.36,
+      "y": 75.88,
+      "map": null
+    },
+    "hp": 1052,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:grafted-scion",
+    "name": "Grafted Scion",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Chapel of Anticipation",
+    "grace": "The Four Belfries",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "1176 Runes",
+      "12800 Runes (NG+1)",
+      "1283 Runes",
+      "2313 runes-currency-elden-ring-wiki-guide-18 Runes",
+      "3200 Runes",
+      "583 runes-currency-elden-ring-wiki-guide-18 Runes",
+      "Golden Beast Crest Shield",
+      "Larval Tear",
+      "Ornamental Straight Sword"
+    ],
+    "coords": {
+      "x": -41.75,
+      "y": 21.33,
+      "map": "m10_01_00_00"
+    },
+    "hp": 1146,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:nights-cavalry",
+    "name": "Night's Cavalry",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Bellum Church",
+    "grace": "Agheel Lake North",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "10,000 Runes",
+      "10000 Runes",
+      "2,400 Runes",
+      "2400 Runes",
+      "3,400 Runes",
+      "3400 Runes",
+      "36000 Runes",
+      "42000 Runes",
+      "5,600 Runes",
+      "5600 Runes",
+      "8,500 Runes",
+      "84000 Runes",
+      "8500 Runes",
+      "Ash of War: Barricade Shield",
+      "Ash of War: Giant Hunt",
+      "Ash of War: Ice Spear",
+      "Ash of War: Phantom Slash",
+      "Ash of War: Poison Moth Flight",
+      "Ash of War: Repeating Thrust",
+      "Ash of War: Shared Order",
+      "Ash of War:Bloodhound's Step",
+      "Night's Calvary Set",
+      "Nightrider Flail",
+      "Nightrider Glaive"
+    ],
+    "coords": {
+      "x": 38.44,
+      "y": 67.98,
+      "map": "m60_43_37_00"
+    },
+    "hp": 1006,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:nights-cavalry",
+    "name": "Night's Cavalry",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Gate Town Bridge",
+    "grace": "Agheel Lake North",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "10,000 Runes",
+      "10000 Runes",
+      "2,400 Runes",
+      "2400 Runes",
+      "3,400 Runes",
+      "3400 Runes",
+      "36000 Runes",
+      "42000 Runes",
+      "5,600 Runes",
+      "5600 Runes",
+      "8,500 Runes",
+      "84000 Runes",
+      "8500 Runes",
+      "Ash of War: Barricade Shield",
+      "Ash of War: Giant Hunt",
+      "Ash of War: Ice Spear",
+      "Ash of War: Phantom Slash",
+      "Ash of War: Poison Moth Flight",
+      "Ash of War: Repeating Thrust",
+      "Ash of War: Shared Order",
+      "Ash of War:Bloodhound's Step",
+      "Night's Calvary Set",
+      "Nightrider Flail",
+      "Nightrider Glaive"
+    ],
+    "coords": {
+      "x": 38.44,
+      "y": 67.98,
+      "map": "m60_43_37_00"
+    },
+    "hp": 1006,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:omenkiller",
+    "name": "Omenkiller",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Village of the Albinaurics",
+    "grace": "Village of the Albinaurics",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "4,900 Runes",
+      "4900 Runes",
+      "8400 Runes",
+      "Crucible Knot Talisman",
+      "Great Omenkiller Cleaver"
+    ],
+    "coords": {
+      "x": 17.94,
+      "y": 55.05,
+      "map": "m60_35_42_00"
+    },
+    "hp": 429,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:royal-revenant",
+    "name": "Royal Revenant",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Kingsrealm Ruins",
+    "grace": "Road to the Manor",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "3,100 Runes"
+    ],
+    "coords": {
+      "x": 16.29,
+      "y": 39.51,
+      "map": null
+    },
+    "hp": 679,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:tibia-mariner",
+    "name": "Tibia Mariner",
+    "campaign": "base",
+    "region": "Liurnia of the Lakes",
+    "location": "Limgrave",
+    "grace": "Summonwater Village Outskirts",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "2400 Runes",
+      "4700 Runes",
+      "Deathroot",
+      "Helphen's Steeple",
+      "Skeletal Bandit Ashes",
+      "Skeletal Militiaman Ashes",
+      "Tibia's Cookbook",
+      "Tibia's Summons"
+    ],
+    "coords": {
+      "x": 42.35,
+      "y": 62.18,
+      "map": "m60_45_39_10"
+    },
+    "hp": 1918,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:deathrite-bird",
+    "name": "Deathrite Bird",
+    "campaign": "base",
+    "region": "Many",
+    "location": "Many",
+    "grace": null,
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": null,
+    "hp": null,
+    "sources": [
+      "armory-bosses"
+    ]
+  },
+  {
+    "id": "boss:malenia",
+    "name": "Malenia, Blade of Miquella",
+    "campaign": "base",
+    "region": "Miquella's Haligtree",
+    "location": "Miquella's Haligtree",
+    "grace": "Haligtree Roots",
+    "tier": "great-rune",
+    "requiredForEnding": false,
+    "drops": [
+      "480,000 Runes",
+      "Malenia's Great Rune",
+      "Remembrance of the Rot Goddess"
+    ],
+    "coords": {
+      "x": -18.97,
+      "y": 52.34,
+      "map": "m15_00_00_00"
+    },
+    "hp": 2489,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:malenia-goddess-of-rot",
+    "name": "Malenia, Goddess of Rot",
+    "campaign": "base",
+    "region": "Miquella's Haligtree",
+    "location": "Miquella's Haligtree",
+    "grace": "Elphael Inner Wall",
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "Miquella's Needle"
+    ],
+    "coords": {
+      "x": 53.22,
+      "y": 8.36,
+      "map": null
+    },
+    "hp": null,
+    "sources": [
+      "armory-bosses"
+    ]
+  },
+  {
+    "id": "boss:loretta-haligtree",
+    "name": "Loretta, Knight of the Haligtree",
+    "campaign": "base",
+    "region": "Miquella's Haligtree",
+    "location": "Miquella's Haligtree",
+    "grace": "Haligtree Town",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "200,000 Runes",
+      "Loretta's Mastery",
+      "Loretta's War Sickle"
+    ],
+    "coords": {
+      "x": 55.15,
+      "y": 10.11,
+      "map": null
+    },
+    "hp": 1860,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:mohg",
+    "name": "Mohg, Lord of Blood",
+    "campaign": "base",
+    "region": "Mohgwyn Dynasty Mausoleum",
+    "location": "Mohgwyn Dynasty Mausoleum",
+    "grace": "Dynasty Mausoleum Midpoint",
+    "tier": "great-rune",
+    "requiredForEnding": false,
+    "drops": [
+      "420,000 Runes",
+      "Mohg's Great Rune",
+      "Remembrance of the Blood Lord"
+    ],
+    "coords": {
+      "x": 53.05,
+      "y": 64.78,
+      "map": null
+    },
+    "hp": 2553,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:adula",
+    "name": "Glintstone Dragon Adula",
+    "campaign": "base",
+    "region": "Moonlight Altar",
+    "location": "Moonlight Altar",
+    "grace": "Royal Moongazing Grounds",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "120,000 Runes",
+      "3x Dragon Heart",
+      "Adula's Moonblade",
+      "Dragon Heart",
+      "No Runes"
+    ],
+    "coords": {
+      "x": 17.08,
+      "y": 55.16,
+      "map": "m60_34_42_00"
+    },
+    "hp": 1639,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:alecto-black-knife-ringleader",
+    "name": "Alecto, Black Knife Ringleader",
+    "campaign": "base",
+    "region": "Moonlight Altar",
+    "location": "Ringleader's Evergaol",
+    "grace": "Moonlight Altar",
+    "tier": "evergaol",
+    "requiredForEnding": false,
+    "drops": [
+      "8.000 Runes",
+      "80.000 Runes",
+      "88,000 Runes",
+      "Black Knife Tiche",
+      "Black Knife Tiche Ashes",
+      "Other Drops"
+    ],
+    "coords": {
+      "x": 13.03,
+      "y": 54.06,
+      "map": "m60_33_42_00"
+    },
+    "hp": 1307,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:fire-giant",
+    "name": "Fire Giant",
+    "campaign": "base",
+    "region": "Mountaintops of the Giants",
+    "location": "Flame Peak",
+    "grace": "Foot of the Forge",
+    "tier": "remembrance",
+    "requiredForEnding": true,
+    "drops": [
+      "180,000 Runes",
+      "Remembrance of the Fire Giant"
+    ],
+    "coords": {
+      "x": 60.85,
+      "y": 29.63,
+      "map": "m60_52_52_00"
+    },
+    "hp": 3489,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:borealis",
+    "name": "Borealis the Freezing Fog",
+    "campaign": "base",
+    "region": "Mountaintops of the Giants",
+    "location": "Freezing Lake",
+    "grace": "Spiritcaller Cave",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "100,000 Runes",
+      "Dragon Heart"
+    ],
+    "coords": {
+      "x": 63.43,
+      "y": 19.27,
+      "map": "m60_54_56_00"
+    },
+    "hp": 1639,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:commander-niall",
+    "name": "Commander Niall",
+    "campaign": "base",
+    "region": "Mountaintops of the Giants",
+    "location": "Castle Sol",
+    "grace": "Church of the Eclipse",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "90,000 Runes",
+      "90000 Runes",
+      "Veteran's Prosthesis"
+    ],
+    "coords": {
+      "x": 58.06,
+      "y": 16.29,
+      "map": "m60_51_57_00"
+    },
+    "hp": 2834,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:death-rite-bird",
+    "name": "Death Rite Bird",
+    "campaign": "base",
+    "region": "Mountaintops of the Giants",
+    "location": "Mountaintops of the Giants",
+    "grace": "Gate Town North",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "15,000 Runes",
+      "18,000 Runes",
+      "220,000 Runes",
+      "230,000 Runes",
+      "7,800 Runes",
+      "77,000 Runes",
+      "Ancient Death Rancor",
+      "Ash of War: Ghostflame Call",
+      "Death Ritual Spear",
+      "Death' Poker",
+      "Death's Poker",
+      "Explosive Ghostflame"
+    ],
+    "coords": {
+      "x": 20.06,
+      "y": 47.18,
+      "map": "m60_36_45_00"
+    },
+    "hp": 2447,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:roundtable-knight-vyke",
+    "name": "Roundtable Knight Vyke",
+    "campaign": "base",
+    "region": "Mountaintops of the Giants",
+    "location": "Lord Contender's Evergaol",
+    "grace": "Whiteridge Road",
+    "tier": "evergaol",
+    "requiredForEnding": false,
+    "drops": [
+      "75,000 Runes",
+      "Fingerprint Set",
+      "Vyke's Dragonbolt"
+    ],
+    "coords": {
+      "x": 61.69,
+      "y": 21.84,
+      "map": "m60_53_56_00"
+    },
+    "hp": 9146,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:spirit-caller-snail",
+    "name": "Spirit-Caller Snail",
+    "campaign": "base",
+    "region": "Mountaintops of the Giants",
+    "location": "Road&#39;s End Catacombs, Spiritcaller Cave",
+    "grace": "Road's End Catacombs",
+    "tier": "dungeon",
+    "requiredForEnding": false,
+    "drops": [
+      "170000 Runes",
+      "3,000 Runes",
+      "3000 Runes",
+      "70,000 Runes",
+      "Ash of War: Black Flame Tornado",
+      "Black Flame Ritual",
+      "Glintstone Sorcerer Ashes",
+      "Glintstone Sorcerer Ashes ",
+      "Godskin Swaddling Cloth",
+      "Smithing-Stone Miner's Bell Bearing [4]"
+    ],
+    "coords": null,
+    "hp": 1722,
+    "sources": [
+      "bosses-fextralife"
+    ]
+  },
+  {
+    "id": "boss:ancient-hero-zamor",
+    "name": "Ancient Hero of Zamor",
+    "campaign": "base",
+    "region": "Mountaintops of the Giants",
+    "location": "Giant-Conquering Hero's Grave",
+    "grace": "Fourth Church of Marika",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "20,000 Runes",
+      "5,400 Runes",
+      "83,000 Runes",
+      "Ancient Dragon Knight Kristoff Ashes",
+      "Radagon's Scarseal",
+      "Zamor Armor",
+      "Zamor Bracelets",
+      "Zamor Curved Sword",
+      "Zamor Legwraps",
+      "Zamor Mask"
+    ],
+    "coords": {
+      "x": 34.15,
+      "y": 75.79,
+      "map": "m60_42_33_00"
+    },
+    "hp": 1418,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:godskin-apostle",
+    "name": "Godskin Apostle",
+    "campaign": "base",
+    "region": "Mountaintops of the Giants",
+    "location": "Spiritcaller Cave",
+    "grace": "Windmill Village",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "14,000 Runes",
+      "70,000 Runes",
+      "70k Runes",
+      "94,000 Runes",
+      "Black Flame Ritual",
+      "Godskin Apostle Bracers",
+      "Godskin Apostle Hood",
+      "Godskin Apostle Robe",
+      "Godskin Apostle Set",
+      "Godskin Apostle Trousers",
+      "Godskin Peeler",
+      "Godskin Swaddling Cloth",
+      "Scouring Black Flame"
+    ],
+    "coords": {
+      "x": 35.03,
+      "y": 23.54,
+      "map": "m60_42_55_00"
+    },
+    "hp": 2033,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:putrid-avatar",
+    "name": "Putrid Avatar",
+    "campaign": "base",
+    "region": "Mountaintops of the Giants",
+    "location": "Mountaintops of the Giants",
+    "grace": null,
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "160,000 Runes",
+      "27,090 Runes",
+      "9,600 Runes",
+      "91,000 Runes",
+      "Flame-Shrouding Cracked Tear",
+      "Greenburst Crystal Tear",
+      "Lord's Rune",
+      "Opaline Hardtear",
+      "Rotten Staff",
+      "Ruptured Crystal Tear",
+      "Stonebarb Cracked Tear",
+      "Thorny Cracked Tear"
+    ],
+    "coords": {
+      "x": 54.06,
+      "y": 18.83,
+      "map": null
+    },
+    "hp": 1745,
+    "sources": [
+      "engine-markers"
+    ]
+  },
+  {
+    "id": "boss:ulcerated-tree-spirit",
+    "name": "Ulcerated Tree Spirit",
+    "campaign": "base",
+    "region": "Mountaintops of the Giants",
+    "location": "Giants' Mountaintop Catacombs",
+    "grace": "Stranded Graveyard",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "15,000 Runes",
+      "18,000 Runes",
+      "48,000 Runes",
+      "Banished Knight Oleg",
+      "Cerulean Hidden Tear",
+      "Glovewort Picker's Bell Bearing (2)",
+      "Golden Seed",
+      "Leaden Hardtear"
+    ],
+    "coords": {
+      "x": 22.85,
+      "y": 26.31,
+      "map": "m60_37_54_00"
+    },
+    "hp": 2713,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:god-devouring-serpent-rykard-lord-of-blasphemy",
+    "name": "God Devouring Serpent/ Rykard, Lord of Blasphemy",
+    "campaign": "base",
+    "region": "Mt. Gelmir",
+    "location": "Mt. Gelmir",
+    "grace": null,
+    "tier": "great-rune",
+    "requiredForEnding": false,
+    "drops": [
+      "130,000 Runes",
+      "Remembrance of the Blasphemous",
+      "Rykard's Great Rune",
+      "See Rykard, Lord of Blasphemy"
+    ],
+    "coords": null,
+    "hp": null,
+    "sources": [
+      "armory-bosses"
+    ]
+  },
+  {
+    "id": "hunt:kindred-of-rot-x2",
+    "name": "Kindred of Rot(x2)",
+    "campaign": "base",
+    "region": "Mt. Gelmir",
+    "location": "Seethewater Cave",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "10,000 Runes",
+      "10000 Runes",
+      "Kindred of Rot's Exultation"
+    ],
+    "coords": {
+      "x": -122.64,
+      "y": 719.6,
+      "map": "m31_07_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:magma-wyrm",
+    "name": "Magma Wyrm",
+    "campaign": "base",
+    "region": "Mt. Gelmir",
+    "location": "Fort Laiedd",
+    "grace": "Gael Tunnel Entrance",
+    "tier": "dungeon",
+    "requiredForEnding": false,
+    "drops": [
+      "19,000 Runes",
+      "5,044 Runes",
+      "7,500 Runes",
+      "7,718 Runes",
+      "7500 Runes",
+      "Ancient Dragon Smithing Stone",
+      "Dragon Heart",
+      "Moonveil"
+    ],
+    "coords": {
+      "x": 18.31,
+      "y": 28.81,
+      "map": "m60_35_53_00"
+    },
+    "hp": 2968,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:abductor-virgin-duo",
+    "name": "Abductor Virgin Duo",
+    "campaign": "base",
+    "region": "Mt. Gelmir",
+    "location": "Mt. Gelmir",
+    "grace": null,
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "Inquisitor's Girandole"
+    ],
+    "coords": null,
+    "hp": null,
+    "sources": [
+      "armory-bosses"
+    ]
+  },
+  {
+    "id": "hunt:demi-human-queen-maggie",
+    "name": "Demi-Human Queen Maggie",
+    "campaign": "base",
+    "region": "Mt. Gelmir",
+    "location": "Hermit Village",
+    "grace": "Primeval Sorcerer Azur",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "13,000 Runes",
+      "13000 Runes",
+      "Golden Rune (1)",
+      "Golden Rune [1]",
+      "Memory Stone"
+    ],
+    "coords": {
+      "x": 23.28,
+      "y": 28.91,
+      "map": "m60_37_53_00"
+    },
+    "hp": 911,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:demi-human-queen-margot",
+    "name": "Demi-Human Queen Margot",
+    "campaign": "base",
+    "region": "Mt. Gelmir",
+    "location": "Volcano Cave",
+    "grace": "Volcano Cave",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "11,000 Runes",
+      "Jar Cannon"
+    ],
+    "coords": {
+      "x": 22.56,
+      "y": 23.89,
+      "map": null
+    },
+    "hp": 1222,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:red-wolf-champion",
+    "name": "Red Wolf of the Champion",
+    "campaign": "base",
+    "region": "Mt. Gelmir",
+    "location": "Gelmir Hero's Grave",
+    "grace": "Gelmir Hero's Grave",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "21,000 Runes",
+      "21000 Runes",
+      "Bloodhound Knight Floh"
+    ],
+    "coords": {
+      "x": 21.76,
+      "y": 27.12,
+      "map": null
+    },
+    "hp": 973,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:ulcerated-tree-spirit",
+    "name": "Ulcerated Tree Spirit",
+    "campaign": "base",
+    "region": "Mt. Gelmir",
+    "location": "Minor Erdtree",
+    "grace": "Stranded Graveyard",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "15,000 Runes",
+      "18,000 Runes",
+      "48,000 Runes",
+      "Banished Knight Oleg",
+      "Cerulean Hidden Tear",
+      "Glovewort Picker's Bell Bearing (2)",
+      "Golden Seed",
+      "Leaden Hardtear"
+    ],
+    "coords": {
+      "x": 22.85,
+      "y": 26.31,
+      "map": "m60_37_54_00"
+    },
+    "hp": 2713,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:dragonkin-soldier-of-nokron",
+    "name": "Dragonkin Soldier of Nokron",
+    "campaign": "base",
+    "region": "Nokron, Eternal City",
+    "location": "Nokron, Eternal City",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 1282.24,
+      "y": -749.04,
+      "map": "m12_02_00_00"
+    },
+    "hp": 1396,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:ancestor-spirit",
+    "name": "Ancestor Spirit",
+    "campaign": "base",
+    "region": "Siofra River",
+    "location": "Siofra River Bank",
+    "grace": "Siofra River Bank",
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "13,000 Runes",
+      "13.000 Runes",
+      "Ancestral Follower Ashes"
+    ],
+    "coords": {
+      "x": 1546.1,
+      "y": -1736.05,
+      "map": "m12_08_00_00"
+    },
+    "hp": 1939,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:regal-ancestor",
+    "name": "Regal Ancestor Spirit",
+    "campaign": "base",
+    "region": "Siofra River",
+    "location": "Hallowhorn Grounds",
+    "grace": "Ancestral Woods",
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "24,000 Runes",
+      "24000 Runes",
+      "Remembrance of the Regal Ancestor"
+    ],
+    "coords": {
+      "x": 1183.83,
+      "y": -1538.41,
+      "map": "m12_09_00_00"
+    },
+    "hp": 1939,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:valiant-gargoyle",
+    "name": "Valiant Gargoyle",
+    "campaign": "base",
+    "region": "Siofra River",
+    "location": "Siofra Aqueduct",
+    "grace": "Siofra River",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "2,835 Runes",
+      "3,332 Runes",
+      "30,000 Runes",
+      "30000 Runes",
+      "32000 Runes",
+      "8,608 Runes",
+      "Gargoyle's Great Axe",
+      "Gargoyle's Greatsword",
+      "Gargoyle's Halberd",
+      "Gargoyle's Twinblade"
+    ],
+    "coords": {
+      "x": 35.72,
+      "y": 32.11,
+      "map": "m60_42_51_00"
+    },
+    "hp": 1745,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:dragonkin-soldier",
+    "name": "Dragonkin Soldier",
+    "campaign": "base",
+    "region": "Siofra River",
+    "location": "Siofra River Bank",
+    "grace": "Worshippers' Woods",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "16,000 Runes",
+      "16000 Runes",
+      "58,000 Runes",
+      "Dragon Halberd",
+      "Dragonscale Blade"
+    ],
+    "coords": {
+      "x": 20.5,
+      "y": 46.14,
+      "map": null
+    },
+    "hp": 2239,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:mimic-tear",
+    "name": "Mimic Tear",
+    "campaign": "base",
+    "region": "Siofra River",
+    "location": "Nokron, Eternal City",
+    "grace": "Nokron, Eternal City. Elden Ring",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "10,000 Runes",
+      "10000 Runes",
+      "50,000 Runes",
+      "Blackflame Monk Amon Ashes",
+      "Larval Tear",
+      "Larval Tear x2",
+      "Silver Tear Mask"
+    ],
+    "coords": {
+      "x": 46.09,
+      "y": 67.16,
+      "map": null
+    },
+    "hp": 1551,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:godrick",
+    "name": "Godrick the Grafted",
+    "campaign": "base",
+    "region": "Stormveil Castle",
+    "location": "Stormveil Castle",
+    "grace": "Secluded Cell",
+    "tier": "great-rune",
+    "requiredForEnding": false,
+    "drops": [
+      "20,000 Runes",
+      "Godrick's Great Rune",
+      "Godrick's Great Rune, Remembrance of the Grafted",
+      "Remembrance of the Grafted"
+    ],
+    "coords": {
+      "x": 29.51,
+      "y": 61.55,
+      "map": null
+    },
+    "hp": 3354,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:margit",
+    "name": "Margit, the Fell Omen",
+    "campaign": "base",
+    "region": "Stormveil Castle",
+    "location": "Stormveil Castle",
+    "grace": "Castleward Tunnel",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "12,000 Runes",
+      "16,800 Runes",
+      "Talisman Pouch",
+      "Viridian Amber Medallion 1"
+    ],
+    "coords": {
+      "x": 31.58,
+      "y": 65.05,
+      "map": null
+    },
+    "hp": 2521,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:abductor-virgins",
+    "name": "Abductor Virgins",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": "Abductor Virgin",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "10,000 Runes",
+      "10.000 Runes",
+      "Inquisitor's Girandole"
+    ],
+    "coords": {
+      "x": 23.43,
+      "y": 29.39,
+      "map": null
+    },
+    "hp": 3811,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:alabaster-lord",
+    "name": "Alabaster Lord",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": "Church of the Plague",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "3.600 Runes",
+      "Meteorite"
+    ],
+    "coords": {
+      "x": 55.73,
+      "y": 63.19,
+      "map": "m60_50_39_00"
+    },
+    "hp": 755,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:baleful-shadow",
+    "name": "Baleful Shadow",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "Discarded Palace Key",
+      "Miniature Ranni (Lifeless)"
+    ],
+    "coords": {
+      "x": 355.84,
+      "y": -80.03,
+      "map": "m12_01_00_00"
+    },
+    "hp": 1320,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:banished-knight",
+    "name": "Banished Knight",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "Azula Beastman Ashes",
+      "Banished Knight Armor",
+      "Banished Knight Armor (Altered)",
+      "Banished Knight Gauntlets",
+      "Banished Knight Greaves",
+      "Dragon Communion Seal"
+    ],
+    "coords": {
+      "x": 33.77,
+      "y": -111.09,
+      "map": "m18_00_00_00"
+    },
+    "hp": 477,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:blighted-avatar",
+    "name": "Blighted Avatar",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": -188.2,
+      "y": 92.58,
+      "map": "m12_03_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:crazed-duelist",
+    "name": "Crazed Duelist",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": -166.69,
+      "y": 13.05,
+      "map": "m31_21_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:crucible-knight-devonia",
+    "name": "Crucible Knight Devonia",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": "Ravine North",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "Devonia's Hammer"
+    ],
+    "coords": {
+      "x": 15.4,
+      "y": 14.99,
+      "map": "m61_45_47_10"
+    },
+    "hp": 840,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:crucible-knight-hirnan",
+    "name": "Crucible Knight Hirnan",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 1607.9,
+      "y": -758.18,
+      "map": "m12_02_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:crucible-knight-rhyacis",
+    "name": "Crucible Knight Rhyacis",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": -25.46,
+      "y": -91.38,
+      "map": "m18_00_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:demi-human-queen-mairead",
+    "name": "Demi-Human Queen Mairead",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": "Church of Pilgrimage",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 38.06,
+      "y": 74.41,
+      "map": "m60_43_34_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:divine-beast-storm-warrior",
+    "name": "Divine Beast Storm Warrior",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": -340.61,
+      "y": 148.65,
+      "map": "m20_01_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:equilibrious-beast",
+    "name": "Equilibrious Beast",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 73.99,
+      "y": -298.55,
+      "map": "m35_00_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:erdtree-burial-watchdogs",
+    "name": "Erdtree Burial Watchdogs",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "1,300 Runes",
+      "12,000 Runes",
+      "2,400 Runes",
+      "3,200 Runes",
+      "7,400 Runes",
+      "Demi-Human Ashes",
+      "Glovewort Picker's Bell Bearing (1)",
+      "Kaiden Sellsword Ashes",
+      "Mad Pumpkin Head Ashes",
+      "Noble Sorcerer Ashes"
+    ],
+    "coords": {
+      "x": -123.4,
+      "y": 73.3,
+      "map": "m30_14_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:fallen-cavalry",
+    "name": "Fallen Cavalry",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": "Secluded Cell",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 31.63,
+      "y": 61.79,
+      "map": "m60_41_39_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:fellthorn-spirit",
+    "name": "Fellthorn Spirit",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": "Foot of the Forge",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 60.71,
+      "y": 27.06,
+      "map": "m60_52_53_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:fia-champions",
+    "name": "Fia's Champions",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "40,000 Runes",
+      "40000 Runes",
+      "Fia's Mist"
+    ],
+    "coords": {
+      "x": -370.11,
+      "y": 149.47,
+      "map": "m12_03_00_00"
+    },
+    "hp": 709,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:flamelost-knights",
+    "name": "Flamelost Knights",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": -223.71,
+      "y": 529.23,
+      "map": "m31_08_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:fulghor-champion-of-rauh",
+    "name": "Fulghor, Champion of Rauh",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": "Rauh Ancient Ruins, East",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 21.5,
+      "y": 16.73,
+      "map": "m61_46_46_10"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:fulminating-runebear",
+    "name": "Fulminating Runebear",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": "East Raya Lucaria Gate",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 18.38,
+      "y": 41.21,
+      "map": "m60_35_48_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:gnarrl-draconic-sentinel",
+    "name": "Gnarrl, Draconic Sentinel",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": "Prince of Death's Throne",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 42.95,
+      "y": 30.07,
+      "map": "m60_45_52_10"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:gnoster-the-false-sky",
+    "name": "Gnoster, the False Sky",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 1206.69,
+      "y": -619.42,
+      "map": "m12_02_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:grave-sentinel-wyngrant",
+    "name": "Grave Sentinel Wyngrant",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 357.31,
+      "y": 742.42,
+      "map": "m30_08_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:hallowed-avatar",
+    "name": "Hallowed Avatar",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 195.2,
+      "y": 102.2,
+      "map": "m19_00_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:miranda-omenkiller",
+    "name": "Miranda & Omenkiller",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "4,900 Runes",
+      "4900 Runes",
+      "8400 Runes",
+      "Crucible Knot Talisman",
+      "Great Omenkiller Cleaver"
+    ],
+    "coords": {
+      "x": -85.18,
+      "y": 790.63,
+      "map": "m31_18_00_00"
+    },
+    "hp": 429,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:miranda-blossom",
+    "name": "Miranda Blossom",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": "Tombsward Cave (Site of Grace)",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "Heal from Afar",
+      "Miranda Powder",
+      "Nomad Ashes",
+      "Poisonbloom",
+      "Viridian Amber Medallion"
+    ],
+    "coords": {
+      "x": 34.25,
+      "y": 76.82,
+      "map": null
+    },
+    "hp": 1939,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:morion-unbound-death",
+    "name": "Morion, Unbound Death",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": "Farum Greatbridge",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 58.67,
+      "y": 56.01,
+      "map": "m60_52_41_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:nox-nightmaiden",
+    "name": "Nox Nightmaiden",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "Night Maiden Armor",
+      "Nox Bracelets"
+    ],
+    "coords": {
+      "x": 985.83,
+      "y": -671.18,
+      "map": "m12_02_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:royal-guardian-helicos",
+    "name": "Royal Guardian Helicos",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": -132,
+      "y": 31.01,
+      "map": "m11_00_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:thief-taker-acacio",
+    "name": "Thief-Taker Acacio",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": "Liurnia Lake Shore",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 25.6,
+      "y": 58.42,
+      "map": "m60_38_41_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:putrid-crystalian-trio",
+    "name": "Putrid Crystalian Trio",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "dungeon",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": -144.1,
+      "y": 127.07,
+      "map": "m31_11_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:fell-twins",
+    "name": "Fell Twins",
+    "campaign": "base",
+    "region": "The Lands Between",
+    "location": "The Lands Between",
+    "grace": null,
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "29,000 Runes",
+      "Omenkiller Rollo"
+    ],
+    "coords": {
+      "x": 584.39,
+      "y": -373.48,
+      "map": "m34_14_00_00"
+    },
+    "hp": 7871,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:rykard",
+    "name": "Rykard, Lord of Blasphemy",
+    "campaign": "base",
+    "region": "Volcano Manor",
+    "location": "Volcano Manor",
+    "grace": "Audience Pathway",
+    "tier": "great-rune",
+    "requiredForEnding": false,
+    "drops": [
+      "130,000 Runes",
+      "Remembrance of the Blasphemous",
+      "Rykard's Great Rune",
+      "See Rykard, Lord of Blasphemy"
+    ],
+    "coords": {
+      "x": 21.74,
+      "y": 28.13,
+      "map": null
+    },
+    "hp": 12216,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:abductor-virgin-swinging-sickle-abductor-virgin-wheel",
+    "name": "Abductor Virgin (Swinging Sickle) & Abductor Virgin (Wheel)",
+    "campaign": "base",
+    "region": "Volcano Manor",
+    "location": "Subterranean Inquisition Chamber",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "Calm Down!",
+      "Explosive Greatbolt",
+      "Inquisitor's Girandole",
+      "Red-Hot Whetblade",
+      "Sacramental Bud",
+      "Stormhawk Axe"
+    ],
+    "coords": null,
+    "hp": null,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:godskin-noble",
+    "name": "Godskin Noble",
+    "campaign": "base",
+    "region": "Volcano Manor",
+    "location": "Temple of Eiglay",
+    "grace": "Prison Town Church",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "4,810 Runes",
+      "50,000 Runes",
+      "70,000 Runes",
+      "Black Flame Ritual",
+      "Godskin Noble Set",
+      "Godskin Stitcher",
+      "Godskin Swaddling Cloth",
+      "Noble Presence",
+      "Serpent's Amnion"
+    ],
+    "coords": {
+      "x": 21.44,
+      "y": 29.02,
+      "map": null
+    },
+    "hp": 2439,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:leonine-misbegotten",
+    "name": "Leonine Misbegotten",
+    "campaign": "base",
+    "region": "Weeping Peninsula",
+    "location": "Morne Moangrave",
+    "grace": "Beside the Rampart Gaol",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "3,800 Runes",
+      "3800 Runes",
+      "Grafted Blade Greatsword"
+    ],
+    "coords": {
+      "x": 37.51,
+      "y": 84.22,
+      "map": "m60_43_30_00"
+    },
+    "hp": 664,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:pumpkin-head",
+    "name": "Pumpkin Head",
+    "campaign": "base",
+    "region": "Weeping Peninsula",
+    "location": "Castle Morne, Weeping Peninsula",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "291 Runes",
+      "Pumpkin Helm",
+      "Sanctuary Stone"
+    ],
+    "coords": null,
+    "hp": null,
+    "sources": [
+      "checklists/bosses"
+    ]
+  },
+  {
+    "id": "boss:ancient-hero-zamor",
+    "name": "Ancient Hero of Zamor",
+    "campaign": "base",
+    "region": "Weeping Peninsula",
+    "location": "Weeping Evergaol",
+    "grace": "Fourth Church of Marika",
+    "tier": "evergaol",
+    "requiredForEnding": false,
+    "drops": [
+      "20,000 Runes",
+      "5,400 Runes",
+      "83,000 Runes",
+      "Ancient Dragon Knight Kristoff Ashes",
+      "Radagon's Scarseal",
+      "Zamor Armor",
+      "Zamor Bracelets",
+      "Zamor Curved Sword",
+      "Zamor Legwraps",
+      "Zamor Mask"
+    ],
+    "coords": {
+      "x": 34.15,
+      "y": 75.79,
+      "map": "m60_42_33_00"
+    },
+    "hp": 1418,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:cemetery-shade",
+    "name": "Cemetery Shade",
+    "campaign": "base",
+    "region": "Weeping Peninsula",
+    "location": "Tombsward Catacombs",
+    "grace": "Tombsward Catacombs",
+    "tier": "dungeon",
+    "requiredForEnding": false,
+    "drops": [
+      "2,200 Runes",
+      "2200 Runes",
+      "3,500 Runes",
+      "6,800 Runes",
+      "Kindred of Rot Ashes",
+      "Lhutel the Headless",
+      "Twinsage Sorcerer Ashes",
+      "xx Runes"
+    ],
+    "coords": {
+      "x": 37.83,
+      "y": 76.2,
+      "map": null
+    },
+    "hp": 305,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:deathbird",
+    "name": "Deathbird",
+    "campaign": "base",
+    "region": "Weeping Peninsula",
+    "location": "Limgrave",
+    "grace": "Warmaster's Shack",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "2,800 Runes",
+      "29,000 Runes",
+      "3,900 Runes",
+      "6,600 Runes",
+      "Blue-Feathered Branchsword",
+      "Red-Feathered Branchsword",
+      "Sacrifical Axe",
+      "Sacrificial Axe",
+      "Twinbird Kite Shield"
+    ],
+    "coords": {
+      "x": 36.57,
+      "y": 64.11,
+      "map": "m60_42_38_00"
+    },
+    "hp": 2079,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:erdtree-avatar",
+    "name": "Erdtree Avatar",
+    "campaign": "base",
+    "region": "Weeping Peninsula",
+    "location": "Minor Erdtree",
+    "grace": "Tombsward Catacombs",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "10,062 Runes",
+      "10,621 Runes",
+      "3,600 Runes",
+      "5,800 Runes",
+      "70,000 Runes",
+      "9,600 Runes",
+      "Cerulean Crystal Tear",
+      "Crimson Bubbletear",
+      "Crimsonburst Crystal Tear",
+      "Flame-Shrouding Cracked Tear",
+      "Greenburst Crystal Tear",
+      "Holy-Shrouding Cracked Tear",
+      "Lightning-Shrouding Cracked Tear",
+      "Lord's Rune",
+      "Magic-Shrouding Cracked Tear",
+      "Opaline Bubbletear",
+      "Ruptured Crystal Tear",
+      "Staff of the Avatar"
+    ],
+    "coords": {
+      "x": 37.27,
+      "y": 76.65,
+      "map": "m60_43_33_00"
+    },
+    "hp": 1745,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:erdtree-burial-watchdog",
+    "name": "Erdtree Burial Watchdog",
+    "campaign": "base",
+    "region": "Weeping Peninsula",
+    "location": "Impaler's Catacombs",
+    "grace": "Stormfoot Catacombs",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "1,300 Runes",
+      "12,000 Runes",
+      "2,400 Runes",
+      "3,200 Runes",
+      "7,400 Runes",
+      "Demi-Human Ashes",
+      "Glovewort Picker's Bell Bearing (1)",
+      "Kaiden Sellsword Ashes",
+      "Mad Pumpkin Head Ashes",
+      "Noble Sorcerer Ashes"
+    ],
+    "coords": {
+      "x": 42.36,
+      "y": 75.88,
+      "map": null
+    },
+    "hp": 1052,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:miranda-the-blighted-bloom",
+    "name": "Miranda the Blighted Bloom",
+    "campaign": "base",
+    "region": "Weeping Peninsula",
+    "location": "Tombsward Cave",
+    "grace": "Tombsward Catacombs",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "2,100 Runes",
+      "2100 Runes",
+      "8500 Runes",
+      "Great Omenkiller Cleaver",
+      "Viridian Amber Medallion"
+    ],
+    "coords": null,
+    "hp": 1939,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:nights-cavalry",
+    "name": "Night's Cavalry",
+    "campaign": "base",
+    "region": "Weeping Peninsula",
+    "location": "Castle Morne Rampart",
+    "grace": "Agheel Lake North",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "10,000 Runes",
+      "10000 Runes",
+      "2,400 Runes",
+      "2400 Runes",
+      "3,400 Runes",
+      "3400 Runes",
+      "36000 Runes",
+      "42000 Runes",
+      "5,600 Runes",
+      "5600 Runes",
+      "8,500 Runes",
+      "84000 Runes",
+      "8500 Runes",
+      "Ash of War: Barricade Shield",
+      "Ash of War: Giant Hunt",
+      "Ash of War: Ice Spear",
+      "Ash of War: Phantom Slash",
+      "Ash of War: Poison Moth Flight",
+      "Ash of War: Repeating Thrust",
+      "Ash of War: Shared Order",
+      "Ash of War:Bloodhound's Step",
+      "Night's Calvary Set",
+      "Nightrider Flail",
+      "Nightrider Glaive"
+    ],
+    "coords": {
+      "x": 38.44,
+      "y": 67.98,
+      "map": "m60_43_37_00"
+    },
+    "hp": 1006,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:runebear",
+    "name": "Runebear",
+    "campaign": "base",
+    "region": "Weeping Peninsula",
+    "location": "Earthbore Cave",
+    "grace": "Earthbore Cave",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "2,600 Runes",
+      "2600 Runes",
+      "Spelldrake Talisman"
+    ],
+    "coords": {
+      "x": 38.87,
+      "y": 75.79,
+      "map": null
+    },
+    "hp": 2585,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:scaly-misbegotten",
+    "name": "Scaly Misbegotten",
+    "campaign": "base",
+    "region": "Weeping Peninsula",
+    "location": "Morne Tunnel",
+    "grace": "Morne Tunnel",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "2,000 Runes",
+      "2000 Runes",
+      "Rusted Anchor"
+    ],
+    "coords": {
+      "x": 38.6,
+      "y": 77.06,
+      "map": null
+    },
+    "hp": 531,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:midra",
+    "name": "Midra, Lord of Frenzied Flame",
+    "campaign": "sote",
+    "region": "Abyssal Woods",
+    "location": "Midra's Manse",
+    "grace": "Second Floor Chamber",
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "410,000 Runes",
+      "Remembrance of the Lord of Frenzied Flame"
+    ],
+    "coords": {
+      "x": 52.02,
+      "y": 59.26,
+      "map": null
+    },
+    "hp": 3347,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:jori-elder-inquisitor",
+    "name": "Jori, Elder Inquisitor",
+    "campaign": "sote",
+    "region": "Abyssal Woods",
+    "location": "Darklight Catacombs",
+    "grace": "Darklight Catacombs",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "260,000 Runes",
+      "Barbed Staff-Spear"
+    ],
+    "coords": {
+      "x": 59.11,
+      "y": 51.79,
+      "map": null
+    },
+    "hp": 30506,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:divine-beast",
+    "name": "Divine Beast Dancing Lion",
+    "campaign": "sote",
+    "region": "Ancient Ruins of Rauh",
+    "location": "Enir-Ilim",
+    "grace": "Stagefront",
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "Divine Beast Head",
+      "Divine Beast Tornado",
+      "Remembrance of the Dancing Lion"
+    ],
+    "coords": {
+      "x": 18.38,
+      "y": 25.03,
+      "map": "m61_46_46_10"
+    },
+    "hp": 2330,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:romina-saint-of-the-bud",
+    "name": "Romina, Saint of the Bud",
+    "campaign": "sote",
+    "region": "Ancient Ruins of Rauh",
+    "location": "Church of the Bud",
+    "grace": "Church of the Bud, Main Entrance",
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "380,000 Runes",
+      "Remembrance of the Saint of the Bud"
+    ],
+    "coords": {
+      "x": 0,
+      "y": 28.38,
+      "map": "m61_44_45_10"
+    },
+    "hp": 35798,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:putrescent-knight",
+    "name": "Putrescent Knight",
+    "campaign": "sote",
+    "region": "Cerulean Coast",
+    "location": "Stone Coffin Fissure",
+    "grace": "Fissure Depths",
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "220,000 Runes",
+      "Remembrance of Putrescence"
+    ],
+    "coords": {
+      "x": -145.27,
+      "y": -296.67,
+      "map": "m22_00_00_00"
+    },
+    "hp": 1745,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:dancer-of-ranah",
+    "name": "Dancer of Ranah",
+    "campaign": "sote",
+    "region": "Cerulean Coast",
+    "location": "Southern Nameless Mausoleum",
+    "grace": "Cerulean Coast West",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "80,000 Runes",
+      "Dancer's Set",
+      "Dancing Blade of Ranah"
+    ],
+    "coords": {
+      "x": 44.88,
+      "y": 65.56,
+      "map": null
+    },
+    "hp": 15025,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:ghostflame-dragon",
+    "name": "Ghostflame Dragon",
+    "campaign": "sote",
+    "region": "Cerulean Coast",
+    "location": "Cerulean Coast",
+    "grace": "Greatbridge, North",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "100,000 Runes",
+      "120,000 Runes",
+      "Dragon Heart",
+      "Somber Ancient Dragon Smithing Stone"
+    ],
+    "coords": {
+      "x": 13.5,
+      "y": 45.41,
+      "map": "m61_45_44_10"
+    },
+    "hp": 31518,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:death-rite-bird",
+    "name": "Death Rite Bird",
+    "campaign": "sote",
+    "region": "Charo's Hidden Grave",
+    "location": "Mountaintops of the Giants",
+    "grace": "Gate Town North",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "15,000 Runes",
+      "18,000 Runes",
+      "220,000 Runes",
+      "230,000 Runes",
+      "7,800 Runes",
+      "77,000 Runes",
+      "Ancient Death Rancor",
+      "Ash of War: Ghostflame Call",
+      "Death Ritual Spear",
+      "Death' Poker",
+      "Death's Poker",
+      "Explosive Ghostflame"
+    ],
+    "coords": {
+      "x": 20.06,
+      "y": 47.18,
+      "map": "m60_36_45_00"
+    },
+    "hp": 2447,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:demi-human-queen-marigga",
+    "name": "Demi-Human Queen Marigga",
+    "campaign": "sote",
+    "region": "Charo's Hidden Grave",
+    "location": "Charo's Hidden Grave",
+    "grace": "Cerulean Coast West",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "100,000 Runes",
+      "Star-Lined Sword"
+    ],
+    "coords": {
+      "x": 18.13,
+      "y": 81.4,
+      "map": "m61_46_40_00"
+    },
+    "hp": 9793,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:consort",
+    "name": "Promised Consort Radahn / Radahn, Consort of Miquella",
+    "campaign": "sote",
+    "region": "Enir-Ilim",
+    "location": "Enir-Ilim",
+    "grace": null,
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "500,000 Runes",
+      "Remembrance of a God and a Lord"
+    ],
+    "coords": {
+      "x": 38.73,
+      "y": 49.65,
+      "map": null
+    },
+    "hp": 3168,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:leda-and-allies-boss",
+    "name": "Leda and Allies Boss",
+    "campaign": "sote",
+    "region": "Enir-Ilim",
+    "location": "Enir-Ilim",
+    "grace": "Cleansing Chamber Anteroom.",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "300,000 Runes",
+      "Leda's Sword"
+    ],
+    "coords": null,
+    "hp": 13557,
+    "sources": [
+      "bosses-fextralife"
+    ]
+  },
+  {
+    "id": "boss:divine-beast",
+    "name": "Divine Beast Dancing Lion",
+    "campaign": "sote",
+    "region": "Gravesite Plain",
+    "location": "Belurat, Tower Settlement",
+    "grace": "Stagefront",
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "Divine Beast Head",
+      "Divine Beast Tornado",
+      "Remembrance of the Dancing Lion"
+    ],
+    "coords": {
+      "x": 18.38,
+      "y": 25.03,
+      "map": "m61_46_46_10"
+    },
+    "hp": 2330,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:rennala-sote",
+    "name": "Rellana, Twin Moon Knight",
+    "campaign": "sote",
+    "region": "Gravesite Plain",
+    "location": "Castle Ensis",
+    "grace": "Castle Lord's Chamber.",
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "240,000 Runes",
+      "Remembrance of the Twin Moon Knight"
+    ],
+    "coords": {
+      "x": 37.27,
+      "y": 40.85,
+      "map": "m61_48_44_00"
+    },
+    "hp": 2765,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:blackgaol-knight",
+    "name": "Blackgaol Knight",
+    "campaign": "sote",
+    "region": "Gravesite Plain",
+    "location": "Western Nameless Mausoleum",
+    "grace": "Scorched Ruins",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "Greatsword of Solitude",
+      "Solitude Set"
+    ],
+    "coords": null,
+    "hp": 14129,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:chief-bloodfiend",
+    "name": "Chief Bloodfiend",
+    "campaign": "sote",
+    "region": "Gravesite Plain",
+    "location": "Rivermouth Cave",
+    "grace": "Rivermouth Cave",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "Bloodfiend Hexer's Ashes"
+    ],
+    "coords": null,
+    "hp": 1094,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:demi-human-swordmaster-onze",
+    "name": "Demi-Human Swordmaster Onze",
+    "campaign": "sote",
+    "region": "Gravesite Plain",
+    "location": "Belurat Gaol",
+    "grace": "Belurat Gaol",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "Demi-Human Swordsman Yosh"
+    ],
+    "coords": null,
+    "hp": 1056,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:ghostflame-dragon",
+    "name": "Ghostflame Dragon",
+    "campaign": "sote",
+    "region": "Gravesite Plain",
+    "location": "Gravesite Plain",
+    "grace": "Greatbridge, North",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "100,000 Runes",
+      "120,000 Runes",
+      "Dragon Heart",
+      "Somber Ancient Dragon Smithing Stone"
+    ],
+    "coords": {
+      "x": 13.5,
+      "y": 45.41,
+      "map": "m61_45_44_10"
+    },
+    "hp": 31518,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:lamenter",
+    "name": "Lamenter",
+    "campaign": "sote",
+    "region": "Gravesite Plain",
+    "location": "Lamenter's Gaol",
+    "grace": "Lamenter's Gaol",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "160,000 Runes",
+      "Lamenter's Mask"
+    ],
+    "coords": null,
+    "hp": 54963,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:bayle",
+    "name": "Bayle the Dread",
+    "campaign": "sote",
+    "region": "Jagged Peak",
+    "location": "Jagged Peak Summit",
+    "grace": "Jagged Peak Summit",
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "490,000 Runes",
+      "Heart of Bayle"
+    ],
+    "coords": {
+      "x": 100,
+      "y": 90.03,
+      "map": "m61_54_39_00"
+    },
+    "hp": 2712,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:ancient-dragon-senessax",
+    "name": "Ancient Dragon Senessax",
+    "campaign": "sote",
+    "region": "Jagged Peak",
+    "location": "Jagged Peak Mountainside",
+    "grace": "Jagged Peak Mountainside",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "200,000 Runes",
+      "Ancient Dragon Smithing Stone",
+      "Somber Ancient Dragon Smithing Stone"
+    ],
+    "coords": {
+      "x": 92.52,
+      "y": 89.76,
+      "map": "m61_54_39_00"
+    },
+    "hp": 45551,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:ancient-dragon-man",
+    "name": "Ancient Dragon-Man",
+    "campaign": "sote",
+    "region": "Jagged Peak",
+    "location": "Dragon's Pit",
+    "grace": "Dragon's Pit",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "130,000 Runes",
+      "Dragon-Hunter's Great Katana"
+    ],
+    "coords": null,
+    "hp": 21859,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:jagged-peak-drake",
+    "name": "Jagged Peak Drake",
+    "campaign": "sote",
+    "region": "Jagged Peak",
+    "location": "Foot of the Jagged Peak",
+    "grace": "Dragon's Pit Terminus",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "120,000 Runes",
+      "90,000 Runes",
+      "Dragon Heart",
+      "Dragonscale Flesh"
+    ],
+    "coords": {
+      "x": 51.43,
+      "y": 75.47,
+      "map": "m61_49_41_00"
+    },
+    "hp": 31941,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:jagged-peak-drake",
+    "name": "Jagged Peak Drake",
+    "campaign": "sote",
+    "region": "Jagged Peak",
+    "location": "Jagged Peak Mountainside",
+    "grace": "Dragon's Pit Terminus",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "120,000 Runes",
+      "90,000 Runes",
+      "Dragon Heart",
+      "Dragonscale Flesh"
+    ],
+    "coords": {
+      "x": 51.43,
+      "y": 75.47,
+      "map": "m61_49_41_00"
+    },
+    "hp": 31941,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:jagged-peak-drake-duo",
+    "name": "Jagged Peak Drake Duo",
+    "campaign": "sote",
+    "region": "Jagged Peak",
+    "location": "Jagged Peak",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 74.21,
+      "y": 83.38,
+      "map": "m61_52_40_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
+    "id": "boss:tree-sentinel",
+    "name": "Tree Sentinel",
+    "campaign": "sote",
+    "region": "Limgrave",
+    "location": "Church of Elleh",
+    "grace": "The First Step",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "120,000 Runes",
+      "16000 Runes (NG+1)",
+      "20,000 Runes",
+      "28,080 Runes",
+      "3,200 Runes",
+      "3200 Runes",
+      "50,000 Runes",
+      "Blessing of Marika",
+      "Erdtree Greatshield",
+      "Golden Halberd",
+      "Hero's Rune (1)",
+      "Hero's Rune [1]"
+    ],
+    "coords": {
+      "x": 35.25,
+      "y": 69.07,
+      "map": "m60_42_36_00"
+    },
+    "hp": 1745,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:death-rite-bird",
+    "name": "Death Rite Bird",
+    "campaign": "sote",
+    "region": "Liurnia of the Lakes",
+    "location": "Gate Town North",
+    "grace": "Gate Town North",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "15,000 Runes",
+      "18,000 Runes",
+      "220,000 Runes",
+      "230,000 Runes",
+      "7,800 Runes",
+      "77,000 Runes",
+      "Ancient Death Rancor",
+      "Ash of War: Ghostflame Call",
+      "Death Ritual Spear",
+      "Death' Poker",
+      "Death's Poker",
+      "Explosive Ghostflame"
+    ],
+    "coords": {
+      "x": 20.06,
+      "y": 47.18,
+      "map": "m60_36_45_00"
+    },
+    "hp": 2447,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:full-grown-fallingstar",
+    "name": "Full-Grown Fallingstar Beast",
+    "campaign": "sote",
+    "region": "Mt. Gelmir",
+    "location": "Ninth Mt. Gelmir Campsite",
+    "grace": "Ninth Mt. Gelmir Campsite",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "21,000 Runes",
+      "Fallingstar Beast Jaw",
+      "Smithing Stone (6)",
+      "Somber Smithing Stone (6)"
+    ],
+    "coords": {
+      "x": 21.69,
+      "y": 26.06,
+      "map": "m60_36_54_00"
+    },
+    "hp": 3154,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:messmer",
+    "name": "Messmer the Impaler",
+    "campaign": "sote",
+    "region": "Scadu Altus",
+    "location": "Shadow Keep",
+    "grace": "Dark Chamber Entrance",
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "400,000 Runes",
+      "Messmer's Kindling",
+      "Remembrance of the Impaler"
+    ],
+    "coords": {
+      "x": 77.54,
+      "y": 351.77,
+      "map": "m21_01_00_00"
+    },
+    "hp": 2963,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:metyr",
+    "name": "Metyr, Mother of Fingers",
+    "campaign": "sote",
+    "region": "Scadu Altus",
+    "location": "Cathedral of Manus Metyr",
+    "grace": "Cathedral of Manus Metyr",
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "420,000 Runes",
+      "Remembrance of the Mother of Fingers"
+    ],
+    "coords": {
+      "x": 4.32,
+      "y": 0.02,
+      "map": "m25_00_00_00"
+    },
+    "hp": 43296,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:black-knight-edredd",
+    "name": "Black Knight Edredd",
+    "campaign": "sote",
+    "region": "Scadu Altus",
+    "location": "Fort of Reprimand",
+    "grace": "Fort of Reprimand",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "80,000 Runes",
+      "Ash of War: Aspects of the Crucible: Wings"
+    ],
+    "coords": {
+      "x": 51.11,
+      "y": 55.79,
+      "map": "m61_49_43_00"
+    },
+    "hp": 19584,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:black-knight-garrew",
+    "name": "Black Knight Garrew",
+    "campaign": "sote",
+    "region": "Scadu Altus",
+    "location": "Fog Rift Fort",
+    "grace": "Scadu Altus, West",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "80,000 Runes",
+      "Black Steel Greatshield"
+    ],
+    "coords": {
+      "x": 28.97,
+      "y": 38.26,
+      "map": "m61_47_45_10"
+    },
+    "hp": 19584,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:count-ymir-mother-of-fingers",
+    "name": "Count Ymir, Mother of Fingers",
+    "campaign": "sote",
+    "region": "Scadu Altus",
+    "location": "Cathedral of Manus Metyr",
+    "grace": "Cathedral of Manus Meyr",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "210,000 Runes",
+      "High Priest Set",
+      "Maternal Staff",
+      "Ymir's Bell Bearing"
+    ],
+    "coords": {
+      "x": 63.78,
+      "y": 33.33,
+      "map": "m61_51_45_00"
+    },
+    "hp": 16673,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:curseblade-labirith",
+    "name": "Curseblade Labirith",
+    "campaign": "sote",
+    "region": "Scadu Altus",
+    "location": "Bonny Gaol",
+    "grace": "Bonny Gaol",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "100,000 Runes",
+      "Curseblade Meera"
+    ],
+    "coords": null,
+    "hp": 8426,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:death-knight",
+    "name": "Death Knight",
+    "campaign": "sote",
+    "region": "Scadu Altus",
+    "location": "Fog Rift Catacombs",
+    "grace": "Fog Rift Catacombs",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "110,000 Runes",
+      "130,000 Runes",
+      "Cerulean Amber Medallion 3",
+      "Crimson Amber Medallion 3",
+      "Death Knight's Longhaft Axe",
+      "Death Knight's Twin Axes"
+    ],
+    "coords": null,
+    "hp": 19285,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:death-knight",
+    "name": "Death Knight",
+    "campaign": "sote",
+    "region": "Scadu Altus",
+    "location": "Scorpion River Catacombs",
+    "grace": "Fog Rift Catacombs",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "110,000 Runes",
+      "130,000 Runes",
+      "Cerulean Amber Medallion 3",
+      "Crimson Amber Medallion 3",
+      "Death Knight's Longhaft Axe",
+      "Death Knight's Twin Axes"
+    ],
+    "coords": null,
+    "hp": 19285,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:dryleaf-dane",
+    "name": "Dryleaf Dane",
+    "campaign": "sote",
+    "region": "Scadu Altus",
+    "location": "Moorth Ruins",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "0 Runes",
+      "Dane's Hat",
+      "Dryleaf Arts"
+    ],
+    "coords": {
+      "x": -226.94,
+      "y": 174.59,
+      "map": "m20_01_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:ghostflame-dragon",
+    "name": "Ghostflame Dragon",
+    "campaign": "sote",
+    "region": "Scadu Altus",
+    "location": "Scadu Altus",
+    "grace": "Greatbridge, North",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "100,000 Runes",
+      "120,000 Runes",
+      "Dragon Heart",
+      "Somber Ancient Dragon Smithing Stone"
+    ],
+    "coords": {
+      "x": 13.5,
+      "y": 45.41,
+      "map": "m61_45_44_10"
+    },
+    "hp": 31518,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:golden-hippopotamus",
+    "name": "Golden Hippopotamus",
+    "campaign": "sote",
+    "region": "Scadu Altus",
+    "location": "Shadow Keep",
+    "grace": "Shadow Keep Main Gate",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "11,270 Runes",
+      "11,960 Runes",
+      "200,000 Runes",
+      "9,576 Runes",
+      "Aspects of the Crucible: Thorns",
+      "Scadutree Fragment"
+    ],
+    "coords": {
+      "x": 100.45,
+      "y": 156.47,
+      "map": "m21_00_00_00"
+    },
+    "hp": 33866,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:rakshasa",
+    "name": "Rakshasa",
+    "campaign": "sote",
+    "region": "Scadu Altus",
+    "location": "Eastern Nameless Mausoleum",
+    "grace": "Recluses' River Downstream",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "90,000 Runes",
+      "Rakshasa Set",
+      "Rakshasa's Great Katana"
+    ],
+    "coords": {
+      "x": 57.37,
+      "y": 49.1,
+      "map": null
+    },
+    "hp": 25809,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:ralva-the-great-red-bear",
+    "name": "Ralva the Great Red Bear",
+    "campaign": "sote",
+    "region": "Scadu Altus",
+    "location": "Scadu Altus",
+    "grace": "Highroad Cross",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "180,000 Runes",
+      "Pelt of Ralva"
+    ],
+    "coords": {
+      "x": 51.36,
+      "y": 28.85,
+      "map": "m61_49_45_00"
+    },
+    "hp": 29606,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:red-bear",
+    "name": "Red Bear",
+    "campaign": "sote",
+    "region": "Scadu Altus",
+    "location": "Northern Nameless Mausoleum",
+    "grace": "Temple Town Ruins",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "80,000 Runes",
+      "Iron Rivet Set",
+      "Red Bear's Claw"
+    ],
+    "coords": {
+      "x": 46.16,
+      "y": 48.33,
+      "map": null
+    },
+    "hp": 24476,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:rugalea-the-great-red-bear",
+    "name": "Rugalea the Great Red Bear",
+    "campaign": "sote",
+    "region": "Scadu Altus",
+    "location": "Rauh Base",
+    "grace": "Ravine North",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "210,000 Runes",
+      "Roar of Rugalea"
+    ],
+    "coords": {
+      "x": 0.37,
+      "y": 9.89,
+      "map": "m61_44_47_10"
+    },
+    "hp": 30535,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:scadutree-avatar",
+    "name": "Scadutree Avatar",
+    "campaign": "sote",
+    "region": "Scaduview",
+    "location": "Scadutree Base",
+    "grace": "Tree-Worship Sanctum",
+    "tier": "great-rune",
+    "requiredForEnding": false,
+    "drops": [
+      "260,000 Runes",
+      "Miquella's Great Rune",
+      "Remembrance of the Shadow Sunflower"
+    ],
+    "coords": {
+      "x": 53.83,
+      "y": 3.71,
+      "map": "m61_50_48_00"
+    },
+    "hp": 1050,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "hunt:commander-gaius",
+    "name": "Commander Gaius",
+    "campaign": "sote",
+    "region": "Scaduview",
+    "location": "Scaduview",
+    "grace": "Shadow Keep, Back Gate",
+    "tier": "remembrance",
+    "requiredForEnding": false,
+    "drops": [
+      "230,000 Runes",
+      "Remembrance of the Wild Boar Rider"
+    ],
+    "coords": {
+      "x": 51.55,
+      "y": 4.12,
+      "map": "m61_49_48_00"
+    },
+    "hp": 33871,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:fallingstar-beast",
+    "name": "Fallingstar Beast",
+    "campaign": "sote",
+    "region": "Scaduview",
+    "location": "Fingerstone Hill",
+    "grace": "Sellia Crystal Tunnel",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "11,000 Runes",
+      "170,000 Runes",
+      "7,600 Runes",
+      "Gravitational Missile",
+      "Gravity Stone Chunk",
+      "Gravity Stone Chunk x 4",
+      "Gravity Stone Fan",
+      "Smithing Stone (6)",
+      "Smithing Stone (7)",
+      "Smithing Stone (7) x 5",
+      "Somber Smithing Stone (5)",
+      "Somber Smithing Stone (6)",
+      "Somberstone Miner's Bell Bearing (1)"
+    ],
+    "coords": {
+      "x": 33.33,
+      "y": 34.33,
+      "map": "m60_41_50_00"
+    },
+    "hp": 1893,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:tree-sentinel",
+    "name": "Tree Sentinel",
+    "campaign": "sote",
+    "region": "Scaduview",
+    "location": "Hinterland",
+    "grace": "The First Step",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "120,000 Runes",
+      "16000 Runes (NG+1)",
+      "20,000 Runes",
+      "28,080 Runes",
+      "3,200 Runes",
+      "3200 Runes",
+      "50,000 Runes",
+      "Blessing of Marika",
+      "Erdtree Greatshield",
+      "Golden Halberd",
+      "Hero's Rune (1)",
+      "Hero's Rune [1]"
+    ],
+    "coords": {
+      "x": 35.25,
+      "y": 69.07,
+      "map": "m60_42_36_00"
+    },
+    "hp": 1745,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:tree-sentinel",
+    "name": "Tree Sentinel",
+    "campaign": "sote",
+    "region": "Scaduview",
+    "location": "Hinterland Bridge",
+    "grace": "The First Step",
+    "tier": "field",
+    "requiredForEnding": false,
+    "drops": [
+      "120,000 Runes",
+      "16000 Runes (NG+1)",
+      "20,000 Runes",
+      "28,080 Runes",
+      "3,200 Runes",
+      "3200 Runes",
+      "50,000 Runes",
+      "Blessing of Marika",
+      "Erdtree Greatshield",
+      "Golden Halberd",
+      "Hero's Rune (1)",
+      "Hero's Rune [1]"
+    ],
+    "coords": {
+      "x": 35.25,
+      "y": 69.07,
+      "map": "m60_42_36_00"
+    },
+    "hp": 1745,
+    "sources": [
+      "hunts"
+    ]
+  },
+  {
+    "id": "boss:death-knight-underground",
+    "name": "Death Knight · underground",
+    "campaign": "sote",
+    "region": "Shadow of the Erdtree",
+    "location": "Realm of Shadow",
+    "grace": "East Capital Rampart",
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [],
+    "coords": {
+      "x": 43.5,
+      "y": 45.45,
+      "map": null
+    },
+    "hp": null,
+    "sources": [
+      "engine-markers"
+    ]
+  },
+  {
+    "id": "boss:needle-knight-leda",
+    "name": "Needle Knight Leda",
+    "campaign": "sote",
+    "region": "Shadow of the Erdtree",
+    "location": "Shadow of the Erdtree",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "Ansbach's Attire",
+      "Ansbach's Boots",
+      "Ansbach's Longbow",
+      "Ansbach's Manchettes",
+      "Ash of War: Swift Slash",
+      "Freyja's Greatsword"
+    ],
+    "coords": {
+      "x": -338.33,
+      "y": 84.12,
+      "map": "m20_01_00_00"
+    },
+    "hp": null,
+    "sources": [
+      "boss-list"
+    ]
+  }
+]

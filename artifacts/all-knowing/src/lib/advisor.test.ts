@@ -9,6 +9,7 @@ import {
   pickGear,
   planRespec,
   rankUpgrades,
+  strongerUpgrades,
 } from './advisor'
 import { emptyCharacter } from '../data/seed'
 import type { Character, Stats } from '../types'
@@ -127,6 +128,40 @@ describe('advisor AR-ranked upgrades', () => {
       expect(rob.meets).toBe(false)
       expect(rob.requirement).toMatch(/needs \+/)
     }
+  })
+})
+
+describe('advisor stronger-for-your-build (Task 130 §3)', () => {
+  const dexChar = () =>
+    char({
+      stats: stats({ vigor: 40, endurance: 25, strength: 14, dexterity: 50, arcane: 10 }),
+      discoveredGraces: ['grace:gatefront'],
+      loadout: [{ id: 'cane', name: 'Cane Sword', kind: 'armament', upgrade: 0 }],
+    })
+
+  it('only lists reachable weapons with a positive gain', () => {
+    const c = dexChar()
+    const pool = rankUpgrades(c, detectBuild(c, weapons), { weapons, reachableUpgrade: 0, limit: 400 })
+    const stronger = strongerUpgrades(pool)
+    expect(stronger.length).toBeGreaterThan(0)
+    for (const u of stronger) {
+      expect(u.reachable, `${u.name} reachable`).toBe(true)
+      expect(u.gainPct, `${u.name} gain`).toBeGreaterThan(0)
+    }
+    // Every weaker/equal candidate stays out of the list.
+    expect(stronger.every((u) => u.gainPct > 0)).toBe(true)
+    expect(pool.some((u) => u.gainPct <= 0)).toBe(true)
+  })
+
+  it('returns nothing when no weapon beats the kit', () => {
+    // The kit is the strongest thing at these stats, so the non-positive
+    // candidates must all be filtered out.
+    const strong = rankUpgrades(
+      char({ stats: stats({ strength: 99, dexterity: 99 }), collectedItems: [] }),
+      detectBuild(char({ stats: stats({ strength: 99, dexterity: 99 }) }), weapons),
+      { weapons, reachableUpgrade: 0, limit: 400 },
+    ).filter((u) => u.gainPct <= 0)
+    expect(strongerUpgrades(strong)).toEqual([])
   })
 })
 

@@ -1010,3 +1010,12 @@ export function advise(character: Character, opts: AdviseOptions = {}): Advice {
     warnings: buildWarnings(character, opts),
   }
 }
+
+/**
+ * Task 130 §3 — the "Stronger for your build" list. A weapon that is weaker than
+ * the current kit (a negative or zero gain, e.g. "−5.1% vs Cane Sword") is never
+ * an upgrade; only reachable weapons with a positive gain make the cut.
+ */
+export function strongerUpgrades<T extends { reachable: boolean; gainPct: number }>(upgrades: T[]): T[] {
+  return upgrades.filter((u) => u.reachable && u.gainPct > 0)
+}

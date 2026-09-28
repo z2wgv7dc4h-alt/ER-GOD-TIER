@@ -8,6 +8,7 @@ import {
   locationToHash,
   locationToModule,
   moduleToLocation,
+  preserveQuery,
 } from '../lib/sections'
 
 const MODULE_IDS: ModuleId[] = ['reckon', 'map', 'build', 'quests', 'codex']
@@ -49,6 +50,16 @@ describe('shell location model (Task 91)', () => {
     expect(locationToHash('library', 'builds')).toBe('#/library/builds')
     expect(locationToHash('library', 'pvp')).toBe('#/library/pvp')
     expect(locationToHash('library', 'guides')).toBe('#/library/guides')
+  })
+
+  it('keeps a Library deep-link query while staying on the same route (Task 130 §4)', () => {
+    const base = locationToHash('library', 'search')
+    expect(base).toBe('#/library/search')
+    // The shell must not strip `?cat=bosses` before the Library reads it.
+    expect(preserveQuery(base, base, '#/library/search?cat=bosses')).toBe('#/library/search?cat=bosses')
+    // Leaving the route drops the query; an entity param is never doubled.
+    expect(preserveQuery(base, base, '#/journey/map?e=boss%3Amargit')).toBe(base)
+    expect(preserveQuery(base, '#/library/search?e=boss%3Amargit', '#/library/search')).toBe('#/library/search?e=boss%3Amargit')
   })
 })
 

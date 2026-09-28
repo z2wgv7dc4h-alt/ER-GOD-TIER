@@ -1,7 +1,7 @@
 import { byId, facts, type Fact } from '../knowledge/catalog'
 import { warpGraces } from '../knowledge/graces'
 import { inferChains } from '../knowledge/inferChains'
-import { remembrances } from '../knowledge/remembrances'
+import { defeatedEncounterCount, bossFactCount, rosterGroups, type BossCampaign, type BossEncounter } from './bossRoster'
 import type { Character } from '../types'
 import { canonicalFactId } from './aliases'
 import { clearFact, knownFactIds } from './infer'
@@ -154,7 +154,7 @@ export function completeness(character: Character): CompletenessCategory[] {
     { id: 'gear', label: 'Gear', have: Math.min(character.loadout.length, GEAR_SLOT_COUNT), total: GEAR_SLOT_COUNT, step: 'equipment' },
     { id: 'inventory', label: 'Inventory', have: character.collectedItems.length, total: countKind('item'), step: 'inventory' },
     { id: 'graces', label: 'Graces', have: character.discoveredGraces.length, total: warpGraces.length, step: 'graces' },
-    { id: 'bosses', label: 'Bosses', have: character.defeatedBosses.length, total: countKind('boss'), step: 'bosses' },
+    { id: 'bosses', label: 'Bosses', have: defeatedEncounterCount(character.defeatedBosses), total: bossFactCount, step: 'bosses' },
     { id: 'quests', label: 'Quests', have: character.completedQuestSteps.length, total: countKind('quest'), step: 'bosses' },
   ]
 }
@@ -174,32 +174,15 @@ export function weakestStep(character: Character): SetupStepId {
   return weakest.step
 }
 
-export type BossGroup = { region: string; bosses: Fact[] }
+export type BossGroup = { region: string; campaign: BossCampaign; major: BossEncounter[]; rest: BossEncounter[] }
 
-/** Boss facts grouped by region, remembrance/shardbearer fights first. */
+/**
+ * The canonical roster grouped by region, remembrance / Great Rune fights split
+ * out first (Task 130 §2). The Setup step renders `major` as tiles and collapses
+ * `rest` per region.
+ */
 export function bossGroups(): BossGroup[] {
-  const major = new Set(remembrances.map((r) => r.bossFactId).filter((x): x is string => Boolean(x)))
-  const groups = new Map<string, Fact[]>()
-  for (const f of facts) {
-    if (f.kind !== 'boss') continue
-    const list = groups.get(f.region) ?? []
-    list.push(f)
-    groups.set(f.region, list)
-  }
-  return [...groups.entries()]
-    .map(([region, list]) => ({
-      region,
-      bosses: list.sort((a, b) => {
-        const am = major.has(a.id) ? 0 : 1
-        const bm = major.has(b.id) ? 0 : 1
-        return am !== bm ? am - bm : a.name.localeCompare(b.name)
-      }),
-    }))
-    .sort((a, b) => a.region.localeCompare(b.region))
-}
-
-export function isMajorBoss(id: string): boolean {
-  return remembrances.some((r) => r.bossFactId === id)
+  return rosterGroups()
 }
 
 export type QuestLineGroup = { line: string; label: string; beats: Fact[] }

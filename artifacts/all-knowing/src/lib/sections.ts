@@ -97,6 +97,18 @@ export function locationToHash(section: Section, sub: Sub | null): string {
 }
 
 /**
+ * Task 130 §4 — the shell owns `#/section/sub` only. When the target is that
+ * same route and the live hash carries a query the shell does not understand
+ * (e.g. the Library's `#/library/search?cat=bosses` deep link), keep it instead
+ * of stripping it before the view can read it.
+ */
+export function preserveQuery(base: string, target: string, current: string): string {
+  const [currentBase, currentQuery = ''] = current.split('?')
+  if (!target.includes('?') && currentQuery && currentBase === base) return `${target}?${currentQuery}`
+  return target
+}
+
+/**
  * Task 117 — resolve a legacy alias to the sub-view that replaced it, then clamp
  * anything unknown to the section's default. Used by both the URL hash and the
  * persisted vault location, so an old `kit` / `reference` link never lands on a
