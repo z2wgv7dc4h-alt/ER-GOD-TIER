@@ -1,5 +1,5 @@
 import { byId, facts } from '../knowledge/catalog'
-import { inferChains } from '../knowledge/inferChains'
+import { inferChains, type InferChain } from '../knowledge/inferChains'
 import type { Character, Evidence, EvidenceClaim, EvidenceSource, StartingClass } from '../types'
 import { canonicalFactId } from './aliases'
 import { resolveClaim, type ConflictOptions } from './conflict'
@@ -85,7 +85,15 @@ export function knownFactIds(character: Character): Set<string> {
  * records them as `inference`. Omitting it keeps the original single-argument
  * behaviour for callers that only need the catalog graph.
  */
-export function closeWorld(ids: string[], knownFacts?: Iterable<string>) {
+export function closeWorld(
+  ids: string[],
+  knownFacts?: Iterable<string>,
+  /**
+   * Task 138 — the authored chain table to walk. Defaults to the live table; the
+   * inference audit passes a filtered copy to measure a before/after closure.
+   */
+  chainTable: InferChain[] = inferChains,
+) {
   const out = new Set(ids)
   const known = new Set<string>([...(knownFacts ?? []), ...ids])
   const queue = [...ids]
@@ -103,7 +111,7 @@ export function closeWorld(ids: string[], knownFacts?: Iterable<string>) {
     }
     // Task 54: extra authored chains, applied through the same closer. Each
     // derived id is labelled `inference` by `applyFacts`, so a deny/save still wins.
-    for (const chain of inferChains) {
+    for (const chain of chainTable) {
       if (canonicalFactId(chain.whenFact) !== id) continue
       if (chain.allOf?.some((x) => !known.has(canonicalFactId(x)))) continue
       if (chain.unless?.some((x) => known.has(canonicalFactId(x)))) continue

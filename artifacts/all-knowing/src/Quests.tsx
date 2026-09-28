@@ -7,6 +7,7 @@ import { MedusaRoute } from './MedusaRoute'
 import { EntityLink } from './EntityLink'
 import { Related } from './Related'
 import { Thread } from './Thread'
+import { WikiText } from './WikiText'
 import { applyFacts, clearFact } from './lib/infer'
 import { beatPin } from './lib/beatPins'
 import { useCoords } from './lib/coords'
@@ -137,10 +138,10 @@ export function QuestWorkspace() {
                     />
                     <div>
                       <div>
-                        {s.do}
+                        <WikiText text={s.do} />
                         {s.id === lineCurrentId ? ' · now' : ''}
                       </div>
-                      <div className="note">{s.detail}</div>
+                      <WikiText className="note" text={s.detail} />
                       {s.obtain && <div className="note">Reward: {s.obtain}</div>}
                       {s.lockout && <div className="warn">{s.lockout}</div>}
                       {factId && (

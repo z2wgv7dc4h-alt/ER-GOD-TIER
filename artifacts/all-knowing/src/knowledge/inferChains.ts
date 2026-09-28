@@ -1,5 +1,6 @@
 import { canonicalFactId } from '../lib/aliases'
 import { byId } from './catalog'
+import { mapFragments } from './collectibles'
 
 /**
  * Named-evidence inference chains (Task 54).
@@ -34,6 +35,14 @@ export type InferChain = {
   unless?: string[]
   /** 0..1 confidence in the implication itself, for ranking / explanation. */
   confidence: number
+  /**
+   * Task 138 §2 — whether the implication is a certainty (the evidence cannot
+   * exist without the conclusion) or only a likely read that the UI must offer
+   * for confirmation. Defaults to `certain` when omitted.
+   */
+  certainty?: 'certain' | 'likely'
+  /** The task that authored this rule. Used by the audit to measure before/after. */
+  addedBy?: number
   why: string
 }
 
@@ -49,6 +58,43 @@ function bellBearingRule(bearing: string, region: string, owner: string): InferC
     confidence: 0.85,
     why: `${owner} only drops their Bell Bearing once they are gone, so ${owner}'s area was reached.`,
   }
+}
+
+/**
+ * Task 138 §2 — owning a painted map fragment proves the region it lives in was
+ * reached: the fragment is a fixed pickup placed on that terrain. Only fragments
+ * that actually exist in `collectibles.ts` are emitted, so the table can never
+ * gain a fabricated id.
+ */
+const MAP_FRAGMENT_REACH: Record<string, string> = {
+  'mapfrag:limgrave-w': 'region:limgrave',
+  'mapfrag:limgrave-e': 'region:limgrave',
+  'mapfrag:weeping': 'region:weeping',
+  'mapfrag:liurnia-e': 'region:liurnia',
+  'mapfrag:liurnia-n': 'region:liurnia',
+  'mapfrag:liurnia-w': 'region:liurnia',
+  'mapfrag:caelid': 'region:caelid',
+  'mapfrag:dragonbarrow': 'region:caelid',
+  'mapfrag:altus': 'region:altus',
+  'mapfrag:leyndell': 'region:leyndell',
+  'mapfrag:gelmir': 'region:altus',
+  'mapfrag:mountaintops-w': 'region:mountaintops',
+  'mapfrag:mountaintops-e': 'region:mountaintops',
+  'mapfrag:consecrated': 'region:mountaintops',
+}
+
+function mapFragmentChains(): InferChain[] {
+  const known = new Set(mapFragments.map((f) => f.id))
+  return Object.entries(MAP_FRAGMENT_REACH)
+    .filter(([id]) => known.has(id))
+    .map(([whenFact, region]) => ({
+      whenFact,
+      implies: [region],
+      confidence: 0.9,
+      certainty: 'certain' as const,
+      addedBy: 138,
+      why: `A painted ${region.replace(/^region:/, '').replace(/-/g, ' ')} map fragment can only be picked up in that region, so that region was reached.`,
+    }))
 }
 
 export const inferChains: InferChain[] = [
@@ -163,6 +209,67 @@ export const inferChains: InferChain[] = [
   bellBearingRule('bell-bearing-ymir-s-bell-bearing', 'region:shadow', 'Count Ymir'),
   bellBearingRule('bell-bearing-igon-s-bell-bearing', 'region:shadow', 'Igon'),
   bellBearingRule('bell-bearing-moore-s-bell-bearing', 'region:shadow', 'Moore'),
+
+  // ---------------------------------------------------------------------------
+  // Task 138 §2 — conclusions a knowledgeable player draws that the app did not.
+  // Each is a one-directional certainty: the evidence cannot exist without the
+  // conclusion. Likely reads live in `likelyInferences.ts`, never here.
+  // ---------------------------------------------------------------------------
+  // Entering the Mountaintops at all means a Rold medallion was used: the first
+  // way up is the Grand Lift of Rold (the Haligtree secret medallion is itself
+  // found from within the Mountaintops), and the Forge sits only past it.
+  {
+    whenFact: 'region:mountaintops',
+    implies: ['item:rold-medallion'],
+    confidence: 0.9,
+    certainty: 'certain',
+    addedBy: 138,
+    why: 'The Grand Lift of Rold is the only way up to the Mountaintops, so the Rold Medallion was already used.',
+  },
+  {
+    whenFact: 'grace:forge-giants',
+    implies: ['item:rold-medallion'],
+    confidence: 0.9,
+    certainty: 'certain',
+    addedBy: 138,
+    why: 'The Forge of the Giants lies past the Grand Lift of Rold, so the Rold Medallion was already used.',
+  },
+  // A discovered underground grace proves the corresponding well/region was reached.
+  {
+    whenFact: 'grace:siofra',
+    implies: ['region:siofra-river'],
+    confidence: 0.9,
+    certainty: 'certain',
+    addedBy: 138,
+    why: 'A Siofra grace can only be found underground, so the Siofra River Well was used.',
+  },
+  {
+    whenFact: 'grace:ainsel',
+    implies: ['region:ainsel-river'],
+    confidence: 0.9,
+    certainty: 'certain',
+    addedBy: 138,
+    why: 'An Ainsel grace can only be found underground, so the Ainsel River Well was reached.',
+  },
+  // A stat-boost talisman with a single fixed source proves that source was reached.
+  {
+    whenFact: 'item:radagon-s-soreseal',
+    implies: ['region:caelid'],
+    confidence: 0.9,
+    certainty: 'certain',
+    addedBy: 138,
+    why: "Radagon's Soreseal is a fixed chest inside Fort Faroth in Dragonbarrow, so Caelid was reached.",
+  },
+  {
+    whenFact: 'item:green-turtle-talisman',
+    implies: ['region:limgrave'],
+    confidence: 0.9,
+    certainty: 'certain',
+    addedBy: 138,
+    why: 'The Green Turtle Talisman is a fixed pickup at Summonwater Village, so Limgrave was reached.',
+  },
+
+  ...mapFragmentChains(),
 ]
 
 const byWhen = new Map<string, InferChain[]>()

@@ -3,6 +3,7 @@ import { warpGraces } from '../knowledge/graces'
 import { loot, type LootKind } from '../knowledge/loot'
 import { remembrances } from '../knowledge/remembrances'
 import { gates, gateState } from '../knowledge/gates'
+import { chainsFor } from '../knowledge/inferChains'
 import { allLines } from '../knowledge/storylines'
 import { dungeons } from '../knowledge/dungeons'
 import { dungeons as dungeonIndex, dungeonBosses } from './dungeons'
@@ -434,6 +435,18 @@ function buildIndex(): Index {
       // A step can name a real item/boss as its beat (e.g. item:fingerslayer);
       // never let the beat row reclassify the authored fact.
       if (!entities.has(beatId)) addEntity({ id: beatId, kind: 'quest', name: step.do, summary: step.detail }, [], false)
+      // Task 138 §3 — the step's grants / lockouts / requirements are real fact
+      // ids too. Register the ones that have no row yet so a lockout warning or a
+      // plan step never renders a dead EntityLink. Names stay out of the glossary
+      // (registerName=false) — these are state flags, not browsable entities.
+      for (const ref of [...(step.grants ?? []), ...(step.lockouts ?? []), ...(step.requires ?? []), ...(step.factIds ?? [])]) {
+        if (entities.has(ref) || byName.has(normalize(ref))) continue
+        addEntity(
+          { id: ref, kind: prefixKind(ref), name: ref.replace(/^[a-z]+:/, '').replace(/-/g, ' '), summary: `${line.name} — ${step.do}` },
+          [],
+          false,
+        )
+      }
     }
   }
 
@@ -572,6 +585,38 @@ function buildIndex(): Index {
     if (region && region !== f.id) push(f.id, { rel: 'foundIn', to: region, label: f.region, source: 'catalog' })
   }
 
+  // Task 138 §3 — edges the enrichment index already carries, folded into the
+  // graph so Related/Where and the coverage guard can traverse them. Only data
+  // that exists is wired; nothing is inferred or invented here.
+  const locationTargets: { n: string; id: string; name: string }[] = []
+  for (const [n, id] of byName) {
+    const kind = entities.get(id)?.kind
+    if (kind !== 'region' && kind !== 'grace' && kind !== 'dungeon') continue
+    if (n.length >= 4) locationTargets.push({ n, id, name: entities.get(id)?.name ?? n })
+  }
+  for (const record of allRecords()) {
+    const from = record.id
+    if (record.region) {
+      const regionId = byName.get(normalize(record.region))
+      if (regionId && regionId !== from && entities.get(regionId)?.kind === 'region') {
+        push(from, { rel: 'foundIn', to: canon(regionId), label: record.region, source: 'entity-index' })
+      }
+    }
+    if (record.location) {
+      const text = normalize(record.location)
+      let best: { id: string; name: string; len: number } | null = null
+      for (const target of locationTargets) {
+        if (target.id === from || !text.includes(target.n)) continue
+        if (!best || target.n.length > best.len) best = { id: target.id, name: target.name, len: target.n.length }
+      }
+      if (best) push(from, { rel: 'foundIn', to: canon(best.id), label: best.name, source: 'entity-index' })
+    }
+    for (const drop of record.drops ?? []) {
+      const to = byName.get(normalize(drop))
+      if (to && to !== from) push(from, { rel: 'drops', to: canon(to), label: drop, source: 'entity-index' })
+    }
+  }
+
   // loot: where it is found
   for (const l of loot) {
     const itemId = idAlias.get(l.id) ?? canon(l.id)
@@ -593,8 +638,11 @@ function buildIndex(): Index {
     if (itemId) push(itemId, { rel: 'soldBy', to: `merchant:${slug(s.vendor)}`, label: s.vendor, source: 'shops' })
   }
 
-  // remembrances: traded for
+  // remembrances: dropped by the boss, traded at Enia
   for (const r of remembrances) {
+    if (r.bossFactId) {
+      push(canon(r.bossFactId), { rel: 'drops', to: canon(r.id), label: r.name, source: 'remembrances' })
+    }
     for (const reward of r.rewards) {
       const to = reward.factId ? canon(reward.factId) : resolve(reward.name)
       push(r.id, { rel: 'tradedFor', to, label: reward.name, source: 'remembrances' })
@@ -841,6 +889,39 @@ function knownCanonical(character: Character): Set<string> {
   )
 }
 
+/** How the trigger fact proves the derived one, in player terms. */
+function inferredReason(fromId: string): string {
+  const name = entityName(fromId)
+  const kind = byId.get(canonicalEntityId(fromId))?.kind ?? prefixKind(fromId)
+  if (kind === 'item') return `you hold ${name}`
+  if (kind === 'grace' || kind === 'region') return `you reached ${name}`
+  if (kind === 'boss') return `you defeated ${name}`
+  if (kind === 'quest') return `${name} is done`
+  return `${name} proves it`
+}
+
+/**
+ * The inference reason for a fact the character did not log directly, or
+ * undefined when every winning piece of evidence is a direct read.
+ */
+function inferredWhy(character: Character, id: string): string | undefined {
+  const evidence = character.evidence.find((e) => canonicalEntityId(e.fact) === id && e.source === 'inference')
+  if (!evidence) return undefined
+  const known = knownCanonical(character)
+  for (const chain of chainsFor(id)) {
+    if (!chain.implies.some((x) => canonicalEntityId(x) === id)) continue
+    if (!known.has(canonicalEntityId(chain.whenFact))) continue
+    if (chain.allOf?.some((x) => !known.has(canonicalEntityId(x)))) continue
+    if (chain.unless?.some((x) => known.has(canonicalEntityId(x)))) continue
+    return inferredReason(chain.whenFact)
+  }
+  for (const f of facts) {
+    if (!known.has(canonicalEntityId(f.id))) continue
+    if (f.implies.some((x) => canonicalEntityId(x) === id)) return inferredReason(f.id)
+  }
+  return evidence.detail?.replace(/^implied by\s*/i, '')
+}
+
 /**
  * Where the character stands on an entity: catalog/gate data supplies the
  * prerequisite chain and lockouts, the character supplies ownership.
@@ -851,9 +932,12 @@ export function status(factId: string, character: Character): { state: EntitySta
   const known = knownCanonical(character)
 
   if (known.has(id)) {
+    const reason = inferredWhy(character, id)
     return {
       state: OWNED_KINDS.has(entity.kind) ? 'owned' : 'done',
-      why: 'Logged on this character.',
+      // Task 138 §4 — the strip says why the app believes it, e.g.
+      // "Defeated — you hold Remembrance of the Starscourge".
+      why: reason ? `Inferred — ${reason}.` : 'Logged on this character.',
     }
   }
 

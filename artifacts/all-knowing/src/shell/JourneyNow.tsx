@@ -7,6 +7,7 @@ import { useCoords } from '../lib/coords'
 import { gideonHeader } from '../lib/gideonHeader'
 import { leftoverPins } from '../lib/leftoverPins'
 import { leftovers as missedLoot } from '../lib/leftovers'
+import { confirmLikelyInference, likelyInferences, rejectLikelyInference } from '../lib/likelyInferences'
 import { lockoutWarningsFor, type LockWarning } from '../lib/lockWarnings'
 import { suggestedNextArea } from '../lib/worldState'
 import { BeforeYouGoCard } from '../BeforeYouGoCard'
@@ -75,6 +76,7 @@ export function JourneyNow() {
     return rows
   }, [outstanding, w.character])
   const leftovers = useRowReveal(missed.length)
+  const likely = useMemo(() => likelyInferences(w.character, 3), [w.character])
   const [lockPending, setLockPending] = useState<{ ids: string[]; warnings: LockWarning[] } | null>(null)
   const unset = hasUnsetStats(w.character)
   const suggested = useMemo(() => suggestedNextArea(w.character), [w.character])
@@ -190,6 +192,37 @@ export function JourneyNow() {
         )}
 
         <BeforeYouGoCard />
+
+        {likely.length > 0 && (
+          <section className="panel likely-card">
+            <div className="kicker">Probably done — confirm?</div>
+            {likely.map((l) => (
+              <ListRow
+                key={l.id}
+                title={l.label}
+                subtitle={l.why}
+                trailing={
+                  <span className="opts">
+                    <Button
+                      variant="secondary"
+                      small
+                      onClick={() => w.setCharacter(confirmLikelyInference(w.character, l.factId))}
+                    >
+                      Yes
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      small
+                      onClick={() => w.setCharacter(rejectLikelyInference(w.character, l.factId))}
+                    >
+                      No
+                    </Button>
+                  </span>
+                }
+              />
+            ))}
+          </section>
+        )}
 
         {missed.length > 0 && (
           <section className="panel leftover-card">
