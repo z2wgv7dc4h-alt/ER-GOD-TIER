@@ -40,6 +40,7 @@ export type WikiSearchHit = {
   entityId: string
   title: string
   kind: string
+  url: string
   heading: string
   markdown: string
   score: number
@@ -175,14 +176,27 @@ export async function loadWikiPageByEntity(entityId: string): Promise<{ meta: Wi
 // Search
 // ---------------------------------------------------------------------------
 
-async function loadSearchMeta(): Promise<{ docs: number; buckets: Record<string, string>; terms?: Record<string, Posting[]> } | null> {
+type SearchMeta = {
+  docs: number
+  buckets: Record<string, string>
+  terms?: Record<string, Posting[]>
+  avgdl?: number
+  lengths?: Record<string, number>
+}
+
+async function loadSearchMeta(): Promise<SearchMeta | null> {
   if (!searchMetaPromise) {
-    searchMetaPromise = fetchJson<{ docs?: number; buckets?: Record<string, string>; single?: boolean; terms?: Record<string, Posting[]> }>(
-      `${BASE}/search-index.json`,
-    ).then((doc) => {
+    searchMetaPromise = fetchJson<{
+      docs?: number
+      buckets?: Record<string, string>
+      single?: boolean
+      terms?: Record<string, Posting[]>
+      avgdl?: number
+      lengths?: Record<string, number>
+    }>(`${BASE}/search-index.json`).then((doc) => {
       if (!doc) return null
-      if (doc.single) return { docs: doc.docs ?? 0, buckets: {}, terms: doc.terms ?? {} }
-      return { docs: doc.docs ?? 0, buckets: doc.buckets ?? {} }
+      if (doc.single) return { docs: doc.docs ?? 0, buckets: {}, terms: doc.terms ?? {}, avgdl: doc.avgdl, lengths: doc.lengths }
+      return { docs: doc.docs ?? 0, buckets: doc.buckets ?? {}, avgdl: doc.avgdl, lengths: doc.lengths }
     })
   }
   return searchMetaPromise
@@ -196,11 +210,17 @@ async function loadBucket(name: string): Promise<Record<string, Posting[]>> {
   return promise
 }
 
-/** Pure scorer over prebuilt postings; exported for unit tests. */
+/** BM25 constants; the small values keep long walkthrough sections from winning. */
+const K1 = 1.2
+const B = 0.75
+
+/** Pure BM25-ish scorer over prebuilt postings; exported for unit tests. */
 export function rankPostings(
   terms: string[],
   docs: number,
   postings: Map<string, Posting[]>,
+  lengths?: Map<string, number>,
+  avgdl = 0,
 ): { pageId: string; ord: number; score: number }[] {
   if (!terms.length || docs <= 0) return []
   const scores = new Map<string, { pageId: string; ord: number; score: number }>()
@@ -208,11 +228,14 @@ export function rankPostings(
   for (const term of unique) {
     const list = postings.get(term)
     if (!list?.length) continue
-    const idf = Math.log(1 + docs / list.length)
+    const df = list.length
+    const idf = Math.log(1 + (docs - df + 0.5) / (df + 0.5))
     for (const [pageId, ord, tf] of list) {
       const key = `${pageId}:${ord}`
+      const dl = lengths?.get(key) ?? avgdl
+      const norm = dl && avgdl ? 1 - B + B * (dl / avgdl) : 1
       const entry = scores.get(key) ?? { pageId: String(pageId), ord, score: 0 }
-      entry.score += idf * (1 + Math.log(tf))
+      entry.score += idf * ((tf * (K1 + 1)) / (tf + K1 * norm))
       scores.set(key, entry)
     }
   }
@@ -249,7 +272,8 @@ export async function searchWiki(query: string, limit = 8): Promise<WikiSearchHi
     }
   }
 
-  const ranked = rankPostings(terms, meta.docs, postings)
+  const lengths = meta.lengths ? new Map(Object.entries(meta.lengths)) : undefined
+  const ranked = rankPostings(terms, meta.docs, postings, lengths, meta.avgdl)
   if (!ranked.length) return []
   // Resolve the top candidates to sections; a phrase/title hit gets a boost.
   const candidates = ranked.slice(0, Math.max(limit * 4, 24))
@@ -276,6 +300,7 @@ export async function searchWiki(query: string, limit = 8): Promise<WikiSearchHi
       entityId: pageMeta.entityId,
       title: pageMeta.title,
       kind: pageMeta.kind,
+      url: pageMeta.url,
       heading: section.heading,
       markdown: section.markdown,
       score,

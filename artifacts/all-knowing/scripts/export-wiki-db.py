@@ -612,6 +612,7 @@ def export_wiki_corpus(db_path):
 
     docs = 0
     postings = {}
+    lengths = {}
     for page in pages:
         for section_index, section in enumerate(page["sections"]):
             docs += 1
@@ -625,6 +626,8 @@ def export_wiki_corpus(db_path):
                 weights[term] = weights.get(term, 0) + 4
             for term, weight in weights.items():
                 postings.setdefault(term, {})[key] = weight
+            lengths["%d:%d" % key] = sum(weights.values())
+    avgdl = (sum(lengths.values()) / docs) if docs else 0.0
 
     buckets = {}
     for term in sorted(postings):
@@ -639,7 +642,7 @@ def export_wiki_corpus(db_path):
     if total <= SEARCH_BUDGET:
         terms = {term: rows for bucket in buckets.values() for term, rows in bucket.items()}
         with open(os.path.join(CORPUS_DIR, "search-index.json"), "w", encoding="utf-8") as handle:
-            json.dump({"generatedAt": None, "docs": docs, "pages": len(pages), "single": True, "terms": terms}, handle, ensure_ascii=False, separators=(",", ":"))
+            json.dump({"generatedAt": None, "docs": docs, "pages": len(pages), "single": True, "avgdl": avgdl, "lengths": lengths, "terms": terms}, handle, ensure_ascii=False, separators=(",", ":"))
     else:
         bucket_files = {}
         for name in sorted(buckets):
@@ -652,6 +655,8 @@ def export_wiki_corpus(db_path):
                 "generatedAt": None,
                 "docs": docs,
                 "pages": len(pages),
+                "avgdl": avgdl,
+                "lengths": lengths,
                 "buckets": bucket_files,
                 "terms": sum(len(bucket) for bucket in buckets.values()),
             }, handle, ensure_ascii=False, separators=(",", ":"))

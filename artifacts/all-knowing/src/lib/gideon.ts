@@ -37,6 +37,7 @@ import { factState } from '../state'
 import { callGideonLlm, hasGideonKey, type ChatMessage } from './muse'
 import { askGideonAgent } from './gideonAgent'
 import { buildGrounding, gideonMessages, validateGideonAct } from './gideonLlm'
+import { askGideonWiki } from './gideonWiki'
 import { buildHunt } from './buildHunt'
 import { isDialogueAsk, quoteFor } from './dialogueQuote'
 import { loadDialogueOwners, type DialogueOwners } from './dialogueOwners'
@@ -1514,12 +1515,16 @@ export async function askGideon(
   const router = askGideonRouter(question, character, memory, combat, dialogue, placements, medusaSteps, guides, weapons, regionLevelList, area)
   if (isFastLookup(question, memory, combat ?? cachedBossCombat(), placements, medusaSteps, guides, weapons, regionLevelList)) return router
 
+  // Task 133 §4 — the deterministic fallback: answer an open question from the
+  // wiki corpus instead of a bare "I don't know".
+  const fromWiki = async (): Promise<GideonAct> => (await askGideonWiki(question).catch(() => null)) ?? router
+
   if (!hasGideonKey()) {
     if (!warnedNoKey) {
       warnedNoKey = true
       console.info('[gideon] VITE_GIDEON_API_KEY is not set — using the deterministic router only.')
     }
-    return router
+    return fromWiki()
   }
 
   try {
@@ -1536,12 +1541,12 @@ export async function askGideon(
     const raw = await callGideonLlm(gideonMessages(question, grounding, history))
     const { act, rejected } = validateGideonAct(raw, grounding)
     if (!act) {
-      console.warn('[gideon] Muse response rejected (invented or invalid ids); using the router.', rejected)
-      return router
+      console.warn('[gideon] Muse response rejected (invented or invalid ids); using the wiki/router.', rejected)
+      return fromWiki()
     }
     return act
   } catch (err) {
-    console.warn('[gideon] Muse call failed; using the deterministic router.', err)
-    return router
+    console.warn('[gideon] Muse call failed; using the wiki/router.', err)
+    return fromWiki()
   }
 }

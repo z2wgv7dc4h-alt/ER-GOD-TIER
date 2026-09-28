@@ -14,6 +14,7 @@ import { matchCoords, type CoordPin } from './coords'
 import { findQuest, loadNpcQuests } from './npcQuests'
 import { loadRecipes, matchRecipes } from './recipes'
 import { loadWikiText, matchWiki } from './wikiText'
+import { loadWikiPageByEntity, searchWiki } from './wikiSearch'
 import { loadSecrets, matchSecrets } from './secrets'
 import { loadGameTextTable } from './gameText'
 import { quoteFor } from './dialogueQuote'
@@ -128,6 +129,22 @@ export const GIDEON_TOOLS: ToolDef[] = [
       name: 'wiki',
       description: 'Search the full Elden Ring wiki text for anything else — a mechanic, an enemy, a location, a boss detail, a term.',
       parameters: { type: 'object', properties: { q: str('what to look up') }, required: ['q'], additionalProperties: false },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'wiki_search',
+      description: 'Full-text search of the whole Elden Ring wiki. Returns the top sections with the page, heading, a <=600 character excerpt and the page entity id. Use for how/where/lore/what questions the other tools do not cover, then cite the page.',
+      parameters: { type: 'object', properties: { q: str('what to search the wiki for') }, required: ['q'], additionalProperties: false },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'wiki_page',
+      description: 'The full wiki page for an entity or wiki id: its sections with headings and prose. Accepts a fact id (boss:margit) or a wiki:<slug> page id.',
+      parameters: { type: 'object', properties: { id: str('fact id or wiki:<slug>') }, required: ['id'], additionalProperties: false },
     },
   },
   {
@@ -310,6 +327,27 @@ export async function runGideonTool(name: string, args: Record<string, unknown>,
       const doc = await loadWikiText().catch(() => null)
       const hits = doc ? matchWiki(q, doc.sections, 3) : []
       return hits.map((h) => ({ page: h.page, heading: h.heading, text: h.text.slice(0, 600) }))
+    }
+    case 'wiki_search': {
+      if (!q.trim()) return { error: 'empty query' }
+      const hits = await searchWiki(q, 4).catch(() => [])
+      return hits.map((hit) => ({
+        id: hit.entityId,
+        page: hit.title,
+        heading: hit.heading,
+        excerpt: hit.markdown.slice(0, 600),
+        entityIds: [...new Set([hit.entityId, ...[...hit.markdown.matchAll(/\[\[([^\]|]+)(?:\|[^\]]*)?\]\]/g)].map((m) => m[1])])],
+      }))
+    }
+    case 'wiki_page': {
+      const found = await loadWikiPageByEntity(String(args.id ?? '')).catch(() => null)
+      if (!found) return { error: 'no wiki page for that id' }
+      return {
+        id: found.page.entityId,
+        title: found.page.title,
+        url: found.page.url,
+        sections: found.page.sections.map((section) => ({ heading: section.heading, markdown: section.markdown.slice(0, 2000) })),
+      }
     }
     case 'recipe': {
       const doc = await loadRecipes().catch(() => null)
