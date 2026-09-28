@@ -126,7 +126,9 @@ function mapEngine(): Plugin {
     }
     const send = (f: string) => {
       res.setHeader('Content-Type', mimeType(f))
-      res.setHeader('Cache-Control', 'public, max-age=3600')
+      // Tiles and icons never change between extractions; code/markup must not go stale
+      // (a cached map.js on the phone hid engine fixes for up to an hour).
+      res.setHeader('Cache-Control', /\.(webp|png|jpe?g|svg|woff2)$/i.test(f) ? 'public, max-age=3600' : 'no-cache')
       fs.createReadStream(f).pipe(res)
     }
     fs.stat(file, (err, st) => {
