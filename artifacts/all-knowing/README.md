@@ -51,6 +51,26 @@ Install from the browser menu when you want it on a phone. Fonts are self-hosted
 
 ---
 
+## HTTPS on the LAN (needed for the phone camera)
+
+The live inventory scanner uses `getUserMedia`, which browsers only allow in a **secure
+context**. A plain `http://192.168.x.x:5173` tab is not secure, so the camera stays blocked.
+Generate a self-signed certificate once:
+
+```bash
+npm run cert            # uses openssl if installed, else Node's crypto (no new deps)
+npm run dev             # Vite now serves https://localhost:5173 and https://<lan-ip>:5173
+```
+
+`npm run cert` writes `.cert/key.pem` + `.cert/cert.pem` (gitignored) covering `localhost`
+and every LAN IPv4 this PC currently has. On the phone, open `https://<PC LAN IP>:5173` and
+**accept the "not private" warning once** (Advanced → Proceed). After that the browser treats
+the origin as secure and the camera prompt appears. Re-run `npm run cert -- --force` whenever
+the LAN IP changes (new Wi-Fi). Without a `.cert/` folder the dev server stays plain HTTP,
+exactly as before.
+
+---
+
 ## Live memory mode — read this before you enable it
 
 Default `npm start` / `npm run map` never touches the game process. It can watch `ER0000.sl2`. That path is not visible to anti-cheat as process injection.

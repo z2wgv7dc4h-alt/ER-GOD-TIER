@@ -78,3 +78,6 @@ vendor/elden-ring-map/**/__pycache__/
 
 # Tesseract language model downloaded on first Node OCR run (Task 134)
 eng.traineddata
+
+# Task 136 §1 — self-signed dev certificate for LAN camera access (never commit keys)
+.cert/

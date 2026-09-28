@@ -172,6 +172,23 @@ function mapEngine(): Plugin {
   }
 }
 
+/**
+ * Task 136 §1 — optional HTTPS for the LAN.
+ *
+ * A phone only opens its camera in a secure context, so the live scanner needs
+ * `https://<lan-ip>:5173`. `npm run cert` writes `.cert/key.pem` + `.cert/cert.pem`
+ * (gitignored); when both exist we serve HTTPS, otherwise plain HTTP as before.
+ */
+function devHttps(): { key: Buffer; cert: Buffer } | undefined {
+  const dir = path.join(process.cwd(), '.cert')
+  const key = path.join(dir, 'key.pem')
+  const cert = path.join(dir, 'cert.pem')
+  if (!fs.existsSync(key) || !fs.existsSync(cert)) return undefined
+  return { key: fs.readFileSync(key), cert: fs.readFileSync(cert) }
+}
+
+const https = devHttps()
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), VitePWA(pwaOptions), mapEngine()],
@@ -187,6 +204,7 @@ export default defineConfig({
   },
   server: {
     host: true,
+    ...(https ? { https } : {}),
     // `.scratch/` is gitignored task scratch (clones, dumps, headless-browser profiles).
     // Watching it can crash Vite on locked files (EBUSY) and should never trigger HMR.
     watch: { ignored: ['**/.scratch/**'] },
@@ -201,4 +219,5 @@ export default defineConfig({
       },
     },
   },
+  ...(https ? { preview: { host: true, https } } : {}),
 })

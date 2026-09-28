@@ -113,6 +113,13 @@ export function HelpSheet({ onClose }: { onClose: () => void }) {
           optional process-memory player dot is opt-in and offline-only.
         </p>
         <p className="note">
+          <strong>Phone camera needs HTTPS.</strong> The live scanner uses the camera, which the
+          browser only allows on a secure origin. Run <kbd>npm run cert</kbd> once (self-signed,
+          covers this PC's LAN IP), restart the dev server, then on the phone open
+          <kbd>https://&lt;pc-ip&gt;:5173</kbd> and accept the one-time certificate warning. Without it
+          the app stays on HTTP and you can still read recorded videos or photos.
+        </p>
+        <p className="note">
           <strong>FanAPI is reference, not AR.</strong> The Codex reference data (armor poise,
           talisman effects, spell costs, boss HP/drops) comes from the FanAPI; attack rating is
           computed from the in-repo regulation data, and pin coordinates come from in-repo coord

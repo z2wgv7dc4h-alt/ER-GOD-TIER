@@ -7,6 +7,7 @@
     "start": "node scripts/dev-stack.mjs",
     "start:live": "node scripts/dev-stack.mjs --live-memory",
     "dev": "vite",
+    "cert": "node scripts/make-dev-cert.mjs",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "test": "vitest run",
