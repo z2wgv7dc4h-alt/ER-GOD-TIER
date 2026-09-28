@@ -79,13 +79,17 @@ supported, chosen by config with no code change:
 | DeepSeek | `deepseek` | `deepseek-chat` | `https://api.deepseek.com/v1` | `/gideon-llm-deepseek` |
 | Meta Muse Spark | `meta` (default) | `muse-spark-1.3-contributor` | `https://api.meta.ai/v1` | `/gideon-llm` |
 
-To enable one:
+To enable one — **DeepSeek is the documented setup** for this build:
 
-1. Copy `.env.example` to `.env.local` and set `VITE_GIDEON_API_KEY`.
-2. For DeepSeek set `VITE_GIDEON_PROVIDER=deepseek`; omit it to keep Meta. A
-   `VITE_GIDEON_BASE_URL` containing `deepseek` is detected too.
-3. Optionally override `VITE_GIDEON_BASE_URL` / `VITE_GIDEON_MODEL`
-   (`deepseek-reasoner` is accepted for the reasoning model).
+1. Copy `.env.example` to `.env.local` and set `VITE_GIDEON_API_KEY` to your
+   DeepSeek key.
+2. Set `VITE_GIDEON_PROVIDER=deepseek` (already the value in `.env.example`).
+   Set it to `meta` to use Meta Muse Spark instead; a `VITE_GIDEON_BASE_URL`
+   containing `deepseek` is detected too.
+3. Optional overrides: `VITE_GIDEON_BASE_URL` and `VITE_GIDEON_MODEL`
+   (`deepseek-reasoner` is accepted for the reasoning model). Leave both empty
+   unless you need them — an explicit URL always wins over the provider, so a
+   leftover Meta URL would bypass the DeepSeek proxy; clear it when switching.
 4. **Restart the dev server** — Vite only reads `.env.local` at startup.
 5. Settings → **Gideon AI key → Test connection** reports the provider, model and
    latency (one ping, the same 45 s timeout as real calls).
