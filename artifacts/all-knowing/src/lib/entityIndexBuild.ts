@@ -1294,7 +1294,11 @@ function mergeWikiDb(): void {
   // Locations category already uses).
   for (const rec of wikiRecords(wikiLocationDoc)) {
     const title = canonicalWikiTitle(rec.title)
-    const id = resolveName(title, 'region') ?? `region:${slug(title)}`
+    // Only fold onto an existing *region* entity; a wiki Location page that
+    // resolves to a grace/boss keeps its own location record so the page's
+    // description + region are not lost on the wrong kind.
+    const resolved = resolveName(title, 'region')
+    const id = resolved && hasEntity(resolved) && getEntity(resolved).kind === 'region' ? resolved : `region:${slug(title)}`
     const record = records.get(id) ?? ensure(id, 'region', title)
     if (record.kind === 'item') record.kind = 'region'
     enrichFromWiki(record, rec)

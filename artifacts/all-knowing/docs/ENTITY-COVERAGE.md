@@ -33,6 +33,9 @@ drops / strategy fields remain in the table as information.
 | spirit: description + location | ≥ 100% | 100% | PASS |
 | item: description + location (all items) | ≥ 100% | 100% | PASS |
 | grace: coords | ≥ 100% | 100% | PASS |
+| npc: description (characters) | ≥ 95% | 99% | PASS |
+| region: description + location (locations) | ≥ 95% | 98.1% | PASS |
+| enemy: description + location (enemies) | ≥ 95% | 99.5% | PASS |
 
 ## Before (no enrichment index)
 
@@ -68,10 +71,10 @@ drops / strategy fields remain in the table as information.
 | spirit | 63 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | · | 100% |
 | item | 439 | 100% | 100% | 0% | · | 91.6% | 100% | · | · | · | · | · | 100% |
 | material | 3 | 100% | 100% | 0% | · | 66.7% | · | · | · | · | · | · | · |
-| npc | 580 | 16.9% | 13.4% | 0.5% | · | 1.6% | 13.1% | · | · | · | · | · | · |
+| npc | 99 | 99% | 78.8% | 3% | · | 9.1% | 76.8% | · | · | · | · | · | · |
 | grace | 420 | 100% | 100% | · | 100% | · | · | · | · | · | · | · | · |
-| dungeon | 119 | 95.8% | 100% | 100% | · | 99.2% | · | · | · | · | · | · | · |
-| region | 1157 | 14.6% | 14.3% | 0.2% | · | · | · | · | · | · | · | · | · |
+| dungeon | 119 | 90.8% | 100% | 100% | · | 99.2% | · | · | · | · | · | · | · |
+| region | 309 | 100% | 98.1% | 0.6% | · | · | · | · | · | · | · | · | · |
 | enemy | 2390 | 99.9% | 99.6% | 0% | · | 0% | 97.9% | · | 95% | 3.9% | 0% | · | · |
 
 ## Spot checks
@@ -249,7 +252,131 @@ The ten records Task 119 names, printed straight from the built index.
 
 ## Remaining misses (guard fields, by name)
 
-_None._
+### npc — description (characters) (0/99)
+
+- Blaidd
+- Boc the Seamster
+- Hyetta
+- Igon
+- Irina
+- Iron Fist Alexander
+- Millicent
+- Roderika
+- Dark Moon Ring
+- Two Fingers Prayerbook
+- Abandoned Merchant
+- Alexander, Warrior Jar
+- Ancient Dragon Gransax
+- Ancient Dragon Knight
+- Arbor Sentinel
+- Aseo
+- Asimi, Silver Tear
+- Aureliette
+- Bearded Ancient Dynasty Statue
+- Bernahl's Finger Maiden
+- Birac
+- Black Moon
+- Blind Swordsman
+- Blood Star
+- Boc's Mother
+- Castellan Edgar
+- Castellan Jerren
+- Chair-Crypt Mummies
+- Charo
+- Colossal Dragon
+- Crescent Moon
+- D, Beholder of Death
+- Daedicar
+- Dolores the Sleeping Arrow
+- Elphael Needle Statue
+- Ensha (lord)
+- Fell God
+- Finger Reader Crone
+- Finger Reader Enia
+- Fire Knight Queelign
+- Flame Guardian
+- Forager Brood
+- Formless Mother
+- Gaea
+- Gloam-Eyed Queen
+- God of Vengeance
+- Godwyn the Golden
+- Grandmother
+- Great Horned Tragoth
+- Greater Potentate
+- Horned Giant
+- Hornsent Grandam
+- Host of Fingers
+- Lacrima
+- Leonard
+- Lobo
+- Melina
+- Miquella of the Haligtree
+- Moore
+- Nanaya
+- Nomadic Merchant (Altus Plateau)
+- Nomadic Merchant (Caelid Highway North)
+- Nomadic Merchant (Eastern Limgrave)
+- Nomadic Merchant (Liurnia Lake Shore)
+- Nomadic Merchant (Mt. Gelmir)
+- Nomadic Merchant (Northern Limgrave)
+- Nomadic Merchant (Northern Liurnia)
+- Nomadic Merchant (Southern Caelid)
+- Nomadic Merchant (Weeping Peninsula)
+- Nomadic Merchant (Western Limgrave)
+- Old Albus
+- Old Knight Istvan
+- Painter Spirit
+- Phillia, Towering Little Sister
+- Primeval Sorcerer Azur
+- Primeval Sorcerer Lusat
+- Puppet Master
+- Queen Marika the Eternal
+- Rauh Goddess Statue
+- Redeemer Guilbert
+- Reeling Rico
+- Rya the Scout
+- Serosh
+- Serpent-God
+- Sir Neidhardt
+- Smithing Master Hewg
+- Snowy Crone
+- Spellmachinist Rabbath
+- Storm Lord
+- Stranded Souls
+- Sun
+- Swordhand of Night Anna
+- Traveling Perfumer
+- Twinbird
+- Usher of Death, Rosus
+- Vyke's Finger Maiden
+- War Counselor Iji
+- Winged Serpents
+- Yuri
+
+### region — description + location (locations) (303/309)
+
+- Crumbling Farum Azula
+- Miquella’s Haligtree
+- Bonny Gaol
+- Lands Between
+- Sea of Fog
+- Sites of Grace
+
+### enemy — description + location (enemies) (2379/2390)
+
+- Avionette Soldier
+- Boar
+- Catapult
+- Deer
+- Flamespitter
+- Giant Land Octopus
+- Large Inquisitor
+- Man-Fly
+- Rotmound
+- Slug
+- Umibozu
+
 
 ## Unmatched rows per source
 

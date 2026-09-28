@@ -71,6 +71,14 @@ export const GUARD_MINIMUMS: { kind: EntityKind; field: string; min: number; lab
   { kind: 'spirit', field: 'descriptionLocation', min: 100, label: 'description + location' },
   { kind: 'item', field: 'descriptionLocation', min: 100, label: 'description + location (all items)' },
   { kind: 'grace', field: 'map', min: 100, label: 'coords' },
+  // Task 132 §5 — the kinds the wiki DB added (NPC characters, locations,
+  // enemies) must carry a description and a location for ≥95% of the primary
+  // records. The FMG name plane (names.json npcs/places) is a reference plane
+  // marked `catalogue: false` and excluded from the denominator, the same way
+  // the search-only magic.json spells already are.
+  { kind: 'npc', field: 'description', min: 95, label: 'description (characters)' },
+  { kind: 'region', field: 'descriptionLocation', min: 95, label: 'description + location (locations)' },
+  { kind: 'enemy', field: 'descriptionLocation', min: 95, label: 'description + location (enemies)' },
 ]
 
 function fieldsFor(kind: EntityKind, records: (EntityRecord | undefined)[]): Record<string, FieldCoverage> {
@@ -121,7 +129,7 @@ function fieldsFor(kind: EntityKind, records: (EntityRecord | undefined)[]): Rec
     default:
       break
   }
-  if (['armor', 'talisman', 'spell', 'ash', 'spirit', 'item', 'material', 'npc'].includes(kind)) {
+  if (['armor', 'talisman', 'spell', 'ash', 'spirit', 'item', 'material', 'npc', 'region', 'enemy'].includes(kind)) {
     out.descriptionLocation = field(count((r) => has(r, 'description') && has(r, 'location')), total)
   }
   return out
@@ -147,9 +155,11 @@ export function computeEntityCoverage(
   for (const [id, record] of lookup) {
     if (seen.has(id)) continue
     const kind = record.kind as EntityKind
-    // Catalogue kinds measure the catalogue rows only; extra reference records
-    // (e.g. the search-only magic.json spells) are not part of the full set.
-    if (CATALOGUE_KIND_SET.has(kind) && !record.catalogue) continue
+    // Catalogue kinds measure catalogue rows only. Other kinds (npc, region,
+    // enemy) measure every real record, but the FMG name-plane reference rows
+    // (`catalogue: false`) exist for search/peek only and are excluded, as the
+    // search-only magic.json spells already are.
+    if (CATALOGUE_KIND_SET.has(kind) ? !record.catalogue : record.catalogue === false) continue
     seen.add(id)
     const list = byKind.get(kind) ?? []
     list.push(record)
@@ -213,7 +223,7 @@ export function guardMisses(
   for (const [id, record] of lookup) {
     if (seen.has(id)) continue
     const kind = record.kind as EntityKind
-    if (CATALOGUE_KIND_SET.has(kind) && !record.catalogue) continue
+    if (CATALOGUE_KIND_SET.has(kind) ? !record.catalogue : record.catalogue === false) continue
     seen.add(id)
     byKind.set(kind, [...(byKind.get(kind) ?? []), record])
   }
