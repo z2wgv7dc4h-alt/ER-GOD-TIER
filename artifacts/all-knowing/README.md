@@ -68,6 +68,35 @@ until you want the PC save / player-dot reader (`npm run map:live`).
 
 ---
 
+## Gideon AI
+
+Gideon works with no key: the deterministic router answers from the character and
+the local corpus. An optional LLM answers open-ended questions. Two providers are
+supported, chosen by config with no code change:
+
+| Provider | `VITE_GIDEON_PROVIDER` | Default model | Default base URL | Dev proxy |
+|---|---|---|---|---|
+| DeepSeek | `deepseek` | `deepseek-chat` | `https://api.deepseek.com/v1` | `/gideon-llm-deepseek` |
+| Meta Muse Spark | `meta` (default) | `muse-spark-1.3-contributor` | `https://api.meta.ai/v1` | `/gideon-llm` |
+
+To enable one:
+
+1. Copy `.env.example` to `.env.local` and set `VITE_GIDEON_API_KEY`.
+2. For DeepSeek set `VITE_GIDEON_PROVIDER=deepseek`; omit it to keep Meta. A
+   `VITE_GIDEON_BASE_URL` containing `deepseek` is detected too.
+3. Optionally override `VITE_GIDEON_BASE_URL` / `VITE_GIDEON_MODEL`
+   (`deepseek-reasoner` is accepted for the reasoning model).
+4. **Restart the dev server** — Vite only reads `.env.local` at startup.
+5. Settings → **Gideon AI key → Test connection** reports the provider, model and
+   latency (one ping, the same 45 s timeout as real calls).
+
+In dev the browser calls the provider through our Vite proxy, so the phone never
+hits CORS. The key is embedded client-side — this is a local-first, no-backend
+PWA, so keep it on your own LAN and never commit `.env.local`. DeepSeek chat has
+no image input, so the equipment-screen reader falls back to on-device OCR.
+
+---
+
 ## Tooling & audits
 
 ```bash
