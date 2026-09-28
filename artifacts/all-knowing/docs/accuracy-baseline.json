@@ -1,0 +1,227 @@
+{
+  "generatedAt": "2026-09-28T14:17:56.240Z",
+  "sampled": {
+    "comparisons": 563,
+    "errors": 36,
+    "errorRate": 0.06394316163410302,
+    "duplicateNameGroups": 236,
+    "unmatched": {
+      "boss": [
+        "Great Wyrm Theodorix",
+        "Magma Wyrm Makar",
+        "Perfumer Tricia & Misbegotten Warrior",
+        "Crucible Knight",
+        "Fia's Champion & Sorcerer Rogier & Lionel the Lionhearted",
+        "Crucible Knight Hirnan",
+        "Valiant Gargoyle",
+        "Fell Twin(x2)",
+        "Gnarrl, Draconic Sentinel",
+        "Blackgaol Knight",
+        "Blighted Avatar",
+        "Kindred of Rot(x2)",
+        "Edgar the Revenger",
+        "Baleful Shadow",
+        "Needle Knight Leda",
+        "Miranda & Omenkiller",
+        "Margit, the Fell Omen",
+        "Rileigh the Idle",
+        "Bloody Finger Okina"
+      ],
+      "npc": [
+        "Nepheli Loux",
+        "The Great-jar",
+        "Renna",
+        "Thops",
+        "Fia's Champion",
+        "White-faced Varré",
+        "Base Serpent Messmer",
+        "Hoarah Loux, Warrior",
+        "Asimi, Eternal King"
+      ],
+      "item": [
+        "Reed Great Katana",
+        "Great Epee",
+        "Winged Spear",
+        "Leontiel's Hat",
+        "Rellana's Greaves",
+        "Golden Vow (spell)",
+        "Smarag's Glint Breath",
+        "Polished Luminous Scene",
+        "Ash of War: Barbaric Roar",
+        "Ash of War: Seppuku"
+      ],
+      "grace": [
+        "Debate Parlor",
+        "Outer Wall Battleground",
+        "Capital Rampart",
+        "Stormhill Shack"
+      ]
+    }
+  },
+  "kinds": {
+    "boss": {
+      "kind": "boss",
+      "checked": 105,
+      "errors": 0,
+      "rate": 0
+    },
+    "npc": {
+      "kind": "npc",
+      "checked": 95,
+      "errors": 0,
+      "rate": 0
+    },
+    "weapon": {
+      "kind": "weapon",
+      "checked": 60,
+      "errors": 0,
+      "rate": 0
+    },
+    "armor": {
+      "kind": "armor",
+      "checked": 50,
+      "errors": 13,
+      "rate": 0.26
+    },
+    "talisman": {
+      "kind": "talisman",
+      "checked": 29,
+      "errors": 0,
+      "rate": 0
+    },
+    "spell": {
+      "kind": "spell",
+      "checked": 40,
+      "errors": 16,
+      "rate": 0.4
+    },
+    "item": {
+      "kind": "item",
+      "checked": 21,
+      "errors": 7,
+      "rate": 0.3333333333333333
+    },
+    "grace": {
+      "kind": "grace",
+      "checked": 52,
+      "errors": 0,
+      "rate": 0
+    },
+    "quest": {
+      "kind": "quest",
+      "checked": 111,
+      "errors": 0,
+      "rate": 0
+    }
+  },
+  "fields": {
+    "name": {
+      "field": "name",
+      "checked": 128,
+      "errors": 0,
+      "rate": 0
+    },
+    "hp": {
+      "field": "hp",
+      "checked": 21,
+      "errors": 0,
+      "rate": 0
+    },
+    "location": {
+      "field": "location",
+      "checked": 76,
+      "errors": 0,
+      "rate": 0
+    },
+    "region": {
+      "field": "region",
+      "checked": 67,
+      "errors": 0,
+      "rate": 0
+    },
+    "drops": {
+      "field": "drops",
+      "checked": 21,
+      "errors": 0,
+      "rate": 0
+    },
+    "role": {
+      "field": "role",
+      "checked": 20,
+      "errors": 0,
+      "rate": 0
+    },
+    "weight": {
+      "field": "weight",
+      "checked": 33,
+      "errors": 0,
+      "rate": 0
+    },
+    "requirements": {
+      "field": "requirements",
+      "checked": 20,
+      "errors": 0,
+      "rate": 0
+    },
+    "scaling": {
+      "field": "scaling",
+      "checked": 12,
+      "errors": 0,
+      "rate": 0
+    },
+    "skill": {
+      "field": "skill",
+      "checked": 12,
+      "errors": 0,
+      "rate": 0
+    },
+    "poise": {
+      "field": "poise",
+      "checked": 12,
+      "errors": 0,
+      "rate": 0
+    },
+    "slot": {
+      "field": "slot",
+      "checked": 13,
+      "errors": 13,
+      "rate": 1
+    },
+    "effect": {
+      "field": "effect",
+      "checked": 25,
+      "errors": 0,
+      "rate": 0
+    },
+    "fp cost": {
+      "field": "fp cost",
+      "checked": 8,
+      "errors": 8,
+      "rate": 1
+    },
+    "slots": {
+      "field": "slots",
+      "checked": 8,
+      "errors": 8,
+      "rate": 1
+    },
+    "type": {
+      "field": "type",
+      "checked": 7,
+      "errors": 7,
+      "rate": 1
+    },
+    "order": {
+      "field": "order",
+      "checked": 40,
+      "errors": 0,
+      "rate": 0
+    },
+    "action": {
+      "field": "action",
+      "checked": 40,
+      "errors": 0,
+      "rate": 0
+    }
+  }
+}

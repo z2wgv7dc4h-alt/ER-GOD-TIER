@@ -93,14 +93,18 @@ export const gates: Gate[] = [
   },
   {
     id: 'gate:ranni-ending',
-    name: 'Age of Stars committed',
-    aliases: ['ranni ending', 'age of stars', 'dark moon ring', 'ranni'],
-    // Placing the Dark Moon Ring is the last irreversible Ranni beat; from there
-    // Seluvis is already gone and the ending is the one you can summon.
-    triggerFacts: ['quest:ranni:ring', 'item:dark-moon-ring'],
-    approachingWhen: ['quest:ranni:statue', 'quest:ranni:nokron'],
+    name: 'Ranni given the Fingerslayer Blade',
+    aliases: ['ranni ending', 'age of stars', 'dark moon ring', 'ranni', 'fingerslayer blade'],
+    // The wiki is explicit: "Pidia's questline becomes locked after giving Ranni
+    // the Fingerslayer Blade." Seluvis's stock (Magic Scorpion Charm, puppets)
+    // closes at that hand-in, NOT at the Dark Moon Ring — warning as late as the
+    // ring would cost the player the charm. The ring placement (quest:ranni:ring)
+    // is the later commit, so it stays a trigger too.
+    triggerFacts: ['item:fingerslayer', 'quest:ranni:nokron', 'quest:ranni:ring', 'item:dark-moon-ring'],
+    approachingWhen: ['quest:ranni:festival'],
     locks: [
       { factId: 'quest:seluvis:concluded', name: 'Preceptor Seluvis — potion and puppet stock', why: 'Once Ranni has the Fingerslayer Blade, Seluvis is found dead and his sorceries and puppets are gone for the run.' },
+      { factId: 'item:magic-scorpion-charm', name: 'Magic Scorpion Charm', why: 'Sold by Seluvis only after the Amber Starlight step; his death at the Fingerslayer hand-in closes the shop for the run.' },
       { factId: 'loot:therolina', name: 'Finger Maiden Therolina Puppet', why: "Seluvis's puppet cellar closes when his line ends." },
     ],
     stillOk: [
@@ -154,11 +158,13 @@ export const gates: Gate[] = [
     aliases: ['volcano manor', 'rykard', 'tanith', 'rya', 'serpent'],
     triggerFacts: ['boss:rykard'],
     approachingWhen: ['quest:rya:manor', 'quest:tanith:contracts', 'quest:rya:necklace'],
+    // The wiki: "Defeating Rykard ... causes all subsequent steps to lock." The
+    // pre-Rykard beats (the amnion, the named contracts) are what closes. Rya's
+    // resolution and Tanith's "devour the god" are BOTH explicitly post-Rykard
+    // steps on the wiki, so listing them here would have been a false lockout.
     locks: [
       { factId: 'quest:rya:amnion', name: 'Rya — Serpent’s Amnion', why: 'Killing Rykard before giving Rya the amnion strands her in the manor.' },
-      { factId: 'quest:rya:concluded', name: 'Rya — spare or tell her the truth', why: "Rykard's death closes her window." },
       { factId: 'quest:tanith:targets', name: 'Tanith — the named contracts', why: 'The contract window ends when Rykard dies.' },
-      { factId: 'quest:tanith:concluded', name: 'Tanith — devour the god', why: "Tanith's final beat needs the manor alive." },
     ],
   },
   {

@@ -259,6 +259,7 @@ export const facts: Fact[] = [
   { id: 'item:cursemark-of-death', kind: 'item', name: 'Cursemark of Death', aliases: ['cursemark'], region: 'Liurnia', campaign: 'base', implies: ['quest:ranni:statue'], usedIn: ['quest:fia:cursemark'] },
   { id: 'item:miniature-ranni', kind: 'item', name: 'Miniature Ranni', aliases: ['mini ranni'], region: 'Liurnia', campaign: 'base', implies: ['quest:ranni:service'], usedIn: ['quest:ranni:ring'] },
   { id: 'item:valkyries-prosthesis', kind: 'item', name: "Valkyrie's Prosthesis", aliases: ['prosthesis'], region: 'Caelid', campaign: 'base', implies: ['quest:millicent:cured'], usedIn: ['quest:millicent:aid'] },
+  { id: 'item:primal-glintstone', kind: 'item', name: "Sellen's Primal Glintstone", aliases: ['primal glintstone'], region: 'Liurnia', campaign: 'base', implies: [], usedIn: ['quest:sellen:primal-glintstone'] },
   { id: 'item:black-knifeprint', kind: 'item', name: 'Black Knifeprint', aliases: ['knifeprint'], region: 'Liurnia', campaign: 'base', implies: ['region:liurnia'], usedIn: ['quest:ranni:service'] },
   { id: 'item:weathered-dagger', kind: 'item', name: 'Weathered Dagger', aliases: ['weathered dagger'], region: 'Roundtable', campaign: 'base', implies: ['quest:fia:met'], usedIn: ['quest:fia:dagger', 'quest:d:dagger-choice'] },
   { id: 'item:sellian-sealbreaker', kind: 'item', name: 'Sellian Sealbreaker', aliases: ['sealbreaker'], region: 'Caelid', campaign: 'base', implies: ['region:caelid'] },
@@ -324,6 +325,8 @@ export const facts: Fact[] = [
   { id: 'quest:millicent:altus', kind: 'quest', name: 'Millicent — met at Erdtree-Gazing Hill', aliases: [], region: 'Altus', campaign: 'base', implies: [] },
   { id: 'quest:millicent:godskin', kind: 'quest', name: 'Millicent — aided at Dominula', aliases: [], region: 'Altus', campaign: 'base', implies: [] },
   { id: 'quest:millicent:prosthesis', kind: 'quest', name: 'Millicent — Valkyrie’s Prosthesis given', aliases: [], region: 'Altus', campaign: 'base', implies: [] },
+  { id: 'quest:millicent:mountains', kind: 'quest', name: 'Millicent — met at the Ancient Snow Valley Ruins', aliases: [], region: 'Mountaintops', campaign: 'base', implies: [] },
+  { id: 'quest:millicent:elphael', kind: 'quest', name: 'Millicent — met at the Elphael Prayer Room', aliases: [], region: 'Elphael', campaign: 'base', implies: [] },
   { id: 'quest:millicent:aid', kind: 'quest', name: 'Millicent — aided at Elphael (gold sign)', aliases: [], region: 'Elphael', campaign: 'base', implies: [] },
   { id: 'quest:millicent:betrayed', kind: 'quest', name: 'Millicent — challenged at Elphael (red sign)', aliases: [], region: 'Elphael', campaign: 'base', implies: [] },
   { id: 'quest:millicent-killed', kind: 'quest', name: 'Millicent is dead this run', aliases: [], region: 'Elphael', campaign: 'base', implies: [] },
@@ -349,6 +352,9 @@ export const facts: Fact[] = [
   { id: 'quest:rya:manor', kind: 'quest', name: 'Rya — joined Volcano Manor', aliases: [], region: 'Volcano Manor', campaign: 'base', implies: [] },
   { id: 'quest:rya:concluded', kind: 'quest', name: 'Rya — aftermath chosen', aliases: [], region: 'Volcano Manor', campaign: 'base', implies: [] },
 
+  // Yura — the Limgrave/Liurnia invasions, the Altus meeting, then Shabriri.
+  { id: 'quest:yura:altus', kind: 'quest', name: 'Yura — met at the Second Church of Marika', aliases: [], region: 'Altus', campaign: 'base', implies: [] },
+
   // Leda — one beat per invitation window, then Sealing Tree and Enir-Ilim.
   { id: 'quest:leda:met', kind: 'quest', name: 'Leda — met at the Three-Path Cross', aliases: [], region: 'Gravesite Plain', campaign: 'sote', implies: [] },
   { id: 'quest:leda:highroad', kind: 'quest', name: 'Leda — met at the Highroad Cross', aliases: [], region: 'Scadu Altus', campaign: 'sote', implies: [] },
@@ -365,6 +371,8 @@ export const facts: Fact[] = [
   { id: 'quest:sellen:azur', kind: 'quest', name: 'Sellen — Azur found', aliases: [], region: 'Mt. Gelmir', campaign: 'base', implies: [] },
   { id: 'quest:sellen:lusat', kind: 'quest', name: 'Sellen — Lusat found', aliases: [], region: 'Caelid', campaign: 'base', implies: [] },
   { id: 'quest:sellen:primers', kind: 'quest', name: 'Sellen — both primeval sorcerers reported', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:sellen:witchbane', kind: 'quest', name: 'Sellen — true body found at Witchbane Ruins', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:sellen:primal-glintstone', kind: 'quest', name: 'Sellen — revived in the Three Sisters puppet', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
   { id: 'quest:sellen:jerren', kind: 'quest', name: 'Sellen — Witch-Hunter Jerren met', aliases: [], region: 'Raya Lucaria', campaign: 'base', implies: [] },
   { id: 'quest:sellen:side', kind: 'quest', name: 'Sellen — sided with her against Jerren', aliases: [], region: 'Raya Lucaria', campaign: 'base', implies: [] },
   { id: 'quest:sellen:jerren-side', kind: 'quest', name: 'Sellen — sided with Jerren', aliases: [], region: 'Raya Lucaria', campaign: 'base', implies: [] },
