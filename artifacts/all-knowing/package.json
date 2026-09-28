@@ -11,6 +11,7 @@
     "lint": "oxlint",
     "test": "vitest run",
     "audit:ui": "node scripts/ui-audit.mjs",
+    "crawl:ui": "node scripts/ui-crawl.mjs",
     "index:entities": "node scripts/build-entity-index.mjs",
     "coverage:entities": "node scripts/entity-coverage.mjs",
     "preview": "vite preview",
