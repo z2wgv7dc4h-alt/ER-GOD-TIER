@@ -152,6 +152,16 @@ export type Character = {
   level: number
   startingClass: StartingClass
   stats: Stats
+  /**
+   * Task 134: the Status screen prints stats *including* talisman / helm / Great
+   * Rune bonuses. `stats` stores the base spread (what the level is derived from);
+   * `baseStats` mirrors it and `statBonus` records what was removed so the UI can
+   * say why the photographed numbers looked too high.
+   */
+  baseStats?: Stats
+  statBonus?: { source: string; deltas: Partial<Stats> }
+  /** Task 134: Runes Held from the Status screen, feeding the level-up calculator. */
+  runesHeld?: number
   loadout: LoadoutSlot[]
   defeatedBosses: string[]
   discoveredGraces: string[]
