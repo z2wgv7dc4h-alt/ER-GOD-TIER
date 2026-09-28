@@ -63,31 +63,41 @@ function slug(name) {
     .replace(/^-+|-+$/g, '')
 }
 
-// Entity index boss records: name -> canonical id.
-const entityBossByName = new Map()
+// Entity index boss records: name -> canonical id. Catalog `boss:`/`invader:`
+// ids are kept apart from `hunt:` rows so a composite hunt can still prefer the
+// authored boss it contains.
+const catalogByName = new Map()
+const huntEntityByName = new Map()
 const entityBossById = new Map()
 for (const [id, record] of Object.entries(entityIndex)) {
   if (record.kind !== 'boss') continue
   entityBossById.set(id, record)
-  const key = norm(record.name)
-  if (key && !entityBossByName.has(key)) entityBossByName.set(key, id)
+  const target = id.startsWith('hunt:') ? huntEntityByName : catalogByName
+  for (const variant of [record.name, coreName(record.name)]) {
+    const key = norm(variant)
+    if (key && !target.has(key)) target.set(key, id)
+  }
 }
 
 // Generated alias plane: FMG name + aliases -> canonical id. `slug` already
 // carries the `kind:` prefix for engine rows.
-const aliasNameToId = new Map()
+// Authored/engine boss-invader names and hunt names are kept apart so a
+// composite fight prefers the canonical boss it contains over its hunt row.
+const aliasNameToBoss = new Map()
+const aliasNameToHunt = new Map()
 for (const row of aliases) {
   if (!['boss', 'invader', 'hunt'].includes(row.kind)) continue
   const id = row.slug?.includes(':') ? row.slug : `${row.kind}:${row.slug}`
+  const target = row.kind === 'hunt' ? aliasNameToHunt : aliasNameToBoss
   for (const name of [row.fmgName, ...(row.aliases ?? [])]) {
     const key = norm(name)
-    if (key && !aliasNameToId.has(key)) aliasNameToId.set(key, id)
+    if (key && !target.has(key)) target.set(key, id)
   }
 }
 // Hunts carry their own encounter-level ids for field bosses the graph knows.
 for (const hunt of hunts) {
   const key = norm(hunt.name)
-  if (key && !aliasNameToId.has(key)) aliasNameToId.set(key, hunt.id)
+  if (key && !aliasNameToHunt.has(key)) aliasNameToHunt.set(key, hunt.id)
 }
 
 /** Token overlap for a fuzzy last resort (e.g. source typos). */
@@ -100,14 +110,42 @@ function similar(a, b) {
   return shared / Math.max(at.size, bt.size)
 }
 
-const entityNames = [...entityBossByName.entries()]
+const entityNames = [...catalogByName.entries(), ...huntEntityByName.entries()]
+
+function splitFight(name) {
+  return String(name)
+    .split(/\s*(?:&| and | \+ )\s*/i)
+    .flatMap((part) => [part, coreName(part)])
+    .filter(Boolean)
+}
+
+/** Drop a trailing "Duo / Trio / Twin(s) / (x2)" qualifier. */
+function withoutGroupSuffix(name) {
+  return coreName(name)
+    .replace(/\s*\b(duo|trio|quad|twin|twins|x\d)\b\s*$/i, '')
+    .replace(/\s+\band\b\s*$/i, '')
+    .trim()
+}
 
 /** Best canonical id for a source name, or null when the roster must mint one. */
 function canonicalId(name) {
-  for (const candidate of [name, coreName(name)]) {
+  const group = withoutGroupSuffix(name)
+  // Try the group-stripped / composite-part forms first so a name like
+  // "Mad Pumpkin Head Duo" resolves to the catalog boss, never to a previously
+  // minted `boss:mad-pumpkin-head-duo` row in the index.
+  const candidates = [group, ...splitFight(group), name, coreName(name), ...splitFight(name)]
+  // A catalog boss the name contains (a composite fight, or a qualified name)
+  // always wins over the hunt row for the composite.
+  for (const candidate of candidates) {
     const key = norm(candidate)
     if (!key) continue
-    const hit = entityBossByName.get(key) ?? aliasNameToId.get(key)
+    const hit = catalogByName.get(key) ?? aliasNameToBoss.get(key)
+    if (hit) return hit
+  }
+  for (const candidate of candidates) {
+    const key = norm(candidate)
+    if (!key) continue
+    const hit = huntEntityByName.get(key) ?? aliasNameToHunt.get(key)
     if (hit) return hit
   }
   // Fuzzy fallback: a near-identical known boss, or a part of a composite fight.
@@ -505,17 +543,33 @@ for (const hunt of hunts) {
 const encounterCount = (id) => [...encounters.values()].filter((r) => r.id === id).length
 const encounterForName = (id) => [...encounters.values()].find((r) => r.id === id)
 
+// Engine master `M10` is the Shadow of the Erdtree world; a boss-list row's
+// kill flag tells us which world it is, even when the internal name carries no
+// region.
+const markerMasterByFlag = new Map()
+for (const marker of engineMarkers) {
+  if (marker.cat !== 'boss') continue
+  const flag = Number(String(marker.id).split(':')[1])
+  if (Number.isFinite(flag)) markerMasterByFlag.set(flag, marker.master)
+}
+const isDlcEncounter = (row) =>
+  markerMasterByFlag.get(row.killEventFlagId) === 'M10' ||
+  markerMasterByFlag.get(row.clearedEventFlagId) === 'M10'
+
 for (const row of bossList) {
   const id = canonicalId(row.vanillaPlaceName) ?? `boss:${slug(row.vanillaPlaceName)}`
   if (!canonicalId(row.vanillaPlaceName)) sourceFailures.push({ source: 'boss-list', name: row.vanillaPlaceName })
   const name = entityBossById.get(id)?.name ?? row.vanillaPlaceName
-  const region = huntNameRegion.get(norm(name))?.[0] ?? regionFromText(name) ?? 'The Lands Between'
+  let region = huntNameRegion.get(norm(name))?.[0] ?? entityBossById.get(id)?.region ?? regionFromText(name) ?? 'The Lands Between'
+  const dlc = isDlcEncounter(row) || isSote(region) || isSote(name)
+  if (region === 'The Lands Between' && dlc) region = 'Shadow of the Erdtree'
   const existing = encounterForName(id)
   if (existing) {
     if (!existing.coords) existing.coords = coordsFor(id, name)
     const combat = combatFor(id, name)
     const hp = hpFromCombat(combat) ?? hpFromFext(name)
     if (!existing.hp && hp) existing.hp = hp
+    if (dlc) existing.campaign = 'sote'
     hit('boss-list')
     continue
   }
@@ -524,7 +578,7 @@ for (const row of bossList) {
   const drops = [...(dropsByName.get(norm(name)) ?? [])]
   upsert({
     id, name, region, location: region,
-    campaign: isSote(region) ? 'sote' : 'base',
+    campaign: dlc ? 'sote' : 'base',
     grace: nearestGrace(region, coords),
     tier: tierFor(id, name, drops, region),
     requiredForEnding: REQUIRED_ENDING.has(id),
@@ -660,6 +714,14 @@ for (const row of armoryBosses) {
   })
   sourceFailures.push({ source: 'armory-bosses', name })
   hit('armory-bosses')
+}
+
+// Region fallback: the enrichment index already resolved a region for most
+// canonical bosses; use it when no source placed the encounter.
+for (const record of encounters.values()) {
+  if (record.region !== 'The Lands Between') continue
+  const fallback = entityBossById.get(record.id)?.region
+  if (fallback && fallback !== 'The Lands Between') record.region = fallback
 }
 
 // ---------------------------------------------------------------------------

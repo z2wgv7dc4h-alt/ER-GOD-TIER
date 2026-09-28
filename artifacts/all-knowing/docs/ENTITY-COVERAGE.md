@@ -58,7 +58,7 @@ drops / strategy fields remain in the table as information.
 
 | kind | entities | Desc | Location | Map | Coords | Image | Stats | Effect | HP+Neg+Loc | Drops | Strategy | Req+Scale+Loc | Desc+Loc |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| boss | 246 | 91.1% | 100% | 67.9% | · | 45.5% | 87% | · | 86.2% | 86.2% | 94.3% | · | · |
+| boss | 237 | 91.6% | 100% | 67.9% | · | 47.3% | 87.3% | · | 86.5% | 87.3% | 94.5% | · | · |
 | weapon | 419 | 73% | 100% | 0% | · | 73% | · | · | · | · | · | 100% | · |
 | shield | 69 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | 100% | · |
 | armor | 565 | 100% | 100% | 0% | · | 95.6% | 100% | · | · | · | · | · | 100% |
@@ -261,6 +261,8 @@ dropped silently.
 | recipes | 64 |
 | checklists/npcs | 11 |
 | fanapi/npcs | 11 |
+| checklists/bosses | 1 |
+| fanapi/bosses | 1 |
 | armory-bosses | 1 |
 
 _Regenerated 2026-09-28._
