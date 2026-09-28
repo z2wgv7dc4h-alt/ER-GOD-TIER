@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { facts } from '../knowledge/catalog'
 import { mechanics } from '../knowledge/mechanics'
-import { canonicalEntityId, registerEntityGraphData, type EntityKind } from '../lib/entityGraph'
+import { registerEntityGraphData, type EntityKind } from '../lib/entityGraph'
+import { catalogueIdFor } from '../lib/catalogueIds'
 import { loadWeapons, type Weapon } from '../lib/ar'
 import { useArmory, type ArmoryBoss, type ArmoryWeapon } from '../lib/armory'
 import { loadBossCombat, type CombatStats } from '../lib/enemy'
@@ -98,12 +99,8 @@ function factFor(name: string) {
 }
 
 function factIdFor(category: CategoryId, name: string): string {
-  const known = factFor(name)
-  if (known) return known.id
-  // No catalog fact matched: let the entity graph be the id authority so a
-  // synthesised id (item:uchigatana) resolves through canonicalFactId/aliases and
-  // ownership + Related edges agree with the rest of the app.
-  return canonicalEntityId(`${FACT_PREFIX[category]}:${slug(name)}`, name)
+  // Task 123 §2: shared with the build-time index so both name a row identically.
+  return catalogueIdFor(FACT_PREFIX[category], name)
 }
 
 const ICON_KIND: Partial<Record<CategoryId, string>> = {

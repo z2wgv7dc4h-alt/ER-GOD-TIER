@@ -41,6 +41,12 @@ export type EntityRecord = {
   sections?: { heading: string; text: string }[]
   /** Labels of the entity's strongest graph edges. */
   related?: string[]
+  /**
+   * Task 123 §3 — true when this record is a Library catalogue row, so the
+   * coverage guard measures exactly the full catalogue and not extra reference
+   * records (e.g. the search-only `magic.json` spells).
+   */
+  catalogue?: boolean
   /** Contributing datasets, for provenance. */
   sources: string[]
 }

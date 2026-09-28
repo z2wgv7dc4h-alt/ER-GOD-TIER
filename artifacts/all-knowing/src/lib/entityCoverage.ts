@@ -43,18 +43,29 @@ function drops(record: EntityRecord | undefined): boolean {
   return Boolean(record?.drops && record.drops.length)
 }
 
+/**
+ * Task 123 §3 — the catalogue kinds. Their `full set` is the Library catalogue
+ * (enumerated by `buildEntityIndex`), measured from the enrichment index, not
+ * from every authored graph item. The remaining kinds (bosses, graces, quests,
+ * …) are measured from the entity graph as before.
+ */
+export const CATALOGUE_KINDS: EntityKind[] = ['weapon', 'shield', 'armor', 'talisman', 'spell', 'ash', 'spirit', 'item']
+const CATALOGUE_KIND_SET = new Set<EntityKind>(CATALOGUE_KINDS)
+
 /** The guard combos the task names, per kind. */
 export const GUARD_MINIMUMS: { kind: EntityKind; field: string; min: number; label: string }[] = [
   { kind: 'boss', field: 'hpNegationLocation', min: 95, label: 'HP + negation + location' },
   { kind: 'boss', field: 'drops', min: 90, label: 'drops' },
   { kind: 'boss', field: 'strategy', min: 90, label: 'strategy/wiki section' },
   { kind: 'weapon', field: 'requirementsScalingLocation', min: 95, label: 'requirements + scaling + location (all weapons)' },
+  { kind: 'shield', field: 'requirementsScalingLocation', min: 95, label: 'requirements + scaling + location (all shields)' },
   { kind: 'armor', field: 'negationWeightLocation', min: 95, label: 'negation + weight + location (all armor)' },
   { kind: 'armor', field: 'descriptionLocation', min: 95, label: 'description + location' },
   { kind: 'talisman', field: 'descriptionLocation', min: 95, label: 'description + location' },
   { kind: 'spell', field: 'descriptionLocation', min: 95, label: 'description + location' },
   { kind: 'ash', field: 'descriptionLocation', min: 95, label: 'description + location' },
   { kind: 'spirit', field: 'descriptionLocation', min: 95, label: 'description + location' },
+  { kind: 'item', field: 'descriptionLocation', min: 85, label: 'description + location (all items)' },
   { kind: 'grace', field: 'map', min: 98, label: 'coords' },
 ]
 
@@ -117,10 +128,11 @@ export function computeEntityCoverage(
   const byKind = new Map<EntityKind, (EntityRecord | undefined)[]>()
   const seen = new Set<string>()
 
-  // Task 122 §C: measure the *full* set. Walk every graph entity first, then add
-  // every enrichment record the graph does not already know (e.g. the 560 armor
-  // rows) so the minimums cover the whole index, not just the curated subset.
+  // Task 122 §C / Task 123 §3: measure the *full* set. Catalogue kinds are the
+  // Library catalogue records in the index; the rest walk the entity graph, with
+  // any extra enrichment record the graph does not know (e.g. armor) appended.
   for (const entity of allEntities()) {
+    if (CATALOGUE_KIND_SET.has(entity.kind)) continue
     seen.add(entity.id)
     const list = byKind.get(entity.kind) ?? []
     list.push(lookup.get(entity.id))
@@ -128,8 +140,11 @@ export function computeEntityCoverage(
   }
   for (const [id, record] of lookup) {
     if (seen.has(id)) continue
-    seen.add(id)
     const kind = record.kind as EntityKind
+    // Catalogue kinds measure the catalogue rows only; extra reference records
+    // (e.g. the search-only magic.json spells) are not part of the full set.
+    if (CATALOGUE_KIND_SET.has(kind) && !record.catalogue) continue
+    seen.add(id)
     const list = byKind.get(kind) ?? []
     list.push(record)
     byKind.set(kind, list)
@@ -147,6 +162,63 @@ export function computeEntityCoverage(
   overall.description = field(withRecord.filter((r) => has(r, 'description')).length, total)
   overall.location = field(withRecord.filter((r) => has(r, 'location')).length, total)
   return { kinds, overall }
+}
+
+/** Does one record satisfy a named guard combo? Mirrors `fieldsFor`. */
+function satisfies(field: string, record: EntityRecord | undefined): boolean {
+  switch (field) {
+    case 'hpNegationLocation':
+      return stat(record, 'HP') && stat(record, 'Negation') && has(record, 'location')
+    case 'drops':
+      return drops(record)
+    case 'strategy':
+      return has(record, 'strategy')
+    case 'requirementsScalingLocation':
+      return stat(record, 'Requirements') && stat(record, 'Scaling') && has(record, 'location')
+    case 'negationWeightLocation':
+      return stat(record, 'Negation') && stat(record, 'Weight') && has(record, 'location')
+    case 'descriptionLocation':
+      return has(record, 'description') && has(record, 'location')
+    case 'map':
+      return Boolean(record?.map)
+    default:
+      return false
+  }
+}
+
+/**
+ * Task 123 §3 — the entities that miss each guard, by name, for the doc's
+ * "remaining misses" list. Uses the same grouping as `computeEntityCoverage`.
+ */
+export function guardMisses(
+  records: Record<string, EntityRecord> | Map<string, EntityRecord>,
+  guards = GUARD_MINIMUMS,
+): { kind: EntityKind; label: string; field: string; missing: string[]; total: number }[] {
+  const lookup = records instanceof Map ? records : new Map(Object.entries(records))
+  const byKind = new Map<EntityKind, (EntityRecord | undefined)[]>()
+  const seen = new Set<string>()
+  for (const entity of allEntities()) {
+    if (CATALOGUE_KIND_SET.has(entity.kind)) continue
+    seen.add(entity.id)
+    byKind.set(entity.kind, [...(byKind.get(entity.kind) ?? []), lookup.get(entity.id)])
+  }
+  for (const [id, record] of lookup) {
+    if (seen.has(id)) continue
+    const kind = record.kind as EntityKind
+    if (CATALOGUE_KIND_SET.has(kind) && !record.catalogue) continue
+    seen.add(id)
+    byKind.set(kind, [...(byKind.get(kind) ?? []), record])
+  }
+  const out: { kind: EntityKind; label: string; field: string; missing: string[]; total: number }[] = []
+  for (const guard of guards) {
+    const list = byKind.get(guard.kind)
+    if (!list?.length) continue
+    const missing = list
+      .filter((record) => !satisfies(guard.field, record))
+      .map((record) => record?.name ?? '(unresolved)')
+    out.push({ kind: guard.kind, label: guard.label, field: guard.field, missing, total: list.length })
+  }
+  return out
 }
 
 /** True when a report satisfies every task minimum. */

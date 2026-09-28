@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { allEntities } from './entityGraph'
 import { clearEntityIndex, setEntityIndex } from './entityIndex'
 import { computeEntityCoverage, GUARD_MINIMUMS, violations, type CoverageReport } from './entityCoverage'
+import { catalogueIdFor } from './catalogueIds'
 import type { EntityRecord } from './entityIndex'
 
 /**
@@ -59,6 +60,46 @@ describe('entity coverage minimums (Task 119)', () => {
     } finally {
       clearEntityIndex()
     }
+  })
+
+  it('enumerates the full catalogue, not just the graph subset (Task 123 §2)', () => {
+    const byKind: Record<string, number> = {}
+    for (const record of Object.values(loadRecords())) byKind[record.kind] = (byKind[record.kind] ?? 0) + 1
+    expect(byKind.weapon ?? 0, 'weapons').toBeGreaterThanOrEqual(400)
+    expect(byKind.shield ?? 0, 'shields').toBeGreaterThanOrEqual(60)
+    expect(byKind.armor ?? 0, 'armor').toBeGreaterThanOrEqual(550)
+    expect(byKind.talisman ?? 0, 'talismans').toBeGreaterThanOrEqual(80)
+    expect(byKind.spell ?? 0, 'spells').toBeGreaterThanOrEqual(160)
+    expect(byKind.ash ?? 0, 'ashes').toBeGreaterThanOrEqual(80)
+    expect(byKind.spirit ?? 0, 'spirits').toBeGreaterThanOrEqual(55)
+    expect(byKind.item ?? 0, 'items').toBeGreaterThanOrEqual(420)
+  })
+
+  it('shares the Library id authority with the index (Task 123 §2)', () => {
+    const records = loadRecords()
+    const samples: [string, string][] = [
+      ['item', 'Uchigatana'],
+      ['item', "Lordsworn's Straight Sword"],
+      ['item', 'Brass Shield'],
+      ['item', 'Banished Knight Helm'],
+      ['item', 'Crimson Amber Medallion'],
+      ['item', 'Glintstone Pebble'],
+      ['item', 'Flame Sling'],
+      ['item', "Lion's Claw"],
+      ['item', 'Black Knife Tiche'],
+      ['item', 'Golden Seed'],
+    ]
+    for (const [prefix, name] of samples) {
+      const id = catalogueIdFor(prefix, name)
+      expect(records[id], `${name} -> ${id} has no index record`).toBeTruthy()
+    }
+  })
+
+  it('never stores a stringified structured value in the index (Task 123 §1)', () => {
+    const raw = readFileSync(indexPath, 'utf8')
+    expect(raw).not.toContain('[object Object]')
+    expect(raw).not.toContain('undefined')
+    expect(raw).not.toContain('NaN')
   })
 
   it('covers the ten spot-check entities end to end', () => {
