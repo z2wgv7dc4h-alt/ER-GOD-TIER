@@ -3,6 +3,7 @@ import { warpGraces } from '../knowledge/graces'
 import { loot, type LootKind } from '../knowledge/loot'
 import { remembrances } from '../knowledge/remembrances'
 import { gates, gateState } from '../knowledge/gates'
+import { chainsFor } from '../knowledge/inferChains'
 import { allLines } from '../knowledge/storylines'
 import { dungeons } from '../knowledge/dungeons'
 import { dungeons as dungeonIndex, dungeonBosses } from './dungeons'
@@ -888,6 +889,39 @@ function knownCanonical(character: Character): Set<string> {
   )
 }
 
+/** How the trigger fact proves the derived one, in player terms. */
+function inferredReason(fromId: string): string {
+  const name = entityName(fromId)
+  const kind = byId.get(canonicalEntityId(fromId))?.kind ?? prefixKind(fromId)
+  if (kind === 'item') return `you hold ${name}`
+  if (kind === 'grace' || kind === 'region') return `you reached ${name}`
+  if (kind === 'boss') return `you defeated ${name}`
+  if (kind === 'quest') return `${name} is done`
+  return `${name} proves it`
+}
+
+/**
+ * The inference reason for a fact the character did not log directly, or
+ * undefined when every winning piece of evidence is a direct read.
+ */
+function inferredWhy(character: Character, id: string): string | undefined {
+  const evidence = character.evidence.find((e) => canonicalEntityId(e.fact) === id && e.source === 'inference')
+  if (!evidence) return undefined
+  const known = knownCanonical(character)
+  for (const chain of chainsFor(id)) {
+    if (!chain.implies.some((x) => canonicalEntityId(x) === id)) continue
+    if (!known.has(canonicalEntityId(chain.whenFact))) continue
+    if (chain.allOf?.some((x) => !known.has(canonicalEntityId(x)))) continue
+    if (chain.unless?.some((x) => known.has(canonicalEntityId(x)))) continue
+    return inferredReason(chain.whenFact)
+  }
+  for (const f of facts) {
+    if (!known.has(canonicalEntityId(f.id))) continue
+    if (f.implies.some((x) => canonicalEntityId(x) === id)) return inferredReason(f.id)
+  }
+  return evidence.detail?.replace(/^implied by\s*/i, '')
+}
+
 /**
  * Where the character stands on an entity: catalog/gate data supplies the
  * prerequisite chain and lockouts, the character supplies ownership.
@@ -898,9 +932,12 @@ export function status(factId: string, character: Character): { state: EntitySta
   const known = knownCanonical(character)
 
   if (known.has(id)) {
+    const reason = inferredWhy(character, id)
     return {
       state: OWNED_KINDS.has(entity.kind) ? 'owned' : 'done',
-      why: 'Logged on this character.',
+      // Task 138 §4 — the strip says why the app believes it, e.g.
+      // "Defeated — you hold Remembrance of the Starscourge".
+      why: reason ? `Inferred — ${reason}.` : 'Logged on this character.',
     }
   }
 
