@@ -2132,6 +2132,10 @@ body { overflow: hidden; overscroll-behavior: none; }
   /* Task 113 §1 — while the omnibox owns the phone screen the + has no job and
      would sit on the results. */
   .app.search-open .quicklog-fab { display: none; }
+  /* Task 133 §5 — Builds is a stack of full-width collapsible headings; the
+     floating + briefly sat over "Level-up calculator" mid-scroll. Header `⋯`
+     still offers Quick log. */
+  .app.builds-active .quicklog-fab { display: none; }
   .app.gideon-active .gideon-page { padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
   .app.gideon-active .gideon-log { padding-bottom: 0; }
   /* Task 108 §3: the quick-log toast reserves its own band so no control ends up

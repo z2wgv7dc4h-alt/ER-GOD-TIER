@@ -164,6 +164,9 @@ function AppShell() {
   const className = [
     'app',
     w.section === 'gideon' ? 'gideon-active' : '',
+    // Task 133 §5 — the Builds planner is form-heavy; the floating + would sit on
+    // its section headings mid-scroll, so the header `⋯` owns Quick log here.
+    w.section === 'library' && w.sub === 'builds' ? 'builds-active' : '',
     w.glance ? 'glance-active' : '',
     dockVisible ? 'with-dock' : '',
     searchOpen ? 'search-open' : '',
