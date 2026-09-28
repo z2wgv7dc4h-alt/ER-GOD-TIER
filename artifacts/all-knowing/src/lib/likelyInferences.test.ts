@@ -14,8 +14,9 @@ describe('likely inferences', () => {
     const c = applyFacts({ ...emptyCharacter, level: 87 }, ['region:liurnia'], 'screenshot', 'test')
     const likely = likelyInferences(c)
     expect(likely.some((l) => l.factId === 'boss:rennala')).toBe(true)
-    // Godrick is already inferred by the Liurnia catalog edge, so it is not suggested.
-    expect(likely.some((l) => l.factId === 'boss:godrick')).toBe(false)
+    // Liurnia no longer proves Godrick (Stormveil can be bypassed), so he is only suggested.
+    expect(c.defeatedBosses).not.toContain('boss:godrick')
+    expect(likely.some((l) => l.factId === 'boss:godrick')).toBe(true)
   })
 
   it('never suggests below the level band', () => {

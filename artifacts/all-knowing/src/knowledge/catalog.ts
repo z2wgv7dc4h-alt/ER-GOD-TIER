@@ -29,14 +29,14 @@ export const facts: Fact[] = [
   // Regions as milestones
   { id: 'region:limgrave', kind: 'region', name: 'Limgrave', aliases: ['west limgrave', 'the first step'], region: 'Limgrave', campaign: 'base', implies: ['grace:first-step'] },
   { id: 'region:weeping', kind: 'region', name: 'Weeping Peninsula', aliases: ['weeping'], region: 'Weeping Peninsula', campaign: 'base', implies: ['region:limgrave'] },
-  { id: 'region:liurnia', kind: 'region', name: 'Liurnia of the Lakes', aliases: ['liurnia', 'the lakes'], region: 'Liurnia', campaign: 'base', implies: ['boss:godrick'] },
+  { id: 'region:liurnia', kind: 'region', name: 'Liurnia of the Lakes', aliases: ['liurnia', 'the lakes'], region: 'Liurnia', campaign: 'base', implies: ['region:limgrave'] }, // not Godrick: Stormveil can be bypassed via the cliffside path
   { id: 'region:caelid', kind: 'region', name: 'Caelid', aliases: ['scarlet rot', 'redmane'], region: 'Caelid', campaign: 'base', implies: ['region:limgrave'] },
   { id: 'region:altus', kind: 'region', name: 'Altus Plateau', aliases: ['altus', 'ergtree grazing'], region: 'Altus', campaign: 'base', implies: ['region:liurnia'] },
   { id: 'region:leyndell', kind: 'region', name: 'Leyndell, Royal Capital', aliases: ['leyndell', 'royal capital'], region: 'Leyndell', campaign: 'base', implies: ['region:altus'] },
   { id: 'region:mountaintops', kind: 'region', name: 'Mountaintops of the Giants', aliases: ['mountaintops', 'forge of the giants'], region: 'Mountaintops', campaign: 'base', implies: ['boss:morgott'] },
   { id: 'region:farum', kind: 'region', name: 'Crumbling Farum Azula', aliases: ['farum azula', 'farum'], region: 'Farum Azula', campaign: 'base', implies: ['grace:forge-giants'] },
   { id: 'region:haligtree', kind: 'region', name: 'Miquella’s Haligtree', aliases: ['haligtree', 'elphael'], region: 'Haligtree', campaign: 'base', implies: ['item:haligtree-secret-medallion'] },
-  { id: 'region:shadow', kind: 'region', name: 'Realm of Shadow', aliases: ['sote', 'shadow of the erdtree', 'land of shadow', 'gravesite'], region: 'Gravesite Plain', campaign: 'sote', implies: ['item:shadow-realm-blessing'] },
+  { id: 'region:shadow', kind: 'region', name: 'Realm of Shadow', aliases: ['sote', 'shadow of the erdtree', 'land of shadow', 'gravesite'], region: 'Gravesite Plain', campaign: 'sote', implies: ['boss:mohg', 'boss:radahn'] }, // entering the DLC requires both
 
   // Graces — warp-list OCR targets
   { id: 'grace:first-step', kind: 'grace', name: 'The First Step', aliases: ['first step'], region: 'Limgrave', campaign: 'base', implies: [] },
@@ -59,7 +59,7 @@ export const facts: Fact[] = [
   { id: 'grace:farum-balcony', kind: 'grace', name: 'Dragon Temple Altar', aliases: ['farum altar'], region: 'Farum Azula', campaign: 'base', implies: ['region:farum'] },
   { id: 'grace:haligtree-town', kind: 'grace', name: 'Haligtree Town Plaza', aliases: [], region: 'Haligtree', campaign: 'base', implies: ['region:haligtree'] },
   { id: 'grace:drainage', kind: 'grace', name: 'Drainage Channel', aliases: ['elphael drainage'], region: 'Elphael', campaign: 'base', implies: ['region:haligtree'] },
-  { id: 'grace:deeproot', kind: 'grace', name: 'Deeproot Depths', aliases: ['deeproot', 'prince of deaths throne'], region: 'Deeproot Depths', campaign: 'base', implies: ['boss:radahn'] },
+  { id: 'grace:deeproot', kind: 'grace', name: 'Deeproot Depths', aliases: ['deeproot', 'prince of deaths throne'], region: 'Deeproot Depths', campaign: 'base', implies: [] }, // reachable via Nokron (Radahn) OR Nokstella, so it proves neither
   // Task 54 hotfix: the dump-verified Nokron beat the Black Whetblade actually proves.
   // Name from public/sourced/checklists/graces.json (grace:120208) and open/names.json.
   // No authored warp x/y, so it is not added to `graces.ts` (no invented coordinates).
