@@ -607,6 +607,11 @@ image.atlas-art-img { background: #050403; }
   grid-template-columns: 1.1fr 0.9fr;
   height: 100%;
 }
+/* Task 128 §2: on a narrow page a grid column is otherwise floored at its
+   content's min-content width, so a nowrap table inside one pane pushed the
+   whole split (and the page) wider than the viewport. Let the panes shrink and
+   handle their own overflow. */
+.split > * { min-width: 0; }
 .panel { padding: 20px 22px; overflow: auto; }
 .panel + .panel { border-left: 1px solid var(--line); }
 
@@ -1267,8 +1272,48 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
 
 @media (max-width: 1100px) {
   .shell-header { flex-wrap: wrap; gap: 8px; padding: 8px 12px; }
-  .map-stage, .split { grid-template-columns: 1fr; }
+  .split { grid-template-columns: 1fr; }
   .side, .panel + .panel { border-left: 0; border-top: 1px solid var(--line); }
+
+  /* Task 128 §2: the two-column map collapsed to a content-sized row at
+     tablet/laptop widths, so the embed iframe fell back to its 150px default
+     and the engine's own floating controls piled on each other. Give the map
+     the screen and slide the details up, exactly like the phone. */
+  .map-stage { display: block; position: relative; height: 100%; }
+  .map-stage .atlas { height: 100%; }
+  .atlas-toggle {
+    display: inline-flex;
+    align-items: center;
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    z-index: 6;
+    min-height: 44px;
+    padding: 0 16px;
+    background: rgba(20, 17, 12, 0.94);
+    border: 1px solid var(--gold-dim);
+    color: var(--gold);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .atlas-toggle.engine-live { display: none; }
+  .map-stage .side {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 64%;
+    z-index: 5;
+    padding: 14px;
+    border: 0;
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -10px 28px rgba(0, 0, 0, 0.55);
+    transform: translateY(100%);
+    transition: transform 0.22s ease;
+    overflow: auto;
+  }
+  .map-stage.side-open .side { transform: translateY(0); }
 }
 
 /* Task 93: on a wide desktop the overview / now pages fill the space with a

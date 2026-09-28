@@ -25,23 +25,42 @@ const OUT_ROOT = path.join(process.cwd(), '.scratch', 'ui-audit')
 const STAMP = timestamp()
 const OUT = path.join(OUT_ROOT, STAMP)
 
-const RUNS = [
-  {
-    name: 'phone',
-    label: 'phone 375\u00d7812',
-    context: {
-      viewport: { width: 375, height: 812 },
-      isMobile: true,
-      hasTouch: true,
-      deviceScaleFactor: 2,
-    },
-  },
-  {
-    name: 'desktop',
-    label: 'desktop 1440\u00d7900',
-    context: { viewport: { width: 1440, height: 900 } },
-  },
+/**
+ * Task 128 §2 — every target viewport, not just the two the audit used before.
+ * `mobile` gets touch + DPR 2, matching the phone runs.
+ */
+const VIEWPORTS = [
+  { name: 'android-360', label: 'small Android 360\u00d7740', width: 360, height: 740, mobile: true },
+  { name: 'iphone-390', label: 'iPhone 390\u00d7844', width: 390, height: 844, mobile: true },
+  { name: 'phone-430', label: 'large phone 430\u00d7932', width: 430, height: 932, mobile: true },
+  { name: 'phone-landscape', label: 'phone landscape 812\u00d7375', width: 812, height: 375, mobile: true },
+  { name: 'tablet-768', label: 'tablet portrait 768\u00d71024', width: 768, height: 1024 },
+  { name: 'tablet-1024', label: 'tablet landscape 1024\u00d7768', width: 1024, height: 768 },
+  { name: 'laptop-1280', label: 'laptop 1280\u00d7800', width: 1280, height: 800 },
+  { name: 'desktop-1440', label: 'desktop 1440\u00d7900', width: 1440, height: 900 },
+  { name: 'fullhd-1920', label: 'full HD 1920\u00d71080', width: 1920, height: 1080 },
 ]
+
+/** Optional comma-separated viewport-name filter (fast iteration smoke runs). */
+const ONLY_VIEWPORTS = (process.env.AUDIT_VIEWPORTS || '')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean)
+
+function contextFor(v) {
+  const context = { viewport: { width: v.width, height: v.height } }
+  if (v.mobile) {
+    context.isMobile = true
+    context.hasTouch = true
+    context.deviceScaleFactor = 2
+  }
+  return context
+}
+
+const RUNS = VIEWPORTS.filter((v) => !ONLY_VIEWPORTS.length || ONLY_VIEWPORTS.includes(v.name)).map(
+  (v) => ({ name: v.name, label: v.label, context: contextFor(v) }),
+)
+
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -266,6 +285,7 @@ function auditPage() {
     interactive: 0,
     textOverflow: 0,
     devText: 0,
+    atlasOverlap: 0,
   }
   const items = {
     overlap: [],
@@ -277,6 +297,8 @@ function auditPage() {
     transparent: [],
     textOverflow: [],
     devText: [],
+    atlasOverlap: [],
+    hScroll: [],
   }
   const bump = (kind, obj) => {
     counts[kind] += 1
@@ -289,7 +311,7 @@ function auditPage() {
   const OVERLAY_SELECTOR =
     '.entity-overlay, .quicklog-overlay, .area-picker, .header-more-menu, ' +
     '.help-overlay, .gear-picker, .lockout-overlay, .qr-overlay, .lib-detail, ' +
-    '.lib-filters-overlay, .tour-overlay'
+    '.lib-filters-overlay, .tour-overlay, .peek-card'
   const overlays = Array.prototype.slice.call(document.querySelectorAll(OVERLAY_SELECTOR)).filter((el) => {
     if (!isVisible(el)) return false
     // `.lib-detail` is a normal column on desktop but a fixed sheet on phone.
@@ -356,12 +378,25 @@ function auditPage() {
     }
   }
   const docEl = document.scrollingElement || document.documentElement
-  if (docEl.scrollWidth > docEl.clientWidth + 1) counts.hScroll = 1
+  if (docEl.scrollWidth > docEl.clientWidth + 1) {
+    bump('hScroll', { sel: 'document', sw: docEl.scrollWidth, cw: docEl.clientWidth, over: docEl.scrollWidth - docEl.clientWidth })
+  }
   const mainEl = mainScroller()
-  if (mainEl && mainEl.scrollWidth > mainEl.clientWidth + 1) counts.hScroll = 1
+  if (mainEl && mainEl.scrollWidth > mainEl.clientWidth + 1) {
+    let worst = null
+    for (const el of mainEl.querySelectorAll('*')) {
+      if (el.scrollWidth <= el.clientWidth + 2) continue
+      if (!worst || el.scrollWidth - el.clientWidth > worst.scrollWidth - worst.clientWidth) worst = el
+    }
+    const el = worst || mainEl
+    bump('hScroll', { sel: cssPath(el), sw: el.scrollWidth, cw: el.clientWidth, over: el.scrollWidth - el.clientWidth })
+  }
 
   // ---- covered ------------------------------------------------------------
   for (const b of boxes) {
+    // A `pointer-events:none` element cannot be blocked in any user-visible
+    // way (and cannot be clicked at all), so it is not a coverage defect.
+    if (style(b.el)?.pointerEvents === 'none') continue
     const cx = b.r.left + b.r.width / 2
     const cy = b.r.top + b.r.height / 2
     if (cx < 0 || cy < 0 || cx >= window.innerWidth || cy >= window.innerHeight) continue
@@ -395,6 +430,7 @@ function auditPage() {
       if (!parent) continue
       if (parent.closest('svg')) continue
       if (isExempt(parent)) continue
+      if (style(parent)?.pointerEvents === 'none') continue
       if (!isVisible(parent)) continue
       range.selectNodeContents(node)
       const rects = Array.prototype.slice.call(range.getClientRects())
@@ -617,6 +653,50 @@ function auditPage() {
     }
   }
 
+  // ---- our Atlas chrome vs the engine iframe's floating controls -----------
+  // Task 128 §2: the live map is a same-origin iframe, so its floating controls
+  // can be measured and checked against our own Atlas chrome (the "Filters &
+  // details" toggle, the side panel, the layer chips). A collision here is
+  // exactly the tablet/laptop world-grid-vs-Tools defect.
+  try {
+    const frameEl = document.querySelector('.engine-frame')
+    const fdoc = frameEl && frameEl.contentDocument
+    if (frameEl && fdoc) {
+      const fr = frameEl.getBoundingClientRect()
+      const FLOATING =
+        '.embed-layer-buttons, .embed-world-select, #embed-tools-toggle, ' +
+        '#embed-cat-toggle, #embed-tools, #embed-categories, #zoom-controls'
+      const label = (el) => {
+        const cls = (el.getAttribute('class') || '').trim().split(/\s+/).filter(Boolean).slice(0, 2)
+        return `${el.id ? `#${el.id}` : el.nodeName.toLowerCase()}${cls.length ? `.${cls.join('.')}` : ''}`
+      }
+      for (const ctl of fdoc.querySelectorAll(FLOATING)) {
+        const cs = fdoc.defaultView ? fdoc.defaultView.getComputedStyle(ctl) : null
+        if (cs && (cs.display === 'none' || cs.visibility === 'hidden')) continue
+        const r = ctl.getBoundingClientRect()
+        if (r.width < 0.5 || r.height < 0.5) continue
+        const mapped = {
+          left: fr.left + r.left,
+          top: fr.top + r.top,
+          right: fr.left + r.right,
+          bottom: fr.top + r.bottom,
+          width: r.width,
+          height: r.height,
+        }
+        for (const b of boxes) {
+          if (overlapArea(mapped, b.r) <= 4) continue
+          bump('atlasOverlap', {
+            a: { sel: `iframe ${label(ctl)}`, text: (ctl.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 40) },
+            b: { sel: b.sel, text: b.text },
+          })
+          break
+        }
+      }
+    }
+  } catch {
+    /* cross-origin engine frame: nothing to compare */
+  }
+
   // ---- page length --------------------------------------------------------
   const scroller = mainScroller()
   const screens = scroller ? scroller.scrollHeight / window.innerHeight : 0
@@ -704,6 +784,27 @@ async function runScenario(browser, runCfg) {
       .catch(() => false)
   }
 
+  /** The same-origin live-map embed's frame, if it is up. */
+  function engineFrame() {
+    try {
+      return (
+        page.frames().find((f) => f !== page.mainFrame() && /\/engine(\/|\?|$)/.test(f.url())) || null
+      )
+    } catch {
+      return null
+    }
+  }
+
+  /** Navigate to Journey > Map and return the live engine frame (or null). */
+  async function openEngineMap(notes) {
+    await nav('journey', 'Journey', 'map', 'Map', notes)
+    if (!engineFrame()) {
+      await page.waitForSelector('.engine-frame', { timeout: 6000 }).catch(() => {})
+      await sleep(700)
+    }
+    return engineFrame()
+  }
+
   async function step(label, action, check) {
     buffers.console.length = 0
     buffers.requests.length = 0
@@ -746,12 +847,45 @@ async function runScenario(browser, runCfg) {
       notes.push(`audit failed: ${err?.message || err}`)
       audit = {
         error: String(err?.message || err),
-        counts: { overlap: 0, tapSize: 0, offscreen: 0, hScroll: 0, covered: 0, dead: 0, tinyText: 0, transparent: 0, blank: 0, interactive: 0, textOverflow: 0, devText: 0 },
+        counts: { overlap: 0, tapSize: 0, offscreen: 0, hScroll: 0, covered: 0, dead: 0, tinyText: 0, transparent: 0, blank: 0, interactive: 0, textOverflow: 0, devText: 0, atlasOverlap: 0 },
         pageLength: { screens: 0, flagged: false, selector: '', scrollHeight: 0, clientHeight: 0 },
-        items: { overlap: [], tapSize: [], offscreen: [], covered: [], dead: [], tinyText: [], transparent: [], textOverflow: [], devText: [] },
+        items: { overlap: [], tapSize: [], offscreen: [], covered: [], dead: [], tinyText: [], transparent: [], textOverflow: [], devText: [], atlasOverlap: [], hScroll: [] },
       }
     }
     if (audit && audit.counts) audit.counts.blank = blank ? 1 : 0
+    // Task 128 §2: audit the live-map iframe's own document too. Keep only the
+    // geometry kinds this task owns — the engine's own tiny text / dev copy is
+    // not our chrome.
+    let frameAudit = null
+    try {
+      const frame = engineFrame()
+      if (frame) {
+        const fa = await frame.evaluate(auditPage)
+        if (fa && fa.counts) {
+          frameAudit = {
+            url: frame.url(),
+            counts: {
+              overlap: fa.counts.overlap,
+              tapSize: fa.counts.tapSize,
+              offscreen: fa.counts.offscreen,
+              hScroll: fa.counts.hScroll,
+              covered: fa.counts.covered,
+              textOverflow: fa.counts.textOverflow,
+              interactive: fa.counts.interactive,
+            },
+            items: {
+              overlap: fa.items?.overlap || [],
+              tapSize: fa.items?.tapSize || [],
+              offscreen: fa.items?.offscreen || [],
+              covered: fa.items?.covered || [],
+              textOverflow: fa.items?.textOverflow || [],
+            },
+          }
+        }
+      }
+    } catch {
+      /* frame audit is best-effort */
+    }
     steps.push({
       index,
       label,
@@ -759,6 +893,7 @@ async function runScenario(browser, runCfg) {
       notes,
       reached,
       audit,
+      frameAudit,
       consoleErrors: buffers.console.splice(0),
       networkFailures: buffers.requests.splice(0),
     })
@@ -1087,6 +1222,112 @@ async function runScenario(browser, runCfg) {
       await sleep(400)
     })
 
+    // --- Step 6b: the live engine embed (Task 128 §2) ---------------------
+    // Switch every remaining world, open Filters, open Tools, open a pin popup
+    // and zoom in — each step also audits the iframe's own document plus our
+    // Atlas chrome against the iframe's floating controls.
+    await step('engine-embed-worlds', async (notes) => {
+      const frame = await openEngineMap(notes)
+      if (!frame) {
+        notes.push('live engine frame not available (static plate)')
+        return
+      }
+      await frame.waitForSelector('#app.embed', { timeout: 6000 }).catch(() => notes.push('engine not in embed mode'))
+      const keys = await frame.locator('#embed-world-select option').count().catch(() => 0)
+      const btns = await frame.locator('.embed-layer-buttons .layer-btn').count().catch(() => 0)
+      const labels = (await frame
+        .locator('.embed-layer-buttons .layer-btn, #embed-world-select option')
+        .allInnerTexts()
+        .catch(() => []))
+        .join(' | ')
+      notes.push(`engine worlds: options=${keys} buttons=${btns} [${labels}]`)
+      if (keys > 3 || btns > 3) notes.push('M11 still offered by the switcher')
+      if (btns > 0) {
+        for (let i = 0; i < btns; i++) {
+          await frame.locator('.embed-layer-buttons .layer-btn').nth(i).click({ timeout: 3000 }).catch(() => {})
+          await sleep(350)
+        }
+      } else if (keys > 0) {
+        for (const w of ['M00', 'M01', 'M10']) {
+          await frame.locator('#embed-world-select').selectOption(w).catch(() => {})
+          await sleep(350)
+        }
+      }
+    }, async () => {
+      const frame = engineFrame()
+      if (!frame) return false
+      const keys = await frame.locator('#embed-world-select option').count().catch(() => 0)
+      const btns = await frame.locator('.embed-layer-buttons .layer-btn').count().catch(() => 0)
+      return (keys > 0 && keys <= 3) || (btns > 0 && btns <= 3)
+    })
+
+    await step('engine-embed-filters', async (notes) => {
+      const frame = engineFrame() || (await openEngineMap(notes))
+      if (!frame) {
+        notes.push('live engine frame not available (static plate)')
+        return
+      }
+      await frame.locator('#embed-cat-toggle').click({ timeout: 4000 }).catch((e) => notes.push(`filters click: ${e.message}`))
+      await sleep(400)
+      notes.push((await frame.locator('#embed-categories.open').isVisible().catch(() => false)) ? 'filters open' : 'filters not open')
+    }, async () => {
+      const frame = engineFrame()
+      return frame ? frame.locator('#embed-categories.open').isVisible().catch(() => false) : false
+    })
+
+    await step('engine-embed-tools', async (notes) => {
+      const frame = engineFrame() || (await openEngineMap(notes))
+      if (!frame) {
+        notes.push('live engine frame not available (static plate)')
+        return
+      }
+      await frame.locator('#embed-cat-toggle').click({ timeout: 3000 }).catch(() => {})
+      await frame.locator('#embed-tools-toggle').click({ timeout: 4000 }).catch((e) => notes.push(`tools click: ${e.message}`))
+      await sleep(400)
+      notes.push((await frame.locator('#embed-tools.open').isVisible().catch(() => false)) ? 'tools open' : 'tools not open')
+    }, async () => {
+      const frame = engineFrame()
+      return frame ? frame.locator('#embed-tools.open').isVisible().catch(() => false) : false
+    })
+
+    await step('engine-embed-popup', async (notes) => {
+      const frame = engineFrame() || (await openEngineMap(notes))
+      if (!frame) {
+        notes.push('live engine frame not available (static plate)')
+        return
+      }
+      if (!(await frame.locator('#embed-tools.open').isVisible().catch(() => false))) {
+        await frame.locator('#embed-tools-toggle').click({ timeout: 4000 }).catch(() => {})
+        await sleep(300)
+      }
+      await frame.locator('#embed-search').fill('grace').catch(() => notes.push('engine search not found'))
+      await sleep(500)
+      const hits = frame.locator('.sr-item[data-id]')
+      const n = await hits.count().catch(() => 0)
+      if (n) {
+        await hits.first().click({ timeout: 3000 }).catch(() => notes.push('search hit not clickable'))
+        await sleep(800)
+      } else {
+        notes.push('no engine search hits')
+      }
+      notes.push((await frame.locator('#popup').isVisible().catch(() => false)) ? 'pin popup open' : 'pin popup not shown')
+    }, async () => {
+      const frame = engineFrame()
+      return frame ? frame.locator('#popup').isVisible().catch(() => false) : false
+    })
+
+    await step('engine-embed-zoom', async (notes) => {
+      const frame = engineFrame() || (await openEngineMap(notes))
+      if (!frame) {
+        notes.push('live engine frame not available (static plate)')
+        return
+      }
+      await frame.locator('#zoom-in').click({ timeout: 3000 }).catch(() => notes.push('zoom-in not clickable'))
+      await sleep(250)
+      await frame.locator('#zoom-in').click({ timeout: 3000 }).catch(() => {})
+      await sleep(400)
+    })
+
     // --- Step 7: Journey > Quests -----------------------------------------
     await step('journey-quests', async (notes) => {
       await nav('journey', 'Journey', 'quests', 'Quests', notes)
@@ -1218,6 +1459,7 @@ const TYPE_ROWS = [
   { key: 'transparent', label: 'Transparent overlay' },
   { key: 'textOverflow', label: 'Text overflow' },
   { key: 'devText', label: 'Developer text' },
+  { key: 'hScroll', label: 'Horizontal overflow' },
 ]
 
 function stepCounts(s) {
@@ -1234,6 +1476,7 @@ function stepCounts(s) {
     blank: c.blank || 0,
     textOverflow: c.textOverflow || 0,
     devText: c.devText || 0,
+    atlasOverlap: c.atlasOverlap || 0,
     console: (s.consoleErrors || []).length,
     net: (s.networkFailures || []).length,
     screens: s.audit?.pageLength?.screens ?? 0,
@@ -1241,6 +1484,12 @@ function stepCounts(s) {
     reached: s.reached !== false,
     header: s.audit?.header?.height ?? 0,
     headerOk: s.audit?.header?.ok !== false,
+    frame: !!s.frameAudit,
+    frameOverlap: s.frameAudit?.counts?.overlap || 0,
+    frameTap: s.frameAudit?.counts?.tapSize || 0,
+    frameOffscreen: s.frameAudit?.counts?.offscreen || 0,
+    frameCovered: s.frameAudit?.counts?.covered || 0,
+    frameOverflow: s.frameAudit?.counts?.textOverflow || 0,
   }
 }
 
@@ -1255,15 +1504,32 @@ function contentChecks(runs) {
     let dev = 0
     let worstOverflow = ''
     let worstDev = ''
+    // Task 128 §2 — the live engine iframe is audited too; its text overflow and
+    // its floating controls colliding with ours must also be zero.
+    let frameOverflow = 0
+    let frameOverlap = 0
+    let atlasOverlap = 0
+    let worstFrameOverflow = ''
+    let worstFrameOverlap = ''
+    let worstAtlasOverlap = ''
     for (const s of run.steps) {
       const c = stepCounts(s)
       if (c.textOverflow > 0 && !worstOverflow) worstOverflow = `${s.index}. ${s.label} (${c.textOverflow})`
       if (c.devText > 0 && !worstDev) worstDev = `${s.index}. ${s.label} (${c.devText})`
+      if (c.frameOverflow > 0 && !worstFrameOverflow) worstFrameOverflow = `${s.index}. ${s.label} (${c.frameOverflow})`
+      if (c.frameOverlap > 0 && !worstFrameOverlap) worstFrameOverlap = `${s.index}. ${s.label} (${c.frameOverlap})`
+      if (c.atlasOverlap > 0 && !worstAtlasOverlap) worstAtlasOverlap = `${s.index}. ${s.label} (${c.atlasOverlap})`
       overflow += c.textOverflow
       dev += c.devText
+      frameOverflow += c.frameOverflow
+      frameOverlap += c.frameOverlap
+      atlasOverlap += c.atlasOverlap
     }
     out.push({ run: run.name, kind: 'text-overflow', ok: overflow === 0, count: overflow, worst: worstOverflow })
     out.push({ run: run.name, kind: 'dev-text', ok: dev === 0, count: dev, worst: worstDev })
+    out.push({ run: run.name, kind: 'engine-overflow', ok: frameOverflow === 0, count: frameOverflow, worst: worstFrameOverflow })
+    out.push({ run: run.name, kind: 'engine-overlap', ok: frameOverlap === 0, count: frameOverlap, worst: worstFrameOverlap })
+    out.push({ run: run.name, kind: 'atlas-overlap', ok: atlasOverlap === 0, count: atlasOverlap, worst: worstAtlasOverlap })
   }
   return out
 }
@@ -1358,6 +1624,22 @@ function buildReport(runs, meta) {
       for (const s of addressed) lines.push(`- ${s.index}. ${s.label}: ${s.notes.join('; ')}`)
       lines.push('')
     }
+    // Task 128 §2 — the same steps, measured inside the live-map iframe.
+    const framed = run.steps.filter((s) => s.frameAudit)
+    if (framed.length) {
+      lines.push('Engine iframe (same-origin live map):')
+      lines.push('')
+      lines.push(
+        mdTable(
+          ['Step', 'Overlap', 'Tap<40', 'Off-screen', 'H-Scroll', 'Covered', 'TextOvf', 'Controls'],
+          framed.map((s) => {
+            const c = stepCounts(s)
+            return [s.label, c.frameOverlap, c.frameTap, c.frameOffscreen, s.frameAudit?.counts?.hScroll || 0, c.frameCovered, c.frameOverflow, s.frameAudit?.counts?.interactive ?? 0]
+          }),
+        ),
+      )
+      lines.push('')
+    }
   }
 
   // ---- hard checks (Task 108 §1, Task 109 §6) ----------------------------
@@ -1376,7 +1658,13 @@ function buildReport(runs, meta) {
           `max ${c.max}px at ${c.worst || 'n/a'} (${c.countMax} header children)`,
         ]),
         ...content.map((c) => [
-          c.kind === 'text-overflow' ? 'No text overflow' : 'No dev text outside Profiles',
+          {
+            'text-overflow': 'No text overflow',
+            'dev-text': 'No dev text outside Profiles',
+            'engine-overflow': 'No engine-iframe text overflow',
+            'engine-overlap': 'No engine-iframe overlap',
+            'atlas-overlap': 'No Atlas-chrome vs engine-control collision',
+          }[c.kind] || c.kind,
           c.run,
           c.ok ? 'PASS' : 'FAIL',
           c.count === 0 ? '0' : `${c.count} at ${c.worst || 'n/a'}`,
@@ -1405,6 +1693,7 @@ function buildReport(runs, meta) {
     top[kind] = rows.slice(0, 15)
   }
   for (const t of TYPE_ROWS) gather(t.key)
+  gather('atlasOverlap')
 
   lines.push('## Top issues per type (top 15, both runs)')
   lines.push('')
@@ -1415,6 +1704,16 @@ function buildReport(runs, meta) {
     mdTable(
       ['Run', 'Step', 'Selector A', 'Selector B'],
       top.overlap.map((r) => [r.run, r.step, r.it.a.sel, r.it.b.sel]),
+    ),
+  )
+  lines.push('')
+
+  lines.push('### Atlas chrome colliding with an engine floating control')
+  lines.push('')
+  lines.push(
+    mdTable(
+      ['Run', 'Step', 'Engine control', 'Atlas chrome'],
+      top.atlasOverlap.map((r) => [r.run, r.step, r.it.a.sel, r.it.b.sel]),
     ),
   )
   lines.push('')
@@ -1435,6 +1734,16 @@ function buildReport(runs, meta) {
     mdTable(
       ['Run', 'Step', 'Selector', 'Text', 'Left/Right'],
       top.offscreen.map((r) => [r.run, r.step, r.it.sel, r.it.text, `${r.it.left}/${r.it.right}`]),
+    ),
+  )
+  lines.push('')
+
+  lines.push('### Horizontal overflow')
+  lines.push('')
+  lines.push(
+    mdTable(
+      ['Run', 'Step', 'Selector', 'Overflow (px)'],
+      top.hScroll.map((r) => [r.run, r.step, r.it.sel, `${r.it.over} (${r.it.sw} > ${r.it.cw})`]),
     ),
   )
   lines.push('')

@@ -895,6 +895,9 @@ function fillRoute(el, m) {
 }
 
 function showPopup(m) {
+  // All-Knowing Task 128 §2: a pin popup is the focus on a phone-sized embed —
+  // close the Tools/Filters popovers so the popup never stacks over a panel.
+  closeEmbedPanels();
   state.selected = m.id;
   const el = $('popup');
   const found = isFound(m);
@@ -939,6 +942,26 @@ function closePopup() {
   state.selected = null;
   $('popup').classList.add('hidden');
   if (map) map.requestDraw();
+}
+
+/** All-Knowing Task 128: collapse the embed Tools/Filters popovers. */
+function closeEmbedPanels() {
+  closeEmbedTools();
+  closeEmbedFilters();
+}
+
+function closeEmbedTools() {
+  const panel = document.getElementById('embed-tools');
+  if (panel) panel.classList.remove('open');
+  const toggle = document.getElementById('embed-tools-toggle');
+  if (toggle) toggle.setAttribute('aria-expanded', 'false');
+}
+
+function closeEmbedFilters() {
+  const panel = document.getElementById('embed-categories');
+  if (panel) panel.classList.remove('open');
+  const toggle = document.getElementById('embed-cat-toggle');
+  if (toggle) toggle.setAttribute('aria-expanded', 'false');
 }
 
 async function toggleCheck(id, on) {
@@ -1198,6 +1221,7 @@ function wireUi() {
     catToggle.onclick = () => {
       const open = catPanel.classList.toggle('open');
       catToggle.setAttribute('aria-expanded', String(open));
+      if (open) closeEmbedTools();
     };
   }
 
@@ -1209,6 +1233,7 @@ function wireUi() {
     toolsToggle.onclick = () => {
       const open = toolsPanel.classList.toggle('open');
       toolsToggle.setAttribute('aria-expanded', String(open));
+      if (open) closeEmbedFilters();
     };
   }
 

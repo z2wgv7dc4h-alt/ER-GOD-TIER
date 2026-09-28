@@ -284,8 +284,9 @@ html, body {
    class as the sidebar's, so the existing wiring drives both. */
 .embed-tools-toggle {
   display: none;
-  /* Below the 4-button, 2-row world switch at top:14 (which ends ~108px). */
-  position: absolute; left: 14px; top: 116px; z-index: 20;
+  /* Task 128 §2: below the 3-button, 2-row world switch at top:14 (which ends
+     ~135px with wrapped labels) — the old 116px let the switch cover it. */
+  position: absolute; left: 14px; top: 150px; z-index: 20;
   min-height: 40px; padding: 0 14px;
   background: rgba(22,20,15,.92); color: var(--text);
   border: 1px solid var(--line); border-radius: 4px; cursor: pointer;
@@ -296,8 +297,8 @@ html, body {
 }
 .embed-tools {
   display: none;
-  position: absolute; left: 14px; top: 164px; z-index: 20;
-  width: min(300px, calc(100vw - 28px)); max-height: calc(100vh - 178px);
+  position: absolute; left: 14px; top: 198px; z-index: 20;
+  width: min(300px, calc(100vw - 28px)); max-height: calc(100vh - 268px);
   background: rgba(16,14,10,.98); border: 1px solid var(--line);
   border-radius: 6px; box-shadow: var(--shadow);
   padding: 10px 12px; overflow: auto;
@@ -326,6 +327,22 @@ html, body {
 .embed-tools .lang-switch { margin-left: 0; }
 .embed-tools .lang-btn { min-width: 44px; min-height: 40px; font-size: 12px; }
 #app.embed #zoom-controls button { width: 40px; height: 40px; }
+/* Task 128 §2: every embed control a thumb can reach must be >= 40px — the
+   category "none" mini button, the popup buttons and the option checkboxes
+   were all smaller on the phone-sized embed. */
+#app.embed #embed-toggle-all { min-height: 40px; }
+#app.embed #popup button { min-height: 40px; }
+#app.embed #popup .close { width: 40px; height: 40px; padding: 0; font-size: 18px; }
+#app.embed .embed-tools .row-check input[type="checkbox"] {
+  appearance: none; -webkit-appearance: none;
+  width: 40px; height: 40px; margin: 0; flex: 0 0 auto;
+  border: 1px solid var(--line); border-radius: 4px;
+  background: var(--panel);
+}
+#app.embed .embed-tools .row-check input[type="checkbox"]:checked {
+  background: var(--gold); border-color: var(--gold);
+  box-shadow: inset 0 0 0 4px rgba(16,14,10,.85);
+}
 
 #zoom-controls button {
   width: 32px; height: 32px; font-size: 16px; line-height: 1;
@@ -416,12 +433,13 @@ html, body {
 
 .hidden { display: none !important; }
 
-/* All-Knowing Task 93 (Task 122 §D4): on a phone/tablet the embedded map's
-   controls used to wrap and collide - a 2x2 world grid over Tools / Filters over
-   the pins, and "Realm of Shadow" truncated. Under 900px the grid becomes one
-   compact <select> (short labels) and Tools / Filters shrink to icon-sized
-   square buttons that never overlap each other. */
-@media (max-width: 900px) {
+/* All-Knowing Task 93 (Task 122 §D4, Task 128 §2): on a phone/tablet the
+   embedded map's controls used to wrap and collide - a 2x2 world grid over
+   Tools / Filters over the pins, and "Realm of Shadow" truncated. At and below
+   1100px of iframe width the grid becomes one compact <select> (short labels)
+   and Tools / Filters shrink to icon-sized square buttons that never overlap
+   each other or the open panels. */
+@media (max-width: 1100px) {
   #app.embed .embed-layer-buttons { display: none; }
   #app.embed .embed-world-select {
     display: block;
@@ -434,18 +452,25 @@ html, body {
   }
   #app.embed #embed-tools-toggle,
   #app.embed #embed-cat-toggle {
+    top: 12px;
     width: 40px; height: 40px; min-width: 40px; min-height: 40px;
     padding: 0; display: inline-flex; align-items: center; justify-content: center;
     font-size: 0;
   }
   #app.embed #embed-tools-toggle::before { content: '⚙'; font-size: 18px; }
   #app.embed #embed-cat-toggle::before { content: '▽'; font-size: 16px; }
-  /* Left column, top to bottom: world switch, Tools, then the Filters icon.
-     Zoom and the toasts own the right edge, so nothing overlaps. */
-  #app.embed #embed-tools-toggle { left: 12px; top: 60px; }
-  #app.embed #embed-cat-toggle { left: 12px; bottom: 12px; }
-  #app.embed .embed-tools { left: 12px; top: 108px; max-height: calc(100vh - 132px); }
-  #app.embed .embed-categories { left: 12px; bottom: 60px; }
+  /* One top row: world switch, then Tools, then Filters — everything below
+     belongs to the map. The panels open just under that row and stop above the
+     bottom edge, so on a short landscape phone nothing piles up. The width
+     leaves the top-right zoom controls clear. */
+  #app.embed #embed-tools-toggle { left: 170px; }
+  #app.embed #embed-cat-toggle { left: 218px; }
+  #app.embed .embed-tools,
+  #app.embed .embed-categories {
+    left: 12px; top: 60px; bottom: auto;
+    width: min(300px, calc(100vw - 76px));
+    max-height: calc(100vh - 72px);
+  }
 }
 
 ::-webkit-scrollbar { width: 9px; height: 9px; }
