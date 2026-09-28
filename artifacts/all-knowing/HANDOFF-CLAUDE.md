@@ -54,6 +54,47 @@ that consume it, and an **UNUSED** flag.
 
 ---
 
+## 0.1 Latest — Task 137 (get it ready)
+
+Task 137 was the "make it shippable" pass. Architecture is written up in
+`docs/ARCHITECTURE.md`; the data census is `docs/DATA-CATALOG.md`.
+
+- **Shell.** Four sections — **Tarnished** (overview/update/profiles), **Journey**
+  (now/map/quests), **Library** (search/builds/kit/pvp/guides), **Gideon** — with
+  `#/section/sub` hashes, legacy `setModule` ids mapped onto them, and the four
+  phone bottom tabs. Entity pages are the `?e=<factId>` overlay.
+- **Entity graph + index.** `src/lib/entityGraph.ts` is the runtime graph;
+  `public/sourced/entity-index.json` (rebuilt with `npm run index:entities`) is the
+  build-time enrichment (NPCs, locations, enemies, items, quest beats, combat,
+  placements), read by `src/lib/entityIndex.ts` / `entityEnrich.ts`.
+- **Wiki corpus.** `public/sourced/wiki/pages-*.json` + `search-index.json` (the
+  Fandom snapshot, 4,939 pages) back Library search (beside category results),
+  Lore tabs and Gideon's grounded wiki answers (`src/lib/wikiSearch.ts`,
+  `gideonWiki.ts`).
+- **Advisor.** `src/lib/advisor.ts` (`advise`/`detectBuild`/gear) plus the pure
+  threshold logic in `verdict.ts` and the AR verdict in `weaponVerdict.ts`.
+- **PS5 capture.** Status OCR (`ps5Status.ts`), the live inventory/equipment
+  scanner (`ps5Scanner.ts` + `ps5Capture.ts` + `ScanInventory.tsx`) and the Task 135
+  map photo reader (`ps5Map*`, MeSetup map step) reconstruct a character with no
+  save drop. OCR tests: `npm run test:ocr`.
+- **Map engine at `/engine`.** The Vite `all-knowing-map-engine` plugin serves the
+  absorbed EldenRingMap tiled map same-origin; plates are the fail-closed fallback.
+- **HTTPS cert.** `npm run cert` (Node crypto or openssl) writes `.cert/`; Vite then
+  serves `https://<lan-ip>:5173` so the phone camera works. Re-run `--force` when
+  the LAN IP changes.
+- **Offline.** `SOURCED_OFFLINE_CACHE` serves `sourced/**` cache-first; Settings →
+  Data & offline downloads every file via `public/sourced/offline-manifest.json`
+  (`npm run data:offline`), resumable + removable, with usage/quota and persist.
+- **Performance.** The attack-rating calculator (`src/lib/ar.ts`) is a lazy chunk;
+  the main entry never imports it (stat-only model in `archetype.ts`, gear table in
+  `gearTags.ts`).
+- **Tests.** `npm test` is build-independent; `npm run test:bundle` builds then runs
+  the bundle guards; `npm run audit:ui` / `npm run crawl:ui` drive the UI audits.
+- **Phone.** `npm run cert` → `npm run dev` → open `https://<lan-ip>:5173`, accept
+  the cert once, install from the browser menu, then download the offline data.
+
+---
+
 ## 1. Product (what Wyatt asked for)
 
 A single tool that beats wiki tabs + MapGenie + spreadsheet trackers.
