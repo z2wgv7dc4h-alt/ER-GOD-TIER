@@ -339,6 +339,7 @@ function initMap(masterId) {
     tileSize: (state.manifest && state.manifest.tileSize) || 256,
     width: info ? info.width : 10496,
     height: info ? info.height : 10496,
+    bounds: (info && info.bounds) || null,
     nativeZoom: info ? info.nativeZoom : 6,
     tileIndex: tileIndexFor(masterId),
     tileUrl: (z, x, y) => `tiles/${masterId}/${z}/${x}/${y}.${fmt}`,

@@ -155,6 +155,23 @@ def write_pyramid(master: Image.Image, out_dir: str, fmt: str, quality: int):
     return native, written, skipped, index
 
 
+def content_bounds(index, native_zoom, tile=TILE):
+    """Master-pixel rectangle covered by the non-empty tiles at native zoom.
+
+    The M11 (Realm of Shadow - Underground) master is a small patch inside the
+    10496x10496 canvas - 160 of 1681 cells. Fitting the whole square lands the
+    user on grey, so the client fits this rectangle instead. Returns
+    [left, top, right, bottom] (right/bottom exclusive), or None if the master
+    rendered nothing.
+    """
+    present = index.get(native_zoom)
+    if not present:
+        return None
+    xs = [p[0] for p in present]
+    ys = [p[1] for p in present]
+    return [min(xs) * tile, min(ys) * tile, (max(xs) + 1) * tile, (max(ys) + 1) * tile]
+
+
 # ------------------------------------------------------------------------ main
 
 def main():
@@ -211,6 +228,15 @@ def main():
     bdt = dvd._bdt(bdt_entry.archive)
     manifest = {"tileSize": TILE, "grid": GRID, "masterPx": MASTER_PX,
                 "format": args.format, "masters": {}}
+    # A subset run (--masters M11) must not drop the other masters already in
+    # the output manifest; only the generated ones are replaced.
+    mf = os.path.join(args.out, "manifest.json")
+    if os.path.exists(mf):
+        try:
+            with open(mf, encoding="utf-8") as f:
+                manifest["masters"].update(json.load(f).get("masters", {}))
+        except (OSError, ValueError):
+            pass
 
     for master in args.masters.split(","):
         master = master.strip()
@@ -262,11 +288,11 @@ def main():
             "nativeZoom": native,
             "width": MASTER_PX,
             "height": MASTER_PX,
+            "bounds": content_bounds(index, native),
             "tiles": {str(z): index[z] for z in index},
         }
 
     dvd.close()
-    mf = os.path.join(args.out, "manifest.json")
     with open(mf, "w", encoding="utf-8") as f:
         json.dump(manifest, f)
     print(f"\nmanifest -> {mf}")

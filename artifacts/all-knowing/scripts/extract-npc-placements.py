@@ -50,7 +50,12 @@ PART_NPC_PARAM_ID = 0x2A8    # int32, NPCParamID
 TILE_WORLD = 256
 OFFSET_X = -7168
 OFFSET_Y = 16640
-WORLD_BY_MASTER = {"M00": "overworld", "M01": "underground", "M10": "shadow"}
+WORLD_BY_MASTER = {"M00": "overworld", "M01": "underground", "M10": "shadow",
+                   "M11": "shadow-underground"}
+# SotE underground areas (mirrors build_markers.SOTE_UNDERGROUND_AREAS): Stone
+# Coffin Fissure, Finger Birthing Grounds, catacombs/gaols/forges/caves. The
+# area-61 overworld and the surface legacy dungeons (20, 21, 28) are M10.
+SOTE_UNDERGROUND_AREAS = {22, 25, 40, 41, 42, 43}
 
 
 def map_ids():
@@ -146,7 +151,10 @@ def load_projector():
         if not r:
             return None
         px, py, _h, dst_area = r
-        master = "M10" if dst_area == 61 else ("M01" if f"{dst_area},{block}" in underground else "M00")
+        if dst_area == 61:
+            master = "M11" if area in SOTE_UNDERGROUND_AREAS else "M10"
+        else:
+            master = "M01" if f"{dst_area},{block}" in underground else "M00"
         return round(px, 1), round(py, 1), WORLD_BY_MASTER.get(master, "overworld")
 
     return project

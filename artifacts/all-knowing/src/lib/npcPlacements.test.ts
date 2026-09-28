@@ -27,6 +27,6 @@ describe('npc placements', () => {
     const projected = rows.filter((r) => r.px != null && r.py != null)
     expect(projected.length).toBeGreaterThan(1200)
     expect(projected.every((r) => r.px! >= 0 && r.px! <= 10496 && r.py! >= 0 && r.py! <= 10496)).toBe(true)
-    expect(projected.every((r) => r.world === 'overworld' || r.world === 'shadow')).toBe(true)
+    expect(projected.every((r) => r.world === 'overworld' || r.world === 'shadow' || r.world === 'shadow-underground')).toBe(true)
   })
 })

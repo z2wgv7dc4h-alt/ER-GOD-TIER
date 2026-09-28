@@ -18,7 +18,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MARKERS = os.path.join(ROOT, "vendor", "elden-ring-map", "data", "markers.json")
 PLACEMENTS = os.path.join(ROOT, "public", "sourced", "npc-placements.json")
 
-MASTER = {"overworld": "M00", "underground": "M01", "shadow": "M10"}
+MASTER = {"overworld": "M00", "underground": "M01", "shadow": "M10",
+          "shadow-underground": "M11"}
 
 
 def mk(mid, cat, name, icon, px, py, world, map_id):
