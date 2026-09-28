@@ -1,13 +1,12 @@
 import { useMemo, useState } from 'react'
-import { markers } from '../data/seed'
-import { bossFactCount, defeatedEncounterCount } from '../lib/bossRoster'
 import { scadutreeFragments } from '../knowledge/collectibles'
 import { canonicalHunts } from '../knowledge/completion'
-import { warpGraces } from '../knowledge/graces'
 import { allLines } from '../knowledge/storylines'
 import { completionCategories } from '../lib/completionView'
 import { EntityLink } from '../EntityLink'
 import { sourceLabel } from '../lib/sourceLabel'
+import { activityLine, progressMeters } from '../lib/progressStats'
+import { useEntityIndex } from '../lib/entityIndex'
 import { Recents, softCapMark } from '../QoL'
 import { factState, useWorkspace } from '../state'
 import { Button, Card, Kicker } from '../ui'
@@ -36,7 +35,14 @@ function CharacterCard() {
       title={character.name}
       subtitle={
         <>
-          Lv. {character.level} · {character.startingClass.replace('-', ' ')}
+          Lv. {character.level} ·{' '}
+          {character.startingClass && character.startingClass !== 'unknown' ? (
+            character.startingClass.replace(/-/g, ' ')
+          ) : (
+            <button type="button" className="chip" onClick={() => go('me', 'setup')}>
+              Class not set
+            </button>
+          )}
           {typeof character.answers.gideonGoal === 'string' && (
             <> · {allLines.find((l) => l.id === character.answers.gideonGoal)?.name ?? character.answers.gideonGoal}</>
           )}
@@ -132,11 +138,8 @@ export function MeOverview() {
     character.defeatedBosses.length === 0 &&
     character.discoveredGraces.length === 0 &&
     character.collectedItems.length === 0
-  const graces = new Set(character.discoveredGraces)
-  const bossesHave = defeatedEncounterCount(character.defeatedBosses)
-  const items = new Set(character.collectedItems)
-  const totalBosses = bossFactCount
-  const totalItems = markers.filter((m) => m.kind === 'item').length
+  const { version: indexVersion } = useEntityIndex()
+  const progress = useMemo(() => progressMeters(character), [character, indexVersion])
   const fragmentIds = scadutreeFragments.map((f) => f.id)
   const fragmentsHave = fragmentIds.filter((id) => character.collectedItems.includes(id)).length
   const huntIds = [...new Set(canonicalHunts.map((h) => h.id))]
@@ -174,9 +177,9 @@ export function MeOverview() {
         }
       >
         <div className="meters">
-          <Meter label="Graces" have={graces.size} total={warpGraces.length} />
-          <Meter label="Bosses" have={bossesHave} total={totalBosses} />
-          <Meter label="Items found" have={items.size} total={totalItems} />
+          {progress.map((m) => (
+            <Meter key={m.id} label={m.label} have={m.have} total={m.total} />
+          ))}
           <Meter label="Fragments" have={fragmentsHave} total={fragmentIds.length} />
           <Meter label="Field hunts" have={huntsHave} total={huntIds.length} />
         </div>
@@ -187,12 +190,19 @@ export function MeOverview() {
           <p className="note">Nothing logged yet.</p>
         ) : (
           <ul className="list" style={{ marginTop: 6 }}>
-            {recent.map((e) => (
-              <li key={e.id} style={{ cursor: 'default' }}>
-                <span>{e.fact.replace(/^[a-z]+:/, '')}</span>
-                <span className="note">{e.source ?? ''}</span>
-              </li>
-            ))}
+            {recent.map((e) => {
+              const line = activityLine(e)
+              return (
+                <li key={e.id} style={{ cursor: 'default' }}>
+                  <span>
+                    {line.verb}{' '}
+                    <EntityLink id={line.factId}>{line.name}</EntityLink>
+                    {line.from ? <> from {line.from}</> : null}
+                  </span>
+                  <span className="note">{e.source === 'inference' ? 'inferred' : e.source}</span>
+                </li>
+              )
+            })}
           </ul>
         )}
       </section>

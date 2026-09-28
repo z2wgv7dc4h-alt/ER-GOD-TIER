@@ -76,6 +76,21 @@ export function knownFactIds(character: Character): Set<string> {
 }
 
 /**
+ * Task 144 §3 — the same set plus the inference closure, minus anything the
+ * character explicitly denied. Completion counts and ticks use this so a boss
+ * proven by a downstream fact (Godrick ⇒ Margit) is not left unticked just
+ * because the derived id was never written to a list.
+ */
+export function resolvedFactIds(character: Character): Set<string> {
+  const direct = knownFactIds(character)
+  const closed = closeWorld([...direct], direct)
+  const denied = new Set((character.deniedFacts ?? []).map((id) => canonicalFactId(id)))
+  const out = new Set(closed)
+  for (const id of denied) out.delete(id)
+  return out
+}
+
+/**
  * Walk `catalog.implies` **and** the Task 54 inference chains from a set of ids.
  *
  * `knownFacts` is the character's current facts (canonicalised). It is only used
