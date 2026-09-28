@@ -74,7 +74,7 @@ drops / strategy fields remain in the table as information.
 | npc | 99 | 99% | 78.8% | 3% | · | 9.1% | 76.8% | · | · | · | · | · | · |
 | grace | 420 | 100% | 100% | · | 100% | · | · | · | · | · | · | · | · |
 | dungeon | 119 | 90.8% | 100% | 100% | · | 99.2% | · | · | · | · | · | · | · |
-| region | 309 | 100% | 98.1% | 0.6% | · | · | · | · | · | · | · | · | · |
+| region | 312 | 100% | 98.1% | 0.6% | · | · | · | · | · | · | · | · | · |
 | enemy | 2390 | 99.9% | 99.6% | 0% | · | 0% | 97.9% | · | 95% | 3.9% | 0% | · | · |
 
 ## Spot checks
@@ -354,7 +354,7 @@ The ten records Task 119 names, printed straight from the built index.
 - Winged Serpents
 - Yuri
 
-### region — description + location (locations) (303/309)
+### region — description + location (locations) (306/312)
 
 - Crumbling Farum Azula
 - Miquella’s Haligtree

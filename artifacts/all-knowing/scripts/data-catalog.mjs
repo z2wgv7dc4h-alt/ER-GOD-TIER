@@ -227,6 +227,42 @@ function inferKinds(sourceRel, value) {
 
 const rows = []
 const unused = []
+const redundant = []
+
+/**
+ * Task 132 §3 — sources with no direct consumer that are *superseded* by a
+ * source the app does load (a FanAPI mirror, a flattened scrape or a doc). These
+ * are reported separately from UNUSED, and are only ever true duplicates.
+ */
+const REDUNDANT = new Map([
+  ['public/sourced/.gitkeep', 'directory placeholder, not data'],
+  ['public/sourced/checklists/ammos.json', 'public/sourced/open/fanapi/ammos.json (same 53 rows; FanAPI loader)'],
+  ['public/sourced/checklists/classes.json', 'public/sourced/open/fanapi/classes.json (same 14 rows; FanAPI loader)'],
+  ['public/sourced/checklists/creatures.json', 'public/sourced/open/fanapi/creatures.json (same 115 rows; FanAPI loader)'],
+  ['public/sourced/guide/expected-counts.json', 'public/sourced/guide/catalog.json (catalogue counts)'],
+  ['public/sourced/guide/missable-index.json', 'public/sourced/guide/missables.json + guide/items.json (missable flags)'],
+  ['public/sourced/guide/overrides.json', 'src/data/entity-overrides.json (entity-index override table)'],
+  ['public/sourced/maps/README.md', 'documentation, not data'],
+  ['public/sourced/maps/m1-underground-armory.jpg', 'public/sourced/maps/m1-underground.jpg (same world plate)'],
+  ['public/sourced/maps/m1-underground-hi.jpg', 'public/sourced/maps/m1-underground.jpg (same world plate)'],
+  ['public/sourced/open/boss_list.json', 'public/sourced/open/boss-list.json (byte-identical duplicate)'],
+  ['public/sourced/open/map-regions.json', 'public/sourced/open/engine-markers.json + guide/map-extras.json (map geometry)'],
+  ['public/sourced/open/wiki-db/class.json', 'public/sourced/open/fanapi/classes.json + src/data build tables'],
+  ['public/sourced/open/wiki-db/faction.json', 'src/knowledge/catalog.ts facts (factions)'],
+  ['public/sourced/open/wiki-db/gesture.json', 'public/sourced/guide/catalog.json (gestures)'],
+  ['public/sourced/open/wiki-db/lore.json', 'public/sourced/open/wiki-sections.json (page prose)'],
+  ['public/sourced/open/wiki-db/mechanic.json', 'src/knowledge/mechanics.ts'],
+  ['public/sourced/open/wiki-db/nightreign.json', 'out of scope (Elden Ring: Nightreign, not base/SotE)'],
+  ['public/sourced/open/wiki-db/object.json', 'public/sourced/guide/catalog.json (objects/props)'],
+  ['public/sourced/open/wiki-db/summary.json', 'per-kind wiki-db/*.json (export manifest)'],
+])
+
+function redundantReason(sourceRel) {
+  if (sourceRel.startsWith('public/sourced/guide/regions/')) {
+    return 'public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup)'
+  }
+  return REDUNDANT.get(sourceRel) ?? null
+}
 
 function addFile(file, kind) {
   const stat = fs.statSync(file)
@@ -263,7 +299,13 @@ function addFile(file, kind) {
   const consumers = consumersFor(sourceRel, kind)
   const entry = { sourceRel, size: stat.size, records, shape, kinds, consumers }
   rows.push(entry)
-  if (!consumers.length) unused.push(entry)
+  if (!consumers.length) {
+    const reason = redundantReason(sourceRel)
+    if (reason) {
+      entry.redundant = reason
+      redundant.push(entry)
+    } else unused.push(entry)
+  }
   return entry
 }
 
@@ -521,7 +563,7 @@ function renderSourceTable(entries) {
       e.records,
       e.shape,
       e.kinds,
-      e.consumers.length ? e.consumers.map((c) => `\`${c}\``).join('<br>') : '**UNUSED**',
+      e.consumers.length ? e.consumers.map((c) => `\`${c}\``).join('<br>') : e.redundant ? `**REDUNDANT** → ${e.redundant}` : '**UNUSED**',
     ]),
   )
 }
@@ -551,6 +593,7 @@ function main() {
   lines.push('')
   lines.push(`- **${rows.length}** data files catalogued, **${bytes(totalBytes)}** (plus **${imageCount}** images in ${imageGroups.size} groups, **${bytes(imageBytes)}**).`)
   lines.push(`- **${unused.length}** flagged **UNUSED** (no \`src/\`/\`scripts/\` consumer).`)
+  lines.push(`- **${redundant.length}** marked **REDUNDANT** (superseded by a source the app loads).`)
   if (db.stats) {
     lines.push(`- **SQLite wiki DB** \`data/raw/er-mcp.db\` — **${bytes(db.stats.size)}**, ${db.tables.length} tables/views, ${db.stats.pagesRows} pages. Gitignored; see \`data/raw/README.md\`.`)
   }
@@ -561,6 +604,11 @@ function main() {
   lines.push('')
   if (!unused.length) lines.push('_None — every catalogued file is referenced somewhere._')
   else for (const u of unused) lines.push(`- \`${u.sourceRel}\` (${bytes(u.size)}, ${u.records} records)`)
+  lines.push('')
+  lines.push('## Redundant sources (superseded)')
+  lines.push('')
+  if (!redundant.length) lines.push('_None._')
+  else for (const r of redundant) lines.push(`- \`${r.sourceRel}\` → ${r.redundant}`)
   lines.push('')
   lines.push('---')
   lines.push('')

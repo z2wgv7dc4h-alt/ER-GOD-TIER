@@ -61,12 +61,18 @@ import eldenringMap from '../../public/sourced/open/eldenringmap.json'
 import namesData from '../../public/sourced/open/names.json'
 import saveIds from '../../public/sourced/open/save-ids.json'
 import npcQuestsDoc from '../../public/sourced/open/npc-quests.json'
+import placeNames from '../../public/sourced/open/place-names.json'
+import mapPoints from '../../public/sourced/open/map-points.json'
+import mapLots from '../../public/sourced/open/map-lots.json'
+import msbEnemies from '../../public/sourced/open/msb-enemies.json'
 
 // Task 132 §1 — the full wiki DB, classified per kind by `scripts/export-wiki-db.py`.
 import wikiBossDoc from '../../public/sourced/open/wiki-db/boss.json'
 import wikiEnemyDoc from '../../public/sourced/open/wiki-db/enemy.json'
 import wikiNpcDoc from '../../public/sourced/open/wiki-db/npc.json'
 import wikiLocationDoc from '../../public/sourced/open/wiki-db/location.json'
+import wikiRegionDoc from '../../public/sourced/open/wiki-db/region.json'
+import wikiSkillDoc from '../../public/sourced/open/wiki-db/skill.json'
 import wikiDungeonDoc from '../../public/sourced/open/wiki-db/dungeon.json'
 import wikiItemDoc from '../../public/sourced/open/wiki-db/item.json'
 import wikiWeaponDoc from '../../public/sourced/open/wiki-db/weapon.json'
@@ -1307,6 +1313,29 @@ function mergeWikiDb(): void {
     for (const alias of redirectAliases.get(simpleNorm(rec.title)) ?? []) addName(alias, id)
   }
 
+  // Regions: the top-level overworld/DLC regions (a small set beside the
+  // Location pages).
+  for (const rec of wikiRecords(wikiRegionDoc)) {
+    const title = canonicalWikiTitle(rec.title)
+    const resolved = resolveName(title, 'region')
+    const id = resolved && hasEntity(resolved) && getEntity(resolved).kind === 'region' ? resolved : `region:${slug(title)}`
+    const record = records.get(id) ?? ensure(id, 'region', title)
+    if (record.kind === 'item') record.kind = 'region'
+    enrichFromWiki(record, rec)
+    setText(record, 'location', rec.region || rec.stats.Region || rec.location || rec.stats.Type)
+  }
+
+  // Skills: unique/weapon skills already have an ash/weapon record; the wiki
+  // page only enriches it, it never mints a new kind for a non-player skill.
+  for (const rec of wikiRecords(wikiSkillDoc)) {
+    const title = canonicalWikiTitle(rec.title)
+    const record = records.get(catalogueIdFor('item', title))
+    if (!record) continue
+    setText(record, 'description', rec.description)
+    if (!record.location) setText(record, 'location', rec.location || rec.region)
+    source(record, 'wiki-db/skill')
+  }
+
   // Dungeons: enrich the authored `dungeon:` records the graph already knows.
   for (const rec of wikiRecords(wikiDungeonDoc)) {
     const title = canonicalWikiTitle(rec.title)
@@ -1490,6 +1519,52 @@ type EnemyCombatRow = {
   negation?: Record<string, number>
   resist?: Record<string, number>
   maps?: string[]
+}
+
+/**
+ * Task 132 §3 — fold the remaining open dumps the app never indexed: place
+ * names (region aliases), map points (grace/region aliases), map lots (item
+ * name aliases) and the MSB enemy placements (per-model map ids unioned onto
+ * the enemy-combat rows). Nothing here mints a new entity: it only makes the
+ * scraped names resolve to the records the other sources already built.
+ */
+function mergeExtraSources(): void {
+  const aliasToExisting = (name: string): void => {
+    const clean = String(name).replace(/<[^>]+>/g, '').trim()
+    if (!clean) return
+    const id = mapKeys(clean).map((key) => nameIndex.get(key)).find((candidate) => candidate && records.has(candidate))
+    if (id) addName(clean, id)
+  }
+  for (const value of Object.values(placeNames as Record<string, string>)) {
+    const name = String(value).replace(/<[^>]+>/g, '').trim()
+    if (!name || /^(discovered|cleared|completed)$/i.test(name)) continue
+    aliasToExisting(name)
+  }
+  for (const row of mapPoints as { name: string }[]) {
+    for (const part of String(row.name).split(/\s*[-–—]\s*/)) {
+      aliasToExisting(part.replace(/^guidance of grace:\s*/i, ''))
+    }
+    aliasToExisting(row.name.replace(/^guidance of grace:\s*/i, ''))
+  }
+  for (const row of mapLots as { name: string }[]) {
+    const id = catalogueIdFor('item', row.name)
+    if (records.has(id)) addName(row.name, id)
+  }
+  // Per-model map ids from the MSB dump widen each enemy-combat row's maps.
+  const byModel = new Map<string, Set<string>>()
+  for (const row of msbEnemies as { model?: string; map?: string }[]) {
+    if (!row.model || !row.map) continue
+    const set = byModel.get(row.model) ?? new Set<string>()
+    set.add(row.map)
+    byModel.set(row.model, set)
+  }
+  for (const row of enemyCombat as (EnemyCombatRow & { model?: string })[]) {
+    if (!row.model) continue
+    const extra = byModel.get(row.model)
+    if (!extra?.size) continue
+    row.maps = row.maps ?? []
+    for (const map of extra) if (!row.maps.includes(map)) row.maps.push(map)
+  }
 }
 
 /**
@@ -1848,6 +1923,7 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   // Task 132 §2 — the FMG name plane and the enemy-combat rows, then the
   // classified wiki DB, before the lowest-priority gap-fill, so a grounded fact
   // is never overwritten by a hand-noted gap.
+  mergeExtraSources()
   mergeEnemyCombat()
   mergeFmgNames()
   mergeAcquisitionItems()
