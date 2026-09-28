@@ -93,10 +93,21 @@ function vendorFor(name: string, detail: string): string | undefined {
   return undefined
 }
 
+/** How the fact was learned, in player words (never the raw source tag). */
+export const SOURCE_LABEL: Record<Evidence['source'], string> = {
+  answer: 'logged',
+  screenshot: 'photo',
+  save: 'save file',
+  inference: 'inferred',
+}
+
 export function activityLine(evidence: Evidence): ActivityLine {
   const factId = canonicalFactId(evidence.fact)
   const entity = getEntity(factId)
-  const name = entity.name
+  // Merchant-stock rows are named "Vendor:Item"; the vendor goes in `from`.
+  const colon = entity.name.indexOf(':')
+  const name = colon > 2 ? entity.name.slice(colon + 1).trim() : entity.name
+  const vendorPrefix = colon > 2 ? entity.name.slice(0, colon).trim() : undefined
   const inferred = evidence.source === 'inference'
   if (inferred) return { verb: 'Inferred', factId, name, inferred }
   switch (entity.kind) {
@@ -109,7 +120,7 @@ export function activityLine(evidence: Evidence): ActivityLine {
     case 'ending':
       return { verb: 'Did', factId, name, inferred }
     default: {
-      const from = vendorFor(name, evidence.detail ?? '')
+      const from = vendorPrefix ?? vendorFor(name, evidence.detail ?? '')
       return { verb: from ? 'Bought' : 'Found', factId, name, from, inferred }
     }
   }

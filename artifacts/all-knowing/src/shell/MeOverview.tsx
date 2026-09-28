@@ -5,7 +5,7 @@ import { allLines } from '../knowledge/storylines'
 import { completionCategories } from '../lib/completionView'
 import { EntityLink } from '../EntityLink'
 import { sourceLabel } from '../lib/sourceLabel'
-import { activityLine, progressMeters } from '../lib/progressStats'
+import { activityLine, progressMeters, SOURCE_LABEL } from '../lib/progressStats'
 import { useEntityIndex } from '../lib/entityIndex'
 import { Recents, softCapMark } from '../QoL'
 import { factState, useWorkspace } from '../state'
@@ -199,7 +199,7 @@ export function MeOverview() {
                     <EntityLink id={line.factId}>{line.name}</EntityLink>
                     {line.from ? <> from {line.from}</> : null}
                   </span>
-                  <span className="note">{e.source === 'inference' ? 'inferred' : e.source}</span>
+                  <span className="note">{SOURCE_LABEL[e.source] ?? e.source}</span>
                 </li>
               )
             })}

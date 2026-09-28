@@ -20,6 +20,7 @@ const BossPrepCard = lazy(() => import('../combat/BossPrepCard').then((m) => ({ 
 // chunk so the eager panel keeps the shared shell only.
 const EntityKinds = lazy(() => import('./EntityKinds'))
 import { knownFactIds } from '../lib/infer'
+import { areaFromFactId } from '../lib/areaContext'
 import type { EntityRecord } from '../lib/entityIndex'
 import { attributeStats, isOwned, meetsRequirements, type AttributeKey, type CategoryId, type LibraryEntity } from './model'
 
@@ -36,18 +37,20 @@ function kindStatus(
   character: Character,
 ): { label: string; why: string } {
   const bossLike = kind === 'boss' || kind === 'enemy'
+  const done = info.state === 'done' || info.state === 'owned'
+  const inRegion = entity.region ? `In ${entity.region}.` : record?.location ? `${record.location}.` : ''
   if (bossLike) {
-    if (info.state === 'done' || info.state === 'owned') return { label: 'Defeated', why: info.why }
+    if (done) return { label: 'Defeated', why: info.why }
     if (info.state === 'locked' || info.state === 'missed' || info.state === 'ahead') {
       return { label: "Can't reach yet", why: info.why }
     }
     if (info.state === 'unknown') return { label: 'Unknown', why: info.why }
-    return { label: 'Not yet', why: entity.region ? `In ${entity.region}.` : info.why }
+    return { label: 'Not yet', why: inRegion || 'Not defeated on this character.' }
   }
   if (kind === 'grace') {
-    if (info.state === 'done' || info.state === 'owned') return { label: 'Discovered', why: entity.region ? `In ${entity.region}.` : info.why }
+    if (done) return { label: 'Discovered', why: inRegion || info.why }
     if (info.state === 'locked' || info.state === 'missed') return { label: 'Missed', why: info.why }
-    return { label: 'Not yet', why: entity.region ? `In ${entity.region}.` : info.why }
+    return { label: 'Not yet', why: inRegion || 'Not discovered on this character.' }
   }
   if (kind === 'npc' || kind === 'merchant') {
     const known = knownFactIds(character)
@@ -58,7 +61,18 @@ function kindStatus(
     return { label: record?.stats?.Role ?? entity.subtype ?? 'NPC', why: entity.where || record?.location || 'No tracked quest steps.' }
   }
   if (kind === 'region' || kind === 'dungeon') {
-    return { label: 'Area', why: entity.region ? `In ${entity.region}.` : info.why }
+    if (done) return { label: 'Visited', why: inRegion || info.why }
+    // A grace, boss or item known inside the area proves it was visited.
+    const area = entity.name.toLowerCase()
+    const inside = area.length >= 4
+      ? [...knownFactIds(character)].find((id) => {
+          const at = areaFromFactId(id)
+          return [at?.region, at?.place].some((n) => n && (n.toLowerCase().includes(area) || (n.length >= 4 && area.includes(n.toLowerCase()))))
+        })
+      : undefined
+    if (inside) return { label: 'Visited', why: `Inferred — you reached ${getEntity(inside).name}.` }
+    if (info.state === 'ahead' || info.state === 'locked' || info.state === 'missed') return { label: "Can't reach yet", why: info.why }
+    return { label: 'Not visited yet', why: inRegion || 'Progress is counted below.' }
   }
   // item-shaped: weapons, armor, talismans, spells, ashes, spirits, items…
   if (info.state === 'owned' || info.state === 'done') return { label: 'Owned', why: info.why }
@@ -67,7 +81,7 @@ function kindStatus(
   }
   const where = entity.where || record?.location
   if (where) return { label: 'Where to get', why: where }
-  return { label: info.state === 'unknown' ? 'Unknown' : 'Not owned', why: info.why }
+  return { label: info.state === 'unknown' ? 'Unknown' : 'Not owned', why: info.state === 'available' ? 'Not on this character yet.' : info.why }
 }
 
 function EntityStatusStrip({
@@ -431,7 +445,7 @@ export function EntityPanel({
               </div>
             )}
 
-            {!isBoss && requirementEntries.length === 0 && !entity.attack?.length && !entity.stats?.length && !ar && entity.weight === undefined && enrichedStats.length === 0 && (
+            {!isBoss && !isLocation && !isGrace && !isNpc && requirementEntries.length === 0 && !entity.attack?.length && !entity.stats?.length && !ar && entity.weight === undefined && enrichedStats.length === 0 && (
               indexReady ? (
                 <p className="note">No structured stats in the data for this entry.</p>
               ) : (

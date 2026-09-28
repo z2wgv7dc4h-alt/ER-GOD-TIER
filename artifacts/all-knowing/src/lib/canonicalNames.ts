@@ -34,6 +34,24 @@ export function canonicalName(name: string): string {
   return CANONICAL_BY_NAME.get(key) ?? name
 }
 
+const MINOR_WORDS = new Set(['of', 'the', 'and', 'in', 'to', 'at', 'a', 'an', 'for', 'on', 'from'])
+
+/**
+ * A readable name for display: the in-game spelling when the game text knows
+ * one. Otherwise a dump's casing is repaired: an all-lowercase slug name
+ * ("stormveil") is capitalised, and connectives inside a Title-Cased name
+ * ("Ranni The Witch") are lowered as the game writes them ("Ranni the Witch").
+ */
+export function displayName(name: string): string {
+  const canon = canonicalName(name)
+  if (canon !== name) return canon
+  const words = name.split(' ')
+  if (!/[A-Z]/.test(name)) {
+    return words.map((w, i) => (i > 0 && MINOR_WORDS.has(w) ? w : w.charAt(0).toUpperCase() + w.slice(1))).join(' ')
+  }
+  return words.map((w, i) => (i > 0 && MINOR_WORDS.has(w.toLowerCase()) ? w.toLowerCase() : w)).join(' ')
+}
+
 /** True when the spelling differs from the canonical game name. */
 export function hasBadCasing(name: string): boolean {
   return canonicalName(name) !== name

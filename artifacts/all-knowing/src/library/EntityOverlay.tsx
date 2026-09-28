@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState } from 'react'
 import { remembrances } from '../knowledge/remembrances'
 import type { Weapon } from '../lib/ar'
 import { areaFromFactId } from '../lib/areaContext'
+import { displayName } from '../lib/canonicalNames'
 import { getEntity, type EntityKind } from '../lib/entityGraph'
+import { getRecord, useEntityIndex } from '../lib/entityIndex'
 import { wikiPageForEntity } from '../lib/wikiSearch'
 import { applyFacts, denyFacts } from '../lib/infer'
 import { rankRemembrance, type RemembranceOption } from '../lib/remembranceChoice'
@@ -21,6 +23,8 @@ import type { CategoryId, LibraryEntity } from './model'
  * Task 100 adds two pieces of the entity page here: the advisor verdict for a
  * weapon/armor/talisman, and the ranked Enia options for a remembrance.
  */
+
+const NO_DATA = 'No data for this entity yet.'
 
 const CATEGORY_BY_KIND: Record<EntityKind, CategoryId> = {
   weapon: 'weapons',
@@ -55,6 +59,7 @@ export function EntityOverlay() {
     weaponVerdict: typeof import('../lib/weaponVerdict')['weaponVerdict']
   } | null>(null)
   const [wikiTitle, setWikiTitle] = useState<string | null>(null)
+  const { ready: indexReady } = useEntityIndex()
 
   // Task 137 §4 — load the attack-rating calculator only when the open entity is
   // actually a weapon/shield, so the main entry never imports it.
@@ -87,16 +92,22 @@ export function EntityOverlay() {
   const entity = useMemo<LibraryEntity | null>(() => {
     if (!entityId) return null
     const e = getEntity(entityId)
+    // The panel's status line, grace "nearby" lists and region body all key off
+    // the region and a readable name, so resolve both here, not just the raw row.
+    const area = areaFromFactId(entityId)
+    const record = getRecord(e.id)
+    const region = e.kind === 'region' ? undefined : area?.region ?? record?.region
     return {
       id: e.id,
       factId: e.id,
-      name: wikiTitle ?? e.name,
+      name: wikiTitle ?? displayName(record?.name && !/[A-Z]/.test(e.name) ? record.name : e.name),
       category: CATEGORY_BY_KIND[e.kind],
       subtype: e.kind,
       icon: e.icon,
-      lore: e.summary,
+      region,
+      lore: e.summary && e.summary !== NO_DATA && e.summary !== region ? e.summary : undefined,
     }
-  }, [entityId, wikiTitle])
+  }, [entityId, wikiTitle, indexReady])
 
   const verdict = useMemo<Verdict | null>(() => {
     if (!entityId || !entity) return null
