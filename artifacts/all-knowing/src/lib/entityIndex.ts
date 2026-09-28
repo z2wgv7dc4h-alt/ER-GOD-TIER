@@ -132,13 +132,14 @@ export function searchRecordIds(query: string, kind?: string, limit = 12): Entit
   const out: EntityRecord[] = []
   for (const record of records.values()) {
     if (kind && record.kind !== kind) continue
-    if (record.name.toLowerCase().includes(q)) {
-      out.push(record)
-      if (out.length >= limit) break
-    }
+    if (record.name.toLowerCase().includes(q)) out.push(record)
   }
-  return out
+  // Task 132 §2 — a name shared by an NPC and an enemy resolves to the NPC.
+  out.sort((a, b) => (NAME_PRIORITY[a.kind] ?? 5) - (NAME_PRIORITY[b.kind] ?? 5))
+  return out.slice(0, limit)
 }
+
+const NAME_PRIORITY: Record<string, number> = { npc: 0, boss: 1, quest: 2, enemy: 3 }
 
 /** Test seam: drop the cached index. */
 export function clearEntityIndex(): void {
