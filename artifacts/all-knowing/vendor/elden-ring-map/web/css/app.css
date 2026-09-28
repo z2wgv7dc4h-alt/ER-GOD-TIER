@@ -77,7 +77,7 @@ html, body {
 #app.embed .sb-expand { display: none; }
 #app.embed .embed-layer-buttons { display: grid; }
 /* All-Knowing Task 93: compact phone world switch; only shown in embed mode
-   under 700px (the media block at the end of this file). */
+   under 900px (the media block at the end of this file). */
 .embed-world-select { display: none; }
 .lang-switch { margin-left: auto; display: flex; gap: 3px; align-self: center; }
 .lang-btn {
@@ -416,11 +416,12 @@ html, body {
 
 .hidden { display: none !important; }
 
-/* All-Knowing Task 93: on a phone the embedded map's controls used to wrap and
-   collide - a 2x2 world grid over Tools / Filters over the pins. Under 700px
-   the grid becomes one compact <select> and Tools / Filters shrink to
-   icon-sized square buttons that never overlap each other. */
-@media (max-width: 700px) {
+/* All-Knowing Task 93 (Task 122 §D4): on a phone/tablet the embedded map's
+   controls used to wrap and collide - a 2x2 world grid over Tools / Filters over
+   the pins, and "Realm of Shadow" truncated. Under 900px the grid becomes one
+   compact <select> (short labels) and Tools / Filters shrink to icon-sized
+   square buttons that never overlap each other. */
+@media (max-width: 900px) {
   #app.embed .embed-layer-buttons { display: none; }
   #app.embed .embed-world-select {
     display: block;

@@ -815,6 +815,11 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     setStat(record, 'Negation', negation)
     setStat(record, 'Weight', armor.weight)
     source(record, 'checklists/armors')
+    const acq = acqFuzzy(row.name)
+    if (acq) {
+      setText(record, 'location', acq.location ?? acq.near)
+      source(record, 'acquisition')
+    }
   }
   for (const row of fanArmors as ChecklistItem[]) {
     const id = canonicalEntityId(`item:${slug(row.name)}`, row.name)
@@ -823,6 +828,11 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     setStat(record, 'Poise', armor.poise)
     setStat(record, 'Weight', armor.weight)
     source(record, 'fanapi/armors')
+    const acq = acqFuzzy(row.name)
+    if (acq) {
+      setText(record, 'location', acq.location ?? acq.near)
+      source(record, 'acquisition')
+    }
   }
 
   for (const row of checklistNpcs as ChecklistNpc[]) if (!mergeNpc(row.name)) bump('checklists/npcs')

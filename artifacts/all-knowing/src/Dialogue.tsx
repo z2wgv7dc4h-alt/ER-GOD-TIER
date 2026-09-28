@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { DIALOGUE_TABLES, allGameText, loadGameTextTable, searchGameText } from './lib/gameText'
 import { linesBySpeaker, loadDialogueOwners, speakerLabel, type DialogueOwners } from './lib/dialogueOwners'
+import { ShowMore } from './ShowMore'
 import { WikiText } from './WikiText'
 
 type Tables = Record<string, Record<string, string>>
@@ -98,6 +99,7 @@ export function DialogueBySpeaker({
 }) {
   const [text, setText] = useState<Record<string, string> | null>(preloadedText ?? null)
   const [own, setOwn] = useState<DialogueOwners | null>(owners ?? null)
+  const [limit, setLimit] = useState(6)
   const q = query.trim().toLowerCase()
 
   useEffect(() => {
@@ -120,10 +122,11 @@ export function DialogueBySpeaker({
   const o = owners ?? own
   if ((!browse && q.length < 3) || !rows || !o) return null
 
-  const groups = [...linesBySpeaker(o).entries()].filter(
+  const allGroups = [...linesBySpeaker(o).entries()].filter(
     ([name]) => browse || name.toLowerCase().includes(q),
   )
-  if (groups.length === 0) return null
+  if (allGroups.length === 0) return null
+  const groups = browse ? allGroups.slice(0, limit) : allGroups
 
   return (
     <>
@@ -139,6 +142,9 @@ export function DialogueBySpeaker({
           </ul>
         </article>
       ))}
+      {browse && (
+        <ShowMore total={allGroups.length} shown={limit} onMore={() => setLimit((n) => n + 6)} />
+      )}
     </>
   )
 }

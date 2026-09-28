@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { allEntities } from './entityGraph'
+import { clearEntityIndex, setEntityIndex } from './entityIndex'
 import { computeEntityCoverage, GUARD_MINIMUMS, violations, type CoverageReport } from './entityCoverage'
 import type { EntityRecord } from './entityIndex'
 
@@ -46,6 +47,19 @@ describe('entity coverage minimums (Task 119)', () => {
       expect(value!.pct).toBeGreaterThanOrEqual(guard.min)
     })
   }
+
+  it('registers the full enrichment index as graph entities (Task 122 §C)', () => {
+    const records = loadRecords()
+    setEntityIndex(new Map(Object.entries(records)))
+    try {
+      const known = new Set(allEntities().map((e) => e.id))
+      expect(known.has('item:alberich-s-bracers'), 'armor record not registered').toBe(true)
+      expect(known.has('boss:margit')).toBe(true)
+      expect(known.size).toBeGreaterThan(1400)
+    } finally {
+      clearEntityIndex()
+    }
+  })
 
   it('covers the ten spot-check entities end to end', () => {
     const records = loadRecords()

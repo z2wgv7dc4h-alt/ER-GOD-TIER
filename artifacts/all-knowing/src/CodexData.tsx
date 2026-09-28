@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { WikiText } from './WikiText'
+import { PAGE_SIZE, ShowMore } from './ShowMore'
 import { matchRecipes, loadRecipes, type Recipe } from './lib/recipes'
 import { loadSecrets, matchSecrets, type WallSecret } from './lib/secrets'
 import { loadAcquisition, matchAcquisition, type Acquisition } from './lib/acquisition'
@@ -14,6 +15,7 @@ import { loadWikiText, matchWiki, type WikiSection } from './lib/wikiText'
 
 export function RecipesSection({ query, preloaded, browse = false }: { query: string; preloaded?: Recipe[]; browse?: boolean }) {
   const [rows, setRows] = useState<Recipe[] | null>(preloaded ?? null)
+  const [limit, setLimit] = useState(PAGE_SIZE)
   const q = query.trim()
   const show = browse || q.length >= 3
   useEffect(() => {
@@ -24,7 +26,7 @@ export function RecipesSection({ query, preloaded, browse = false }: { query: st
   }, [show, rows])
   const data = preloaded ?? rows
   if (!show || !data) return null
-  const hits = browse ? data.slice(0, 12) : matchRecipes(q, data)
+  const hits = browse ? data.slice(0, limit) : matchRecipes(q, data)
   if (!hits.length) return null
   return (
     <>
@@ -38,12 +40,14 @@ export function RecipesSection({ query, preloaded, browse = false }: { query: st
           </article>
         ))}
       </div>
+      {browse && <ShowMore total={data.length} shown={limit} onMore={() => setLimit((n) => n + PAGE_SIZE)} />}
     </>
   )
 }
 
 export function SecretsSection({ query, preloaded, browse = false }: { query: string; preloaded?: WallSecret[]; browse?: boolean }) {
   const [rows, setRows] = useState<WallSecret[] | null>(preloaded ?? null)
+  const [limit, setLimit] = useState(PAGE_SIZE)
   const q = query.trim()
   const show = browse || q.length >= 3
   useEffect(() => {
@@ -54,7 +58,7 @@ export function SecretsSection({ query, preloaded, browse = false }: { query: st
   }, [show, rows])
   const data = preloaded ?? rows
   if (!show || !data) return null
-  const hits = browse ? data.slice(0, 12) : matchSecrets(q, data)
+  const hits = browse ? data.slice(0, limit) : matchSecrets(q, data)
   if (!hits.length) return null
   return (
     <>
@@ -67,6 +71,7 @@ export function SecretsSection({ query, preloaded, browse = false }: { query: st
           </article>
         ))}
       </div>
+      {browse && <ShowMore total={data.length} shown={limit} onMore={() => setLimit((n) => n + PAGE_SIZE)} />}
     </>
   )
 }
@@ -134,6 +139,7 @@ export function QuestStepsSection({ query, preloaded }: { query: string; preload
 
 export function WikiTextSection({ query, preloaded, browse = false }: { query: string; preloaded?: WikiSection[]; browse?: boolean }) {
   const [rows, setRows] = useState<WikiSection[] | null>(preloaded ?? null)
+  const [limit, setLimit] = useState(4)
   const q = query.trim()
   const show = browse || q.length >= 6
   useEffect(() => {
@@ -145,7 +151,7 @@ export function WikiTextSection({ query, preloaded, browse = false }: { query: s
   }, [show, rows])
   const data = preloaded ?? rows
   if (!show || !data) return null
-  const hits = browse ? data.slice(0, 3) : matchWiki(q, data, 3)
+  const hits = browse ? data.slice(0, limit) : matchWiki(q, data, 3)
   if (!hits.length) return null
   return (
     <>
@@ -158,6 +164,7 @@ export function WikiTextSection({ query, preloaded, browse = false }: { query: s
           </article>
         ))}
       </div>
+      {browse && <ShowMore total={data.length} shown={limit} onMore={() => setLimit((n) => n + 4)} />}
     </>
   )
 }
