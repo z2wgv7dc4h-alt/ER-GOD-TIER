@@ -20,6 +20,7 @@ import { quoteFor } from './dialogueQuote'
 import { advise, planRespec } from './advisor'
 import { edges, entityName, getEntity, status } from './entityGraph'
 import { enrichmentFor } from './entityEnrich'
+import { searchRecordIds } from './entityIndex'
 import { summarize } from './infer'
 import { findLine, stillAvailable, survey } from '../knowledge/storylines'
 import { opBuilds } from '../knowledge/builds'
@@ -222,7 +223,19 @@ export async function runGideonTool(name: string, args: Record<string, unknown>,
     case 'search': {
       const kind = typeof args.kind === 'string' ? args.kind.trim().toLowerCase() : ''
       const hits = searchSync(q).slice(0, 20).map((h) => ({ id: h.id, name: h.name, module: h.module, kind: getEntity(h.id).kind }))
-      return (kind ? hits.filter((h) => h.kind === kind) : hits).slice(0, 8)
+      const seen = new Set(hits.map((h) => h.id))
+      // Task 132 §4 — the enrichment index carries the kinds the authored graph
+      // does not (wiki NPCs, locations, enemies, the full item plane).
+      const indexHits = searchRecordIds(q, kind || undefined, 8)
+        .filter((r) => !seen.has(r.id))
+        .map((r) => ({
+          id: r.id,
+          name: r.name,
+          module: r.kind === 'region' || r.kind === 'grace' || r.kind === 'enemy' ? 'map' : 'codex',
+          kind: r.kind,
+        }))
+      const merged = kind ? [...hits, ...indexHits].filter((h) => h.kind === kind) : [...hits, ...indexHits]
+      return merged.slice(0, 8)
     }
     case 'here': {
       const r = regionLeftovers(ctx.character, q, 8)
@@ -263,10 +276,15 @@ export async function runGideonTool(name: string, args: Record<string, unknown>,
       ])
       const q = String(args.name ?? '').toLowerCase()
       const hit = [...bosses, ...enemies].find((x) => x.name.toLowerCase().includes(q))
-      if (!hit) return { error: 'no enemy by that name' }
-      const neg = hit.negation ?? {}
-      const weakest = Object.entries(neg).sort((a, b) => a[1] - b[1])[0]
-      return { name: hit.name, baseHp: hit.baseHp, poise: hit.poise, negation: neg, resist: hit.resist, weakest: weakest ? weakest[0] : null }
+      if (hit) {
+        const neg = hit.negation ?? {}
+        const weakest = Object.entries(neg).sort((a, b) => a[1] - b[1])[0]
+        return { name: hit.name, baseHp: hit.baseHp, poise: hit.poise, negation: neg, resist: hit.resist, weakest: weakest ? weakest[0] : null }
+      }
+      // Task 132 §4 — fall back to the enriched enemy index (wiki-only enemies).
+      const rec = searchRecordIds(String(args.name ?? ''), 'enemy', 1)[0]
+      if (rec) return { id: rec.id, name: rec.name, hp: rec.stats?.HP ?? null, stats: rec.stats ?? {}, location: rec.location ?? null, drops: rec.drops ?? [] }
+      return { error: 'no enemy by that name' }
     }
     case 'find_item': {
       const name = String(args.name ?? '')
@@ -362,15 +380,18 @@ export async function runGideonTool(name: string, args: Record<string, unknown>,
       ])
       const acq = acqDoc ? matchAcquisition(entity.name, acqDoc.rows, 1)[0] : null
       const pin = matchCoords(entity.name, coordRows)[0] ?? null
+      // Task 132 §4 — index records (NPCs, locations, enemies) carry their own
+      // region + plate coords when no acquisition/engine row matches.
+      const enriched = enrichmentFor(entity.id)
       return {
         id: entity.id,
         name: entity.name,
         kind: entity.kind,
-        region: pin?.world ?? entity.summary,
+        region: pin?.world ?? enriched?.region ?? enriched?.location ?? entity.summary,
         acquisition: acq
           ? { method: acq.method, where: acq.location.slice(0, 300), near: acq.near, missable: acq.missable }
           : null,
-        map: pin ? { world: pin.world, x: pin.x, y: pin.y } : null,
+        map: pin ? { world: pin.world, x: pin.x, y: pin.y } : (enriched?.map ?? null),
       }
     }
     case 'character': {

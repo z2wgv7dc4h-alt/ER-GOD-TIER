@@ -119,6 +119,27 @@ export function allRecords(): EntityRecord[] {
   return records ? [...records.values()] : []
 }
 
+/**
+ * Task 132 §4 — substring search over the loaded enrichment index, so Gideon and
+ * the command palette can resolve the kinds the authored graph does not carry
+ * (wiki NPCs, locations, enemies, the full item plane). Empty before the one
+ * fetch settles.
+ */
+export function searchRecordIds(query: string, kind?: string, limit = 12): EntityRecord[] {
+  if (!records) return []
+  const q = query.trim().toLowerCase()
+  if (q.length < 3) return []
+  const out: EntityRecord[] = []
+  for (const record of records.values()) {
+    if (kind && record.kind !== kind) continue
+    if (record.name.toLowerCase().includes(q)) {
+      out.push(record)
+      if (out.length >= limit) break
+    }
+  }
+  return out
+}
+
 /** Test seam: drop the cached index. */
 export function clearEntityIndex(): void {
   records = null
