@@ -1,6 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
+  callGideonChat,
   callGideonLlm,
+  callGideonResponses,
   DEFAULT_GIDEON_BASE_URL,
   gideonBaseUrl,
   gideonModel,
@@ -151,5 +153,41 @@ describe('callGideonLlm — DeepSeek provider (Task 142 §1)', () => {
     stubDeepseek()
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse({ choices: [{ message: { content: 'not json' } }] })))
     await expect(callGideonLlm(messages)).rejects.toThrow()
+  })
+})
+
+describe('Gideon agent transport routing (Task 142 §5)', () => {
+  function stubDeepseek() {
+    vi.stubEnv('VITE_GIDEON_API_KEY', 'test-key')
+    vi.stubEnv('VITE_GIDEON_PROVIDER', 'deepseek')
+    vi.stubEnv('VITE_GIDEON_BASE_URL', 'https://api.deepseek.com/v1')
+    vi.stubEnv('VITE_GIDEON_MODEL', '')
+  }
+
+  it('sends OpenAI-style tools and reads tool_calls on DeepSeek', async () => {
+    stubDeepseek()
+    const fetchMock = vi.fn().mockResolvedValue(
+      jsonResponse({
+        choices: [{ message: { content: '', tool_calls: [{ id: 'c1', function: { name: 'search', arguments: '{"q":"x"}' } }] } }],
+      }),
+    )
+    vi.stubGlobal('fetch', fetchMock)
+
+    const tools = [{ type: 'function' as const, function: { name: 'search', description: 'd', parameters: {} } }]
+    const out = await callGideonChat([{ role: 'user', content: 'hi' }], tools)
+    expect(out.toolCalls).toEqual([{ id: 'c1', name: 'search', arguments: '{"q":"x"}' }])
+
+    const body = JSON.parse((fetchMock.mock.calls[0] as [string, RequestInit])[1].body as string)
+    expect(body.tools).toEqual(tools)
+    expect(body.tool_choice).toBe('auto')
+    expect(body.response_format).toBeUndefined()
+  })
+
+  it('refuses /responses for DeepSeek instead of guessing', async () => {
+    stubDeepseek()
+    const fetchMock = vi.fn()
+    vi.stubGlobal('fetch', fetchMock)
+    await expect(callGideonResponses([], [], undefined)).rejects.toThrow('no /responses endpoint')
+    expect(fetchMock).not.toHaveBeenCalled()
   })
 })
