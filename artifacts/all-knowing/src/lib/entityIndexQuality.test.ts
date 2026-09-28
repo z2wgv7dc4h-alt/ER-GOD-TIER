@@ -273,3 +273,36 @@ describe('Task 133 §0 — a boss-encounter enemy merges into the boss', () => {
     expect(list.find((record) => record.kind === 'enemy' && norm(record.name) === 'nox swordstress boss')).toBeUndefined()
   })
 })
+
+describe('Task 140 §1 — fields the accuracy sample found missing are now carried', () => {
+  it('gives catalogue armour its slot', () => {
+    const armour = list.filter((record) => record.kind === 'armor' && record.catalogue)
+    const withSlot = armour.filter((record) => record.stats?.Type)
+    expect(armour.length).toBeGreaterThan(500)
+    expect(withSlot.length / armour.length).toBeGreaterThanOrEqual(0.99)
+  })
+
+  it('gives catalogue spells their FP cost and slot count', () => {
+    const spells = list.filter((record) => record.kind === 'spell' && record.catalogue)
+    const withCost = spells.filter((record) => record.stats?.['FP cost'] && record.stats?.Slots)
+    expect(spells.length).toBeGreaterThan(100)
+    expect(withCost.length / spells.length).toBeGreaterThanOrEqual(0.99)
+  })
+
+  it('backfills FP cost / slots on spells seeded only from the magic dump', () => {
+    // Miriam's Vanishing has no checklist row, so the parsed wiki DB `spells`
+    // table is its only source for the cost and slot count.
+    const vanishing = list.find((record) => record.kind === 'spell' && /miriam.s vanishing/i.test(record.name))
+    expect(vanishing?.stats?.['FP cost']).toBe('9')
+    expect(vanishing?.stats?.Slots).toBe('1')
+  })
+
+  it('carries the wiki skill on a wiki-only weapon', () => {
+    expect(records['item:serpent-crest-shield']?.stats?.Skill).toBe('No Skill')
+  })
+
+  it('gives goods records the wiki infobox type where present', () => {
+    const typed = list.filter((record) => record.kind === 'item' && record.stats?.Type)
+    expect(typed.length).toBeGreaterThan(50)
+  })
+})
