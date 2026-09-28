@@ -6,7 +6,7 @@ import { applyAnswers, applyFacts, denyFacts } from '../lib/infer'
 import { parseEquipmentText } from '../lib/equipmentOcr'
 import { headerToLoadout } from '../lib/ps5Equipment'
 import { analyzeEquipmentImage, analyzeStatusImage, loadBrowserWeaponCatalogue } from '../lib/ps5Capture'
-import { analyzeMapPhoto, loadBrowserMapReferences, mapPhotoFromImage, type MapAnalysis } from '../lib/ps5MapCapture'
+import { analyzeMapPhoto, loadBrowserGraceIndex, loadBrowserMapReferences, mapPhotoFromImage, type MapAnalysis } from '../lib/ps5MapCapture'
 import { bonusExplanation } from '../lib/statBoostGear'
 import { matchArmors, matchSpells, matchTalismans, useFanapiData } from '../lib/fanapiData'
 import type { GuideItem } from '../lib/guide'
@@ -233,8 +233,9 @@ export function MeSetup() {
         if (step === 'graces') {
           const dataUrl = await fileToDataUrl(image)
           const refs = await loadBrowserMapReferences()
+          const index = await loadBrowserGraceIndex()
           const photo = await mapPhotoFromImage(dataUrl)
-          const analysis = analyzeMapPhoto(photo, refs)
+          const analysis = analyzeMapPhoto(photo, refs, index)
           setMapPreview(dataUrl)
           setMapAnalysis(analysis)
           const reg = analysis.registration

@@ -150,6 +150,72 @@ export function detectGraceBlobs(img: ColorImage, opts: DetectGraceOptions = {})
 
 export type GraceCandidate = { graceId: string; name: string; region: string; distancePercent: number }
 
+/** A known grace position in map-percent space, with the region it belongs to. */
+export type GraceIndexEntry = {
+  id: string
+  name: string
+  region: string
+  world: MapWorld
+  xPercent: number
+  yPercent: number
+}
+
+export type EngineGrace = { name: string; px: number; py: number }
+
+const MOSAIC = 10496
+
+function slug(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+}
+
+/** The curated list also carries ashen/shadow; registration only knows these two. */
+function toMapWorld(world: string): MapWorld {
+  return world === 'underground' ? 'underground' : 'overworld'
+}
+
+function curatedWorldGraces(): KnownGrace[] {
+  return warpGraces
+    .filter((g) => g.world === 'overworld' || g.world === 'underground')
+    .map((g) => ({ id: g.id, name: g.name, region: g.region, world: toMapWorld(g.world), x: g.x, y: g.y }))
+}
+
+/**
+ * Build the full known-grace index from the engine's 413 named graces, assigning
+ * each a `warpGraces` region and world by nearest curated grace. The curated list
+ * alone is only ~40 rows, so snapping against it finds almost nothing; the engine
+ * entity index is what the task means by "nearest known grace (grace-xyz)".
+ */
+export function buildGraceIndex(engineGraces: EngineGrace[]): GraceIndexEntry[] {
+  const out: GraceIndexEntry[] = []
+  for (const g of engineGraces) {
+    const xPercent = (g.px / MOSAIC) * 100
+    const yPercent = (g.py / MOSAIC) * 100
+    let nearest: (typeof warpGraces)[number] | undefined
+    let best = Infinity
+    for (const w of warpGraces) {
+      if (w.world !== 'overworld' && w.world !== 'underground') continue
+      const d = Math.hypot(w.x - xPercent, w.y - yPercent)
+      if (d < best) {
+        best = d
+        nearest = w
+      }
+    }
+    if (!nearest) continue
+    const warp = warpGraces.find((w) => slug(w.name) === slug(g.name))
+    out.push({
+      id: warp?.id ?? `grace:${slug(g.name)}`,
+      name: g.name,
+      region: warp?.region ?? nearest.region,
+      world: toMapWorld(warp?.world ?? nearest.world),
+      xPercent,
+      yPercent,
+    })
+  }
+  return out
+}
+
+export type KnownGrace = { id: string; name: string; region: string; world: MapWorld; x: number; y: number }
+
 export type SnappedGrace = {
   graceId: string
   name: string
@@ -174,6 +240,8 @@ export type SnapOptions = {
   /** A second grace this much closer than the tolerance makes the snap ambiguous. */
   ambiguityPercent?: number
   minConfidence?: number
+  /** Full known-grace index; falls back to the curated `warpGraces` when absent. */
+  index?: GraceIndexEntry[]
 }
 
 /**
@@ -185,7 +253,11 @@ export function snapGraces(blobs: GraceBlob[], H: Homography, ref: MapReference,
   const tolerance = opts.tolerancePercent ?? 1.1
   const ambiguity = opts.ambiguityPercent ?? tolerance * 1.6
   const minConfidence = opts.minConfidence ?? 0
-  const known = warpGraces.filter((g) => g.world === world)
+  const known: KnownGrace[] = opts.index?.length
+    ? opts.index
+      .filter((e) => e.world === world)
+      .map((e) => ({ id: e.id, name: e.name, region: e.region, world: e.world, x: e.xPercent, y: e.yPercent }))
+    : curatedWorldGraces().filter((g) => g.world === world)
   const best = new Map<string, SnappedGrace>()
   for (const blob of blobs) {
     const [rx, ry] = applyH(H, blob.x, blob.y)

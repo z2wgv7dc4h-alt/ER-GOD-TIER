@@ -8,7 +8,7 @@ import {
   type MapWorld,
 } from './ps5MapReference'
 import { registerPhoto, type Registration } from './ps5MapRegistration'
-import { detectGraceBlobs, snapGraces, type ColorImage, type GraceBlob, type SnappedGrace } from './ps5MapGraces'
+import { detectGraceBlobs, snapGraces, buildGraceIndex, type ColorImage, type GraceBlob, type GraceIndexEntry, type SnappedGrace } from './ps5MapGraces'
 import { classifyFragments, type FragmentClassification } from './ps5MapFragments'
 
 /**
@@ -75,7 +75,7 @@ export type MapAnalysis = {
 }
 
 /** Full map-photo read: register, snap graces, classify fragments. */
-export function analyzeMapPhoto(photo: MapPhoto, refs: MapReference[]): MapAnalysis {
+export function analyzeMapPhoto(photo: MapPhoto, refs: MapReference[], index: GraceIndexEntry[] = []): MapAnalysis {
   const started = Date.now()
   const features = detectFeatures(photo.gray)
   const registration = registerPhoto(features, refs)
@@ -85,8 +85,22 @@ export function analyzeMapPhoto(photo: MapPhoto, refs: MapReference[]): MapAnaly
   if (registration) {
     const ref = refs.find((r) => r.world === registration.world) ?? refs[0]
     blobs = detectGraceBlobs(photo.color)
-    graces = snapGraces(blobs, registration.H, ref, registration.world)
+    graces = snapGraces(blobs, registration.H, ref, registration.world, { index })
     fragments = classifyFragments(photo.gray, photo.color, registration.Hinv, ref, registration.world)
   }
   return { width: photo.gray.width, height: photo.gray.height, registration, blobs, graces, fragments, features, ms: Date.now() - started }
+}
+
+let graceIndexCache: GraceIndexEntry[] | null = null
+
+/** The engine's 413 named graces, as a snap index (fetched once). */
+export async function loadBrowserGraceIndex(): Promise<GraceIndexEntry[]> {
+  if (graceIndexCache) return graceIndexCache
+  try {
+    const doc = (await fetch('/sourced/open/engine-markers.json').then((r) => r.json())) as { graces?: { name: string; px: number; py: number }[] }
+    graceIndexCache = buildGraceIndex(doc.graces ?? [])
+  } catch {
+    graceIndexCache = []
+  }
+  return graceIndexCache
 }
