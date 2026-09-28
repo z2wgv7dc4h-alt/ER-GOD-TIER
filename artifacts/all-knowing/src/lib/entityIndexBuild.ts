@@ -2559,11 +2559,27 @@ function prune(record: EntityRecord): void {
   }
 }
 
+/** The only goods that are genuinely reinforced rather than separate pickups. */
+const FLASK_NAME_RE = /^flask of (crimson|cerulean) tears$/i
+
 /**
- * Task 133 §0 — `+1 … +N` upgrade rows (spirit ashes, flasks, talismans) are
- * folded into their base entity as an `upgradeLevels` table instead of shipping
- * as separate items. Every base already exists (checklist/FanAPI/acquisition).
+ * Task 133 §0 — a `+N` row is only the *same item reinforced* for a spirit-ash
+ * summon, a weapon/shield reinforcement level or one of the two Flasks. Those
+ * fold into their base entity as an `upgradeLevels` table.
+ *
+ * Everything else is a distinct collectible with its own pickup location, so
+ * its `+N` row must stay a record of its own: talismans above all ("Crimson
+ * Amber Medallion +1/+2/+3", "Great-Jar's Arsenal", "Erdtree's Favor +2" …)
+ * but also armour and any ordinary good whose `+N` is a separate pickup.
  */
+function isFoldableUpgrade(record: EntityRecord, baseName: string): boolean {
+  if (record.kind === 'talisman' || record.kind === 'armor') return false
+  if (record.kind === 'spirit' || record.kind === 'weapon' || record.kind === 'shield' || record.kind === 'ash') return true
+  if (record.kind !== 'item') return false
+  // FMG goods: only spirit-ash summons and the two flasks carry upgrade levels.
+  return /^summons?\b/i.test(record.description ?? '') || FLASK_NAME_RE.test(baseName)
+}
+
 function foldUpgrades(): void {
   const pattern = /^(.*?)\s+\+(\d+)$/
   for (const record of [...records.values()]) {
@@ -2572,6 +2588,7 @@ function foldUpgrades(): void {
     const baseName = match[1].trim()
     const level = Number(match[2])
     if (!baseName || !Number.isFinite(level)) continue
+    if (!isFoldableUpgrade(record, baseName)) continue
     let baseId: string | undefined = records.get(catalogueIdFor('item', baseName)) ? catalogueIdFor('item', baseName) : undefined
     if (!baseId) {
       for (const key of mapKeys(baseName)) {

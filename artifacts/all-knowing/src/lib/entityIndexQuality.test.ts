@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs'
+import { DatabaseSync } from 'node:sqlite'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import type { EntityRecord } from './entityIndex'
@@ -13,6 +14,8 @@ import type { EntityRecord } from './entityIndex'
  */
 
 const indexPath = fileURLToPath(new URL('../../public/sourced/entity-index.json', import.meta.url))
+const checklistTalismansPath = fileURLToPath(new URL('../../public/sourced/checklists/talismans.json', import.meta.url))
+const wikiTalismanDbPath = fileURLToPath(new URL('../../data/raw/er-mcp.db', import.meta.url))
 const records = (JSON.parse(readFileSync(indexPath, 'utf8')) as { records?: Record<string, EntityRecord> }).records ?? {}
 const list = Object.values(records)
 
@@ -177,8 +180,9 @@ describe('Task 133 §0 — wiki markup and Nightreign boilerplate are stripped',
 })
 
 describe('Task 133 §0 — upgrade rows and quest steps are folded', () => {
-  it('keeps no standalone +N upgrade record', () => {
-    expect(list.filter((record) => /\s\+\d+$/.test(record.name)).map((record) => record.id)).toEqual([])
+  it('folds only genuine upgrade kinds, never talismans or armour', () => {
+    const leftover = list.filter((record) => /\s\+\d+$/.test(record.name) && record.kind !== 'talisman' && record.kind !== 'armor')
+    expect(leftover.map((record) => record.id)).toEqual([])
   })
 
   it('folds the +N levels onto the base entity as an upgrade table', () => {
@@ -196,6 +200,69 @@ describe('Task 133 §0 — upgrade rows and quest steps are folded', () => {
     expect(steps.length).toBeGreaterThanOrEqual(7)
     expect(steps.some((step) => step.source === 'authored')).toBe(true)
     expect(steps.map((step) => step.order)).toEqual(steps.map((_, index) => index + 1))
+  })
+})
+
+describe('Task 133 §0 — talisman variants are separate collectibles, not folded upgrades', () => {
+  const talismans = list.filter((record) => record.kind === 'talisman')
+  const talismanNames = new Set(talismans.map((record) => norm(record.name)))
+
+  it('keeps every wiki DB talisman (including the +N variants) as its own talisman record', () => {
+    // `data/raw/er-mcp.db` is the DLC-inclusive authority: 156 talisman pages,
+    // 38 of them `+N` variants that are distinct pickups with their own pages.
+    const db = new DatabaseSync(wikiTalismanDbPath, { readOnly: true })
+    try {
+      const dbNames = db.prepare('SELECT name FROM talismans').all().map((row) => String(row.name))
+      const missing = dbNames.filter((name) => !talismanNames.has(norm(name)))
+      expect(missing).toEqual([])
+      expect(talismans.length).toBeGreaterThanOrEqual(dbNames.length)
+    } finally {
+      db.close()
+    }
+  })
+
+  it('keeps every checklist talisman as its own talisman record', () => {
+    const checklist = JSON.parse(readFileSync(checklistTalismansPath, 'utf8')) as { name: string }[]
+    const missing = checklist.filter((row) => !talismanNames.has(norm(row.name)))
+    expect(missing).toEqual([])
+    expect(talismans.length).toBeGreaterThanOrEqual(checklist.length)
+  })
+
+  it('keeps the +N and distinct-name variants the task called out', () => {
+    const called = [
+      'Crimson Amber Medallion +1',
+      'Crimson Amber Medallion +2',
+      'Crimson Amber Medallion +3',
+      'Cerulean Amber Medallion +1',
+      'Cerulean Amber Medallion +2',
+      'Cerulean Amber Medallion +3',
+      'Viridian Amber Medallion +1',
+      'Viridian Amber Medallion +2',
+      'Viridian Amber Medallion +3',
+      'Arsenal Charm +1',
+      "Erdtree's Favor +1",
+      "Erdtree's Favor +2",
+      'Stalwart Horn Charm +1',
+      'Immunizing Horn Charm +1',
+      'Clarifying Horn Charm +1',
+      'Mottled Necklace +1',
+      'Spelldrake Talisman +1',
+      'Flamedrake Talisman +1',
+      'Boltdrake Talisman +1',
+      'Haligdrake Talisman +1',
+      'Pearldrake Talisman +1',
+      'Dragoncrest Shield Talisman +1',
+      "Great-Jar's Arsenal",
+      "Prince of Death's Cyst",
+      "Kindred of Rot's Exultation",
+      'Green Turtle Talisman',
+      'Dragoncrest Greatshield Talisman',
+    ]
+    for (const name of called) expect(talismanNames.has(norm(name)), name).toBe(true)
+  })
+
+  it('has at least 30 standalone +N talisman records', () => {
+    expect(talismans.filter((record) => /\s\+\d+$/.test(record.name)).length).toBeGreaterThanOrEqual(30)
   })
 })
 
