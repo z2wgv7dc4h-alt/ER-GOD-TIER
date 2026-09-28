@@ -9,10 +9,10 @@ PS5 capture rules — plus what the real-player scenario fixture actually proves
 
 | metric | before Task 138 | after Task 138 |
 | --- | --- | --- |
-| rules enumerated | 468 | 488 |
-| certain rules | 465 | 485 |
-| likely rules | 3 | 3 |
-| scenario inferred facts | 14 | 23 |
+| rules enumerated | 472 | 492 |
+| certain rules | 472 | 492 |
+| likely rules | 0 | 0 |
+| scenario inferred facts | 9 | 17 |
 
 Task 138 added **20** chain rules.
 
@@ -20,25 +20,19 @@ Task 138 added **20** chain rules.
 
 Scenario: `urmummytoilet` — 19 certain reads, nothing uncertain applied.
 
-- Inferred before Task 138: **14**
-- Inferred after Task 138: **23**
-- Newly inferred by Task 138: **9** (`boss:godfrey-golden`, `boss:morgott`, `item:rold-medallion`, `region:ainsel-river`, `region:caelid`, `region:limgrave`, `region:mountaintops`, `region:siofra-river`, `region:weeping`)
+- Inferred before Task 138: **9**
+- Inferred after Task 138: **17**
+- Newly inferred by Task 138: **8** (`boss:godfrey-golden`, `boss:morgott`, `item:rold-medallion`, `region:ainsel-river`, `region:caelid`, `region:mountaintops`, `region:siofra-river`, `region:weeping`)
 
 ### After: every inferred fact with its reason
 
 | fact | from | class | reason |
 | --- | --- | --- | --- |
 | `boss:godfrey-golden` | `boss:morgott` | certain | Morgott, the Omen King requires boss:godfrey-golden. |
-| `boss:godrick` | `region:liurnia` | **likely** | Liurnia of the Lakes requires boss:godrick. |
-| `boss:margit` | `boss:godrick` | certain | Godrick the Grafted requires boss:margit. |
 | `boss:morgott` | `region:mountaintops` | certain | Mountaintops of the Giants requires boss:morgott. |
 | `boss:radahn` | `item:remembrance-starscourge` | certain | Remembrance of the Starscourge requires boss:radahn. |
-| `grace:castleward` | `boss:margit` | certain | Margit, the Fell Omen requires grace:castleward. |
-| `grace:elleh` | `grace:gatefront` | certain | Gatefront requires grace:elleh. |
 | `grace:first-step` | `region:limgrave` | certain | Limgrave requires grace:first-step. |
-| `grace:gatefront` | `grace:stormhill-shack` | certain | Stormhill Shack requires grace:gatefront. |
 | `grace:lake-shore` | `quest:ranni:service` | certain | Ranni — entered her service requires grace:lake-shore. |
-| `grace:stormhill-shack` | `grace:castleward` | certain | Castleward Tunnel requires grace:stormhill-shack. |
 | `item:rold-medallion` | `region:mountaintops` | certain | The Grand Lift of Rold is the only way up to the Mountaintops, so the Rold Medallion was already used. |
 | `quest:ranni:festival` | `boss:radahn` | certain | Starscourge Radahn requires quest:ranni:festival. |
 | `quest:ranni:service` | `quest:ranni:festival` | certain | Ranni — Radahn festival opened Nokron requires quest:ranni:service. |
@@ -76,28 +70,24 @@ action only the player can log.
 These are live today. The audit flags them rather than trusting them; they are
 candidates to demote into the confirmation layer.
 
-| id | trigger | conclusions | class | conf | why | added |
-| --- | --- | --- | --- | --- | --- | --- |
-| `catalog:region:liurnia` | `region:liurnia` | `boss:godrick` | **likely** | 0.6 | Liurnia can be reached along the cliffside path around Stormveil, so Godrick need not be dead. Likely, not certain. | — |
-| `catalog:region:shadow` | `region:shadow` | `item:shadow-realm-blessing` | **likely** | 0.6 | Entering the Realm of Shadow does not require picking up a Scadutree Fragment. Likely, not certain. | — |
-| `catalog:grace:deeproot` | `grace:deeproot` | `boss:radahn` | **likely** | 0.6 | Deeproot Depths is reachable through the Leyndell sewers without the Radahn festival. Likely, not certain. | — |
+_None._
 
 ## Every rule
 
-### Catalog `implies` (221)
+### Catalog `implies` (220)
 
 | id | trigger | conclusions | class | conf | why | added |
 | --- | --- | --- | --- | --- | --- | --- |
 | `catalog:region:limgrave` | `region:limgrave` | `grace:first-step` | certain | 0.9 | Holding/reaching Limgrave requires the listed facts first. | — |
 | `catalog:region:weeping` | `region:weeping` | `region:limgrave` | certain | 0.9 | Holding/reaching Weeping Peninsula requires the listed facts first. | — |
-| `catalog:region:liurnia` | `region:liurnia` | `boss:godrick` | **likely** | 0.6 | Liurnia can be reached along the cliffside path around Stormveil, so Godrick need not be dead. Likely, not certain. | — |
+| `catalog:region:liurnia` | `region:liurnia` | `region:limgrave` | certain | 0.9 | Holding/reaching Liurnia of the Lakes requires the listed facts first. | — |
 | `catalog:region:caelid` | `region:caelid` | `region:limgrave` | certain | 0.9 | Holding/reaching Caelid requires the listed facts first. | — |
 | `catalog:region:altus` | `region:altus` | `region:liurnia` | certain | 0.9 | Holding/reaching Altus Plateau requires the listed facts first. | — |
 | `catalog:region:leyndell` | `region:leyndell` | `region:altus` | certain | 0.9 | Holding/reaching Leyndell, Royal Capital requires the listed facts first. | — |
 | `catalog:region:mountaintops` | `region:mountaintops` | `boss:morgott` | certain | 0.9 | Holding/reaching Mountaintops of the Giants requires the listed facts first. | — |
 | `catalog:region:farum` | `region:farum` | `grace:forge-giants` | certain | 0.9 | Holding/reaching Crumbling Farum Azula requires the listed facts first. | — |
 | `catalog:region:haligtree` | `region:haligtree` | `item:haligtree-secret-medallion` | certain | 0.9 | Holding/reaching Miquella’s Haligtree requires the listed facts first. | — |
-| `catalog:region:shadow` | `region:shadow` | `item:shadow-realm-blessing` | **likely** | 0.6 | Entering the Realm of Shadow does not require picking up a Scadutree Fragment. Likely, not certain. | — |
+| `catalog:region:shadow` | `region:shadow` | `boss:mohg`, `boss:radahn` | certain | 0.9 | Holding/reaching Realm of Shadow requires the listed facts first. | — |
 | `catalog:grace:elleh` | `grace:elleh` | `grace:first-step` | certain | 0.9 | Holding/reaching Church of Elleh requires the listed facts first. | — |
 | `catalog:grace:gatefront` | `grace:gatefront` | `grace:elleh` | certain | 0.9 | Holding/reaching Gatefront requires the listed facts first. | — |
 | `catalog:grace:stormhill-shack` | `grace:stormhill-shack` | `grace:gatefront` | certain | 0.9 | Holding/reaching Stormhill Shack requires the listed facts first. | — |
@@ -117,7 +107,6 @@ candidates to demote into the confirmation layer.
 | `catalog:grace:farum-balcony` | `grace:farum-balcony` | `region:farum` | certain | 0.9 | Holding/reaching Dragon Temple Altar requires the listed facts first. | — |
 | `catalog:grace:haligtree-town` | `grace:haligtree-town` | `region:haligtree` | certain | 0.9 | Holding/reaching Haligtree Town Plaza requires the listed facts first. | — |
 | `catalog:grace:drainage` | `grace:drainage` | `region:haligtree` | certain | 0.9 | Holding/reaching Drainage Channel requires the listed facts first. | — |
-| `catalog:grace:deeproot` | `grace:deeproot` | `boss:radahn` | **likely** | 0.6 | Deeproot Depths is reachable through the Leyndell sewers without the Radahn festival. Likely, not certain. | — |
 | `catalog:grace:gravesite` | `grace:gravesite` | `region:shadow` | certain | 0.9 | Holding/reaching Gravesite Plain requires the listed facts first. | — |
 | `catalog:grace:belurat` | `grace:belurat` | `region:shadow` | certain | 0.9 | Holding/reaching Belurat, Tower Settlement requires the listed facts first. | — |
 | `catalog:grace:shadow-keep` | `grace:shadow-keep` | `region:shadow` | certain | 0.9 | Holding/reaching Main Gate Plaza requires the listed facts first. | — |
@@ -373,15 +362,15 @@ candidates to demote into the confirmation layer.
 | `gate:gate:forge` | `quest:erdtree-burned` | `item:bolt-of-gransax`, `item:sanctified-whetblade`, `item:golden-order-principia`, `item:blessed-dew-talisman`, `item:sword-of-milos`, `item:weathered-dagger`, `quest:dungeater:invasion` | certain | 0.9 | Forge of the Giants / burning the Erdtree has fired (or is one beat away from boss:fire-giant \| grace:forge-giants); continuing locks Bolt of Gransax, Sanctified Whetblade, Golden Order Principia, Blessed Dew Talisman, Sword of Milos, Weathered Dagger, Dung Eater — Leyndell moat invasion. | — |
 | `gate:gate:maliketh` | `boss:maliketh` | `item:bolt-of-gransax`, `item:sanctified-whetblade`, `item:golden-order-principia` | certain | 0.9 | Maliketh / the Ashen Capital has fired (or is one beat away from boss:godskin-duo \| grace:farum-balcony \| region:farum); continuing locks Bolt of Gransax, Sanctified Whetblade, Golden Order Principia. | — |
 | `gate:gate:sealing-tree` | `quest:leda:invitations-locked | grace:enir` | `quest:freyja:concluded`, `quest:ansbach:concluded`, `quest:thiollier:concluded`, `quest:leda:invitations` | certain | 0.9 | Sealing Tree / Shadow Keep has fired (or is one beat away from quest:leda:met \| quest:leda:invitations \| grace:shadow-keep \| boss:messmer); continuing locks Redmane Freyja — Enir-Ilim alliance, Sir Ansbach — Enir-Ilim alliance, Thiollier — Enir-Ilim alliance, Leda — invitation decisions. | — |
-| `gate:gate:ranni-ending` | `quest:ranni:ring | item:dark-moon-ring` | `quest:seluvis:concluded`, `loot:therolina` | certain | 0.9 | Age of Stars committed has fired (or is one beat away from quest:ranni:statue \| quest:ranni:nokron); continuing locks Preceptor Seluvis — potion and puppet stock, Finger Maiden Therolina Puppet. | — |
+| `gate:gate:ranni-ending` | `item:fingerslayer | quest:ranni:nokron | quest:ranni:ring | item:dark-moon-ring` | `quest:seluvis:concluded`, `item:magic-scorpion-charm`, `loot:therolina` | certain | 0.9 | Ranni given the Fingerslayer Blade has fired (or is one beat away from quest:ranni:festival); continuing locks Preceptor Seluvis — potion and puppet stock, Magic Scorpion Charm, Finger Maiden Therolina Puppet. | — |
 | `gate:gate:frenzy` | `quest:frenzy:taken` | `quest:ranni:ring`, `item:mending-rune-death-prince`, `item:mending-rune-fell-curse`, `item:mending-rune-order` | certain | 0.9 | Lord of Frenzied Flame committed has fired (or is one beat away from grace:east-capital \| boss:mohg-omen \| quest:hyetta:maiden \| quest:hyetta:grapes); continuing locks Age of Stars, Age of the Duskborn, Mending Rune of the Fell Curse, Age of Order. | — |
 | `gate:gate:dung-eater-curse` | `quest:dungeater:potioned` | `item:mending-rune-fell-curse` | certain | 0.9 | Seedbed Curse / Dung Eater fork has fired (or is one beat away from quest:dungeater:freed \| quest:dungeater:invasion); continuing locks Mending Rune of the Fell Curse. | — |
 | `gate:gate:seluvis-potion` | `quest:nepheli:potioned` | `quest:nepheli:ruler`, `quest:nepheli:stormhawk`, `quest:kenneth:ruler` | certain | 0.9 | Seluvis's potion used on Nepheli has fired (or is one beat away from quest:seluvis:met \| quest:seluvis:potion \| quest:nepheli:refused-potion); continuing locks Nepheli Loux crowned at Stormveil, Nepheli — Stormhawk King, Kenneth Haight — Limgrave steward. | — |
-| `gate:gate:volcano-host` | `boss:rykard` | `quest:rya:amnion`, `quest:rya:concluded`, `quest:tanith:targets`, `quest:tanith:concluded` | certain | 0.9 | Rykard / Volcano Manor too early has fired (or is one beat away from quest:rya:manor \| quest:tanith:contracts \| quest:rya:necklace); continuing locks Rya — Serpent’s Amnion, Rya — spare or tell her the truth, Tanith — the named contracts, Tanith — devour the god. | — |
+| `gate:gate:volcano-host` | `boss:rykard` | `quest:rya:amnion`, `quest:tanith:targets` | certain | 0.9 | Rykard / Volcano Manor too early has fired (or is one beat away from quest:rya:manor \| quest:tanith:contracts \| quest:rya:necklace); continuing locks Rya — Serpent’s Amnion, Tanith — the named contracts. | — |
 | `gate:gate:millicent-choice` | `quest:millicent:aid | quest:millicent:betrayed | quest:millicent-killed` | `item:miquella-needle`, `item:rotten-winged-sword-insignia`, `item:millicent-prosthesis` | certain | 0.9 | Millicent's choice at Elphael has fired (or is one beat away from quest:millicent:cured \| grace:drainage); continuing locks Miquella's Needle, Rotten Winged Sword Insignia, Millicent's Prosthesis. | — |
 | `gate:gate:varre-ignore` | `quest:varre:killed` | `item:pureblood-medal`, `quest:varre:cloth`, `item:lord-of-blood-favor` | certain | 0.9 | Varré / Rose Church ignored or killed has fired (or is one beat away from quest:varre:met \| quest:varre:cloth \| grace:lake-shore); continuing locks Pureblood Knight's Medal, Varré — soak the cloth in maiden blood, Lord of Blood's Favor. | — |
 
-### Storylines (`storylines.ts` grants) (193)
+### Storylines (`storylines.ts` grants) (198)
 
 | id | trigger | conclusions | class | conf | why | added |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -420,10 +409,12 @@ candidates to demote into the confirmation layer.
 | `storyline:millicent:m1` | `quest:millicent:needle` | `quest:millicent:needle`, `item:rotted-wing` | certain | 0.85 | Completing Millicent — “Get the Unalloyed Gold Needle from Commander O’Neil” grants its listed facts. | — |
 | `storyline:millicent:m2` | `quest:millicent:cured` | `quest:millicent:cured` | certain | 0.85 | Completing Millicent — “Cure Millicent at the Church of the Plague” grants its listed facts. | — |
 | `storyline:millicent:m3` | `quest:millicent:altus` | `quest:millicent:altus` | certain | 0.85 | Completing Millicent — “Meet Millicent at Erdtree-Gazing Hill” grants its listed facts. | — |
-| `storyline:millicent:m4` | `quest:millicent:godskin` | `quest:millicent:godskin` | certain | 0.85 | Completing Millicent — “Aid her at Dominula and the Godskin Apostle” grants its listed facts. | — |
-| `storyline:millicent:m5` | `quest:millicent:prosthesis` | `quest:millicent:prosthesis` | certain | 0.85 | Completing Millicent — “Bring her the Valkyrie’s Prosthesis” grants its listed facts. | — |
-| `storyline:millicent:m6` | `quest:millicent:aid` | `quest:millicent:aid`, `item:miquella-needle`, `item:rotten-winged-sword-insignia` | certain | 0.85 | Completing Millicent — “Aid Millicent at Elphael (gold sign)” grants its listed facts. | — |
-| `storyline:millicent:m7` | `quest:millicent:betrayed` | `quest:millicent:betrayed`, `item:millicent-prosthesis` | certain | 0.85 | Completing Millicent — “Challenge Millicent at Elphael (red sign)” grants its listed facts. | — |
+| `storyline:millicent:m4` | `quest:millicent:prosthesis` | `quest:millicent:prosthesis`, `item:valkyries-prosthesis` | certain | 0.85 | Completing Millicent — “Bring her the Valkyrie’s Prosthesis” grants its listed facts. | — |
+| `storyline:millicent:m5` | `quest:millicent:godskin` | `quest:millicent:godskin` | certain | 0.85 | Completing Millicent — “Aid her at Dominula and the Godskin Apostle” grants its listed facts. | — |
+| `storyline:millicent:m6` | `quest:millicent:mountains` | `quest:millicent:mountains` | certain | 0.85 | Completing Millicent — “Meet Millicent at the Ancient Snow Valley Ruins” grants its listed facts. | — |
+| `storyline:millicent:m7` | `quest:millicent:elphael` | `quest:millicent:elphael` | certain | 0.85 | Completing Millicent — “Meet Millicent at the Elphael Prayer Room” grants its listed facts. | — |
+| `storyline:millicent:m8` | `quest:millicent:aid` | `quest:millicent:aid`, `item:miquella-needle`, `item:rotten-winged-sword-insignia` | certain | 0.85 | Completing Millicent — “Aid Millicent at Elphael (gold sign)” grants its listed facts. | — |
+| `storyline:millicent:m9` | `quest:millicent:betrayed` | `quest:millicent:betrayed`, `item:millicent-prosthesis` | certain | 0.85 | Completing Millicent — “Challenge Millicent at Elphael (red sign)” grants its listed facts. | — |
 | `storyline:alexander:a1` | `quest:alexander:met` | `alexander-1`, `quest:alexander:met` | certain | 0.85 | Completing Iron Fist Alexander — “Free Alexander from the Limgrave hole” grants its listed facts. | — |
 | `storyline:alexander:a2` | `quest:alexander:gael` | `quest:alexander:gael` | certain | 0.85 | Completing Iron Fist Alexander — “Find him again near Gael Tunnel in Caelid” grants its listed facts. | — |
 | `storyline:alexander:a2b` | `boss:radahn` | `boss:radahn`, `quest:alexander:festival` | certain | 0.85 | Completing Iron Fist Alexander — “Fight beside him at the Redmane festival” grants its listed facts. | — |
@@ -481,11 +472,14 @@ candidates to demote into the confirmation layer.
 | `storyline:sellen:se2` | `quest:sellen:azur` | `quest:sellen:azur` | certain | 0.85 | Completing Sorceress Sellen — “Find Azur, the Primeval Sorcerer” grants its listed facts. | — |
 | `storyline:sellen:se3` | `quest:sellen:lusat` | `quest:sellen:lusat` | certain | 0.85 | Completing Sorceress Sellen — “Find Lusat in the Sellia Hideaway” grants its listed facts. | — |
 | `storyline:sellen:se4` | `quest:sellen:primers` | `quest:sellen:primers` | certain | 0.85 | Completing Sorceress Sellen — “Report both primeval sorcerers to Sellen” grants its listed facts. | — |
+| `storyline:sellen:se4b` | `quest:sellen:witchbane` | `quest:sellen:witchbane`, `item:primal-glintstone` | certain | 0.85 | Completing Sorceress Sellen — “Find Sellen’s true body at Witchbane Ruins” grants its listed facts. | — |
+| `storyline:sellen:se4c` | `quest:sellen:primal-glintstone` | `quest:sellen:primal-glintstone` | certain | 0.85 | Completing Sorceress Sellen — “Revive Sellen in the Three Sisters puppet” grants its listed facts. | — |
 | `storyline:sellen:se5` | `quest:sellen:jerren` | `quest:sellen:jerren` | certain | 0.85 | Completing Sorceress Sellen — “Meet Witch-Hunter Jerren at Raya Lucaria” grants its listed facts. | — |
 | `storyline:sellen:se6` | `quest:sellen:side` | `quest:sellen:side`, `item:stars-of-ruin` | certain | 0.85 | Completing Sorceress Sellen — “Side with Sellen” grants its listed facts. | — |
 | `storyline:sellen:se7` | `quest:sellen:jerren-side` | `quest:sellen:jerren-side` | certain | 0.85 | Completing Sorceress Sellen — “Or side with Jerren” grants its listed facts. | — |
 | `storyline:yura:yu1` | `quest:yura:nerijus` | `quest:yura:nerijus` | certain | 0.85 | Completing Bloody Finger Hunter Yura — “Help Yura against Bloody Finger Nerijus” grants its listed facts. | — |
 | `storyline:yura:yu2` | `quest:yura:nagakiba` | `quest:yura:nagakiba`, `item:nagakiba` | certain | 0.85 | Completing Bloody Finger Hunter Yura — “Help him again at the Liurnia invasion” grants its listed facts. | — |
+| `storyline:yura:yu2b` | `quest:yura:altus` | `quest:yura:altus` | certain | 0.85 | Completing Bloody Finger Hunter Yura — “Find Yura wounded at the Second Church of Marika” grants its listed facts. | — |
 | `storyline:yura:yu3` | `quest:yura:shabriri` | `quest:yura:shabriri` | certain | 0.85 | Completing Bloody Finger Hunter Yura — “Find Shabriri wearing Yura’s body at Zamor Ruins” grants its listed facts. | — |
 | `storyline:gowry:go1` | `quest:gowry:met` | `quest:gowry:met` | certain | 0.85 | Completing Gowry — “Meet Gowry at his shack in Sellia” grants its listed facts. | — |
 | `storyline:gowry:go2` | `quest:millicent:needle` | `quest:millicent:needle` | certain | 0.85 | Completing Gowry — “Bring Gowry the Unalloyed Gold Needle” grants its listed facts. | — |

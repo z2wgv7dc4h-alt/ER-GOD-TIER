@@ -66,11 +66,11 @@ All guard minimums met.
 | boss | 242 | · | 85.1% | 97.5% | · | · | · | · | · |
 | dungeon | 119 | · | · | · | 85.7% | · | · | · | · |
 | grace | 416 | · | · | · | · | 90.9% | · | · | · |
-| item | 1203 | 73.2% | · | · | · | · | · | · | · |
+| item | 1204 | 73.2% | · | · | · | · | · | · | · |
 | material | 3 | 100% | · | · | · | · | · | · | · |
 | merchant | 106 | · | · | · | · | · | 100% | · | · |
 | npc | 221 | · | · | 65.2% | · | · | · | · | · |
-| quest | 467 | · | · | 68.3% | · | · | · | · | · |
+| quest | 472 | · | · | 68.6% | · | · | · | · | · |
 | region | 312 | · | · | · | 31.7% | · | · | · | · |
 | remembrance | 25 | · | · | · | · | · | · | 100% | 100% |
 | shield | 67 | 83.6% | · | · | · | · | · | · | · |
@@ -87,10 +87,10 @@ the links a plain renderer still owes.
 
 | surface | linkable | unlinked before | unlinked after |
 | --- | --- | --- | --- |
-| entity descriptions | 1262 | 0 | 0 |
+| entity descriptions | 1284 | 0 | 0 |
 | wiki sections | 1584 | 0 | 0 |
 | acquisition text | 1539 | 0 | 0 |
-| quest step actions | 577 | 577 | 0 |
+| quest step actions | 603 | 577 | 0 |
 | mechanics bodies | 182 | 0 | 0 |
 
 _Regenerated 2026-09-28._
