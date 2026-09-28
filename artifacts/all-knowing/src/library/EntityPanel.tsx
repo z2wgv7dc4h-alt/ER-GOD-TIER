@@ -11,6 +11,7 @@ import { BossPrepCard } from '../combat/BossPrepCard'
 import { Term } from '../peek/Term'
 import type { Character } from '../types'
 import { BossFacts } from './BossFacts'
+import { WikiTab } from './WikiTab'
 import { attributeStats, isOwned, meetsRequirements, type AttributeKey, type CategoryId, type LibraryEntity } from './model'
 
 const STATUS_LABELS: Record<EntityState, string> = {
@@ -96,7 +97,9 @@ function panelKind(entity: LibraryEntity, factId: string, kind?: EntityKind): En
   return CATEGORY_KIND[entity.category] ?? getEntity(factId).kind
 }
 
-type Tab = 'stats' | 'where' | 'lore' | 'related'
+type Tab = 'stats' | 'where' | 'lore' | 'related' | 'wiki'
+
+const TAB_LABELS: Record<Tab, string> = { stats: 'Stats', where: 'Where', lore: 'Lore', related: 'Related', wiki: 'Wiki' }
 
 const ATTR_LABELS: Record<AttributeKey, string> = {
   str: 'Str',
@@ -198,7 +201,7 @@ export function EntityPanel({
       )}
 
       <div className="lib-panel-tabs" role="tablist">
-        {(['stats', 'where', 'lore', 'related'] as Tab[]).map((t) => (
+        {(['stats', 'where', 'lore', 'related', 'wiki'] as Tab[]).map((t) => (
           <button
             key={t}
             type="button"
@@ -207,7 +210,7 @@ export function EntityPanel({
             className={tab === t ? 'chip on' : 'chip'}
             onClick={() => setTab(t)}
           >
-            {t === 'stats' ? 'Stats' : t === 'where' ? 'Where' : t === 'lore' ? 'Lore' : 'Related'}
+            {TAB_LABELS[t]}
           </button>
         ))}
       </div>
@@ -415,6 +418,12 @@ export function EntityPanel({
         {tab === 'related' && (
           <div className="lib-panel-related">
             <Related id={entity.factId} />
+          </div>
+        )}
+
+        {tab === 'wiki' && (
+          <div className="lib-panel-wiki">
+            <WikiTab entityId={statusFactId} />
           </div>
         )}
       </div>

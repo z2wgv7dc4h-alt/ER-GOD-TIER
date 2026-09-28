@@ -958,3 +958,53 @@
     background-position: -200% 0;
   }
 }
+
+/* --- Task 133 §2 — the Wiki tab --------------------------------------- */
+.wiki-tab-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.wiki-section {
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.12));
+  border-radius: 8px;
+  margin-bottom: 8px;
+  padding: 4px 10px;
+}
+
+.wiki-section > summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 6px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.wiki-section-source {
+  font-size: 0.7rem;
+  opacity: 0.5;
+  font-weight: 400;
+}
+
+.wiki-markdown {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.wiki-markdown p {
+  margin: 0 0 8px;
+}
+
+.wiki-tab .wikilink {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--accent, #d4b483);
+  cursor: pointer;
+  text-decoration: underline dotted;
+}

@@ -3,6 +3,7 @@ import { remembrances } from '../knowledge/remembrances'
 import { findWeapon, loadWeapons, type Weapon } from '../lib/ar'
 import { areaFromFactId } from '../lib/areaContext'
 import { getEntity, type EntityKind } from '../lib/entityGraph'
+import { wikiPageForEntity } from '../lib/wikiSearch'
 import { applyFacts, denyFacts } from '../lib/infer'
 import { rankRemembrance, type RemembranceOption } from '../lib/remembranceChoice'
 import { gearVerdict, weaponVerdict, type Verdict } from '../lib/verdict'
@@ -49,6 +50,7 @@ export function EntityOverlay() {
   const w = useWorkspace()
   const { entityId, character, setCharacter } = w
   const [weapons, setWeapons] = useState<Weapon[] | null>(null)
+  const [wikiTitle, setWikiTitle] = useState<string | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -58,19 +60,30 @@ export function EntityOverlay() {
     return () => { cancelled = true }
   }, [])
 
+  // Task 133 §2 — a wiki-only page (`openEntity('wiki:<slug>')`) has no graph
+  // record; show the real wiki title once the corpus manifest resolves.
+  useEffect(() => {
+    let cancelled = false
+    setWikiTitle(null)
+    if (entityId?.startsWith('wiki:')) {
+      void wikiPageForEntity(entityId).then((found) => { if (!cancelled && found) setWikiTitle(found.page.title) })
+    }
+    return () => { cancelled = true }
+  }, [entityId])
+
   const entity = useMemo<LibraryEntity | null>(() => {
     if (!entityId) return null
     const e = getEntity(entityId)
     return {
       id: e.id,
       factId: e.id,
-      name: e.name,
+      name: wikiTitle ?? e.name,
       category: CATEGORY_BY_KIND[e.kind],
       subtype: e.kind,
       icon: e.icon,
       lore: e.summary,
     }
-  }, [entityId])
+  }, [entityId, wikiTitle])
 
   const verdict = useMemo<Verdict | null>(() => {
     if (!entityId || !entity) return null
