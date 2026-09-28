@@ -20,7 +20,7 @@ export function GatheringNodes() {
       <p className="note">
         Placement records for gathering-node assets (bushes, rocks, pots, etc.). The model code is
         generic (e.g. AEG099_821) and the dump carries no item field, so this is not a material
-        location — it is not drawn on the Atlas and Gideon will not answer “where is X” from it.
+        location — it is not drawn on the map and Gideon will not answer “where is X” from it.
         Search by region, map, or model.
       </p>
       <input

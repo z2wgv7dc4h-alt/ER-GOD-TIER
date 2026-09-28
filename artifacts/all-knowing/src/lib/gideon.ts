@@ -811,7 +811,7 @@ export function askGideonRouter(
     const s = stillAvailable(character)
     const fmt = (rows: typeof s.open) => rows.map((r) => `${r.line.name}: ${r.note}`).join('\n')
     return {
-      say: `Mid-run survey.\nActive:\n${fmt(s.active) || '—'}\nOpen:\n${fmt(s.open) || '—'}\nLocked:\n${fmt(s.locked) || '—'}\nDone:\n${fmt(s.done) || '—'}\nSay a name to pick up that line, or Blitz Elden Lord to skip flavour.`,
+      say: `Mid-run survey.\nActive:\n${fmt(s.active) || '—'}\nOpen:\n${fmt(s.open) || '—'}\nLocked:\n${fmt(s.locked) || '—'}\nDone:\n${fmt(s.done) || '—'}\nSay a name to pick up that questline, or “fastest route” to skip the flavour.`,
       module: 'quests',
     }
   }
@@ -916,7 +916,7 @@ export function askGideonRouter(
     const moves = nextMoves(updated, 3)
     if (pick) {
       return {
-        say: `${ack} ${pick.line.name} ${pick.state}: ${pick.note} Say “blitz” for the shortest Lord path, or “what is still available.”`,
+        say: `${ack} ${pick.line.name} ${pick.state}: ${pick.note} Say “fastest route” for the shortest Lord path, or “what is still available.”`,
         goal: pick.line.id,
         factId: pick.current?.factId,
         module: 'quests',
@@ -949,8 +949,8 @@ export function askGideonRouter(
     return speakNextUp(character, memory, area, regionLevelList)
   }
 
-  const line = findLine(q) || (memory.goalId && /\b(what next|what now|what should i do|continue|plan|blitz)\b/.test(q) ? routeById(memory.goalId) : undefined)
-  if (line && (/\b(ending|want|get|do|how|path|route|finish|plan|next|blitz|story|quest|line)\b/.test(q) || findLine(q))) {
+  const line = findLine(q) || (memory.goalId && (/\b(what next|what now|what should i do|continue|plan|blitz)\b/.test(q) || q.includes('fastest route')) ? routeById(memory.goalId) : undefined)
+  if (line && (/\b(ending|want|get|do|how|path|route|finish|plan|next|blitz|story|quest|line)\b/.test(q) || q.includes('fastest route') || findLine(q))) {
     return speakPlan(character, line)
   }
 
@@ -972,7 +972,7 @@ export function askGideonRouter(
     const moves = nextMoves(character, 3)
     if (pick) {
       return {
-        say: `${approachingGateLine(character)}No goal set. You already have ${pick.line.name} ${pick.state}: ${pick.note} Say “blitz” for the shortest Lord path, or “what is still available.”`,
+        say: `${approachingGateLine(character)}No goal set. You already have ${pick.line.name} ${pick.state}: ${pick.note} Say “fastest route” for the shortest Lord path, or “what is still available.”`,
         goal: pick.line.id,
         factId: pick.current?.factId,
         module: 'quests',
@@ -1402,7 +1402,7 @@ export function isFastLookup(
 
   if (/^(what is still available|what'?s still available|still available|what next|what now|what should i do|what do i do|where to|continue|i am stuck|i'?m stuck|stuck|help with this wall)\b/.test(q)) return true
   if (/\b100\s*%|\b(completionist|everything in|full clear|medusa)\b/.test(q)) return true
-  if (/\b(blitz|speedrun|rush the game|fast ending)\b/.test(q)) return true
+  if (/\b(blitz|speedrun|rush the game|fast ending)\b/.test(q) || q.includes('fastest route')) return true
   if (GATE_ASK.test(q)) return true
 
   // Deterministic knowledge questions that would otherwise trip the reasoning

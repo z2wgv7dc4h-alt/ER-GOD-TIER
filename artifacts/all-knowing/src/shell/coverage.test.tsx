@@ -35,6 +35,7 @@ function workspace(overrides: {
   query?: string
   section?: Section
   sub?: Sub | null
+  currentArea?: { region: string; source: 'map'; at: number } | null
 }) {
   const character = overrides.character ?? demoCharacter
   const profile = {
@@ -55,6 +56,7 @@ function workspace(overrides: {
     setModule: () => {},
     section: overrides.section ?? ('me' as Section),
     sub: overrides.sub ?? ('overview' as Sub | null),
+    currentArea: overrides.currentArea ?? null,
     go: () => {},
     character,
     setCharacter: () => {},
@@ -103,8 +105,17 @@ describe('Task 92 coverage: every feature has a home', () => {
     expect(render(<JourneyNow />, { section: 'journey', sub: 'now' })).toContain('100% route')
   })
 
-  it('row 2 — "Before you leave this area" card on Journey › Now', () => {
-    expect(render(<JourneyNow />, { section: 'journey', sub: 'now' })).toContain('Before you leave this area')
+  it('row 2 — "Before you leave this area" card shows only with an area and real missables', () => {
+    // No area set: the card must not render unrelated questline steps.
+    expect(render(<JourneyNow />, { section: 'journey', sub: 'now' })).not.toContain('Before you leave this area')
+    // An area with authored missables (Leyndell: Bolt of Gransax) does render it.
+    const html = render(<JourneyNow />, {
+      section: 'journey',
+      sub: 'now',
+      currentArea: { region: 'Leyndell', source: 'map', at: Date.now() },
+    })
+    expect(html).toContain('Before you leave this area')
+    expect(html).toContain('Bolt of Gransax')
   })
 
   it('row 3 — leftover count + show on map on Journey › Now', () => {
@@ -143,7 +154,7 @@ describe('Task 92 coverage: every feature has a home', () => {
   it('row 7 — browse chips for every Guides corpus on the empty state', () => {
     const html = render(<Guides />, { section: 'library', sub: 'guides' })
     expect(html).toContain('Guides &amp; mechanics')
-    for (const corpus of ['Guides', 'Recipes', 'Secrets', 'Dialogue', 'Wiki prose']) {
+    for (const corpus of ['Guides', 'Recipes', 'Secrets', 'Dialogue', 'Wiki']) {
       expect(html, corpus).toContain(corpus)
     }
   })

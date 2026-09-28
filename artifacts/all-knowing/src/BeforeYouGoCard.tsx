@@ -1,57 +1,31 @@
-import { useEffect, useMemo, useState } from 'react'
-import { beforeYouGo } from './lib/beforeYouGo'
-import { loadRegionLevels, type RegionLevel } from './lib/regionLevels'
-import { SeeAllButton, useRowReveal } from './shell/rows'
+import { useMemo } from 'react'
+import { areaDontMiss } from './lib/areaHub'
 import { useWorkspace } from './state'
+import { Card, ListRow } from './ui'
+import { SeeAllButton, useRowReveal } from './shell/rows'
 
 /**
- * Task 92 row 2: missables / points of no return / "before I go" as a card on
- * Journey → Now, level-aware. Same pure `beforeYouGo` advice Gideon already
- * gives, scoped to the character's current region. Task 100 caps the open list
- * at three rows behind a "See all (N)" control.
+ * Task 92 row 2 / Task 127 §2: "Before you leave this area" is missables only,
+ * and only when the character actually has a current area. It is scoped by
+ * region via `areaDontMiss` (authored missable loot plus world-state gates that
+ * touch the area) and shows the thing plus *why* it is missable — no source
+ * tags, no unrelated questline steps.
  */
 export function BeforeYouGoCard() {
-  const { character } = useWorkspace()
-  const [areas, setAreas] = useState<RegionLevel[]>([])
+  const { character, currentArea } = useWorkspace()
+  const area = currentArea?.region ?? null
+  const misses = useMemo(() => areaDontMiss(character, area), [character, area])
+  const reveal = useRowReveal(misses.length)
 
-  useEffect(() => {
-    let cancelled = false
-    void loadRegionLevels()
-      .then((doc) => { if (!cancelled) setAreas(doc.areas) })
-      .catch(() => { /* no bands: the advice still lists what is open */ })
-    return () => { cancelled = true }
-  }, [])
-
-  const advice = useMemo(() => beforeYouGo(character, 'here', areas), [character, areas])
-  const open = useRowReveal(advice.open.length)
-
-  // Render nothing when there is no area and nothing open — no empty advice card.
-  if (!advice.region && advice.open.length === 0) return null
+  // Render nothing without an area, or when there is nothing missable here.
+  if (!area || misses.length === 0) return null
 
   return (
-    <section className="panel before-you-go">
-      <div className="kicker">Before you leave this area</div>
-      {advice.region && (
-        <p className="note" style={{ margin: '4px 0 6px' }}>
-          Region: <strong>{advice.region}</strong>
-          {advice.band
-            ? ` · Lv ${advice.band.levelMin}-${advice.band.levelMax}`
-            : ' · no level band on file'}
-          {` · you are Lv ${advice.level}`}
-        </p>
-      )}
-      <p className="note">{advice.advice}</p>
-      {advice.open.length > 0 && (
-        <ul className="list" style={{ marginTop: 8 }}>
-          {advice.open.slice(0, open.visible).map((o) => (
-            <li key={`${o.name}-${o.source}`} style={{ cursor: 'default' }}>
-              <span>{o.name}</span>
-              <span className="note">{o.source}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-      <SeeAllButton total={advice.open.length} expanded={open.expanded} onToggle={open.toggle} />
-    </section>
+    <Card title="Before you leave this area" subtitle={area}>
+      {misses.slice(0, reveal.visible).map((m) => (
+        <ListRow key={m.id} title={m.name} subtitle={m.why} icon={m.kind === 'gate' ? '⚠' : undefined} />
+      ))}
+      <SeeAllButton total={misses.length} expanded={reveal.expanded} onToggle={reveal.toggle} />
+    </Card>
   )
 }

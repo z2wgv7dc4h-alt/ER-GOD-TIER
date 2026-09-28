@@ -41,7 +41,7 @@ export const SECTIONS: SectionMeta[] = [
       { id: 'search', label: 'Search', purpose: 'Look up any weapon, boss, NPC, item or place and open its page.' },
       { id: 'builds', label: 'Builds', purpose: 'Plan your character, find stronger gear, and browse OP PvE kits.' },
       { id: 'pvp', label: 'PvP', purpose: 'Invasion and duel builds, matchup counters and PvP tech.' },
-      { id: 'guides', label: 'Guides', purpose: 'Mechanics cards, guides, recipes, secrets, dialogue and wiki prose.' },
+      { id: 'guides', label: 'Guides', purpose: 'Mechanics, guides, recipes, secrets, dialogue and wiki.' },
     ],
   },
   { id: 'gideon', label: 'Gideon', purpose: 'Ask anything and get an answer grounded in your save.', subs: [] },

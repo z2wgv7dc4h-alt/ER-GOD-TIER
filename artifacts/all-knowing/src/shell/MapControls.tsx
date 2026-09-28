@@ -33,7 +33,7 @@ export function MapControls() {
         Missing only
       </button>
       <button className={w.showLeftovers ? 'chip on' : 'chip'} onClick={() => w.toggleLeftovers()}>
-        leftovers
+        Missed nearby
       </button>
       <button className={w.showGates ? 'chip on' : 'chip'} onClick={() => w.toggleGates()}>
         locks

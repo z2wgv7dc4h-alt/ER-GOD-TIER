@@ -9,7 +9,6 @@ export function AreaPrompt({ className = 'panel area-prompt' }: { className?: st
   return (
     <section className={className}>
       <div className="kicker">Still in {label}?</div>
-      <p className="note">It has been a while. Keep the nearby lists honest.</p>
       <div className="opts">
         <button
           type="button"

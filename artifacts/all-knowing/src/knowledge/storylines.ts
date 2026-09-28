@@ -460,8 +460,8 @@ export const blitz: Line[] = [
   {
     id: 'blitz-lord',
     kind: 'blitz',
-    name: 'Blitz Elden Lord',
-    aliases: ['blitz', 'speedrun', 'fast ending', 'blitz lord', 'rush the game'],
+    name: 'Fastest route: Elden Lord',
+    aliases: ['blitz', 'speedrun', 'fast ending', 'fastest route', 'blitz lord', 'rush the game'],
     lockedIf: () => null,
     steps: [
       { id: 'b1', do: 'Limgrave → Stormveil', detail: 'Margit, Godrick. Grab the Groveside / Gatefront kit and leave.', factId: 'boss:godrick', module: 'map', minLevel: 20, requires: [], grants: ['boss:godrick'], lockouts: [] },
@@ -473,14 +473,14 @@ export const blitz: Line[] = [
   {
     id: 'blitz-stars',
     kind: 'blitz',
-    name: 'Blitz Age of Stars',
-    aliases: ['blitz stars', 'fast ranni', 'rush stars'],
+    name: 'Fastest route: Age of Stars',
+    aliases: ['blitz stars', 'fast ranni', 'fastest route', 'rush stars'],
     lockedIf: (c) => endings[0].lockedIf(c),
     steps: [
       { id: 'bs1', do: 'Godrick, then Ranni’s Rise', detail: 'Skip Weeping. Caria Manor as soon as Liurnia opens.', factId: 'quest:ranni:service', module: 'quests', minLevel: 40, requires: [], grants: ['quest:ranni:service'], lockouts: ['quest:seluvis-blade'] },
       { id: 'bs2', do: 'Radahn the moment the festival is up', detail: 'Do not tour Caelid. In, festival, out, Nokron.', factId: 'boss:radahn', module: 'map', minLevel: 60, requires: ['quest:ranni:service'], grants: ['quest:ranni:festival', 'boss:radahn'], lockouts: ['quest:seluvis-blade'] },
       { id: 'bs3', do: 'Blade → statue → Astel → ring', detail: 'No Seluvis side deals. Straight to Manus Celes.', factId: 'quest:ranni:ring', module: 'map', minLevel: 80, requires: ['quest:ranni:festival'], grants: ['quest:ranni:ring'], lockouts: ['quest:seluvis-blade'] },
-      { id: 'bs4', do: 'Blitz the Lord path and summon Ranni', detail: 'Same as Blitz Elden Lord from Morgott onward.', factId: 'boss:radagon', module: 'map', minLevel: 100, requires: ['quest:ranni:ring'], grants: ['boss:radagon'], lockouts: ['quest:seluvis-blade'] },
+      { id: 'bs4', do: 'Take the fastest Lord route and summon Ranni', detail: 'Same as the fastest Elden Lord route from Morgott onward.', factId: 'boss:radagon', module: 'map', minLevel: 100, requires: ['quest:ranni:ring'], grants: ['boss:radagon'], lockouts: ['quest:seluvis-blade'] },
     ],
   },
 ]

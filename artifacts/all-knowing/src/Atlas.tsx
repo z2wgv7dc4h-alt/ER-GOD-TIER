@@ -640,7 +640,7 @@ export function AtlasWorkspace() {
                 aria-pressed={w.showLeftovers}
                 onClick={() => w.toggleLeftovers()}
               >
-                leftovers
+                Missed nearby
               </button>
               <button
                 type="button"
@@ -744,7 +744,7 @@ export function AtlasWorkspace() {
                   display: 'inline-block',
                 }}
               />
-              leftovers
+              missed nearby
             </span>
           )}
           {w.showGates && (

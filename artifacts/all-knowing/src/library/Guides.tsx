@@ -14,6 +14,7 @@ import { applyFacts } from '../lib/infer'
 import { useGuide } from '../lib/guide'
 import { sectionMeta } from '../lib/sections'
 import { useWorkspace } from '../state'
+import { Card, Chip } from '../ui'
 
 /**
  * Task 117 — Library › Guides.
@@ -31,7 +32,7 @@ const CORPORA: { id: Corpus; label: string }[] = [
   { id: 'recipes', label: 'Recipes' },
   { id: 'secrets', label: 'Secrets' },
   { id: 'dialogue', label: 'Dialogue' },
-  { id: 'wiki', label: 'Wiki prose' },
+  { id: 'wiki', label: 'Wiki' },
 ]
 
 function matchesCard(card: MechanicCard, q: string): boolean {
@@ -45,6 +46,19 @@ function firstSentence(text: string): string {
   return match ? match[1] : text.trim()
 }
 
+/**
+ * Task 126 §3 / 127 §3: a topic card leads with one short line; the full text
+ * opens behind "More". Truncating the string (not CSS-clamping) is deliberate —
+ * the collapsed words must not load on first paint.
+ */
+function oneLine(text: string, max = 92): string {
+  const sentence = firstSentence(text)
+  if (sentence.length <= max) return sentence
+  const cut = sentence.slice(0, max)
+  const at = cut.lastIndexOf(' ')
+  return `${(at > max / 2 ? cut.slice(0, at) : cut).trim()}…`
+}
+
 function MechanicsSection({ query }: { query: string }) {
   const q = query.trim().toLowerCase()
   const [limit, setLimit] = useState(6)
@@ -55,14 +69,10 @@ function MechanicsSection({ query }: { query: string }) {
     <Collapsed title="Mechanics" count={cards.length} defaultOpen>
       <div className="codex-grid">
         {shown.map((m) => {
-          const lead = firstSentence(m.body)
+          const lead = oneLine(m.body)
           const hasMore = lead.length < m.body.trim().length
           return (
-            <article className="card" key={m.id}>
-              <div className="kicker">{m.category}</div>
-              <h3>
-                <EntityLink id={m.id}>{m.title}</EntityLink>
-              </h3>
+            <Card key={m.id} kicker={m.category} title={<EntityLink id={m.id}>{m.title}</EntityLink>}>
               <p className="note">{lead}</p>
               {hasMore && (
                 <details className="codex-more">
@@ -77,7 +87,7 @@ function MechanicsSection({ query }: { query: string }) {
                   )}
                 </details>
               )}
-            </article>
+            </Card>
           )
         })}
       </div>
@@ -280,37 +290,25 @@ export function Guides() {
   const searching = q.length >= 3
   const purpose =
     sectionMeta('library').subs.find((s) => s.id === 'guides')?.purpose ??
-    'Mechanics cards, guides, recipes, secrets, dialogue and wiki prose.'
+    'Mechanics, guides, recipes, secrets, dialogue and wiki.'
 
   return (
-    <div className="codex-wrap">
+    <div className="codex-wrap guides-page">
       {!searching && (
-        <section className="codex-empty">
-          <h3 className="codex-head">Guides &amp; mechanics</h3>
-          <p className="note">{purpose}</p>
-          <p className="note">
-            {corpus
-              ? 'Browsing one corpus. Use the bar above to search everything instead.'
-              : 'Type in the bar above to filter — or browse one:'}
-          </p>
+        <Card title="Guides & mechanics" subtitle={purpose}>
           <div className="opts">
             {corpus && (
-              <button type="button" className="chip on" onClick={() => setCorpus(null)}>
+              <Chip on onClick={() => setCorpus(null)}>
                 All guides
-              </button>
+              </Chip>
             )}
             {CORPORA.map((c) => (
-              <button
-                key={c.id}
-                type="button"
-                className={corpus === c.id ? 'chip on' : 'chip'}
-                onClick={() => setCorpus(c.id)}
-              >
+              <Chip key={c.id} on={corpus === c.id} onClick={() => setCorpus(c.id)}>
                 {c.label}
-              </button>
+              </Chip>
             ))}
           </div>
-        </section>
+        </Card>
       )}
 
       <MechanicsSection query={searching ? query : ''} />

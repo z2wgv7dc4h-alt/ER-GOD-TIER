@@ -662,7 +662,7 @@ export const pvpBuilds: PvpBuild[] = [
     mode: 'both',
     bracket: 'RL150',
     keywords: ['arcane', 'strength', 'sote', 'bleed', 'colossal'],
-    playstyle: 'Play it like a strength colossal but expect the blood proc to matter in long fights; the skill trades well and the arcane scaling keeps the damage honest.',
+    playstyle: 'Play it like a strength colossal but expect the blood proc to matter in long fights; the skill trades well and the arcane scaling keeps the damage competitive.',
     combos: ['Skill into an L1 trade', 'Jumping R2 roll-catch', 'Bleed proc into a punish'],
     beats: 'Poise stackers who think a greatsword cannot build status.',
     losesTo: 'Fast poke and bleed-resistant shields.',

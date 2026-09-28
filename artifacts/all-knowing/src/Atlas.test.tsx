@@ -50,7 +50,7 @@ describe('AtlasWorkspace phone job controls', () => {
   it('always renders the three job controls under 700px', () => {
     expect(html).toContain('aria-label="Map job filters"')
     expect(html).toContain('>Missing only<')
-    expect(html).toContain('>leftovers<')
+    expect(html).toContain('>Missed nearby<')
     expect(html).toContain('>locks<')
   })
 

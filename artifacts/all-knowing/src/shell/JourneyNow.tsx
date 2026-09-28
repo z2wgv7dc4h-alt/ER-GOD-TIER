@@ -8,6 +8,7 @@ import { gideonHeader } from '../lib/gideonHeader'
 import { leftoverPins } from '../lib/leftoverPins'
 import { leftovers as missedLoot } from '../lib/leftovers'
 import { lockoutWarningsFor, type LockWarning } from '../lib/lockWarnings'
+import { suggestedNextArea } from '../lib/worldState'
 import { BeforeYouGoCard } from '../BeforeYouGoCard'
 import { LockoutPrompt } from '../LockoutPrompt'
 import { MedusaRoute } from '../MedusaRoute'
@@ -17,7 +18,6 @@ import { WatchlistCard } from '../watch/WatchlistCard'
 import { AreaPrompt } from './AreaPrompt'
 import { ResumeCard } from './ResumeCard'
 import { SeeAllButton, useRowReveal } from './rows'
-import { WorldRibbon } from './WorldRibbon'
 import { RecommendedCard, hasUnsetStats } from './RecommendedCard'
 import { Button, ListRow } from '../ui'
 
@@ -73,6 +73,11 @@ export function JourneyNow() {
   const leftovers = useRowReveal(missed.length)
   const [lockPending, setLockPending] = useState<{ ids: string[]; warnings: LockWarning[] } | null>(null)
   const unset = hasUnsetStats(w.character)
+  const suggested = useMemo(() => suggestedNextArea(w.character), [w.character])
+  // "Mark done" works from the explicit goal plan when there is one, and from
+  // the header beat's fact otherwise — so it sits next to "Show on map" instead
+  // of disappearing whenever no goal is pinned.
+  const doneFact = plan?.current ? (nextCompletionId(w.character, plan.current) ?? null) : (header.factId ?? null)
 
   function persistGoal(id?: string) {
     if (!id || w.character.answers.gideonGoal === id) return
@@ -80,15 +85,13 @@ export function JourneyNow() {
   }
 
   function doneNow() {
-    if (!plan?.current) return
-    const factId = nextCompletionId(w.character, plan.current)
-    if (!factId) return
-    const warnings = lockoutWarningsFor(w.character, [factId])
+    if (!doneFact) return
+    const warnings = lockoutWarningsFor(w.character, [doneFact])
     if (warnings.length) {
-      setLockPending({ ids: [factId], warnings })
+      setLockPending({ ids: [doneFact], warnings })
       return
     }
-    w.setCharacter(applyFacts(w.character, [factId], 'answer', 'I’m done'))
+    w.setCharacter(applyFacts(w.character, [doneFact], 'answer', 'I’m done'))
   }
 
   function confirmLock() {
@@ -99,7 +102,6 @@ export function JourneyNow() {
 
   return (
     <div className="now-page">
-      <WorldRibbon />
       <ResumeCard />
       <div className="now-cards">
         <AreaPrompt className="panel area-prompt" />
@@ -124,9 +126,15 @@ export function JourneyNow() {
                     Show on map
                   </Button>
                 )}
-                {plan?.current && <Button variant="secondary" onClick={doneNow}>Mark done</Button>}
+                {doneFact && <Button variant="secondary" onClick={doneNow}>Mark done</Button>}
                 <NowMore blitzLineId={blitzLine?.id} goalLineKind={goalLine?.kind} onPersistGoal={persistGoal} factId={header.factId} />
               </div>
+
+              {suggested && (
+                <p className="note suggested-area" style={{ margin: '10px 0 0' }}>
+                  Suggested next area: <strong>{suggested}</strong>
+                </p>
+              )}
 
               {nextSteps.length > 0 && (
                 <div className="now-steps">
