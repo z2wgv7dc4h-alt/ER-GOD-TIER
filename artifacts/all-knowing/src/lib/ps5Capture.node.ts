@@ -13,6 +13,7 @@ import {
   type WeaponCatalogue,
   type SlotGrid,
 } from './ps5Equipment'
+import { cellOccupancy, detectInventoryGrid, inventoryCountRegion, parseInventoryHeader, type InventoryHeader } from './ps5Inventory'
 
 /**
  * Task 134 — Node runner for the real PS5 captures.
@@ -204,6 +205,60 @@ async function readCellCount(worker: NodeOcrWorker, gray: GrayImage, grid: SlotG
 /** Build a weapon catalogue from a JSON map or array of names. */
 export function weaponCatalogueFromNames(names: string[], skills: string[] = []): WeaponCatalogue {
   return buildWeaponCatalogue(names, skills)
+}
+
+export type InventoryPhotoResult = {
+  header: InventoryHeader
+  grid?: SlotGrid
+  occupied: boolean[]
+  counts: (number | undefined)[]
+  ms: number
+}
+
+/** Task 134 §4 — inventory page: tab, selected name, occupied cells and counts. */
+export async function inventoryFromPhoto(worker: NodeOcrWorker, imagePath: string): Promise<InventoryPhotoResult> {
+  const started = Date.now()
+  const gray = await grayViaTesseract(worker, imagePath)
+  const variants = preprocessLadder(gray)
+  let best: InventoryHeader = { lines: [] }
+  let bestScore = -1
+  for (const variant of variants) {
+    for (const psm of ['6', '4']) {
+      const list = await readWords(worker, variant, psm)
+      const candidate = parseInventoryHeader(list)
+      const score = (candidate.tab ? 2 : 0) + (candidate.selected ? 1 : 0) + candidate.lines.length * 0.01
+      if (score > bestScore) {
+        best = candidate
+        bestScore = score
+      }
+    }
+  }
+  const grid = detectInventoryGrid(gray)
+  let occupied: boolean[] = []
+  let counts: (number | undefined)[] = []
+  if (grid) {
+    occupied = cellOccupancy(gray, grid).occupied
+    counts = []
+    for (let r = 0; r < grid.rows; r++) {
+      for (let c = 0; c < grid.cols; c++) {
+        counts.push(await readInventoryCount(worker, gray, grid, r, c))
+      }
+    }
+  }
+  return { header: best, grid, occupied, counts, ms: Date.now() - started }
+}
+
+async function readInventoryCount(worker: NodeOcrWorker, gray: GrayImage, grid: SlotGrid, row: number, col: number): Promise<number | undefined> {
+  const region = inventoryCountRegion(gray, grid, row, col)
+  if (region.width < 6 || region.height < 6) return undefined
+  const { data } = await worker.recognize(
+    encodeGrayPng(upscale(region, 3)),
+    { tessedit_pageseg_mode: '7', tessedit_char_whitelist: '0123456789' },
+    { text: true },
+  )
+  const n = Number((data.text ?? '').replace(/\D/g, ''))
+  if (!Number.isFinite(n) || n < 1 || n > 999) return undefined
+  return n
 }
 
 /** Load the game's weapon names (base + DLC + affinity variants) for fuzzy matching. */

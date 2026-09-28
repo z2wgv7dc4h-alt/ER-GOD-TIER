@@ -68,3 +68,9 @@ order; icon accuracy is printed.
 - **Item Crafting** list: only unlocked recipes appear, so craftable items → owned cookbooks (via `recipes.json`
   recipe → cookbook). Add inferred cookbooks as facts with source "crafting screenshot" and reason.
 Tests assert selected names, cell counts and badge positions from `ground-truth.json`.
+
+## 6. Remembrances ⇒ bosses (fixture `inventory-tools-01.jpg`)
+The Tools page shows held remembrances (row of x1 cells). Each held remembrance ⇒ that remembrance boss is
+defeated (and not yet traded). Icon-match against the remembrance set and add boss-defeated facts (reason "holds
+Remembrance of X", confidence from the match) through the normal confirm + inference path, so gates/quests update.
+Great Runes on the Key Items page likewise ⇒ shardbearer defeated.

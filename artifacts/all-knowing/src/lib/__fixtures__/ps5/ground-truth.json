@@ -154,5 +154,35 @@
       13
     ],
     "_note": "The slot picker lists EVERY owned talisman, not just equipped ones. Equipped talismans carry a small crossed-swords badge at the top-left of the cell (3 visible here; cells numbered 1-based in reading order). One photo = the whole owned talisman set; identify cells by icon matching restricted to talismans."
+  },
+  "inventory-tools-01.jpg": {
+    "screen": "inventory",
+    "tab": "Tools",
+    "category": "tool",
+    "selectedItem": "Blue Cipher Ring",
+    "iconCellCount": 21,
+    "countsInOrder": [
+      1,
+      1,
+      3,
+      1,
+      4,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      110,
+      8
+    ],
+    "rows": {
+      "goldenRunes": 7,
+      "remembrances": 5,
+      "multiplayer": 5,
+      "multiplayerRow2": 4
+    },
+    "_note": "Row 3 holds 5 REMEMBRANCES (x1 each). Each held remembrance => that boss is defeated and the remembrance not yet traded at Enia/Finger Reader. Identify each by icon matching against the remembrance set, add boss-defeated facts with reason \"holds Remembrance of X\" (after confirmation). Golden runes: 7 stacks. Row 4-5: multiplayer items (stack 110 and 8); small badge top-left on 4 cells marks items registered to the pouch/quick slots."
   }
 }

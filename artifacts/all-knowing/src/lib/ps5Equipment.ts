@@ -274,22 +274,35 @@ export type SlotGrid = {
  * the phase. Rows use the same trick down the left block. This follows the photo's
  * own geometry instead of assuming a fixed crop.
  */
-export function detectSlotGrid(img: GrayImage): SlotGrid | undefined {
-  const x0 = Math.round(img.width * 0.1)
-  const x1 = Math.round(img.width * 0.74)
-  const y0 = Math.round(img.height * 0.24)
-  const y1 = Math.round(img.height * 0.82)
+/**
+ * Detect a regular menu lattice (the equipment and inventory grids share the same
+ * five columns and dark seams). The column profile's autocorrelation gives the
+ * pitch and the profile minima give the phase; the vertical search band is a caller
+ * choice so the same code works for the equipment panel and the inventory list.
+ */
+export function detectLattice(
+  img: GrayImage,
+  opts: { x0: number; x1: number; y0: number; y1: number; rows: number },
+): SlotGrid | undefined {
+  const x0 = Math.round(img.width * opts.x0)
+  const x1 = Math.round(img.width * opts.x1)
+  const y0 = Math.round(img.height * opts.y0)
+  const y1 = Math.round(img.height * opts.y1)
   if (x1 <= x0 || y1 <= y0) return undefined
 
   const colProfile = smooth(columnMeans(img, x0, x1, y0, y1), 6)
   const rowProfile = smooth(rowMeans(img, x0, x1, y0, y1), 6)
-  // Cell pitch as a fraction of the frame: five columns / six rows of the menu grid.
+  // Cell pitch as a fraction of the frame: five columns of the menu grid.
   const pitchX = bestPitch(colProfile, Math.round(img.width * 0.09), Math.round(img.width * 0.16))
   const pitchY = bestPitch(rowProfile, Math.round(img.height * 0.07), Math.round(img.height * 0.13))
   if (!pitchX || !pitchY) return undefined
   const left = x0 + phase(colProfile, pitchX, 6)
-  const top = y0 + phase(rowProfile, pitchY, 7)
-  return { left, top, cellW: pitchX, cellH: pitchY, cols: 5, rows: 6 }
+  const top = y0 + phase(rowProfile, pitchY, opts.rows + 1)
+  return { left, top, cellW: pitchX, cellH: pitchY, cols: 5, rows: opts.rows }
+}
+
+export function detectSlotGrid(img: GrayImage): SlotGrid | undefined {
+  return detectLattice(img, { x0: 0.1, x1: 0.74, y0: 0.24, y1: 0.82, rows: 6 })
 }
 
 function columnMeans(img: GrayImage, x0: number, x1: number, y0: number, y1: number): Float64Array {
