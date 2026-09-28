@@ -50,12 +50,22 @@ PART_NPC_PARAM_ID = 0x2A8    # int32, NPCParamID
 TILE_WORLD = 256
 OFFSET_X = -7168
 OFFSET_Y = 16640
-WORLD_BY_MASTER = {"M00": "overworld", "M01": "underground", "M10": "shadow",
-                   "M11": "shadow-underground"}
+WORLD_BY_MASTER = {"M00": "overworld", "M01": "underground", "M10": "shadow"}
 # SotE underground areas (mirrors build_markers.SOTE_UNDERGROUND_AREAS): Stone
-# Coffin Fissure, Finger Birthing Grounds, catacombs/gaols/forges/caves. The
-# area-61 overworld and the surface legacy dungeons (20, 21, 28) are M10.
+# Coffin Fissure, Finger Birthing Grounds, catacombs/gaols/forges/caves. Task
+# 128 retired the M11 master, so these project to M10 (shadow) with an
+# "underground" badge. The area-61 overworld and the surface legacy dungeons
+# (20, 21, 28) are M10.
 SOTE_UNDERGROUND_AREAS = {22, 25, 40, 41, 42, 43}
+UNDERGROUND_SUFFIX = " · underground"
+
+
+def map_area(map_id):
+    """MSB map id -> area number (`m22_00_00_00` -> 22), or None."""
+    try:
+        return int(map_id[1:].split("_")[0])
+    except (IndexError, ValueError):
+        return None
 
 
 def map_ids():
@@ -152,7 +162,11 @@ def load_projector():
             return None
         px, py, _h, dst_area = r
         if dst_area == 61:
-            master = "M11" if area in SOTE_UNDERGROUND_AREAS else "M10"
+            # Task 128: the M11 ("shadow-underground") master is retired — its
+            # art is a partial patch no projection maps pins onto — so every
+            # SotE marker sits on the Shadow surface master (M10) at its surface
+            # entrance. Under-area NPCs get the " · underground" badge in main().
+            master = "M10"
         else:
             master = "M01" if f"{dst_area},{block}" in underground else "M00"
         return round(px, 1), round(py, 1), WORLD_BY_MASTER.get(master, "overworld")
@@ -196,7 +210,11 @@ def main():
             if key in seen:
                 continue
             seen.add(key)
-            row = {"npc": npc, "name": names[npc], "map": mid,
+            name = names[npc]
+            if map_area(mid) in SOTE_UNDERGROUND_AREAS:
+                # Task 128: read as underground on the Shadow surface map.
+                name += UNDERGROUND_SUFFIX
+            row = {"npc": npc, "name": name, "map": mid,
                    "x": round(x, 2), "y": round(y, 2), "z": round(z, 2)}
             if project:
                 p = project(mid, x, y, z)

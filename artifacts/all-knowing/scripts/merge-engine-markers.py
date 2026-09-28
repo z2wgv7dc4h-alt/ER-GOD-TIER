@@ -20,8 +20,7 @@ MARKERS = os.path.join(ROOT, "vendor", "elden-ring-map", "data", "markers.json")
 RMARKERS = os.path.join(ROOT, "public", "sourced", "open", "eldenringmap.json")
 PLACEMENTS = os.path.join(ROOT, "public", "sourced", "npc-placements.json")
 
-MASTER = {"overworld": "M00", "underground": "M01", "shadow": "M10",
-          "shadow-underground": "M11"}
+MASTER = {"overworld": "M00", "underground": "M01", "shadow": "M10"}
 
 
 def slug(s):

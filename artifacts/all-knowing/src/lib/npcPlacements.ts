@@ -14,7 +14,8 @@ export type NpcPlacement = {
   /** Master-image pixel from the engine affine; percent = px / 10496 * 100. */
   px?: number
   py?: number
-  world?: 'overworld' | 'underground' | 'shadow' | 'shadow-underground'
+  /** Task 128: SotE-underground areas are pinned to M10 (shadow), badged. */
+  world?: 'overworld' | 'underground' | 'shadow'
 }
 export type NpcPlacements = { source: string; placements: NpcPlacement[] }
 

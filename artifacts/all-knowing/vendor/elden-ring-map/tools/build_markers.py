@@ -63,44 +63,20 @@ DERIVED = {
 # Legacy blocks whose art lives on the underground master rather than the surface.
 UNDERGROUND_BLOCKS = {(12, 1), (12, 2), (12, 3), (12, 4), (12, 5), (12, 7)}
 
-# SotE map areas that are underground and belong on the Shadow underground
-# master (M11), not the Shadow surface master (M10). Stone Coffin Fissure (22)
-# and the Finger Birthing Grounds (25) are the open underground regions; 40-43
-# are the catacombs, gaols, ruined forges and caves. The area-61 overworld grid
-# (Gravesite Plain, Scadu Altus, ...) and the surface legacy dungeons Belurat
-# (20), Shadow Keep (21) and Midra's Manse (28) stay on M10.
+# SotE map areas that are underground: Stone Coffin Fissure (22) and the Finger
+# Birthing Grounds (25) are the open underground regions; 40-43 are the
+# catacombs, gaols, ruined forges and caves. Task 128 retired the separate M11
+# ("Realm of Shadow — Underground") master — its extracted art is a partial
+# patch and no projection maps the pins onto it — so these markers now live on
+# the Shadow surface master (M10) at their surface entrance and carry an
+# "underground" badge in their label. The area-61 overworld grid (Gravesite
+# Plain, Scadu Altus, ...) and the surface legacy dungeons Belurat (20), Shadow
+# Keep (21) and Midra's Manse (28) are already M10.
 SOTE_UNDERGROUND_AREAS = {22, 25, 40, 41, 42, 43}
 
-# The M11 master is a small extracted inset, not a full 10496 square (Task 121):
-# its tiles cover only this rectangle. The SotE-underground markers project by
-# ``WorldMapLegacyConvParam`` onto the DLC *surface* grid, which spills outside
-# this patch (and the marker bounding box is taller than the patch, so no single
-# projection can fit them all). A marker whose projected point falls outside the
-# patch is left on M10 - its real surface entrance - instead of floating over
-# transparent tiles on M11. Verified by sampling tile alpha at the pin px in
-# ``find_map_banners.py``-style probes and reported in docs/tasks/122.
-M11_FALLBACK_BOUNDS = [4608, 5120, 8704, 7680]
-
-
-def m11_bounds():
-    """[left, top, right, bottom] of the extracted M11 content, or the fallback."""
-    path = os.path.join(ROOT, "web", "tiles", "manifest.json")
-    try:
-        m11 = json.load(open(path, encoding="utf-8"))["masters"]["M11"]
-        b = m11.get("bounds")
-        if b:
-            return b
-    except (OSError, ValueError, KeyError, TypeError):
-        pass
-    return M11_FALLBACK_BOUNDS
-
-
-M11_BOUNDS = m11_bounds()
-
-
-def in_m11_bounds(px, py):
-    l, t, r, b = M11_BOUNDS
-    return l <= px < r and t <= py < b
+# The badge appended to a SotE-underground marker's name so a pin on the Shadow
+# surface map still reads as underground (e.g. "Stone Coffin Fissure · underground").
+UNDERGROUND_SUFFIX = {"en": " · underground", "ru": " · подземелье"}
 
 
 def project(area, grid_x, grid_z, pos_x, pos_z, tier=0):
@@ -116,10 +92,6 @@ def project(area, grid_x, grid_z, pos_x, pos_z, tier=0):
     world_x = grid_x * size + size / 2 + pos_x
     world_z = grid_z * size + size / 2 + pos_z
     return world_x + OFFSET_X, OFFSET_Y - world_z
-
-
-def master_for_area(area):
-    return "M11" if area in SOTE_UNDERGROUND_AREAS else "M00"
 
 
 # ------------------------------------------------------------------ boss names
@@ -266,14 +238,12 @@ def place(area, block, mapno, x, y, z, conv, tier=0):
         return None
     px, py, height, dst_area = r
     if dst_area == 61:
-        # Realm of Shadow. The area-61 grid is the DLC *surface* (M10); its
+        # Realm of Shadow. The area-61 grid is the DLC *surface* (M10), and
+        # Task 128 retired the separate M11 underground master entirely: its
         # underground interiors (Stone Coffin Fissure, Finger Birthing Grounds,
-        # catacombs/gaols/forges/caves) are M11. Routing every area-61 marker to
-        # M10 put the whole underground layer on the surface map. A point that
-        # lands outside the extracted M11 patch cannot be shown on M11 (the
-        # projection is surface-space), so it stays on M10 rather than floating
-        # over transparent tiles.
-        master = "M11" if (area in SOTE_UNDERGROUND_AREAS and in_m11_bounds(px, py)) else "M10"
+        # catacombs/gaols/forges/caves) project onto the surface grid at their
+        # entrance, so every area-61 marker is M10 and gets the badge below.
+        master = "M10"
     elif (area, block) in UNDERGROUND_BLOCKS:
         master = "M01"
     else:
@@ -296,6 +266,33 @@ def nearest_marker(markers, master, px, py, radius):
 def derived_names(key, arg):
     """Localised name for the few markers whose text we synthesise."""
     return {loc: DERIVED[key][loc].format(arg) for loc in LOCALES}
+
+
+def marker_area(marker):
+    """Map area number from the marker's `mNN_...` map id, or None."""
+    mid = marker.get("map") or ""
+    try:
+        return int(mid[1:3])
+    except (ValueError, IndexError, TypeError):
+        return None
+
+
+def tag_underground(markers):
+    """Badge the SotE-underground markers now that they sit on the M10 surface.
+
+    Task 128: areas 22/25/40-43 are pinned to the Shadow surface master at their
+    (surface) entrance, so their label says so: "Stone Coffin Fissure ·
+    underground". Idempotent, so a marker already carrying the badge is left
+    alone.
+    """
+    for m in markers:
+        if marker_area(m) not in SOTE_UNDERGROUND_AREAS:
+            continue
+        names = m.get("names") or {}
+        for loc, suffix in UNDERGROUND_SUFFIX.items():
+            if loc in names and not names[loc].endswith(suffix.strip()):
+                names[loc] += suffix
+    return markers
 
 
 # ---------------------------------------------------------------------- builders
@@ -592,7 +589,7 @@ def main():
     print("reading boss names from the event scripts ...")
     named = boss_names(dvd, helper, params, defs, names_by_loc["en"].get("NpcName", {}))
 
-    markers = dedupe(build(params, defs, names_by_loc, conv, named))
+    markers = dedupe(tag_underground(build(params, defs, names_by_loc, conv, named)))
     stacked = len(markers)
     markers = merge_colocated(markers)
     stacked -= len(markers)

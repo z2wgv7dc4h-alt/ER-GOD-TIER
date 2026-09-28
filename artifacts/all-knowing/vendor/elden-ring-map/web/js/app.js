@@ -274,8 +274,9 @@ async function boot() {
   // last session's choices rather than being built and then corrected.
   const prefs = loadPrefs();
   applyPrefsToState(prefs);
-  if (prefs && prefs.master && manifest && manifest.masters && manifest.masters[prefs.master]) {
-    state.master = prefs.master;
+  if (prefs && prefs.master) {
+    // Task 128: a preference for a retired/hidden master (M11) lands on M10.
+    state.master = isHiddenMaster(prefs.master) ? fallbackMaster() : prefs.master;
   }
 
   buildLayerButtons();
@@ -321,6 +322,28 @@ function buildLangSwitch() {
 
 function masterInfo(id) {
   return (state.manifest && state.manifest.masters && state.manifest.masters[id]) || null;
+}
+
+/**
+ * Task 128: the tile extractor marks retired masters `hidden: true` (M11, the
+ * partial Shadow-underground patch). Hidden or absent masters are never offered
+ * by a switcher and never restored from a stored preference.
+ */
+function isHiddenMaster(id) {
+  const info = masterInfo(id);
+  return !info || info.hidden === true;
+}
+
+/** The master to land on when a stored preference is hidden/absent. */
+function fallbackMaster() {
+  for (const id of ['M10', 'M01', 'M00', 'M11']) {
+    if (masterInfo(id) && !isHiddenMaster(id)) return id;
+  }
+  const masters = (state.manifest && state.manifest.masters) || {};
+  for (const id of Object.keys(masters)) {
+    if (!isHiddenMaster(id)) return id;
+  }
+  return 'M00';
 }
 
 function tileIndexFor(id) {
@@ -944,10 +967,10 @@ function buildLayerButtons() {
     wrap.innerHTML = '';
     for (const id of order) {
       const info = masterInfo(id);
+      if (!info || info.hidden) continue;
       const b = document.createElement('button');
       b.className = 'layer-btn' + (id === state.master ? ' active' : '');
       b.textContent = t('master.' + id);
-      b.disabled = !info;
       b.onclick = () => switchMaster(id);
       wrap.appendChild(b);
     }
@@ -959,19 +982,21 @@ function buildLayerButtons() {
   for (const sel of document.querySelectorAll('.embed-world-select')) {
     sel.innerHTML = '';
     for (const id of order) {
+      const info = masterInfo(id);
+      if (!info || info.hidden) continue;
       const opt = document.createElement('option');
       opt.value = id;
       opt.textContent = t('masterShort.' + id);
-      opt.disabled = !masterInfo(id);
       sel.appendChild(opt);
     }
     sel.value = state.master;
+    if (!sel.value) sel.value = fallbackMaster();
     sel.onchange = (e) => switchMaster(e.target.value);
   }
 }
 
 function switchMaster(id) {
-  if (!masterInfo(id) || id === state.master) return;
+  if (isHiddenMaster(id) || id === state.master) return;
   state.master = id;
   closePopup();
   buildLayerButtons();

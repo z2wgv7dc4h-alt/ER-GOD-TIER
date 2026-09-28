@@ -49,8 +49,9 @@ export function worldMasters(world: string): string[] {
       return ['M00']
     case 'underground':
       return ['M01']
+    // Task 128: M11 is retired from the switchers; Shadow labels are M10 only.
     case 'shadow':
-      return ['M10', 'M11']
+      return ['M10']
     // The Ashen Capital is the overworld frame after the Forge, so its region
     // names are the same M00 banners.
     case 'ashen':

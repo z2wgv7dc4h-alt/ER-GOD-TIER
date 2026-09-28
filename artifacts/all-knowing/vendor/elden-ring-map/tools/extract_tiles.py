@@ -289,6 +289,10 @@ def main():
             "width": MASTER_PX,
             "height": MASTER_PX,
             "bounds": content_bounds(index, native),
+            # Task 128: M11 is a partial patch that no projection maps pins onto,
+            # so it is retired from the switchers. The tiles stay extracted (and
+            # content-bounded) but the client skips hidden masters.
+            **({"hidden": True} if master == "M11" else {}),
             "tiles": {str(z): index[z] for z in index},
         }
 
