@@ -63,6 +63,14 @@ DERIVED = {
 # Legacy blocks whose art lives on the underground master rather than the surface.
 UNDERGROUND_BLOCKS = {(12, 1), (12, 2), (12, 3), (12, 4), (12, 5), (12, 7)}
 
+# SotE map areas that are underground and belong on the Shadow underground
+# master (M11), not the Shadow surface master (M10). Stone Coffin Fissure (22)
+# and the Finger Birthing Grounds (25) are the open underground regions; 40-43
+# are the catacombs, gaols, ruined forges and caves. The area-61 overworld grid
+# (Gravesite Plain, Scadu Altus, ...) and the surface legacy dungeons Belurat
+# (20), Shadow Keep (21) and Midra's Manse (28) stay on M10.
+SOTE_UNDERGROUND_AREAS = {22, 25, 40, 41, 42, 43}
+
 
 def project(area, grid_x, grid_z, pos_x, pos_z, tier=0):
     """Overworld grid + local offset -> master pixel.
@@ -80,7 +88,7 @@ def project(area, grid_x, grid_z, pos_x, pos_z, tier=0):
 
 
 def master_for_area(area):
-    return "M10" if area == 61 else "M00"
+    return "M11" if area in SOTE_UNDERGROUND_AREAS else "M00"
 
 
 # ------------------------------------------------------------------ boss names
@@ -227,7 +235,11 @@ def place(area, block, mapno, x, y, z, conv, tier=0):
         return None
     px, py, height, dst_area = r
     if dst_area == 61:
-        master = "M10"
+        # Realm of Shadow. The area-61 grid is the DLC *surface* (M10); its
+        # underground interiors (Stone Coffin Fissure, Finger Birthing Grounds,
+        # catacombs/gaols/forges/caves) are M11. Routing every area-61 marker to
+        # M10 put the whole underground layer on the surface map.
+        master = "M11" if area in SOTE_UNDERGROUND_AREAS else "M10"
     elif (area, block) in UNDERGROUND_BLOCKS:
         master = "M01"
     else:

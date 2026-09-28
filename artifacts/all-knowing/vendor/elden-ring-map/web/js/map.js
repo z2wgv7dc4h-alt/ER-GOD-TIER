@@ -19,6 +19,10 @@ class TileMap {
     this.width = opts.width || 10496;
     this.height = opts.height || 10496;
     this.nativeZoom = opts.nativeZoom ?? 6;
+    // [left, top, right, bottom] master px of a master's non-empty tiles. M11
+    // fills a small patch of the 10496 square, so fit() frames this and not the
+    // whole canvas (which would land the user on grey).
+    this.bounds = opts.bounds || null;
     this.tileUrl = opts.tileUrl;              // (z, x, y) -> url
     this.tileIndex = opts.tileIndex || null;  // {z: Set("x,y")} - avoids 404 storms
     this.background = opts.background || '#070705';
@@ -82,9 +86,12 @@ class TileMap {
 
   fit() {
     const r = this.canvas.getBoundingClientRect();
-    this.scale = Math.min(r.width / this.width, r.height / this.height) * 0.98;
-    this.cx = this.width / 2;
-    this.cy = this.height / 2;
+    const b = this.bounds;
+    const w = b ? b[2] - b[0] : this.width;
+    const h = b ? b[3] - b[1] : this.height;
+    this.scale = Math.min(r.width / w, r.height / h) * 0.98;
+    this.cx = b ? (b[0] + b[2]) / 2 : this.width / 2;
+    this.cy = b ? (b[1] + b[3]) / 2 : this.height / 2;
     this.requestDraw();
   }
 
