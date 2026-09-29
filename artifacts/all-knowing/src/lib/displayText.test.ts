@@ -34,3 +34,16 @@ describe('activityLine', () => {
     for (const label of Object.values(SOURCE_LABEL)) expect(label).not.toMatch(/answer|inference/)
   })
 })
+
+describe('canonical names keep qualifiers', () => {
+  it('never drops a bracketed qualifier to match a shorter game name', () => {
+    expect(displayName('Crucible Knight (Farum Azula)')).toBe('Crucible Knight (Farum Azula)')
+    expect(displayName('Godfrey The Grafted')).toBe('Godfrey the Grafted')
+  })
+})
+
+describe('casing repair edge cases', () => {
+  it('keeps a trailing letter label and a lone article', () => {
+    expect(displayName('Twinsage Glintstone Sorcerer A')).toBe('Twinsage Glintstone Sorcerer A')
+  })
+})

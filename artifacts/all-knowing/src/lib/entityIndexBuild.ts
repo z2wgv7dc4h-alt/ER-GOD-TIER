@@ -5,6 +5,7 @@ import { loot as lootRows } from '../knowledge/loot'
 import { merchants } from '../knowledge/merchants'
 import { catalogueIdFor } from './catalogueIds'
 import { normalizeName } from './fanImage'
+import { displayName, JUNK_NAME } from './canonicalNames'
 import { itemEntityNameSet, matchWikiStepToBeat } from './questStepMatch'
 import type { EntityRecord, QuestStepEntry } from './entityIndex'
 import generatedAliases from '../data/aliases.json'
@@ -61,6 +62,14 @@ import mapExtras from '../../public/sourced/guide/map-extras.json'
 import engineMarkersDoc from '../../public/sourced/open/engine-markers.json'
 import eldenringMap from '../../public/sourced/open/eldenringmap.json'
 import namesData from '../../public/sourced/open/names.json'
+// The game's own item descriptions (FMG *Caption), keyed by the same numeric id
+// as names.json within each kind. Build-time only — this module never ships.
+import goodsCaptions from '../../public/sourced/open/text/GoodsCaption.json'
+import protectorCaptions from '../../public/sourced/open/text/ProtectorCaption.json'
+import accessoryCaptions from '../../public/sourced/open/text/AccessoryCaption.json'
+import artsCaptions from '../../public/sourced/open/text/ArtsCaption.json'
+import gemCaptions from '../../public/sourced/open/text/GemCaption.json'
+import weaponCaptions from '../../public/sourced/open/text/WeaponCaption.json'
 import saveIds from '../../public/sourced/open/save-ids.json'
 import npcQuestsDoc from '../../public/sourced/open/npc-quests.json'
 import placeNames from '../../public/sourced/open/place-names.json'
@@ -1766,6 +1775,28 @@ type FmgNameRow = { id: string; kind: string; name: string; info?: string }
  * These are plain reference records (not Library catalogue rows), so a name
  * with no description/location never drags a coverage guard down.
  */
+const CAPTIONS_BY_KIND: Record<string, Record<string, string>> = {
+  goods: goodsCaptions as Record<string, string>,
+  protector: protectorCaptions as Record<string, string>,
+  accessories: accessoryCaptions as Record<string, string>,
+  arts: artsCaptions as Record<string, string>,
+  gems: gemCaptions as Record<string, string>,
+  weapon: weaponCaptions as Record<string, string>,
+}
+
+/**
+ * The in-game description for an FMG name row: its own `info` line, else the
+ * caption text of the same id in the same kind's caption file (ids overlap
+ * across kinds, so the kind must match). Placeholder captions are ignored.
+ */
+function fmgDescription(row: FmgNameRow): string | undefined {
+  if (row.info) return row.info
+  const num = row.id?.split(':')[1]
+  const text = num ? CAPTIONS_BY_KIND[row.kind]?.[num]?.trim() : undefined
+  if (!text || /^\[?ERROR\]?$|^%null%$|^no text$/i.test(text)) return undefined
+  return text.replace(/\n{3,}/g, '\n\n')
+}
+
 function mergeFmgNames(): void {
   const rows = namesData as FmgNameRow[]
   // Task 132 §2 — the FMG `arts` plane carries 265 rows, but most are unique
@@ -1789,14 +1820,14 @@ function mergeFmgNames(): void {
     if (row.kind === 'goods') {
       const id = catalogueIdFor('item', row.name)
       const record = records.get(id) ?? ensureKind(id, 'item', row.name)
-      setText(record, 'description', row.info)
+      setText(record, 'description', fmgDescription(row))
       source(record, 'names/fmg-goods')
     } else if (row.kind === 'npcs') {
       const exact = mapKeys(row.name).map((key) => nameIndex.get(key)).find((id) => id && hasEntity(id) && getEntity(id).kind === 'npc')
       const id = exact ?? row.id ?? `npc:${slug(row.name)}`
       const record = records.get(id) ?? ensureKind(id, 'npc', row.name)
       if (record.kind === 'item') record.kind = 'npc'
-      setText(record, 'description', row.info)
+      setText(record, 'description', fmgDescription(row))
       source(record, 'names/fmg-npcs')
     } else if (row.kind === 'places') {
       const exact = mapKeys(row.name).map((key) => nameIndex.get(key)).find((id) => id && hasEntity(id) && getEntity(id).kind === 'region')
@@ -1807,19 +1838,23 @@ function mergeFmgNames(): void {
     } else if (row.kind === 'accessories') {
       const id = catalogueIdFor('item', row.name)
       const record = records.get(id) ?? ensureKind(id, 'talisman', row.name)
-      setText(record, 'description', row.info)
+      setText(record, 'description', fmgDescription(row))
       source(record, 'names/fmg-accessories')
     } else if (row.kind === 'protector') {
       const id = catalogueIdFor('item', row.name)
       const record = records.get(id) ?? ensureKind(id, 'armor', row.name)
-      setText(record, 'description', row.info)
+      setText(record, 'description', fmgDescription(row))
       source(record, 'names/fmg-protector')
     } else if (row.kind === 'arts') {
       if (!ashOfWarNames.has(stripAsh(row.name))) continue
       const id = catalogueIdFor('item', row.name)
       const record = records.get(id) ?? ensureKind(id, 'ash', row.name)
-      setText(record, 'description', row.info)
+      setText(record, 'description', fmgDescription(row))
       source(record, 'names/fmg-arts')
+    } else if (row.kind === 'weapon') {
+      // Weapons are enumerated elsewhere; only describe a record that exists.
+      const record = records.get(catalogueIdFor('item', row.name))
+      if (record) setText(record, 'description', fmgDescription(row))
     }
   }
 }
@@ -2145,6 +2180,43 @@ function resolveEnemyCollisions(): void {
 }
 
 /** A name-plane row that carries no fact of its own. */
+/**
+ * The FMG NpcName plane names boss-fight phases and placeholders as their own
+ * "NPC" rows with no data ("Radahn, Consort of Miquella", "Someone Yet Unseen").
+ * Placeholder rows are dropped; a boss-fight name is folded into the real
+ * record — via the wiki redirect ("Base Serpent Messmer" -> "Messmer the
+ * Impaler") or a longer boss name it starts ("Perfumer Tricia" -> "Perfumer
+ * Tricia & Misbegotten Warrior") — and kept as a search alias for it.
+ */
+function foldFmgNpcRows(): void {
+  const byName = new Map<string, string>()
+  for (const [id, record] of records) {
+    if (/^npcs:\d+$/.test(id)) continue
+    const key = simpleNorm(record.name)
+    if (key && !byName.has(key)) byName.set(key, id)
+  }
+  const bossNames = [...records.values()].filter((r) => r.kind === 'boss').map((r) => [simpleNorm(r.name), r.id] as const)
+  const targetFor = (name: string): string | undefined => {
+    const redirect = wikiRedirectTo.get(simpleNorm(name))
+    const direct = (redirect && byName.get(simpleNorm(redirect))) ?? byName.get(simpleNorm(name))
+    if (direct) return direct
+    const base = simpleNorm(redirect ?? name)
+    if (base.length < 6) return undefined
+    return bossNames.find(([n]) => n.startsWith(`${base} `))?.[1]
+  }
+  for (const [id, record] of [...records]) {
+    if (JUNK_NAME.test(record.name.trim()) && !hasEntity(id)) {
+      records.delete(id)
+      continue
+    }
+    if (!/^npcs:\d+$/.test(id) || record.description || record.location || record.questSteps?.length) continue
+    const target = targetFor(record.name)
+    if (!target || target === id) continue
+    addName(record.name, target)
+    records.delete(id)
+  }
+}
+
 function isFmgEmpty(record: EntityRecord): boolean {
   if (!(record.sources ?? []).some((s) => s.startsWith('names/fmg'))) return false
   return (
@@ -2326,10 +2398,14 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   // sets omit a handful of real incantations (e.g. Flame Sling). Record the
   // extras so peek/entity pages resolve them, without counting them among the
   // catalogue coverage set (they carry no description/location dump).
+  // The game's goods name table lists every spell a player can hold; a magic-dump
+  // entry missing from it is an enemy/boss-only cast (Smarag's Glint Breath).
+  const playerGoods = new Set((namesData as FmgNameRow[]).filter((r) => r.kind === 'goods').map((r) => simpleNorm(r.name)))
   for (const row of magicData as { name: string }[]) {
     const match = /^\[(Incantation|Sorcery)\]\s*(.+)$/.exec(row.name)
     if (!match) continue
     const spellName = correctName(match[2].trim())
+    if (!playerGoods.has(simpleNorm(spellName))) continue
     const id = catalogueIdFor('item', spellName)
     if (records.has(id)) continue
     const record = ensure(id, 'spell', spellName)
@@ -2509,6 +2585,7 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   // collisions, drop the empty FMG name-plane rows, give regions their graces
   // and every enemy a real description.
   cleanupFmgDuplicates()
+  foldFmgNpcRows()
   resolveEnemyCollisions()
   // Task 133 §0 — fold `+N` upgrades, collapse duplicate primaries (enemies
   // above all) and merge boss-encounter enemy rows onto their boss.
@@ -2516,6 +2593,16 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   dedupePrimary()
   mergeBossEncounterEnemies()
   enrichRegions()
+
+  // Any other record the catalog places (quest beats, items) gets that region
+  // when no source gave one, so area views can find it. This runs after quest
+  // step matching on purpose: a bare region is too weak a signal to pair a wiki
+  // step with an authored beat.
+  const catalogRegion = new Map<string, string>()
+  for (const f of facts) if (f.region) catalogRegion.set(f.id, f.region)
+  for (const [id, record] of records) {
+    if (!record.region && catalogRegion.has(id)) record.region = catalogRegion.get(id)
+  }
 
   // Task 124 §2 — the sourced gap-fill, applied last so every field is a
   // lowest-priority fallback. `setText`/`setStat` only write when absent.
@@ -2535,7 +2622,28 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     }
   }
 
-  for (const record of records.values()) prune(record)
+  // A catalog record named after a real item (e.g. item:rennala-great-rune =
+  // Great Rune of the Unborn) takes its twin's description/image when it has none.
+  const twinByName = new Map<string, EntityRecord>()
+  for (const record of records.values()) {
+    const key = `${record.kind}|${simpleNorm(record.name)}`
+    if (record.description && !twinByName.has(key)) twinByName.set(key, record)
+  }
+  for (const record of records.values()) {
+    if (record.description) continue
+    const twin = twinByName.get(`${record.kind}|${simpleNorm(record.name)}`)
+    if (!twin || twin === record) continue
+    setText(record, 'description', twin.description)
+    setText(record, 'location', twin.location)
+    if (!record.image && twin.image) record.image = twin.image
+  }
+
+  for (const record of records.values()) {
+    prune(record)
+    // Repair dump casing ("Axe Of Godfrey") so every screen, not just the
+    // entity panel, shows the game's spelling. Ids are unchanged.
+    record.name = displayName(record.name)
+  }
 
   const byKind: Record<string, number> = {}
   for (const record of records.values()) byKind[record.kind] = (byKind[record.kind] ?? 0) + 1

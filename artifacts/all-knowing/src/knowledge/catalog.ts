@@ -95,7 +95,7 @@ export const facts: Fact[] = [
 
   // Items that reconstruct the run
   { id: 'item:godrick-great-rune', kind: 'item', name: "Godrick's Great Rune", aliases: ['godrick rune'], region: 'Limgrave', campaign: 'base', implies: ['boss:godrick'], usedIn: ['grace:limgrave-tower'] },
-  { id: 'item:rennala-great-rune', kind: 'item', name: "Rennala's Great Rune", aliases: ['rennala rune'], region: 'Liurnia', campaign: 'base', implies: ['boss:rennala'] },
+  { id: 'item:rennala-great-rune', kind: 'item', name: 'Great Rune of the Unborn', aliases: ['rennala rune', "rennala's great rune"], region: 'Liurnia', campaign: 'base', implies: ['boss:rennala'] },
   { id: 'item:radahn-great-rune', kind: 'item', name: "Radahn's Great Rune", aliases: ['radahn rune'], region: 'Caelid', campaign: 'base', implies: ['boss:radahn'] },
   { id: 'item:rykard-great-rune', kind: 'item', name: "Rykard's Great Rune", aliases: ['rykard rune'], region: 'Mt. Gelmir', campaign: 'base', implies: ['boss:rykard'] },
   { id: 'item:morgott-great-rune', kind: 'item', name: "Morgott's Great Rune", aliases: ['morgott rune'], region: 'Leyndell', campaign: 'base', implies: ['boss:morgott'] },

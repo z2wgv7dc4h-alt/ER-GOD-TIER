@@ -2,7 +2,7 @@ import wikiManifest from '../../public/sourced/wiki/manifest.json'
 import { emptyCharacter } from '../data/seed'
 import { allRecords, entityIndexReady, type EntityRecord } from './entityIndex'
 import { allEntities, status, type EntityKind } from './entityGraph'
-import { canonicalName, hasBadCasing } from './canonicalNames'
+import { canonicalName, hasBadCasing, JUNK_NAME } from './canonicalNames'
 import { kindStatus, NO_DATA, overlayEntity, trackActionLabel } from '../library/pageModel'
 import { scenarioCharacter } from './__fixtures__/scenarios/urmummytoilet'
 import type { Character } from '../types'
@@ -231,10 +231,8 @@ const OWNABLE_REFERENCE = new Set<EntityKind>([
 /** Kinds the old generic action footer gave a bogus "Mark owned" to. */
 const INVALID_ACTION_KINDS = new Set<EntityKind>(['region', 'dungeon', 'grace', 'npc', 'merchant'])
 
-/** Names that are character-creator/equip-slot placeholders, not game entities. */
-export const JUNK_NAME = /^(?:type d+|arms|body|head|legs|travel hairstyle|someone yet unseen)$/i
 
-const TITLE_CASE_CONNECTIVE = /s(?:Of|The|And|In|To|At|For|From)s/
+const TITLE_CASE_CONNECTIVE = /\s(?:Of|The|And|In|To|At|For|From)\s/
 
 /**
  * Every rule checked against what the page actually renders: the overlay's
@@ -252,7 +250,9 @@ function renderedIssues(record: EntityRecord, characters: Character[]): PageIssu
     texts.push(line.label, line.why)
     if (!line.why.trim() || line.why === 'Available now.') generic = true
   }
-  if (texts.some((t) => RAW_FACT_ID.test(stripLinks(t)) || ASSET_CODE.test(stripLinks(t)))) issues.push('raw-id')
+  // A name shaped like an id segment ("Corhyn:goldmask") is a raw id too.
+  const idShapedName = /^[A-Za-z]+:[a-z0-9]/.test(entity.name) && !/:\s/.test(entity.name)
+  if (idShapedName || texts.some((t) => RAW_FACT_ID.test(stripLinks(t)) || ASSET_CODE.test(stripLinks(t)))) issues.push('raw-id')
   // The game's own spelling always wins ("Grovel For Mercy" is how the game writes it).
   const gameSpelling = canonicalName(entity.name.toLowerCase()) === entity.name
   if (

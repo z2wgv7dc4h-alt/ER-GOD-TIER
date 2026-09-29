@@ -12,7 +12,7 @@ Scenarios audited: **1** · violations: **0**
 | --- | --- | --- | --- |
 | Graces | 5 | 404 | 0.012 |
 | Bosses | 3 | 196 | 0.015 |
-| Items found | 26 | 3087 | 0.008 |
+| Items found | 26 | 3062 | 0.008 |
 
 Lockouts at Stormveil: _none_
 
@@ -20,4 +20,4 @@ Positive upgrades surfaced by Now: 0
 
 _All checks passed._
 
-_Regenerated 2026-09-28._
+_Regenerated 2026-09-29._

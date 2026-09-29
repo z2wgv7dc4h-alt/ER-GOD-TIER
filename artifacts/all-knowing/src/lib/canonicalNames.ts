@@ -27,11 +27,18 @@ const CANONICAL_BY_NAME = (() => {
   return map
 })()
 
-/** The in-game spelling for a name when the game text knows one. */
+const letters = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
+
+/**
+ * The in-game spelling for a name when the game text knows one. Only a spelling
+ * of the same words wins: the lookup key drops bracketed qualifiers, so
+ * "Crucible Knight (Farum Azula)" must stay distinct, not become "Crucible Knight".
+ */
 export function canonicalName(name: string): string {
   const key = normalizeName(name)
   if (!key) return name
-  return CANONICAL_BY_NAME.get(key) ?? name
+  const known = CANONICAL_BY_NAME.get(key)
+  return known && letters(known) === letters(name) ? known : name
 }
 
 const MINOR_WORDS = new Set(['of', 'the', 'and', 'in', 'to', 'at', 'a', 'an', 'for', 'on', 'from'])
@@ -43,14 +50,21 @@ const MINOR_WORDS = new Set(['of', 'the', 'and', 'in', 'to', 'at', 'a', 'an', 'f
  * ("Ranni The Witch") are lowered as the game writes them ("Ranni the Witch").
  */
 export function displayName(name: string): string {
-  const known = CANONICAL_BY_NAME.get(normalizeName(name))
-  if (known) return known
+  const known = canonicalName(name)
+  if (known !== name || CANONICAL_BY_NAME.get(normalizeName(name)) === name) return known
   const words = name.split(' ')
   if (!/[A-Z]/.test(name)) {
     return words.map((w, i) => (i > 0 && MINOR_WORDS.has(w) ? w : w.charAt(0).toUpperCase() + w.slice(1))).join(' ')
   }
-  return words.map((w, i) => (i > 0 && MINOR_WORDS.has(w.toLowerCase()) ? w.toLowerCase() : w)).join(' ')
+  // Never the last word, and never a lone article: "Sorcerer A" is a label.
+  const last = words.length - 1
+  return words
+    .map((w, i) => (i > 0 && i < last && MINOR_WORDS.has(w.toLowerCase()) && !/^an?$/i.test(w) ? w.toLowerCase() : w))
+    .join(' ')
 }
+
+/** Character-creator / bare-slot / placeholder rows the dumps carry — never game entities. */
+export const JUNK_NAME = /^(?:type \d+|arms|body|head|legs|travel hairstyle|someone yet unseen)$/i
 
 /** True when the spelling differs from the canonical game name. */
 export function hasBadCasing(name: string): boolean {

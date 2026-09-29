@@ -54,27 +54,27 @@ table. The table below is the current traversal; the guards snapshot it.
 | material.source | ≥ 90% | 100% | PASS |
 | talisman.source | ≥ 90% | 91.8% | PASS |
 | weapon.source | ≥ 85% | 85.1% | PASS |
-| spell.source | ≥ 90% | 94.2% | PASS |
-| npc.location | ≥ 65% | 65.2% | PASS |
+| spell.source | ≥ 90% | 96.3% | PASS |
+| npc.location | ≥ 65% | 75.4% | PASS |
 
 All guard minimums met.
 
 | kind | entities | source | drops | location | contents | region | stock | boss | trades |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| armor | 768 | 70.8% | · | · | · | · | · | · | · |
+| armor | 750 | 73.3% | · | · | · | · | · | · | · |
 | ash | 124 | 72.6% | · | · | · | · | · | · | · |
 | boss | 242 | · | 85.1% | 97.5% | · | · | · | · | · |
 | dungeon | 119 | · | · | · | 85.7% | · | · | · | · |
 | grace | 416 | · | · | · | · | 90.9% | · | · | · |
-| item | 1204 | 73.2% | · | · | · | · | · | · | · |
+| item | 1202 | 73.1% | · | · | · | · | · | · | · |
 | material | 3 | 100% | · | · | · | · | · | · | · |
 | merchant | 106 | · | · | · | · | · | 100% | · | · |
-| npc | 221 | · | · | 65.2% | · | · | · | · | · |
-| quest | 472 | · | · | 68.6% | · | · | · | · | · |
+| npc | 195 | · | · | 75.4% | · | · | · | · | · |
+| quest | 468 | · | · | 68.4% | · | · | · | · | · |
 | region | 312 | · | · | · | 31.7% | · | · | · | · |
 | remembrance | 25 | · | · | · | · | · | · | 100% | 100% |
 | shield | 67 | 83.6% | · | · | · | · | · | · | · |
-| spell | 224 | 94.2% | · | · | · | · | · | · | · |
+| spell | 217 | 96.3% | · | · | · | · | · | · | · |
 | spirit | 79 | 87.3% | · | · | · | · | · | · | · |
 | talisman | 158 | 91.8% | · | · | · | · | · | · | · |
 | weapon | 443 | 85.1% | · | · | · | · | · | · | · |
@@ -87,10 +87,10 @@ the links a plain renderer still owes.
 
 | surface | linkable | unlinked before | unlinked after |
 | --- | --- | --- | --- |
-| entity descriptions | 1284 | 0 | 0 |
-| wiki sections | 1584 | 0 | 0 |
-| acquisition text | 1539 | 0 | 0 |
-| quest step actions | 603 | 577 | 0 |
-| mechanics bodies | 182 | 0 | 0 |
+| entity descriptions | 1272 | 0 | 0 |
+| wiki sections | 1563 | 0 | 0 |
+| acquisition text | 1524 | 0 | 0 |
+| quest step actions | 598 | 577 | 0 |
+| mechanics bodies | 181 | 0 | 0 |
 
-_Regenerated 2026-09-28._
+_Regenerated 2026-09-29._

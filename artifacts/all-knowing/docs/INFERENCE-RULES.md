@@ -132,7 +132,7 @@ _None._
 | `catalog:boss:consort` | `boss:consort` | `boss:messmer` | certain | 0.9 | Holding/reaching Promised Consort Radahn / Radahn, Consort of Miquella requires the listed facts first. | — |
 | `catalog:boss:leontiel` | `boss:leontiel` | `boss:radahn` | certain | 0.9 | Holding/reaching Knight Leontiel requires the listed facts first. | — |
 | `catalog:item:godrick-great-rune` | `item:godrick-great-rune` | `boss:godrick` | certain | 0.9 | Holding/reaching Godrick's Great Rune requires the listed facts first. | — |
-| `catalog:item:rennala-great-rune` | `item:rennala-great-rune` | `boss:rennala` | certain | 0.9 | Holding/reaching Rennala's Great Rune requires the listed facts first. | — |
+| `catalog:item:rennala-great-rune` | `item:rennala-great-rune` | `boss:rennala` | certain | 0.9 | Holding/reaching Great Rune of the Unborn requires the listed facts first. | — |
 | `catalog:item:radahn-great-rune` | `item:radahn-great-rune` | `boss:radahn` | certain | 0.9 | Holding/reaching Radahn's Great Rune requires the listed facts first. | — |
 | `catalog:item:rykard-great-rune` | `item:rykard-great-rune` | `boss:rykard` | certain | 0.9 | Holding/reaching Rykard's Great Rune requires the listed facts first. | — |
 | `catalog:item:morgott-great-rune` | `item:morgott-great-rune` | `boss:morgott` | certain | 0.9 | Holding/reaching Morgott's Great Rune requires the listed facts first. | — |
@@ -596,4 +596,4 @@ _None._
 | `capture:crafting:cookbook` | `craftable item visible on the Item Crafting page` | `<cookbook that unlocks it>` | certain | 0.85 | `inferCookbooks` maps a read recipe to the cookbook(s) that taught it (`ps5Crafting.ts`). | — |
 | `capture:map:region` | `painted map fragment / discovered underground grace` | `<the region reached>` | certain | 0.9 | Task 138: `mapfrag:* -> region` and underground `grace -> region` chains in `inferChains.ts`. | — |
 
-_Regenerated 2026-09-28._
+_Regenerated 2026-09-29._

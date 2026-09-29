@@ -435,17 +435,20 @@ function buildIndex(): Index {
       // A step can name a real item/boss as its beat (e.g. item:fingerslayer);
       // never let the beat row reclassify the authored fact.
       if (!entities.has(beatId)) addEntity({ id: beatId, kind: 'quest', name: step.do, summary: step.detail }, [], false)
-      // Task 138 §3 — the step's grants / lockouts / requirements are real fact
-      // ids too. Register the ones that have no row yet so a lockout warning or a
-      // plan step never renders a dead EntityLink. Names stay out of the glossary
-      // (registerName=false) — these are state flags, not browsable entities.
+    }
+  }
+  // Task 138 §3 — a step's grants / lockouts / requirements are real fact ids
+  // too. Register the ones that have no row yet so a lockout warning or a plan
+  // step never renders a dead EntityLink. This runs after EVERY line's beats are
+  // in, so a flag another line owns as a beat keeps that beat's name. Names stay
+  // out of the glossary (registerName=false) — these are state flags.
+  const lockName = new Map<string, string>()
+  for (const g of gates) for (const l of g.locks) if (l.name && !lockName.has(l.factId)) lockName.set(l.factId, l.name)
+  for (const line of allLines) {
+    for (const step of line.steps) {
       for (const ref of [...(step.grants ?? []), ...(step.lockouts ?? []), ...(step.requires ?? []), ...(step.factIds ?? [])]) {
         if (entities.has(ref) || byName.has(normalize(ref))) continue
-        addEntity(
-          { id: ref, kind: prefixKind(ref), name: ref.replace(/^[a-z]+:/, '').replace(/-/g, ' '), summary: `${line.name} — ${step.do}` },
-          [],
-          false,
-        )
+        addEntity({ id: ref, kind: prefixKind(ref), name: lockName.get(ref) ?? flagName(ref), summary: `${line.name} — ${step.do}` }, [], false)
       }
     }
   }
@@ -876,6 +879,12 @@ export function edges(factId: string): Edge[] {
 /** Just the edges of one relationship type. */
 export function edgesByRel(factId: string, rel: AnyEdgeRel): Edge[] {
   return edges(factId).filter((e) => e.rel === rel)
+}
+
+/** A readable name for a bare state flag id: "quest:fia:killed" -> "Fia killed". */
+function flagName(id: string): string {
+  const words = id.replace(/^[a-z]+:/, '').split(/[:-]+/).filter(Boolean).join(' ')
+  return words ? words.charAt(0).toUpperCase() + words.slice(1) : id
 }
 
 const OWNED_KINDS = new Set<EntityKind>(['item', 'weapon', 'shield', 'armor', 'talisman', 'spell', 'ash', 'spirit', 'material'])
