@@ -14,7 +14,7 @@ The atlas is [egormagurin/EldenRingMap](https://github.com/egormagurin/EldenRing
 
 ## Features
 
-**Shell** — four sections: **Tarnished** (overview / update / profiles), **Journey** (now / map / quests), **Library** (search / builds / kit) and **Gideon**. A shared header carries the section tabs, command search and character chip; a phone gets four bottom tabs, desktop gets an optional Gideon dock. The old off-canvas Tarnished rail is gone. `#/journey/map` URL hashes keep reload and back working, and every old room still resolves through `setModule`.  
+**Shell** — four sections: **Tarnished** (overview / update / profiles), **Journey** (now / map / quests), **Library** (search / builds / pvp / guides) and **Gideon**. A shared header carries the section tabs, command search and character chip; a phone gets four bottom tabs, desktop gets an optional Gideon dock. The old off-canvas Tarnished rail is gone. `#/journey/map` URL hashes keep reload and back working, and every old room still resolves through `setModule`.  
 **Reckoning** — interview, warp-list paste, on-device Tesseract, inference with undo.  
 **PS5 capture** — no save needed: the setup wizard reads the status screen (level, runes, attributes), the live camera scanner reads the inventory and equipment screens, and the map photo reader reads a photographed map / grace list into discoveries. All OCR runs on-device.  
 **Atlas** — plates or live engine, leftover / gate / hunt pins, phone job chips. Plates also carry our grounded EldenRingMap-pack pins (dungeons, merchants, night bosses, collectibles). Fails closed: if the embed fails it shows the plate and a banner, never a blank iframe. The live engine has marker **search**, per-category toggles (all/none) and hide-found/labels/icons; our NPC placements sit under a dedicated **NPCs** category that defaults off.  
@@ -107,11 +107,25 @@ no image input, so the equipment-screen reader falls back to on-device OCR.
 npm run data:catalog     # regenerate docs/DATA-CATALOG.md (every source + consumer)
 npm run index:entities   # rebuild public/sourced/entity-index.json
 npm run data:offline     # rebuild public/sourced/offline-manifest.json
+npm run audit:pages      # every entity page, checked as rendered → docs/PAGE-AUDIT.md
+npm run audit:progress   # 6 characters × 16 areas: ratios, ticks vs inference → docs/PROGRESS-AUDIT.md
+npm run audit:links      # dead entity links → docs/LINKS-AUDIT.md
+npm run audit:inference  # inference rules + scenario closure → docs/INFERENCE-RULES.md
+npm run coverage:entities # entity coverage per source → docs/ENTITY-COVERAGE.md
 npm run test:bundle      # build, then run the bundle-budget guards
 npm run audit:ui         # static UI audit (needs a running dev server)
 npm run crawl:ui         # click-everything crawl → .scratch/ui-crawl/<ts>/crawl.md
 npm run test:ocr         # the OCR/scanner suite (vitest.ocr.config.ts)
 ```
+
+**Rebuild the entity index whenever** `src/lib/entityIndexBuild.ts`, `src/lib/entityGraph.ts`,
+`src/knowledge/*` or anything under `public/sourced/**` changes — the app, search and the
+audits all read the built `entity-index.json`, not the code. (It once shipped stale, missing
+a whole task's quest beats.) The page audit runs the same page model the entity panel
+renders (`src/library/pageModel.ts`), so a clean audit means clean pages.
+
+**Map:** the Shadow of the Erdtree underground plate (M11) is retired — the game ships only
+fog tiles for it (see `docs/M11-FORENSICS.md`); its pins live on M10 labelled "underground".
 
 ---
 

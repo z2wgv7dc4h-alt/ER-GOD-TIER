@@ -129,8 +129,23 @@ function withoutGroupSuffix(name) {
     .trim()
 }
 
+/**
+ * Source misspellings / spacing variants of a real boss (checklist + FanAPI dumps).
+ * Without these the roster mints a phantom second boss for the same fight.
+ */
+const MISSPELLED = new Map(
+  [
+    ['Godfrey the Grafted', 'Godefroy the Grafted'],
+    ['Erdtree Burial Watchdogs', 'Erdtree Burial Watchdog'],
+    ['Deathrite Bird', 'Death Rite Bird'],
+    ['Spirit-Caller Snail', 'Spiritcaller Snail'],
+    ['Adan, Theif of Fire', 'Adan, Thief of Fire'],
+  ].map(([typo, real]) => [norm(typo), real]),
+)
+
 /** Best canonical id for a source name, or null when the roster must mint one. */
-function canonicalId(name) {
+function canonicalId(rawName) {
+  const name = MISSPELLED.get(norm(rawName)) ?? rawName
   const group = withoutGroupSuffix(name)
   // Try the group-stripped / composite-part forms first so a name like
   // "Mad Pumpkin Head Duo" resolves to the catalog boss, never to a previously

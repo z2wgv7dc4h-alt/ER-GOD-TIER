@@ -4,16 +4,19 @@ Read this before writing code. Do not invent a second kernel.
 
 ## What it is
 
-Local-first PWA. One `Character` is the world. Atlas, Build, Quests, Codex, Reckoning, Gideon are views.
+Local-first PWA. One `Character` is the world; every screen is a view of it.
 
 ```
-Desktop  280px Gideon │ Stage 1fr
-Phone    tabs: Map / Gideon / Kit
+Sections  Tarnished (overview / update / profiles) · Journey (now / map / quests)
+          Library (search / builds / pvp / guides) · Gideon
+Routing   #/section/sub, entity overlay via ?e=<factId>; old rooms resolve through setModule
+Phone     four bottom tabs · Desktop: header tabs + optional Gideon dock
 ```
 
-The identity rail is an off-canvas **Tarnished sheet** behind the name button (profiles, packet,
-save drop, recents, the full character card, the five room links). Reckon / Quests / Codex are links
-in that sheet, not tabs; the Codex also opens from a `/` search hit. The old lean-back toggle was removed (Task 83).
+Any entity link opens the one shared `EntityPanel` overlay. What a page shows — name,
+region, status line, track button — is `src/library/pageModel.ts`; the page audit runs
+that same module, so change page text there, not inside the components.
+(The old Atlas/Codex/Reckoning rooms and the off-canvas Tarnished sheet are gone — Task 91.)
 
 ## Do not break
 

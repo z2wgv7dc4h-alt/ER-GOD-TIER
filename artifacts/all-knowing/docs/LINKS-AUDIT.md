@@ -46,8 +46,8 @@ table. The table below is the current traversal; the guards snapshot it.
 | guard | min | actual | status |
 | --- | --- | --- | --- |
 | grace.region | ≥ 90% | 90.9% | PASS |
-| boss.location | ≥ 90% | 97.5% | PASS |
-| boss.drops | ≥ 85% | 85.1% | PASS |
+| boss.location | ≥ 90% | 92% | PASS |
+| boss.drops | ≥ 85% | 85.7% | PASS |
 | remembrance.boss | ≥ 90% | 100% | PASS |
 | remembrance.Enia trades | ≥ 90% | 100% | PASS |
 | region.contents | ≥ 30% | 31.7% | PASS |
@@ -63,8 +63,8 @@ All guard minimums met.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | armor | 750 | 73.3% | · | · | · | · | · | · | · |
 | ash | 124 | 72.6% | · | · | · | · | · | · | · |
-| boss | 242 | · | 85.1% | 97.5% | · | · | · | · | · |
-| dungeon | 119 | · | · | · | 85.7% | · | · | · | · |
+| boss | 237 | · | 85.7% | 92% | · | · | · | · | · |
+| dungeon | 119 | · | · | · | 84.9% | · | · | · | · |
 | grace | 416 | · | · | · | · | 90.9% | · | · | · |
 | item | 1202 | 73.1% | · | · | · | · | · | · | · |
 | material | 3 | 100% | · | · | · | · | · | · | · |
@@ -87,8 +87,8 @@ the links a plain renderer still owes.
 
 | surface | linkable | unlinked before | unlinked after |
 | --- | --- | --- | --- |
-| entity descriptions | 1272 | 0 | 0 |
-| wiki sections | 1563 | 0 | 0 |
+| entity descriptions | 1235 | 0 | 0 |
+| wiki sections | 1562 | 0 | 0 |
 | acquisition text | 1524 | 0 | 0 |
 | quest step actions | 598 | 577 | 0 |
 | mechanics bodies | 181 | 0 | 0 |

@@ -132,6 +132,16 @@ The app is PS5-first: a player with no save file reconstructs state from screens
 - `npm run data:offline` — rebuild the offline manifest.
 - `npm run audit:ui` — static UI audit; `npm run crawl:ui` — the click-everything
   Playwright crawl (needs a running dev server; output under `.scratch/ui-crawl/`).
+- `npm run audit:pages` (`src/lib/pageAudit.ts`) — every index record and every
+  linkable graph id, checked through `src/library/pageModel.ts` (the panel's own
+  name/region/status/action code) for an empty and a mid-game character: empty
+  pages, raw ids, casing, generic status, wrong actions, junk rows.
+- `npm run audit:progress` (`src/lib/progressAudit.ts`) — the user's character plus
+  early/mid/late/DLC/denial characters (`__fixtures__/scenarios/progression.ts`)
+  across 16 areas: meter ratios, area ticks vs `resolvedFactIds`, raw ids.
+- Entity index sources, in merge order, live in `buildEntityIndex()`; item
+  descriptions come from the game's own `open/text/*Caption.json` (by kind + id)
+  before the wiki. Rebuild the index after changing the builder, graph or catalog.
 - `npm run test:bundle` — build, then run the bundle-budget guards against fresh
   `dist/` output. `src/lib/bundleBudget.test.ts` skips its `dist/` scans when the
   build is older than the sources, so `npm test` is build-independent.

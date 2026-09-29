@@ -22,6 +22,30 @@ that consume it, and an **UNUSED** flag.
 
 ---
 
+## Current status (2026-09-29) — read this first
+
+- **Shell:** Library sub-views are now `search` / `builds` / `pvp` / `guides` (Kit and Reference
+  moved; `#/library/kit` and `#/library/reference` redirect). The section notes below predate this.
+- **Task 144 (merged):** kind-specific entity pages (region/grace/NPC/boss bodies in
+  `src/library/EntityKinds.tsx`), status lines per kind, progress meters on full sets, readable
+  activity, area-first Journey › Now, stronger-only upgrades.
+- **Page model:** `src/library/pageModel.ts` owns what a page shows (overlay entity with region and
+  display name, `kindStatus`, `trackActionLabel`). Both `EntityPanel` and the page audit use it.
+  The audit previously only checked for empty pages in its "after" mode — it reported 0 casing /
+  raw-id / status faults while the UI showed them. Never re-implement page logic inside an audit.
+- **Entity index:** item descriptions come from the game's own `open/text/*Caption.json` (matched
+  by kind + id); junk rows (Type N, Arms/Body/Head/Legs, "Someone Yet Unseen") are dropped;
+  boss-fight NPC name rows fold into the real record via wiki redirects; names are repaired
+  (`displayName`, never dropping a bracketed qualifier). The shipped index had gone stale vs the
+  code — rebuild it (`npm run index:entities`) whenever builder/graph/catalog/source data changes.
+- **Audits:** `audit:pages` 5 flagged (all genuine gaps: Fetal Position (cut), Let Us Go Together,
+  May the Best Win, Ring of Miquella, The Noble Broken Mask); `audit:progress` 6 characters × 16
+  areas, 0 violations; `audit:links` 0 dead.
+- **Open:** Task 143 (planning: goal stack, route, endings, NG+) is on branch `task-143`, awaiting
+  the user's merge decision. Task 141 (map reader recall, Mt Gelmir) WIP on branch `task-141`.
+  Task 139 (build nerf labels) was stopped at the user's request — do not merge it; the user's
+  builds are researched and stay as they are.
+
 ## 0. Latest (2026-09-23)
 
 - **Four-section shell (Task 91).** The off-canvas "Tarnished" rail, its backdrop, the 3-tab phone

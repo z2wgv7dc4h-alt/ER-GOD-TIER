@@ -62,10 +62,10 @@ drops / strategy fields remain in the table as information.
 | kind | entities | Desc | Location | Map | Coords | Image | Stats | Effect | HP+Neg+Loc | Drops | Strategy | Req+Scale+Loc | Desc+Loc |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | boss | 242 | 92.6% | 100% | 66.1% | · | 46.3% | 87.2% | · | 84.7% | 88.4% | 92.1% | · | · |
-| weapon | 418 | 97.8% | 100% | 0% | · | 73% | · | · | · | · | · | 100% | · |
+| weapon | 418 | 100% | 100% | 0% | · | 73% | · | · | · | · | · | 100% | · |
 | shield | 69 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | 100% | · |
 | armor | 565 | 100% | 100% | 0% | · | 95.6% | 100% | · | · | · | · | · | 100% |
-| talisman | 88 | 100% | 100% | 0% | · | 98.9% | · | 98.9% | · | · | · | · | 100% |
+| talisman | 88 | 100% | 100% | 0% | · | 98.9% | · | 100% | · | · | · | · | 100% |
 | spell | 167 | 100% | 100% | 0% | · | 99.4% | · | — | · | · | · | · | 100% |
 | ash | 86 | 100% | 100% | 0% | · | 88.4% | · | · | · | · | · | · | 100% |
 | spirit | 63 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | · | 100% |
@@ -145,7 +145,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Strategy:** Health: 9,572 HP Defense: 113 Stance: 200 Parryable: No Is vulnerable to a critical hit after being stance broken Damage: Standard, Pierce, Magic Drops 70,000, Remembrance of the Starscourge, Radahn's Great Rune Negations (or Absorptions) Standard: 10 Slash: 10 Strike: 10 Pierce: 0 Magic: 20 Fire: 20 Lightning: 20 Holy: 40 The negation numbers are the&#160;% of your damage that gets blocked. For example, if a negation is 60, 40% of that damage by that type will go through and 60% will be negated. Bigger number = less damage.
 
-**Related:** Deeproot Depths · Ranni — Radahn festival opened Nokron · Radahn's Great Rune · Remembrance of the Starscourge · Caelid · Age of Stars
+**Related:** Realm of Shadow · Ranni — Radahn festival opened Nokron · Radahn's Great Rune · Remembrance of the Starscourge · Caelid · Age of Stars
 
 ### Godrick (`boss:godrick`)
 
@@ -167,7 +167,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Strategy:** Health: 6,080 HP Defense: 105 Stance: 105 Parryable: No Is vulnerable to a critical hit after being stance broken Has increased defense during phase transition His Stormcaller attack deflects throwable items like arrows and pots. Damage: Standard, Strike (phase 1) Standard, Fire, Strike (phase 2) Drops 20,000, Godrick's Great Rune, Remembrance of the Grafted Negations (or Absorptions) Standard: 0 Slash: 0 Strike: 0 Pierce: 0 Magic: 20 Fire: 20 Lightning: 20 Holy: 40 The negation numbers are the&#160;% of your damage that gets blocked.
 
-**Related:** Liurnia of the Lakes · Limgrave Tower Bridge · Margit, the Fell Omen · Godrick's Great Rune · Remembrance of the Grafted · Elden Lord (default)
+**Related:** Limgrave Tower Bridge · Margit, the Fell Omen · Godrick's Great Rune · Remembrance of the Grafted · Elden Lord (default) · Morgott, then the Forge of the Giants
 
 ### Moonveil (`item:moonveil`)
 
@@ -184,6 +184,8 @@ The ten records Task 119 names, printed straight from the built index.
 **Scaling:** Str E · Dex D · Int C
 
 **Skill:** Transient Moonlight
+
+**Type:** Katana
 
 **Related:** Gael Tunnel · Magma Wyrm · Caelid · Moonveil Shinobi
 
@@ -203,6 +205,8 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Skill:** Corpse Piler
 
+**Type:** Katana
+
 **Related:** Near Zamor Ruins · Okina · Mountaintops · Church of Repose · Rivers of Blood · Frost-bleed twinblade
 
 ### Mimic Tear Ash (`item:mimic-tear-ashes`)
@@ -212,6 +216,8 @@ The ten records Task 119 names, printed straight from the built index.
 **Location:** Nokron
 
 **Effect:** Summons mimic tear spirit
+
+**Type:** Spirit Ashes
 
 **Related:** Nokron · Mimic Tear bleed
 
@@ -224,6 +230,8 @@ The ten records Task 119 names, printed straight from the built index.
 **Effect:** Greatly raises attributes, but also increases damage taken
 
 **Weight:** 0.8
+
+**Type:** Talisman
 
 **Related:** Fort Faroth
 
@@ -290,7 +298,7 @@ The ten records Task 119 names, printed straight from the built index.
 - Crescent Moon
 - Cuckoo
 - D, Beholder of Death
-- D, Hunter Of The Dead
+- D, Hunter of the Dead
 - Daedicar
 - Dark Moon
 - Death (outer god)
@@ -301,7 +309,7 @@ The ten records Task 119 names, printed straight from the built index.
 - Elphael Needle Statue
 - Enia
 - Ensha (lord)
-- Ensha Of The Royal Remains
+- Ensha of the Royal Remains
 - Fell God
 - Fia
 - Fia, Deathbed Companion
@@ -356,7 +364,7 @@ The ten records Task 119 names, printed straight from the built index.
 - Milos
 - Miquella of the Haligtree
 - Miranda
-- Miriel, Pastor Of Vows
+- Miriel, Pastor of Vows
 - Moon
 - Moore
 - Nameless White Mask
@@ -388,7 +396,7 @@ The ten records Task 119 names, printed straight from the built index.
 - Puppet Master
 - Queen Marika
 - Queen Marika the Eternal
-- Ranni The Witch
+- Ranni the Witch
 - Rauh Goddess Statue
 - Redeemer Guilbert
 - Redmane Freyja
@@ -438,13 +446,13 @@ The ten records Task 119 names, printed straight from the built index.
 - White-faced Varré
 - White Mask Varré
 - Winged Serpents
-- Witch-hunter Jerren
+- Witch-Hunter Jerren
 - Yuri
 
 ### region — description + location (locations) (310/312)
 
 - (unresolved)
-- Miquella’s Haligtree
+- Miquella's Haligtree
 
 ### enemy — description + location (enemies) (1303/1312)
 
@@ -469,12 +477,12 @@ dropped silently.
 | --- | --- |
 | acquisition | 2148 |
 | shops | 348 |
-| checklists/graces | 221 |
-| fanapi/locations | 76 |
-| checklists/locations | 65 |
+| checklists/graces | 219 |
+| fanapi/locations | 74 |
 | recipes | 64 |
+| checklists/locations | 63 |
 | checklists/bosses | 1 |
 | fanapi/bosses | 1 |
 | armory-bosses | 1 |
 
-_Regenerated 2026-09-28._
+_Regenerated 2026-09-29._

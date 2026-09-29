@@ -4,7 +4,7 @@
     "name": "Baleful Shadow",
     "campaign": "base",
     "region": "A",
-    "location": "The Lands Between",
+    "location": "A",
     "grace": null,
     "tier": "major",
     "requiredForEnding": false,
@@ -27,7 +27,7 @@
     "name": "Gnarrl, Draconic Sentinel",
     "campaign": "base",
     "region": "A",
-    "location": "The Lands Between",
+    "location": "A",
     "grace": "Prince of Death's Throne",
     "tier": "major",
     "requiredForEnding": false,
@@ -47,7 +47,7 @@
     "name": "Grave Sentinel Wyngrant",
     "campaign": "base",
     "region": "A",
-    "location": "The Lands Between",
+    "location": "A",
     "grace": null,
     "tier": "major",
     "requiredForEnding": false,
@@ -67,7 +67,7 @@
     "name": "Miranda & Omenkiller",
     "campaign": "base",
     "region": "A",
-    "location": "The Lands Between",
+    "location": "A",
     "grace": null,
     "tier": "major",
     "requiredForEnding": false,
@@ -371,8 +371,8 @@
     "drops": [
       "9,400 Runes",
       "9400 Runes",
-      "Perfumer Tricia Ashes",
-      "[[Perfumer Tricia (ash)"
+      "Perfumer Tricia (ash)",
+      "Perfumer Tricia Ashes"
     ],
     "coords": {
       "x": 8.09,
@@ -406,26 +406,6 @@
     "hp": 3354,
     "sources": [
       "hunts"
-    ]
-  },
-  {
-    "id": "boss:godfrey-the-grafted",
-    "name": "Godfrey The Grafted",
-    "campaign": "base",
-    "region": "Altus Plateau",
-    "location": "Golden Lineage Evergaol",
-    "grace": null,
-    "tier": "evergaol",
-    "requiredForEnding": false,
-    "drops": [
-      "26,000 Runes",
-      "Godfrey Icon",
-      "Other Drops"
-    ],
-    "coords": null,
-    "hp": null,
-    "sources": [
-      "checklists/bosses"
     ]
   },
   {
@@ -669,7 +649,7 @@
     "name": "Fell Twins",
     "campaign": "base",
     "region": "Altus Plateau",
-    "location": "The Lands Between",
+    "location": "Altus Plateau",
     "grace": null,
     "tier": "field",
     "requiredForEnding": false,
@@ -907,34 +887,11 @@
     ]
   },
   {
-    "id": "boss:crucible-knight-devonia",
-    "name": "Crucible Knight Devonia",
-    "campaign": "base",
-    "region": "Ancient Ruins of Rauh",
-    "location": "The Lands Between",
-    "grace": "Ravine North",
-    "tier": "major",
-    "requiredForEnding": false,
-    "drops": [
-      "Crucible Hammer-Helm",
-      "Devonia's Hammer"
-    ],
-    "coords": {
-      "x": 15.4,
-      "y": 14.99,
-      "map": "m61_45_47_10"
-    },
-    "hp": 840,
-    "sources": [
-      "boss-list"
-    ]
-  },
-  {
     "id": "boss:divine-beast-storm-warrior",
     "name": "Divine Beast Storm Warrior",
     "campaign": "base",
     "region": "B",
-    "location": "The Lands Between",
+    "location": "B",
     "grace": null,
     "tier": "major",
     "requiredForEnding": false,
@@ -954,7 +911,7 @@
     "name": "Crazed Duelist",
     "campaign": "base",
     "region": "C",
-    "location": "The Lands Between",
+    "location": "C",
     "grace": null,
     "tier": "major",
     "requiredForEnding": false,
@@ -970,42 +927,11 @@
     ]
   },
   {
-    "id": "boss:erdtree-burial-watchdogs",
-    "name": "Erdtree Burial Watchdogs",
-    "campaign": "base",
-    "region": "C",
-    "location": "The Lands Between",
-    "grace": null,
-    "tier": "major",
-    "requiredForEnding": false,
-    "drops": [
-      "1,300 Runes",
-      "12,000 Runes",
-      "2,400 Runes",
-      "3,200 Runes",
-      "7,400 Runes",
-      "Demi-Human Ashes",
-      "Glovewort Picker's Bell Bearing (1)",
-      "Kaiden Sellsword Ashes",
-      "Mad Pumpkin Head Ashes",
-      "Noble Sorcerer Ashes"
-    ],
-    "coords": {
-      "x": -123.4,
-      "y": 73.3,
-      "map": "m30_14_00_00"
-    },
-    "hp": null,
-    "sources": [
-      "boss-list"
-    ]
-  },
-  {
     "id": "boss:morion-unbound-death",
     "name": "Morion, Unbound Death",
     "campaign": "base",
     "region": "C",
-    "location": "The Lands Between",
+    "location": "C",
     "grace": "Farum Greatbridge",
     "tier": "major",
     "requiredForEnding": false,
@@ -1183,8 +1109,8 @@
     "name": "Fallen Cavalry",
     "campaign": "base",
     "region": "Caelid",
-    "location": "The Lands Between",
-    "grace": "Secluded Cell",
+    "location": "Caelid",
+    "grace": null,
     "tier": "major",
     "requiredForEnding": false,
     "drops": [],
@@ -2046,7 +1972,7 @@
     "name": "Blighted Avatar",
     "campaign": "base",
     "region": "D",
-    "location": "The Lands Between",
+    "location": "D",
     "grace": null,
     "tier": "major",
     "requiredForEnding": false,
@@ -2160,7 +2086,7 @@
     "name": "Night's Cavalry",
     "campaign": "base",
     "region": "Forbidden Lands",
-    "location": "Forbidden Lands",
+    "location": "Liurnia of the Lakes",
     "grace": "Agheel Lake North",
     "tier": "field",
     "requiredForEnding": false,
@@ -2470,7 +2396,7 @@
     "name": "Banished Knight",
     "campaign": "base",
     "region": "L",
-    "location": "The Lands Between",
+    "location": "L",
     "grace": null,
     "tier": "major",
     "requiredForEnding": false,
@@ -2497,7 +2423,7 @@
     "name": "Crucible Knight Rhyacis",
     "campaign": "base",
     "region": "L",
-    "location": "The Lands Between",
+    "location": "L",
     "grace": null,
     "tier": "major",
     "requiredForEnding": false,
@@ -2517,7 +2443,7 @@
     "name": "Demi-Human Queen Mairead",
     "campaign": "base",
     "region": "L",
-    "location": "The Lands Between",
+    "location": "L",
     "grace": "Church of Pilgrimage",
     "tier": "major",
     "requiredForEnding": false,
@@ -2537,7 +2463,7 @@
     "name": "Equilibrious Beast",
     "campaign": "base",
     "region": "L",
-    "location": "The Lands Between",
+    "location": "L",
     "grace": null,
     "tier": "major",
     "requiredForEnding": false,
@@ -2557,7 +2483,7 @@
     "name": "Fellthorn Spirit",
     "campaign": "base",
     "region": "L",
-    "location": "The Lands Between",
+    "location": "L",
     "grace": "Foot of the Forge",
     "tier": "major",
     "requiredForEnding": false,
@@ -2577,7 +2503,7 @@
     "name": "Hallowed Avatar",
     "campaign": "base",
     "region": "L",
-    "location": "The Lands Between",
+    "location": "L",
     "grace": null,
     "tier": "major",
     "requiredForEnding": false,
@@ -2597,7 +2523,7 @@
     "name": "Miranda Blossom",
     "campaign": "base",
     "region": "L",
-    "location": "The Lands Between",
+    "location": "L",
     "grace": "Tombsward Cave (Site of Grace)",
     "tier": "major",
     "requiredForEnding": false,
@@ -2623,7 +2549,7 @@
     "name": "Royal Guardian Helicos",
     "campaign": "base",
     "region": "L",
-    "location": "The Lands Between",
+    "location": "L",
     "grace": null,
     "tier": "major",
     "requiredForEnding": false,
@@ -2643,7 +2569,7 @@
     "name": "Thief-Taker Acacio",
     "campaign": "base",
     "region": "L",
-    "location": "The Lands Between",
+    "location": "L",
     "grace": "Liurnia Lake Shore",
     "tier": "major",
     "requiredForEnding": false,
@@ -2911,7 +2837,7 @@
     "name": "Fia's Champions",
     "campaign": "base",
     "region": "Limgrave",
-    "location": "The Lands Between",
+    "location": "Limgrave",
     "grace": null,
     "tier": "major",
     "requiredForEnding": false,
@@ -3402,7 +3328,7 @@
     "name": "Night's Cavalry",
     "campaign": "base",
     "region": "Limgrave",
-    "location": "Limgrave",
+    "location": "Liurnia of the Lakes",
     "grace": "Agheel Lake North",
     "tier": "field",
     "requiredForEnding": false,
@@ -3550,8 +3476,8 @@
     "name": "Alabaster Lord",
     "campaign": "base",
     "region": "Liurnia of the Lakes",
-    "location": "The Lands Between",
-    "grace": "Church of the Plague",
+    "location": "Liurnia of the Lakes",
+    "grace": null,
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
@@ -3729,7 +3655,7 @@
     "name": "Fulminating Runebear",
     "campaign": "base",
     "region": "Liurnia of the Lakes",
-    "location": "The Lands Between",
+    "location": "Liurnia of the Lakes",
     "grace": "East Raya Lucaria Gate",
     "tier": "major",
     "requiredForEnding": false,
@@ -3848,22 +3774,6 @@
     "hp": 380,
     "sources": [
       "hunts"
-    ]
-  },
-  {
-    "id": "boss:adan-theif-of-fire",
-    "name": "Adan, Theif of Fire",
-    "campaign": "base",
-    "region": "Liurnia of the Lakes",
-    "location": "Liurnia of the Lakes",
-    "grace": null,
-    "tier": "evergaol",
-    "requiredForEnding": false,
-    "drops": [],
-    "coords": null,
-    "hp": null,
-    "sources": [
-      "armory-bosses"
     ]
   },
   {
@@ -4447,22 +4357,6 @@
     ]
   },
   {
-    "id": "boss:deathrite-bird",
-    "name": "Deathrite Bird",
-    "campaign": "base",
-    "region": "Many",
-    "location": "Many",
-    "grace": null,
-    "tier": "field",
-    "requiredForEnding": false,
-    "drops": [],
-    "coords": null,
-    "hp": null,
-    "sources": [
-      "armory-bosses"
-    ]
-  },
-  {
     "id": "boss:malenia",
     "name": "Malenia, Blade of Miquella",
     "campaign": "base",
@@ -4618,7 +4512,7 @@
     "name": "Abductor Virgins",
     "campaign": "base",
     "region": "Mount Gelmir",
-    "location": "The Lands Between",
+    "location": "Mount Gelmir",
     "grace": "Abductor Virgin",
     "tier": "major",
     "requiredForEnding": false,
@@ -4778,33 +4672,6 @@
     "hp": null,
     "sources": [
       "armory-bosses"
-    ]
-  },
-  {
-    "id": "boss:spirit-caller-snail",
-    "name": "Spirit-Caller Snail",
-    "campaign": "base",
-    "region": "Mountaintops of the Giants",
-    "location": "Road&#39;s End Catacombs, Spiritcaller Cave",
-    "grace": "Road's End Catacombs",
-    "tier": "dungeon",
-    "requiredForEnding": false,
-    "drops": [
-      "170000 Runes",
-      "3,000 Runes",
-      "3000 Runes",
-      "70,000 Runes",
-      "Ash of War: Black Flame Tornado",
-      "Black Flame Ritual",
-      "Glintstone Sorcerer Ashes",
-      "Glintstone Sorcerer Ashes ",
-      "Godskin Swaddling Cloth",
-      "Smithing-Stone Miner's Bell Bearing [4]"
-    ],
-    "coords": null,
-    "hp": 1722,
-    "sources": [
-      "bosses-fextralife"
     ]
   },
   {
@@ -5133,7 +5000,7 @@
     "name": "Crucible Knight Hirnan",
     "campaign": "base",
     "region": "N",
-    "location": "The Lands Between",
+    "location": "N",
     "grace": null,
     "tier": "major",
     "requiredForEnding": false,
@@ -5153,7 +5020,7 @@
     "name": "Gnoster, the False Sky",
     "campaign": "base",
     "region": "N",
-    "location": "The Lands Between",
+    "location": "N",
     "grace": null,
     "tier": "major",
     "requiredForEnding": false,
@@ -5173,7 +5040,7 @@
     "name": "Nox Nightmaiden",
     "campaign": "base",
     "region": "N",
-    "location": "The Lands Between",
+    "location": "N",
     "grace": null,
     "tier": "major",
     "requiredForEnding": false,
@@ -5400,7 +5267,7 @@
     "name": "Flamelost Knights",
     "campaign": "base",
     "region": "V",
-    "location": "The Lands Between",
+    "location": "V",
     "grace": null,
     "tier": "major",
     "requiredForEnding": false,
@@ -5906,6 +5773,29 @@
     ]
   },
   {
+    "id": "boss:crucible-knight-devonia",
+    "name": "Crucible Knight Devonia",
+    "campaign": "sote",
+    "region": "Ancient Ruins of Rauh",
+    "location": "Ancient Ruins of Rauh",
+    "grace": null,
+    "tier": "major",
+    "requiredForEnding": false,
+    "drops": [
+      "Crucible Hammer-Helm",
+      "Devonia's Hammer"
+    ],
+    "coords": {
+      "x": 15.4,
+      "y": 14.99,
+      "map": "m61_45_47_10"
+    },
+    "hp": 840,
+    "sources": [
+      "boss-list"
+    ]
+  },
+  {
     "id": "hunt:putrescent-knight",
     "name": "Putrescent Knight",
     "campaign": "sote",
@@ -5958,7 +5848,7 @@
     "name": "Ghostflame Dragon",
     "campaign": "sote",
     "region": "Cerulean Coast",
-    "location": "Cerulean Coast",
+    "location": "Charo's Hidden Grave",
     "grace": "Greatbridge, North",
     "tier": "major",
     "requiredForEnding": false,
@@ -6183,7 +6073,7 @@
     "name": "Ghostflame Dragon",
     "campaign": "sote",
     "region": "Gravesite Plain",
-    "location": "Gravesite Plain",
+    "location": "Charo's Hidden Grave",
     "grace": "Greatbridge, North",
     "tier": "major",
     "requiredForEnding": false,
@@ -6663,7 +6553,7 @@
     "name": "Ghostflame Dragon",
     "campaign": "sote",
     "region": "Scadu Altus",
-    "location": "Scadu Altus",
+    "location": "Charo's Hidden Grave",
     "grace": "Greatbridge, North",
     "tier": "major",
     "requiredForEnding": false,
@@ -6740,7 +6630,7 @@
     "name": "Ralva the Great Red Bear",
     "campaign": "sote",
     "region": "Scadu Altus",
-    "location": "Scadu Altus",
+    "location": "Gravesite Plain",
     "grace": "Highroad Cross",
     "tier": "major",
     "requiredForEnding": false,
