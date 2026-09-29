@@ -11,8 +11,8 @@ Scenarios audited: **6** · violations: **0**
 | meter | have | total | ratio |
 | --- | --- | --- | --- |
 | Graces | 5 | 404 | 0.012 |
-| Bosses | 2 | 257 | 0.008 |
-| Items found | 26 | 3062 | 0.008 |
+| Bosses | 3 | 220 | 0.014 |
+| Items found | 26 | 3048 | 0.009 |
 
 Lockouts at Stormveil: _none_
 
@@ -23,8 +23,8 @@ Positive upgrades surfaced by Now: 0
 | meter | have | total | ratio |
 | --- | --- | --- | --- |
 | Graces | 5 | 404 | 0.012 |
-| Bosses | 1 | 257 | 0.004 |
-| Items found | 1 | 3043 | 0.000 |
+| Bosses | 1 | 220 | 0.005 |
+| Items found | 1 | 3029 | 0.000 |
 
 Lockouts at Stormveil: _none_
 
@@ -35,8 +35,8 @@ Positive upgrades surfaced by Now: 0
 | meter | have | total | ratio |
 | --- | --- | --- | --- |
 | Graces | 6 | 404 | 0.015 |
-| Bosses | 5 | 257 | 0.019 |
-| Items found | 4 | 3045 | 0.001 |
+| Bosses | 5 | 220 | 0.023 |
+| Items found | 4 | 3031 | 0.001 |
 
 Lockouts at Stormveil: _none_
 
@@ -47,8 +47,8 @@ Positive upgrades surfaced by Now: 0
 | meter | have | total | ratio |
 | --- | --- | --- | --- |
 | Graces | 2 | 404 | 0.005 |
-| Bosses | 4 | 257 | 0.016 |
-| Items found | 7 | 3048 | 0.002 |
+| Bosses | 5 | 220 | 0.023 |
+| Items found | 7 | 3034 | 0.002 |
 
 Lockouts at Stormveil: _none_
 
@@ -59,8 +59,8 @@ Positive upgrades surfaced by Now: 0
 | meter | have | total | ratio |
 | --- | --- | --- | --- |
 | Graces | 3 | 404 | 0.007 |
-| Bosses | 3 | 257 | 0.012 |
-| Items found | 3 | 3045 | 0.001 |
+| Bosses | 3 | 220 | 0.014 |
+| Items found | 3 | 3031 | 0.001 |
 
 Lockouts at Stormveil: _none_
 
@@ -71,8 +71,8 @@ Positive upgrades surfaced by Now: 0
 | meter | have | total | ratio |
 | --- | --- | --- | --- |
 | Graces | 5 | 404 | 0.012 |
-| Bosses | 1 | 257 | 0.004 |
-| Items found | 0 | 3042 | 0.000 |
+| Bosses | 1 | 220 | 0.005 |
+| Items found | 0 | 3028 | 0.000 |
 
 Lockouts at Stormveil: _none_
 

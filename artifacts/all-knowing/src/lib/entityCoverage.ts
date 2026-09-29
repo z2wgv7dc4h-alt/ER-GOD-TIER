@@ -1,4 +1,4 @@
-import { allEntities, type EntityKind } from './entityGraph'
+import { allEntities, canonicalEntityId, hasEntity, type EntityKind } from './entityGraph'
 import type { EntityRecord } from './entityIndex'
 
 /**
@@ -49,6 +49,12 @@ function drops(record: EntityRecord | undefined): boolean {
  * from every authored graph item. The remaining kinds (bosses, graces, quests,
  * …) are measured from the entity graph as before.
  */
+/** True when the id only aliases another known fact. */
+function isAliasOnly(id: string): boolean {
+  const canonical = canonicalEntityId(id)
+  return canonical !== id && hasEntity(canonical)
+}
+
 export const CATALOGUE_KINDS: EntityKind[] = ['weapon', 'shield', 'armor', 'talisman', 'spell', 'ash', 'spirit', 'item']
 const CATALOGUE_KIND_SET = new Set<EntityKind>(CATALOGUE_KINDS)
 
@@ -147,6 +153,8 @@ export function computeEntityCoverage(
   // any extra enrichment record the graph does not know (e.g. armor) appended.
   for (const entity of allEntities()) {
     if (CATALOGUE_KIND_SET.has(entity.kind)) continue
+    // An alias id (a hunt id the roster files under an encounter) is not a page of its own.
+    if (isAliasOnly(entity.id)) continue
     seen.add(entity.id)
     const list = byKind.get(entity.kind) ?? []
     list.push(lookup.get(entity.id))
@@ -217,6 +225,8 @@ export function guardMisses(
   const seen = new Set<string>()
   for (const entity of allEntities()) {
     if (CATALOGUE_KIND_SET.has(entity.kind)) continue
+    // An alias id (a hunt id the roster files under an encounter) is not a page of its own.
+    if (isAliasOnly(entity.id)) continue
     seen.add(entity.id)
     byKind.set(entity.kind, [...(byKind.get(entity.kind) ?? []), lookup.get(entity.id)])
   }

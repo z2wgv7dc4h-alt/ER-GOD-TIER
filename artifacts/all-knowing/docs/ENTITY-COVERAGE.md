@@ -35,7 +35,7 @@ drops / strategy fields remain in the table as information.
 | grace: coords | ≥ 100% | 100% | PASS |
 | npc: description (characters) | ≥ 95% | 99.5% | PASS |
 | region: description + location (locations) | ≥ 95% | 99.4% | PASS |
-| enemy: description + location (enemies) | ≥ 95% | 99.3% | PASS |
+| enemy: description + location (enemies) | ≥ 95% | 99.2% | PASS |
 
 ## Before (no enrichment index)
 
@@ -61,7 +61,7 @@ drops / strategy fields remain in the table as information.
 
 | kind | entities | Desc | Location | Map | Coords | Image | Stats | Effect | HP+Neg+Loc | Drops | Strategy | Req+Scale+Loc | Desc+Loc |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| boss | 337 | 94.1% | 100% | 47.5% | · | 63.2% | 91.7% | · | 89.9% | 85.8% | 94.7% | · | · |
+| boss | 280 | 97.1% | 100% | 54.6% | · | 74.3% | 99.3% | · | 98.6% | 90% | 98.6% | · | · |
 | weapon | 418 | 100% | 100% | 0% | · | 73% | · | · | · | · | · | 100% | · |
 | shield | 69 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | 100% | · |
 | armor | 565 | 100% | 100% | 0% | · | 95.6% | 100% | · | · | · | · | · | 100% |
@@ -75,7 +75,7 @@ drops / strategy fields remain in the table as information.
 | grace | 416 | 100% | 100% | · | 100% | · | · | · | · | · | · | · | · |
 | dungeon | 119 | 90.8% | 100% | 100% | · | 99.2% | · | · | · | · | · | · | · |
 | region | 312 | 99.4% | 99.7% | 0.6% | · | · | · | · | · | · | · | · | · |
-| enemy | 1305 | 100% | 99.3% | 0% | · | 0% | 96.3% | · | 91.1% | 7.2% | 0% | · | · |
+| enemy | 1326 | 100% | 99.2% | 0% | · | 0% | 96.4% | · | 91% | 7.3% | 0% | · | · |
 
 ## Spot checks
 
@@ -97,7 +97,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Status resist:** Poison 154 · Scarlet Rot 154 · Bleed 154 · Sleep 999 · Madness 999 · Curse 999
 
-**Drops:** 12,000 Runes · Talisman Pouch · 16,800 Runes · Viridian Amber Medallion 1
+**Drops:** 12,000 Runes · Talisman Pouch · 16,800 Runes · Viridian Amber Medallion 1 · Viridian Amber Medallion +1
 
 **Strategy:** Health: 4,174 HP Defense: 103 Stance: 80 Parryable: Yes, but 2 parries are required per stance break Is vulnerable to a critical hit after being stance broken or parried Damage: Standard, Strike, Pierce, Holy Drops 12,000, Talisman Pouch (NG only) Negations (or Absorptions) Standard: 0 Slash: -10 Strike: 0 Pierce: 0 Magic: 0 Fire: 0 Lightning: 0 Holy: 40 The negation numbers are the&#160;% of your damage that gets blocked. For example, if a negation is 60, 40% of that damage by that type will go through and 60% will be negated. Bigger number = less damage.
 
@@ -109,7 +109,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Location:** Elphael, Brace of the Haligtree
 
-**Coords:** -18.968, 52.343 (m15_00_00_00)
+**Coords:** -25.87, 51.95 (m15_00_00_00)
 
 **HP:** 2489
 
@@ -119,7 +119,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Status resist:** Poison 542 · Scarlet Rot 542 · Bleed 154 · Sleep 252 · Madness 999 · Curse 999
 
-**Drops:** Malenia's Great Rune · Remembrance of the Rot Goddess · 480,000 Runes · * Malenia's Great Rune
+**Drops:** Malenia's Great Rune · Remembrance of the Rot Goddess · 480,000 Runes · Miquella's Needle · * Malenia's Great Rune
 
 **Strategy:** Health: 33,251 HP (Phase 1: 18,473, Phase 2: 14,778 ) Defense: 123 Stance: 80 Parryable: Yes, but 3 parries are required per stance break Is vulnerable to a critical hit after being stance broken or parried Damage: Standard, Slash, Pierce (Phase 1), Standard, Slash, Pierce, Holy (Phase 2) Inflicts: Scarlet Rot (Phase 2) Drops 480,000, Malenia's Great Rune, Remembrance of the Rot Goddess Negations (or Absorptions) Standard: 10 Slash: 10 Strike: 10 Pierce: 10 Magic: 20 Fire: 0 (in water: 10 ) Lightning: 20 (in water: 10 ) Holy: 40 The negation numbers are the&#160;% of your dam…
 
@@ -454,9 +454,10 @@ The ten records Task 119 names, printed straight from the built index.
 - (unresolved)
 - Miquella's Haligtree
 
-### enemy — description + location (enemies) (1296/1305)
+### enemy — description + location (enemies) (1316/1326)
 
 - Avionette Soldier
+- Banished Knight
 - Boar
 - Deer
 - Giant Land Octopus
@@ -475,7 +476,7 @@ dropped silently.
 
 | source | unmatched rows |
 | --- | --- |
-| acquisition | 2140 |
+| acquisition | 2151 |
 | shops | 348 |
 | checklists/graces | 219 |
 | fanapi/locations | 74 |
@@ -483,5 +484,6 @@ dropped silently.
 | checklists/locations | 63 |
 | checklists/bosses | 2 |
 | fanapi/bosses | 2 |
+| armory-bosses | 2 |
 
 _Regenerated 2026-09-29._

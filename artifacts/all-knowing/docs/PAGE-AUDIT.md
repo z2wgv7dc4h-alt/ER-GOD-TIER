@@ -18,14 +18,14 @@ and every entity-graph id the app can link to.
 
 | kind | entities | flagged | empty | raw ids | bad casing | generic status | wrong actions | wiki nav | junk rows | boss filed as NPC |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| enemy | 1305 | 1305 | 0 | 0 | 0 | 1305 | 0 | 0 | 0 | 0 |
-| item | 1201 | 4 | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| enemy | 1326 | 1325 | 0 | 0 | 0 | 1325 | 0 | 0 | 0 | 0 |
+| item | 1187 | 4 | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | armor | 750 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | quest | 468 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | weapon | 441 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | grace | 416 | 416 | 0 | 0 | 0 | 387 | 416 | 0 | 0 | 0 |
-| boss | 337 | 158 | 0 | 0 | 0 | 158 | 0 | 0 | 0 | 0 |
 | region | 311 | 311 | 0 | 0 | 0 | 302 | 311 | 0 | 0 | 0 |
+| boss | 280 | 105 | 0 | 0 | 0 | 105 | 0 | 0 | 0 | 0 |
 | spell | 217 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | npc | 195 | 195 | 1 | 0 | 0 | 195 | 195 | 0 | 0 | 0 |
 | talisman | 158 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -39,20 +39,20 @@ and every entity-graph id the app can link to.
 | gate | 10 | 10 | 0 | 0 | 0 | 10 | 0 | 0 | 0 | 0 |
 | ending | 5 | 5 | 0 | 0 | 0 | 5 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **total** | **6407** | **2629** | 5 | 0 | 0 | 2481 | 1147 | 0 | 0 | 0 |
+| **total** | **6357** | **2596** | 5 | 0 | 0 | 2448 | 1147 | 0 | 0 | 0 |
 
 ## After
 
 | kind | entities | flagged | empty | raw ids | bad casing | generic status | wrong actions | wiki nav | junk rows | boss filed as NPC |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| enemy | 1305 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| item | 1202 | 4 | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| enemy | 1326 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| item | 1188 | 4 | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | armor | 750 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | quest | 468 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | weapon | 441 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | grace | 416 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| boss | 337 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | region | 312 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| boss | 280 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | spell | 217 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | npc | 195 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | talisman | 158 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -66,9 +66,9 @@ and every entity-graph id the app can link to.
 | gate | 10 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | ending | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **total** | **6409** | **5** | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **total** | **6359** | **5** | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
-Task 144 removed **2624** flagged pages
+Task 144 removed **2591** flagged pages
 (empty, raw ids, bad casing, generic status, wrong actions, wiki nav, junk rows, boss filed as NPC).
 
 ## Remaining empty pages, by name

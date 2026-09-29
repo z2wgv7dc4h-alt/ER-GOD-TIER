@@ -44,11 +44,13 @@ describe('per-encounter bosses', () => {
     expect(knownFactIds(c).has(NC)).toBe(true)
   })
 
-  it("an encounter implies only its own region — a Forbidden Lands kill does not prove Limgrave via the shared id", () => {
+  it("an encounter implies its own region, never another copy of the boss", () => {
     const c = applyFacts(emptyCharacter, [forbidden().id], 'answer', 'test')
     const known = resolvedFactIds(c)
     expect(known.has('region:mountaintops')).toBe(true)
-    expect(known.has('region:limgrave')).toBe(false)
+    for (const other of encountersOf(NC).filter((r) => r.id !== forbidden().id)) {
+      expect(known.has(other.id), other.id).toBe(false)
+    }
   })
 
   it('the shared page counts encounters and has no single "Mark defeated"', () => {

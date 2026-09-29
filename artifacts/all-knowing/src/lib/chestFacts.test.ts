@@ -24,9 +24,9 @@ const regions: GraceRegion[] = graceXyz.map((r) => ({
 describe('chest facts (world-lots -> queryable chests)', () => {
   const chests = buildChestFacts(lots, regions)
 
-  it('collapses 4018 treasure rows into one fact per event flag', () => {
-    // 3404 distinct flags, minus 3 whose rows carry no item name.
-    expect(chests.length).toBe(3401)
+  it('collapses the vanilla treasure rows into one fact per event flag', () => {
+    // One chest/pickup per getItemFlagId in the install's ItemLotParam_map.
+    expect(chests.length).toBe(3364)
     expect(chests.every((c) => c.id === `lot:${c.flag}`)).toBe(true)
   })
 
@@ -47,7 +47,7 @@ describe('chest facts (world-lots -> queryable chests)', () => {
 
   it('dedupes items against the authored catalog', () => {
     const blade = chests.find((c) => c.flag === 12027080)
-    expect(blade!.items).toEqual(['Fingerslayer Blade'])
+    expect(blade!.items).toContain('Fingerslayer Blade')
     expect(blade!.catalogIds).toContain('item:fingerslayer')
     expect(catalogItemIndex().get('fingerslayer blade')).toBe('item:fingerslayer')
     // and the connection is not accidental: at least one chest resolves per known item

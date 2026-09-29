@@ -25,8 +25,8 @@ describe('relatedFor — item: item:fingerslayer (Fingerslayer Blade)', () => {
     expect(linkedIds('item:fingerslayer', 'usedIn')).toContain('quest:ranni:nokron')
   })
 
-  it('leads to the Grand Cloister Astel, the encounter it gates in the catalog graph', () => {
-    expect(linkedIds('item:fingerslayer', 'leadsTo')).toContain('boss:astel--grand-cloister')
+  it('leads to Astel, Naturalborn of the Void, the boss it gates in the catalog graph', () => {
+    expect(linkedIds('item:fingerslayer', 'leadsTo')).toContain('boss:astel')
   })
 
   it('is a beat of the Age of Stars route', () => {
@@ -96,10 +96,10 @@ describe('relatedFor — honesty and routing', () => {
   })
 
   it('canonicalises an engine id and links it to the authored fact', () => {
-    const r = relatedFor('bossflag:530100')
-    expect(r.canonical).toBe('boss:tree-sentinel')
-    expect(linkedIds('bossflag:530100', 'alias')).toContain('boss:tree-sentinel')
-    expect(r.node?.name).toBe('Tree Sentinel')
+    const r = relatedFor('bossflag:1042360800')
+    expect(r.canonical).toBe('boss:tree-sentinel--church-of-elleh')
+    expect(linkedIds('bossflag:1042360800', 'alias')).toContain('boss:tree-sentinel--church-of-elleh')
+    expect(r.node?.name).toBe('Tree Sentinel (Church of Elleh)')
   })
 
   it('links a loot row to its nearest grace on the map', () => {

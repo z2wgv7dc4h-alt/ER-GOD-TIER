@@ -1,5 +1,5 @@
 import type { Campaign } from '../types'
-import bossRosterJson from '../data/bosses.json'
+import bossRosterJson from '../data/bosses.json' with { type: 'json' }
 import { REGULATION_STAMP } from '../lib/regulation.ts'
 
 /**
@@ -76,7 +76,7 @@ export const facts: Fact[] = [
   { id: 'boss:rennala', kind: 'boss', name: 'Rennala, Queen of the Full Moon', aliases: ['rennala'], region: 'Raya Lucaria', campaign: 'base', implies: ['boss:red-wolf'], drops: ['item:rennala-great-rune', 'item:remembrance-full-moon-queen'] },
   { id: 'boss:radahn', kind: 'boss', name: 'Starscourge Radahn', aliases: ['radahn', 'general radahn'], region: 'Caelid', campaign: 'base', implies: ['quest:ranni:festival'], drops: ['item:radahn-great-rune', 'item:remembrance-starscourge'] },
   { id: 'boss:rykard', kind: 'boss', name: 'Rykard, Lord of Blasphemy', aliases: ['rykard', 'god-devouring serpent'], region: 'Mt. Gelmir', campaign: 'base', implies: [], drops: ['item:rykard-great-rune', 'item:remembrance-blasphemous'] },
-  { id: 'boss:godfrey-golden', kind: 'boss', name: 'Godfrey, First Elden Lord (golden shade)', aliases: ['golden godfrey', 'godfrey shade'], region: 'Leyndell', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
+  { id: 'boss:godfrey-golden', kind: 'boss', name: 'Godfrey, First Elden Lord (golden shade)', aliases: ['golden godfrey', 'godfrey shade'], region: 'Leyndell', campaign: 'base', implies: ['region:leyndell'] },
   { id: 'boss:morgott', kind: 'boss', name: 'Morgott, the Omen King', aliases: ['morgott', 'omen king'], region: 'Leyndell', campaign: 'base', implies: ['boss:godfrey-golden'], drops: ['item:morgott-great-rune', 'item:remembrance-omen-king'] },
   { id: 'boss:fire-giant', kind: 'boss', name: 'Fire Giant', aliases: [], region: 'Mountaintops', campaign: 'base', implies: ['grace:forge-giants'], drops: ['item:remembrance-fire-giant'] },
   { id: 'boss:godskin-duo', kind: 'boss', name: 'Godskin Duo', aliases: [], region: 'Farum Azula', campaign: 'base', implies: ['region:farum'] },
@@ -120,7 +120,8 @@ export const facts: Fact[] = [
   { id: 'item:golden-order-flail', kind: 'item', name: 'Golden Order Flail', aliases: ['order flail'], region: 'Leyndell', campaign: 'tarnished-pack', implies: ['region:leyndell'] },
   { id: 'item:reverse-bladed', kind: 'item', name: 'Reverse-Bladed Sword', aliases: ['backhand blade tarnished'], region: 'Roundtable', campaign: 'tarnished-pack', implies: [] },
 
-  { id: 'boss:astel', kind: 'boss', name: 'Astel, Naturalborn of the Void', aliases: ['astel'], region: 'Lake of Rot', campaign: 'base', implies: [], drops: ['item:remembrance-naturalborn'] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
+
+  { id: 'boss:astel', kind: 'boss', name: 'Astel, Naturalborn of the Void', aliases: ['astel'], region: 'Lake of Rot', campaign: 'base', implies: ['item:fingerslayer'], drops: ['item:remembrance-naturalborn'] },
 
   { id: 'quest:ranni:festival', kind: 'quest', name: 'Ranni — Radahn festival opened Nokron', aliases: [], region: 'Caelid', campaign: 'base', implies: ['quest:ranni:service'] },
   { id: 'quest:ranni:service', kind: 'quest', name: 'Ranni — entered her service', aliases: ['ranni rise'], region: 'Liurnia', campaign: 'base', implies: ['grace:lake-shore'] },
@@ -146,7 +147,7 @@ export const facts: Fact[] = [
   { id: 'boss:magma-wyrm-makar', kind: 'boss', name: 'Magma Wyrm Makar', aliases: ['makar'], region: 'Liurnia', campaign: 'base', implies: ['region:liurnia'] },
   { id: 'boss:commander-niall', kind: 'boss', name: 'Commander Niall', aliases: ['niall'], region: 'Mountaintops', campaign: 'base', implies: ['item:haligtree-secret-medallion'] },
   { id: 'boss:loretta-haligtree', kind: 'boss', name: 'Loretta, Knight of the Haligtree', aliases: ['loretta haligtree'], region: 'Haligtree', campaign: 'base', implies: ['grace:haligtree-town'] },
-  { id: 'boss:adula', kind: 'boss', name: 'Glintstone Dragon Adula', aliases: ['adula'], region: 'Liurnia', campaign: 'base', implies: ['grace:academy-gate'] },
+  { id: 'boss:adula', kind: 'boss', name: 'Glintstone Dragon Adula', aliases: ['adula'], region: 'Liurnia', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:mimic-tear', kind: 'boss', name: 'Mimic Tear', aliases: ['mimic tear'], region: 'Nokron', campaign: 'base', implies: ['boss:radahn'] },
   { id: 'boss:valiant-gargoyle', kind: 'boss', name: 'Valiant Gargoyle', aliases: ['valiant gargoyle duo', 'valiant gargoyles'], region: 'Nokron', campaign: 'base', implies: ['boss:radahn'] },
   { id: 'boss:mohg-omen', kind: 'boss', name: 'Mohg, the Omen', aliases: ['mohg the omen', 'omen mohg'], region: 'Leyndell', campaign: 'base', implies: ['grace:east-capital'] },
@@ -166,7 +167,7 @@ export const facts: Fact[] = [
   { id: 'boss:magma-wyrm', kind: 'boss', name: 'Magma Wyrm', aliases: ['magma wyrm'], region: 'Altus', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:godskin-apostle-noble', kind: 'boss', name: 'Godskin Apostle & Godskin Noble', aliases: ['apostle and noble', 'spiritcaller godskins'], region: 'Mountaintops', campaign: 'base', implies: ['region:mountaintops'] },
   { id: 'boss:royal-knight-loretta', kind: 'boss', name: 'Royal Knight Loretta', aliases: ['royal loretta', 'loretta caria'], region: 'Liurnia', campaign: 'base', implies: ['region:liurnia'] },
-  { id: 'boss:lansseax', kind: 'boss', name: 'Ancient Dragon Lansseax', aliases: ['lansseax'], region: 'Altus', campaign: 'base', implies: ['region:altus'] },
+  { id: 'boss:lansseax', kind: 'boss', name: 'Ancient Dragon Lansseax', aliases: ['lansseax'], region: 'Altus', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:black-blade-kindred', kind: 'boss', name: 'Black Blade Kindred', aliases: ['black blade kindred'], region: 'Mountaintops', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:full-grown-fallingstar', kind: 'boss', name: 'Full-Grown Fallingstar Beast', aliases: ['full grown fallingstar'], region: 'Mountaintops', campaign: 'base', implies: ['region:mountaintops'] },
   { id: 'boss:ulcerated-tree-spirit', kind: 'boss', name: 'Ulcerated Tree Spirit', aliases: ['ulcerated spirit'], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
@@ -194,7 +195,7 @@ export const facts: Fact[] = [
   { id: 'boss:fallingstar-beast', kind: 'boss', name: 'Fallingstar Beast', aliases: ['fallingstar'], region: 'Altus', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:grafted-scion', kind: 'boss', name: 'Grafted Scion', aliases: ['grafted scions'], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
   { id: 'boss:spiritcaller-snail', kind: 'boss', name: 'Spiritcaller Snail', aliases: ['spiritcaller'], region: 'Liurnia', campaign: 'base', implies: ['region:liurnia'] },
-  { id: 'boss:darriwil', kind: 'boss', name: 'Bloodhound Knight Darriwil', aliases: ['darriwil', 'bloodhound knight'], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
+  { id: 'boss:darriwil', kind: 'boss', name: 'Bloodhound Knight Darriwil', aliases: ['darriwil', 'bloodhound knight'], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
   { id: 'boss:mad-pumpkin-head', kind: 'boss', name: 'Mad Pumpkin Head', aliases: ['mad pumpkin'], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:godefroy', kind: 'boss', name: 'Godefroy the Grafted', aliases: ['godefroy'], region: 'Altus', campaign: 'base', implies: ['region:altus'] },
   { id: 'boss:erdtree-burial-watchdog', kind: 'boss', name: 'Erdtree Burial Watchdog', aliases: ['burial watchdog'], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
@@ -522,11 +523,11 @@ for (const row of bossEncounterRows) {
 
 /**
  * Rules the shared id used to carry that are only true of one of its fights.
- * The Grand Cloister Astel lies past the Fingerslayer Blade step of Ranni's line;
+ * Adula is first fought at the Three Sisters (past the Academy Gate);
  * the Belurat Dancing Lion guards Belurat.
  */
 const ENCOUNTER_IMPLIES: Record<string, string[]> = {
-  'boss:astel--grand-cloister': ['item:fingerslayer'],
+  'boss:adula--liurnia-of-the-lakes': ['grace:academy-gate'],
   'boss:divine-beast--belurat-tower-settlement': ['grace:belurat'],
 }
 

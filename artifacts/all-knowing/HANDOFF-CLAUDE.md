@@ -259,7 +259,7 @@ bash scripts/ingest-open.sh
 python3 scripts/slim-lots.py
 node scripts/ingest-fanapi.mjs
 ```
-Clones: er-guide, eldenring-api, Paramdex ER/Names, ERR-MapForGoblins-DLL data.
+Clones: er-guide, eldenring-api, Paramdex ER/Names. (Not ERR-MapForGoblins-DLL — that is the Elden Ring Reforged mod build; map/boss/loot dumps come from the install via scripts/extract-vanilla-open.py.)
 
 ---
 
@@ -280,7 +280,7 @@ Accuracy rules still apply, because they are about correctness, not permission:
 | Text Explorer | https://github.com/EldenRingExplorer/EldenRingTextExplorer — `elden_ring_text.json` (~9 MB, we slimmed EN) |
 | Paramdex | https://github.com/soulsmods/Paramdex/tree/master/ER/Names |
 | FanAPI | https://eldenring.fanapis.com + `deliton/eldenring-api` JSON |
-| Goblins dump | https://github.com/VirusAlex/ERR-MapForGoblins-DLL/tree/master/data — lots, MSB, WMPP, gathering nodes |
+| ~~Goblins dump~~ | Removed: VirusAlex/ERR-MapForGoblins-DLL is the Elden Ring Reforged (PC mod) build. Replaced by scripts/extract-vanilla-open.py reading the local install. |
 | er-guide | https://github.com/aether-auto/er-guide — items + routes + map degrees |
 | BuLEEto hunts | bosses.json + flags |
 | vawser | https://github.com/vawser/ER-Documentation — event flag dumps, map ref |

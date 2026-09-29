@@ -54,11 +54,16 @@ describe('Task 132 §1 — no raw engine map ids reach the player', () => {
   })
 
   it('translates a known tile to a human place, not the id', () => {
-    // m14_00_00_00 is the Academy of Raya Lucaria; the Abductor Virgin Duo lives there.
-    const duo = records['boss:abductor-virgin-duo']
-    expect(duo?.location).toBeTruthy()
-    expect(duo!.location).toMatch(/Raya Lucaria/i)
-    expect(duo!.location).not.toMatch(RAW_TILE)
+    // m14_00_00_00 is the Academy of Raya Lucaria, where Rennala is fought.
+    // (The old fixture here — Abductor Virgins at the Academy — came from the
+    // Elden Ring Reforged dump; in the game they are in Volcano Manor.)
+    const rennala = records['boss:rennala']
+    expect(rennala?.location).toBeTruthy()
+    expect(rennala!.location).toMatch(/Raya Lucaria/i)
+    expect(rennala!.location).not.toMatch(RAW_TILE)
+    for (const record of Object.values(records)) {
+      if (record.kind === 'boss' && record.location) expect(record.location, record.id).not.toMatch(RAW_TILE)
+    }
   })
 })
 

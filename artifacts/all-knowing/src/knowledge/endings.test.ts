@@ -201,7 +201,7 @@ describe('dump-id completion markers', () => {
     id: 'dump',
     do: 'Kill Godrick',
     detail: '',
-    factId: 'bossflag:510010',
+    factId: 'bossflag:10000800',
     requires: [],
     grants: [],
     lockouts: [],
@@ -216,7 +216,7 @@ describe('dump-id completion markers', () => {
   })
 
   it('matches a character that still holds the raw dump id', () => {
-    expect(isStepDone({ ...emptyCharacter, defeatedBosses: ['bossflag:510010'] }, dumpStep)).toBe(true)
+    expect(isStepDone({ ...emptyCharacter, defeatedBosses: ['bossflag:10000800'] }, dumpStep)).toBe(true)
   })
 })
 

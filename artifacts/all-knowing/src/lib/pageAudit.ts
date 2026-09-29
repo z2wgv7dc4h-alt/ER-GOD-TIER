@@ -1,7 +1,7 @@
 import wikiManifest from '../../public/sourced/wiki/manifest.json'
 import { emptyCharacter } from '../data/seed'
 import { allRecords, entityIndexReady, type EntityRecord } from './entityIndex'
-import { allEntities, status, type EntityKind } from './entityGraph'
+import { allEntities, canonicalEntityId, hasEntity, status, type EntityKind } from './entityGraph'
 import { canonicalName, hasBadCasing, JUNK_NAME } from './canonicalNames'
 import { kindStatus, NO_DATA, overlayEntity, trackActionLabel } from '../library/pageModel'
 import { scenarioCharacter } from './__fixtures__/scenarios/urmummytoilet'
@@ -162,6 +162,8 @@ export function auditPages(opts: { fixed?: boolean } = {}): PageAuditReport {
       const indexed = new Set(rows.map((r) => r.id))
       for (const e of allEntities()) {
         if (indexed.has(e.id) || e.id.startsWith('wiki:')) continue
+        // An alias id (a hunt id the roster files under an encounter) opens that encounter's page.
+        if (canonicalEntityId(e.id) !== e.id && hasEntity(canonicalEntityId(e.id))) continue
         const stub: EntityRecord = { id: e.id, kind: e.kind, name: e.name, sources: [] }
         const issues = renderedIssues(stub, characters)
         const lore = overlayEntity(e.id).lore

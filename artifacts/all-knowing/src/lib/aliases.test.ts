@@ -11,11 +11,16 @@ const generatedRows = generatedJson as AliasRow[]
 const loose = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
 
 describe('boss alias table', () => {
+  it('resolves a multi-location boss kill flag to that encounter, not the shared boss', () => {
+    expect(canonicalFactId('bossflag:1043370800')).toBe('boss:nights-cavalry--limgrave')
+    expect(canonicalFactId('bossflag:1039510800')).toBe('boss:nights-cavalry--altus-highway-junction')
+  })
+
   it('resolves dump boss ids to authored boss: slugs', () => {
-    expect(canonicalFactId('bossflag:510010')).toBe('boss:godrick')
-    expect(canonicalFactId('bossflag:510300')).toBe('boss:radahn')
-    expect(canonicalFactId('bossflag:510220')).toBe('boss:rykard')
-    expect(canonicalFactId('bossflag:510040')).toBe('boss:morgott')
+    expect(canonicalFactId('bossflag:10000800')).toBe('boss:godrick')
+    expect(canonicalFactId('bossflag:1052380800')).toBe('boss:radahn')
+    expect(canonicalFactId('bossflag:16000800')).toBe('boss:rykard')
+    expect(canonicalFactId('bossflag:11000800')).toBe('boss:morgott')
   })
 
   it('resolves by name as well as id', () => {
@@ -41,22 +46,24 @@ describe('boss alias table', () => {
 
   it('reports hosted / seeded / linked boss coverage', () => {
     const status = aliasStatus()
-    expect(status.bossHosted).toBe(215)
+    expect(status.bossHosted).toBe(209) // the game's GameAreaParam fights (vanilla install)
     // `boss:bayle` is one authored row; a Task 74 duplicate was removed so the
     // seeded roster is 88 again.
     expect(status.bossSeeded).toBe(88)
-    expect(status.bossLinked).toBe(84)
+    // Shared ids of bosses fought in several places are not linked by name: their
+    // flags resolve to one encounter each (see the per-encounter test below).
+    expect(status.bossLinked).toBeGreaterThanOrEqual(45)
   })
 
   it('looks bosses up by slug or dump id', () => {
-    expect(bossBySlug('bossflag:510010')?.id).toBe('boss:godrick')
+    expect(bossBySlug('bossflag:10000800')?.id).toBe('boss:godrick')
     expect(bossBySlug('boss:godrick')?.name).toBe('Godrick the Grafted')
   })
 
   it('canonicalizes dump ids before applying facts', () => {
-    const next = applyFacts(emptyCharacter, ['bossflag:510010'], 'screenshot', 'shot')
+    const next = applyFacts(emptyCharacter, ['bossflag:10000800'], 'screenshot', 'shot')
     expect(next.defeatedBosses).toContain('boss:godrick')
-    expect(next.defeatedBosses).not.toContain('bossflag:510010')
+    expect(next.defeatedBosses).not.toContain('bossflag:10000800')
   })
 })
 

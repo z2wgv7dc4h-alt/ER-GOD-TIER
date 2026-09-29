@@ -25,7 +25,7 @@ describe('generated alias plane', () => {
 
   it('round-trips an engine row id to the authored slug across categories', () => {
     expect(canonicalFactId('grace:100000')).toBe('grace:godrick-grace')
-    expect(canonicalFactId('bossflag:510010')).toBe('boss:godrick')
+    expect(canonicalFactId('bossflag:10000800')).toBe('boss:godrick')
     expect(canonicalFactId('npc:21300014')).toBe('boss:margit')
     // The halves are distinct catalog items; the bare "… Medallion" whole is
     // granted by the compound inference chain once both are held (Task 54/55).

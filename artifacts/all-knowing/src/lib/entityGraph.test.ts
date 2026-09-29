@@ -55,8 +55,9 @@ describe('entityGraph — resolution and id authority', () => {
   })
 
   it('canonicalises an engine row id to the authored slug', () => {
-    expect(canonicalEntityId('bossflag:530100')).toBe('boss:tree-sentinel')
-    expect(getEntity('bossflag:530100').name).toBe('Tree Sentinel')
+    // The game's kill flag for the Church of Elleh Tree Sentinel (GameAreaParam).
+    expect(canonicalEntityId('bossflag:1042360800')).toBe('boss:tree-sentinel--church-of-elleh')
+    expect(getEntity('bossflag:1042360800').name).toBe('Tree Sentinel (Church of Elleh)')
   })
 
   it('aliases a loot row onto the canonical item id', () => {

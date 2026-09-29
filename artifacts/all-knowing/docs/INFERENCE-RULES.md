@@ -9,8 +9,8 @@ PS5 capture rules — plus what the real-player scenario fixture actually proves
 
 | metric | before Task 138 | after Task 138 |
 | --- | --- | --- |
-| rules enumerated | 542 | 562 |
-| certain rules | 542 | 562 |
+| rules enumerated | 538 | 558 |
+| certain rules | 538 | 558 |
 | likely rules | 0 | 0 |
 | scenario inferred facts | 9 | 17 |
 
@@ -74,7 +74,7 @@ _None._
 
 ## Every rule
 
-### Catalog `implies` (290)
+### Catalog `implies` (286)
 
 | id | trigger | conclusions | class | conf | why | added |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -115,6 +115,7 @@ _None._
 | `catalog:boss:red-wolf` | `boss:red-wolf` | `item:academy-glintstone-key` | certain | 0.9 | Holding/reaching Red Wolf of Radagon requires the listed facts first. | — |
 | `catalog:boss:rennala` | `boss:rennala` | `boss:red-wolf` | certain | 0.9 | Holding/reaching Rennala, Queen of the Full Moon requires the listed facts first. | — |
 | `catalog:boss:radahn` | `boss:radahn` | `quest:ranni:festival` | certain | 0.9 | Holding/reaching Starscourge Radahn requires the listed facts first. | — |
+| `catalog:boss:godfrey-golden` | `boss:godfrey-golden` | `region:leyndell` | certain | 0.9 | Holding/reaching Godfrey, First Elden Lord (golden shade) requires the listed facts first. | — |
 | `catalog:boss:morgott` | `boss:morgott` | `boss:godfrey-golden` | certain | 0.9 | Holding/reaching Morgott, the Omen King requires the listed facts first. | — |
 | `catalog:boss:fire-giant` | `boss:fire-giant` | `grace:forge-giants` | certain | 0.9 | Holding/reaching Fire Giant requires the listed facts first. | — |
 | `catalog:boss:godskin-duo` | `boss:godskin-duo` | `region:farum` | certain | 0.9 | Holding/reaching Godskin Duo requires the listed facts first. | — |
@@ -149,6 +150,7 @@ _None._
 | `catalog:item:revered-ash` | `item:revered-ash` | `region:shadow` | certain | 0.9 | Holding/reaching Revered Spirit Ash requires the listed facts first. | — |
 | `catalog:item:leontiel-greatsword` | `item:leontiel-greatsword` | `boss:leontiel` | certain | 0.9 | Holding/reaching Leontiel's Greatsword requires the listed facts first. | — |
 | `catalog:item:golden-order-flail` | `item:golden-order-flail` | `region:leyndell` | certain | 0.9 | Holding/reaching Golden Order Flail requires the listed facts first. | — |
+| `catalog:boss:astel` | `boss:astel` | `item:fingerslayer` | certain | 0.9 | Holding/reaching Astel, Naturalborn of the Void requires the listed facts first. | — |
 | `catalog:quest:ranni:festival` | `quest:ranni:festival` | `quest:ranni:service` | certain | 0.9 | Holding/reaching Ranni — Radahn festival opened Nokron requires the listed facts first. | — |
 | `catalog:quest:ranni:service` | `quest:ranni:service` | `grace:lake-shore` | certain | 0.9 | Holding/reaching Ranni — entered her service requires the listed facts first. | — |
 | `catalog:quest:ranni:nokron` | `quest:ranni:nokron` | `quest:ranni:festival` | certain | 0.9 | Holding/reaching Ranni — Fingerslayer Blade recovered requires the listed facts first. | — |
@@ -164,7 +166,6 @@ _None._
 | `catalog:boss:magma-wyrm-makar` | `boss:magma-wyrm-makar` | `region:liurnia` | certain | 0.9 | Holding/reaching Magma Wyrm Makar requires the listed facts first. | — |
 | `catalog:boss:commander-niall` | `boss:commander-niall` | `item:haligtree-secret-medallion` | certain | 0.9 | Holding/reaching Commander Niall requires the listed facts first. | — |
 | `catalog:boss:loretta-haligtree` | `boss:loretta-haligtree` | `grace:haligtree-town` | certain | 0.9 | Holding/reaching Loretta, Knight of the Haligtree requires the listed facts first. | — |
-| `catalog:boss:adula` | `boss:adula` | `grace:academy-gate` | certain | 0.9 | Holding/reaching Glintstone Dragon Adula requires the listed facts first. | — |
 | `catalog:boss:mimic-tear` | `boss:mimic-tear` | `boss:radahn` | certain | 0.9 | Holding/reaching Mimic Tear requires the listed facts first. | — |
 | `catalog:boss:valiant-gargoyle` | `boss:valiant-gargoyle` | `boss:radahn` | certain | 0.9 | Holding/reaching Valiant Gargoyle requires the listed facts first. | — |
 | `catalog:boss:mohg-omen` | `boss:mohg-omen` | `grace:east-capital` | certain | 0.9 | Holding/reaching Mohg, the Omen requires the listed facts first. | — |
@@ -180,12 +181,12 @@ _None._
 | `catalog:boss:stray-mimic-tear` | `boss:stray-mimic-tear` | `item:haligtree-secret-medallion` | certain | 0.9 | Holding/reaching Stray Mimic Tear requires the listed facts first. | — |
 | `catalog:boss:godskin-apostle-noble` | `boss:godskin-apostle-noble` | `region:mountaintops` | certain | 0.9 | Holding/reaching Godskin Apostle & Godskin Noble requires the listed facts first. | — |
 | `catalog:boss:royal-knight-loretta` | `boss:royal-knight-loretta` | `region:liurnia` | certain | 0.9 | Holding/reaching Royal Knight Loretta requires the listed facts first. | — |
-| `catalog:boss:lansseax` | `boss:lansseax` | `region:altus` | certain | 0.9 | Holding/reaching Ancient Dragon Lansseax requires the listed facts first. | — |
 | `catalog:boss:full-grown-fallingstar` | `boss:full-grown-fallingstar` | `region:mountaintops` | certain | 0.9 | Holding/reaching Full-Grown Fallingstar Beast requires the listed facts first. | — |
 | `catalog:boss:runebear` | `boss:runebear` | `region:limgrave` | certain | 0.9 | Holding/reaching Runebear requires the listed facts first. | — |
 | `catalog:boss:wormface` | `boss:wormface` | `region:altus` | certain | 0.9 | Holding/reaching Wormface requires the listed facts first. | — |
 | `catalog:boss:grafted-scion` | `boss:grafted-scion` | `region:limgrave` | certain | 0.9 | Holding/reaching Grafted Scion requires the listed facts first. | — |
 | `catalog:boss:spiritcaller-snail` | `boss:spiritcaller-snail` | `region:liurnia` | certain | 0.9 | Holding/reaching Spiritcaller Snail requires the listed facts first. | — |
+| `catalog:boss:darriwil` | `boss:darriwil` | `region:limgrave` | certain | 0.9 | Holding/reaching Bloodhound Knight Darriwil requires the listed facts first. | — |
 | `catalog:boss:godefroy` | `boss:godefroy` | `region:altus` | certain | 0.9 | Holding/reaching Godefroy the Grafted requires the listed facts first. | — |
 | `catalog:boss:perfumer-tricia` | `boss:perfumer-tricia` | `region:altus` | certain | 0.9 | Holding/reaching Perfumer Tricia & Misbegotten Warrior requires the listed facts first. | — |
 | `catalog:boss:red-wolf-champion` | `boss:red-wolf-champion` | `region:caelid` | certain | 0.9 | Holding/reaching Red Wolf of the Champion requires the listed facts first. | — |
@@ -269,7 +270,7 @@ _None._
 | `catalog:item:blessed-dew-talisman` | `item:blessed-dew-talisman` | `region:leyndell` | certain | 0.9 | Holding/reaching Blessed Dew Talisman requires the listed facts first. | — |
 | `catalog:item:rotten-winged-sword-insignia` | `item:rotten-winged-sword-insignia` | `grace:drainage` | certain | 0.9 | Holding/reaching Rotten Winged Sword Insignia requires the listed facts first. | — |
 | `catalog:item:millicent-prosthesis` | `item:millicent-prosthesis` | `grace:drainage` | certain | 0.9 | Holding/reaching Millicent's Prosthesis requires the listed facts first. | — |
-| `catalog:boss:astel--grand-cloister` | `boss:astel--grand-cloister` | `item:fingerslayer` | certain | 0.9 | Holding/reaching Astel, Naturalborn of the Void (Grand Cloister) requires the listed facts first. | — |
+| `catalog:boss:lansseax--rampartside-path` | `boss:lansseax--rampartside-path` | `region:altus` | certain | 0.9 | Holding/reaching Ancient Dragon Lansseax (Rampartside Path) requires the listed facts first. | — |
 | `catalog:boss:crystalian-duo--altus-tunnel` | `boss:crystalian-duo--altus-tunnel` | `region:altus` | certain | 0.9 | Holding/reaching Crystalian (Spear) & Crystalian (Ringblade) (Altus Tunnel) requires the listed facts first. | — |
 | `catalog:boss:stonedigger-troll--old-altus-tunnel` | `boss:stonedigger-troll--old-altus-tunnel` | `region:altus` | certain | 0.9 | Holding/reaching Stonedigger Troll (Old Altus Tunnel) requires the listed facts first. | — |
 | `catalog:boss:ancient-hero-zamor--sainted-hero-s-grave` | `boss:ancient-hero-zamor--sainted-hero-s-grave` | `region:altus` | certain | 0.9 | Holding/reaching Ancient Hero of Zamor (Sainted Hero's Grave) requires the listed facts first. | — |
@@ -283,8 +284,6 @@ _None._
 | `catalog:boss:tibia-mariner--wyndham-ruins` | `boss:tibia-mariner--wyndham-ruins` | `region:altus` | certain | 0.9 | Holding/reaching Tibia Mariner (Wyndham Ruins) requires the listed facts first. | — |
 | `catalog:boss:tree-sentinel--limgrave` | `boss:tree-sentinel--limgrave` | `region:altus` | certain | 0.9 | Holding/reaching Tree Sentinel (Limgrave) requires the listed facts first. | — |
 | `catalog:boss:death-rite-bird--southern-aeonia-swamp-bank` | `boss:death-rite-bird--southern-aeonia-swamp-bank` | `region:caelid` | certain | 0.9 | Holding/reaching Death Rite Bird (Southern Aeonia Swamp Bank) requires the listed facts first. | — |
-| `catalog:boss:grave-warden-duelist--gaol-cave` | `boss:grave-warden-duelist--gaol-cave` | `region:caelid` | certain | 0.9 | Holding/reaching Frenzied Duelist (Gaol Cave) requires the listed facts first. | — |
-| `catalog:boss:crystalian-duo--sellia-hideaway` | `boss:crystalian-duo--sellia-hideaway` | `region:caelid` | certain | 0.9 | Holding/reaching Putrid Crystalian (Ringblade) & Putrid Crystalian (Spear) & Putrid Crystalian (Staff) (Sellia Hideaway) requires the listed facts first. | — |
 | `catalog:boss:cemetery-shade--caelid-catacombs` | `boss:cemetery-shade--caelid-catacombs` | `region:caelid` | certain | 0.9 | Holding/reaching Cemetery Shade (Caelid Catacombs) requires the listed facts first. | — |
 | `catalog:boss:magma-wyrm--gael-tunnel` | `boss:magma-wyrm--gael-tunnel` | `region:caelid` | certain | 0.9 | Holding/reaching Magma Wyrm (Gael Tunnel) requires the listed facts first. | — |
 | `catalog:boss:erdtree-burial-watchdog--minor-erdtree-catacombs` | `boss:erdtree-burial-watchdog--minor-erdtree-catacombs` | `region:caelid` | certain | 0.9 | Holding/reaching Erdtree Burial Watchdog (Minor Erdtree Catacombs) requires the listed facts first. | — |
@@ -297,9 +296,7 @@ _None._
 | `catalog:boss:bell-bearing-hunter--hermit-merchant-s-shack` | `boss:bell-bearing-hunter--hermit-merchant-s-shack` | `region:altus` | certain | 0.9 | Holding/reaching Bell Bearing Hunter (Hermit Merchant's Shack) requires the listed facts first. | — |
 | `catalog:boss:deathbird--capital-outskirts` | `boss:deathbird--capital-outskirts` | `region:altus` | certain | 0.9 | Holding/reaching Deathbird (Capital Outskirts) requires the listed facts first. | — |
 | `catalog:boss:onyx-lord--sealed-tunnel` | `boss:onyx-lord--sealed-tunnel` | `region:altus` | certain | 0.9 | Holding/reaching Onyx Lord (Sealed Tunnel) requires the listed facts first. | — |
-| `catalog:boss:astel--yelough-anix-tunnel` | `boss:astel--yelough-anix-tunnel` | `region:mountaintops` | certain | 0.9 | Holding/reaching Astel, Stars of Darkness (Yelough Anix Tunnel) requires the listed facts first. | — |
 | `catalog:boss:death-rite-bird--consecrated-snowfield` | `boss:death-rite-bird--consecrated-snowfield` | `region:mountaintops` | certain | 0.9 | Holding/reaching Death Rite Bird (Consecrated Snowfield) requires the listed facts first. | — |
-| `catalog:boss:grave-warden-duelist--consecrated-snowfield-catacombs` | `boss:grave-warden-duelist--consecrated-snowfield-catacombs` | `region:mountaintops` | certain | 0.9 | Holding/reaching Putrid Grave Warden Duelist (Consecrated Snowfield Catacombs) requires the listed facts first. | — |
 | `catalog:boss:nights-cavalry--inner-consecrated-snowfield` | `boss:nights-cavalry--inner-consecrated-snowfield` | `region:mountaintops` | certain | 0.9 | Holding/reaching Night's Cavalry (Inner Consecrated Snowfield) requires the listed facts first. | — |
 | `catalog:boss:black-blade-kindred--forbidden-lands` | `boss:black-blade-kindred--forbidden-lands` | `region:mountaintops` | certain | 0.9 | Holding/reaching Black Blade Kindred (Forbidden Lands) requires the listed facts first. | — |
 | `catalog:boss:nights-cavalry--forbidden-lands` | `boss:nights-cavalry--forbidden-lands` | `region:mountaintops` | certain | 0.9 | Holding/reaching Night's Cavalry (Forbidden Lands) requires the listed facts first. | — |
@@ -309,10 +306,7 @@ _None._
 | `catalog:boss:cleanrot-knight--abandoned-cave` | `boss:cleanrot-knight--abandoned-cave` | `region:caelid` | certain | 0.9 | Holding/reaching Cleanrot Knight (Abandoned Cave) requires the listed facts first. | — |
 | `catalog:boss:godskin-apostle--divine-tower-of-caelid` | `boss:godskin-apostle--divine-tower-of-caelid` | `region:caelid` | certain | 0.9 | Holding/reaching Godskin Apostle (Divine Tower of Caelid) requires the listed facts first. | — |
 | `catalog:boss:nights-cavalry--lenne-s-rise` | `boss:nights-cavalry--lenne-s-rise` | `region:caelid` | certain | 0.9 | Holding/reaching Night's Cavalry (Lenne's Rise) requires the listed facts first. | — |
-| `catalog:boss:godfrey-golden--elden-throne` | `boss:godfrey-golden--elden-throne` | `region:leyndell` | certain | 0.9 | Holding/reaching Godfrey, First Elden Lord (golden shade) (Elden Throne) requires the listed facts first. | — |
-| `catalog:boss:godfrey-golden--erdtree-sanctuary` | `boss:godfrey-golden--erdtree-sanctuary` | `region:leyndell` | certain | 0.9 | Holding/reaching Godfrey, First Elden Lord (golden shade) (Erdtree Sanctuary) requires the listed facts first. | — |
 | `catalog:boss:grave-warden-duelist--murkwater-catacombs` | `boss:grave-warden-duelist--murkwater-catacombs` | `region:limgrave` | certain | 0.9 | Holding/reaching Grave Warden Duelist (Murkwater Catacombs) requires the listed facts first. | — |
-| `catalog:boss:darriwil--forlorn-hound-evergaol` | `boss:darriwil--forlorn-hound-evergaol` | `region:limgrave` | certain | 0.9 | Holding/reaching Bloodhound Knight Darriwil (Forlorn Hound Evergaol) requires the listed facts first. | — |
 | `catalog:boss:stonedigger-troll--limgrave-tunnels` | `boss:stonedigger-troll--limgrave-tunnels` | `region:limgrave` | certain | 0.9 | Holding/reaching Stonedigger Troll (Limgrave Tunnels) requires the listed facts first. | — |
 | `catalog:hunt:beastman-of-farum-azula--groveside-cave` | `hunt:beastman-of-farum-azula--groveside-cave` | `region:limgrave` | certain | 0.9 | Holding/reaching Beastman of Farum Azula (Groveside Cave) requires the listed facts first. | — |
 | `catalog:boss:bell-bearing-hunter--warmaster-s-shack` | `boss:bell-bearing-hunter--warmaster-s-shack` | `region:limgrave` | certain | 0.9 | Holding/reaching Bell Bearing Hunter (Warmaster's Shack) requires the listed facts first. | — |
@@ -322,10 +316,13 @@ _None._
 | `catalog:boss:mad-pumpkin-head--waypoint-ruins` | `boss:mad-pumpkin-head--waypoint-ruins` | `region:limgrave` | certain | 0.9 | Holding/reaching Mad Pumpkin Head (Waypoint Ruins) requires the listed facts first. | — |
 | `catalog:boss:nights-cavalry--limgrave` | `boss:nights-cavalry--limgrave` | `region:limgrave` | certain | 0.9 | Holding/reaching Night's Cavalry (Limgrave) requires the listed facts first. | — |
 | `catalog:boss:tibia-mariner--summonwater-village` | `boss:tibia-mariner--summonwater-village` | `region:limgrave` | certain | 0.9 | Holding/reaching Tibia Mariner (Summonwater Village) requires the listed facts first. | — |
+| `catalog:boss:tree-sentinel--church-of-elleh` | `boss:tree-sentinel--church-of-elleh` | `region:limgrave` | certain | 0.9 | Holding/reaching Tree Sentinel (Church of Elleh) requires the listed facts first. | — |
 | `catalog:boss:ulcerated-tree-spirit--fringefolk-hero-s-grave` | `boss:ulcerated-tree-spirit--fringefolk-hero-s-grave` | `region:limgrave` | certain | 0.9 | Holding/reaching Ulcerated Tree Spirit (Fringefolk Hero's Grave) requires the listed facts first. | — |
+| `catalog:boss:lansseax--liurnia-of-the-lakes` | `boss:lansseax--liurnia-of-the-lakes` | `region:liurnia` | certain | 0.9 | Holding/reaching Ancient Dragon Lansseax (Liurnia of the Lakes) requires the listed facts first. | — |
 | `catalog:boss:crystalian-duo--raya-lucaria-crystal-tunnel` | `boss:crystalian-duo--raya-lucaria-crystal-tunnel` | `region:liurnia` | certain | 0.9 | Holding/reaching Crystalian (Ringblade) (Raya Lucaria Crystal Tunnel) requires the listed facts first. | — |
 | `catalog:boss:crystalian-duo--academy-crystal-cave` | `boss:crystalian-duo--academy-crystal-cave` | `region:liurnia` | certain | 0.9 | Holding/reaching Crystalian (Staff) & Crystalian (Spear) (Academy Crystal Cave) requires the listed facts first. | — |
-| `catalog:boss:darriwil--lakeside-crystal-cave` | `boss:darriwil--lakeside-crystal-cave` | `region:liurnia` | certain | 0.9 | Holding/reaching Bloodhound Knight (Lakeside Crystal Cave) requires the listed facts first. | — |
+| `catalog:boss:death-rite-bird--gate-town-north` | `boss:death-rite-bird--gate-town-north` | `region:liurnia` | certain | 0.9 | Holding/reaching Death Rite Bird (Gate Town North) requires the listed facts first. | — |
+| `catalog:boss:adula--liurnia-of-the-lakes` | `boss:adula--liurnia-of-the-lakes` | `region:liurnia`, `grace:academy-gate` | certain | 0.9 | Holding/reaching Glintstone Dragon Adula (Liurnia of the Lakes) requires the listed facts first. | — |
 | `catalog:boss:onyx-lord--royal-grave-evergaol` | `boss:onyx-lord--royal-grave-evergaol` | `region:liurnia` | certain | 0.9 | Holding/reaching Onyx Lord (Royal Grave Evergaol) requires the listed facts first. | — |
 | `catalog:boss:cemetery-shade--black-knife-catacombs` | `boss:cemetery-shade--black-knife-catacombs` | `region:liurnia` | certain | 0.9 | Holding/reaching Cemetery Shade (Black Knife Catacombs) requires the listed facts first. | — |
 | `catalog:boss:bell-bearing-hunter--church-of-vows` | `boss:bell-bearing-hunter--church-of-vows` | `region:liurnia` | certain | 0.9 | Holding/reaching Bell Bearing Hunter (Church of Vows) requires the listed facts first. | — |
@@ -339,6 +336,7 @@ _None._
 | `catalog:boss:nights-cavalry--gate-town-bridge` | `boss:nights-cavalry--gate-town-bridge` | `region:liurnia` | certain | 0.9 | Holding/reaching Night's Cavalry (Gate Town Bridge) requires the listed facts first. | — |
 | `catalog:boss:omenkiller--village-of-the-albinaurics` | `boss:omenkiller--village-of-the-albinaurics` | `region:liurnia` | certain | 0.9 | Holding/reaching Omenkiller (Village of the Albinaurics) requires the listed facts first. | — |
 | `catalog:boss:tibia-mariner--liurnia-of-the-lakes` | `boss:tibia-mariner--liurnia-of-the-lakes` | `region:liurnia` | certain | 0.9 | Holding/reaching Tibia Mariner (Liurnia of the Lakes) requires the listed facts first. | — |
+| `catalog:boss:adula--moonlight-altar` | `boss:adula--moonlight-altar` | `region:liurnia` | certain | 0.9 | Holding/reaching Glintstone Dragon Adula (Moonlight Altar) requires the listed facts first. | — |
 | `catalog:boss:death-rite-bird--mountaintops-of-the-giants` | `boss:death-rite-bird--mountaintops-of-the-giants` | `region:mountaintops` | certain | 0.9 | Holding/reaching Death Rite Bird (Mountaintops of the Giants) requires the listed facts first. | — |
 | `catalog:boss:ancient-hero-zamor--giant-conquering-hero-s-grave` | `boss:ancient-hero-zamor--giant-conquering-hero-s-grave` | `region:mountaintops` | certain | 0.9 | Holding/reaching Ancient Hero of Zamor (Giant-Conquering Hero's Grave) requires the listed facts first. | — |
 | `catalog:boss:erdtree-avatar--mountaintops-of-the-giants` | `boss:erdtree-avatar--mountaintops-of-the-giants` | `region:mountaintops` | certain | 0.9 | Holding/reaching Erdtree Avatar (Mountaintops of the Giants) requires the listed facts first. | — |
@@ -360,8 +358,6 @@ _None._
 | `catalog:hunt:ghostflame-dragon--gravesite-plain` | `hunt:ghostflame-dragon--gravesite-plain` | `region:shadow` | certain | 0.9 | Holding/reaching Ghostflame Dragon (Gravesite Plain) requires the listed facts first. | — |
 | `catalog:hunt:jagged-peak-drake--foot-of-the-jagged-peak` | `hunt:jagged-peak-drake--foot-of-the-jagged-peak` | `region:shadow` | certain | 0.9 | Holding/reaching Jagged Peak Drake (Foot of the Jagged Peak) requires the listed facts first. | — |
 | `catalog:hunt:jagged-peak-drake--jagged-peak-mountainside` | `hunt:jagged-peak-drake--jagged-peak-mountainside` | `region:shadow` | certain | 0.9 | Holding/reaching Jagged Peak Drake (Jagged Peak Mountainside) requires the listed facts first. | — |
-| `catalog:boss:tree-sentinel--church-of-elleh` | `boss:tree-sentinel--church-of-elleh` | `region:limgrave` | certain | 0.9 | Holding/reaching Tree Sentinel (Church of Elleh) requires the listed facts first. | — |
-| `catalog:boss:death-rite-bird--gate-town-north` | `boss:death-rite-bird--gate-town-north` | `region:liurnia` | certain | 0.9 | Holding/reaching Death Rite Bird (Gate Town North) requires the listed facts first. | — |
 | `catalog:hunt:death-knight--fog-rift-catacombs` | `hunt:death-knight--fog-rift-catacombs` | `region:altus` | certain | 0.9 | Holding/reaching Death Knight (Fog Rift Catacombs) requires the listed facts first. | — |
 | `catalog:hunt:death-knight--scorpion-river-catacombs` | `hunt:death-knight--scorpion-river-catacombs` | `region:altus` | certain | 0.9 | Holding/reaching Death Knight (Scorpion River Catacombs) requires the listed facts first. | — |
 | `catalog:hunt:ghostflame-dragon--scadu-altus` | `hunt:ghostflame-dragon--scadu-altus` | `region:altus` | certain | 0.9 | Holding/reaching Ghostflame Dragon (Scadu Altus) requires the listed facts first. | — |

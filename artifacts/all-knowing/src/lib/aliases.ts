@@ -2,7 +2,7 @@ import hosted from '../data/hosted-graces.json'
 import hostedBossesJson from '../data/hosted-bosses.json'
 import generatedJson from '../data/aliases.json'
 import { warpGraces, type AtlasWorld, type WarpGrace } from '../knowledge/graces'
-import { facts, type Fact } from '../knowledge/catalog'
+import { encountersByGroup, facts, type Fact } from '../knowledge/catalog'
 import type { Campaign } from '../types'
 
 /**
@@ -109,7 +109,10 @@ const seedByBossId = new Map<string, string>()
 const linkedBossSeeds = new Set<string>()
 for (const b of hostedBosses) {
   const seed = seedBossByName.get(norm(b.name))
-  if (!seed) continue
+  // A boss fought in several places: the flag is one encounter's, resolved by
+  // the generated alias plane, never the shared id (every Night's Cavalry
+  // would otherwise log as the same one).
+  if (!seed || encountersByGroup.has(seed.id)) continue
   linkedBossSeeds.add(seed.id)
   seedByBossId.set(b.id, seed.id)
   seedByBossId.set(`bossflag:${b.flag}`, seed.id)

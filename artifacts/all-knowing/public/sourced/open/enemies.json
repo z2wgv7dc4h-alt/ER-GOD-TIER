@@ -1,1 +1,4906 @@
-[{"id":"2010004","name":"Blaidd"},{"id":"2010104","name":"Baleful Shadow"},{"id":"2030004","name":"Rennala, Queen of the Full Moon"},{"id":"2031004","name":"Rennala, Full Moon Witch"},{"id":"2040004","name":"Juvenile Scholar"},{"id":"2041004","name":"Rot Larva"},{"id":"2100004","name":"Black Knife Assassin"},{"id":"2100104","name":"Mimic Black Knife Assassin"},{"id":"2110004","name":"Gurranq, Beast Clergyman"},{"id":"2110104","name":"Maliketh, the Black Blade"},{"id":"2120004","name":"Malenia, Blade of Miquella"},{"id":"2130004","name":"Margit, the Fell Omen"},{"id":"2130104","name":"Morgott, the Omen King"},{"id":"2140004","name":"Omen"},{"id":"2140104","name":"Accursed Omen"},{"id":"2140204","name":"Horned Omen"},{"id":"2140304","name":"Death-serving Omen"},{"id":"2180004","name":"Mimic Melina"},{"id":"2190004","name":"Radagon of the Golden Order"},{"id":"2200004","name":"Elden Beast"},{"id":"2270004","name":"Giant Crab"},{"id":"2271004","name":"Baby Crab"},{"id":"2272004","name":"Giant Black Crab"},{"id":"2273004","name":"Baby Black Crab"},{"id":"2274004","name":"Giant Albinauric Crab"},{"id":"2275004","name":"Baby Albinauric Crab"},{"id":"2275104","name":"Baby Glintstone Albinauric Crab"},{"id":"2276004","name":"Giant Deathblight Crab"},{"id":"2277004","name":"Baby Deathblight Crab"},{"id":"2500004","name":"Crucible Knight"},{"id":"2500104","name":"Spirit Ash Crucible Knight"},{"id":"3000004","name":"Exile Soldier"},{"id":"3000104","name":"Ghost Exile Soldier"},{"id":"3000204","name":"Spirit Ash Exile Soldier"},{"id":"3010004","name":"Banished Knight"},{"id":"3010104","name":"Ghost Banished Knight"},{"id":"3010204","name":"Spirit Ash Banished Knight"},{"id":"3020004","name":"Large Exile Soldier"},{"id":"3020104","name":"Large Ghost Exile Soldier"},{"id":"3020204","name":"Large Spirit Ash Exile Soldier"},{"id":"3050004","name":"Commander O'Neil"},{"id":"3050104","name":"Commander Niall"},{"id":"3060004","name":"Giant Skeleton"},{"id":"3061004","name":"Giant Beast Skeleton"},{"id":"3070004","name":"Dominula Dancer"},{"id":"3080004","name":"Cat Imp"},{"id":"3080104","name":"Mirage Cat Imp"},{"id":"3080204","name":"Fanged Imp"},{"id":"3080304","name":"Wolf Imp"},{"id":"3080404","name":"Corpse Imp"},{"id":"3080504","name":"Long-Tongued Imp"},{"id":"3080604","name":"Elder Imp"},{"id":"3090004","name":"Forsaken Consort"},{"id":"3100004","name":"Bell-Bearing Hunter"},{"id":"3100104","name":"Elemer of the Briar"},{"id":"3150004","name":"Night's Cavalry"},{"id":"3160004","name":"Funeral Steed"},{"id":"3170004","name":"Albinauric Archer"},{"id":"3180004","name":"Archer's Wolf"},{"id":"3181004","name":"Red Wolf"},{"id":"3201004","name":"Frenzied Nomad"},{"id":"3250004","name":"Draconic Tree Sentinel"},{"id":"3251004","name":"Tree Sentinel"},{"id":"3252004","name":"Loretta, Knight of the Haligtree"},{"id":"3252104","name":"Royal Knight Loretta"},{"id":"3260004","name":"Dismounted Tree Sentinel"},{"id":"3300004","name":"Nox Monk"},{"id":"3300104","name":"Nox Nightmaiden"},{"id":"3300204","name":"Nox Swordstress"},{"id":"3320004","name":"Silver Tear"},{"id":"3320104","name":"Sparking Silver Tear"},{"id":"3320204","name":"Lava Tear"},{"id":"3320304","name":"Sparking Lava Tear"},{"id":"3330004","name":"Giant Silver Tear"},{"id":"3350004","name":"Crystalian"},{"id":"3350104","name":"Putrid Crystalian"},{"id":"3350204","name":"Spirit Ash Crystalian"},{"id":"3360004","name":"Ancestral Follower Warrior"},{"id":"3360104","name":"Phantom Ancestral Follower Warrior"},{"id":"3361004","name":"Putrid Ancestral Follower Warrior"},{"id":"3370004","name":"Ancestral Follower Shaman"},{"id":"3370104","name":"Phantom Ancestral Follower Shaman"},{"id":"3371004","name":"Putrid Ancestral Follower Shaman"},{"id":"3400004","name":"Grave Warden Duelist"},{"id":"3400104","name":"Crazed Duelist"},{"id":"3400204","name":"Putrid Grave Warden Duelist"},{"id":"3450004","name":"Misbegotten"},{"id":"3450104","name":"Winged Misbegotten"},{"id":"3451004","name":"Scaly Misbegotten"},{"id":"3460004","name":"Leonine Misbegotten"},{"id":"3460104","name":"Haligtree Misbegotten"},{"id":"3470004","name":"Albinauric"},{"id":"3470104","name":"Bloodbane Albinauric"},{"id":"3470204","name":"Snowfield Albinauric"},{"id":"3471004","name":"Large Albinauric"},{"id":"3471104","name":"Large Bloodbane Albinauric"},{"id":"3471204","name":"Large Snowfield Albinauric"},{"id":"3480004","name":"Serpentspawn"},{"id":"3480104","name":"Warped Serpentspawn"},{"id":"3500004","name":"Skeletal Militiaman"},{"id":"3500104","name":"Golden Skeletal Militiaman"},{"id":"3500204","name":"Beast Skeletal Militiaman"},{"id":"3500304","name":"Skeletal Grave Warden"},{"id":"3500404","name":"Golden Skeletal Grave Warden"},{"id":"3500504","name":"Beast Skeletal Grave Warden"},{"id":"3500604","name":"Skeletal Knight"},{"id":"3500704","name":"Golden Skeletal Knight"},{"id":"3500804","name":"Beast Skeletal Knight"},{"id":"3500904","name":"Skeletal Bandit"},{"id":"3501004","name":"Golden Skeletal Bandit"},{"id":"3501104","name":"Beast Skeletal Bandit"},{"id":"3510004","name":"Catacomb Skeleton"},{"id":"3510104","name":"Putrescent Skeleton"},{"id":"3550004","name":"Sanguine Noble"},{"id":"3560004","name":"Godskin Apostle"},{"id":"3560104","name":"Spirit Ash Godskin Apostle"},{"id":"3570004","name":"Godskin Noble"},{"id":"3570104","name":"Spirit Ash Godskin Noble"},{"id":"3600004","name":"Alabaster Lord"},{"id":"3600104","name":"Onyx Lord"},{"id":"3610004","name":"Small Oracle Envoy"},{"id":"3620004","name":"Oracle Envoy"},{"id":"3630004","name":"Giant Oracle Envoy"},{"id":"3650004","name":"Guardian"},{"id":"3650104","name":"Full-Bloom Guardian"},{"id":"3650204","name":"Burnt Guardian"},{"id":"3660004","name":"Commoner"},{"id":"3660104","name":"Frenzied Flame Commoner"},{"id":"3660204","name":"Clergyman Commoner"},{"id":"3660304","name":"Imprisoned Commoner"},{"id":"3660404","name":"Servant of Death Commoner"},{"id":"3661004","name":"Putrid Corpse"},{"id":"3661104","name":"Grub-infested Putrid Corpse"},{"id":"3661204","name":"Flaming Putrid Corpse"},{"id":"3661304","name":"Mushroom Putrid Corpse"},{"id":"3661404","name":"Magic Putrid Corpse"},{"id":"3661504","name":"Bloody Putrid Corpse"},{"id":"3661604","name":"Rotten Putrid Corpse"},{"id":"3661704","name":"Mirage Putrid Corpse"},{"id":"3664004","name":"Cemetery Shade"},{"id":"3670004","name":"Elder Albinauric"},{"id":"3670104","name":"Sorcerer Elder Albinauric"},{"id":"3670204","name":"Bound Elder Albinauric"},{"id":"3670304","name":"Black Dumpling Elder Albinauric"},{"id":"3670404","name":"Poison Elder Albinauric"},{"id":"3700004","name":"Depraved Perfumer"},{"id":"3701004","name":"Perfumer"},{"id":"3702004","name":"Karolos Glintstone Sorcerer"},{"id":"3702104","name":"Olivinus Glintstone Sorcerer"},{"id":"3702204","name":"Lazuli Glintstone Sorcerer"},{"id":"3702304","name":"Twinsage Glintstone Sorcerer A"},{"id":"3702404","name":"Twinsage Glintstone Sorcerer B"},{"id":"3702504","name":"Mirage Karolos Glintstone Sorcerer"},{"id":"3702604","name":"Mirage Olivinus Glintstone Sorcerer"},{"id":"3702704","name":"Mirage Lazuli Glintstone Sorcerer"},{"id":"3702804","name":"Mirage Twinsage Glintstone Sorcerer A"},{"id":"3702904","name":"Mirage Twinsage Glintstone Sorcerer B"},{"id":"3703004","name":"Page"},{"id":"3703104","name":"High Page"},{"id":"3703204","name":"Rimed Olivinus Glintstone Sorcerer"},{"id":"3703304","name":"Rimed Lazuli Glintstone Sorcerer"},{"id":"3704004","name":"Battlemage"},{"id":"3704104","name":"Mimic Battlemage"},{"id":"3730004","name":"Graven School"},{"id":"3750004","name":"Clayman"},{"id":"3800004","name":"Cleanrot Knight"},{"id":"3800104","name":"Ghost Cleanrot Knight"},{"id":"3810004","name":"Kindred of Rot"},{"id":"3810104","name":"Scarlet Kindred of Rot"},{"id":"3850004","name":"Marionette Soldier"},{"id":"3860004","name":"Avionette Soldier"},{"id":"3900004","name":"Fire Monk"},{"id":"3901004","name":"Blackflame Monk"},{"id":"3910004","name":"Fire Prelate"},{"id":"3910104","name":"Renowned Fire Prelate"},{"id":"3950004","name":"Gelmir Man-Serpent"},{"id":"3950104","name":"Shell Gelmir Man-Serpent"},{"id":"3970004","name":"Beastman of Farum Azula"},{"id":"3970104","name":"Armored Beastman of Farum Azula"},{"id":"3970204","name":"Mimic Armored Beastman of Farum Azula"},{"id":"4000004","name":"Revenant Follower"},{"id":"4000104","name":"Mounted Revenant Follower"},{"id":"4020004","name":"Royal Revenant"},{"id":"4040004","name":"Slug"},{"id":"4040104","name":"Flame Slug"},{"id":"4040204","name":"Magma Slug"},{"id":"4040304","name":"Worm Slug"},{"id":"4050004","name":"Kaiden Mercenary"},{"id":"4060004","name":"Kaiden Mercenary's Horse"},{"id":"4070004","name":"Wolf"},{"id":"4070104","name":"Spirit Ash Wolf"},{"id":"4070204","name":"Rennala's Wolf"},{"id":"4071004","name":"White Wolf"},{"id":"4071104","name":"Spirit Ash White Wolf"},{"id":"4080004","name":"Giant Rat"},{"id":"4080104","name":"Giant Frenzied Flame Rat"},{"id":"4090004","name":"Colossal Rat"},{"id":"4090104","name":"Colossal Frenzied Flame Rat"},{"id":"4100004","name":"Demi-Human"},{"id":"4101004","name":"Mighty Demi-Human"},{"id":"4110004","name":"Diminutive Demi-Human"},{"id":"4120004","name":"Fierce Demi-Human"},{"id":"4130004","name":"Demi-Human Queen"},{"id":"4140004","name":"Snake Snail"},{"id":"4140104","name":"Great Snail"},{"id":"4140204","name":"Spiritcaller Snail"},{"id":"4140304","name":"Skeletal Snail"},{"id":"4140404","name":"Crystal Snake Snail"},{"id":"4150004","name":"Basilisk"},{"id":"4161004","name":"Stray"},{"id":"4163004","name":"Stray of Farum Azula"},{"id":"4165004","name":"Bloodbane Stray"},{"id":"4167004","name":"Rotten Stray"},{"id":"4170004","name":"Writhing Rotmound"},{"id":"4170104","name":"Bloody Writhing Rotmound"},{"id":"4170204","name":"Rotten Writhing Rotmound"},{"id":"4170304","name":"Poisonous Writhing Rotmound"},{"id":"4170404","name":"Putrescent Writhing Rotmound"},{"id":"4170504","name":"Gravel Stone Writhing Rotmound"},{"id":"4171004","name":"Blood Rotmound"},{"id":"4180004","name":"Spirit Jellyfish"},{"id":"4190004","name":"Large Crimson Teardrop Scarab"},{"id":"4190104","name":"Large Cerulean Teardrop Scarab"},{"id":"4190204","name":"Large Ash-of-War Scarab"},{"id":"4190304","name":"Large Glintstone Scarab"},{"id":"4190404","name":"Large Incantation Scarab"},{"id":"4190504","name":"Large Somber Scarab"},{"id":"4191004","name":"Crimson Teardrop Scarab"},{"id":"4191104","name":"Cerulean Teardrop Scarab"},{"id":"4191204","name":"Ash-of-War Scarab"},{"id":"4191304","name":"Glintstone Scarab"},{"id":"4191404","name":"Incantation Scarab"},{"id":"4191504","name":"Somber Scarab"},{"id":"4192004","name":"Giant Crimson Teardrop Scarab"},{"id":"4192104","name":"Giant Cerulean Teardrop Scarab"},{"id":"4192204","name":"Giant Ash-of-War Scarab"},{"id":"4192304","name":"Giant Glintstone Scarab"},{"id":"4192404","name":"Giant Incantation Scarab"},{"id":"4192504","name":"Giant Somber Scarab"},{"id":"4200004","name":"Man-Bat"},{"id":"4200104","name":"Snowfield Man-Bat"},{"id":"4201004","name":"Operatic Bat"},{"id":"4201104","name":"Crowned Operatic Bat"},{"id":"4210004","name":"Warhawk"},{"id":"4210104","name":"Brown Warhawk"},{"id":"4210204","name":"White Warhawk"},{"id":"4210304","name":"Spiritspring Stormhawk"},{"id":"4220004","name":"Land Octopus"},{"id":"4230004","name":"Larval Land Octopus"},{"id":"4240004","name":"Fingercreeper"},{"id":"4241004","name":"Colossal Fingercreeper"},{"id":"4250004","name":"Small Fingercreeper"},{"id":"4260004","name":"Erdtree Burial Watchdog"},{"id":"4270004","name":"Elder Lion"},{"id":"4270104","name":"Frost Elder Lion"},{"id":"4270204","name":"Azash, Pride of the Redmanes"},{"id":"4280004","name":"Giant Ant"},{"id":"4280104","name":"Winged Giant Ant"},{"id":"4280304","name":"Honeypot Giant Ant"},{"id":"4281004","name":"Hardhead Giant Ant"},{"id":"4290004","name":"Bloodhound Knight"},{"id":"4290104","name":"Rennala's Bloodhound Knight"},{"id":"4300004","name":"Wandering Noble"},{"id":"4300104","name":"Puppet Wandering Noble"},{"id":"4300204","name":"Noble Sorcerer"},{"id":"4300304","name":"Noble Sorcerer Puppet"},{"id":"4300404","name":"Wandering Noble Bannerman"},{"id":"4300504","name":"Wandering Noble Treasurer"},{"id":"4300604","name":"Poisoned Wandering Noble"},{"id":"4300704","name":"Teleporting Noble Sorcerer"},{"id":"4300804","name":"Mirage Noble Sorcerer"},{"id":"4311004","name":"Godrick Soldier"},{"id":"4312004","name":"Raya Lucaria Soldier"},{"id":"4312104","name":"Puppet Raya Lucaria Soldier"},{"id":"4312204","name":"Frenzied Raya Lucaria Soldier"},{"id":"4313004","name":"Leyndell Soldier"},{"id":"4313104","name":"Frenzied Leyndell Soldier"},{"id":"4313204","name":"Spirit Ash Leyndell Soldier"},{"id":"4314004","name":"Radahn Soldier"},{"id":"4314104","name":"Puppet Radahn Soldier"},{"id":"4314204","name":"Ghost Radahn Soldier"},{"id":"4315004","name":"Mausoleum Soldier"},{"id":"4316004","name":"Haligtree Soldier"},{"id":"4321004","name":"Vulgar Militia"},{"id":"4321104","name":"Black Blade Militia"},{"id":"4321204","name":"Shadow Militia"},{"id":"4340004","name":"Mad Pumpkin Head"},{"id":"4340104","name":"Mimic Mad Pumpkin Head"},{"id":"4351004","name":"Godrick Knight"},{"id":"4351104","name":"Blood-obsessed Godrick Knight"},{"id":"4352004","name":"Cuckoo Knight"},{"id":"4353004","name":"Leyndell Knight"},{"id":"4353104","name":"Frenzied Leyndell Knight"},{"id":"4354004","name":"Redmane Knight"},{"id":"4354104","name":"Blood-obsessed Redmane Knight"},{"id":"4354204","name":"Ghost Redmane Knight"},{"id":"4355004","name":"Mausoleum Knight"},{"id":"4356004","name":"Haligtree Knight"},{"id":"4361004","name":"Godrick Knight's Steed"},{"id":"4362004","name":"Cuckoo Knight's Steed"},{"id":"4363004","name":"Leyndell Knight's Steed"},{"id":"4364004","name":"Redmane Knight's Steed"},{"id":"4365004","name":"Mausoleum Knight's Steed"},{"id":"4366004","name":"Haligtree Knight's Steed"},{"id":"4371004","name":"Godrick Foot Soldier"},{"id":"4372004","name":"Raya Lucaria Foot Soldier"},{"id":"4373004","name":"Leyndell Foot Soldier"},{"id":"4373104","name":"Frenzied Leyndell Foot Soldier"},{"id":"4373204","name":"Spirit Ash Leyndell Foot Soldier"},{"id":"4374004","name":"Radahn Foot Soldier"},{"id":"4374104","name":"Ghost Radahn Foot Soldier"},{"id":"4375004","name":"Mausoleum Foot Soldier"},{"id":"4376004","name":"Haligtree Foot Soldier"},{"id":"4377004","name":"Highwayman"},{"id":"4380004","name":"Starcaller"},{"id":"4381004","name":"Guilty"},{"id":"4382004","name":"Stonedigger"},{"id":"4383004","name":"Glintstone Digger"},{"id":"4384004","name":"Large Glintstone Digger"},{"id":"4385004","name":"Rot Disciple"},{"id":"4390004","name":"Flamelost Knight"},{"id":"4410004","name":"Rockbelly"},{"id":"4410104","name":"Gelmir Rockbelly"},{"id":"4420004","name":"Giant Crayfish"},{"id":"4420104","name":"Ice Crayfish"},{"id":"4430004","name":"Sentry Stone"},{"id":"4430104","name":"Explosive Sentry Stone"},{"id":"4440004","name":"Land Squirt"},{"id":"4441004","name":"Giant Land Squirt"},{"id":"4442004","name":"Rotten Land Squirt"},{"id":"4460004","name":"Flame Chariot"},{"id":"4470004","name":"Abductor Virgin"},{"id":"4470104","name":"Broken Abductor Virgin"},{"id":"4480004","name":"Miranda Blossom"},{"id":"4480104","name":"Black Miranda Blossom"},{"id":"4480204","name":"Blue Miranda Blossom"},{"id":"4480304","name":"Yellow Miranda Blossom"},{"id":"4480404","name":"Spotted Miranda Blossom"},{"id":"4481004","name":"Miranda Sprout"},{"id":"4481104","name":"Black Miranda Sprout"},{"id":"4481204","name":"Blue Miranda Sprout"},{"id":"4481404","name":"Yellow Miranda Sprout"},{"id":"4481504","name":"Spotted Miranda Sprout"},{"id":"4482004","name":"Rotten Miranda Blossom"},{"id":"4483004","name":"Rotten Miranda Sprout"},{"id":"4490004","name":"Living Jar Warrior"},{"id":"4491004","name":"Small Living Jar"},{"id":"4491104","name":"Small Fire Jar"},{"id":"4500004","name":"Flying Dragon"},{"id":"4500104","name":"Rennala's Flying Dragon"},{"id":"4500204","name":"Morion, Unbound Death"},{"id":"4501004","name":"Decaying Ekzykes"},{"id":"4502004","name":"Glintstone Dragon"},{"id":"4503004","name":"Borealis the Freezing Fog"},{"id":"4504004","name":"Elder Dragon Greyoll"},{"id":"4505004","name":"Minor Flying Dragon"},{"id":"4510004","name":"Ancient Dragon"},{"id":"4511004","name":"Lichdragon Fortissax"},{"id":"4520004","name":"Dragonlord Placidusax"},{"id":"4550004","name":"Giant Dog"},{"id":"4550104","name":"Snowfield Giant Dog"},{"id":"4560004","name":"Giant Crow"},{"id":"4560104","name":"Snowfield Giant Crow"},{"id":"4561004","name":"Bloodbane Giant Crow"},{"id":"4570004","name":"Wormface"},{"id":"4580004","name":"Giant Wormface"},{"id":"4590004","name":"Royal Guardian Helicos"},{"id":"4600004","name":"Troll"},{"id":"4600104","name":"Rennala's Troll"},{"id":"4600204","name":"Frenzied Flame Troll"},{"id":"4601004","name":"Troll Knight"},{"id":"4601104","name":"Mausoleum Troll Knight"},{"id":"4601204","name":"Puppet Troll Knight"},{"id":"4602004","name":"Snowfield Troll"},{"id":"4603004","name":"Stonedigger Troll"},{"id":"4620004","name":"Withered Astel"},{"id":"4620104","name":"Astel"},{"id":"4630004","name":"Runebear"},{"id":"4630104","name":"Snowfield Runebear"},{"id":"4630204","name":"Fulminating Runebear"},{"id":"4640004","name":"Ulcerated Tree Spirit"},{"id":"4640104","name":"Putrid Tree Spirit"},{"id":"4640204","name":"Ulcerated Scadutree Spirit"},{"id":"4650004","name":"Dragonkin Soldier"},{"id":"4650104","name":"Ice Lightning Dragonkin Soldier"},{"id":"4650204","name":"Phantom Dragonkin Soldier"},{"id":"4660004","name":"Guardian Golem"},{"id":"4660104","name":"Magic Guardian Golem"},{"id":"4660204","name":"Mossy Guardian Golem"},{"id":"4670004","name":"Ancestor Spirit"},{"id":"4670104","name":"Regal Ancestor Spirit"},{"id":"4680004","name":"Fallingstar Beast"},{"id":"4680104","name":"Full-Grown Fallingstar Beast"},{"id":"4690004","name":"Grafted Scion"},{"id":"4710004","name":"God-Devouring Serpent"},{"id":"4710104","name":"Rykard, Lord of Blasphemy"},{"id":"4720104","name":"Godfrey, First Elden Lord"},{"id":"4721004","name":"Hoarah Loux, Warrior"},{"id":"4730004","name":"Starscourge Radahn"},{"id":"4750004","name":"Godrick the Grafted"},{"id":"4760004","name":"Fire Giant"},{"id":"4770004","name":"Ravaged Valiant Gargoyle"},{"id":"4770104","name":"Valiant Gargoyle"},{"id":"4770204","name":"Black Blade Kindred"},{"id":"4800104","name":"Mohg, Lord of Blood"},{"id":"4810004","name":"Erdtree Avatar"},{"id":"4811004","name":"Putrid Avatar"},{"id":"4812004","name":"Blighted Avatar"},{"id":"4813004","name":"Hallowed Avatar"},{"id":"4820004","name":"Omenkiller"},{"id":"4830004","name":"Fellthorn Spirit"},{"id":"4840004","name":"Putrescent Bonemass"},{"id":"4850004","name":"Putrescent Mudgrub"},{"id":"4860004","name":"Roundtable Ambassador"},{"id":"4870004","name":"Harvester of Rot"},{"id":"4870104","name":"Scarlet Harvester of Rot"},{"id":"4910004","name":"Magma Wyrm"},{"id":"4911004","name":"Great Wyrm Theodorix"},{"id":"4950004","name":"Tibia Mariner"},{"id":"4960004","name":"Giant Skeletal Phantom"},{"id":"4980004","name":"Deathbird"},{"id":"4980104","name":"Death Rite Bird"},{"id":"5000004","name":"Commander Gaius"},{"id":"5010004","name":"Golden Hippopotamus"},{"id":"5011004","name":"Giant Hippopotamus"},{"id":"5020004","name":"Putrescent Knight"},{"id":"5030004","name":"Romina, Saint of the Bud"},{"id":"5040004","name":"Curseblade"},{"id":"5050004","name":"Lord Midra"},{"id":"5051004","name":"Midra, Lord of Frenzied Flame"},{"id":"5060004","name":"Lamprey"},{"id":"5061004","name":"Large Lamprey"},{"id":"5070004","name":"Death Knight"},{"id":"5080004","name":"Bloodfiend"},{"id":"5080104","name":"Soporific Bloodfiend"},{"id":"5081004","name":"Chief Bloodfiend"},{"id":"5081104","name":"Soporific Chief Bloodfiend"},{"id":"5090004","name":"Gravebird"},{"id":"5090104","name":"Soporific Gravebird"},{"id":"5110004","name":"Spirit Eel"},{"id":"5120004","name":"Bayle the Dread"},{"id":"5130004","name":"Messmer the Impaler"},{"id":"5130104","name":"Base Serpent Messmer"},{"id":"5160004","name":"Fire Knight"},{"id":"5170004","name":"Furnace Golem"},{"id":"5190004","name":"Spider Scorpion"},{"id":"5192004","name":"Large Spider Scorpion"},{"id":"5193004","name":"Small Spider Scorpion"},{"id":"5200004","name":"Metyr, Mother of Fingers"},{"id":"5210004","name":"Divine Beast Dancing Lion"},{"id":"5220004","name":"Promised Consort Radahn"},{"id":"5220104","name":"Radahn, Consort of Miquella"},{"id":"5230004","name":"Scadutree Avatar"},{"id":"5240004","name":"Hornsent Shadow"},{"id":"5240104","name":"Hornsent Collaborator"},{"id":"5240204","name":"Hornsent Jar-Bearer"},{"id":"5241004","name":"Large Hornsent Shadow"},{"id":"5250004","name":"Horned Warrior"},{"id":"5250104","name":"Divine Bird Warrior"},{"id":"5250204","name":"Divine Beast Warrior"},{"id":"5250304","name":"Divine Beast Lightning Warrior"},{"id":"5250404","name":"Divine Beast Frost Warrior"},{"id":"5250504","name":"Divine Beast Storm Warrior"},{"id":"5250604","name":"Wraith Horned Warrior"},{"id":"5251004","name":"Horned Priest"},{"id":"5260004","name":"Golem Smith"},{"id":"5270004","name":"Jar Innards"},{"id":"5270104","name":"Jar Terror"},{"id":"5280004","name":"Aging Untouchable"},{"id":"5300004","name":"Rellana, Twin Moon Knight"},{"id":"5311004","name":"Hornsent Inquisitor"},{"id":"5311104","name":"Frenzied Hornsent Inquisitor"},{"id":"5312004","name":"Elder Inquisitor"},{"id":"5320004","name":"Great Inquisitor"},{"id":"5511004","name":"Messmerfire Putrid Corpse"},{"id":"5521004","name":"Messmerfire Stray"},{"id":"5523004","name":"Shadow Stray"},{"id":"5591004","name":"Putrescent Rotmound"},{"id":"5651004","name":"Messmer Foot Soldier"},{"id":"5810004","name":"Demi-Human Swordmaster"},{"id":"5820004","name":"Great Red Bear"},{"id":"5830004","name":"Messmer Soldier"},{"id":"5840004","name":"Black Knight"},{"id":"5850004","name":"Giant Lightning Sheep"},{"id":"5860004","name":"Ghostflame Dragon"},{"id":"5870004","name":"Lion Imp"},{"id":"5870104","name":"Bigmouth Imp"},{"id":"5871004","name":"Biggermouth Imp"},{"id":"5872004","name":"Biggestmouth Imp"},{"id":"5880004","name":"Catacombs Sorcerer"},{"id":"5890004","name":"Black Knight's Steed"},{"id":"5900004","name":"Man-Fly"},{"id":"6001004","name":"Eagle"},{"id":"6010004","name":"Deer"},{"id":"6031004","name":"Bear"},{"id":"6031104","name":"Red Bear"},{"id":"6040004","name":"Owl"},{"id":"6050004","name":"Boar"},{"id":"6050104","name":"Fanged Boar"},{"id":"6060004","name":"Sheep"},{"id":"6060104","name":"Lightning Sheep"},{"id":"6060204","name":"Ram"},{"id":"6060304","name":"Lightning Ram"},{"id":"6060404","name":"Greathorn Ram"},{"id":"6060504","name":"Lightning Greathorn Ram"},{"id":"6060604","name":"Frenzied Sheep"},{"id":"6060704","name":"Frenzied Ram"},{"id":"6070004","name":"Guillemot"},{"id":"6080004","name":"Dragonfly"},{"id":"6081004","name":"Yellow Dragonfly"},{"id":"6082004","name":"Great Dragonfly"},{"id":"6090004","name":"Turtle"},{"id":"6100004","name":"Springhare"},{"id":"7000004","name":"Fallen Hawk Company"},{"id":"7100004","name":"Ancient Hero of Zamor"},{"id":"7520004","name":"Gnoster, the False Sky"},{"id":"7530004","name":"Stoneshield Scorpion"},{"id":"7530104","name":"Decaying Stoneshield Scorpion"},{"id":"7561004","name":"Equilibrious Beast"},{"id":"7600004","name":"Fulghor, Champion of Rauh"}]
+[
+  {
+    "id": "10000000",
+    "name": "Bonfire"
+  },
+  {
+    "id": "10001000",
+    "name": "BuddyStone"
+  },
+  {
+    "id": "20100000",
+    "name": "Blaidd the Half-Wolf"
+  },
+  {
+    "id": "20108500",
+    "name": "Baleful Shadow"
+  },
+  {
+    "id": "20300000",
+    "name": "Rennala, Queen of the Full Moon"
+  },
+  {
+    "id": "20400000",
+    "name": "Juvenile Scholar"
+  },
+  {
+    "id": "20410000",
+    "name": "Kindred of Rot Larva"
+  },
+  {
+    "id": "20500000",
+    "name": "Ranni the Witch"
+  },
+  {
+    "id": "20500010",
+    "name": "Renna the Witch"
+  },
+  {
+    "id": "20600000",
+    "name": "The Two Fingers"
+  },
+  {
+    "id": "21000000",
+    "name": "Black Knife Assassin (Unscaled)"
+  },
+  {
+    "id": "21000034",
+    "name": "Black Knife Assassin (Leyndell)"
+  },
+  {
+    "id": "21000052",
+    "name": "Black Knife Assassin (Ordina)"
+  },
+  {
+    "id": "21000735",
+    "name": "Black Knife Assassin (Boss)"
+  },
+  {
+    "id": "21001010",
+    "name": "Black Knife Assassin (Limgrave Catacombs Boss)"
+  },
+  {
+    "id": "21002922",
+    "name": "Alecto, Black Knife Ringleader"
+  },
+  {
+    "id": "21009020",
+    "name": "Black Knife Assassin (Liurnia Catacombs Boss)"
+  },
+  {
+    "id": "21100000",
+    "name": "Beast Clergyman"
+  },
+  {
+    "id": "21100072",
+    "name": "Beast Clergyman (Farum Azula)"
+  },
+  {
+    "id": "21101000",
+    "name": "Maliketh"
+  },
+  {
+    "id": "21101072",
+    "name": "Maliketh (Farum Azula)"
+  },
+  {
+    "id": "21109000",
+    "name": "Gurranq, Beast Clergyman"
+  },
+  {
+    "id": "21200000",
+    "name": "Malenia, Blade of Miquella"
+  },
+  {
+    "id": "21300000",
+    "name": "Margit"
+  },
+  {
+    "id": "21300014",
+    "name": "Margit, the Fell Omen"
+  },
+  {
+    "id": "21300033",
+    "name": "Margit (Capital Outskirts)"
+  },
+  {
+    "id": "21300500",
+    "name": "Morgott"
+  },
+  {
+    "id": "21300534",
+    "name": "Morgott, the Omen King"
+  },
+  {
+    "id": "21310000",
+    "name": "Morgott - Dead"
+  },
+  {
+    "id": "21310034",
+    "name": "Morgott - Dead (Leyndell)"
+  },
+  {
+    "id": "21400000",
+    "name": "Omen"
+  },
+  {
+    "id": "21400034",
+    "name": "Omen (Leyndell)"
+  },
+  {
+    "id": "21400114",
+    "name": "Omen (Stormveil Castle)"
+  },
+  {
+    "id": "21400200",
+    "name": "Omen (Accursed)"
+  },
+  {
+    "id": "21400400",
+    "name": "Omen (Horned)"
+  },
+  {
+    "id": "21400600",
+    "name": "Omen (Death-serving)"
+  },
+  {
+    "id": "21403050",
+    "name": "Fell Twin"
+  },
+  {
+    "id": "21500052",
+    "name": "Lightning Ball"
+  },
+  {
+    "id": "21500064",
+    "name": "Lightning Ball (Siofra River)"
+  },
+  {
+    "id": "21600000",
+    "name": "Finger Reader Crone"
+  },
+  {
+    "id": "21601050",
+    "name": "Keeper of Forbidden Lands"
+  },
+  {
+    "id": "21601066",
+    "name": "Godwyn's Wet Nurse"
+  },
+  {
+    "id": "21700000",
+    "name": "Finger Reader Enia"
+  },
+  {
+    "id": "21800000",
+    "name": "Melina"
+  },
+  {
+    "id": "21900000",
+    "name": "Radagon (Unscaled)"
+  },
+  {
+    "id": "21900078",
+    "name": "Radagon of the Golden Order"
+  },
+  {
+    "id": "21910000",
+    "name": "Radagon - Crucified (Unscaled)"
+  },
+  {
+    "id": "22000000",
+    "name": "Elden Beast"
+  },
+  {
+    "id": "22700000",
+    "name": "Giant Crab"
+  },
+  {
+    "id": "22700013",
+    "name": "Giant Crab (Limgrave)"
+  },
+  {
+    "id": "22700064",
+    "name": "Giant Crab (Siofra River)"
+  },
+  {
+    "id": "22710000",
+    "name": "Crab"
+  },
+  {
+    "id": "22710013",
+    "name": "Crab (Limgrave)"
+  },
+  {
+    "id": "22710060",
+    "name": "Crab (Ainsel River)"
+  },
+  {
+    "id": "22710064",
+    "name": "Crab (Siofra River)"
+  },
+  {
+    "id": "22720000",
+    "name": "Giant Black Crab"
+  },
+  {
+    "id": "22730020",
+    "name": "Black Crab"
+  },
+  {
+    "id": "22740000",
+    "name": "Giant Albinauric Crab"
+  },
+  {
+    "id": "22750000",
+    "name": "Albinauric Crab"
+  },
+  {
+    "id": "22760000",
+    "name": "Giant Death Crab"
+  },
+  {
+    "id": "22770000",
+    "name": "Death Crab"
+  },
+  {
+    "id": "25000000",
+    "name": "Crucible Knight (Unscaled)"
+  },
+  {
+    "id": "25000010",
+    "name": "Crucible Knight (Limgrave Evergaol Boss)"
+  },
+  {
+    "id": "25000014",
+    "name": "Crucible Knight"
+  },
+  {
+    "id": "25000034",
+    "name": "Crucible Knight (Leyndell)"
+  },
+  {
+    "id": "25000042",
+    "name": "Crucible Knight (Boss)"
+  },
+  {
+    "id": "25000172",
+    "name": "Crucible Knight (Farum Azula)"
+  },
+  {
+    "id": "25000865",
+    "name": "Crucible Knight (Four Belfries)"
+  },
+  {
+    "id": "25000933",
+    "name": "Crucible Knight Ordovis"
+  },
+  {
+    "id": "25000941",
+    "name": "Crucible Knight (Redmane Boss)"
+  },
+  {
+    "id": "25001066",
+    "name": "Crucible Knight Siluria"
+  },
+  {
+    "id": "25001933",
+    "name": "Crucible Knight Ordovis (Auriza Boss)"
+  },
+  {
+    "id": "25009000",
+    "name": "Tanith's Knight"
+  },
+  {
+    "id": "30000000",
+    "name": "Exile Soldier"
+  },
+  {
+    "id": "30000014",
+    "name": "Exile Soldier (Stormveil Castle)"
+  },
+  {
+    "id": "30000034",
+    "name": "Exile Soldier (Leyndell)"
+  },
+  {
+    "id": "30004000",
+    "name": "Mausoleum Exile Soldier"
+  },
+  {
+    "id": "30008040",
+    "name": "Exile Soldier (Boss)"
+  },
+  {
+    "id": "30100000",
+    "name": "Banished Knight"
+  },
+  {
+    "id": "30100014",
+    "name": "Banished Knight (Stormveil Castle)"
+  },
+  {
+    "id": "30100034",
+    "name": "Banished Knight (Leyndell)"
+  },
+  {
+    "id": "30100400",
+    "name": "Mausoleum Banished Knight"
+  },
+  {
+    "id": "30106051",
+    "name": "Banished Knight (Niall Boss)"
+  },
+  {
+    "id": "30200000",
+    "name": "Large Exile Soldier"
+  },
+  {
+    "id": "30200034",
+    "name": "Large Exile Soldier (Leyndell)"
+  },
+  {
+    "id": "30200100",
+    "name": "Mausoleum Large Exile Soldier"
+  },
+  {
+    "id": "30208040",
+    "name": "Large Exile Soldier (Boss)"
+  },
+  {
+    "id": "30500000",
+    "name": "Commander"
+  },
+  {
+    "id": "30500051",
+    "name": "Commander Niall"
+  },
+  {
+    "id": "30500140",
+    "name": "Commander O'Neil"
+  },
+  {
+    "id": "30600000",
+    "name": "Giant Skeleton"
+  },
+  {
+    "id": "30610000",
+    "name": "Giant Beast Skeleton"
+  },
+  {
+    "id": "30700000",
+    "name": "Dominula Celebrant"
+  },
+  {
+    "id": "30800000",
+    "name": "Imp"
+  },
+  {
+    "id": "30800034",
+    "name": "Imp (Leyndell)"
+  },
+  {
+    "id": "30800912",
+    "name": "Imp (Boss)"
+  },
+  {
+    "id": "31000000",
+    "name": "Elemer of the Briar"
+  },
+  {
+    "id": "31000010",
+    "name": "Bell Bearing Hunter (Limgrave)"
+  },
+  {
+    "id": "31000020",
+    "name": "Bell Bearing Hunter"
+  },
+  {
+    "id": "31000931",
+    "name": "Elemer of the Briar (Shaded Castle)"
+  },
+  {
+    "id": "31500000",
+    "name": "Night's Cavalry"
+  },
+  {
+    "id": "31500010",
+    "name": "Night's Cavalry (Limgrave Boss)"
+  },
+  {
+    "id": "31500052",
+    "name": "Night's Cavalry (Glaive)"
+  },
+  {
+    "id": "31501012",
+    "name": "Night's Cavalry (Weeping Peninsula Boss)"
+  },
+  {
+    "id": "31501052",
+    "name": "Night's Cavalry (Flail)"
+  },
+  {
+    "id": "31600000",
+    "name": "Funeral Steed"
+  },
+  {
+    "id": "31600010",
+    "name": "Funeral Steed (Limgrave)"
+  },
+  {
+    "id": "31600012",
+    "name": "Funeral Steed (Weeping Peninsula)"
+  },
+  {
+    "id": "31700000",
+    "name": "Albinauric Archer"
+  },
+  {
+    "id": "31709000",
+    "name": "Latenna the Albinauric"
+  },
+  {
+    "id": "31710000",
+    "name": "Phillia, Towering Little Sister"
+  },
+  {
+    "id": "31800000",
+    "name": "Albinauric Archer's Wolf"
+  },
+  {
+    "id": "31810000",
+    "name": "Red Wolf of Radagon"
+  },
+  {
+    "id": "31811000",
+    "name": "Red Wolf of Radagon Sword"
+  },
+  {
+    "id": "31811024",
+    "name": "Red Wolf of Radagon Sword (Archives)"
+  },
+  {
+    "id": "31811032",
+    "name": "Red Wolf of the Champion"
+  },
+  {
+    "id": "31811052",
+    "name": "Red Wolf of Radagon Sword (Snowfields)"
+  },
+  {
+    "id": "32000000",
+    "name": "Merchant Kalé"
+  },
+  {
+    "id": "32001110",
+    "name": "Nomadic Merchant"
+  },
+  {
+    "id": "32001612",
+    "name": "Isolated Merchant"
+  },
+  {
+    "id": "32001933",
+    "name": "Hermit Merchant"
+  },
+  {
+    "id": "32002764",
+    "name": "Abandoned Merchant"
+  },
+  {
+    "id": "32002968",
+    "name": "Imprisoned Merchant"
+  },
+  {
+    "id": "32009000",
+    "name": "Merchant"
+  },
+  {
+    "id": "32010000",
+    "name": "Frenzied Nomad"
+  },
+  {
+    "id": "32100000",
+    "name": "Nomadic Merchant's Donkey"
+  },
+  {
+    "id": "32102764",
+    "name": "Nomadic Merchant's Donkey (Siofra River)"
+  },
+  {
+    "id": "32102860",
+    "name": "Nomadic Merchant's Donkey (Ainsel River)"
+  },
+  {
+    "id": "32500000",
+    "name": "Draconic Tree Sentinel (Unscaled)"
+  },
+  {
+    "id": "32500033",
+    "name": "Draconic Tree Sentinel (Capital Outskirts)"
+  },
+  {
+    "id": "32500070",
+    "name": "Draconic Tree Sentinel"
+  },
+  {
+    "id": "32500072",
+    "name": "Draconic Tree Sentinel (Farum Azula)"
+  },
+  {
+    "id": "32510000",
+    "name": "Tree Sentinel (Unscaled)"
+  },
+  {
+    "id": "32510010",
+    "name": "Tree Sentinel (Limgrave)"
+  },
+  {
+    "id": "32510030",
+    "name": "Tree Sentinel (Altus Plateau)"
+  },
+  {
+    "id": "32510034",
+    "name": "Tree Sentinel  (Leyndell)"
+  },
+  {
+    "id": "32510070",
+    "name": "Tree Sentinel"
+  },
+  {
+    "id": "32511030",
+    "name": "Tree Sentinel - Torch (Altus Plateau)"
+  },
+  {
+    "id": "32520000",
+    "name": "Loretta Tree Sentinel (Unscaled)"
+  },
+  {
+    "id": "32520054",
+    "name": "Loretta, Knight of the Haligtree"
+  },
+  {
+    "id": "32520921",
+    "name": "Royal Knight Loretta"
+  },
+  {
+    "id": "33000000",
+    "name": "Nox Swordstress (Unscaled)"
+  },
+  {
+    "id": "33000062",
+    "name": "Nox Swordstress"
+  },
+  {
+    "id": "33000940",
+    "name": "Nox Swordstress (Boss)"
+  },
+  {
+    "id": "33001000",
+    "name": "Nox Monk (Unscaled)"
+  },
+  {
+    "id": "33001062",
+    "name": "Nox Monk"
+  },
+  {
+    "id": "33001940",
+    "name": "Nox Monk (Boss)"
+  },
+  {
+    "id": "33002000",
+    "name": "Nox Nightmaiden"
+  },
+  {
+    "id": "33200000",
+    "name": "Silver Tear (Unscaled)"
+  },
+  {
+    "id": "33200062",
+    "name": "Silver Tear"
+  },
+  {
+    "id": "33202000",
+    "name": "Electrified Silver Tear (Unscaled)"
+  },
+  {
+    "id": "33202062",
+    "name": "Electrified Silver Tear"
+  },
+  {
+    "id": "33209000",
+    "name": "Asimi, Silver Tear"
+  },
+  {
+    "id": "33300000",
+    "name": "Giant Silver Tear (Unscaled)"
+  },
+  {
+    "id": "33300040",
+    "name": "Giant Silver Tear"
+  },
+  {
+    "id": "33500000",
+    "name": "Crystalian"
+  },
+  {
+    "id": "33500154",
+    "name": "Crystalian (Spirit)"
+  },
+  {
+    "id": "33500500",
+    "name": "Putrid Crystalian"
+  },
+  {
+    "id": "33500920",
+    "name": "Crystalian (Boss)"
+  },
+  {
+    "id": "33500930",
+    "name": "Crystalian (Ringblade)"
+  },
+  {
+    "id": "33500940",
+    "name": "Putrid Crystalian (Ringblade)"
+  },
+  {
+    "id": "33501920",
+    "name": "Crystalian (Spear)"
+  },
+  {
+    "id": "33501940",
+    "name": "Putrid Crystalian (Spear)"
+  },
+  {
+    "id": "33502920",
+    "name": "Crystalian (Staff)"
+  },
+  {
+    "id": "33502940",
+    "name": "Putrid Crystalian (Staff)"
+  },
+  {
+    "id": "33600000",
+    "name": "Ancestral Follower"
+  },
+  {
+    "id": "33600064",
+    "name": "Ancestral Follower (Siofra River)"
+  },
+  {
+    "id": "33601000",
+    "name": "Ancestral Follower - Greathorn Hammer"
+  },
+  {
+    "id": "33602000",
+    "name": "Ancestral Follower - Winged Greatthorn"
+  },
+  {
+    "id": "33610000",
+    "name": "Putrid Ancestral Follower"
+  },
+  {
+    "id": "33700000",
+    "name": "Ancestral Follower Shaman"
+  },
+  {
+    "id": "33700064",
+    "name": "Ancestral Follower Shaman (Siofra River)"
+  },
+  {
+    "id": "33710000",
+    "name": "Putrid Ancestral Shaman"
+  },
+  {
+    "id": "34000000",
+    "name": "Grave Warden Duelist"
+  },
+  {
+    "id": "34000034",
+    "name": "Grave Warden Duelist (Leyndell)"
+  },
+  {
+    "id": "34000940",
+    "name": "Frenzied Grave Warden Duelist (Boss)"
+  },
+  {
+    "id": "34000952",
+    "name": "Putrid Grave Warden Duelist (Boss)"
+  },
+  {
+    "id": "34001110",
+    "name": "Grave Warden Duelist (Boss)"
+  },
+  {
+    "id": "34001133",
+    "name": "Grave Warden Duelist (Auriza Boss)"
+  },
+  {
+    "id": "34500000",
+    "name": "Misbegotten"
+  },
+  {
+    "id": "34500034",
+    "name": "Misbegotten (Leyndell)"
+  },
+  {
+    "id": "34501000",
+    "name": "Winged Misbegotten"
+  },
+  {
+    "id": "34501034",
+    "name": "Winged Misbegotten (Leyndell)"
+  },
+  {
+    "id": "34510000",
+    "name": "Scaly Misbegotten"
+  },
+  {
+    "id": "34510034",
+    "name": "Scaly Misbegotten (Leyndell)"
+  },
+  {
+    "id": "34510100",
+    "name": "Smithing Master Hewg"
+  },
+  {
+    "id": "34510912",
+    "name": "Scaly Misbegotten (Morne Tunnel Boss)"
+  },
+  {
+    "id": "34600000",
+    "name": "Leonine Misbegotten"
+  },
+  {
+    "id": "34600034",
+    "name": "Leonine Misbegotten (Leyndell)"
+  },
+  {
+    "id": "34600913",
+    "name": "Leonine Misbegotten (Castle Morne Boss)"
+  },
+  {
+    "id": "34600930",
+    "name": "Misbegotten Warrior"
+  },
+  {
+    "id": "34601952",
+    "name": "Misbegotten Crusader"
+  },
+  {
+    "id": "34700000",
+    "name": "Albinauric"
+  },
+  {
+    "id": "34700200",
+    "name": "Bloodbane Albinauric (Unscaled)"
+  },
+  {
+    "id": "34700268",
+    "name": "Bloodbane Albinauric"
+  },
+  {
+    "id": "34700300",
+    "name": "Snowfield Albinauric (Unscaled)"
+  },
+  {
+    "id": "34700352",
+    "name": "Snowfield Albinauric"
+  },
+  {
+    "id": "34715000",
+    "name": "Large Albinauric"
+  },
+  {
+    "id": "34715200",
+    "name": "Large Bloodbane Albinauric (Unscaled)"
+  },
+  {
+    "id": "34715268",
+    "name": "Large Bloodbane Albinauric"
+  },
+  {
+    "id": "34715300",
+    "name": "Large Snowfield Albinauric (Unscaled)"
+  },
+  {
+    "id": "34715352",
+    "name": "Large Snowfield Albinauric"
+  },
+  {
+    "id": "35000000",
+    "name": "Large Skeleton (Spear)"
+  },
+  {
+    "id": "35001000",
+    "name": "Large Skeleton (Crossbow)"
+  },
+  {
+    "id": "35002000",
+    "name": "Large Skeleton (Scythe)"
+  },
+  {
+    "id": "35003000",
+    "name": "Large Skeleton (Sword and Shield)"
+  },
+  {
+    "id": "35004000",
+    "name": "Large Skeleton (Curved Swords)"
+  },
+  {
+    "id": "35100000",
+    "name": "Skeleton (Sword and Shield)"
+  },
+  {
+    "id": "35101000",
+    "name": "Skeleton (Sword)"
+  },
+  {
+    "id": "35102000",
+    "name": "Skeleton (Bow)"
+  },
+  {
+    "id": "35103000",
+    "name": "Skeleton (Fists)"
+  },
+  {
+    "id": "35500000",
+    "name": "Sanguine Noble (Unscaled)"
+  },
+  {
+    "id": "35500020",
+    "name": "Sanguine Noble"
+  },
+  {
+    "id": "35500930",
+    "name": "Sanguine Noble (Boss)"
+  },
+  {
+    "id": "35600000",
+    "name": "Godskin Apostle (Unscaled)"
+  },
+  {
+    "id": "35600030",
+    "name": "Godskin Apostle"
+  },
+  {
+    "id": "35600172",
+    "name": "Godskin Apostle {Godskin Duo)"
+  },
+  {
+    "id": "35600972",
+    "name": "Godskin Apostle (Godskin Duo HP)"
+  },
+  {
+    "id": "35700000",
+    "name": "Godskin Noble (Unscaled)"
+  },
+  {
+    "id": "35700028",
+    "name": "Godskin Noble (Liurnia Divine Tower)"
+  },
+  {
+    "id": "35700038",
+    "name": "Godskin Noble (Volcano Manor)"
+  },
+  {
+    "id": "35700172",
+    "name": "Godskin Noble (Godskin Duo)"
+  },
+  {
+    "id": "35700950",
+    "name": "Godskin Noble"
+  },
+  {
+    "id": "36000000",
+    "name": "Alabaster Lord (Unscaled)"
+  },
+  {
+    "id": "36000010",
+    "name": "Alabaster Lord"
+  },
+  {
+    "id": "36001000",
+    "name": "Onyx Lord"
+  },
+  {
+    "id": "36001920",
+    "name": "Onyx Lord (Boss)"
+  },
+  {
+    "id": "36100000",
+    "name": "Oracle Envoy"
+  },
+  {
+    "id": "36100034",
+    "name": "Oracle Envoy (Leyndell)"
+  },
+  {
+    "id": "36200000",
+    "name": "Large Oracle Envoy"
+  },
+  {
+    "id": "36200034",
+    "name": "Large Oracle Envoy (Leyndell)"
+  },
+  {
+    "id": "36300000",
+    "name": "Giant Oracle Envoy"
+  },
+  {
+    "id": "36500000",
+    "name": "Guardian"
+  },
+  {
+    "id": "36500034",
+    "name": "Guardian (Leyndell)"
+  },
+  {
+    "id": "36501000",
+    "name": "Full-Bloom Guardian"
+  },
+  {
+    "id": "36501034",
+    "name": "Full-Bloom Guardian (Leyndell)"
+  },
+  {
+    "id": "36501100",
+    "name": "Full-Bloom Guardian - Full Bloomed"
+  },
+  {
+    "id": "36502000",
+    "name": "Rotten Guardian"
+  },
+  {
+    "id": "36503000",
+    "name": "Fuller-Bloom Guardian"
+  },
+  {
+    "id": "36600000",
+    "name": "Commoner"
+  },
+  {
+    "id": "36600034",
+    "name": "Commoner (Leyndell)"
+  },
+  {
+    "id": "36600600",
+    "name": "Frenzied Commoner"
+  },
+  {
+    "id": "36600700",
+    "name": "Death-serving Commoner"
+  },
+  {
+    "id": "36600800",
+    "name": "Imprisoned Commoner"
+  },
+  {
+    "id": "36601000",
+    "name": "Commoner (Spear)"
+  },
+  {
+    "id": "36602000",
+    "name": "Commoner (Torchpole, Cloak)"
+  },
+  {
+    "id": "36603000",
+    "name": "Commoner (Torchpole)"
+  },
+  {
+    "id": "36608000",
+    "name": "Commoner (Margit)"
+  },
+  {
+    "id": "36609000",
+    "name": "Commoner (Stranded Soul)"
+  },
+  {
+    "id": "36610000",
+    "name": "Putrid Corpse"
+  },
+  {
+    "id": "36610034",
+    "name": "Putrid Corpse (Leyndell)"
+  },
+  {
+    "id": "36610820",
+    "name": "Putrid Corpse (Mirage)"
+  },
+  {
+    "id": "36611000",
+    "name": "Putrid Corpse (Maggots)"
+  },
+  {
+    "id": "36611031",
+    "name": "Putrid Corpse (Maggots) (Shaded Castle)"
+  },
+  {
+    "id": "36612000",
+    "name": "Putrid Corpse (Burning)"
+  },
+  {
+    "id": "36613000",
+    "name": "Putrid Corpse (Mushroom)"
+  },
+  {
+    "id": "36614000",
+    "name": "Putrid Corpse (Magic)"
+  },
+  {
+    "id": "36615000",
+    "name": "Putrid Corpse (Blood)"
+  },
+  {
+    "id": "36616000",
+    "name": "Putrid Corpse (Rotten)"
+  },
+  {
+    "id": "36619040",
+    "name": "Putrid Corpse Ghost"
+  },
+  {
+    "id": "36620000",
+    "name": "Putrid Corpse (Large)"
+  },
+  {
+    "id": "36620034",
+    "name": "Putrid Corpse (Large) (Leyndell)"
+  },
+  {
+    "id": "36621000",
+    "name": "Putrid Corpse (Large) (Maggots)"
+  },
+  {
+    "id": "36621031",
+    "name": "Putrid Corpse (Large) (Maggots) (Shaded Castle)"
+  },
+  {
+    "id": "36622000",
+    "name": "Putrid Corpse (Large) (Burning)"
+  },
+  {
+    "id": "36623000",
+    "name": "Putrid Corpse (Large) (Mushroom)"
+  },
+  {
+    "id": "36624000",
+    "name": "Putrid Corpse (Large) (Magic)"
+  },
+  {
+    "id": "36625000",
+    "name": "Putrid Corpse (Large) (Blood)"
+  },
+  {
+    "id": "36626000",
+    "name": "Putrid Corpse (Large) (Rotten)"
+  },
+  {
+    "id": "36640000",
+    "name": "Cemetery Shade"
+  },
+  {
+    "id": "36640012",
+    "name": "Cemetery Shade (Weeping Peninsula)"
+  },
+  {
+    "id": "36640040",
+    "name": "Cemetery Shade (Boss)"
+  },
+  {
+    "id": "36650000",
+    "name": "Gatekeeper Gostoc"
+  },
+  {
+    "id": "36660000",
+    "name": "The Noble Goldmask"
+  },
+  {
+    "id": "36700000",
+    "name": "Elder Albinauric"
+  },
+  {
+    "id": "36700134",
+    "name": "Elder Albinauric (Leyndell)"
+  },
+  {
+    "id": "36701000",
+    "name": "Elder Albinauric Sorcerer"
+  },
+  {
+    "id": "36701200",
+    "name": "Pidia, Carian Servant"
+  },
+  {
+    "id": "36702000",
+    "name": "Imprisoned Elder Albinauric"
+  },
+  {
+    "id": "36703000",
+    "name": "Black Dumpling Elder Albinauric"
+  },
+  {
+    "id": "36703034",
+    "name": "Black Dumpling Elder Albinauric (Leyndell, Royal Capital)"
+  },
+  {
+    "id": "36704000",
+    "name": "Poison Claw Elder Albinauric"
+  },
+  {
+    "id": "36708000",
+    "name": "Old Albus"
+  },
+  {
+    "id": "37000000",
+    "name": "Depraved Perfumer"
+  },
+  {
+    "id": "37000031",
+    "name": "Depraved Perfumer (Shaded Castle)"
+  },
+  {
+    "id": "37010000",
+    "name": "Perfumer"
+  },
+  {
+    "id": "37010034",
+    "name": "Perfumer  (Leyndell)"
+  },
+  {
+    "id": "37011034",
+    "name": "Perfumer (Leyndell)"
+  },
+  {
+    "id": "37011930",
+    "name": "Perfumer Tricia"
+  },
+  {
+    "id": "37020000",
+    "name": "Glintstone Sorcerer"
+  },
+  {
+    "id": "37020040",
+    "name": "Glintstone Sorcerer (Mirage)"
+  },
+  {
+    "id": "37021000",
+    "name": "Karolos Glintstone Sorcerer"
+  },
+  {
+    "id": "37021040",
+    "name": "Karolos Glintstone Sorcerer (Mirage)"
+  },
+  {
+    "id": "37022000",
+    "name": "Lazuli Glintstone Sorcerer"
+  },
+  {
+    "id": "37023000",
+    "name": "Twinsage Glintstone Sorcerer A"
+  },
+  {
+    "id": "37023040",
+    "name": "Mirage Twinsage Glintstone Sorcerer A"
+  },
+  {
+    "id": "37024000",
+    "name": "Twinsage Glintstone Sorcerer B"
+  },
+  {
+    "id": "37024040",
+    "name": "Mirage Twinsage Glintstone Sorcerer B"
+  },
+  {
+    "id": "37030000",
+    "name": "Page"
+  },
+  {
+    "id": "37030031",
+    "name": "Page (Shaded Castle)"
+  },
+  {
+    "id": "37030034",
+    "name": "Page (Leyndell)"
+  },
+  {
+    "id": "37031000",
+    "name": "High Page"
+  },
+  {
+    "id": "37031024",
+    "name": "High Page (Raya Lucaria)"
+  },
+  {
+    "id": "37031034",
+    "name": "High Page (Leyndell)"
+  },
+  {
+    "id": "37040000",
+    "name": "Battlemage"
+  },
+  {
+    "id": "37040940",
+    "name": "Battlemage Hugues (Boss)"
+  },
+  {
+    "id": "37100000",
+    "name": "Azur"
+  },
+  {
+    "id": "37200000",
+    "name": "Lusat"
+  },
+  {
+    "id": "37300000",
+    "name": "Graven School"
+  },
+  {
+    "id": "37301000",
+    "name": "Sorceress Sellen"
+  },
+  {
+    "id": "37500000",
+    "name": "Clayman - Spear"
+  },
+  {
+    "id": "37500060",
+    "name": "Clayman (Ainsel River)"
+  },
+  {
+    "id": "37500062",
+    "name": "Clayman (Lake of Rot)"
+  },
+  {
+    "id": "37500064",
+    "name": "Clayman (Siofra River)"
+  },
+  {
+    "id": "37500065",
+    "name": "Clayman"
+  },
+  {
+    "id": "37501000",
+    "name": "Clayman - Dagger"
+  },
+  {
+    "id": "38000000",
+    "name": "Cleanrot Knight"
+  },
+  {
+    "id": "38000031",
+    "name": "Cleanrot Knight (Shaded Castle)"
+  },
+  {
+    "id": "38000100",
+    "name": "Mausoleum Cleanrot Knight"
+  },
+  {
+    "id": "38000920",
+    "name": "Cleanrot Knight (Boss)"
+  },
+  {
+    "id": "38100000",
+    "name": "Kindred of Rot"
+  },
+  {
+    "id": "38100040",
+    "name": "Kindred of Rot (Sellia Tunnel)"
+  },
+  {
+    "id": "38100932",
+    "name": "Kindred of Rot (Boss)"
+  },
+  {
+    "id": "38500000",
+    "name": "Marionette"
+  },
+  {
+    "id": "38600000",
+    "name": "Avionette"
+  },
+  {
+    "id": "39000000",
+    "name": "Fire Monk"
+  },
+  {
+    "id": "39010038",
+    "name": "Blackflame Monk"
+  },
+  {
+    "id": "39100000",
+    "name": "Fire Prelate"
+  },
+  {
+    "id": "39100100",
+    "name": "Fire Prelate (Surcoat)"
+  },
+  {
+    "id": "39500000",
+    "name": "Man-Serpent - Whip Cool"
+  },
+  {
+    "id": "39500038",
+    "name": "Man-Serpent"
+  },
+  {
+    "id": "39501000",
+    "name": "Man-Serpent - Whip Hot"
+  },
+  {
+    "id": "39502000",
+    "name": "Man-Serpent - Magma Blade Cool"
+  },
+  {
+    "id": "39503000",
+    "name": "Man-Serpent - Magma Blade Hot"
+  },
+  {
+    "id": "39504000",
+    "name": "Man-Serpent - Egghead"
+  },
+  {
+    "id": "39509000",
+    "name": "Zorayas the Scout"
+  },
+  {
+    "id": "39700000",
+    "name": "Azula Beastman"
+  },
+  {
+    "id": "39701000",
+    "name": "Armored Beastman of Farum Azula"
+  },
+  {
+    "id": "39701910",
+    "name": "Beastman of Farum Azula (Limgrave Cave Boss)"
+  },
+  {
+    "id": "39701942",
+    "name": "Armored Beastman of Farum Azula (Boss)"
+  },
+  {
+    "id": "39702942",
+    "name": "Azula Beastman (Boss)"
+  },
+  {
+    "id": "40000000",
+    "name": "Revenant Follower"
+  },
+  {
+    "id": "40000031",
+    "name": "Revenant Follower (Shaded Castle)"
+  },
+  {
+    "id": "40200000",
+    "name": "Royal Revenant"
+  },
+  {
+    "id": "40200031",
+    "name": "Royal Revenant (Shaded Castle)"
+  },
+  {
+    "id": "40200920",
+    "name": "Royal Revenant (Boss)"
+  },
+  {
+    "id": "40400000",
+    "name": "Slug"
+  },
+  {
+    "id": "40400031",
+    "name": "Slug (Shaded Castle)"
+  },
+  {
+    "id": "40401000",
+    "name": "Magma Slug"
+  },
+  {
+    "id": "40402000",
+    "name": "Worm Slug"
+  },
+  {
+    "id": "40403000",
+    "name": "Fire Slug"
+  },
+  {
+    "id": "40500000",
+    "name": "Kaiden Sellsword"
+  },
+  {
+    "id": "40600000",
+    "name": "Horse"
+  },
+  {
+    "id": "40600010",
+    "name": "Kaiden Sellsword Horse"
+  },
+  {
+    "id": "40700000",
+    "name": "Wolf"
+  },
+  {
+    "id": "40710000",
+    "name": "White Wolf"
+  },
+  {
+    "id": "40800000",
+    "name": "Rat"
+  },
+  {
+    "id": "40800014",
+    "name": "Rat (Stormveil Castle)"
+  },
+  {
+    "id": "40800034",
+    "name": "Rat  (Leyndell)"
+  },
+  {
+    "id": "40800064",
+    "name": "Rat (Siofra River)"
+  },
+  {
+    "id": "40800134",
+    "name": "Rat (Leyndell)"
+  },
+  {
+    "id": "40900000",
+    "name": "Giant Rat"
+  },
+  {
+    "id": "40900014",
+    "name": "Giant Rat (Stormveil Castle)"
+  },
+  {
+    "id": "40900034",
+    "name": "Giant Rat (Leyndell)"
+  },
+  {
+    "id": "40900064",
+    "name": "Giant Rat (Siofra River)"
+  },
+  {
+    "id": "41000000",
+    "name": "Demi-Human"
+  },
+  {
+    "id": "41010000",
+    "name": "Large Demi-Human"
+  },
+  {
+    "id": "41100000",
+    "name": "Demi-Human Shaman"
+  },
+  {
+    "id": "41109000",
+    "name": "Demi-Human Boc"
+  },
+  {
+    "id": "41109020",
+    "name": "Boc the Seamster"
+  },
+  {
+    "id": "41200000",
+    "name": "Demi-Human Chief"
+  },
+  {
+    "id": "41200910",
+    "name": "Demi-Human Chief (Duo Boss)"
+  },
+  {
+    "id": "41300000",
+    "name": "Demi-Human Queen"
+  },
+  {
+    "id": "41300032",
+    "name": "Demi-Human Queen Maggie"
+  },
+  {
+    "id": "41301030",
+    "name": "Demi-Human Queen Gilika"
+  },
+  {
+    "id": "41301932",
+    "name": "Demi-Human Queen Margot"
+  },
+  {
+    "id": "41400000",
+    "name": "Snail"
+  },
+  {
+    "id": "41401034",
+    "name": "Snail (Leyndell)"
+  },
+  {
+    "id": "41402920",
+    "name": "Spiritcaller Snail"
+  },
+  {
+    "id": "41500000",
+    "name": "Basilisk"
+  },
+  {
+    "id": "41500031",
+    "name": "Basilisk (Shaded Castle)"
+  },
+  {
+    "id": "41500060",
+    "name": "Basilisk (Ainsel River)"
+  },
+  {
+    "id": "41600000",
+    "name": "Large Stray"
+  },
+  {
+    "id": "41600014",
+    "name": "Large Stray (Stormveil Castle)"
+  },
+  {
+    "id": "41600031",
+    "name": "Large Stray (Shaded Castle)"
+  },
+  {
+    "id": "41600034",
+    "name": "Large Stray (Leyndell)"
+  },
+  {
+    "id": "41610000",
+    "name": "Stray"
+  },
+  {
+    "id": "41610014",
+    "name": "Stray (Stormveil Castle)"
+  },
+  {
+    "id": "41610020",
+    "name": "Stray (Village of the Albinaurics)"
+  },
+  {
+    "id": "41610031",
+    "name": "Stray (Shaded Castle)"
+  },
+  {
+    "id": "41610034",
+    "name": "Stray (Leyndell)"
+  },
+  {
+    "id": "41610064",
+    "name": "Stray (Siofra River)"
+  },
+  {
+    "id": "41620000",
+    "name": "Large Azula Stray"
+  },
+  {
+    "id": "41630000",
+    "name": "Azula Stray"
+  },
+  {
+    "id": "41640000",
+    "name": "Large Bloodbane Stray"
+  },
+  {
+    "id": "41650000",
+    "name": "Bloodbane Stray"
+  },
+  {
+    "id": "41650935",
+    "name": "Bloodbane Stray (Boss)"
+  },
+  {
+    "id": "41660000",
+    "name": "Large Rotten Stray"
+  },
+  {
+    "id": "41670000",
+    "name": "Rotten Stray"
+  },
+  {
+    "id": "41700000",
+    "name": "Putrid Flesh"
+  },
+  {
+    "id": "41700100",
+    "name": "Putrid Flesh (Blood)"
+  },
+  {
+    "id": "41700200",
+    "name": "Putrid Flesh (Rotten)"
+  },
+  {
+    "id": "41700300",
+    "name": "Putrid Flesh (Green)"
+  },
+  {
+    "id": "41710000",
+    "name": "Giant Putrid Flesh (Blood)"
+  },
+  {
+    "id": "41800000",
+    "name": "Spirit Jellyfish"
+  },
+  {
+    "id": "41809050",
+    "name": "Aurelia (Jellyfish)"
+  },
+  {
+    "id": "41900000",
+    "name": "Large Crimson Tear Scarab"
+  },
+  {
+    "id": "41901000",
+    "name": "Large Cerulean Tear Scarab"
+  },
+  {
+    "id": "41902000",
+    "name": "Large Ash of War Scarab"
+  },
+  {
+    "id": "41903000",
+    "name": "Large Glintstone Scarab"
+  },
+  {
+    "id": "41904000",
+    "name": "Large Incantation Scarab"
+  },
+  {
+    "id": "41905000",
+    "name": "Large Smithing Stone Scarab"
+  },
+  {
+    "id": "41906110",
+    "name": "Large Scarab"
+  },
+  {
+    "id": "41910000",
+    "name": "Crimson Tear Scarab"
+  },
+  {
+    "id": "41911000",
+    "name": "Cerulean Tear Scarab"
+  },
+  {
+    "id": "41912000",
+    "name": "Ash of War Scarab"
+  },
+  {
+    "id": "41913000",
+    "name": "Glintstone Scarab"
+  },
+  {
+    "id": "41914000",
+    "name": "Incantation Scarab"
+  },
+  {
+    "id": "41915000",
+    "name": "Smithing Stone Scarab"
+  },
+  {
+    "id": "41916160",
+    "name": "Scarab"
+  },
+  {
+    "id": "41920000",
+    "name": "Giant Crimson Tear Scarab"
+  },
+  {
+    "id": "41921000",
+    "name": "Giant Cerulean Tear Scarab"
+  },
+  {
+    "id": "41922000",
+    "name": "Giant Ash of War Scarab"
+  },
+  {
+    "id": "41923000",
+    "name": "Giant Glintstone Scarab"
+  },
+  {
+    "id": "41924000",
+    "name": "Giant Incantation Scarab"
+  },
+  {
+    "id": "41925000",
+    "name": "Giant Smithing Stone Scarab"
+  },
+  {
+    "id": "41927064",
+    "name": "Giant Scarab"
+  },
+  {
+    "id": "42000000",
+    "name": "Man-Bat"
+  },
+  {
+    "id": "42000064",
+    "name": "Man-Bat (Siofra River)"
+  },
+  {
+    "id": "42010000",
+    "name": "Operatic Bat"
+  },
+  {
+    "id": "42100000",
+    "name": "Warhawk"
+  },
+  {
+    "id": "42100014",
+    "name": "Warhawk (Stormveil Castle)"
+  },
+  {
+    "id": "42200000",
+    "name": "Giant Land Octopus"
+  },
+  {
+    "id": "42200064",
+    "name": "Giant Land Octopus (Siofra River)"
+  },
+  {
+    "id": "42300000",
+    "name": "Small Land Octopus"
+  },
+  {
+    "id": "42300010",
+    "name": "Land Octopus"
+  },
+  {
+    "id": "42300064",
+    "name": "Land Octopus (Siofra River)"
+  },
+  {
+    "id": "42400000",
+    "name": "Fingercreeper"
+  },
+  {
+    "id": "42400034",
+    "name": "Fingercreeper (Leyndell)"
+  },
+  {
+    "id": "42407034",
+    "name": "Fingercreeper  (Leyndell)"
+  },
+  {
+    "id": "42410000",
+    "name": "Giant Fingercreeper"
+  },
+  {
+    "id": "42500000",
+    "name": "Small Fingercreeper"
+  },
+  {
+    "id": "42500028",
+    "name": "Small Fingercreeper (Leyndell)"
+  },
+  {
+    "id": "42500034",
+    "name": "Small Fingercreeper  (Leyndell)"
+  },
+  {
+    "id": "42600000",
+    "name": "Erdtree Burial Watchdog"
+  },
+  {
+    "id": "42600110",
+    "name": "Erdtree Burial Watchdog (Limgrave Catacombs)"
+  },
+  {
+    "id": "42600512",
+    "name": "Erdtree Burial Watchdog (Impalers Catacombs)"
+  },
+  {
+    "id": "42600940",
+    "name": "Erdtree Burial Watchdog (Minor Erdtree Catacombs)"
+  },
+  {
+    "id": "42601920",
+    "name": "Erdtree Burial Watchdog (Cliffbottom Catacombs)"
+  },
+  {
+    "id": "42602932",
+    "name": "Erdtree Burial Watchdog (Wyndham Catacombs)"
+  },
+  {
+    "id": "42700000",
+    "name": "Elder Lion"
+  },
+  {
+    "id": "42700014",
+    "name": "Elder Lion (Stormveil Castle)"
+  },
+  {
+    "id": "42700034",
+    "name": "Elder Lion  (Leyndell)"
+  },
+  {
+    "id": "42800000",
+    "name": "Giant Ant"
+  },
+  {
+    "id": "42800060",
+    "name": "Giant Ant (Ainsel River)"
+  },
+  {
+    "id": "42800100",
+    "name": "Giant Ant (Stinger)"
+  },
+  {
+    "id": "42800160",
+    "name": "Giant Ant (Stinger) (Ainsel River)"
+  },
+  {
+    "id": "42800200",
+    "name": "Giant Ant (Stinger, Large Abdomen)"
+  },
+  {
+    "id": "42800260",
+    "name": "Giant Ant (Stinger, Large Abdomen) (Ainsel River)"
+  },
+  {
+    "id": "42800300",
+    "name": "Giant Ant (Replete)"
+  },
+  {
+    "id": "42800360",
+    "name": "Giant Ant (Replete) (Ainsel River)"
+  },
+  {
+    "id": "42800400",
+    "name": "Giant Ant (Winged)"
+  },
+  {
+    "id": "42801100",
+    "name": "Giant Ant (Mounted)"
+  },
+  {
+    "id": "42810000",
+    "name": "Skull Plate Giant Ant"
+  },
+  {
+    "id": "42810060",
+    "name": "Skull Plate Giant Ant (Ainsel River)"
+  },
+  {
+    "id": "42900000",
+    "name": "Bloodhound Knight"
+  },
+  {
+    "id": "42900010",
+    "name": "Bloodhound Knight Darriwil"
+  },
+  {
+    "id": "42900920",
+    "name": "Bloodhound Knight (Boss)"
+  },
+  {
+    "id": "43000000",
+    "name": "Wandering Noble"
+  },
+  {
+    "id": "43000131",
+    "name": "Wandering Noble (Shaded Castle)"
+  },
+  {
+    "id": "43000300",
+    "name": "Wandering Noble (Puppet)"
+  },
+  {
+    "id": "43002000",
+    "name": "Wandering Noble (Sorcerer)"
+  },
+  {
+    "id": "43002031",
+    "name": "Wandering Noble (Sorcerer) (Shaded Castle)"
+  },
+  {
+    "id": "43003000",
+    "name": "Wandering Noble (Banner)"
+  },
+  {
+    "id": "43004000",
+    "name": "Wandering Noble (Chest)"
+  },
+  {
+    "id": "43006000",
+    "name": "Wandering Noble (Poisoned)"
+  },
+  {
+    "id": "43009000",
+    "name": "Wandering Noble (Stranded Soul)"
+  },
+  {
+    "id": "43110000",
+    "name": "Godrick Soldier"
+  },
+  {
+    "id": "43110914",
+    "name": "Godrick Soldier (Stormveil Castle)"
+  },
+  {
+    "id": "43113906",
+    "name": "Soldier of Godrick (Boss)"
+  },
+  {
+    "id": "43120000",
+    "name": "Raya Lucaria Soldier"
+  },
+  {
+    "id": "43130000",
+    "name": "Leyndell Soldier"
+  },
+  {
+    "id": "43130034",
+    "name": "Leyndell Soldier  (Leyndell)"
+  },
+  {
+    "id": "43130134",
+    "name": "Leyndell Soldier (Leyndell)"
+  },
+  {
+    "id": "43140000",
+    "name": "Radahn Soldier"
+  },
+  {
+    "id": "43150000",
+    "name": "Mausoleum Soldier"
+  },
+  {
+    "id": "43160000",
+    "name": "Haligtree Soldier"
+  },
+  {
+    "id": "43210000",
+    "name": "Vulgar Militia"
+  },
+  {
+    "id": "43400000",
+    "name": "Mad Pumpkin Head"
+  },
+  {
+    "id": "43400910",
+    "name": "Mad Pumpkin Head (Boss)"
+  },
+  {
+    "id": "43400940",
+    "name": "Mad Pumpkin Head (Flail)"
+  },
+  {
+    "id": "43401940",
+    "name": "Mad Pumpkin Head (Hammer)"
+  },
+  {
+    "id": "43410000",
+    "name": "Thin Mad Pumpkin Head"
+  },
+  {
+    "id": "43510000",
+    "name": "Godrick Knight"
+  },
+  {
+    "id": "43510110",
+    "name": "Godrick Knight (Blood)"
+  },
+  {
+    "id": "43520000",
+    "name": "Cuckoo Knight"
+  },
+  {
+    "id": "43530000",
+    "name": "Leyndell Knight"
+  },
+  {
+    "id": "43530034",
+    "name": "Leyndell Knight (Leyndell)"
+  },
+  {
+    "id": "43532034",
+    "name": "Leyndell Knight - Archer (Leyndell)"
+  },
+  {
+    "id": "43540000",
+    "name": "Redmane Knight"
+  },
+  {
+    "id": "43550000",
+    "name": "Mausoleum Knight"
+  },
+  {
+    "id": "43560000",
+    "name": "Haligtree Knight"
+  },
+  {
+    "id": "43560034",
+    "name": "Haligtree Knight (Leyndell)"
+  },
+  {
+    "id": "43610000",
+    "name": "Godrick Knight's Horse"
+  },
+  {
+    "id": "43620000",
+    "name": "Cuckoo Knight's Horse"
+  },
+  {
+    "id": "43630000",
+    "name": "Leyndell Knight's Horse"
+  },
+  {
+    "id": "43640000",
+    "name": "Redmane Knight's Horse"
+  },
+  {
+    "id": "43650000",
+    "name": "Mausoleum Knight's Horse"
+  },
+  {
+    "id": "43710000",
+    "name": "Godrick Foot Soldier"
+  },
+  {
+    "id": "43720000",
+    "name": "Raya Lucaria Foot Soldier"
+  },
+  {
+    "id": "43730000",
+    "name": "Leyndell Foot Soldier"
+  },
+  {
+    "id": "43730534",
+    "name": "Leyndell Foot Soldier (Leyndell)"
+  },
+  {
+    "id": "43740000",
+    "name": "Radahn Foot Soldier"
+  },
+  {
+    "id": "43750000",
+    "name": "Mausoleum Foot Soldier"
+  },
+  {
+    "id": "43760000",
+    "name": "Haligtree Foot Soldier"
+  },
+  {
+    "id": "43770000",
+    "name": "Highwayman"
+  },
+  {
+    "id": "43800000",
+    "name": "Starcaller"
+  },
+  {
+    "id": "43810000",
+    "name": "Guilty"
+  },
+  {
+    "id": "43820000",
+    "name": "Stonedigger"
+  },
+  {
+    "id": "43830000",
+    "name": "Glintstone Digger"
+  },
+  {
+    "id": "43830040",
+    "name": "Glintstone Digger (Sellia Tunnel)"
+  },
+  {
+    "id": "43831040",
+    "name": "Glintstone Digger (Sellia Hideaway)"
+  },
+  {
+    "id": "43840020",
+    "name": "Large Glintstone Digger"
+  },
+  {
+    "id": "43850000",
+    "name": "Disciple of Rot"
+  },
+  {
+    "id": "44200000",
+    "name": "Giant Crayfish"
+  },
+  {
+    "id": "44300000",
+    "name": "Watcher Stones"
+  },
+  {
+    "id": "44400000",
+    "name": "Land Squirt"
+  },
+  {
+    "id": "44410000",
+    "name": "Giant Land Squirt"
+  },
+  {
+    "id": "44420040",
+    "name": "Giant Rotten Land Squirt"
+  },
+  {
+    "id": "44500000",
+    "name": "Walking Mausoleum"
+  },
+  {
+    "id": "44600000",
+    "name": "Flame Chariot"
+  },
+  {
+    "id": "44700000",
+    "name": "Abductor Virgin (Unscaled)"
+  },
+  {
+    "id": "44700020",
+    "name": "Abductor Virgin"
+  },
+  {
+    "id": "44700034",
+    "name": "Abductor Virgin (Leyndell)"
+  },
+  {
+    "id": "44700938",
+    "name": "Abductor Virgin (Boss)"
+  },
+  {
+    "id": "44701100",
+    "name": "Abductor Virgin - Broken (Unscaled)"
+  },
+  {
+    "id": "44701132",
+    "name": "Abductor Virgin - Broken"
+  },
+  {
+    "id": "44702041",
+    "name": "Abductor Virgin Both"
+  },
+  {
+    "id": "44800000",
+    "name": "Miranda Blossom"
+  },
+  {
+    "id": "44800034",
+    "name": "Miranda Blossom (Leyndell)"
+  },
+  {
+    "id": "44800064",
+    "name": "Miranda Blossom (Siofra River)"
+  },
+  {
+    "id": "44800100",
+    "name": "Miranda Blossom (Frenzy)"
+  },
+  {
+    "id": "44800200",
+    "name": "Miranda Blossom (Magic)"
+  },
+  {
+    "id": "44800930",
+    "name": "Miranda the Blighted Bloom"
+  },
+  {
+    "id": "44810000",
+    "name": "Miranda Sprout"
+  },
+  {
+    "id": "44810034",
+    "name": "Miranda Sprout (Leyndell)"
+  },
+  {
+    "id": "44810064",
+    "name": "Miranda Sprout (Siofra River)"
+  },
+  {
+    "id": "44810100",
+    "name": "Miranda Sprout (Frenzy)"
+  },
+  {
+    "id": "44810200",
+    "name": "Miranda Sprout (Magic)"
+  },
+  {
+    "id": "44810912",
+    "name": "Miranda Sprout (Boss)"
+  },
+  {
+    "id": "44811000",
+    "name": "Miranda Sprout (Burrowed)"
+  },
+  {
+    "id": "44820000",
+    "name": "Fading Miranda Blossom"
+  },
+  {
+    "id": "44820031",
+    "name": "Fading Miranda Blossom (Shaded Castle)"
+  },
+  {
+    "id": "44820040",
+    "name": "Rotten Miranda Blossom"
+  },
+  {
+    "id": "44830000",
+    "name": "Rotten Miranda Sprout"
+  },
+  {
+    "id": "44830031",
+    "name": "Rotten Miranda Sprout (Shaded Castle)"
+  },
+  {
+    "id": "44900000",
+    "name": "Living Jar Warrior"
+  },
+  {
+    "id": "44900014",
+    "name": "Living Jar Warrior (Stormveil Castle)"
+  },
+  {
+    "id": "44900034",
+    "name": "Living Jar Warrior (Leyndell)"
+  },
+  {
+    "id": "44909000",
+    "name": "Alexander, Warrior Jar"
+  },
+  {
+    "id": "44910000",
+    "name": "Living Jar"
+  },
+  {
+    "id": "44910014",
+    "name": "Living Jar (Stormveil Castle)"
+  },
+  {
+    "id": "44910034",
+    "name": "Living Jar (Leyndell)"
+  },
+  {
+    "id": "44910200",
+    "name": "Living Fire Jar"
+  },
+  {
+    "id": "44910234",
+    "name": "Living Fire Jar (Leyndell)"
+  },
+  {
+    "id": "44919000",
+    "name": "Jar-Bairn"
+  },
+  {
+    "id": "44920000",
+    "name": "Greatjar"
+  },
+  {
+    "id": "45000000",
+    "name": "Flying Dragon (Unscaled)"
+  },
+  {
+    "id": "45000010",
+    "name": "Flying Dragon Agheel (Limgrave)"
+  },
+  {
+    "id": "45000042",
+    "name": "Flying Dragon Greyll (Caelid)"
+  },
+  {
+    "id": "45000072",
+    "name": "Flying Dragon"
+  },
+  {
+    "id": "45008024",
+    "name": "Flying Dragon (Rennala)"
+  },
+  {
+    "id": "45010000",
+    "name": "Decaying Ekzykes (Unscaled)"
+  },
+  {
+    "id": "45010040",
+    "name": "Decaying Ekzykes (Caelid)"
+  },
+  {
+    "id": "45020000",
+    "name": "Glintstone (Unscaled)"
+  },
+  {
+    "id": "45020022",
+    "name": "Glintstone Dragon (Moonlight Plateau)"
+  },
+  {
+    "id": "45020920",
+    "name": "Glintstone Dragon Smarag"
+  },
+  {
+    "id": "45021000",
+    "name": "Glintstone Dragon (Unscaled)"
+  },
+  {
+    "id": "45021922",
+    "name": "Glintstone Dragon Adula"
+  },
+  {
+    "id": "45030000",
+    "name": "Borealis the Freezing Fog (Unscaled)"
+  },
+  {
+    "id": "45030050",
+    "name": "Borealis the Freezing Fog (Mountaintops)"
+  },
+  {
+    "id": "45040000",
+    "name": "Elder Dragon Greyoll"
+  },
+  {
+    "id": "45050000",
+    "name": "Flying Dragon (Small)"
+  },
+  {
+    "id": "45100000",
+    "name": "Ancient Dragon"
+  },
+  {
+    "id": "45102030",
+    "name": "Ancient Dragon Lansseax (Boss)"
+  },
+  {
+    "id": "45110000",
+    "name": "Lichdragon Fortissax"
+  },
+  {
+    "id": "45200000",
+    "name": "Dragonlord Placidusax (Unscaled)"
+  },
+  {
+    "id": "45200072",
+    "name": "Dragonlord Placidusax"
+  },
+  {
+    "id": "45500000",
+    "name": "Giant Dog"
+  },
+  {
+    "id": "45504000",
+    "name": "Gowry's Giant Dog"
+  },
+  {
+    "id": "45505000",
+    "name": "Giant Dog (Snowfield)"
+  },
+  {
+    "id": "45600000",
+    "name": "Giant Crow"
+  },
+  {
+    "id": "45601000",
+    "name": "Giant Crow (Snowfield)"
+  },
+  {
+    "id": "45610000",
+    "name": "Bloodbane Giant Crow"
+  },
+  {
+    "id": "45700000",
+    "name": "Wormface"
+  },
+  {
+    "id": "45800000",
+    "name": "Giant Wormface"
+  },
+  {
+    "id": "45800030",
+    "name": "Wormface (Boss)"
+  },
+  {
+    "id": "46000000",
+    "name": "Troll"
+  },
+  {
+    "id": "46000014",
+    "name": "Troll (Stormveil Castle)"
+  },
+  {
+    "id": "46004000",
+    "name": "Frenzied Troll"
+  },
+  {
+    "id": "46008000",
+    "name": "Troll (Rennala) (Unscaled)"
+  },
+  {
+    "id": "46008024",
+    "name": "Troll (Rennala)"
+  },
+  {
+    "id": "46010000",
+    "name": "Troll Knight"
+  },
+  {
+    "id": "46010100",
+    "name": "Troll Knight (Mausoleum)"
+  },
+  {
+    "id": "46010200",
+    "name": "Troll Knight (Puppet)"
+  },
+  {
+    "id": "46010920",
+    "name": "Carian Knight Bols (Boss)"
+  },
+  {
+    "id": "46020000",
+    "name": "Snowfield Troll"
+  },
+  {
+    "id": "46030000",
+    "name": "Stonedigger Troll"
+  },
+  {
+    "id": "46030910",
+    "name": "Stonedigger Troll (Boss)"
+  },
+  {
+    "id": "46040000",
+    "name": "Smithing Master Iji"
+  },
+  {
+    "id": "46040120",
+    "name": "War Counselor Iji"
+  },
+  {
+    "id": "46200000",
+    "name": "Astel, Stars of Darkness"
+  },
+  {
+    "id": "46200952",
+    "name": "Astel, Stars of Darkness (Snowfield Mine)"
+  },
+  {
+    "id": "46201000",
+    "name": "Malformed Stars (Unscaled)"
+  },
+  {
+    "id": "46202030",
+    "name": "Malformed Stars"
+  },
+  {
+    "id": "46202060",
+    "name": "Malformed Stars (Ainsel River)"
+  },
+  {
+    "id": "46209000",
+    "name": "Astel, Stars of Darkness (Unscaled)"
+  },
+  {
+    "id": "46209152",
+    "name": "Malformed Stars (Snowfield Mine Clone)"
+  },
+  {
+    "id": "46300000",
+    "name": "Runebear"
+  },
+  {
+    "id": "46300100",
+    "name": "White Runebear"
+  },
+  {
+    "id": "46300200",
+    "name": "Elite Runebear"
+  },
+  {
+    "id": "46300912",
+    "name": "Runebear (Boss)"
+  },
+  {
+    "id": "46400000",
+    "name": "Ulcerated Tree Spirit"
+  },
+  {
+    "id": "46400007",
+    "name": "Ulcerated Tree Spirit (Boss)"
+  },
+  {
+    "id": "46400014",
+    "name": "Ulcerated Tree Spirit (Stormveil Castle)"
+  },
+  {
+    "id": "46400034",
+    "name": "Ulcerated Tree Spirit (Leyndell)"
+  },
+  {
+    "id": "46400100",
+    "name": "Putrid Tree Spirit"
+  },
+  {
+    "id": "46400942",
+    "name": "Putrid Tree Spirit (Boss)"
+  },
+  {
+    "id": "46500000",
+    "name": "Dragonkin Soldier (Ice Lightning) (Unscaled)"
+  },
+  {
+    "id": "46500060",
+    "name": "Dragonkin Soldier (Ice Lightning) (Nokstella)"
+  },
+  {
+    "id": "46500100",
+    "name": "Dragonkin Soldier (Ice Lightning)  (Unscaled)"
+  },
+  {
+    "id": "46500160",
+    "name": "Dragonkin Soldier (Ice Lightning)"
+  },
+  {
+    "id": "46500200",
+    "name": "Dragonkin Soldier (Unscaled)"
+  },
+  {
+    "id": "46500262",
+    "name": "Dragonkin Soldier (Lake of Rot)"
+  },
+  {
+    "id": "46500265",
+    "name": "Dragonkin Soldier (Nokron)"
+  },
+  {
+    "id": "46500300",
+    "name": "Dragonkin Soldier Phantom (Unscaled)"
+  },
+  {
+    "id": "46500352",
+    "name": "Dragonkin Soldier Phantom (Snowfields)"
+  },
+  {
+    "id": "46500900",
+    "name": "Dragonkin Soldier of Nokstella Healthbar (Unscaled)"
+  },
+  {
+    "id": "46500960",
+    "name": "Dragonkin Soldier of Nokstella Healthbar (Boss)"
+  },
+  {
+    "id": "46600000",
+    "name": "Guardian Golem"
+  },
+  {
+    "id": "46600034",
+    "name": "Guardian Golem (Leyndell)"
+  },
+  {
+    "id": "46600910",
+    "name": "Guardian Golem (Limgrave Boss)"
+  },
+  {
+    "id": "46700000",
+    "name": "Ancestor Spirit"
+  },
+  {
+    "id": "46700065",
+    "name": "Ancestor Spirit (Regal)"
+  },
+  {
+    "id": "46700964",
+    "name": "Ancestor Spirit (Nonregal)"
+  },
+  {
+    "id": "46800000",
+    "name": "Full-Grown Fallingstar Beast (Unscaled)"
+  },
+  {
+    "id": "46800032",
+    "name": "Full-Grown Fallingstar Beast (Volcano Top)"
+  },
+  {
+    "id": "46801000",
+    "name": "Fallingstar Beast (Unscaled)"
+  },
+  {
+    "id": "46801930",
+    "name": "Fallingstar Beast (Altus Plateau)"
+  },
+  {
+    "id": "46801940",
+    "name": "Fallingstar Beast (Sellia Tunnel)"
+  },
+  {
+    "id": "46900000",
+    "name": "Grafted Scion (Unscaled)"
+  },
+  {
+    "id": "46900007",
+    "name": "Grafted Scion (Fringefolk Grave)"
+  },
+  {
+    "id": "46900008",
+    "name": "Grafted Scion (Boss)"
+  },
+  {
+    "id": "46900014",
+    "name": "Grafted Scion (Stormveil Castle)"
+  },
+  {
+    "id": "46900020",
+    "name": "Grafted Scion (Liurnia of the Lakes)"
+  },
+  {
+    "id": "46900032",
+    "name": "Grafted Scion (Mt. Gelmir)"
+  },
+  {
+    "id": "46900034",
+    "name": "Grafted Scion (Leyndell)"
+  },
+  {
+    "id": "47100000",
+    "name": "God-Devouring Serpent (Unscaled)"
+  },
+  {
+    "id": "47100038",
+    "name": "God-Devouring Serpent"
+  },
+  {
+    "id": "47101000",
+    "name": "Rykard- Lord of Blasphemy (Unscaled)"
+  },
+  {
+    "id": "47101038",
+    "name": "Rykard- Lord of Blasphemy"
+  },
+  {
+    "id": "47110000",
+    "name": "Rykard's Corpse"
+  },
+  {
+    "id": "47200000",
+    "name": "Godfrey- First Elden Lord (Unscaled)"
+  },
+  {
+    "id": "47200070",
+    "name": "Godfrey- First Elden Lord"
+  },
+  {
+    "id": "47200134",
+    "name": "Godfrey- First Elden Lord (Phantom)"
+  },
+  {
+    "id": "47210000",
+    "name": "Hoarah Loux (Unscaled)"
+  },
+  {
+    "id": "47210070",
+    "name": "Hoarah Loux"
+  },
+  {
+    "id": "47300000",
+    "name": "Starscourge Radahn"
+  },
+  {
+    "id": "47500000",
+    "name": "Godrick the Grafted (Unscaled)"
+  },
+  {
+    "id": "47500014",
+    "name": "Godrick the Grafted (Stormveil Castle)"
+  },
+  {
+    "id": "47500030",
+    "name": "Godefroy the Grafted (Altus)"
+  },
+  {
+    "id": "47510000",
+    "name": "Godrick - Head and Torso"
+  },
+  {
+    "id": "47510014",
+    "name": "Godrick - Head and Torso (Stormveil Castle)"
+  },
+  {
+    "id": "47600000",
+    "name": "Fire Giant"
+  },
+  {
+    "id": "47700000",
+    "name": "Gargoyle"
+  },
+  {
+    "id": "47700033",
+    "name": "Gargoyle (Capital Outskirts)"
+  },
+  {
+    "id": "47700034",
+    "name": "Gargoyle (Leyndell - Royal Capital)"
+  },
+  {
+    "id": "47700070",
+    "name": "Gargoyle (Leyndell - Ashen Capital)"
+  },
+  {
+    "id": "47700100",
+    "name": "Gargoyle (Poison Breath)"
+  },
+  {
+    "id": "47700165",
+    "name": "Valiant Gargoyle (Twinblade) (Nokron)"
+  },
+  {
+    "id": "47700200",
+    "name": "Black Blade Kindred"
+  },
+  {
+    "id": "47700250",
+    "name": "Black Blade Kindred (Forbidden Lands)"
+  },
+  {
+    "id": "47701000",
+    "name": "Gargoyle (Greatsword)"
+  },
+  {
+    "id": "47701034",
+    "name": "Gargoyle (Greatsword) (Leyndell - Royal Capital)"
+  },
+  {
+    "id": "47701100",
+    "name": "Gargoyle (Greatsword + Poison Breath)"
+  },
+  {
+    "id": "47701165",
+    "name": "Valiant Gargoyle (Nokron)"
+  },
+  {
+    "id": "47701200",
+    "name": "Black Blade Kindred (Greatsword)"
+  },
+  {
+    "id": "47701242",
+    "name": "Black Blade Kindred (Dragonbarrow - Bestial Sanctum)"
+  },
+  {
+    "id": "47702000",
+    "name": "Ruined Gargoyle"
+  },
+  {
+    "id": "47702034",
+    "name": "Ruined Gargoyle (Leyndell - Royal Capital)"
+  },
+  {
+    "id": "47702066",
+    "name": "Ruined Gargoyle (Deeproot Depths)"
+  },
+  {
+    "id": "47709900",
+    "name": "Gargoyle -Passive Battle State-"
+  },
+  {
+    "id": "47709910",
+    "name": "Gargoyle (Greatsword) -Passive Battle State-"
+  },
+  {
+    "id": "48000000",
+    "name": "Mohg, the Omen"
+  },
+  {
+    "id": "48000068",
+    "name": "Mohg, Lord of Blood"
+  },
+  {
+    "id": "48001935",
+    "name": "Mohg, the Omen (Sewers)"
+  },
+  {
+    "id": "48100000",
+    "name": "Erdtree Avatar"
+  },
+  {
+    "id": "48100012",
+    "name": "Erdtree Avatar (Weeping Peninsula Boss)"
+  },
+  {
+    "id": "48100020",
+    "name": "Erdtree Avatar (North Liurnia)"
+  },
+  {
+    "id": "48100034",
+    "name": "Erdtree Avatar (Leyndell)"
+  },
+  {
+    "id": "48100066",
+    "name": "Erdtree Avatar (Deeproot Depths)"
+  },
+  {
+    "id": "48100150",
+    "name": "Erdtree Avatar (Giants Mountaintops)"
+  },
+  {
+    "id": "48100920",
+    "name": "Erdtree Avatar (South Liurnia)"
+  },
+  {
+    "id": "48110000",
+    "name": "Putrid Erdtree Avatar"
+  },
+  {
+    "id": "48110052",
+    "name": "Putrid Erdtree Avatar (Snowfield)"
+  },
+  {
+    "id": "48200000",
+    "name": "Omenkiller"
+  },
+  {
+    "id": "48200134",
+    "name": "Omenkiller (Leyndell)"
+  },
+  {
+    "id": "48200920",
+    "name": "Omenkiller (Boss)"
+  },
+  {
+    "id": "48200930",
+    "name": "Omenkiller (Boss Village)"
+  },
+  {
+    "id": "49100000",
+    "name": "Magma Wyrm"
+  },
+  {
+    "id": "49100026",
+    "name": "Magma Wyrm Makar (Boss)"
+  },
+  {
+    "id": "49100032",
+    "name": "Magma Wyrm (Lava Lake Boss)"
+  },
+  {
+    "id": "49100038",
+    "name": "Magma Wyrm (Volcano Manor)"
+  },
+  {
+    "id": "49100940",
+    "name": "Magma Wyrm (Gael Tunnel Boss)"
+  },
+  {
+    "id": "49110000",
+    "name": "Great Wyrm Theodorix"
+  },
+  {
+    "id": "49110052",
+    "name": "Great Wyrm Theodorix (Boss)"
+  },
+  {
+    "id": "49500000",
+    "name": "Tibia Mariner"
+  },
+  {
+    "id": "49500010",
+    "name": "Tibia Mariner (Limgrave)"
+  },
+  {
+    "id": "49500020",
+    "name": "Tibia Mariner (Boss)"
+  },
+  {
+    "id": "49600000",
+    "name": "Giant Skeleton Torso"
+  },
+  {
+    "id": "49800000",
+    "name": "Death Bird"
+  },
+  {
+    "id": "49800010",
+    "name": "Death Bird (Limgrave)"
+  },
+  {
+    "id": "49800012",
+    "name": "Death Bird (Weeping Peninsula)"
+  },
+  {
+    "id": "49800020",
+    "name": "Death Bird (Liurnia)"
+  },
+  {
+    "id": "49800033",
+    "name": "Death Bird (Altus)"
+  },
+  {
+    "id": "49801000",
+    "name": "Death Rite Bird"
+  },
+  {
+    "id": "50000000",
+    "name": "Commander Gaius"
+  },
+  {
+    "id": "50000092",
+    "name": "Commander Gaius (Boss)"
+  },
+  {
+    "id": "50100000",
+    "name": "Golden Hippopotamus"
+  },
+  {
+    "id": "50100098",
+    "name": "Golden Hippopotamus (Boss)"
+  },
+  {
+    "id": "50110000",
+    "name": "Golden Hippopotamus (Golden Wings)"
+  },
+  {
+    "id": "50110084",
+    "name": "Golden Hippopotamus (Charo's Hidden Grave)"
+  },
+  {
+    "id": "50110091",
+    "name": "Golden Hippopotamus (Recluses' River)"
+  },
+  {
+    "id": "50110094",
+    "name": "Golden Hippopotamus (Rauh)"
+  },
+  {
+    "id": "50200000",
+    "name": "Putrescent Knight"
+  },
+  {
+    "id": "50200087",
+    "name": "Putrescent Knight (Boss)"
+  },
+  {
+    "id": "50300000",
+    "name": "Romina, Saint of the Bud"
+  },
+  {
+    "id": "50300094",
+    "name": "Romina, Saint of the Bud (Boss)"
+  },
+  {
+    "id": "50400000",
+    "name": "Curseblade"
+  },
+  {
+    "id": "50400190",
+    "name": "Curseblade Labirith (Boss)"
+  },
+  {
+    "id": "50500000",
+    "name": "Midra - Human"
+  },
+  {
+    "id": "50510000",
+    "name": "Midra, Lord of Frenzied Flame"
+  },
+  {
+    "id": "50510086",
+    "name": "Midra, Lord of Frenzied Flame (Boss)"
+  },
+  {
+    "id": "50600000",
+    "name": "Lamprey"
+  },
+  {
+    "id": "50610000",
+    "name": "Lamprey (Large)"
+  },
+  {
+    "id": "50700000",
+    "name": "Death Knight"
+  },
+  {
+    "id": "50700081",
+    "name": "Death Knight (Fog Rift Catacombs Boss)"
+  },
+  {
+    "id": "50701095",
+    "name": "Death Knight (Scorpion River Catacombs Boss)"
+  },
+  {
+    "id": "50800000",
+    "name": "Bloodfiend"
+  },
+  {
+    "id": "50810000",
+    "name": "Chief Bloodfiend"
+  },
+  {
+    "id": "50810990",
+    "name": "Chief Bloodfiend (Boss)"
+  },
+  {
+    "id": "50900000",
+    "name": "Gravebird"
+  },
+  {
+    "id": "51100000",
+    "name": "Ghostly Worm"
+  },
+  {
+    "id": "51200000",
+    "name": "Bayle the Dread"
+  },
+  {
+    "id": "51200085",
+    "name": "Bayle the Dread (Boss)"
+  },
+  {
+    "id": "51300000",
+    "name": "Messmer the Impaler"
+  },
+  {
+    "id": "51301099",
+    "name": "Messmer the Impaler (Boss)"
+  },
+  {
+    "id": "51400000",
+    "name": "Messmer: Base Serpent"
+  },
+  {
+    "id": "51600000",
+    "name": "Fire Knight"
+  },
+  {
+    "id": "51700000",
+    "name": "Furnace Golem"
+  },
+  {
+    "id": "51700080",
+    "name": "Furnace Golem (Southwest Gravesite Plain - Scorched Ruins)"
+  },
+  {
+    "id": "51700083",
+    "name": "Furnace Golem (Southeast Gravesite Plain - Ellac River End)"
+  },
+  {
+    "id": "51700090",
+    "name": "Furnace Golem (Central Scadu Altus - Shadow Keep Main Gate)"
+  },
+  {
+    "id": "51700091",
+    "name": "Furnace Golem (Central Scadu Altus - Ruins of Unte)"
+  },
+  {
+    "id": "51701084",
+    "name": "Furnace Golem (Southwest Cerulean Coast - Charo's Hidden Grave)"
+  },
+  {
+    "id": "51701090",
+    "name": "Furnace Golem (Central Scadu Altus - Church District Highroad)"
+  },
+  {
+    "id": "51702094",
+    "name": "Furnace Golem (Rauh Ruins)"
+  },
+  {
+    "id": "51900000",
+    "name": "Spider Scorpion"
+  },
+  {
+    "id": "52000000",
+    "name": "Metyr, Mother of Fingers"
+  },
+  {
+    "id": "52000097",
+    "name": "Metyr, Mother of Fingers (Boss)"
+  },
+  {
+    "id": "52100000",
+    "name": "Divine Beast Dancing Lion"
+  },
+  {
+    "id": "52100088",
+    "name": "Divine Beast Dancing Lion (Belurat Boss)"
+  },
+  {
+    "id": "52100094",
+    "name": "Divine Beast Dancing Lion (Rauh Boss)"
+  },
+  {
+    "id": "52200000",
+    "name": "Promised Consort Radahn"
+  },
+  {
+    "id": "52201089",
+    "name": "Promised Consort Radahn (Boss)"
+  },
+  {
+    "id": "52210000",
+    "name": "Miquella's Arms"
+  },
+  {
+    "id": "52300000",
+    "name": "Scadutree Avatar"
+  },
+  {
+    "id": "52300096",
+    "name": "Scadutree Avatar (Boss)"
+  },
+  {
+    "id": "52400000",
+    "name": "Commoner (Pot)"
+  },
+  {
+    "id": "52500000",
+    "name": "Horned Warrior"
+  },
+  {
+    "id": "52510000",
+    "name": "Horned Shaman"
+  },
+  {
+    "id": "52600000",
+    "name": "Golem Smith"
+  },
+  {
+    "id": "52700000",
+    "name": "Jar Innards"
+  },
+  {
+    "id": "52800000",
+    "name": "Winter-Lantern"
+  },
+  {
+    "id": "53000000",
+    "name": "Rellana, Twin Moon Knight"
+  },
+  {
+    "id": "53000082",
+    "name": "Rellana, Twin Moon Knight (Boss)"
+  },
+  {
+    "id": "53100900",
+    "name": "Inquisitor"
+  },
+  {
+    "id": "53110000",
+    "name": "Inquisitor (Candles)"
+  },
+  {
+    "id": "53120000",
+    "name": "Inquisitor (Staff)"
+  },
+  {
+    "id": "53120086",
+    "name": "Jori, Elder Inquisitor (Boss)"
+  },
+  {
+    "id": "53200000",
+    "name": "Fat Inquisitor"
+  },
+  {
+    "id": "53300000",
+    "name": "St. Trina"
+  },
+  {
+    "id": "53500000",
+    "name": "Basilisk Eyes"
+  },
+  {
+    "id": "53700000",
+    "name": "Ancient Dragon Senessax"
+  },
+  {
+    "id": "53701185",
+    "name": "Ancient Dragon Senessax (Boss)"
+  },
+  {
+    "id": "53920000",
+    "name": "Troll - Unknown"
+  },
+  {
+    "id": "54010000",
+    "name": "Eagle"
+  },
+  {
+    "id": "54100000",
+    "name": "Deer"
+  },
+  {
+    "id": "54210000",
+    "name": "Red Bear"
+  },
+  {
+    "id": "54300000",
+    "name": "Owl"
+  },
+  {
+    "id": "54400000",
+    "name": "Boar"
+  },
+  {
+    "id": "54500000",
+    "name": "Ram"
+  },
+  {
+    "id": "54600000",
+    "name": "Murre"
+  },
+  {
+    "id": "54700000",
+    "name": "Dragonfly"
+  },
+  {
+    "id": "54710000",
+    "name": "Yellow Dragonfly"
+  },
+  {
+    "id": "54720000",
+    "name": "Great Dragonfly"
+  },
+  {
+    "id": "54800000",
+    "name": "Turtle"
+  },
+  {
+    "id": "54900000",
+    "name": "Springhare"
+  },
+  {
+    "id": "55000000",
+    "name": "Living Magma"
+  },
+  {
+    "id": "55110000",
+    "name": "Shade"
+  },
+  {
+    "id": "55130000",
+    "name": "Cemetary Shade"
+  },
+  {
+    "id": "55240000",
+    "name": "Braided Stray"
+  },
+  {
+    "id": "55510000",
+    "name": "Fingercreeper (Large)"
+  },
+  {
+    "id": "55600000",
+    "name": "Fingercreeper (Small)"
+  },
+  {
+    "id": "55700000",
+    "name": "Marionette Soldier"
+  },
+  {
+    "id": "55800000",
+    "name": "Jagged Peak Drake"
+  },
+  {
+    "id": "55800084",
+    "name": "Jagged Peak Drake (Solo Boss)"
+  },
+  {
+    "id": "55800085",
+    "name": "Jagged Peak Drake (Duo Mob)"
+  },
+  {
+    "id": "55800985",
+    "name": "Jagged Peak Drake (Duo Boss)"
+  },
+  {
+    "id": "55910000",
+    "name": "Putrid Flesh (Large)"
+  },
+  {
+    "id": "56000000",
+    "name": "Catacomb Skeleton"
+  },
+  {
+    "id": "56200084",
+    "name": "Tibia Mariner (Charo's Hidden Grave)"
+  },
+  {
+    "id": "56510000",
+    "name": "Messmer Foot Soldier"
+  },
+  {
+    "id": "56610000",
+    "name": "Shadow Militia"
+  },
+  {
+    "id": "56800000",
+    "name": "Wheeled Ballista"
+  },
+  {
+    "id": "56900000",
+    "name": "Dragon-faced Flamethrower"
+  },
+  {
+    "id": "57010000",
+    "name": "Demi-Human (Large)"
+  },
+  {
+    "id": "57300083",
+    "name": "Demi-Human Queen Marigga (Boss)"
+  },
+  {
+    "id": "58000000",
+    "name": "Crucible Knight Devonia"
+  },
+  {
+    "id": "58100000",
+    "name": "Demi-Human Swordmaster Onze"
+  },
+  {
+    "id": "58100980",
+    "name": "Demi-Human Swordmaster Onze (Boss)"
+  },
+  {
+    "id": "58200000",
+    "name": "Great Red Bear"
+  },
+  {
+    "id": "58200095",
+    "name": "Rugalea the Great Red Bear (Boss)"
+  },
+  {
+    "id": "58200990",
+    "name": "Ralva the Great Red Bear (Boss)"
+  },
+  {
+    "id": "58300000",
+    "name": "Messmer Soldier"
+  },
+  {
+    "id": "58400000",
+    "name": "Black Knight"
+  },
+  {
+    "id": "58400590",
+    "name": "Black Knight Garrew (Boss)"
+  },
+  {
+    "id": "58400690",
+    "name": "Black Knight Edredd (Boss)"
+  },
+  {
+    "id": "58500000",
+    "name": "Giant Ram"
+  },
+  {
+    "id": "58600000",
+    "name": "Ghostflame Dragon"
+  },
+  {
+    "id": "58600080",
+    "name": "Ghostflame Dragon (Gravesite Plain Boss)"
+  },
+  {
+    "id": "58600083",
+    "name": "Ghostflame Dragon (Cerulean Coast Boss)"
+  },
+  {
+    "id": "58600090",
+    "name": "Ghostflame Dragon (Moorth Highway Boss)"
+  },
+  {
+    "id": "58700000",
+    "name": "Imp (Lion Head)"
+  },
+  {
+    "id": "58710000",
+    "name": "Imp (Dragon Head)"
+  },
+  {
+    "id": "58800000",
+    "name": "Catacombs Sorcerer"
+  },
+  {
+    "id": "58900000",
+    "name": "Black Knight Horse"
+  },
+  {
+    "id": "59000000",
+    "name": "Man-Fly"
+  },
+  {
+    "id": "59100000",
+    "name": "Hornsent Grandam"
+  },
+  {
+    "id": "59200181",
+    "name": "Magma Wyrm (Dragon's Pit)"
+  },
+  {
+    "id": "59600081",
+    "name": "Ulcerated Tree Spirit (Ellac River)"
+  },
+  {
+    "id": "59600088",
+    "name": "Ulcerated Tree Spirit (Belurat, Tower Settlement)"
+  },
+  {
+    "id": "59600098",
+    "name": "Ulcerated Tree Spirit (Church District)"
+  },
+  {
+    "id": "60310000",
+    "name": "Bear"
+  },
+  {
+    "id": "60600000",
+    "name": "Goat"
+  },
+  {
+    "id": "60720000",
+    "name": "Carrier Pigeon"
+  },
+  {
+    "id": "60720134",
+    "name": "Carrier Pigeon (Leyndell)"
+  },
+  {
+    "id": "60910000",
+    "name": "Miriel, Pastor of Vows"
+  },
+  {
+    "id": "62510093",
+    "name": "Tree Sentinel (Hinterland Boss)"
+  },
+  {
+    "id": "62511093",
+    "name": "Tree Sentinel - Torch (Hinterland Boss)"
+  },
+  {
+    "id": "62601084",
+    "name": "Death Rite Bird (Charo's Hidden Grave Boss)"
+  },
+  {
+    "id": "63000000",
+    "name": "Snail (Base)"
+  },
+  {
+    "id": "63000094",
+    "name": "Snail (Rauh Base)"
+  },
+  {
+    "id": "63100000",
+    "name": "Fallingstar Beast (Base)"
+  },
+  {
+    "id": "63101000",
+    "name": "Fallingstar Beast"
+  },
+  {
+    "id": "63101093",
+    "name": "Fallingstar Beast (Scaduview) - Hinterland [Boss]"
+  },
+  {
+    "id": "63202000",
+    "name": "Wandering Noble (Base)"
+  },
+  {
+    "id": "63202082",
+    "name": "Wandering Noble (Gravesite Plain) - Castle Ensis"
+  },
+  {
+    "id": "63207180",
+    "name": "Wandering Noble (Gravesite Plain) - Dragon Lake"
+  },
+  {
+    "id": "63207185",
+    "name": "Wandering Noble (Jagged Peak)"
+  },
+  {
+    "id": "63207195",
+    "name": "Wandering Noble (Rauh Base)"
+  },
+  {
+    "id": "70000000",
+    "name": "Fallen Hawks Soldier (Base)"
+  },
+  {
+    "id": "70000065",
+    "name": "Fallen Hawks Soldier (Siofra River/Nokron)"
+  },
+  {
+    "id": "70000100",
+    "name": "Fallen Hawks Soldier"
+  },
+  {
+    "id": "71000000",
+    "name": "Ancient Hero of Zamor (Base)"
+  },
+  {
+    "id": "71000012",
+    "name": "Ancient Hero of Zamor (Weeping Peninsula) - Weeping Evergaol [Boss]"
+  },
+  {
+    "id": "71000030",
+    "name": "Ancient Hero of Zamor (Altus Plateau) - Sainted Hero's Grave [Boss]"
+  },
+  {
+    "id": "71000050",
+    "name": "Ancient Hero of Zamor"
+  },
+  {
+    "id": "71000150",
+    "name": "Ancient Hero of Zamor (Mountaintops of the Giants) - Zamor Ruins"
+  },
+  {
+    "id": "71000950",
+    "name": "Ancient Hero of Zamor (Mountaintops of the Giants) - Giant-Conquering Hero's Grave [Boss]"
+  },
+  {
+    "id": "80000000",
+    "name": "Torrent"
+  },
+  {
+    "id": "81000000",
+    "name": "Ballista (Base)"
+  },
+  {
+    "id": "81000010",
+    "name": "Ballista (Limgrave) - Fort Haight"
+  },
+  {
+    "id": "81000012",
+    "name": "Ballista (Weeping Peninsula) - Tower of Return / Forest Lookout Tower"
+  },
+  {
+    "id": "81000014",
+    "name": "Ballista (Stormveil Castle)"
+  },
+  {
+    "id": "81000030",
+    "name": "Ballista (Altus Plateau)"
+  },
+  {
+    "id": "81000041",
+    "name": "Ballista (Caelid) - Redmane Castle"
+  },
+  {
+    "id": "81000051",
+    "name": "Ballista (Mountaintops of the Giants) - Castle Sol"
+  },
+  {
+    "id": "81000056",
+    "name": "Ballista (Miquella's Haligtree)"
+  },
+  {
+    "id": "81010000",
+    "name": "Trebuchet (Base)"
+  },
+  {
+    "id": "81010010",
+    "name": "Trebuchet (Limgrave) - Stormhill"
+  },
+  {
+    "id": "81010012",
+    "name": "Trebuchet (Weeping Peninsula) - Bridge of Sacrifice"
+  },
+  {
+    "id": "81010030",
+    "name": "Trebuchet (Altus Plateau) - Altus Highway"
+  },
+  {
+    "id": "81010041",
+    "name": "Trebuchet (Caelid) - Redmane Castle"
+  },
+  {
+    "id": "81010050",
+    "name": "Trebuchet"
+  },
+  {
+    "id": "81100000",
+    "name": "Dragon-faced Flamethrower (Base)"
+  },
+  {
+    "id": "81100014",
+    "name": "Dragon-Faced Flamethrower (Stormveil Castle)"
+  },
+  {
+    "id": "81100020",
+    "name": "Dragon-Faced Flamethrower (Liurnia) - Gate Town"
+  },
+  {
+    "id": "81100041",
+    "name": "Dragon-Faced Flamethrower (Caelid) - Redmane Castle"
+  },
+  {
+    "id": "81200000",
+    "name": "Merciless Chariot (Base)"
+  },
+  {
+    "id": "81200007",
+    "name": "Merciless Chariot (Limgrave) - Fringefolk Hero's Grave"
+  },
+  {
+    "id": "81200032",
+    "name": "Merciless Chariot (Mt. Gelmer) - Gelmir Hero's Grave / Auriza Hero's Grave"
+  },
+  {
+    "id": "81200033",
+    "name": "Merciless Chariot"
+  },
+  {
+    "id": "81200132",
+    "name": "Merciless Chariot (Mt. Gelmer) - Gelmir Hero's Grave"
+  },
+  {
+    "id": "89010000",
+    "name": "Beast Clergyman / Maliketh- the Black Blade"
+  },
+  {
+    "id": "90010000",
+    "name": "Human"
+  },
+  {
+    "id": "100000010",
+    "name": "[Spirit Summon] Mimic Tear"
+  },
+  {
+    "id": "100000020",
+    "name": "[Spirit Summon] Nepheli Loux Puppet"
+  },
+  {
+    "id": "100000030",
+    "name": "[Spirit Summon] Dung Eater Puppet"
+  },
+  {
+    "id": "100000040",
+    "name": "[Spirit Summon] Finger Maiden Therolina Puppet"
+  },
+  {
+    "id": "100000050",
+    "name": "[Spirit Summon] Dolores the Sleeping Arrow"
+  },
+  {
+    "id": "100000060",
+    "name": "[Spirit Summon] Jarwight Puppet"
+  },
+  {
+    "id": "121000000",
+    "name": "[Spirit Summon] Black Knife Tiche"
+  },
+  {
+    "id": "130101000",
+    "name": "[Spirit Summon] Banished Knight Oleg"
+  },
+  {
+    "id": "130102000",
+    "name": "[Spirit Summon] Banished Knight Engvall"
+  },
+  {
+    "id": "130801100",
+    "name": "[Spirit Summon] Fanged Imps"
+  },
+  {
+    "id": "131700000",
+    "name": "[Spirit Summon] Latenna the Albinauric"
+  },
+  {
+    "id": "132010000",
+    "name": "[Spirit Summon] Nomad"
+  },
+  {
+    "id": "133001000",
+    "name": "[Spirit Summon] Nightmaiden"
+  },
+  {
+    "id": "133002000",
+    "name": "[Spirit Summon] Swordstress"
+  },
+  {
+    "id": "133201000",
+    "name": "[Spirit Summon] Mimic Tear - Blob"
+  },
+  {
+    "id": "133500000",
+    "name": "[Spirit Summon] Crystalian"
+  },
+  {
+    "id": "133600500",
+    "name": "[Spirit Summon] Ancestral Follower"
+  },
+  {
+    "id": "134502000",
+    "name": "[Spirit Summon] Winged Misbegotten"
+  },
+  {
+    "id": "134701300",
+    "name": "[Spirit Summon] Albinauric Ashes"
+  },
+  {
+    "id": "135000000",
+    "name": "[Spirit Summon] Skeletal Militiaman"
+  },
+  {
+    "id": "135004000",
+    "name": "[Spirit Summon] Skeletal Bandit"
+  },
+  {
+    "id": "136100000",
+    "name": "[Spirit Summon] Oracle Envoy"
+  },
+  {
+    "id": "136610000",
+    "name": "[Spirit Summon] Putrid Corpse"
+  },
+  {
+    "id": "137000000",
+    "name": "[Spirit Summon] Depraved Perfumer"
+  },
+  {
+    "id": "137011000",
+    "name": "[Spirit Summon] Perfumer Tricia"
+  },
+  {
+    "id": "137021000",
+    "name": "[Spirit Summon] Glintstone Sorcerer Scholar"
+  },
+  {
+    "id": "137023000",
+    "name": "[Spirit Summon] Twinsage Sorcerer"
+  },
+  {
+    "id": "137030000",
+    "name": "[Spirit Summon] Page"
+  },
+  {
+    "id": "137040000",
+    "name": "[Spirit Summon] Battlemage Hugues"
+  },
+  {
+    "id": "137502000",
+    "name": "[Spirit Summon] Clayman"
+  },
+  {
+    "id": "138001000",
+    "name": "[Spirit Summon] Cleanrot Knight Finlay"
+  },
+  {
+    "id": "138100000",
+    "name": "[Spirit Summon] Kindred of Rot"
+  },
+  {
+    "id": "138500000",
+    "name": "[Spirit Summon] Marionette Soldier"
+  },
+  {
+    "id": "138601100",
+    "name": "[Spirit Summon] Avionette Soldier"
+  },
+  {
+    "id": "139000000",
+    "name": "[Spirit Summon] Fire Monk"
+  },
+  {
+    "id": "139011000",
+    "name": "[Spirit Summon] Blackflame Monk"
+  },
+  {
+    "id": "139501000",
+    "name": "[Spirit Summon] Man-Serpent"
+  },
+  {
+    "id": "139701100",
+    "name": "[Spirit Summon] Azula Beastman"
+  },
+  {
+    "id": "140500000",
+    "name": "[Spirit Summon] Kaiden Sellsword"
+  },
+  {
+    "id": "140700000",
+    "name": "[Spirit Summon] Lone Wolf"
+  },
+  {
+    "id": "140800000",
+    "name": "[Spirit Summon] Giant Rat"
+  },
+  {
+    "id": "141000000",
+    "name": "[Spirit Summon] Demi-Human 1"
+  },
+  {
+    "id": "141001000",
+    "name": "[Spirit Summon] Demi-Human 2"
+  },
+  {
+    "id": "141002000",
+    "name": "[Spirit Summon] Demi-Human 3"
+  },
+  {
+    "id": "141010000",
+    "name": "[Spirit Summon] Demi-Human 4"
+  },
+  {
+    "id": "141100000",
+    "name": "[Spirit Summon] Demi-Human 5"
+  },
+  {
+    "id": "141660000",
+    "name": "[Spirit Summon] Rotten Dog"
+  },
+  {
+    "id": "141800000",
+    "name": "[Spirit Summon] Spirit Jellyfish"
+  },
+  {
+    "id": "142100100",
+    "name": "[Spirit Summon] Warhawk"
+  },
+  {
+    "id": "142102000",
+    "name": "[Spirit Summon] Stormhawk"
+  },
+  {
+    "id": "142900000",
+    "name": "[Spirit Summon] Bloodhound Knight Floh"
+  },
+  {
+    "id": "143000000",
+    "name": "[Spirit Summon] Wandering Noble 1"
+  },
+  {
+    "id": "143000200",
+    "name": "[Spirit Summon] Wandering Noble 2"
+  },
+  {
+    "id": "143001000",
+    "name": "[Spirit Summon] Wandering Noble 3"
+  },
+  {
+    "id": "143002000",
+    "name": "[Spirit Summon] Noble Sorcerer"
+  },
+  {
+    "id": "143005000",
+    "name": "[Spirit Summon] Wandering Noble 4"
+  },
+  {
+    "id": "143005100",
+    "name": "[Spirit Summon] Wandering Noble 5"
+  },
+  {
+    "id": "143111300",
+    "name": "[Spirit Summon] Godrick Soldier 1"
+  },
+  {
+    "id": "143112000",
+    "name": "[Spirit Summon] Godrick Soldier 2"
+  },
+  {
+    "id": "143122000",
+    "name": "[Spirit Summon] Raya Lucaria Soldier 1"
+  },
+  {
+    "id": "143133000",
+    "name": "[Spirit Summon] Leyndell Soldier"
+  },
+  {
+    "id": "143140100",
+    "name": "[Spirit Summon] Radahn Soldier 1"
+  },
+  {
+    "id": "143142000",
+    "name": "[Spirit Summon] Radahn Soldier 2"
+  },
+  {
+    "id": "143150000",
+    "name": "[Spirit Summon] Mausoleum Soldier 1"
+  },
+  {
+    "id": "143151000",
+    "name": "[Spirit Summon] Mausoleum Soldier 2"
+  },
+  {
+    "id": "143152000",
+    "name": "[Spirit Summon] Mausoleum Soldier 3"
+  },
+  {
+    "id": "143210000",
+    "name": "[Spirit Summon] Vulgar Militia"
+  },
+  {
+    "id": "143410000",
+    "name": "[Spirit Summon] Mad Pumpkin Head"
+  },
+  {
+    "id": "143531000",
+    "name": "[Spirit Summon] Ancient Dragon Knight Kristoff"
+  },
+  {
+    "id": "143542000",
+    "name": "[Spirit Summon] Redmane Knight Ogha"
+  },
+  {
+    "id": "143551000",
+    "name": "[Spirit Summon] Lhutel the Headless"
+  },
+  {
+    "id": "143720500",
+    "name": "[Spirit Summon] Raya Lucaria Foot Soldier 2"
+  },
+  {
+    "id": "143722500",
+    "name": "[Spirit Summon] Raya Lucaria Foot Soldier 3"
+  },
+  {
+    "id": "143760500",
+    "name": "[Spirit Summon] Haligtree Foot Soldier"
+  },
+  {
+    "id": "144400000",
+    "name": "[Spirit Summon] Land Squirt"
+  },
+  {
+    "id": "144810000",
+    "name": "[Spirit Summon] Miranda Sprout"
+  },
+  {
+    "id": "144910200",
+    "name": "[Spirit Summon] Soldjars of Fortune"
+  },
+  {
+    "id": "148200000",
+    "name": "[Spirit Summon] Omenkiller"
+  },
+  {
+    "id": "150000000",
+    "name": "[Spirit Summon] Ancient Dragon Florissax"
+  },
+  {
+    "id": "150000002",
+    "name": "[Spirit Summon] Fire Knight Queelign"
+  },
+  {
+    "id": "150000003",
+    "name": "[Spirit Summon] Swordhand of Night Jolan"
+  },
+  {
+    "id": "150000004",
+    "name": "[Spirit Summon] Jolan and Anna"
+  },
+  {
+    "id": "150400000",
+    "name": "[Spirit Summon] Curseblade Meera"
+  },
+  {
+    "id": "150800000",
+    "name": "[Spirit Summon] Bloodfiend Hexer"
+  },
+  {
+    "id": "150900000",
+    "name": "[Spirit Summon] Gravebird"
+  },
+  {
+    "id": "151600000",
+    "name": "[Spirit Summon] Fire Knight Hilde"
+  },
+  {
+    "id": "151940000",
+    "name": "[Spirit Summon] Spider Scorpion"
+  },
+  {
+    "id": "152500000",
+    "name": "[Spirit Summon] Divine Bird Warrior Ornis"
+  },
+  {
+    "id": "152501000",
+    "name": "[Spirit Summon] Horned Warrior"
+  },
+  {
+    "id": "152610000",
+    "name": "[Spirit Summon] Golem Smith"
+  },
+  {
+    "id": "153110000",
+    "name": "[Spirit Summon] Inquisitor 1"
+  },
+  {
+    "id": "153110100",
+    "name": "[Spirit Summon] Inquisitor 2"
+  },
+  {
+    "id": "155600000",
+    "name": "[Spirit Summon] Fingercreeper"
+  },
+  {
+    "id": "158100000",
+    "name": "[Spirit Summon] Demi-Human Swordsman Yosh"
+  },
+  {
+    "id": "158300000",
+    "name": "[Spirit Summon] Messmer Soldier 1"
+  },
+  {
+    "id": "158301000",
+    "name": "[Spirit Summon] Messmer Soldier 2"
+  },
+  {
+    "id": "158400000",
+    "name": "[Spirit Summon] Black Knight Commander"
+  },
+  {
+    "id": "158400500",
+    "name": "[Spirit Summon] Black Knight Captain Huw"
+  },
+  {
+    "id": "158700000",
+    "name": "[Spirit Summon] Bigmouth Imp"
+  },
+  {
+    "id": "159000000",
+    "name": "[Spirit Summon] Man-Fly 1/2"
+  },
+  {
+    "id": "159000100",
+    "name": "[Spirit Summon] Man-Fly 3"
+  },
+  {
+    "id": "170001000",
+    "name": "[Spirit Summon] Fallen Hawks Greatshield Soldier"
+  },
+  {
+    "id": "170002000",
+    "name": "[Spirit Summon] Fallen Hawks Archer"
+  },
+  {
+    "id": "500000010",
+    "name": "Stormhill Colosseum Silent Spirit"
+  },
+  {
+    "id": "500000020",
+    "name": "Caria Manor Silent Spirit"
+  },
+  {
+    "id": "500000042",
+    "name": "Dragonbarrow Silent Spirit"
+  },
+  {
+    "id": "500010000",
+    "name": "Smithing Table"
+  },
+  {
+    "id": "500020079",
+    "name": "Twin Maiden Husks"
+  },
+  {
+    "id": "501060020",
+    "name": "Ranni/Renna"
+  },
+  {
+    "id": "502010024",
+    "name": "Rennala's Children"
+  },
+  {
+    "id": "502160010",
+    "name": "Blaidd"
+  },
+  {
+    "id": "502180062",
+    "name": "Asimi"
+  },
+  {
+    "id": "502280050",
+    "name": "Latenna"
+  },
+  {
+    "id": "503180010",
+    "name": "Yura"
+  },
+  {
+    "id": "503260038",
+    "name": "Sword of Bernahl"
+  },
+  {
+    "id": "503300020",
+    "name": "Basin of Atonement"
+  },
+  {
+    "id": "506010010",
+    "name": "Church of Dragon Communion"
+  },
+  {
+    "id": "506010040",
+    "name": "Cathedral of Dragon Communion"
+  },
+  {
+    "id": "506030012",
+    "name": "Wandering Mausoleum Corpse"
+  },
+  {
+    "id": "506080079",
+    "name": "Clouded Mirror Stand"
+  },
+  {
+    "id": "506300084",
+    "name": "Grand Altar of Dragon Communion"
+  },
+  {
+    "id": "523000000",
+    "name": "Tanith, Volcano Manor Proprietress"
+  },
+  {
+    "id": "523010000",
+    "name": "White Mask Varré"
+  },
+  {
+    "id": "523030000",
+    "name": "Guilbert"
+  },
+  {
+    "id": "523040000",
+    "name": "Festering Fingerprint Vyke"
+  },
+  {
+    "id": "523040050",
+    "name": "Roundtable Knight Vyke (Boss)"
+  },
+  {
+    "id": "523070000",
+    "name": "Preceptor Seluvis"
+  },
+  {
+    "id": "523090000",
+    "name": "Patches"
+  },
+  {
+    "id": "523090010",
+    "name": "Patches (Boss)"
+  },
+  {
+    "id": "523100000",
+    "name": "Irina of Morne"
+  },
+  {
+    "id": "523100010",
+    "name": "Lightseeker Hyetta"
+  },
+  {
+    "id": "523100035",
+    "name": "Finger Maiden Hyetta"
+  },
+  {
+    "id": "523110000",
+    "name": "Castellan Edgar"
+  },
+  {
+    "id": "523120000",
+    "name": "Castellan Jerren"
+  },
+  {
+    "id": "523120024",
+    "name": "Witch-Hunter Jerren"
+  },
+  {
+    "id": "523130000",
+    "name": "Rya the Scout"
+  },
+  {
+    "id": "523140000",
+    "name": "Knight Diallos"
+  },
+  {
+    "id": "523140120",
+    "name": "Potentate Diallos"
+  },
+  {
+    "id": "523180000",
+    "name": "Yura, Hunter of Bloody Fingers"
+  },
+  {
+    "id": "523180050",
+    "name": "Shabriri"
+  },
+  {
+    "id": "523190000",
+    "name": "D, Hunter of the Dead"
+  },
+  {
+    "id": "523190065",
+    "name": "D, Beholder of Death"
+  },
+  {
+    "id": "523200000",
+    "name": "Heartbroken Maiden"
+  },
+  {
+    "id": "523200079",
+    "name": "Roderika"
+  },
+  {
+    "id": "523200179",
+    "name": "Roderika, Spirit Tuner"
+  },
+  {
+    "id": "523210000",
+    "name": "Kenneth Haight, Limgrave Heir"
+  },
+  {
+    "id": "523220000",
+    "name": "Fia, Deathbed Companion"
+  },
+  {
+    "id": "523230000",
+    "name": "Dung Eater"
+  },
+  {
+    "id": "523240000",
+    "name": "Sir Gideon Ofnir, the All-Knowing"
+  },
+  {
+    "id": "523250000",
+    "name": "Sorcerer Rogier"
+  },
+  {
+    "id": "523250066",
+    "name": "Sorcerer Rogier (Fia's Champions Boss)"
+  },
+  {
+    "id": "523260000",
+    "name": "Knight Bernahl"
+  },
+  {
+    "id": "523260038",
+    "name": "Recusant Bernahl"
+  },
+  {
+    "id": "523270000",
+    "name": "Eleonora, Violet Bloody Finger"
+  },
+  {
+    "id": "523290066",
+    "name": "Lionel the Lionhearted (Fia's Champions Boss)"
+  },
+  {
+    "id": "523310000",
+    "name": "Blackguard"
+  },
+  {
+    "id": "523320038",
+    "name": "Rykard-Hating Ghost"
+  },
+  {
+    "id": "523330000",
+    "name": "Sorcerer Thops"
+  },
+  {
+    "id": "523340000",
+    "name": "Nepheli Loux, Warrior"
+  },
+  {
+    "id": "523350000",
+    "name": "Reeling Rico"
+  },
+  {
+    "id": "523360000",
+    "name": "Vyke's Finger Maiden"
+  },
+  {
+    "id": "523380000",
+    "name": "Finger Maiden"
+  },
+  {
+    "id": "523390000",
+    "name": "Ensha of the Royal Remains"
+  },
+  {
+    "id": "523400000",
+    "name": "Bloody Finger Ravenmount Assassin"
+  },
+  {
+    "id": "523430000",
+    "name": "Bloody Finger Nerijus"
+  },
+  {
+    "id": "523440000",
+    "name": "Great Horned Tragoth"
+  },
+  {
+    "id": "523450000",
+    "name": "Old Knight Istvan"
+  },
+  {
+    "id": "523460000",
+    "name": "Rileigh the Idle"
+  },
+  {
+    "id": "523470000",
+    "name": "Juno Hoslow, Knight of Blood"
+  },
+  {
+    "id": "523480000",
+    "name": "Millicent"
+  },
+  {
+    "id": "523490000",
+    "name": "Sage Gowry"
+  },
+  {
+    "id": "523510000",
+    "name": "Scribe Corhyn"
+  },
+  {
+    "id": "523510030",
+    "name": "Brother Corhyn"
+  },
+  {
+    "id": "523520000",
+    "name": "Preceptor Miriam"
+  },
+  {
+    "id": "523530000",
+    "name": "Anastasia, Tarnished-Eater"
+  },
+  {
+    "id": "523550000",
+    "name": "Okina"
+  },
+  {
+    "id": "523550050",
+    "name": "Bloody Finger Okina"
+  },
+  {
+    "id": "523560000",
+    "name": "Adan, Thief of Fire"
+  },
+  {
+    "id": "523560020",
+    "name": "Adan, Thief of Fire (Boss)"
+  },
+  {
+    "id": "523590000",
+    "name": "Moongrum, Carian Knight"
+  },
+  {
+    "id": "523600000",
+    "name": "Vargram the Raging Wolf"
+  },
+  {
+    "id": "523610000",
+    "name": "Fia's Champion"
+  },
+  {
+    "id": "523610066",
+    "name": "Fia's Champion 1"
+  },
+  {
+    "id": "523630000",
+    "name": "Finger Maiden Therolina"
+  },
+  {
+    "id": "523640000",
+    "name": "Dolores the Sleeping Arrow"
+  },
+  {
+    "id": "523650000",
+    "name": "Jarwight"
+  },
+  {
+    "id": "523670000",
+    "name": "Inaba, Disciple of Okina"
+  },
+  {
+    "id": "523690000",
+    "name": "Recusant Henricus"
+  },
+  {
+    "id": "523720000",
+    "name": "Maleigh Marais, Shaded Castle Castellan"
+  },
+  {
+    "id": "523730000",
+    "name": "Knight of the Great Jar"
+  },
+  {
+    "id": "523760000",
+    "name": "Necromancer Garris"
+  },
+  {
+    "id": "523760930",
+    "name": "Necromancer Garris (Boss)"
+  },
+  {
+    "id": "523770000",
+    "name": "Nameless White Mask"
+  },
+  {
+    "id": "523800000",
+    "name": "Errant Sorcerer Wilhelm"
+  },
+  {
+    "id": "523820000",
+    "name": "Chief Guardian Arghanthy"
+  },
+  {
+    "id": "523830000",
+    "name": "Flame Guardian"
+  },
+  {
+    "id": "523840000",
+    "name": "Inquisitor Ghiza"
+  },
+  {
+    "id": "523850000",
+    "name": "Mad Tongue Alberich"
+  },
+  {
+    "id": "523860000",
+    "name": "Esgar, Priest of Blood (Boss)"
+  },
+  {
+    "id": "523870000",
+    "name": "Mary, Eldest Sister"
+  },
+  {
+    "id": "523880000",
+    "name": "Maureen, Second Sister"
+  },
+  {
+    "id": "523890000",
+    "name": "Amy, Third Sister"
+  },
+  {
+    "id": "523900000",
+    "name": "Polyanna, Youngest Sister"
+  },
+  {
+    "id": "523910000",
+    "name": "Magnus the Beast Claw"
+  },
+  {
+    "id": "524030000",
+    "name": "Igon"
+  },
+  {
+    "id": "524030081",
+    "name": "Igon (NPC) (Gravesite Plain - Pillar Path Waypoint)"
+  },
+  {
+    "id": "524030085",
+    "name": "Igon (NPC) (Foot of the Jagged Peak - Drake Duo Area)"
+  },
+  {
+    "id": "524060000",
+    "name": "Dragon Communion Priestess"
+  },
+  {
+    "id": "524060084",
+    "name": "Dragon Communion Priestess (NPC) (Foot of the Jagged Peak - Grand Altar)"
+  },
+  {
+    "id": "524070000",
+    "name": "Ancient Dragon-Man"
+  },
+  {
+    "id": "524070081",
+    "name": "Ancient Dragon-Man (Boss) (Dragon's Pit)"
+  },
+  {
+    "id": "524090000",
+    "name": "Swordhand of Night Jolan"
+  },
+  {
+    "id": "524090090",
+    "name": "Swordhand of Night Jolan (NPC) (Scadu Altus - Cathedral of Manus Metyr)"
+  },
+  {
+    "id": "524090190",
+    "name": "Swordhand of Night Jolan (Invader) (Scadu Altus - Cathedral of Manus Metyr)"
+  },
+  {
+    "id": "524120000",
+    "name": "Swordhand of Night Anna"
+  },
+  {
+    "id": "524120090",
+    "name": "Swordhand of Night Anna (NPC) (Scadu Altus - Rabbath's Rise)"
+  },
+  {
+    "id": "524130000",
+    "name": "Fire Knight Queelign"
+  },
+  {
+    "id": "524130098",
+    "name": "Fire Knight Queelign (NPC) (Shadow Keep - Church District)"
+  },
+  {
+    "id": "524140000",
+    "name": "Hornsent"
+  },
+  {
+    "id": "524140080",
+    "name": "Hornsent (NPC) (Gravesite Plain - Three-Path Cross)"
+  },
+  {
+    "id": "524140089",
+    "name": "Hornsent (NPC) (Enir-Ilim)"
+  },
+  {
+    "id": "524140090",
+    "name": "Hornsent (NPC) (Scadu Altus - Highroad Cross)"
+  },
+  {
+    "id": "524140099",
+    "name": "Hornsent (NPC) (Specimen Storehouse)"
+  },
+  {
+    "id": "524140189",
+    "name": "Hornsent (Boss) (Enir-Ilim)"
+  },
+  {
+    "id": "524140198",
+    "name": "Hornsent (Invasion Target) (Shadow Keep)"
+  },
+  {
+    "id": "524150000",
+    "name": "Moore"
+  },
+  {
+    "id": "524150080",
+    "name": "Moore (NPC) (Gravesite Plain - Belurat Main Gate Cross)"
+  },
+  {
+    "id": "524150089",
+    "name": "Moore (NPC) (Enir-Ilim)"
+  },
+  {
+    "id": "524150090",
+    "name": "Moore (NPC) (Scadu Altus - Church of the Crusade)"
+  },
+  {
+    "id": "524150189",
+    "name": "Moore (Boss) (Enir-Ilim)"
+  },
+  {
+    "id": "524160000",
+    "name": "Sir Ansbach"
+  },
+  {
+    "id": "524160080",
+    "name": "Sir Ansbach (NPC) (Gravesite Plain - Belurat Main Gate Cross)"
+  },
+  {
+    "id": "524160089",
+    "name": "Sir Ansbach (NPC) (Enir-Ilim)"
+  },
+  {
+    "id": "524160099",
+    "name": "Sir Ansbach (NPC) (Specimen Storehouse)"
+  },
+  {
+    "id": "524160199",
+    "name": "Sir Ansbach (Invasion Target) (Specimen Storehouse)"
+  },
+  {
+    "id": "524160289",
+    "name": "Pureblood Knight Ansbach"
+  },
+  {
+    "id": "524170000",
+    "name": "Redmane Freyja"
+  },
+  {
+    "id": "524170080",
+    "name": "Redmane Freyja (NPC) (Gravesite Plain - Three-Path Cross)"
+  },
+  {
+    "id": "524170089",
+    "name": "Redmane Freyja (NPC) (Enir-Ilim)"
+  },
+  {
+    "id": "524170099",
+    "name": "Redmane Freyja (NPC) (Specimen Storehouse)"
+  },
+  {
+    "id": "524170189",
+    "name": "Redmane Freyja (Boss) (Enir-Ilim)"
+  },
+  {
+    "id": "524180000",
+    "name": "Needle Knight Leda"
+  },
+  {
+    "id": "524180068",
+    "name": "Needle Knight Leda (NPC) (Mohgwyn Palace)"
+  },
+  {
+    "id": "524180089",
+    "name": "Needle Knight Leda (NPC) (Enir-Ilim)"
+  },
+  {
+    "id": "524180090",
+    "name": "Needle Knight Leda (NPC) (Scadu Altus - Highroad Cross)"
+  },
+  {
+    "id": "524180189",
+    "name": "Needle Knight Leda (Boss) (Enir-Ilim)"
+  },
+  {
+    "id": "524180198",
+    "name": "Needle Knight Leda (Invasion Target) (Shadow Keep)"
+  },
+  {
+    "id": "524180199",
+    "name": "Needle Knight Leda (Invasion Target) (Specimen Storehouse)"
+  },
+  {
+    "id": "524190000",
+    "name": "Thiollier"
+  },
+  {
+    "id": "524190081",
+    "name": "Thiollier (NPC) (Gravesite Plain - Pillar Path Cross)"
+  },
+  {
+    "id": "524190087",
+    "name": "Thiollier (NPC) (Stone Coffin Fissure)"
+  },
+  {
+    "id": "524190089",
+    "name": "Thiollier (NPC) (Enir-Ilim)"
+  },
+  {
+    "id": "524200000",
+    "name": "Count Ymir, High Priest"
+  },
+  {
+    "id": "524200090",
+    "name": "Count Ymir, High Priest (NPC) (Scadu Altus - Cathedral of Manus Metyr)"
+  },
+  {
+    "id": "524200190",
+    "name": "Count Ymir, Mother of Fingers (Boss)"
+  },
+  {
+    "id": "524210000",
+    "name": "(Tarnished) Red Bear"
+  },
+  {
+    "id": "524210095",
+    "name": "(Tarnished) Red Bear (Boss) (Gravesite Plain - Northern Nameless Mausoleum)"
+  },
+  {
+    "id": "524220000",
+    "name": "Dancer of Ranah"
+  },
+  {
+    "id": "524220083",
+    "name": "Dancer of Ranah (Boss) (Cerulean Coast - Southern Nameless Mausoleum)"
+  },
+  {
+    "id": "524230000",
+    "name": "Rakshasa"
+  },
+  {
+    "id": "524230091",
+    "name": "Rakshasa (Boss) (Scadu Altus - Western Nameless Mausoleum)"
+  },
+  {
+    "id": "524240000",
+    "name": "Knight of the Solitary Gaol"
+  },
+  {
+    "id": "524240080",
+    "name": "Knight of the Solitary Gaol (Boss) (Gravesite Plain - Western Nameless Mausoleum)"
+  },
+  {
+    "id": "524250000",
+    "name": "Dryleaf Dane"
+  },
+  {
+    "id": "524250089",
+    "name": "Dryleaf Dane (NPC) (Enir-Ilim)"
+  },
+  {
+    "id": "524250090",
+    "name": "Dryleaf Dane (NPC) (Scadu Altus - Moorth Ruins)"
+  },
+  {
+    "id": "524250189",
+    "name": "Dryleaf Dane (Boss) (Enir-Ilim)"
+  },
+  {
+    "id": "524250190",
+    "name": "Dryleaf Dane (Miniboss) (Scadu Altus - Moorth Ruins)"
+  },
+  {
+    "id": "524270000",
+    "name": "Lamenter"
+  },
+  {
+    "id": "524270001",
+    "name": "Lamenter (Illusion) (Lamenter's Gaol)"
+  },
+  {
+    "id": "524270084",
+    "name": "Lamenter (Boss) (Lamenter's Gaol)"
+  },
+  {
+    "id": "524280000",
+    "name": "Greater Potentate"
+  },
+  {
+    "id": "524280090",
+    "name": "Greater Potentate (Scadu Altus - Bonny Village)"
+  },
+  {
+    "id": "524290000",
+    "name": "Madding Hand"
+  },
+  {
+    "id": "524290086",
+    "name": "Madding Hand (Abyssal Woods - Woodland Trail)"
+  },
+  {
+    "id": "524310000",
+    "name": "Logur, the Beast Claw"
+  },
+  {
+    "id": "524310080",
+    "name": "Logur, the Beast Claw (Gravesite Plain - South of Scorched Ruins)"
+  },
+  {
+    "id": "524320000",
+    "name": "Moonrithyll, Carian Knight"
+  },
+  {
+    "id": "524320082",
+    "name": "Moonrithyll, Carian Knight (Gravesite Plain - West Castle Ensis)"
+  },
+  {
+    "id": "526100052",
+    "name": "Stray Mimic Tear"
+  },
+  {
+    "id": "526100965",
+    "name": "Mimic Tear"
+  },
+  {
+    "id": "533040100",
+    "name": "Roundtable Knight Vyke"
+  },
+  {
+    "id": "533900040",
+    "name": "Polyanna, Adopted Daughter"
+  },
+  {
+    "id": "534031085",
+    "name": "Drake Warrior Igon (Co-op) (Jagged Peak)"
+  },
+  {
+    "id": "534090083",
+    "name": "Swordhand of Night Jolan (Co-op) (Cerulean Coast - Dragon Area)"
+  },
+  {
+    "id": "534090093",
+    "name": "Swordhand of Night Jolan (Co-op) (Scadu Altus - Hinterlands)"
+  },
+  {
+    "id": "534090099",
+    "name": "Swordhand of Night Jolan (Co-op) (Specimen Storehouse)"
+  },
+  {
+    "id": "534140098",
+    "name": "Hornsent (Co-op) (Shadow Keep)"
+  },
+  {
+    "id": "534140099",
+    "name": "Hornsent (Co-op) (Specimen Storehouse)"
+  },
+  {
+    "id": "534140198",
+    "name": "Hornsent (Assisted Spirit) (Shadow Keep)"
+  },
+  {
+    "id": "534160089",
+    "name": "Pureblood Knight Ansbach (Co-op) (Enir-Ilim)"
+  },
+  {
+    "id": "534160099",
+    "name": "Sir Ansbach (Assisted Spirit) (Specimen Storehouse)"
+  },
+  {
+    "id": "534160189",
+    "name": "Pureblood Knight Ansbach (Helpful Spirit) (Enir-Ilim)"
+  },
+  {
+    "id": "534170088",
+    "name": "Redmane Freyja (Co-op) (Belurat, Tower Settlement)"
+  },
+  {
+    "id": "534170090",
+    "name": "Redmane Freyja (Co-op) (Rauh Base - Northwest Great Red Bear)"
+  },
+  {
+    "id": "534170098",
+    "name": "Redmane Freyja (Co-op) (Shadow Keep)"
+  },
+  {
+    "id": "534180082",
+    "name": "Needle Knight Leda (Co-op) (Gravesite Plain - East Castle Ensis)"
+  },
+  {
+    "id": "534180098",
+    "name": "Needle Knight Leda (Helpful Spirit) (Shadow Keep)"
+  },
+  {
+    "id": "534180099",
+    "name": "Needle Knight Leda (Helpful Spirit) (Specimen Storehouse)"
+  },
+  {
+    "id": "534190087",
+    "name": "Thiollier (Co-op) (Stone Coffin Fissure)"
+  },
+  {
+    "id": "534190089",
+    "name": "Thiollier (Co-op) (Enir-Ilim)"
+  },
+  {
+    "id": "534190189",
+    "name": "Thiollier (Helpful Spirit) (Enir-Ilim)"
+  },
+  {
+    "id": "534200000",
+    "name": "Count Ymir, Hight Priest"
+  },
+  {
+    "id": "534250082",
+    "name": "Dryleaf Dane (Co-op) (Gravesite Plain - East Castle Ensis) (REMOVED)"
+  },
+  {
+    "id": "534250094",
+    "name": "Dryleaf Dane (Co-op) (Ancient Ruins of Rauh - North Church of the Bud)"
+  },
+  {
+    "id": "534260000",
+    "name": "Sanguine Noble Nataan"
+  },
+  {
+    "id": "534260089",
+    "name": "Sanguine Noble Nataan (Helpful Spirit) (Enir-Ilim)"
+  },
+  {
+    "id": "543110000",
+    "name": "Edgar the Revenger"
+  },
+  {
+    "id": "544070081",
+    "name": "Ancient Dragon-Man (Invader) (Gravesite Plain - North of Scorched Ruins)"
+  },
+  {
+    "id": "544120090",
+    "name": "Swordhand of Night Anna (Invader) (Scadu Altus - Finger Ruins of Miyr)"
+  },
+  {
+    "id": "544130088",
+    "name": "Fire Knight Queelign (Invader) (Belurat, Tower Settlement)"
+  },
+  {
+    "id": "544130090",
+    "name": "Fire Knight Queelign (Invader) (Scadu Altus - Church of the Crusade)"
+  },
+  {
+    "id": "544140094",
+    "name": "Hornsent (Invader) (Ancient Ruins of Rauh - Rot Ruins)"
+  },
+  {
+    "id": "544150080",
+    "name": "Moore (Invader) (Gravesite Plain - Prospect Town)"
+  },
+  {
+    "id": "544150083",
+    "name": "Moore (Invader) (Gravesite Plain - Ellac River End)"
+  },
+  {
+    "id": "544150090",
+    "name": "Moore (Invader) (Scadu Altus)"
+  },
+  {
+    "id": "544150180",
+    "name": "Moore (Hostile) (Gravesite Plain - Prospect Town)"
+  },
+  {
+    "id": "544150183",
+    "name": "Moore (Hostile) (Gravesite Plain - Ellac River End)"
+  },
+  {
+    "id": "544150190",
+    "name": "Moore (Hostile) (Scadu Altus)"
+  },
+  {
+    "id": "544190087",
+    "name": "Thiollier (Invader) (Stone Coffin Fissure)"
+  }
+]

@@ -93,6 +93,9 @@ const aliasNameToHunt = new Map()
 for (const row of aliases) {
   if (!['boss', 'invader', 'hunt'].includes(row.kind)) continue
   const id = row.slug?.includes(':') ? row.slug : `${row.kind}:${row.slug}`
+  // Rows derived from this script's own output (encounter ids, roster name
+  // fallbacks, aka ids) would feed the roster back into itself on the next run.
+  if (id.includes('--') || row.source === 'boss-roster') continue
   const target = row.kind === 'hunt' ? aliasNameToHunt : aliasNameToBoss
   for (const name of [row.fmgName, ...(row.aliases ?? [])]) {
     const key = norm(name)
@@ -146,8 +149,23 @@ const MISSPELLED = new Map(
   ].map(([typo, real]) => [norm(typo), real]),
 )
 
+/**
+ * Separate bosses whose names the fuzzy resolver would fold into another one:
+ * the wiki gives each its own page, drops and arena.
+ */
+const DISTINCT_BOSSES = new Map(
+  [
+    ['Astel, Stars of Darkness', 'boss:astel-stars-of-darkness'], // not Astel, Naturalborn of the Void
+    ['Bloodhound Knight', 'boss:bloodhound-knight'], // Lakeside Crystal Cave; not Darriwil
+    ['Frenzied Duelist', 'boss:frenzied-duelist'], // Gaol Cave; not a Grave Warden Duelist
+    ['Putrid Grave Warden Duelist', 'boss:putrid-grave-warden-duelist'], // Consecrated Snowfield catacomb
+  ].map(([name, id]) => [norm(name), id]),
+)
+
 /** Best canonical id for a source name, or null when the roster must mint one. */
 function canonicalId(rawName) {
+  const distinct = DISTINCT_BOSSES.get(norm(rawName))
+  if (distinct) return distinct
   const name = MISSPELLED.get(norm(rawName)) ?? rawName
   const group = withoutGroupSuffix(name)
   // Try the group-stripped / composite-part forms first so a name like
@@ -369,7 +387,10 @@ function coordsFor(id, name) {
     return { x: round2((marker.px / 10496) * 100), y: round2((marker.py / 10496) * 100), map: marker.map ?? null }
   }
   const record = entityBossById.get(id)
-  if (record?.map && typeof record.map.x === 'number' && typeof record.map.y === 'number') {
+  // Map percent only: some index records carry a legacy dungeon's local world
+  // coordinates (x = -370), which are not a pin.
+  const inMap = (v) => typeof v === 'number' && v >= 0 && v <= 100
+  if (record?.map && inMap(record.map.x) && inMap(record.map.y)) {
     return { x: round2(record.map.x), y: round2(record.map.y), map: record.map.map ?? null }
   }
   return null
@@ -549,6 +570,9 @@ for (const hunt of hunts) {
     // Field bosses with no place still separate by their kill flag.
     encounterKey: hunt.place ? undefined : `${id}|${hunt.region}|${hunt.flag}`,
   })
+  // The hunt table's own id (dungeon checklists log it) — an alias of this fight
+  // once the roster files it under another id; kept only if unique (below).
+  record.huntIds = [...new Set([...(record.huntIds ?? []), hunt.id])]
   // Canonical/major fields from the entity index.
   if (entity) {
     if (entity.location && !record.location) record.location = entity.location
@@ -590,8 +614,11 @@ for (const row of bossList) {
   let region = huntNameRegion.get(norm(name))?.[0] ?? entityBossById.get(id)?.region ?? regionFromText(name) ?? 'The Lands Between'
   const dlc = isDlcEncounter(row) || isSote(region) || isSote(name)
   if (region === 'The Lands Between' && dlc) region = 'Shadow of the Erdtree'
-  const existing = encounterForName(id)
+  // The game's kill flag identifies the fight; a name only when no flag matches.
+  const byFlag = [...encounters.values()].find((r) => r.flag && r.flag === row.killEventFlagId)
+  const existing = byFlag ?? encounterForName(id)
   if (existing) {
+    if (!existing.flag) existing.flag = row.killEventFlagId
     if (!existing.coords) existing.coords = coordsFor(id, name)
     const combat = combatFor(id, name)
     const hp = hpFromCombat(combat) ?? hpFromFext(name)
@@ -611,6 +638,7 @@ for (const row of bossList) {
     requiredForEnding: REQUIRED_ENDING.has(id),
     drops, coords, hp: hpFromCombat(combat) ?? hpFromFext(name),
     sources: ['boss-list'],
+    flag: row.killEventFlagId,
   })
   hit('boss-list')
 }
@@ -656,6 +684,10 @@ for (const [key, markers] of markerGroups) {
     // second spawn (it minted phantom Adula / Putrid Avatar / Bell Bearing rows).
     const markerFlag = Number(String(marker.id).split(':')[1])
     if ([...encounters.values()].some((r) => r.flag && r.flag === markerFlag)) continue
+    // A marker keyed by the fight's *cleared* flag is the same fight as an
+    // encounter keyed by its *kill* flag (Perfumer Tricia, Crucible Knight Ordovis).
+    const sameFight = bossList.find((row) => row.clearedEventFlagId === markerFlag)
+    if (sameFight && [...encounters.values()].some((r) => r.flag === sameFight.killEventFlagId)) continue
     // Only a flag the game's boss list records as a kill/clear is a separate fight;
     // others are a duo partner (flag +1) or a dragon's flee point (Adula, Lansseax).
     if (!bossList.some((row) => row.killEventFlagId === markerFlag || row.clearedEventFlagId === markerFlag)) continue
@@ -704,6 +736,43 @@ for (const row of fextBosses) {
     sources: ['bosses-fextralife'],
   })
   hit('bosses-fextralife')
+}
+
+// 4b. Named vanilla bosses only the wiki snapshot's boss table carries (no
+// GameAreaParam row, hunt or Fextralife page). An explicit list: the wiki's
+// boss infobox also covers generic enemies (Dragon, Godrick Soldier, Snake
+// Snail) and phases of other fights (God-Devouring Serpent), which are not
+// bosses of their own. Crucible Knight Floh is left out: no HP, no drops, and
+// its evergaol cannot be confirmed in the base game.
+const WIKI_ONLY_BOSSES = {
+  'Crucible Knight Devonia': 'Ancient Ruins of Rauh',
+  'Logur, the Beast Claw': 'Gravesite Plain',
+  'Madding Hand': 'Abyssal Woods',
+  'Moonrithyll, Carian Knight': 'Gravesite Plain',
+  'Knight of the Solitary Gaol': 'Scadu Altus',
+  'Elder Dragon Greyoll': "Greyoll's Dragonbarrow",
+}
+{
+  const wikiBoss = read('public/sourced/open/wiki-db/boss.json')
+  const rows = Array.isArray(wikiBoss) ? wikiBoss : wikiBoss.records ?? []
+  for (const [name, region] of Object.entries(WIKI_ONLY_BOSSES)) {
+    const page = rows.find((r) => r.title === name)
+    if (!page) continue
+    const id = canonicalId(name) ?? `boss:${slug(name)}`
+    if ([...encounters.values()].some((r) => r.id === id)) continue
+    const drops = String(page.stats?.Drops ?? '')
+      .split('·')
+      .map((d) => d.replace(/\[\[|\]\]|\{\{[^}]*\}\}?/g, '').replace(/\s*\(weapon\)$/i, '').trim())
+      .filter(Boolean)
+    const hp = Number(String(page.stats?.HP ?? '').replace(/[^0-9]/g, '')) || null
+    upsert({
+      id, name, region, location: page.location || region,
+      campaign: page.dlc ? 'sote' : 'base',
+      grace: null, tier: tierFor(id, name, drops, page.location), requiredForEnding: false,
+      drops, coords: coordsFor(id, name), hp, sources: ['wiki-db/boss'],
+    })
+    hit('wiki-db/boss')
+  }
 }
 
 // 5. Checklist / FanAPI / armory rows: names the graph knows but that no
@@ -822,6 +891,136 @@ for (const record of encounters.values()) {
   else remaining.push(record.name)
 }
 if (remaining.length) console.log(`placeholder regions still unresolved: ${remaining.length} (${remaining.join(', ')})`)
+
+// Same fight, filed twice by sources that carry no kill flag (Fextralife,
+// checklist, armory). Each entry was checked against the flagged fight's place.
+// The removed id is kept on the surviving row as `aka`, so references resolve.
+{
+  // A flagged fight whose authored catalog id differs from the id sources gave it.
+  const FIGHT_ID_BY_FLAG = {
+    11050800: 'boss:godfrey', // Elden Throne: Godfrey, First Elden Lord / Hoarah Loux (not the golden shade)
+    12030800: 'boss:fia-champions', // Deeproot Depths
+    // Lord Contender's Evergaol boss. Not invader:vyke — that is Festering Fingerprint
+    // Vyke, the NPC invasion (drops Vyke's War Spear); this fight drops Vyke's Dragonbolt.
+    1053560800: 'hunt:roundtable-knight-vyke',
+  }
+  // The fight's own name where the id sources resolved it to belongs to another fight.
+  const FIGHT_OWN_NAME = { 1053560800: 'Roundtable Knight Vyke' }
+  const catalogBossIds = new Set([...entityBossById.keys()].filter((id) => id.startsWith('boss:') || id.startsWith('invader:')))
+  // unflagged duplicate id -> the kill flag of the fight it is
+  const SAME_FIGHT = {
+    'boss:putrid-crystalians': 31110800, // Sellia Hideaway trio
+    'boss:nox-duo': 1049390800, // Nox Swordstress & Nox Monk, Sellia
+    'boss:redmane-combo-crucible-knight': 1051360800, // Redmane Castle
+    'boss:redmane-combo-misbegotten': 1051360800, // Redmane Castle (same fight, armory's other half)
+    'boss:fell-twins': 34140850, // Divine Tower of East Altus
+    'boss:beast-of-farum-azula': 31030800, // Groveside Cave beastman
+    'boss:burial-tree-watchdog': 30020800, // Stormfoot Catacombs
+    'boss:malenia-goddess-of-rot': 15000800, // Malenia's second phase
+    'boss:abductor-virgin-duo': 16000860, // Subterranean Inquisition Chamber
+    'boss:abductor-virgins': 16000860,
+    'boss:leda-and-allies-boss': 20010850, // Needle Knight Leda, Enir-Ilim
+    'boss:vyke-knight-of-the-roundtable': 1053560800, // armory's name for the evergaol fight
+    'boss:rick-soldier-of-godrick': 18000850, // Stranded Graveyard
+  }
+  // A generic page row for a boss that is already a group of encounters.
+  const DROP_ROWS = new Set(['boss:crystalians'])
+  const fold = (keep, other) => {
+    keep.drops = [...new Set([...keep.drops, ...other.drops])]
+    keep.sources = [...new Set([...keep.sources, ...other.sources])]
+    if (!keep.coords && other.coords) keep.coords = other.coords
+    if (!keep.hp && other.hp) keep.hp = other.hp
+    keep.aka = [...new Set([...(keep.aka ?? []), other.id, ...(other.aka ?? [])])].filter((id) => id !== keep.id)
+  }
+  const entries = () => [...encounters.entries()]
+  for (const [flag, id] of Object.entries(FIGHT_ID_BY_FLAG)) {
+    const fight = entries().find(([, r]) => r.flag === Number(flag))
+    if (!fight) continue
+    const [, record] = fight
+    for (const [key, other] of entries()) {
+      if (other !== record && other.id === id) {
+        fold(record, other)
+        encounters.delete(key)
+      }
+    }
+    // The id a source resolved the fight to is an alias only when it is not a
+    // different catalog fight (invader:vyke is Festering Fingerprint Vyke).
+    if (record.id !== id && !(catalogBossIds.has(record.id) && FIGHT_OWN_NAME[flag])) {
+      record.aka = [...new Set([...(record.aka ?? []), record.id])]
+    }
+    if (FIGHT_OWN_NAME[flag]) record.name = FIGHT_OWN_NAME[flag]
+    record.id = id
+  }
+  for (const [dupId, flag] of Object.entries(SAME_FIGHT)) {
+    const target = entries().find(([, r]) => r.flag === flag)?.[1]
+    if (!target) continue
+    for (const [key, other] of entries()) {
+      if (other.id === dupId && other !== target) {
+        fold(target, other)
+        encounters.delete(key)
+      }
+    }
+  }
+  for (const [key, record] of entries()) if (DROP_ROWS.has(record.id)) encounters.delete(key)
+}
+
+// One fight, one row: rows that carry the same game kill flag are the same
+// fight minted under two ids by different sources (hunts "Nox Swordstress &
+// Nox Monk" vs armory "Nox Duo"). Keep the id the entity graph / catalog knows,
+// else the hunt row, and fold the others' data into it.
+{
+  const byFlag = new Map()
+  for (const [key, record] of encounters) {
+    if (!record.flag) continue
+    const list = byFlag.get(record.flag) ?? []
+    list.push([key, record])
+    byFlag.set(record.flag, list)
+  }
+  let merged = 0
+  for (const list of byFlag.values()) {
+    if (new Set(list.map(([, r]) => r.id)).size < 2) continue
+    list.sort(([, a], [, b]) =>
+      Number(entityBossById.has(b.id)) - Number(entityBossById.has(a.id)) ||
+      Number(b.sources.includes('hunts')) - Number(a.sources.includes('hunts')) ||
+      a.id.localeCompare(b.id))
+    const [, keep] = list[0]
+    for (const [key, other] of list.slice(1)) {
+      if (other.id === keep.id) continue
+      keep.drops = [...new Set([...keep.drops, ...other.drops])]
+      keep.sources = [...new Set([...keep.sources, ...other.sources])]
+      if (!keep.coords && other.coords) keep.coords = other.coords
+      if (!keep.hp && other.hp) keep.hp = other.hp
+      encounters.delete(key)
+      merged++
+    }
+  }
+  console.log(`merged ${merged} duplicate rows that share a kill flag`)
+}
+
+// Separated bosses (DISTINCT_BOSSES) used to share one id, so name-based drop
+// merges pooled their drops. Drops that the separated boss's own wiki page lists
+// and the other boss's page does not are removed from the other boss.
+{
+  const SPLIT_FROM = {
+    'boss:astel-stars-of-darkness': 'boss:astel',
+    'boss:bloodhound-knight': 'boss:darriwil',
+    'boss:frenzied-duelist': 'boss:grave-warden-duelist',
+    'boss:putrid-grave-warden-duelist': 'boss:grave-warden-duelist',
+  }
+  const wikiBoss = read('public/sourced/open/wiki-db/boss.json')
+  const pages = new Map((Array.isArray(wikiBoss) ? wikiBoss : wikiBoss.records ?? []).map((r) => [norm(r.title), r]))
+  const pageDrops = (name) => new Set((pages.get(norm(name))?.drops ?? []).map((d) => norm(d)))
+  const all = [...encounters.values()]
+  for (const [splitId, fromId] of Object.entries(SPLIT_FROM)) {
+    const split = all.find((r) => r.id === splitId)
+    if (!split) continue
+    const own = pageDrops(split.name)
+    for (const other of all.filter((r) => r.id === fromId)) {
+      const keep = pageDrops(other.name)
+      other.drops = other.drops.filter((d) => !own.has(norm(d)) || keep.has(norm(d)))
+    }
+  }
+}
 
 // ---------------------------------------------------------------------------
 // One entity per encounter
@@ -975,15 +1174,79 @@ for (const [, list] of byGroup) {
 }
 console.log(`split ${splitGroups} multi-location bosses into their own encounters; ${tabMatched} matched a wiki encounter tab, ${pageMatched} their own wiki page`)
 
+// Rune rewards are not item drops: sources list them as "120,000 Runes" and
+// "120000 Runes" side by side, and pooled lists mixed several bosses' amounts.
+// Keep them out of `drops`; set `runes` when the sources agree on one amount.
+const RUNE_LINE = /^[\d,.\s]+runes?(\s*\(ng[^)]*\))?$/i
+// Drop strings to the game's own item spelling (open/names.json, the install's
+// FMG): wiki markup, "(if …)" notes, "Smithing Stone 6" -> "Smithing Stone [6]",
+// two items pasted into one string, and old names ("Rennala's Great Rune").
+const gameItemNames = new Map()
+for (const row of read('public/sourced/open/names.json')) {
+  if (!['goods', 'weapon', 'protector', 'accessories', 'gems'].includes(row.kind)) continue
+  const key = row.name.toLowerCase()
+  if (!gameItemNames.has(key)) gameItemNames.set(key, row.name)
+}
+const DROP_RENAMES = { "rennala's great rune": 'Great Rune of the Unborn', 'ash of war: glintsword arch': 'Ash of War: Glintblade Phalanx' }
+function cleanDrop(raw) {
+  let d = String(raw).replace(/\{\{[^}]*\}?\}?|\[\[|\]\]/g, '').replace(/^\s*\*\s*/, '').replace(/\s*\(if .*$/i, '').trim()
+  if (!d || /runes-currency|^(n\/a|other drops|see .+)$/i.test(d) || RUNE_LINE.test(d)) return []
+  // Half of a note split on its comma ("the Fell Omen not already defeated)") or a bare number.
+  if (/^[\d,.\s]+$/.test(d) || (d.includes(')') && !d.includes('('))) return []
+  const known = (s) => DROP_RENAMES[s.toLowerCase()] ?? gameItemNames.get(s.toLowerCase())
+  if (known(d)) return [known(d)]
+  // Spirit ashes: the game names the item after the spirit ("Black Knife Tiche").
+  const ashes = /^(.*?)\s+(?:spirit\s+)?ashes$/i.exec(d)
+  if (ashes && known(ashes[1])) return [known(ashes[1])]
+  if (/\sset$/i.test(d)) return [d.replace(/\sset$/i, ' Set')]
+  const parts = d.split(/,\s+/)
+  if (parts.length > 1 && parts.every((p) => known(p))) return parts.map(known)
+  const numbered = /^(.*?)\s*[([]?\+?(\d+)[)\]]?$/.exec(d)
+  if (numbered) {
+    const [, base, n] = numbered
+    const hit = known(`${base} [${n}]`) ?? known(`${base} +${n}`)
+    if (hit) return [hit]
+  }
+  return [d]
+}
+for (const record of encounters.values()) {
+  const amounts = new Set(record.drops.filter((d) => RUNE_LINE.test(String(d).trim()) && !/\(ng/i.test(d)).map((d) => Number(String(d).replace(/\(.*$/, '').replace(/[^0-9]/g, ''))))
+  const seen = new Set()
+  record.drops = record.drops.flatMap(cleanDrop).filter((d) => {
+    const key = d.toLowerCase()
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
+  if (record.runes == null && amounts.size === 1) record.runes = [...amounts][0]
+}
+
 // ---------------------------------------------------------------------------
 // Sort + write
 // ---------------------------------------------------------------------------
+
+// An alias must never name a live fight or group (the golden shade stays
+// boss:godfrey-golden even though the Elden Throne row once carried that id).
+{
+  // A hunt id names one fight only when no other row came from it
+  // (hunt:night-s-cavalry covers all nine riders, so it aliases none of them).
+  const huntUse = new Map()
+  for (const record of encounters.values()) for (const h of record.huntIds ?? []) huntUse.set(h, (huntUse.get(h) ?? 0) + 1)
+  for (const record of encounters.values()) {
+    const own = (record.huntIds ?? []).filter((h) => huntUse.get(h) === 1 && h !== record.id)
+    if (own.length) record.aka = [...new Set([...(record.aka ?? []), ...own])]
+  }
+  const live = new Set([...encounters.values()].flatMap((r) => [r.id, r.group].filter(Boolean)))
+  for (const record of encounters.values()) {
+    if (record.aka) record.aka = record.aka.filter((id) => id !== record.id && !live.has(id))
+  }
+}
 
 const roster = [...encounters.values()]
   .map((r) => ({
     id: r.id,
     ...(r.group ? { group: r.group } : {}),
-    name: r.name,
+    name: r.name.replace(/\s*\(x(\d)\)$/i, ' ×$1'), // "Fell Twin(x2)" -> "Fell Twin ×2"
     campaign: r.campaign,
     region: r.region || 'The Lands Between',
     location: r.location || r.region || 'The Lands Between',
@@ -993,7 +1256,10 @@ const roster = [...encounters.values()]
     drops: [...new Set(r.drops)].sort(),
     coords: r.coords ?? null,
     hp: r.hp ?? null,
-    ...(r.group ? { runes: r.runes ?? null, about: r.about ?? null, flag: r.flag ?? null } : {}),
+    runes: r.runes ?? null,
+    flag: r.flag ?? null,
+    ...(r.aka?.length ? { aka: [...r.aka].sort() } : {}),
+    ...(r.group ? { about: r.about ?? null } : {}),
     sources: r.sources.sort(),
   }))
   .sort(

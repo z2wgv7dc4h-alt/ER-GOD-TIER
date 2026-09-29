@@ -99,7 +99,14 @@ separately, and aligned the catalog's `dlc` flag on 19 rows. Only that JSON file
 none of the pack's overlay binaries are used or referenced anywhere in this repo.
 See `docs/REVIEW.md`.
 
-## Open / Goblins / Paramdex
+## Open / vanilla install / Paramdex
+
+> **Vanilla only.** The map/boss/loot dumps below are extracted from the local, unmodded
+> game install by `scripts/extract-vanilla-open.py` (GameAreaParam, BonfireWarpParam,
+> ItemLotParam_map, every map MSB, the game's own text). They used to be copied from
+> `VirusAlex/ERR-MapForGoblins-DLL` — the Map for Goblins build for **Elden Ring Reforged**,
+> a PC mod — whose added bosses, places, items and gathering assets do not exist on PS5.
+> `src/lib/vanillaData.guard.test.ts` fails if any of that content returns.
 
 | File | What |
 |---|---|
@@ -121,12 +128,12 @@ See `docs/REVIEW.md`.
 | `open/text/` | **Full game text** (36 tables, 34,053 strings) dumped from the install's `menu`/`item` (+ `*_dlc02`) message bundles by `scripts/extract-game-text.py` — one JSON per table + `manifest.json`. Includes the verbatim NPC dialogue `TalkMsg` (9,818 lines, base + DLC merged), the talk-condition tables `EventTextForTalk`/`GR_Dialogues`, and every weapon/goods/armor/talisman/NPC/place name + lore caption. Loaded lazily by `src/lib/gameText.ts`; the Codex surfaces a verbatim dialogue search (`src/Dialogue.tsx`). Junk tables (ToS legal text, `BloodMsg` death spam, network/embedded-image names, placeholder magic) are excluded at extraction. |
 | `open/dialogue-owners.json` | Speaker attribution for NPC talk. `scripts/extract-dialogue-owners.py` matches each ESD's `t<talkId>.esd` to the MSB PARTS entry carrying that **TalkID** (`+0x2b0`), reads its **NPCParamID** (`+0x2a8`), and names it from `NpcParam.txt` + the combat JSONs — the way the game itself resolves a talker. **Ceiling is inherent:** the ESD talk scripts reference only 2,129 of the 9,818 `TalkMsg` lines; 1,952 are named (95 speakers) and 177 sit in ESDs whose talker has no NpcParam row. The other 7,689 lines are not referenced by any talk script (menu/cutscene/UI), so they cannot be attributed this way — and nothing is guessed. `src/lib/dialogueOwners.ts` (`speakerLabel`). |
 | `open/shops.json` | 1261 shop rows |
-| `open/world-lots.json` | 10k lots + XYZ; `src/lib/chestFacts.ts` groups the 4018 treasure rows into 3401 chest/pickup facts |
-| `open/boss-xyz.json` / `boss-pins.json` | 215 named bosses; 109 projected |
-| `open/enemies.json` | 520 EN names |
-| `open/msb-enemies.json` | 8.8k placed enemies — joined to `enemy-combat.json` for placement counts/maps |
-| `open/gathering-nodes.json` | 21.8k AEG gathering-node placements (Goblins dump); model code only, no item/material field — `src/lib/gatheringNodes.ts` labels them honestly as generic placements, world resolved only for the two confirmed grids (area 60 → overworld, 61 → shadow), everything else buckets as `underground` unverified. **Task 62:** never drawn as Atlas pins and never answered by Gideon; Codex-only, labelled "unverified placement, model code only", guarded by `gatheringNodes.guard.test.ts` |
-| `open/grace-xyz.json` | grace world positions + region names; nearest-region label for chest facts |
+| `open/world-lots.json` | Every treasure pickup from the install: MSB treasure events joined to ItemLotParam_map (multi-item pickups chain consecutive lots sharing one flag); `src/lib/chestFacts.ts` groups them into one chest/pickup fact per flag (3,364) |
+| `open/boss-list.json` / `boss-xyz.json` / `boss-pins.json` | The game's 209 boss fights (GameAreaParam): kill flag = the row id (unless a partner row), names from the hunt table / engine event scripts, pins from the engine markers |
+| `open/enemies.json` | Enemy names from NpcParam (Paramdex, vanilla) — search list |
+| `open/msb-enemies.json` | Every placed enemy (~31k) from the install's map MSBs (detailed tier) — joined to `enemy-combat.json` for placement maps |
+| `open/gathering-nodes.json` | ~20k AEG gathering-node placements from the install's map MSBs; model code only, no item/material field — `src/lib/gatheringNodes.ts` labels them honestly as generic placements, world resolved only for the two confirmed grids (area 60 → overworld, 61 → shadow), everything else buckets as `underground` unverified. **Task 62:** never drawn as Atlas pins and never answered by Gideon; Codex-only, labelled "unverified placement, model code only", guarded by `gatheringNodes.guard.test.ts` |
+| `open/grace-xyz.json` | Grace world positions from BonfireWarpParam (422) + sub-region / region names; nearest-region label for chest facts |
 | `open/graces` via checklists/graces.json | 418 warps |
 | `open/paramdex/` | Names txt dump; equipment files topped up from install (Tarnished Pack rows); `NpcParam.txt` still upstream (post-SotE) |
 | `src/knowledge/merchants.ts` | 106 vendors full stock |

@@ -46,8 +46,8 @@ table. The table below is the current traversal; the guards snapshot it.
 | guard | min | actual | status |
 | --- | --- | --- | --- |
 | grace.region | ≥ 90% | 90.9% | PASS |
-| boss.location | ≥ 90% | 94.4% | PASS |
-| boss.drops | ≥ 80% | 82.8% | PASS |
+| boss.location | ≥ 90% | 98.3% | PASS |
+| boss.drops | ≥ 80% | 87.9% | PASS |
 | remembrance.boss | ≥ 90% | 100% | PASS |
 | remembrance.Enia trades | ≥ 90% | 100% | PASS |
 | region.contents | ≥ 30% | 31.7% | PASS |
@@ -61,19 +61,19 @@ All guard minimums met.
 
 | kind | entities | source | drops | location | contents | region | stock | boss | trades |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| armor | 750 | 73.3% | · | · | · | · | · | · | · |
+| armor | 750 | 72.5% | · | · | · | · | · | · | · |
 | ash | 124 | 72.6% | · | · | · | · | · | · | · |
-| boss | 337 | · | 82.8% | 94.4% | · | · | · | · | · |
+| boss | 297 | · | 87.9% | 98.3% | · | · | · | · | · |
 | dungeon | 119 | · | · | · | 84.9% | · | · | · | · |
 | grace | 416 | · | · | · | · | 90.9% | · | · | · |
-| item | 1202 | 73.3% | · | · | · | · | · | · | · |
+| item | 1188 | 73.3% | · | · | · | · | · | · | · |
 | material | 3 | 100% | · | · | · | · | · | · | · |
 | merchant | 106 | · | · | · | · | · | 100% | · | · |
 | npc | 195 | · | · | 75.4% | · | · | · | · | · |
 | quest | 468 | · | · | 68.4% | · | · | · | · | · |
 | region | 312 | · | · | · | 31.7% | · | · | · | · |
 | remembrance | 25 | · | · | · | · | · | · | 100% | 100% |
-| shield | 67 | 83.6% | · | · | · | · | · | · | · |
+| shield | 67 | 85.1% | · | · | · | · | · | · | · |
 | spell | 217 | 96.3% | · | · | · | · | · | · | · |
 | spirit | 79 | 87.3% | · | · | · | · | · | · | · |
 | talisman | 158 | 91.8% | · | · | · | · | · | · | · |
@@ -87,10 +87,10 @@ the links a plain renderer still owes.
 
 | surface | linkable | unlinked before | unlinked after |
 | --- | --- | --- | --- |
-| entity descriptions | 1231 | 0 | 0 |
-| wiki sections | 1558 | 0 | 0 |
-| acquisition text | 1524 | 0 | 0 |
-| quest step actions | 598 | 577 | 0 |
+| entity descriptions | 1266 | 0 | 0 |
+| wiki sections | 1556 | 0 | 0 |
+| acquisition text | 1527 | 0 | 0 |
+| quest step actions | 605 | 577 | 0 |
 | mechanics bodies | 181 | 0 | 0 |
 
 _Regenerated 2026-09-29._

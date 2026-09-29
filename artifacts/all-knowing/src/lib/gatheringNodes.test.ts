@@ -23,9 +23,9 @@ const regions: GraceRegion[] = graceXyz.map((r) => ({
 describe('gathering nodes (AEG placements -> queryable facts)', () => {
   const facts = buildGatheringNodes(nodes, regions)
 
-  it('converts ~21.8k rows into gathering-node facts with world assignments', () => {
-    expect(facts.length).toBeGreaterThan(21000)
-    expect(facts.length).toBeLessThan(22000)
+  it('converts ~20k vanilla rows into gathering-node facts with world assignments', () => {
+    expect(facts.length).toBeGreaterThan(19500)
+    expect(facts.length).toBeLessThan(21000)
     expect(facts.every((f) => f.id.startsWith('node:'))).toBe(true)
   })
 
@@ -41,7 +41,7 @@ describe('gathering nodes (AEG placements -> queryable facts)', () => {
   })
 
   it('resolves a real node to its area and region', () => {
-    const sample = facts.find((f) => f.model === 'AEG099_821')
+    const sample = facts.find((f) => f.model === 'AEG099_720')
     expect(sample).toBeDefined()
     expect(sample!.area).toBeGreaterThan(0)
     // Only area 60/61 are confirmed (m60_*/m61_* world-tile grids); every
