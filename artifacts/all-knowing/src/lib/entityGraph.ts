@@ -466,7 +466,14 @@ function buildIndex(): Index {
   }
   // Task 130: the canonical boss roster registers every encounter's fact id so
   // Setup, progress, the Area hub and the Library share one boss authority.
-  for (const b of bossRoster as { id: string; name: string; region: string }[]) {
+  for (const b of bossRoster as { id: string; name: string; region: string; location: string; group?: string; about?: string | null }[]) {
+    if (b.group) {
+      // One encounter of a boss fought in several places: its own page, named by
+      // place, and the shared boss page it belongs to.
+      if (!entities.has(b.group)) addEntity({ id: b.group, kind: 'boss', name: b.name, summary: 'Fought in several places' })
+      addEntity({ id: b.id, kind: 'boss', name: `${b.name} (${b.location})`, summary: b.about || b.region })
+      continue
+    }
     addEntity({ id: b.id, kind: 'boss', name: b.name, summary: b.region })
   }
   for (const b of opBuilds) {

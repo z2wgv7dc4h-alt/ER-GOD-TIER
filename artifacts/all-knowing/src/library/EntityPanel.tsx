@@ -468,14 +468,14 @@ export function EntityPanel({
       <footer className="lib-panel-actions">
         {isBoss && (
           <>
-            {onOwnedChange && (
+            {onOwnedChange && trackActionLabel(panelKindValue, isOwnedValue, statusFactId) && (
               <button
                 type="button"
                 className={isOwnedValue ? 'chip on' : 'chip'}
                 aria-pressed={isOwnedValue}
                 onClick={() => onOwnedChange(!isOwnedValue)}
               >
-                {isOwnedValue ? 'Defeated ✓' : 'Mark defeated'}
+                {trackActionLabel(panelKindValue, isOwnedValue, statusFactId)}
               </button>
             )}
             {onShowOnMap && (

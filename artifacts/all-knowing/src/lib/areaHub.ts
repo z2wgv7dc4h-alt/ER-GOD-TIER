@@ -74,7 +74,8 @@ export function areaBosses(character: Character, area: string | null | undefined
     if (!regionMatches(b.region, area)) continue
     if (seen.has(b.id)) continue
     seen.add(b.id)
-    out.push({ id: b.id, name: b.name, region: b.region, done: isKnown(known, b.id) })
+    // Two Night's Cavalry in Liurnia must read as two places, not one name twice.
+    out.push({ id: b.id, name: b.group ? `${b.name} (${b.location})` : b.name, region: b.region, done: isKnown(known, b.id) })
   }
   return out.sort((a, b) => Number(a.done) - Number(b.done) || a.name.localeCompare(b.name))
 }

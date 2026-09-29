@@ -2,7 +2,8 @@ import { areaFromFactId } from '../lib/areaContext'
 import { displayName } from '../lib/canonicalNames'
 import { getEntity, type EntityKind, type EntityState } from '../lib/entityGraph'
 import { getRecord, type EntityRecord } from '../lib/entityIndex'
-import { knownFactIds } from '../lib/infer'
+import { knownFactIds, resolvedFactIds } from '../lib/infer'
+import { encountersByGroup } from '../knowledge/catalog'
 import type { Character } from '../types'
 import type { CategoryId, LibraryEntity } from './model'
 
@@ -77,6 +78,19 @@ export function kindStatus(
   const done = info.state === 'done' || info.state === 'owned'
   const blocked = info.state === 'locked' || info.state === 'missed' || info.state === 'ahead'
   const inRegion = entity.region ? `In ${entity.region}.` : record?.location ? `${record.location}.` : ''
+  if (bossLike && encountersByGroup.has(entity.factId)) {
+    // A boss fought in several places: progress is per encounter.
+    const ids = encountersByGroup.get(entity.factId)!
+    const known = resolvedFactIds(character)
+    const beaten = ids.filter((id) => known.has(id)).length
+    if (beaten === 0 && character.defeatedBosses.includes(entity.factId)) {
+      return { label: 'Logged — which one?', why: `Logged before per-location tracking. Mark which of the ${ids.length} you beat below.` }
+    }
+    return {
+      label: `${beaten} of ${ids.length} defeated`,
+      why: beaten === ids.length ? 'Every location done.' : `Fought in ${ids.length} places — each is tracked on its own.`,
+    }
+  }
   if (bossLike) {
     if (done) return { label: 'Defeated', why: info.why }
     if (blocked) return { label: "Can't reach yet", why: info.why }
@@ -125,8 +139,13 @@ export function kindStatus(
   return { label: info.state === 'unknown' ? 'Unknown' : 'Not owned', why: info.state === 'available' ? 'Not on this character yet.' : info.why }
 }
 
-/** The label of the page's track button for this kind, or null when the kind is not trackable. */
-export function trackActionLabel(kind: EntityKind, on: boolean): string | null {
+/**
+ * The label of the page's track button for this kind, or null when the kind is
+ * not trackable. A boss fought in several places is tracked per encounter, so
+ * its shared page has no single "Mark defeated".
+ */
+export function trackActionLabel(kind: EntityKind, on: boolean, factId?: string): string | null {
+  if (factId && encountersByGroup.has(factId)) return null
   if (kind === 'boss' || kind === 'enemy') return on ? 'Defeated ✓' : 'Mark defeated'
   if (QUEST_LIKE.has(kind)) return on ? 'Done ✓' : 'Mark done'
   if (OWNABLE.has(kind)) return on ? 'Mark not owned' : 'Mark owned'

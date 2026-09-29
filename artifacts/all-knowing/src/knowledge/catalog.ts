@@ -1,4 +1,5 @@
 import type { Campaign } from '../types'
+import bossRosterJson from '../data/bosses.json'
 import { REGULATION_STAMP } from '../lib/regulation.ts'
 
 /**
@@ -75,7 +76,7 @@ export const facts: Fact[] = [
   { id: 'boss:rennala', kind: 'boss', name: 'Rennala, Queen of the Full Moon', aliases: ['rennala'], region: 'Raya Lucaria', campaign: 'base', implies: ['boss:red-wolf'], drops: ['item:rennala-great-rune', 'item:remembrance-full-moon-queen'] },
   { id: 'boss:radahn', kind: 'boss', name: 'Starscourge Radahn', aliases: ['radahn', 'general radahn'], region: 'Caelid', campaign: 'base', implies: ['quest:ranni:festival'], drops: ['item:radahn-great-rune', 'item:remembrance-starscourge'] },
   { id: 'boss:rykard', kind: 'boss', name: 'Rykard, Lord of Blasphemy', aliases: ['rykard', 'god-devouring serpent'], region: 'Mt. Gelmir', campaign: 'base', implies: [], drops: ['item:rykard-great-rune', 'item:remembrance-blasphemous'] },
-  { id: 'boss:godfrey-golden', kind: 'boss', name: 'Godfrey, First Elden Lord (golden shade)', aliases: ['golden godfrey', 'godfrey shade'], region: 'Leyndell', campaign: 'base', implies: ['region:leyndell'] },
+  { id: 'boss:godfrey-golden', kind: 'boss', name: 'Godfrey, First Elden Lord (golden shade)', aliases: ['golden godfrey', 'godfrey shade'], region: 'Leyndell', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:morgott', kind: 'boss', name: 'Morgott, the Omen King', aliases: ['morgott', 'omen king'], region: 'Leyndell', campaign: 'base', implies: ['boss:godfrey-golden'], drops: ['item:morgott-great-rune', 'item:remembrance-omen-king'] },
   { id: 'boss:fire-giant', kind: 'boss', name: 'Fire Giant', aliases: [], region: 'Mountaintops', campaign: 'base', implies: ['grace:forge-giants'], drops: ['item:remembrance-fire-giant'] },
   { id: 'boss:godskin-duo', kind: 'boss', name: 'Godskin Duo', aliases: [], region: 'Farum Azula', campaign: 'base', implies: ['region:farum'] },
@@ -85,7 +86,7 @@ export const facts: Fact[] = [
   { id: 'boss:radagon', kind: 'boss', name: 'Radagon of the Golden Order / Elden Beast', aliases: ['radagon', 'elden beast', 'elden lord'], region: 'Ashen Capital', campaign: 'base', implies: ['boss:godfrey'], drops: ['item:elden-remembrance'] },
   { id: 'boss:mohg', kind: 'boss', name: 'Mohg, Lord of Blood', aliases: ['mohg', 'lord of blood'], region: 'Mohgwyn', campaign: 'base', implies: [], drops: ['item:mohg-great-rune', 'item:remembrance-blood-lord'] },
   { id: 'boss:malenia', kind: 'boss', name: 'Malenia, Blade of Miquella', aliases: ['malenia'], region: 'Elphael', campaign: 'base', implies: ['grace:drainage'], drops: ['item:malenia-great-rune', 'item:remembrance-rot-goddess'] },
-  { id: 'boss:divine-beast', kind: 'boss', name: 'Divine Beast Dancing Lion', aliases: ['dancing lion'], region: 'Belurat', campaign: 'sote', implies: ['grace:belurat'] },
+  { id: 'boss:divine-beast', kind: 'boss', name: 'Divine Beast Dancing Lion', aliases: ['dancing lion'], region: 'Belurat', campaign: 'sote', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:rennala-sote', kind: 'boss', name: 'Rellana, Twin Moon Knight', aliases: ['rellana'], region: 'Castle Ensis', campaign: 'sote', implies: ['region:shadow'] },
   { id: 'boss:messmer', kind: 'boss', name: 'Messmer the Impaler', aliases: ['messmer'], region: 'Shadow Keep', campaign: 'sote', implies: ['grace:shadow-keep'] },
   { id: 'boss:midra', kind: 'boss', name: 'Midra, Lord of Frenzied Flame', aliases: ['midra'], region: 'Abyssal Woods', campaign: 'sote', implies: ['region:shadow'] },
@@ -119,7 +120,7 @@ export const facts: Fact[] = [
   { id: 'item:golden-order-flail', kind: 'item', name: 'Golden Order Flail', aliases: ['order flail'], region: 'Leyndell', campaign: 'tarnished-pack', implies: ['region:leyndell'] },
   { id: 'item:reverse-bladed', kind: 'item', name: 'Reverse-Bladed Sword', aliases: ['backhand blade tarnished'], region: 'Roundtable', campaign: 'tarnished-pack', implies: [] },
 
-  { id: 'boss:astel', kind: 'boss', name: 'Astel, Naturalborn of the Void', aliases: ['astel'], region: 'Lake of Rot', campaign: 'base', implies: ['item:fingerslayer'], drops: ['item:remembrance-naturalborn'] },
+  { id: 'boss:astel', kind: 'boss', name: 'Astel, Naturalborn of the Void', aliases: ['astel'], region: 'Lake of Rot', campaign: 'base', implies: [], drops: ['item:remembrance-naturalborn'] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
 
   { id: 'quest:ranni:festival', kind: 'quest', name: 'Ranni — Radahn festival opened Nokron', aliases: [], region: 'Caelid', campaign: 'base', implies: ['quest:ranni:service'] },
   { id: 'quest:ranni:service', kind: 'quest', name: 'Ranni — entered her service', aliases: ['ranni rise'], region: 'Liurnia', campaign: 'base', implies: ['grace:lake-shore'] },
@@ -149,7 +150,7 @@ export const facts: Fact[] = [
   { id: 'boss:mimic-tear', kind: 'boss', name: 'Mimic Tear', aliases: ['mimic tear'], region: 'Nokron', campaign: 'base', implies: ['boss:radahn'] },
   { id: 'boss:valiant-gargoyle', kind: 'boss', name: 'Valiant Gargoyle', aliases: ['valiant gargoyle duo', 'valiant gargoyles'], region: 'Nokron', campaign: 'base', implies: ['boss:radahn'] },
   { id: 'boss:mohg-omen', kind: 'boss', name: 'Mohg, the Omen', aliases: ['mohg the omen', 'omen mohg'], region: 'Leyndell', campaign: 'base', implies: ['grace:east-capital'] },
-  { id: 'boss:godskin-apostle', kind: 'boss', name: 'Godskin Apostle', aliases: ['godskin apostle'], region: 'Liurnia', campaign: 'base', implies: ['region:liurnia'] },
+  { id: 'boss:godskin-apostle', kind: 'boss', name: 'Godskin Apostle', aliases: ['godskin apostle'], region: 'Liurnia', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:godskin-noble', kind: 'boss', name: 'Godskin Noble', aliases: ['godskin noble'], region: 'Mt. Gelmir', campaign: 'base', implies: ['region:altus'] },
   { id: 'boss:ekzykes', kind: 'boss', name: 'Decaying Ekzykes', aliases: ['ekzykes'], region: 'Caelid', campaign: 'base', implies: ['region:caelid'] },
   { id: 'boss:borealis', kind: 'boss', name: 'Borealis the Freezing Fog', aliases: ['borealis'], region: 'Mountaintops', campaign: 'base', implies: ['region:mountaintops'] },
@@ -158,52 +159,52 @@ export const facts: Fact[] = [
   { id: 'boss:siluria', kind: 'boss', name: 'Crucible Knight Siluria', aliases: ['siluria'], region: 'Nokron', campaign: 'base', implies: ['boss:radahn'] },
   { id: 'boss:fia-champions', kind: 'boss', name: "Fia's Champions", aliases: ['fia champions'], region: 'Deeproot Depths', campaign: 'base', implies: ['grace:deeproot'] },
   { id: 'boss:ancestor-spirit', kind: 'boss', name: 'Ancestor Spirit', aliases: ['ancestral spirit'], region: 'Siofra River', campaign: 'base', implies: ['region:limgrave'] },
-  { id: 'boss:dragonkin-soldier', kind: 'boss', name: 'Dragonkin Soldier', aliases: ['dragonkin'], region: 'Siofra River', campaign: 'base', implies: ['region:limgrave'] },
+  { id: 'boss:dragonkin-soldier', kind: 'boss', name: 'Dragonkin Soldier', aliases: ['dragonkin'], region: 'Siofra River', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:dragonkin-nokstella', kind: 'boss', name: 'Dragonkin Soldier of Nokstella', aliases: ['dragonkin nokstella'], region: 'Nokstella', campaign: 'base', implies: ['boss:radahn'] },
-  { id: 'boss:cemetery-shade', kind: 'boss', name: 'Cemetery Shade', aliases: ['cemetary shade'], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
+  { id: 'boss:cemetery-shade', kind: 'boss', name: 'Cemetery Shade', aliases: ['cemetary shade'], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:stray-mimic-tear', kind: 'boss', name: 'Stray Mimic Tear', aliases: ['stray mimic'], region: 'Mountaintops', campaign: 'base', implies: ['item:haligtree-secret-medallion'] },
-  { id: 'boss:magma-wyrm', kind: 'boss', name: 'Magma Wyrm', aliases: ['magma wyrm'], region: 'Altus', campaign: 'base', implies: ['region:altus'] },
+  { id: 'boss:magma-wyrm', kind: 'boss', name: 'Magma Wyrm', aliases: ['magma wyrm'], region: 'Altus', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:godskin-apostle-noble', kind: 'boss', name: 'Godskin Apostle & Godskin Noble', aliases: ['apostle and noble', 'spiritcaller godskins'], region: 'Mountaintops', campaign: 'base', implies: ['region:mountaintops'] },
   { id: 'boss:royal-knight-loretta', kind: 'boss', name: 'Royal Knight Loretta', aliases: ['royal loretta', 'loretta caria'], region: 'Liurnia', campaign: 'base', implies: ['region:liurnia'] },
   { id: 'boss:lansseax', kind: 'boss', name: 'Ancient Dragon Lansseax', aliases: ['lansseax'], region: 'Altus', campaign: 'base', implies: ['region:altus'] },
-  { id: 'boss:black-blade-kindred', kind: 'boss', name: 'Black Blade Kindred', aliases: ['black blade kindred'], region: 'Mountaintops', campaign: 'base', implies: ['region:mountaintops'] },
+  { id: 'boss:black-blade-kindred', kind: 'boss', name: 'Black Blade Kindred', aliases: ['black blade kindred'], region: 'Mountaintops', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:full-grown-fallingstar', kind: 'boss', name: 'Full-Grown Fallingstar Beast', aliases: ['full grown fallingstar'], region: 'Mountaintops', campaign: 'base', implies: ['region:mountaintops'] },
-  { id: 'boss:ulcerated-tree-spirit', kind: 'boss', name: 'Ulcerated Tree Spirit', aliases: ['ulcerated spirit'], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
+  { id: 'boss:ulcerated-tree-spirit', kind: 'boss', name: 'Ulcerated Tree Spirit', aliases: ['ulcerated spirit'], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
 
   // Field bosses (Task 18, diff §2c). A partial pass only: the tracker's 71-name list lived
   // in the deleted .scratch/diff.json and re-scraping the sheet is out of scope, so these are
   // the recurring base-game field bosses named in hosted-bosses.json that were still missing.
   // Names match hosted rows exactly so the alias table links real bossflag ids.
-  { id: 'boss:tree-sentinel', kind: 'boss', name: 'Tree Sentinel', aliases: ['tree sentinels'], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
-  { id: 'boss:nights-cavalry', kind: 'boss', name: "Night's Cavalry", aliases: ['nights cavalry'], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
-  { id: 'boss:deathbird', kind: 'boss', name: 'Deathbird', aliases: [], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
-  { id: 'boss:death-rite-bird', kind: 'boss', name: 'Death Rite Bird', aliases: ['death rite'], region: 'Mountaintops', campaign: 'base', implies: ['region:mountaintops'] },
-  { id: 'boss:bell-bearing-hunter', kind: 'boss', name: 'Bell Bearing Hunter', aliases: ['bell bearing hunter'], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
-  { id: 'boss:erdtree-avatar', kind: 'boss', name: 'Erdtree Avatar', aliases: ['erdtree avatars'], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
-  { id: 'boss:putrid-avatar', kind: 'boss', name: 'Putrid Avatar', aliases: [], region: 'Caelid', campaign: 'base', implies: ['region:caelid'] },
-  { id: 'boss:tibia-mariner', kind: 'boss', name: 'Tibia Mariner', aliases: ['tibia mariners'], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
-  { id: 'boss:black-knife-assassin', kind: 'boss', name: 'Black Knife Assassin', aliases: ['black knife assassins'], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
-  { id: 'boss:cleanrot-knight', kind: 'boss', name: 'Cleanrot Knight', aliases: ['cleanrot knights'], region: 'Caelid', campaign: 'base', implies: ['region:caelid'] },
-  { id: 'boss:crystalian-duo', kind: 'boss', name: 'Crystalian Duo', aliases: ['crystalian'], region: 'Liurnia', campaign: 'base', implies: ['region:liurnia'] },
-  { id: 'boss:grave-warden-duelist', kind: 'boss', name: 'Grave Warden Duelist', aliases: ['grave warden'], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
+  { id: 'boss:tree-sentinel', kind: 'boss', name: 'Tree Sentinel', aliases: ['tree sentinels'], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
+  { id: 'boss:nights-cavalry', kind: 'boss', name: "Night's Cavalry", aliases: ['nights cavalry'], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
+  { id: 'boss:deathbird', kind: 'boss', name: 'Deathbird', aliases: [], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
+  { id: 'boss:death-rite-bird', kind: 'boss', name: 'Death Rite Bird', aliases: ['death rite'], region: 'Mountaintops', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
+  { id: 'boss:bell-bearing-hunter', kind: 'boss', name: 'Bell Bearing Hunter', aliases: ['bell bearing hunter'], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
+  { id: 'boss:erdtree-avatar', kind: 'boss', name: 'Erdtree Avatar', aliases: ['erdtree avatars'], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
+  { id: 'boss:putrid-avatar', kind: 'boss', name: 'Putrid Avatar', aliases: [], region: 'Caelid', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
+  { id: 'boss:tibia-mariner', kind: 'boss', name: 'Tibia Mariner', aliases: ['tibia mariners'], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
+  { id: 'boss:black-knife-assassin', kind: 'boss', name: 'Black Knife Assassin', aliases: ['black knife assassins'], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
+  { id: 'boss:cleanrot-knight', kind: 'boss', name: 'Cleanrot Knight', aliases: ['cleanrot knights'], region: 'Caelid', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
+  { id: 'boss:crystalian-duo', kind: 'boss', name: 'Crystalian Duo', aliases: ['crystalian'], region: 'Liurnia', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
+  { id: 'boss:grave-warden-duelist', kind: 'boss', name: 'Grave Warden Duelist', aliases: ['grave warden'], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:runebear', kind: 'boss', name: 'Runebear', aliases: [], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
-  { id: 'boss:omenkiller', kind: 'boss', name: 'Omenkiller', aliases: ['omenkillers'], region: 'Liurnia', campaign: 'base', implies: ['region:liurnia'] },
+  { id: 'boss:omenkiller', kind: 'boss', name: 'Omenkiller', aliases: ['omenkillers'], region: 'Liurnia', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:wormface', kind: 'boss', name: 'Wormface', aliases: [], region: 'Altus', campaign: 'base', implies: ['region:altus'] },
-  { id: 'boss:onyx-lord', kind: 'boss', name: 'Onyx Lord', aliases: [], region: 'Liurnia', campaign: 'base', implies: ['region:liurnia'] },
-  { id: 'boss:fallingstar-beast', kind: 'boss', name: 'Fallingstar Beast', aliases: ['fallingstar'], region: 'Altus', campaign: 'base', implies: ['region:altus'] },
+  { id: 'boss:onyx-lord', kind: 'boss', name: 'Onyx Lord', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
+  { id: 'boss:fallingstar-beast', kind: 'boss', name: 'Fallingstar Beast', aliases: ['fallingstar'], region: 'Altus', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:grafted-scion', kind: 'boss', name: 'Grafted Scion', aliases: ['grafted scions'], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
   { id: 'boss:spiritcaller-snail', kind: 'boss', name: 'Spiritcaller Snail', aliases: ['spiritcaller'], region: 'Liurnia', campaign: 'base', implies: ['region:liurnia'] },
-  { id: 'boss:darriwil', kind: 'boss', name: 'Bloodhound Knight Darriwil', aliases: ['darriwil', 'bloodhound knight'], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
-  { id: 'boss:mad-pumpkin-head', kind: 'boss', name: 'Mad Pumpkin Head', aliases: ['mad pumpkin'], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
+  { id: 'boss:darriwil', kind: 'boss', name: 'Bloodhound Knight Darriwil', aliases: ['darriwil', 'bloodhound knight'], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
+  { id: 'boss:mad-pumpkin-head', kind: 'boss', name: 'Mad Pumpkin Head', aliases: ['mad pumpkin'], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:godefroy', kind: 'boss', name: 'Godefroy the Grafted', aliases: ['godefroy'], region: 'Altus', campaign: 'base', implies: ['region:altus'] },
-  { id: 'boss:erdtree-burial-watchdog', kind: 'boss', name: 'Erdtree Burial Watchdog', aliases: ['burial watchdog'], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
+  { id: 'boss:erdtree-burial-watchdog', kind: 'boss', name: 'Erdtree Burial Watchdog', aliases: ['burial watchdog'], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:perfumer-tricia', kind: 'boss', name: 'Perfumer Tricia & Misbegotten Warrior', aliases: ['perfumer tricia'], region: 'Altus', campaign: 'base', implies: ['region:altus'] },
   { id: 'boss:red-wolf-champion', kind: 'boss', name: 'Red Wolf of the Champion', aliases: ['red wolf champion'], region: 'Caelid', campaign: 'base', implies: ['region:caelid'] },
   { id: 'boss:crucible-ordovis', kind: 'boss', name: 'Crucible Knight Ordovis', aliases: ['ordovis'], region: 'Altus', campaign: 'base', implies: ['region:altus'] },
-  { id: 'boss:ancient-hero-zamor', kind: 'boss', name: 'Ancient Hero of Zamor', aliases: ['zamor'], region: 'Mountaintops', campaign: 'base', implies: ['region:mountaintops'] },
+  { id: 'boss:ancient-hero-zamor', kind: 'boss', name: 'Ancient Hero of Zamor', aliases: ['zamor'], region: 'Mountaintops', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:demi-human-chiefs', kind: 'boss', name: 'Demi-Human Chiefs', aliases: ['demi human chiefs'], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
   { id: 'boss:guardian-golem', kind: 'boss', name: 'Guardian Golem', aliases: [], region: 'Limgrave', campaign: 'base', implies: ['region:limgrave'] },
-  { id: 'boss:stonedigger-troll', kind: 'boss', name: 'Stonedigger Troll', aliases: ['stonedigger'], region: 'Liurnia', campaign: 'base', implies: ['region:liurnia'] },
+  { id: 'boss:stonedigger-troll', kind: 'boss', name: 'Stonedigger Troll', aliases: ['stonedigger'], region: 'Liurnia', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
 
   // NPC invaders (Task 18, diff §2d). Deliberately `kind: 'boss'` and boss-bucketed in
   // prefixKind: an invader is a defeatable named encounter that belongs on defeatedBosses,
@@ -481,6 +482,66 @@ export const facts: Fact[] = [
   { id: 'quest:igon:concluded', kind: 'quest', name: 'Igon — his revenge fulfilled', aliases: [], region: 'Jagged Peak', campaign: 'sote', implies: [] },
   { id: 'item:igons-harpoon', kind: 'item', name: "Igon's Harpoon", aliases: ['igon harpoon'], region: 'Jagged Peak', campaign: 'sote', implies: [] },
 ]
+
+/**
+ * One fact per boss encounter for bosses fought in several places (Night's
+ * Cavalry x9, Tree Sentinel, Deathbird…). `scripts/build-boss-roster.mjs` gives
+ * each its own id (`<shared id>--<place>`) and keeps the shared id as `group`.
+ * An encounter implies only its own region; the shared id implies nothing
+ * location-specific, and counts as known once any of its encounters is
+ * (`knownFactIds`), so "needs a Godskin Apostle" style references still resolve.
+ */
+type RosterEncounterRow = { id: string; group?: string; name: string; location: string; region: string; campaign: Campaign }
+
+const REGION_FACT: [RegExp, string][] = [
+  [/limgrave|stormhill|stormveil/i, 'region:limgrave'],
+  [/weeping/i, 'region:weeping'],
+  [/liurnia|bellum|moonlight altar|raya lucaria/i, 'region:liurnia'],
+  [/caelid|dragonbarrow/i, 'region:caelid'],
+  [/altus|gelmir|capital outskirts/i, 'region:altus'],
+  [/leyndell/i, 'region:leyndell'],
+  [/mountaintops|snowfield|forbidden lands/i, 'region:mountaintops'],
+  [/farum azula/i, 'region:farum'],
+  [/haligtree|elphael/i, 'region:haligtree'],
+  [/gravesite|scadu|cerulean|jagged peak|rauh|belurat|charo|abyssal|enir-ilim|shadow keep|hinterland|finger ruins|stone coffin/i, 'region:shadow'],
+]
+
+export function regionFactFor(region: string): string | undefined {
+  return REGION_FACT.find(([re]) => re.test(region))?.[1]
+}
+
+export const bossEncounterRows = (bossRosterJson as RosterEncounterRow[]).filter((r) => r.group)
+
+/** Shared boss id -> its per-location encounter ids. */
+export const encountersByGroup = new Map<string, string[]>()
+for (const row of bossEncounterRows) {
+  const list = encountersByGroup.get(row.group!) ?? []
+  list.push(row.id)
+  encountersByGroup.set(row.group!, list)
+}
+
+/**
+ * Rules the shared id used to carry that are only true of one of its fights.
+ * The Grand Cloister Astel lies past the Fingerslayer Blade step of Ranni's line;
+ * the Belurat Dancing Lion guards Belurat.
+ */
+const ENCOUNTER_IMPLIES: Record<string, string[]> = {
+  'boss:astel--grand-cloister': ['item:fingerslayer'],
+  'boss:divine-beast--belurat-tower-settlement': ['grace:belurat'],
+}
+
+for (const row of bossEncounterRows) {
+  const region = regionFactFor(row.region)
+  facts.push({
+    id: row.id,
+    kind: 'boss',
+    name: `${row.name} (${row.location})`,
+    aliases: [],
+    region: row.region,
+    campaign: row.campaign,
+    implies: [...(region ? [region] : []), ...(ENCOUNTER_IMPLIES[row.id] ?? [])],
+  })
+}
 
 export const byId = new Map(facts.map((f) => [f.id, f]))
 

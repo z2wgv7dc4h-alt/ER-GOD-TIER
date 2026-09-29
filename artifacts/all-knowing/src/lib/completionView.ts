@@ -57,7 +57,7 @@ export function completionCategories(character: Character): CompletionCategory[]
     markers.filter((m) => m.kind === kind).map((m) => ({ id: m.id, name: m.name }))
 
   return [
-    category('bosses', 'Bosses', bossRoster.map((b) => ({ id: b.id, name: b.name })), true),
+    category('bosses', 'Bosses', bossRoster.map((b) => ({ id: b.id, name: b.group ? `${b.name} (${b.location})` : b.name })), true),
     category('graces', 'Graces', warpGraces.map((g) => ({ id: g.id, name: g.name })), true),
     category('items', 'Items', markerRows('item'), true),
     category(

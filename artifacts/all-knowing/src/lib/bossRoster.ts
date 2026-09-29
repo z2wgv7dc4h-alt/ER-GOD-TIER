@@ -36,9 +36,29 @@ export type BossEncounter = {
   coords: { x: number; y: number; map?: string | null } | null
   hp: number | null
   sources: string[]
+  /**
+   * For a boss fought in several places: the shared id ("boss:nights-cavalry")
+   * this encounter belongs to. `id` is then the encounter's own id.
+   */
+  group?: string
+  /** Wiki per-encounter tab: rune reward and a short description of this fight. */
+  runes?: number | null
+  about?: string | null
+  /** The game's kill event flag for this encounter. */
+  flag?: number | null
 }
 
 export const bossRoster = rosterJson as BossEncounter[]
+
+/** The encounters of a shared boss id, in roster order (empty for a single-location boss). */
+export function encountersOf(groupId: string): BossEncounter[] {
+  return bossRoster.filter((row) => row.group === groupId)
+}
+
+/** The roster row for an encounter id, or the first encounter of a shared id. */
+export function rosterRow(id: string): BossEncounter | undefined {
+  return bossRoster.find((row) => row.id === id) ?? bossRoster.find((row) => row.group === id)
+}
 
 /** Distinct canonical fact ids — one per boss, across every encounter. */
 export const bossFactIds: string[] = [...new Set(bossRoster.map((r) => r.id))]

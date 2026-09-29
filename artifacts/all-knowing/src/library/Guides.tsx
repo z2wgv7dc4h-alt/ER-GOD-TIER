@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { mechanics, type MechanicCard } from '../knowledge/mechanics'
+import { awesomeResources, type AwesomeResource } from '../knowledge/awesome'
 import { GuidesSection } from '../PackData'
 import { RecipesSection, SecretsSection, WikiTextSection } from '../CodexData'
 import { DialogueHits, DialogueBySpeaker } from '../Dialogue'
@@ -27,7 +28,7 @@ import { WikiSearchResults } from './WikiSearchResults'
  * corpus — and a filter surface when the header search has a query.
  */
 
-type Corpus = 'guides' | 'recipes' | 'secrets' | 'dialogue' | 'wiki'
+type Corpus = 'guides' | 'recipes' | 'secrets' | 'dialogue' | 'wiki' | 'resources'
 
 const CORPORA: { id: Corpus; label: string }[] = [
   { id: 'guides', label: 'Guides' },
@@ -35,7 +36,49 @@ const CORPORA: { id: Corpus; label: string }[] = [
   { id: 'secrets', label: 'Secrets' },
   { id: 'dialogue', label: 'Dialogue' },
   { id: 'wiki', label: 'Wiki' },
+  { id: 'resources', label: 'Resources' },
 ]
+
+const RESOURCE_SECTIONS: { id: AwesomeResource['section']; label: string }[] = [
+  { id: 'tools', label: 'Tools' },
+  { id: 'lore', label: 'Lore' },
+  { id: 'youtube', label: 'Video' },
+  { id: 'community', label: 'Community' },
+  { id: 'assets', label: 'Data & assets' },
+]
+
+/**
+ * Community tools and references (EanNewton's Awesome Elden Ring Resources,
+ * `knowledge/awesome.ts`) — the external sites people actually use alongside
+ * the game. Links open in a new tab.
+ */
+function ResourcesSection({ query }: { query: string }) {
+  const q = query.trim().toLowerCase()
+  const rows = awesomeResources.filter((r) => !q || `${r.name} ${r.blurb} ${r.by ?? ''} ${r.role}`.toLowerCase().includes(q))
+  if (!rows.length) return null
+  return (
+    <Card title="Community resources" subtitle="Tools, lore channels and references players use alongside the game.">
+      {RESOURCE_SECTIONS.map((section) => {
+        const list = rows.filter((r) => r.section === section.id)
+        if (!list.length) return null
+        return (
+          <div key={section.id} className="lib-panel-block">
+            <div className="kicker">{section.label}</div>
+            <ul className="area-list">
+              {list.map((r) => (
+                <li key={r.id}>
+                  <a href={r.href} target="_blank" rel="noreferrer noopener">{r.name}</a>
+                  {r.by ? <span className="note"> · {r.by}</span> : null}
+                  <div className="note">{r.blurb}</div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      })}
+    </Card>
+  )
+}
 
 function matchesCard(card: MechanicCard, q: string): boolean {
   if (!q) return true
@@ -409,6 +452,7 @@ export function Guides() {
           <DialogueBySpeaker query={query} />
           <DialogueHits query={query} />
           <WikiTextSection query={query} />
+          <ResourcesSection query={query} />
         </>
       ) : corpus === 'guides' ? (
         <GuidesSection query="" browse />
@@ -423,6 +467,8 @@ export function Guides() {
         </>
       ) : corpus === 'wiki' ? (
         <WikiTextSection query="" browse />
+      ) : corpus === 'resources' ? (
+        <ResourcesSection query="" />
       ) : null}
 
       <ProgressionSection query={searching ? query : ''} />

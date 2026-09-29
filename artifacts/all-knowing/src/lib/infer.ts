@@ -1,4 +1,4 @@
-import { byId, facts } from '../knowledge/catalog'
+import { byId, encountersByGroup, facts } from '../knowledge/catalog'
 import { inferChains, type InferChain } from '../knowledge/inferChains'
 import type { Character, Evidence, EvidenceClaim, EvidenceSource, StartingClass } from '../types'
 import { canonicalFactId } from './aliases'
@@ -65,7 +65,7 @@ export function reconcileFacts(character: Character, factIds: string[], opts: Co
 
 /** Canonicalised set of every fact a character currently knows. */
 export function knownFactIds(character: Character): Set<string> {
-  return new Set(
+  const known = new Set(
     [
       ...character.defeatedBosses,
       ...character.discoveredGraces,
@@ -73,6 +73,13 @@ export function knownFactIds(character: Character): Set<string> {
       ...character.completedQuestSteps,
     ].map((id) => canonicalFactId(id)),
   )
+  // A boss fought in several places: its shared id ("any Godskin Apostle") is
+  // known once one of its encounters is. The shared id implies nothing
+  // location-specific, so this never infers a region the player did not reach.
+  for (const [group, encounters] of encountersByGroup) {
+    if (!known.has(group) && encounters.some((id) => known.has(id))) known.add(group)
+  }
+  return known
 }
 
 /**

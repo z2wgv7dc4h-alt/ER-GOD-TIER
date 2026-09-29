@@ -73,6 +73,9 @@ const huntEntityByName = new Map()
 const entityBossById = new Map()
 for (const [id, record] of Object.entries(entityIndex)) {
   if (record.kind !== 'boss') continue
+  // Per-encounter ids (`<group>--<place>`) are this script's own output; reading
+  // them back would nest ids on the next run. Resolve names to the shared id only.
+  if (id.includes('--')) continue
   entityBossById.set(id, record)
   const target = id.startsWith('hunt:') ? huntEntityByName : catalogByName
   for (const variant of [record.name, coreName(record.name)]) {
@@ -478,7 +481,7 @@ function recordKey(id, name, location) {
   return `${id}|${place}`
 }
 
-function upsert({ id, name, campaign, region, location, grace, tier, requiredForEnding, drops, coords, hp, sources, encounterKey }) {
+function upsert({ id, name, campaign, region, location, grace, tier, requiredForEnding, drops, coords, hp, sources, encounterKey, flag, sourceName }) {
   const key = encounterKey ?? recordKey(id, name, location)
   const existing = encounters.get(key)
   if (existing) {
@@ -486,6 +489,7 @@ function upsert({ id, name, campaign, region, location, grace, tier, requiredFor
     if (!existing.coords && coords) existing.coords = coords
     if (!existing.hp && hp) existing.hp = hp
     if (!existing.grace && grace) existing.grace = grace
+    if (!existing.flag && flag) existing.flag = flag
     if (existing.region === 'The Lands Between' && region !== 'The Lands Between') existing.region = region
     if (TIER_RANK[tier] < TIER_RANK[existing.tier]) existing.tier = tier
     if (requiredForEnding) existing.requiredForEnding = true
@@ -505,6 +509,8 @@ function upsert({ id, name, campaign, region, location, grace, tier, requiredFor
     coords: coords ?? null,
     hp: hp ?? null,
     sources,
+    flag: flag ?? null,
+    sourceName: sourceName ?? null,
   }
   encounters.set(key, record)
   return record
@@ -527,7 +533,10 @@ for (const hunt of hunts) {
   const id = canonicalId(hunt.name) ?? hunt.id
   const entity = entityBossById.get(id) ?? entityBossById.get(hunt.id)
   const name = entity?.name ?? hunt.name
-  const location = hunt.place || regionFromText(entity?.location) || hunt.region
+  // A boss hunted in several places must not borrow the boss's general location
+  // ("Liurnia of the Lakes" for the Limgrave Night's Cavalry): use this hunt's region.
+  const multiSpawn = hunts.filter((h) => norm(h.name) === norm(hunt.name)).length > 1
+  const location = hunt.place || (multiSpawn ? hunt.region : regionFromText(entity?.location) || hunt.region)
   const coords = coordsFor(id, name)
   const combat = combatFor(id, name)
   const drops = [...(dropsByName.get(norm(name)) ?? [])]
@@ -536,7 +545,7 @@ for (const hunt of hunts) {
     id, name, campaign: hunt.campaign, region: hunt.region, location,
     grace: fextGrace(name) ?? nearestGrace(hunt.region, coords),
     tier, requiredForEnding: REQUIRED_ENDING.has(id), drops,
-    coords, hp: hpFromCombat(combat) ?? hpFromFext(name), sources: ['hunts'],
+    coords, hp: hpFromCombat(combat) ?? hpFromFext(name), sources: ['hunts'], flag: hunt.flag, sourceName: hunt.name,
     // Field bosses with no place still separate by their kill flag.
     encounterKey: hunt.place ? undefined : `${id}|${hunt.region}|${hunt.flag}`,
   })
@@ -643,6 +652,13 @@ for (const [key, markers] of markerGroups) {
   const used = new Set([...encounters.values()].filter((r) => r.id === id).map((r) => norm(r.location)))
   for (const marker of markers) {
     if (existing >= markers.length) break
+    // A marker whose kill flag already has an encounter is that same fight, not a
+    // second spawn (it minted phantom Adula / Putrid Avatar / Bell Bearing rows).
+    const markerFlag = Number(String(marker.id).split(':')[1])
+    if ([...encounters.values()].some((r) => r.flag && r.flag === markerFlag)) continue
+    // Only a flag the game's boss list records as a kill/clear is a separate fight;
+    // others are a duo partner (flag +1) or a dragon's flee point (Adula, Lansseax).
+    if (!bossList.some((row) => row.killEventFlagId === markerFlag || row.clearedEventFlagId === markerFlag)) continue
     const place = nearestPlace(marker)
     const location = place ?? baseRegion
     const locationKey = norm(location)
@@ -660,6 +676,7 @@ for (const [key, markers] of markerGroups) {
       requiredForEnding: REQUIRED_ENDING.has(id),
       drops, coords, hp: hpFromCombat(combat) ?? hpFromFext(name),
       sources: ['engine-markers'],
+      flag: Number(String(marker.id).split(':')[1]) || null,
     })
     existing++
     hit('engine-markers')
@@ -807,12 +824,165 @@ for (const record of encounters.values()) {
 if (remaining.length) console.log(`placeholder regions still unresolved: ${remaining.length} (${remaining.join(', ')})`)
 
 // ---------------------------------------------------------------------------
+// One entity per encounter
+// ---------------------------------------------------------------------------
+//
+// A boss fought in several places (Night's Cavalry x9, Tree Sentinel, Deathbird…)
+// used to share one fact id, so logging one ticked them all and every copy showed
+// the pooled drops and one map pin. Each encounter now gets its own id
+// (`<group>--<place>`) and keeps the shared id as `group`. Per-encounter data:
+//  - map pin: the game's kill flag -> boss-list row -> cleared flag -> boss-pins,
+//    else the engine marker with that flag;
+//  - HP / runes / drops / description: the wiki page's per-encounter tab
+//    (`public/sourced/open/wiki-db/boss-encounters.json`), matched by place.
+// An encounter with no matching tab keeps no drops rather than the pooled list,
+// which belongs on the group page.
+
+const wikiEncounterDoc = fs.existsSync(path.join(root, 'public/sourced/open/wiki-db/boss-encounters.json'))
+  ? read('public/sourced/open/wiki-db/boss-encounters.json')
+  : { encounters: [] }
+const wikiTabsByPage = new Map()
+for (const tab of wikiEncounterDoc.encounters ?? []) {
+  const key = norm(tab.page)
+  const list = wikiTabsByPage.get(key) ?? []
+  list.push(tab)
+  wikiTabsByPage.set(key, list)
+}
+const bossListByKill = new Map(bossList.map((row) => [row.killEventFlagId, row]))
+const pinByFlag = new Map(bossPins.filter((p) => p.flag != null).map((p) => [p.flag, p]))
+const markerByFlag = new Map()
+for (const marker of engineMarkers) {
+  if (marker.cat !== 'boss') continue
+  const flag = Number(String(marker.id).split(':')[1])
+  if (Number.isFinite(flag)) markerByFlag.set(flag, marker)
+}
+
+function coordsForFlag(flag) {
+  if (!flag) return null
+  const row = bossListByKill.get(flag)
+  const pin = pinByFlag.get(row?.clearedEventFlagId) ?? pinByFlag.get(flag)
+  if (pin && typeof pin.x === 'number') return { x: round2(pin.x), y: round2(pin.y), map: pin.map ?? null }
+  const marker = markerByFlag.get(flag) ?? markerByFlag.get(row?.clearedEventFlagId)
+  if (marker && typeof marker.px === 'number') {
+    return { x: round2((marker.px / 10496) * 100), y: round2((marker.py / 10496) * 100), map: marker.map ?? null }
+  }
+  return null
+}
+
+const tokens = (text) => new Set(norm(text).split(' ').filter((t) => t.length > 2))
+function tabScore(encounter, tab) {
+  const want = tokens(`${encounter.location} ${encounter.region}`)
+  const have = tokens(`${tab.tab} ${tab.location} ${tab.text}`)
+  let score = 0
+  for (const t of want) if (have.has(t)) score++
+  // The tab label / infobox location naming the region is the strongest signal.
+  if (tokens(`${tab.tab} ${tab.location}`).has(norm(encounter.region).split(' ')[0])) score += 2
+  return score
+}
+
+const byGroup = new Map()
+for (const record of encounters.values()) {
+  const list = byGroup.get(record.id) ?? []
+  list.push(record)
+  byGroup.set(record.id, list)
+}
+let splitGroups = 0
+let tabMatched = 0
+for (const [group, list] of byGroup) {
+  if (list.length < 2) continue
+  splitGroups++
+  const name = list[0].name
+  // The wiki page for the fight: exact name, core name, else a page whose name the
+  // boss name contains ("Crystalian" for Crystalian Duo, "Crucible Knight" for Ordovis).
+  const nameKey = norm(name)
+  let tabs = wikiTabsByPage.get(nameKey) ?? wikiTabsByPage.get(norm(coreName(name)))
+  if (!tabs) {
+    // Only a page whose words start the boss name and whose remainder is a group
+    // word or a proper name after a multi-word page ("crucible knight" ordovis).
+    // A one-word generic page ("Dragon") must not claim "Glintstone Dragon Adula".
+    const page = [...wikiTabsByPage.keys()]
+      .filter((p) => {
+        if (!nameKey.startsWith(`${p} `) && nameKey !== p) return false
+        const rest = nameKey.slice(p.length).trim()
+        return p.includes(' ') || /^(duo|trio|twins?|x\d)?$/.test(rest)
+      })
+      .sort((a, b) => b.length - a.length)[0]
+    tabs = page ? wikiTabsByPage.get(page) : []
+  }
+  tabs = [...tabs]
+  // Greedy best-first pairing so each wiki tab describes one encounter.
+  const pairs = []
+  for (const record of list) for (const tab of tabs) pairs.push({ record, tab, score: tabScore(record, tab) })
+  pairs.sort((a, b) => b.score - a.score)
+  const usedTab = new Set()
+  const tabFor = new Map()
+  for (const p of pairs) {
+    if (p.score < 1 || usedTab.has(p.tab) || tabFor.has(p.record)) continue
+    usedTab.add(p.tab)
+    tabFor.set(p.record, p.tab)
+  }
+  // One encounter and one tab left over describe each other (Deathbird Limgrave = "Stormhill").
+  const openRecords = list.filter((r) => !tabFor.has(r))
+  const openTabs = tabs.filter((t) => !usedTab.has(t))
+  if (openRecords.length === 1 && openTabs.length === 1) tabFor.set(openRecords[0], openTabs[0])
+  const usedIds = new Set()
+  for (const record of list) {
+    // A different fight folded under this id keeps its own game name
+    // ("Astel, Stars of Darkness"); plain casing/format variants do not.
+    const own = record.sourceName
+    if (own && norm(own) !== nameKey && norm(coreName(own)) !== norm(coreName(name))) record.name = own
+    const base = `${group}--${slug(record.location || record.region)}`
+    let id = base
+    for (let n = 2; usedIds.has(id); n++) id = `${base}-${n}`
+    usedIds.add(id)
+    record.group = group
+    record.id = id
+    const coords = coordsForFlag(record.flag)
+    if (coords) record.coords = coords
+    const tab = tabFor.get(record)
+    record.drops = tab ? tab.drops : []
+    if (tab) {
+      tabMatched++
+      if (tab.hp) record.hp = tab.hp
+      record.runes = tab.runes ?? null
+      record.about = tab.text || null
+    }
+  }
+}
+// An encounter with no tab but its own distinct fight name (Astel, Stars of
+// Darkness; Bloodhound Knight at Lakeside Crystal Cave) has its own wiki page —
+// that page is its data. A name shared by the other copies is not used: that
+// page describes all of them, not this one.
+const wikiBossDoc = read('public/sourced/open/wiki-db/boss.json')
+const wikiBossByTitle = new Map((Array.isArray(wikiBossDoc) ? wikiBossDoc : wikiBossDoc.records ?? []).map((row) => [norm(row.title), row]))
+let pageMatched = 0
+for (const [, list] of byGroup) {
+  if (list.length < 2) continue
+  for (const record of list) {
+    if (record.about || record.drops.length) continue
+    const key = norm(record.name)
+    if (list.filter((r) => norm(r.name) === key).length > 1) continue
+    const page = wikiBossByTitle.get(key)
+    if (!page) continue
+    const drops = (page.drops ?? []).filter((d) => d && !/^various$/i.test(d))
+    if (drops.length) record.drops = drops
+    const hp = Number(String(page.stats?.HP ?? '').replace(/[^0-9]/g, ''))
+    if (hp > 0) record.hp = hp
+    const runes = Number(String(page.stats?.Runes ?? '').replace(/[^0-9]/g, ''))
+    if (runes > 0) record.runes = runes
+    pageMatched++
+  }
+}
+console.log(`split ${splitGroups} multi-location bosses into their own encounters; ${tabMatched} matched a wiki encounter tab, ${pageMatched} their own wiki page`)
+
+// ---------------------------------------------------------------------------
 // Sort + write
 // ---------------------------------------------------------------------------
 
 const roster = [...encounters.values()]
   .map((r) => ({
     id: r.id,
+    ...(r.group ? { group: r.group } : {}),
     name: r.name,
     campaign: r.campaign,
     region: r.region || 'The Lands Between',
@@ -823,6 +993,7 @@ const roster = [...encounters.values()]
     drops: [...new Set(r.drops)].sort(),
     coords: r.coords ?? null,
     hp: r.hp ?? null,
+    ...(r.group ? { runes: r.runes ?? null, about: r.about ?? null, flag: r.flag ?? null } : {}),
     sources: r.sources.sort(),
   }))
   .sort(

@@ -25,8 +25,8 @@ describe('relatedFor — item: item:fingerslayer (Fingerslayer Blade)', () => {
     expect(linkedIds('item:fingerslayer', 'usedIn')).toContain('quest:ranni:nokron')
   })
 
-  it('leads to Astel, the boss it gates in the catalog graph', () => {
-    expect(linkedIds('item:fingerslayer', 'leadsTo')).toContain('boss:astel')
+  it('leads to the Grand Cloister Astel, the encounter it gates in the catalog graph', () => {
+    expect(linkedIds('item:fingerslayer', 'leadsTo')).toContain('boss:astel--grand-cloister')
   })
 
   it('is a beat of the Age of Stars route', () => {

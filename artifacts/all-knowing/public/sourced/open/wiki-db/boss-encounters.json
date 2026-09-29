@@ -1,0 +1,1504 @@
+{
+ "source": "data/raw/er-mcp.db (wiki snapshot) boss tabbers",
+ "count": 121,
+ "encounters": [
+  {
+   "page": "Ancient Hero of Zamor",
+   "tab": "Giant-Conquering Hero's Grave",
+   "location": "Giant-Conquering Hero's Grave",
+   "hpText": "4,122",
+   "hp": 4122,
+   "runes": 5039,
+   "drops": [
+    "Zamor Curved Sword",
+    "Zamor Set"
+   ],
+   "text": "A Zamor knight encountered at the end of the Giant-Conquering Hero's Grave in the Mountaintops of the Giants."
+  },
+  {
+   "page": "Ancient Hero of Zamor",
+   "tab": "Sainted Hero's Grave",
+   "location": "Sainted Hero's Grave",
+   "hpText": "3,811",
+   "hp": 3811,
+   "runes": 20000,
+   "drops": [
+    "Ancient Dragon Knight Kristoff Ashes"
+   ],
+   "text": "A Zamor knight encountered at the end of the Sainted Hero's Grave in Altus Plateau."
+  },
+  {
+   "page": "Ancient Hero of Zamor",
+   "tab": "Weeping Evergaol",
+   "location": "Weeping Evergaol",
+   "hpText": "2,570",
+   "hp": 2570,
+   "runes": 5400,
+   "drops": [
+    "Radagon's Scarseal"
+   ],
+   "text": "A Zamor knight was graced by Lord Radagon. They were sealed within an evergaol between the Fourth Church of Marika and the Church of Pilgrimage for unknown reasons. It carries Radagon's Scarseal and is found in the Weeping Evergaol, which must be unlocked with a Stonesword Key."
+  },
+  {
+   "page": "Astel",
+   "tab": "Astel, Naturalborn of the Void",
+   "location": "Ainsel River",
+   "hpText": "11,170",
+   "hp": 11170,
+   "runes": 80000,
+   "drops": [
+    "Remembrance of the Naturalborn"
+   ],
+   "text": "This is an optional boss, but is required to reach Moonlight Altar and achieve a certain ending. {| class=\"mw-collapsible mw-collapsed article-table centerheaders \" | colspan=\"2\" style=\"text-align:center; background-color: black; color: white;\" |Moveset List &nbsp; |- ! !Phase |- | colspan=\"2\" | |- |} Astel, Naturalborn of the Void is encountered in a cavern beyond the Lake of Rot, accessed via a coffin in the Grand Cloister. It makes use of a variety of gravity-based attacks, and can warp to other parts of the arena."
+  },
+  {
+   "page": "Astel",
+   "tab": "Astel, Stars of Darkness",
+   "location": "Yelough Anix Tunnel",
+   "hpText": "18,617",
+   "hp": 18617,
+   "runes": 120000,
+   "drops": [
+    "Meteorite of Astel"
+   ],
+   "text": "This is an optional boss. {| class=\"mw-collapsible mw-collapsed article-table centerheaders \" | colspan=\"2\" style=\"text-align:center; background-color: black; color: white;\" |Moveset List &nbsp; |- ! !Phase |- | colspan=\"2\" | |- |} Astel, Stars of Darkness is encountered in Yelough Anix Tunnel in the Consecrated Snowfield. It fights much like in the other encounter, however it also gains a grab attack once its health goes below half, in which it spawns several copies of itself to grab the player."
+  },
+  {
+   "page": "Beastman of Farum Azula",
+   "tab": "Dragonbarrow Cave",
+   "location": "Dragonbarrow Cave",
+   "hpText": "3,344 (Throwing Knife), 8,306 (Cleaver)",
+   "hp": 3344,
+   "runes": 65000,
+   "drops": [
+    "Flamedrake Talisman +2"
+   ],
+   "text": "Two Beastmen are encountered in Dragonbarrow Cave in Greyoll's Dragonbarrow. One fights from range, using paired throwing knives, while the other uses a large cleaver."
+  },
+  {
+   "page": "Beastman of Farum Azula",
+   "tab": "Groveside Cave",
+   "location": "Groveside Cave",
+   "hpText": "1,417",
+   "hp": 1417,
+   "runes": 1000,
+   "drops": [
+    "Flamedrake Talisman"
+   ],
+   "text": "An armored, cleaver-wielding Beastman found in the Groveside Cave in Limgrave. It is encountered in a wide cavern littered with dead Godrick Soldiers, who appear to have set up a camp before falling victim to the Beastman."
+  },
+  {
+   "page": "Black Blade Kindred",
+   "tab": "Bestial Sanctum",
+   "location": "Bestial Sanctum",
+   "hpText": "12,297",
+   "hp": 12297,
+   "runes": 88000,
+   "drops": [
+    "Gargoyle's Blackblade",
+    "Gargoyle's Black Halberd"
+   ],
+   "text": "A Black Blade Kindred who stands guard outside the Bestial Sanctum in Caelid. It wields a halberd and a greatsword. It is possible to avoid this boss by using the sending gate north of the Third Church of Marika, which will teleport the player to the door to the Bestial Sanctum, behind the boss. {| class=\"article-table\" ! colspan=\"3\" |Move Name |- |Phase |Damage Type |Can Be Parried/Cannot Be Parried |- | colspan=\"3\" |Description of move |- ! colspan=\"3\" |Move Name |- |Phase |Damage Type |Can Be Parried/Cannot Be Parried |- | colspan=\"3\" |Description of move |- ! colspan=\"3\" |Move Name |- |Pha"
+  },
+  {
+   "page": "Black Blade Kindred",
+   "tab": "Forbidden Lands",
+   "location": "Forbidden Lands",
+   "hpText": "8,452",
+   "hp": 8452,
+   "runes": 60000,
+   "drops": [
+    "Gargoyle's Black Blades",
+    "Gargoyle's Black Axe"
+   ],
+   "text": "A Black Blade Kindred who appears in the Forbidden Lands as the player approaches the Grand Lift of Rold on the way to the Mountaintops of the Giants. It wields a twinblade and an axe. Millicent is available as a summon for this fight, provided she has been given the Valkyrie's Prosthesis and has been spoken to in Dominula, Windmill Village. {| class=\"article-table\" ! colspan=\"3\" |Move Name |- |Phase |Damage Type |Can Be Parried/Cannot Be Parried |- | colspan=\"3\" |Description of move |- ! colspan=\"3\" |Move Name |- |Phase |Damage Type |Can Be Parried/Cannot Be Parried |- | colspan=\"3\" |Descript"
+  },
+  {
+   "page": "Black Knife Assassin",
+   "tab": "Alecto, Black Knife Ringleader",
+   "location": "Ringleader's Evergaol",
+   "hpText": "17,482",
+   "hp": 17482,
+   "runes": 80000,
+   "drops": [
+    "Black Knife Tiche"
+   ],
+   "text": "The ringleader of the Black Knife Assassins is currently imprisoned in an Evergaol in the Moonlight Altar area of Liurnia of the Lakes. Tiche, Alecto's daughter, died protecting her mother during their flight from the Capital after the assassination of Godwyn."
+  },
+  {
+   "page": "Black Knife Assassin",
+   "tab": "Black Knife Catacombs",
+   "location": "Black Knife Catacombs",
+   "hpText": "3,312",
+   "hp": 3312,
+   "runes": 4200,
+   "drops": [
+    "Assassin's Cerulean Dagger",
+    "Black Knifeprint"
+   ],
+   "text": "An assassin hiding in a small chapel within the Catacombs, concealed behind an illusory wall. As well as dropping the Assassin's Cerulean Dagger, which allows the player to recover FP from critical hits, she also leaves behind a Black Knifeprint, which can be given to Sorcerer Rogier to progress his questline. D, Hunter of the Dead can be summoned for this fight."
+  },
+  {
+   "page": "Black Knife Assassin",
+   "tab": "Deathtouched Catacombs",
+   "location": "Deathtouched Catacombs",
+   "hpText": "1,668",
+   "hp": 1668,
+   "runes": 1600,
+   "drops": [
+    "Assassin's Crimson Dagger"
+   ],
+   "text": "This assassin sustained a grievous wound, retreating deep within the Deathtouched Catacombs. Uniquely, her health bar has already been partially depleted before the player arrives so that she starts at 60% HP. She is the only wounded Black Knife Assassin. Although red blood stains her armor, she bleeds darkness on hit. She drops the Assassin's Crimson Dagger, a Talisman which allows the player to recover HP after performing a critical hit."
+  },
+  {
+   "page": "Black Knife Assassin",
+   "tab": "Sage's Cave",
+   "location": "Sage's Cave",
+   "hpText": "3,929",
+   "hp": 3929,
+   "runes": 9000,
+   "drops": [
+    "Concealing Veil"
+   ],
+   "text": "This assassin is invisible, save for the ripples she makes in the water in her boss room. Using the Sentry's Torch will render her visible."
+  },
+  {
+   "page": "Black Knife Assassin",
+   "tab": "Sainted Hero's Grave",
+   "location": "Sainted Hero's Grave exterior (Altus Plateau)",
+   "hpText": "5,413",
+   "hp": 5413,
+   "runes": 10800,
+   "drops": [
+    "Black Knife"
+   ],
+   "text": "A Black Knife Assassin blocks the entrance to the Sainted Hero's Grave, located in central Altus Plateau."
+  },
+  {
+   "page": "Cemetery Shade",
+   "tab": "Black Knife Catacombs",
+   "location": "Black Knife Catacombs",
+   "hpText": "691",
+   "hp": 691,
+   "runes": 3500,
+   "drops": [
+    "Twinsage Sorcerer Ashes"
+   ],
+   "text": "A Cemetery Shade is found in the sealed chamber at the end of the Black Knife Catacombs. Several skeletons spawn during this fight, making it more challenging to focus on the boss."
+  },
+  {
+   "page": "Cemetery Shade",
+   "tab": "Caelid Catacombs",
+   "location": "Caelid Catacombs",
+   "hpText": "1,467",
+   "hp": 1467,
+   "runes": 6800,
+   "drops": [
+    "Kindred of Rot Ashes"
+   ],
+   "text": "A Cemetery Shade that is found in the sealed chamber at the end of Caelid Catacombs."
+  },
+  {
+   "page": "Cemetery Shade",
+   "tab": "Tombsward Catacombs",
+   "location": "Tombsward Catacombs",
+   "hpText": "781",
+   "hp": 781,
+   "runes": 2200,
+   "drops": [
+    "Lhutel the Headless"
+   ],
+   "text": "A Cemetery Shade is found in the sealed chamber at the end of Tombsward Catacombs."
+  },
+  {
+   "page": "Cleanrot Knight",
+   "tab": "Abandoned Cave",
+   "location": "Caelid",
+   "hpText": "2,000 (each)",
+   "hp": 2000,
+   "runes": 7000,
+   "drops": [
+    "Gold Scarab"
+   ],
+   "text": "A Cleanrot Knight and its commander, both encountered in an alcove at the very end of Abandoned Cave that has been partially flooded by scarlet rot. The remains of numerous Abudctor Virgins lay scattered around the arena. As the fight starts, only the spear-wielder is present, with the scythe-wielding commander rising from the rot pool to the left within 12 seconds of starting the battle. As such, it is best to spend that opening either summoning a Spirit or rushing down the spear knight to try and at least severely wound it before the scythe knight can join the fray. Of the two combatants, th"
+  },
+  {
+   "page": "Cleanrot Knight",
+   "tab": "Stillwater Cave",
+   "location": "Liurnia of the Lakes",
+   "hpText": "2,000",
+   "hp": 2000,
+   "runes": 3300,
+   "drops": [
+    "Winged Sword Insignia"
+   ],
+   "text": "A lone Cleanrot Knight, encountered in an alcove at the very end of Stillwater Cave that has been partially flooded in poisonous waters. Most of the room is full of poisonous water, so it's advisable to quickly run to the small island of safety just left of the boss, in the middle left to far left section of the room. Since this boss is the spear-wielding variant and this fight will most likely happen early in the game, it's critical to avoid its Scarlet Rot-inducing, charging grab attack (signified by its spear glowing a bright gold). This is most easily accomplished by rolling diagonally for"
+  },
+  {
+   "page": "Crucible Knight",
+   "tab": "Redmane Castle",
+   "location": "Redmane Castle",
+   "hpText": "2,257",
+   "hp": 2257,
+   "runes": 16000,
+   "drops": [
+    "Ruins Greatsword"
+   ],
+   "text": "Joins the Leonine Misbegotten when it reaches half-health. Disappears alongside the Leonine Misbegotten once the Radahn Festival begins, but will re-appear after its conclusion."
+  },
+  {
+   "page": "Crucible Knight",
+   "tab": "Road's End Catacomb",
+   "location": "Road's End Catacomb",
+   "hpText": "2,625",
+   "hp": 2625,
+   "runes": 0,
+   "drops": [],
+   "text": "The Spirit-Caller Snail at the Road's End Catacombs summons the spirits of two Crucible Knights."
+  },
+  {
+   "page": "Crucible Knight",
+   "tab": "Stormhill Evergaol",
+   "location": "Stormhill Evergaol",
+   "hpText": "1,391",
+   "hp": 1391,
+   "runes": 2100,
+   "drops": [
+    "Aspects of the Crucible: Tail"
+   ],
+   "text": "A Crucible Knight immured in an Evergaol for unknown reasons."
+  },
+  {
+   "page": "Crucible Knight",
+   "tab": "Volcano Manor",
+   "location": "Volcano Manor",
+   "hpText": "3,465",
+   "hp": 3465,
+   "runes": 2000,
+   "drops": [
+    "Aspects of the Crucible: Breath"
+   ],
+   "text": "Allied with the Volcano Manor, they silently stand by Tanith as her guardian. See her questline for more details on how to trigger the invasion."
+  },
+  {
+   "page": "Crystalian",
+   "tab": "Academy Crystal Cave",
+   "location": "Academy Crystal Cave",
+   "hpText": "1,595 (Spear), 1,595 (Staff)",
+   "hp": 1595,
+   "runes": 3300,
+   "drops": [
+    "Crystal Release"
+   ],
+   "text": "* Crystalian (Spear): 1,595 HP * Crystalian (Staff): 1,595 HP A Crystalian boss duo is located in a wide chamber at the end of the Academy Crystal Cave. They drop 3,300 runes and the Crystal Release sorcery. Generally only one is aggressive at a time. Since the spear-wielder pursues the player more actively, it's generally best to try and take care of it first. The pillars in the room can be used to hide from the staff-wielder's sorceries."
+  },
+  {
+   "page": "Crystalian",
+   "tab": "Altus Tunnel",
+   "location": "Altus Tunnel",
+   "hpText": "1,892 (Spear), 1,892 (Ringblade)",
+   "hp": 1892,
+   "runes": 9000,
+   "drops": [
+    "Somberstone Miner's Bell Bearing"
+   ],
+   "text": "* Crystalian (Spear): 1,892 HP * Crystalian (Ringblade): 1,892 HP A pair of Crystalians are a boss located at the end of Altus Tunnel. They drop 9,000 runes and the [[Somberstone Miner's Bell Bearing 2| Somberstone Miner's Bell Bearing [2] ]] There are no objects in the arena to hide behind and it's quite small, so if no Spirit Ash is used you will be under near-constant assault by the duo, as the spear-wielder pursues and the ringblade-wielder attacks from afar."
+  },
+  {
+   "page": "Crystalian",
+   "tab": "Raya Lucaria Crystal Tunnel",
+   "location": "Raya Lucaria Crystal Tunnel",
+   "hpText": "1,595",
+   "hp": 1595,
+   "runes": 3000,
+   "drops": [
+    "Smithing-Stone Miner's Bell Bearing"
+   ],
+   "text": "* Crystalian (Spear): 1,595 A ringblade-wielding Crystalian boss is located at the very bottom of the Raya Lucaria Crystal Tunnel. It drops 3,000 runes and the Smithing-Stone Miner's Bell Bearing. Since this Crystalian is encountered on its own, jumping heavy attacks may safely break its Stance. Remain wary of the Crystalian's ranged attacks as they can hit at inopportune times."
+  },
+  {
+   "page": "Crystalian",
+   "tab": "Sellia Hideaway",
+   "location": "Sellia Hideaway",
+   "hpText": "3,358 (each)",
+   "hp": 3358,
+   "runes": 7100,
+   "drops": [
+    "Crystal Torrent"
+   ],
+   "text": "* Putrid Crystalian (Staff): 3,358 HP * Putrid Crystalian (Ringblade): 3,358 HP * Putrid Crystalian (Spear): 3,358 HP A trio of Putrid Crystalians guard their crystals at the end of Sellia Hideaway. They drop 7,100 runes and the Crystal Torrent sorcery."
+  },
+  {
+   "page": "Death Rite Bird",
+   "tab": "Caelid",
+   "location": "Caelid",
+   "hpText": "7,952",
+   "hp": 7952,
+   "runes": 15000,
+   "drops": [
+    "Death's Poker"
+   ],
+   "text": "Found at night. Go east and slightly south of the Southern Aeonia Swamp Bank grace."
+  },
+  {
+   "page": "Death Rite Bird",
+   "tab": "Charo's Hidden Grave",
+   "location": "Charo's Hidden Grave",
+   "hpText": "28,905",
+   "hp": 28905,
+   "runes": 230000,
+   "drops": [
+    "Ash of War: Ghostflame Call"
+   ],
+   "text": "Found at night, North of the Charo's Hidden Grave grace. Surrounded by Gravebirds that spit Ghostflame fireballs, so it is recommended to kill those first to avoid getting ganked in the middle of the fight."
+  },
+  {
+   "page": "Death Rite Bird",
+   "tab": "Consecrated Snowfields",
+   "location": "Consecrated Snowfield",
+   "hpText": "17,625",
+   "hp": 17625,
+   "runes": 220000,
+   "drops": [
+    "Explosive Ghostflame"
+   ],
+   "text": "Found at night, Southeast of the Apostate Derelict grace and at the end of the frozen river."
+  },
+  {
+   "page": "Death Rite Bird",
+   "tab": "Liurnia of the Lakes",
+   "location": "Liurnia of the Lakes",
+   "hpText": "6,577",
+   "hp": 6577,
+   "runes": 7800,
+   "drops": [
+    "Ancient Death Rancor"
+   ],
+   "text": "Found at night. A short distance South of the Gate Town North grace, in the area in-between the small islands and ruins."
+  },
+  {
+   "page": "Death Rite Bird",
+   "tab": "Mountaintops of the Giants",
+   "location": "Mountaintops of the Giants",
+   "hpText": "16,059",
+   "hp": 16059,
+   "runes": 77000,
+   "drops": [
+    "Death Ritual Spear"
+   ],
+   "text": "Found at day or night, far west of the Snow Valley Ruins Overlook grace, past the cemetery and facing the cliff. There is a Stake of Marika nearby."
+  },
+  {
+   "page": "Deathbird",
+   "tab": "Capital Outskirts",
+   "location": "Capital Outskirts",
+   "hpText": "8,575",
+   "hp": 8575,
+   "runes": 29000,
+   "drops": [
+    "Twinbird Kite Shield"
+   ],
+   "text": "A Deathbird is encountered on a cliff overlooking a Minor Erdtree in the northern Capital Outskirts, northeast of the Hermit Merchant's Shack. It spawns at night, near a moangrave surrounded by Giant Death Snails."
+  },
+  {
+   "page": "Deathbird",
+   "tab": "Liurnia of the Lakes",
+   "location": "Liurnia of the Lakes",
+   "hpText": "5,588",
+   "hp": 5588,
+   "runes": 6600,
+   "drops": [
+    "Red-Feathered Branchsword"
+   ],
+   "text": "Found at night and spawns when near the fallen ruins that are very close and northeast of the Scenic Isle grace."
+  },
+  {
+   "page": "Deathbird",
+   "tab": "Stormhill",
+   "location": "Stormhill",
+   "hpText": "3,442",
+   "hp": 3442,
+   "runes": 2800,
+   "drops": [
+    "Blue-Feathered Branchsword"
+   ],
+   "text": "Found east of the Warmaster's Shack at night. From the shack's site of grace, walk east and get on top of the first fallen ruins seen. Trolls, Man-Bats, and Rams surround the area."
+  },
+  {
+   "page": "Deathbird",
+   "tab": "Weeping Peninsula",
+   "location": "Weeping Peninsula",
+   "hpText": "3,769",
+   "hp": 3769,
+   "runes": 3900,
+   "drops": [
+    "Sacrificial Axe"
+   ],
+   "text": "* Defense: 105 Found at night, northwest of Castle Morne, on top of the cliff. Walk near the Fallen Ruins to make it appear. There are Tarnished Golden Sunflowers where it spawns that can be used to make Holy Water Pots (recipe from Missionary's Cookbook 1, bought from Merchant Kalé)."
+  },
+  {
+   "page": "Draconic Tree Sentinel",
+   "tab": "Farum Azula Draconic Tree Sentinel",
+   "location": "Crumbling Farum Azula",
+   "hpText": "HP",
+   "hp": null,
+   "runes": null,
+   "drops": [
+    "Malformed Dragon Set"
+   ],
+   "text": "Optional field boss in Farum Azula. Protects the entrance where Maliketh, the Black Blade is. Can be simply ignored, or defeated to obtain its armor."
+  },
+  {
+   "page": "Draconic Tree Sentinel",
+   "tab": "Outskirts Draconic Tree Sentinel",
+   "location": "",
+   "hpText": "HP",
+   "hp": null,
+   "runes": null,
+   "drops": [
+    "Dragonclaw Shield",
+    "Dragon Greatclaw"
+   ],
+   "text": "Guards the Entrance to Leyndell, Royal Capital. The fog blocking the entrance will only disappear once the sentinel is defeated."
+  },
+  {
+   "page": "Dragon",
+   "tab": "Flying Dragon Agheel",
+   "location": "Dragon-Burnt Ruins",
+   "hpText": "3,200",
+   "hp": 3200,
+   "runes": 5000,
+   "drops": [
+    "Dragon Heart",
+    "Agheel's Flame"
+   ],
+   "text": "; Flying Dragon Agheel Overview Wandering Nobles in the ruins around the lake chant Agheel's name, praying that it will burn them to ash. Flying Dragon Agheel is encountered in Agheel Lake in southern Limgrave, northwest of the Dragon-Burnt Ruins. It appears by flying down from above, torching a congregation of Wandering Nobles with dragonfire. * Bloody Finger Hunter Yura is available as a summon for this fight, after speaking to him under the ruin south of the lake. * After taking a critical hit, the target receives an additional 20% standard damage for the remainder of the fight. * Defeating"
+  },
+  {
+   "page": "Dragon",
+   "tab": "Flying Dragon Greyll",
+   "location": "Farum Greatbridge, Greyoll's Dragonbarrow (bridge south of Bestial Sanctum)",
+   "hpText": "11,550",
+   "hp": 11550,
+   "runes": 80000,
+   "drops": [
+    "Dragon Heart"
+   ],
+   "text": "; Flying Dragon Greyll Overview A Flying Dragon encountered on the Farum Greatbridge (bridge south of Bestial Sanctum), on the northern peninsula of Greyoll's Dragonbarrow. Greyll is identical to Agheel in both appearance and ability. However, the bridge gives the player much less room to maneuver. ; Moveset"
+  },
+  {
+   "page": "Dragon",
+   "tab": "Glintstone Dragon Adula",
+   "location": "Three Sisters, Cathedral of Manus Celes",
+   "hpText": "4,405, 11,550",
+   "hp": 4405,
+   "runes": 120000,
+   "drops": [
+    "Adula's Moonblade",
+    "Dragon Heart"
+   ],
+   "text": "; Glintstone Dragon Adula Overview A devourer of sorcerers, whose body became corrupted by glintstone. Adula was once bested by Ranni the Witch and subsequently swore a knightly oath to her Dark Moon. * Adula is first encountered outside Ranni's Rise in the Three Sisters, north of Caria Manor. After a brief fight, it disappears, only to reappear at the Moonlight Altar outside the Cathedral of Manus Celes. * Adula can use magic breath, much like Smarag. However, it can also utilize Adula's Moonblade, conjuring a magic blade in its maw mid-flight and unleashing a wave that inflicts Frostbite. ; "
+  },
+  {
+   "page": "Dragon",
+   "tab": "Glintstone Dragon Smarag",
+   "location": "Liurnia of the Lakes (near Crystalline Woods and Temple Quarter)",
+   "hpText": "6,069",
+   "hp": 6069,
+   "runes": 14000,
+   "drops": [
+    "Dragon Heart",
+    "Smarag's Glintstone Breath"
+   ],
+   "text": "; Glintstone Dragon Smarag Overview A devourer of sorcerers, whose body gradually became corrupted by the glintstones of those he ate. Smarag is encountered near an island west of the Academy of Raya Lucaria and north of the Temple Quarter, guarding a corpse that holds the Academy Glintstone Key. Note that it is not necessary to kill this dragon to get the Academy Glintstone Key; it can be retrieved by either sneaking behind it or rushing beyond it before it's fully awakened to get at the corpse. * Smarag is able to fire Glintstone Cometshards from his mouth, and can also unleash magic breath,"
+  },
+  {
+   "page": "Dragonkin Soldier",
+   "tab": "Ainsel River",
+   "location": "Ainsel River",
+   "hpText": "4,372",
+   "hp": 4372,
+   "runes": 12000,
+   "drops": [
+    "Frozen Lightning Spear"
+   ],
+   "text": "A Dragonkin Soldier encountered in the lower part of Ainsel River, in a cave with a giant chair-crypt. Once it's health is below 60%, it sprouts wings and begins using frozen lightning-based attacks, such as lightning spears and AoEs."
+  },
+  {
+   "page": "Dragonkin Soldier",
+   "tab": "Lake of Rot",
+   "location": "Lake of Rot",
+   "hpText": "7,655",
+   "hp": 7655,
+   "runes": 58000,
+   "drops": [
+    "Dragonscale Blade"
+   ],
+   "text": "A Dragonkin Soldier found in the Lake of Rot. A series of platforms nearby can be used to avoid being inflicted with Scarlet Rot while fighting it."
+  },
+  {
+   "page": "Dragonkin Soldier",
+   "tab": "Siofra River",
+   "location": "Siofra River",
+   "hpText": "5,758",
+   "hp": 5758,
+   "runes": 16000,
+   "drops": [
+    "Dragon Halberd"
+   ],
+   "text": "A Dragonkin Soldier encountered in Siofra River, found by dropping down several ledges south of the Worshipper's Woods Site of Grace."
+  },
+  {
+   "page": "Elemer of the Briar",
+   "tab": "Church of Vows",
+   "location": "Church of Vows",
+   "hpText": "4,050",
+   "hp": 4050,
+   "runes": 6000,
+   "drops": [
+    "Meat Peddler's Bell Bearing"
+   ],
+   "text": "The Bell Bearing Hunter will appear inside the Church of Vows at night. To get him to spawn, speak to Miriel, Pastor of Vows and listen to all of his dialogue options. Miriel will not be present when the Bell Bearing Hunter appears, but will reappear if the player dies or if they defeat the boss."
+  },
+  {
+   "page": "Elemer of the Briar",
+   "tab": "Elemer of the Briar",
+   "location": "Shaded Castle",
+   "hpText": "4,897",
+   "hp": 4897,
+   "runes": 24000,
+   "drops": [
+    "Marais Executioner's Sword",
+    "Briar Greatshield"
+   ],
+   "text": "Elemer is encountered in the hall at the top of the Shaded Castle. He can channel energy through his sword, allowing him to send it towards the player and control it at a distance, or fire a red beam by rotating it quickly. The first time he is encountered he will be facing the painting at the end of the room, making a heavy initial attack such as a charged heavy attack more possible. On subsequent attempts he will be facing the entrance."
+  },
+  {
+   "page": "Elemer of the Briar",
+   "tab": "Hermit Merchant's Shack",
+   "location": "Hermit Merchant's Shack",
+   "hpText": "6,216",
+   "hp": 6216,
+   "runes": 20000,
+   "drops": [
+    "Medicine Peddler's Bell Bearing"
+   ],
+   "text": "The Bell Bearing Hunter appears at night, in the Hermit Merchant's Shack in the Capital Outskirts. The Hermit Merchant (Capital Outskirts) will disappear for the duration of the fight, but will reappear if the player dies or if they defeat the boss. This version is actually stronger than Elemer's own fight."
+  },
+  {
+   "page": "Elemer of the Briar",
+   "tab": "Isolated Merchant's Shack",
+   "location": "Isolated Merchant's Shack (Dragonbarrow)",
+   "hpText": "10,619",
+   "hp": 10619,
+   "runes": 50000,
+   "drops": [
+    "Gravity Stone Peddler's Bell Bearing"
+   ],
+   "text": "The Bell Bearing Hunter appears at night, outside the Isolated Merchant's Shack in Greyoll's Dragonbarrow. The Isolated Merchant (Dragonbarrow) will disappear for the duration of the fight, but will reappear if the player dies or if they defeat the boss. This version is actually the strongest of all the Bell-Bearing Hunter encounters and has twice the health of Elemer's own, named encounter."
+  },
+  {
+   "page": "Elemer of the Briar",
+   "tab": "Warmaster's Shack",
+   "location": "Warmaster's Shack",
+   "hpText": "2,495",
+   "hp": 2495,
+   "runes": 2700,
+   "drops": [
+    "Bone Peddler's Bell Bearing"
+   ],
+   "text": "The Bell Bearing Hunter appears in Warmaster's Shack at night. He will only spawn if the player has talked to Knight Bernahl and exhausted his dialogue. Bernahl will not be present while the Bell Bearing Hunter is spawned, but will reappear if the player dies or if they defeat the boss."
+  },
+  {
+   "page": "Erdtree Avatar",
+   "tab": "Caelid",
+   "location": "Minor Erdtree (Caelid)",
+   "hpText": "5,671",
+   "hp": 5671,
+   "runes": 9600,
+   "drops": [
+    "Greenburst Crystal Tear",
+    "Flame-Shrouding Cracked Tear"
+   ],
+   "text": "A Putrid Avatar that guards the Minor Erdtree in Caelid. It can perform a ground slam which releases Scarlet Rot in a wide area around it."
+  },
+  {
+   "page": "Erdtree Avatar",
+   "tab": "Consecrated Snowfield",
+   "location": "Minor Erdtree (Consecrated Snowfield)",
+   "hpText": "12,569",
+   "hp": 12569,
+   "runes": 160000,
+   "drops": [
+    "Ruptured Crystal Tear",
+    "Thorny Cracked Tear"
+   ],
+   "text": "A Putrid Avatar that guards the Minor Erdtree in the Consecrated Snowfield."
+  },
+  {
+   "page": "Erdtree Avatar",
+   "tab": "East Liurnia",
+   "location": "Minor Erdtree (East Liurnia)",
+   "hpText": "4,690",
+   "hp": 4690,
+   "runes": 5800,
+   "drops": [
+    "Holy-Shrouding Cracked Tear",
+    "Lightning-Shrouding Cracked Tear",
+    "Magic-Shrouding Cracked Tear"
+   ],
+   "text": "An Erdtree Avatar that guards the Minor Erdtree on the eastern side of Liurnia. It is encountered near a congregation of Ancestral Followers."
+  },
+  {
+   "page": "Erdtree Avatar",
+   "tab": "Greyoll's Dragonbarrow",
+   "location": "Minor Erdtree (Dragonbarrow)",
+   "hpText": "12,297",
+   "hp": 12297,
+   "runes": 91000,
+   "drops": [
+    "Opaline Hardtear",
+    "Stonebarb Cracked Tear"
+   ],
+   "text": "A Putrid Avatar that guards the Minor Erdtree in Greyoll's Dragonbarrow."
+  },
+  {
+   "page": "Erdtree Avatar",
+   "tab": "Mountaintops of the Giants",
+   "location": "Minor Erdtree (Mountaintops of the Giants)",
+   "hpText": "11,452",
+   "hp": 11452,
+   "runes": 70000,
+   "drops": [
+    "Cerulean Crystal Tear",
+    "Crimson Bubbletear"
+   ],
+   "text": "An Erdtree Avatar that guards the Minor Erdtree in the Mountaintops of the Giants. This Avatar has the unique ability to split itself into two different Avatars once it's health is below 70%, with both enemies sharing a health bar."
+  },
+  {
+   "page": "Erdtree Avatar",
+   "tab": "Weeping Peninsula",
+   "location": "Minor Erdtree (Weeping Peninsula)",
+   "hpText": "3,163",
+   "hp": 3163,
+   "runes": 3600,
+   "drops": [
+    "Opaline Bubbletear",
+    "Crimsonburst Crystal Tear"
+   ],
+   "text": "An Erdtree Avatar that guards the Minor Erdtree in the Weeping Peninsula."
+  },
+  {
+   "page": "Erdtree Avatar",
+   "tab": "West Liurnia",
+   "location": "Minor Erdtree (West Liurnia)",
+   "hpText": "4,690",
+   "hp": 4690,
+   "runes": 5800,
+   "drops": [
+    "Cerulean Crystal Tear",
+    "Ruptured Crystal Tear"
+   ],
+   "text": "An Erdtree Avatar that guards the Minor Erdtree on the western side of Liurnia."
+  },
+  {
+   "page": "Erdtree Burial Watchdog",
+   "tab": "Impaler's Catacombs",
+   "location": "Impaler's Catacombs",
+   "hpText": "1,347",
+   "hp": 1347,
+   "runes": 2400,
+   "drops": [
+    "Demi-Human Ashes"
+   ],
+   "text": "A three-headed Watchdog accompanied by four Imps. It can breathe fire from all three of its mouths."
+  },
+  {
+   "page": "Erdtree Burial Watchdog",
+   "tab": "Minor Erdtree Catacombs",
+   "location": "Minor Erdtree Catacombs",
+   "hpText": "2,531 (Scepter), 2,531 (Sword)",
+   "hp": 2531,
+   "runes": 7400,
+   "drops": [
+    "Mad Pumpkin Head Ashes"
+   ],
+   "text": "A pair of three-headed Erdtree Burial Watchdogs, one with a sword and the other a scepter."
+  },
+  {
+   "page": "Erdtree Burial Watchdog",
+   "tab": "Stormfoot Catacombs",
+   "location": "Stormfoot Catacombs",
+   "hpText": "1,200",
+   "hp": 1200,
+   "runes": 1300,
+   "drops": [
+    "Noble Sorcerer Ashes"
+   ],
+   "text": "A sword-wielding Erdtree Burial Watchdog encountered in Stormfoot Catacombs. It's tail ignites during combat, allowing it to deal fire damage when performing a tail slam."
+  },
+  {
+   "page": "Erdtree Burial Watchdog",
+   "tab": "Wyndham Catacombs",
+   "location": "Wyndham Catacombs",
+   "hpText": "3,419",
+   "hp": 3419,
+   "runes": 12000,
+   "drops": [
+    "Glovewort Picker's Bell Bearing 1"
+   ],
+   "text": "A sword-wielding Erdtree Burial Watchdog with a tail that crackles with electricity, maintaining the lightning theme present in the rest of the dungeon. It can emit lightning from its mouth."
+  },
+  {
+   "page": "Fallingstar Beast",
+   "tab": "Altus Plateau",
+   "location": "Altus Plateau",
+   "hpText": "7,009",
+   "hp": 7009,
+   "runes": 11000,
+   "drops": [
+    "Somber Smithing Stone 5",
+    "Smithing Stone 6",
+    "Gravity Stone Fan",
+    "Gravity Stone Chunk"
+   ],
+   "text": "A Fallingstar Beast found in a crater in Altus Plateau, south of the steps leading to Capital Outskirts, and south-east of the Altus Highway Junction Site of Grace. The route leading to it is pockmarked with smaller craters, and there are several Starcallers and Leyndell Soldiers nearby."
+  },
+  {
+   "page": "Fallingstar Beast",
+   "tab": "Finger Ruins of Dheo",
+   "location": "Finger Ruins of Dheo",
+   "hpText": "26,679",
+   "hp": 26679,
+   "runes": 170000,
+   "drops": [
+    "Gravitational Missile"
+   ],
+   "text": "Found in Shadow of the Erdtree at the northmost part of the Finger Ruins of Dheo."
+  },
+  {
+   "page": "Fallingstar Beast",
+   "tab": "Mt. Gelmir",
+   "location": "Mt. Gelmir",
+   "hpText": "13,010",
+   "hp": 13010,
+   "runes": 21000,
+   "drops": [
+    "Somber Smithing Stone 6",
+    "Smithing Stone 6",
+    "Fallingstar Beast Jaw"
+   ],
+   "text": "A large Fallingstar Beast encountered in a crater on Mt. Gelmir, accessed via a ladder or a spirit spring near the Ninth Mt. Gelmir Campsite Site of Grace. It has a blue orb resembling an eye emerging from the fur on its face, reminiscent of the eye visible through the crack in Astel's skull. It also has an additional phase when falling below half health, unleashing a lifting gravity wave in an area around itself and being able to shot sweeping beams of magic."
+  },
+  {
+   "page": "Fallingstar Beast",
+   "tab": "Sellia Crystal Tunnel",
+   "location": "Sellia Crystal Tunnel",
+   "hpText": "4,554",
+   "hp": 4554,
+   "runes": 7600,
+   "drops": [
+    "Somberstone Miner's Bell Bearing 1",
+    "Smithing Stone 7",
+    "Somber Smithing Stone 6",
+    "Gravity Stone Chunk"
+   ],
+   "text": "A Fallingstar Beast found in a cave at the end of Sellia Crystal Tunnel in Caelid."
+  },
+  {
+   "page": "Godfrey, First Elden Lord",
+   "tab": "Leyndell, Ashen Capital",
+   "location": "Leyndell, Ashen Capital",
+   "hpText": "21,903",
+   "hp": 21903,
+   "runes": 300000,
+   "drops": [
+    "Remembrance of Hoarah Loux"
+   ],
+   "text": "Nepheli Loux, Warrior and Shabriri are both available as summons for this fight, provided their questlines have been completed. Like the first battle, this fight is not optional and must be defeated to reach the final bosses of the game. {| class=\"mw-collapsible mw-collapsed article-table centerheaders \" | colspan=\"2\" style=\"text-align:center; background-color: black; color: white;\" |Moveset List &nbsp; |- !Ground Smash !Phase 1 |- | colspan=\"2\" |Slams his axe into the ground, leaving half of it buried for a moment, before pulling it back out, causing a small earthquake. |- !Axe Swings !Phase "
+  },
+  {
+   "page": "Godfrey, First Elden Lord",
+   "tab": "Leyndell, Royal Capital",
+   "location": "Leyndell, Royal Capital",
+   "hpText": "7,099",
+   "hp": 7099,
+   "runes": 80000,
+   "drops": [
+    "Talisman Pouch"
+   ],
+   "text": "{| class=\"mw-collapsible mw-collapsed article-table centerheaders \" | colspan=\"2\" style=\"text-align:center; background-color: black; color: white;\" |Moveset List &nbsp; |- !Ground Smash !Phase 1 |- | colspan=\"2\" |Slams his axe into the ground, leaving half of it buried for a moment, before pulling it back out, causing a small earthquake. |- !Axe Swings !Phase 1 |- | colspan=\"2\" |Swings his axe several times. |- !Stomp !Phase 1 |- | colspan=\"2\" |Stomps, causing spikes of rock to rise out of the ground in front of him. |- !Jumping Smash !Phase 1 |- | colspan=\"2\" |Leaps into the air and falls bac"
+  },
+  {
+   "page": "Godskin Apostle",
+   "tab": "Divine Tower of Caelid",
+   "location": "Divine Tower of Caelid",
+   "hpText": "13,596",
+   "hp": 13596,
+   "runes": 94000,
+   "drops": [
+    "Godskin Apostle Hood",
+    "Godskin Apostle Robe",
+    "Godskin Apostle Bracelets",
+    "Godskin Apostle Trousers"
+   ],
+   "text": "A Godskin Apostle is found at the bottom of the Divine Tower of Caelid, guarding a chest containing the Godslayer's Greatsword. To reach this boss, the player must complete a platforming section through the inside of the tower, which includes encounters with Redmane Knights and Blackflame Monks."
+  },
+  {
+   "page": "Godskin Apostle",
+   "tab": "Dominula, Windmill Village",
+   "location": "Dominula, Windmill Village",
+   "hpText": "7,528",
+   "hp": 7528,
+   "runes": 14000,
+   "drops": [
+    "Godskin Peeler",
+    "Scouring Black Flame"
+   ],
+   "text": "A Godskin Apostle at the highest point of Dominula, Windmill Village oversees the Dominula Dancer's Dominula Festival. Torrent may be used during this fight. Millicent is available as a summon for this fight, provided she has been given the Valkyrie's Prosthesis."
+  },
+  {
+   "page": "Godskin Apostle",
+   "tab": "Godskin Duo",
+   "location": "Crumbling Farum Azula",
+   "hpText": "6,668 (Godskin Apostle), 8,000 (Godskin Noble), 26,350 (both)",
+   "hp": 6668,
+   "runes": 170000,
+   "drops": [
+    "Ash of War: Black Flame Tornado",
+    "Smithing Stone Miner's Bell Bearing"
+   ],
+   "text": "A duo consisting of a Godskin Apostle and Godskin Noble, encountered in the Dragon Temple within Crumbling Farum Azula. They share a health bar and have their own individual health. If one is killed, the other will resurrect them shortly. If both are killed before the shared health bar reaches 0, the Noble will respawn and summon the Apostle shortly. Sleep is highly effective against both enemies and temporarily incapacitates them when inflicted. Recusant Bernahl is available as a summon for this boss."
+  },
+  {
+   "page": "Godskin Apostle",
+   "tab": "Spiritcaller Snail",
+   "location": "Spiritcaller Cave",
+   "hpText": "9,847",
+   "hp": 9847,
+   "runes": 70000,
+   "drops": [
+    "Black Flame Ritual",
+    "Godskin Swaddling Cloth"
+   ],
+   "text": "The spirit of a Godskin Apostle, along with that of a Godskin Noble, is summoned by the Spiritcaller Snail at the end of Spiritcaller Cave in the Mountaintops of the Giants. The Apostle must be defeated first, followed by the Noble, before the snail appears and can be killed to end the fight."
+  },
+  {
+   "page": "Godskin Noble",
+   "tab": "Divine Tower of Liurnia",
+   "location": "Divine Tower of Liurnia",
+   "hpText": "9,031",
+   "hp": 9031,
+   "runes": 4810,
+   "drops": [
+    "Godskin Noble Set"
+   ],
+   "text": "A Godskin Noble who leads on the bridge from the Carian Study Hall to the Divine Tower of Liurnia. This encounter does not have a boss health bar, and spirit ashes cannot be used for the fight, however the enemy does not respawn when killed."
+  },
+  {
+   "page": "Godskin Noble",
+   "tab": "Godskin Duo",
+   "location": "Crumbling Farum Azula",
+   "hpText": "8,000 (Godskin Noble), 6,668 (Godskin Apostle), 26,350 (both)",
+   "hp": 8000,
+   "runes": 170000,
+   "drops": [
+    "Smithing Stone Miner's Bell Bearing 4",
+    "Ash of War: Black Flame Tornado"
+   ],
+   "text": "A duo consisting of a Godskin Apostle and Godskin Noble, encountered in the Dragon Temple within Crumbling Farum Azula. They share a health bar, as well as having their own individual health. If one is killed, the other will resurrect them after a short amount of time. If both are killed before the shared health bar reaches 0, the Noble will respawn and summon the Apostle after a short amount of time. Sleep is highly effective against both enemies, and will temporarily incapacitate them when inflicted. Recusant Bernahl is available as a summon for this boss."
+  },
+  {
+   "page": "Godskin Noble",
+   "tab": "Volcano Manor",
+   "location": "Volcano Manor",
+   "hpText": "10,060",
+   "hp": 10060,
+   "runes": 50000,
+   "drops": [
+    "Godskin Stitcher",
+    "Noble Presence"
+   ],
+   "text": "A Godskin Noble fought in the Temple of Eiglay in Volcano Manor, in front of a serpentine altar bearing the Serpent's Amnion. This boss drops the Godskin Stitcher and the Noble Presence incantation."
+  },
+  {
+   "page": "Golden Hippopotamus",
+   "tab": "Cerulean Coast",
+   "location": "Cerulean Coast",
+   "hpText": "",
+   "hp": null,
+   "runes": null,
+   "drops": [
+    "Scadutree Fragment"
+   ],
+   "text": "Found near a body of water in the red fields near the Cerulean Coast."
+  },
+  {
+   "page": "Golden Hippopotamus",
+   "tab": "Golden Hippopotamus",
+   "location": "",
+   "hpText": "",
+   "hp": null,
+   "runes": null,
+   "drops": [
+    "Scadutree Fragment",
+    "Aspects of the Crucible: Thorns"
+   ],
+   "text": "The Golden Hippopotamus (boss) located in the Shadow Keep, it will grow thorn-like fur on its back when injured by half of its HP."
+  },
+  {
+   "page": "Golden Hippopotamus",
+   "tab": "TBA",
+   "location": "",
+   "hpText": "HP",
+   "hp": null,
+   "runes": null,
+   "drops": [
+    "Items"
+   ],
+   "text": "Description of boss."
+  },
+  {
+   "page": "Grave Warden Duelist",
+   "tab": "Auriza Side Tomb",
+   "location": "Auriza Side Tomb",
+   "hpText": "6,240",
+   "hp": 6240,
+   "runes": 1700,
+   "drops": [
+    "Soldjars of Fortune Ashes"
+   ],
+   "text": "A Duelist with dual Battle Hammers encountered at the end of the Auriza Side Tomb, alongside a number of Little Living Jars."
+  },
+  {
+   "page": "Grave Warden Duelist",
+   "tab": "Consecrated Snowfield Catacombs",
+   "location": "Consecrated Snowfield Catacombs",
+   "hpText": "8,800",
+   "hp": 8800,
+   "runes": 78000,
+   "drops": [
+    "Rotten Gravekeeper Cloak",
+    "Great Grave Glovewort"
+   ],
+   "text": "A rotten Duelist wielding a Greataxe encountered at the end of the Consecrated Snowfield Catacombs."
+  },
+  {
+   "page": "Grave Warden Duelist",
+   "tab": "Gaol Cave",
+   "location": "Gaol Cave",
+   "hpText": "3,079",
+   "hp": 3079,
+   "runes": 6700,
+   "drops": [
+    "Putrid Corpse Ashes"
+   ],
+   "text": "An axe-wielding Frenzied Duelist is encountered at the end of the Gaol Cave in Caelid."
+  },
+  {
+   "page": "Grave Warden Duelist",
+   "tab": "Murkwater Catacombs",
+   "location": "Murkwater Catacombs",
+   "hpText": "2,190",
+   "hp": 2190,
+   "runes": 1700,
+   "drops": [
+    "Banished Knight Engvall Ashes"
+   ],
+   "text": "A Duelist with dual Battle Hammers encountered at the end of Murkwater Catacombs."
+  },
+  {
+   "page": "Loretta",
+   "tab": "Loretta, Knight of the Haligtree",
+   "location": "Miquella's Haligtree",
+   "hpText": "13,397",
+   "hp": 13397,
+   "runes": 200000,
+   "drops": [
+    "Loretta's Mastery",
+    "Loretta's War Sickle"
+   ],
+   "text": "Loretta, Knight of the Haligtree is a mini-boss in found in Miquella's Haligtree and is required to progress to Elphael, Brace of the Haligtree. This boss is a stronger version of Royal Knight Loretta, found in Caria Manor. It is possible to parry Loretta's halberd swings."
+  },
+  {
+   "page": "Loretta",
+   "tab": "Royal Knight Loretta",
+   "location": "Caria Manor",
+   "hpText": "4,214",
+   "hp": 4214,
+   "runes": 10000,
+   "drops": [
+    "Loretta's Greatbow",
+    "Ash of War: Loretta's Slash"
+   ],
+   "text": "Royal Knight Loretta is a boss in . She can be found at Caria Manor in the Royal Moongazing Grounds. She appears to be an apparition of Loretta summoned to guard Caria Manor, just as the real Loretta presumably used to do before leaving her duty to help find sanctuary for the mistreated Albinaurics. Defeating her disables the magical spell of warding that complicates the approach to the Manor."
+  },
+  {
+   "page": "Mad Pumpkin Head",
+   "tab": "Caelem Ruins",
+   "location": "Caelem Ruins",
+   "hpText": "2,800 (each)",
+   "hp": 2800,
+   "runes": 6300,
+   "drops": [],
+   "text": "A pair of Mad Pumpkin Heads, one with a hammer and the other a flail. Both of their weapons have been lit on fire. The left Pumpkin Head will be sitting with its back as you enter, so make sure to attack it quickly to try and reduce this 1v2 to a 1v1. It's possible to use Torrent in this fight, though it's unlikely to be useful due to how small the room is."
+  },
+  {
+   "page": "Mad Pumpkin Head",
+   "tab": "Waypoint Ruins",
+   "location": "Waypoint Ruins",
+   "hpText": "1,328",
+   "hp": 1328,
+   "runes": 1100,
+   "drops": [],
+   "text": "A flail-wielding Pumpkin Head found in a cellar beneath Waypoint Ruins in Limgrave. The warrior obstructs the entrance to a second chamber, where Sorceress Sellen resides. The room isn't very big but the boss also isn't that quick or good at turning. If you are about to be boxed into a corner, try to run around it to recover or to hit it from behind so that the head's heavy damage reduction isn't applied. Astrologers will most likely want to be extra careful since their FP and its recovery will most likely be very low by this point, as will the variety in Sorceries."
+  },
+  {
+   "page": "Magma Wyrm",
+   "tab": "Gael Tunnel",
+   "location": "Gael Tunnel",
+   "hpText": "7,141",
+   "hp": 7141,
+   "runes": 7500,
+   "drops": [
+    "Moonveil",
+    "Dragon Heart"
+   ],
+   "text": "A Magma Wyrm is encountered at the end of Gael Tunnel in Caelid."
+  },
+  {
+   "page": "Magma Wyrm",
+   "tab": "Great Wyrm Theodorix",
+   "location": "Consecrated Snowfield",
+   "hpText": "25,649",
+   "hp": 25649,
+   "runes": 180000,
+   "drops": [
+    "Dragon Heart"
+   ],
+   "text": "Great Wyrm Theodorix is encountered at the eastern end of the frozen river in the Consecrated Snowfield, northeast of the Inner Consecrated Snowfield Site of Grace. He was once an ancient troll warrior and hero of the war against the Giants, who became a Magma Wyrm after partaking in Dragon Communion. His attacks can inflict damage on the Crabs and Land Octopus nearby, which will cause them to aggro against it. After defeating this boss, Theodorix's Magma can be obtained at the Cathedral of Dragon Communion in Caelid for 2 Dragon Hearts."
+  },
+  {
+   "page": "Magma Wyrm",
+   "tab": "Magma Wyrm Makar",
+   "location": "Ruin-Strewn Precipice",
+   "hpText": "7,141",
+   "hp": 7141,
+   "runes": 24000,
+   "drops": [
+    "Magma Wyrm's Scalesword",
+    "Dragon Heart"
+   ],
+   "text": "Magma Wyrm Makar resides in ancient ruins at the top of the Ruin-Strewn Precipice, blocking the secret path from Liurnia of the Lakes to Altus Plateau. Makar was likely a human hero who became a wyrm after partaking in Dragon Communion. In its second phase, it will spew magma onto its sword, coating it in fire."
+  },
+  {
+   "page": "Magma Wyrm",
+   "tab": "Mt. Gelmir",
+   "location": "Mt. Gelmir",
+   "hpText": "12,243",
+   "hp": 12243,
+   "runes": 19000,
+   "drops": [
+    "Dragon Heart"
+   ],
+   "text": "A Magma Wyrm is encountered in a lava pool near Fort Laiedd, southwest of the Seethewater Terminus Site of Grace. It can be lured out of the lava for an easier fight. After defeating this boss, Magma Breath can be obtained at the Cathedral of Dragon Communion in Caelid for 1 Dragon Heart."
+  },
+  {
+   "page": "Misbegotten Warrior",
+   "tab": "Redmane Castle",
+   "location": "Redmane Castle",
+   "hpText": "3,569",
+   "hp": 3569,
+   "runes": 16000,
+   "drops": [
+    "Ruins Greatsword"
+   ],
+   "text": "See also: Crucible Knight A Misbegotten Warrior fought in the plaza of Redmane Castle when the Radahn Festival is not active. When reduced to half health, a Crucible Knight joins the fight."
+  },
+  {
+   "page": "Misbegotten Warrior",
+   "tab": "Stone Coffin Fissure",
+   "location": "Stone Coffin Fissure",
+   "hpText": "",
+   "hp": null,
+   "runes": null,
+   "drops": [
+    "Multilayered Ring of Light"
+   ],
+   "text": "The pale spirit of a Misbegotten Warrior guards the secrets of Miquella the Kind deep within the Stone Coffin Fissure. This unmarked boss uses Multilayered Ring of Light and drops the incantation upon defeat. Like all unmarked Bosses, it will not respawn."
+  },
+  {
+   "page": "Misbegotten Warrior",
+   "tab": "Unsightly Catacombs",
+   "location": "Unsightly Catacombs",
+   "hpText": "3,569",
+   "hp": 3569,
+   "runes": 9400,
+   "drops": [
+    "Perfumer Tricia"
+   ],
+   "text": "See also: Perfumer Tricia (Boss) A Misbegotten Warrior fought alongside Perfumer Tricia at the end of the Unsightly Catacombs. Tricia, a healer devoted to treating impure creatures, appears to have allied with the Misbegotten."
+  },
+  {
+   "page": "Mohg, Lord of Blood",
+   "tab": "Mohg, Lord of Blood",
+   "location": "Mohgwyn Palace",
+   "hpText": "18,389",
+   "hp": 18389,
+   "runes": 420000,
+   "drops": [
+    "Remembrance of the Blood Lord",
+    "Mohg's Great Rune"
+   ],
+   "text": "Mohg, Lord of Blood is encountered at the top of the Mohgwyn Dynasty Mausoleum. The arena is reasonably wide and open, with some gravestones on each side that act as obstacles. This fight plays out much like the Mohg, the Omen fight, until the second phase, when he performs a Bloodboon Ritual and subsequently sprouts enormous black wings. During phase 2, many of Mohg's moveset expands and his attacks will cover large areas in fire. Mohg, Lord of Blood must be defeated to unlock the Elden Ring: Shadow of the Erdtree expansion, and enter the Realm of Shadow. Phase 1 is largely the same as the fi"
+  },
+  {
+   "page": "Mohg, Lord of Blood",
+   "tab": "Mohg, the Omen",
+   "location": "Subterranean Shunning-Grounds",
+   "hpText": "14,000",
+   "hp": 14000,
+   "runes": 100000,
+   "drops": [
+    "Bloodflame Talons"
+   ],
+   "text": "Mohg, the Omen is projection encountered in the Subterranean Shunning-Grounds, within the Cathedral of the Forsaken that lies beyond the Forsaken Depths Site of Grace. The arena is a fairly small chapel, with pillars on the side that can be used to gain distance. The Dung Eater is available as a summon for this fight, provided he has been released from his cell. Mohg's trident attacks have long delays, and cover a wide range. He uses a number of bloodflame-based attacks, which deal blood loss as well as fire damage. Mohg's Shackle can be used to stun him for a few seconds, allowing for some ad"
+  },
+  {
+   "page": "Night's Cavalry",
+   "tab": "Altus Plateau",
+   "location": "Altus Plateau",
+   "hpText": "3,725",
+   "hp": 3725,
+   "runes": 10000,
+   "drops": [
+    "Ash of War: Shared Order"
+   ],
+   "text": "A flail-wielding Night's Cavalry encountered on the road southwest of the Altus Highway Junction Site of Grace in the Altus Plateau."
+  },
+  {
+   "page": "Night's Cavalry",
+   "tab": "Bellum Highway",
+   "location": "Bellum Highway",
+   "hpText": "2,704",
+   "hp": 2704,
+   "runes": 4200,
+   "drops": [
+    "Ash of War: Giant Hunt",
+    "Nightrider Glaive"
+   ],
+   "text": "A glaive-wielding Night's Cavalry fought on a ruin-strewn road on the Bellum Highway, found northeast of the East Raya Lucaria Gate Site of Grace."
+  },
+  {
+   "page": "Night's Cavalry",
+   "tab": "Caelid",
+   "location": "Caelid (south)",
+   "hpText": "3,269",
+   "hp": 3269,
+   "runes": 8500,
+   "drops": [
+    "Ash of War: Poison Moth Flight"
+   ],
+   "text": "A flail-wielding Night's Cavalry who patrols the roads south of the Swamp of Aeonia, close to where the Map: Caelid map fragment is obtained."
+  },
+  {
+   "page": "Night's Cavalry",
+   "tab": "Consecrated Snowfield",
+   "location": "Consecrated Snowfield",
+   "hpText": "7,246 each",
+   "hp": 7246,
+   "runes": 84000,
+   "drops": [
+    "Ancient Dragon Smithing Stone",
+    "Night's Cavalry Set"
+   ],
+   "text": "A pair of Night's Cavalry, one with a flail and the other with a glaive. Both must be defeated to clear the boss. Encountered escorting a Great Coffin carriage bearing the Flowing Curved Sword through the southern part of the Consecrated Snowfield. After spawning at the Inner Consecrated Snowfield Site of Grace and turning 90 degrees to the left one will see the Caravan slowly appearing."
+  },
+  {
+   "page": "Night's Cavalry",
+   "tab": "Dragonbarrow",
+   "location": "Greyoll's Dragonbarrow",
+   "hpText": "7,089",
+   "hp": 7089,
+   "runes": 42000,
+   "drops": [
+    "Ash of War: Bloodhound's Step"
+   ],
+   "text": "A glaive-wielding Night's Cavalry found on a bridge in Greyoll's Dragonbarrow, north of Lenne's Rise."
+  },
+  {
+   "page": "Night's Cavalry",
+   "tab": "Forbidden Lands",
+   "location": "Forbidden Lands",
+   "hpText": "6,602",
+   "hp": 6602,
+   "runes": 36000,
+   "drops": [
+    "Ash of War: Phantom Slash"
+   ],
+   "text": "A glaive-wielding Night's Cavalry fought in the narrow passage beyond the Forbidden Lands Site of Grace."
+  },
+  {
+   "page": "Night's Cavalry",
+   "tab": "Limgrave",
+   "location": "Limgrave",
+   "hpText": "1,665",
+   "hp": 1665,
+   "runes": 2400,
+   "drops": [
+    "Ash of War: Repeating Thrust"
+   ],
+   "text": "A glaive-wielding Night's Cavalry found patrolling the bridge to the southeast of the Agheel Lake North Site of Grace in Limgrave. There are several Godrick Soldiers and Godrick Foot Soldiers on the west side of the bridge who should be defeated before attempting to challenge the boss."
+  },
+  {
+   "page": "Night's Cavalry",
+   "tab": "Liurnia",
+   "location": "Liurnia of the Lakes (south)",
+   "hpText": "2,704",
+   "hp": 2704,
+   "runes": 5600,
+   "drops": [
+    "Ash of War: Ice Spear"
+   ],
+   "text": "A glaive-wielding Night's Cavalry fought down the road southeast of the Gate Town Bridge Site of Grace in Liurnia of the Lakes."
+  },
+  {
+   "page": "Night's Cavalry",
+   "tab": "Weeping Peninsula",
+   "location": "Weeping Peninsula",
+   "hpText": "1,823",
+   "hp": 1823,
+   "runes": 3400,
+   "drops": [
+    "Ash of War: Barricade Shield",
+    "Nightrider Flail"
+   ],
+   "text": "A flail-wielding Night's Cavalry found at night patrolling the road in the Weeping Peninsula, near the Castle Morne Rampart Site of Grace. Will next to the wall and can later be seen going down the road in front of the grace."
+  },
+  {
+   "page": "Omenkiller",
+   "tab": "Perfumer's Grotto",
+   "location": "Perfumer's Grotto",
+   "hpText": "2,306",
+   "hp": 2306,
+   "runes": 8400,
+   "drops": [
+    "Great Omenkiller Cleaver"
+   ],
+   "text": "An Omenkiller fought alongside Miranda the Blighted Bloom at the end of the Perfumer's Grotto on the Altus Plateau."
+  },
+  {
+   "page": "Omenkiller",
+   "tab": "Village of the Albinaurics",
+   "location": "Village of the Albinaurics",
+   "hpText": "2,306",
+   "hp": 2306,
+   "runes": 4900,
+   "drops": [
+    "Crucible Knot Talisman"
+   ],
+   "text": "An Omenkiller found in the Village of the Albinaurics in Liurnia of the Lakes, across the bridge from the Site of Grace. This Omenkiller appears to be responsible for the slaughter of the Albinaurics on the orders of Sir Gideon Ofnir, the All-Knowing. This Omenkiller is accompanied by three dogs. Nepheli Loux, Warrior is available as a summon for this boss, provided she was spoken to at the entrance to the Village of the Albinaurics. A magic user with a guided bolt-like spell such as Glintstone Pebble has a particularly efficient tactical option for this Omenkiller: the area he is in also cont"
+  },
+  {
+   "page": "Onyx Lord",
+   "tab": "Royal Grave Evergaol",
+   "location": "Royal Grave Evergaol",
+   "hpText": "4,058",
+   "hp": 4058,
+   "runes": 3600,
+   "drops": [
+    "Meteorite"
+   ],
+   "text": "An Onyx Lord imprisoned within the Royal Grave Evergaol, besides the graveyard behind Caria Manor."
+  },
+  {
+   "page": "Onyx Lord",
+   "tab": "Sealed Tunnel",
+   "location": "Sealed Tunnel",
+   "hpText": "4,907",
+   "hp": 4907,
+   "runes": 16000,
+   "drops": [
+    "Onyx Lord's Greatsword"
+   ],
+   "text": "An Onyx Lord encountered at the end of the Sealed Tunnel in Altus Plateau, obstructing the exit that leads to the Divine Tower of West Altus."
+  },
+  {
+   "page": "Snake Snail",
+   "tab": "Road's End Catacombs",
+   "location": "Road's End Catacombs",
+   "hpText": "1,722",
+   "hp": 1722,
+   "runes": 3000,
+   "drops": [
+    "Glintstone Sorcerer Ashes"
+   ],
+   "text": "A Spiritcaller Snail encountered at the end of Road's End Catacombs in Liurnia of the Lakes. It summons the spirits of Crucible Knights to defend it. It can only summon one at a time, and will alternate between sword and spear varieties. The snail itself is effectively invisible, but can be detected by looking for a glowing patch on the ground. It will teleport to another part of the room after being hit a few times. It can be killed without engaging with the Crucible Knight summons, by pursuing the snail."
+  },
+  {
+   "page": "Snake Snail",
+   "tab": "Spiritcaller Cave",
+   "location": "Spiritcaller Cave",
+   "hpText": "1,840",
+   "hp": 1840,
+   "runes": 70000,
+   "drops": [
+    "Black Flame Ritual",
+    "Godskin Swaddling Cloth"
+   ],
+   "text": "A Spiritcaller Snail encountered at the end of Spiritcaller Cave in the Mountaintops of the Giants. The snail will summon the spirits of a Godskin Apostle and then a Godskin Noble before finally materialising."
+  },
+  {
+   "page": "Spiritcaller Snail",
+   "tab": "Road's End Catacombs",
+   "location": "Road's End Catacombs",
+   "hpText": "1,722",
+   "hp": 1722,
+   "runes": 3000,
+   "drops": [
+    "Glintstone Sorcerer Ashes"
+   ],
+   "text": "A Spiritcaller Snail encountered at the end of Road's End Catacombs in Liurnia of the Lakes. It summons the spirits of Crucible Knights to defend it. It can only summon one at a time, and will alternate between sword and spear varieties. The snail itself is effectively invisible, but can be detected by looking for a glowing patch on the ground. It will teleport to another part of the room after being hit a few times. It can be killed without engaging with the Crucible Knight summons, by pursuing the snail."
+  },
+  {
+   "page": "Spiritcaller Snail",
+   "tab": "Spiritcaller Cave",
+   "location": "Spiritcaller Cave",
+   "hpText": "1,840",
+   "hp": 1840,
+   "runes": 70000,
+   "drops": [
+    "Black Flame Ritual",
+    "Godskin Swaddling Cloth"
+   ],
+   "text": "A Spiritcaller Snail encountered at the end of Spiritcaller Cave in the Mountaintops of the Giants. The snail will summon the spirits of a Godskin Apostle and then a Godskin Noble before finally materialising."
+  },
+  {
+   "page": "Tibia Mariner",
+   "tab": "Charo's Hidden Grave",
+   "location": "Charo's Hidden Grave",
+   "hpText": "20,618",
+   "hp": 20618,
+   "runes": 9959,
+   "drops": [
+    "Tibia's Cookbook"
+   ],
+   "text": "A Tibia Mariner at Charo's Hidden Grave solemnly patrols a quiet river flanked by fields of iridescent crimson lilies. When frightened, he teleports up a small waterfall and summons a Royal Revenant. If pushed further, he eventually retreats behind a large aggregation of gravestones where several strong skeletons await his call."
+  },
+  {
+   "page": "Tibia Mariner",
+   "tab": "Liurnia",
+   "location": "Liurnia of the Lakes (East)",
+   "hpText": "5,155",
+   "hp": 5155,
+   "runes": 4700,
+   "drops": [
+    "Deathroot",
+    "Skeletal Bandit Ashes"
+   ],
+   "text": "A Tibia Mariner encountered on the eastern plateau of Liurnia of the Lakes, in a graveyard near the Carian Study Hall and south-east of the Artist's Shack (Liurnia). This Mariner can summon Skeletal Militiamen."
+  },
+  {
+   "page": "Tibia Mariner",
+   "tab": "Summonwater Village",
+   "location": "Summonwater Village",
+   "hpText": "3,176",
+   "hp": 3176,
+   "runes": 2400,
+   "drops": [
+    "Deathroot",
+    "Skeletal Militiaman Ashes"
+   ],
+   "text": "A Tibia Mariner encountered in Summonwater Village in north-eastern Limgrave. D, Hunter of the Dead, can be found nearby to offer a warning about the mariner in the village, and is also available as a summonable co-operator for the fight. The mariner will summon skeletons regularly throughout the fight."
+  },
+  {
+   "page": "Tibia Mariner",
+   "tab": "Wyndham Ruins",
+   "location": "Wyndham Ruins",
+   "hpText": "7,911",
+   "hp": 7911,
+   "runes": 14000,
+   "drops": [
+    "Deathroot",
+    "Tibia's Summons"
+   ],
+   "text": "A Tibia Mariner encountered in Wyndham Ruins in Altus Plateau. It is surrounded by many skeletons, and can summon giant skeletons during combat. The giant skeletons are able to fire death beams from their eye sockets."
+  },
+  {
+   "page": "Tree Sentinel",
+   "tab": "Altus Plateau",
+   "location": "Altus Plateau",
+   "hpText": "6,461 (Shield), 5,384 (Torch)",
+   "hp": 6461,
+   "runes": 20000,
+   "drops": [
+    "Erdtree Greatshield",
+    "Hero's Rune"
+   ],
+   "text": "A duo of Tree Sentinels fought at the top of the steps leading up to the gate to the Capital Outskirts, just before the Outer Wall Phantom Tree Site of Grace. One wields a shield while the other carries a torch. Although they have separate health bars, both must be defeated to clear the boss and obtain the rewards."
+  },
+  {
+   "page": "Tree Sentinel",
+   "tab": "Limgrave",
+   "location": "Church of Elleh (Limgrave)",
+   "hpText": "2,889",
+   "hp": 2889,
+   "runes": 3200,
+   "drops": [
+    "Golden Halberd"
+   ],
+   "text": "A Tree Sentinel patrols a segment of the road connecting the Church of Elleh to Fringefolk Hero's Grave, found past the First Step. Although it is typically the first boss players encounter beyond the Stranded Graveyard, it is too powerful for low-level characters. It can be circumvented by sneaking through the grass, avoiding the dirt path and the Knight's line of sight."
+  },
+  {
+   "page": "Tree Sentinel",
+   "tab": "Scaduview",
+   "location": "Hinterland (Scaduview)",
+   "hpText": "24,594 (Shield), 20,492 (Torch)",
+   "hp": 24594,
+   "runes": 20000,
+   "drops": [
+    "Blessing of Marika"
+   ],
+   "text": "A duo of Tree Sentinels found in the Hinterlands of Scaduview, guarding the path to the Minor Erdtree incantation. The shield bearer starts out on to the left, on the path to riding across the nearby bridge, while the torch-wielder is riding down the path from Shaman Village. This means they are quite easy to fight separately. As with the Altus duo both of these must be defeated to get their runes, but their respective Blessings are dropped the first time each is killed. * Swordhand of Night Jolán can be summoned as a cooperator for this encounter."
+  },
+  {
+   "page": "Ulcerated Tree Spirit",
+   "tab": "Fringefolk Hero's Grave",
+   "location": "Fringefolk Hero's Grave",
+   "hpText": "6,147",
+   "hp": 6147,
+   "runes": 15000,
+   "drops": [
+    "Golden Seed",
+    "Banished Knight Oleg Ashes"
+   ],
+   "text": "An Ulcerated Tree Spirit encountered at the end of the Fringefolk Hero's Grave. This tree spirit will drop a Golden Seed and the ashes of Banished Knight Oleg upon its defeat."
+  },
+  {
+   "page": "Ulcerated Tree Spirit",
+   "tab": "Giant's Mountaintop Catacombs",
+   "location": "Giants' Mountaintop Catacombs",
+   "hpText": "13,141",
+   "hp": 13141,
+   "runes": 48000,
+   "drops": [
+    "Golden Seed",
+    "Glovewort Picker's Bell Bearing"
+   ],
+   "text": "A tree spirit fought at the end of the Giants' Mountaintop Catacombs. It drops a Golden Seed and the [[Glovewort Picker's Bell Bearing 2| Glovewort Picker's Bell Bearing [2] ]] upon its defeat."
+  },
+  {
+   "page": "Ulcerated Tree Spirit",
+   "tab": "Mt. Gelmir",
+   "location": "Minor Erdtree (Mt. Gelmir)",
+   "hpText": "11,191",
+   "hp": 11191,
+   "runes": 18000,
+   "drops": [
+    "Leaden Hardtear",
+    "Cerulean Hidden Tear"
+   ],
+   "text": "A tree spirit encountered at the Minor Erdtree (Mt. Gelmir), lingering in the aftermath of the Assault on Volcano Manor. It drops the Leaden Hardtear and Cerulean Hidden Tear upon its defeat."
+  }
+ ]
+}

@@ -129,7 +129,17 @@ type ChecklistWeapon = {
   weight?: number
 }
 type ChecklistBoss = { name: string; region?: string; location?: string; drops?: string[] }
-type RosterBoss = { id: string; name: string; region: string; location: string; drops: string[]; hp: number | null }
+type RosterBoss = {
+  id: string
+  name: string
+  region: string
+  location: string
+  drops: string[]
+  hp: number | null
+  group?: string
+  runes?: number | null
+  about?: string | null
+}
 type ChecklistItem = { name: string; description?: string; image?: string; effect?: string; type?: string }
 type ChecklistGrace = { name: string; region?: string; world?: string }
 type ChecklistNpc = { name: string; image?: string; quote?: string; location?: string; role?: string }
@@ -1110,6 +1120,15 @@ function mergeGrace(name: string, forcedId?: string): string | undefined {
   return id
 }
 
+/**
+ * A dump 'role' that is really a drop list or a pasted item description
+ * ("x2 Golden Rune (1), Grovel for Mercy" for Patches) is not a role.
+ */
+function plausibleRole(role: string | undefined): string | undefined {
+  if (!role) return undefined
+  return /\d/.test(role) || role.length > 60 ? undefined : role
+}
+
 /** Prefer the authored NPC locator ("Found at grace:x" / a note) over fan data. */
 function npcLocationFromSummary(summary: string | undefined): string | undefined {
   if (!summary || summary === NO_DATA || summary === 'Location not recorded') return undefined
@@ -1151,14 +1170,14 @@ function mergeNpc(name: string, forcedId?: string): string | undefined {
   if (check) {
     setText(record, 'description', check.quote)
     setText(record, 'location', check.location)
-    setStat(record, 'Role', check.role)
+    setStat(record, 'Role', plausibleRole(check.role))
     if (check.image && !record.image) record.image = check.image
     source(record, 'checklists/npcs')
   }
   const fan = lookupName(fanNpcByName, name)
   if (fan) {
     setText(record, 'location', fan.location)
-    setStat(record, 'Role', fan.role)
+    setStat(record, 'Role', plausibleRole(fan.role))
     source(record, 'fanapi/npcs')
   }
   const placement = lookupName(placementByName, name)
@@ -1959,6 +1978,34 @@ function mergeAcquisitionItems(): void {
  * `related` names the NPC, and the NPC record gains a "Questline" section listing
  * the step order/location/action, so the entity page peeks the whole line.
  */
+/**
+ * A person often has several records — `npc:sellen`, `merchant:sellen`, a boss
+ * or hunt row (Patches). The step merge attaches the questline to whichever it
+ * resolves first, which left 13 NPC pages saying "No tracked quest steps"
+ * (Sellen, Rogier, Seluvis, Patches…). Every same-named NPC/merchant record
+ * without a questline gets the one its twin carries.
+ */
+function shareQuestSteps(): void {
+  const PERSON = new Set(['npc', 'merchant', 'boss'])
+  const withSteps = new Map<string, EntityRecord>()
+  for (const record of records.values()) {
+    if (!PERSON.has(record.kind) || !record.questSteps?.length) continue
+    const key = simpleNorm(record.name)
+    const cur = withSteps.get(key)
+    if (!cur || record.questSteps.length > (cur.questSteps?.length ?? 0)) withSteps.set(key, record)
+  }
+  for (const record of records.values()) {
+    if ((record.kind !== 'npc' && record.kind !== 'merchant') || record.questSteps?.length) continue
+    const twin = withSteps.get(simpleNorm(record.name))
+    if (!twin || twin === record) continue
+    record.questSteps = twin.questSteps
+    const section = twin.sections?.find((s) => /^questline/i.test(s.heading))
+    if (section && !record.sections?.some((s) => /^questline/i.test(s.heading))) {
+      record.sections = [...(record.sections ?? []), section]
+    }
+  }
+}
+
 function mergeNpcQuestSteps(): void {
   const quests = (npcQuestsDoc as {
     quests?: { npc: string; url?: string; steps: { id: string; order: number; location?: string; action?: string; breaks?: boolean }[] }[]
@@ -2481,6 +2528,14 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     setText(record, 'location', row.location)
     if (row.hp != null) setStat(record, 'HP', row.hp)
     addDrops(record, row.drops)
+    if (row.group) {
+      // One encounter of a boss fought in several places: its own wiki tab text
+      // and rune reward, and the shared boss it belongs to.
+      setText(record, 'description', row.about ?? undefined)
+      if (row.runes != null) setStat(record, 'Runes', row.runes)
+      record.related = [...new Set([...(record.related ?? []), 'Part of: ' + row.name])]
+      source(record, 'wiki-db/boss-encounters')
+    }
     source(record, 'boss-roster')
   }
   // Every boss/enemy needs a region for the Task 130 guard: the authored
@@ -2592,6 +2647,8 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   foldUpgrades()
   dedupePrimary()
   mergeBossEncounterEnemies()
+  // After the FMG name-plane cleanup, so empty name rows are already folded away.
+  shareQuestSteps()
   enrichRegions()
 
   // Any other record the catalog places (quest beats, items) gets that region
@@ -2619,6 +2676,24 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     if (related.length) record.related = related
     if (!record.description && !record.location && entity.summary && entity.summary !== 'No data for this entity yet.') {
       setText(record, 'description', entity.summary)
+    }
+  }
+
+  // An encounter borrows what is true of every copy of its boss — strategy and
+  // the combat profile — from the shared record, without overwriting its own.
+  for (const row of bossRoster as RosterBoss[]) {
+    if (!row.group) continue
+    const record = records.get(row.id)
+    const shared = records.get(row.group)
+    if (!record || !shared) continue
+    // Drops are per encounter (its wiki tab). Name-based merges above pooled every
+    // copy's drops onto it; the roster row is the authority, empty when unknown.
+    record.drops = row.drops.length ? [...row.drops] : undefined
+    setText(record, 'strategy', shared.strategy)
+    if (!record.image && shared.image) record.image = shared.image
+    for (const [label, value] of Object.entries(shared.stats ?? {})) {
+      if (label === 'HP' || label === 'Drops' || label === 'Runes') continue
+      setStat(record, label, value)
     }
   }
 

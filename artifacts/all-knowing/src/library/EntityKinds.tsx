@@ -2,11 +2,14 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import type { EntityKind } from '../lib/entityGraph'
 import type { EntityRecord } from '../lib/entityIndex'
 import { areaBand, areaBosses, areaGraces, areaLoot, areaNpcs } from '../lib/areaHub'
+import { encountersOf, rosterRow } from '../lib/bossRoster'
+import { resolvedFactIds } from '../lib/infer'
 import { dungeonsInRegion } from '../lib/dungeons'
 import { loadNpcPlacements, type NpcPlacement } from '../lib/npcPlacements'
 import { loadRegionLevels, type RegionLevel } from '../lib/regionLevels'
 import { loadSecrets, type WallSecret } from '../lib/secrets'
 import { merchants } from '../knowledge/merchants'
+import { npcDisplayCards, type NpcDisplayCard } from '../knowledge/npc-display'
 import { normalizeName } from '../lib/fanImage'
 import type { Character } from '../types'
 import { EntityLink } from '../EntityLink'
@@ -147,6 +150,57 @@ function GraceSections({ entity, character }: { entity: LibraryEntity; character
   )
 }
 
+const SHEET_STATS: [keyof NpcDisplayCard['stats'], string][] = [
+  ['vigor', 'Vig'],
+  ['mind', 'Min'],
+  ['endurance', 'End'],
+  ['strength', 'Str'],
+  ['dexterity', 'Dex'],
+  ['intelligence', 'Int'],
+  ['faith', 'Fai'],
+  ['arcane', 'Arc'],
+]
+
+/**
+ * The NPC's own character sheet — the level and attribute spread the game gives
+ * their player model (EanNewton "ER NPC Levels", `npc-display.ts`). Several NPCs
+ * change between visits (Sellen, Jerren, Patches), so every distinct sheet shows.
+ * Reference only: not their combat HP or damage.
+ */
+function NpcSheet({ name }: { name: string }) {
+  const sheets = useMemo(() => {
+    const target = normalizeName(name)
+    if (target.length < 3) return []
+    const words = new Set(target.split(' '))
+    const matches = npcDisplayCards.filter((card) => {
+      const n = normalizeName(card.name)
+      return n === target || n.startsWith(`${target} `) || n.split(' ').some((w) => w.length > 3 && words.has(w) && target.split(' ').length === 1)
+        || n.endsWith(` ${target}`)
+    })
+    const seen = new Set<string>()
+    return matches.filter((card) => {
+      const key = `${card.name}|${card.level}|${JSON.stringify(card.stats)}`
+      if (seen.has(key)) return false
+      seen.add(key)
+      return true
+    })
+  }, [name])
+  if (!sheets.length) return null
+  return (
+    <Block title="Their character sheet">
+      <Rows>
+        {sheets.map((card) => (
+          <li key={card.id} className="note">
+            <strong>{card.name}</strong> · Lv {card.level} ·{' '}
+            {SHEET_STATS.map(([key, label]) => `${label} ${card.stats[key]}`).join(' · ')}
+          </li>
+        ))}
+      </Rows>
+      <p className="note">Their player-model level and attributes — reference, not their combat HP.</p>
+    </Block>
+  )
+}
+
 function NpcSections({
   entity,
   record,
@@ -208,6 +262,8 @@ function NpcSections({
         )}
       </Block>
 
+      <NpcSheet name={entity.name} />
+
       {stock.length > 0 && (
         <Block title="What they sell">
           <Rows>{stock.slice(0, 12).map((item) => <li key={item}>{item}</li>)}</Rows>
@@ -221,19 +277,63 @@ function NpcSections({
   )
 }
 
-function BossSections({ entity, record, onShowWiki }: { entity: LibraryEntity; record: EntityRecord | undefined; onShowWiki: () => void }) {
-  const drops = record?.drops ?? (entity.stats?.find((s) => s.label === 'Drops')?.value.split(' · ') ?? [])
+/** A boss fought in several places: every location, ticked per encounter. */
+function EncounterList({ groupId, character }: { groupId: string; character: Character }) {
+  const rows = useMemo(() => encountersOf(groupId), [groupId])
+  const known = useMemo(() => resolvedFactIds(character), [character])
+  return (
+    <Block title={`Locations (${rows.filter((r) => known.has(r.id)).length}/${rows.length})`}>
+      <Rows>
+        {rows.map((r) => (
+          <li key={r.id}>
+            <span aria-hidden>{known.has(r.id) ? '✓' : '○'}</span>{' '}
+            <EntityLink id={r.id}>{r.location}</EntityLink>
+            <span className="note">
+              {' · '}{r.region}
+              {r.hp ? ` · ${r.hp.toLocaleString()} HP` : ''}
+              {r.drops.length ? ` · ${r.drops.join(', ')}` : ''}
+            </span>
+          </li>
+        ))}
+      </Rows>
+    </Block>
+  )
+}
+
+function BossSections({
+  entity,
+  character,
+  onShowWiki,
+}: {
+  entity: LibraryEntity
+  character: Character
+  onShowWiki: () => void
+}) {
+  // Drops and strategy are shown once, by the combat card (`BossFacts`); this body
+  // adds only what that card cannot: the per-location list and "about this fight".
+  const encounter = rosterRow(entity.factId)
+  const isGroup = encountersOf(entity.factId).length > 0
+  const ownEncounter = encounter && encounter.id === entity.factId && encounter.group ? encounter : undefined
+  if (isGroup) return <EncounterList groupId={entity.factId} character={character} />
+  if (!ownEncounter) {
+    return (
+      <Block title="Wiki">
+        <button type="button" className="chip" onClick={onShowWiki}>Full wiki page</button>
+      </Block>
+    )
+  }
   return (
     <>
-      <Block title="Drops">
-        {drops.length ? <Rows>{drops.map((d) => <li key={d}>{d}</li>)}</Rows> : <p className="note">No drops recorded.</p>}
+      <Block title="About this fight">
+        {ownEncounter.about && <p className="note">{ownEncounter.about}</p>}
+        <p className="note">
+          {ownEncounter.hp ? `${ownEncounter.hp.toLocaleString()} HP` : ''}
+          {ownEncounter.runes ? ` · ${ownEncounter.runes.toLocaleString()} runes` : ''}
+          {ownEncounter.hp || ownEncounter.runes ? ' · ' : ''}One of {encountersOf(ownEncounter.group!).length} —{' '}
+          all locations of <EntityLink id={ownEncounter.group!} />
+        </p>
+        <button type="button" className="chip" onClick={onShowWiki}>Full wiki page</button>
       </Block>
-      {(record?.strategy || entity.lore) && (
-        <Block title="Strategy">
-          <WikiText className="note" text={(record?.strategy || entity.lore)!} />
-          <button type="button" className="chip" onClick={onShowWiki}>More in Wiki</button>
-        </Block>
-      )}
     </>
   )
 }
@@ -254,7 +354,7 @@ export function EntityKinds({
   if (kind === 'region' || kind === 'dungeon') return <RegionSections entity={entity} character={character} />
   if (kind === 'grace') return <GraceSections entity={entity} character={character} />
   if (kind === 'npc' || kind === 'merchant') return <NpcSections entity={entity} record={record} character={character} onShowWiki={onShowWiki} />
-  if (kind === 'boss' || kind === 'enemy') return <BossSections entity={entity} record={record} onShowWiki={onShowWiki} />
+  if (kind === 'boss' || kind === 'enemy') return <BossSections entity={entity} character={character} onShowWiki={onShowWiki} />
   return null
 }
 

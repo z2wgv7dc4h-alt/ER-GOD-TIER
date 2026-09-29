@@ -61,7 +61,7 @@ drops / strategy fields remain in the table as information.
 
 | kind | entities | Desc | Location | Map | Coords | Image | Stats | Effect | HP+Neg+Loc | Drops | Strategy | Req+Scale+Loc | Desc+Loc |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| boss | 242 | 92.6% | 100% | 66.1% | · | 46.3% | 87.2% | · | 84.7% | 88.4% | 92.1% | · | · |
+| boss | 337 | 94.1% | 100% | 47.5% | · | 63.2% | 91.7% | · | 89.9% | 85.8% | 94.7% | · | · |
 | weapon | 418 | 100% | 100% | 0% | · | 73% | · | · | · | · | · | 100% | · |
 | shield | 69 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | 100% | · |
 | armor | 565 | 100% | 100% | 0% | · | 95.6% | 100% | · | · | · | · | · | 100% |
@@ -75,7 +75,7 @@ drops / strategy fields remain in the table as information.
 | grace | 416 | 100% | 100% | · | 100% | · | · | · | · | · | · | · | · |
 | dungeon | 119 | 90.8% | 100% | 100% | · | 99.2% | · | · | · | · | · | · | · |
 | region | 312 | 99.4% | 99.7% | 0.6% | · | · | · | · | · | · | · | · | · |
-| enemy | 1312 | 100% | 99.3% | 0% | · | 0% | 96.3% | · | 91.2% | 7.2% | 0% | · | · |
+| enemy | 1305 | 100% | 99.3% | 0% | · | 0% | 96.3% | · | 91.1% | 7.2% | 0% | · | · |
 
 ## Spot checks
 
@@ -454,7 +454,7 @@ The ten records Task 119 names, printed straight from the built index.
 - (unresolved)
 - Miquella's Haligtree
 
-### enemy — description + location (enemies) (1303/1312)
+### enemy — description + location (enemies) (1296/1305)
 
 - Avionette Soldier
 - Boar
@@ -475,14 +475,13 @@ dropped silently.
 
 | source | unmatched rows |
 | --- | --- |
-| acquisition | 2148 |
+| acquisition | 2140 |
 | shops | 348 |
 | checklists/graces | 219 |
 | fanapi/locations | 74 |
 | recipes | 64 |
 | checklists/locations | 63 |
-| checklists/bosses | 1 |
-| fanapi/bosses | 1 |
-| armory-bosses | 1 |
+| checklists/bosses | 2 |
+| fanapi/bosses | 2 |
 
 _Regenerated 2026-09-29._

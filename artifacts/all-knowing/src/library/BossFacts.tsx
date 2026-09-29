@@ -142,7 +142,10 @@ export function BossFacts({
   const enrichedHp = !combat && record?.stats?.HP
   const enrichedNegation = !combat && record?.stats?.Negation
   const enrichedPoise = !combat && record?.stats?.Poise
-  const enrichedDrops = !fext?.drops?.length ? record?.drops ?? [] : []
+  // One encounter of a boss fought in several places: the name-matched Fextralife
+  // page lists every copy's drops, so show this encounter's own list instead.
+  const isEncounter = canonical.includes('--')
+  const enrichedDrops = isEncounter || !fext?.drops?.length ? record?.drops ?? [] : []
   const enrichedStrategy = !strategy && record?.strategy ? record.strategy : null
   const enrichedLocation = !armory?.region && !fext?.locations?.length ? record?.location : undefined
 
@@ -246,11 +249,11 @@ export function BossFacts({
         </div>
       )}
 
-      {(fext?.drops?.length || enrichedDrops.length > 0) && (
+      {((!isEncounter && fext?.drops?.length) || enrichedDrops.length > 0) && (
         <div className="lib-panel-block">
           <div className="kicker">Drops</div>
           <div className="lib-scaling">
-            {(fext?.drops ?? enrichedDrops).map((d) => (
+            {(isEncounter ? enrichedDrops : fext?.drops ?? enrichedDrops).map((d) => (
               <span key={d} className="lib-scaling-chip">{d}</span>
             ))}
           </div>

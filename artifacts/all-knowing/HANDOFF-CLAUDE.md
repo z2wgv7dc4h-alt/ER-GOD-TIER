@@ -38,6 +38,19 @@ that consume it, and an **UNUSED** flag.
   boss-fight NPC name rows fold into the real record via wiki redirects; names are repaired
   (`displayName`, never dropping a bracketed qualifier). The shipped index had gone stale vs the
   code — rebuild it (`npm run index:entities`) whenever builder/graph/catalog/source data changes.
+- **Bosses fought in several places are one entity per encounter** (33 bosses → 101 encounters;
+  Night's Cavalry ×9, Tree Sentinel, Deathbird…). `scripts/build-boss-roster.mjs` keys each by the
+  game's kill flag, gives it `<shared id>--<place>`, its own map pin (boss-list → boss-pins) and its
+  own HP / runes / drops / description from the wiki's per-encounter tabs
+  (`scripts/export-boss-encounters.py` → `open/wiki-db/boss-encounters.json`, 76 matched) or its own
+  wiki page when it has a distinct name (4). 23 encounters have no per-location drop in any source
+  and show none. Each encounter is a catalog fact implying only its own region; the shared id implies
+  nothing location-specific and counts as known once any encounter is (`knownFactIds`). The shared
+  page shows "N of M defeated" and lists every location; you log encounters, not the shared id.
+  A shared id logged before this change shows "Logged — which one?".
+- **Used data:** NPC pages show the NPC's own character sheet (`knowledge/npc-display.ts`);
+  Library › Guides › Resources lists the community tools (`knowledge/awesome.ts`). Questlines
+  are shared across an NPC's npc/merchant/boss twin records (13 NPC pages were missing theirs).
 - **Audits:** `audit:pages` 5 flagged (all genuine gaps: Fetal Position (cut), Let Us Go Together,
   May the Best Win, Ring of Miquella, The Noble Broken Mask); `audit:progress` 6 characters × 16
   areas, 0 violations; `audit:links` 0 dead.

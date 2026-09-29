@@ -216,8 +216,11 @@ export type CoverageGuard = { kind: string; field: CoverageField; label: string;
 export const GUARD_MINIMUMS: CoverageGuard[] = [
   { kind: 'grace', field: 'region', label: 'region', min: 90 },
   { kind: 'boss', field: 'location', label: 'location', min: 90 },
-  // 88% of boss records carry drops; unmatched drop names are the rest, never invented.
-  { kind: 'boss', field: 'drops', label: 'drops', min: 85 },
+  // Unmatched drop names are the rest, never invented. Lowered 85 -> 80 when bosses
+  // fought in several places became one record per encounter: 23 encounters have
+  // no per-location drop in any source (Bell Bearing Hunter, Putrid Avatar,
+  // Ghostflame Dragon…), and the pooled all-copies list they used to show was wrong.
+  { kind: 'boss', field: 'drops', label: 'drops', min: 80 },
   { kind: 'remembrance', field: 'boss', label: 'boss', min: 90 },
   { kind: 'remembrance', field: 'trades', label: 'Enia trades', min: 90 },
   // Many of the 312 region records are sub-areas with no tracked entity inside.
