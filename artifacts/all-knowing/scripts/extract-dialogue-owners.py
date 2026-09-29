@@ -9,8 +9,8 @@ game itself finds it:
     NpcParam row id  ->  NpcName (the speaker)
 
 PARTS field offsets (MSBE, verified against real maps: e.g. m60_44_34_00
-c2010_9000 has NPCParamID 20100000 @ +0x2a8 and TalkID 216006000 @ +0x2b0, and
-20100000 is Blaidd): NPCParamID @ +0x2a8, TalkID @ +0x2b0. A candidate is only
+c2010_9000 has NPCParamID @ +0x2ac (+0x2a8 is its ThinkParamID) and TalkID 216006000 @ +0x2b0, and
+Blaidd): NPCParamID @ +0x2ac, TalkID @ +0x2b0. A candidate is only
 kept when its NPCParamID is a real NpcParam row, so an object part whose bytes
 coincidentally look like a pair cannot become a speaker.
 
@@ -48,7 +48,7 @@ OUT = os.path.join(ROOT, "public", "sourced", "open", "dialogue-owners.json")
 ESD_NAME = re.compile(r"[\\/]t(\d+)\.esd$", re.IGNORECASE)
 
 # MSBE part field offsets (see module docstring).
-PART_NPC_PARAM_ID = 0x2A8
+PART_NPC_PARAM_ID = 0x2AC  # NPCParamID; 0x2A8 is ThinkParamID (often the same base id, sometimes 1)
 PART_TALK_ID = 0x2B0
 
 

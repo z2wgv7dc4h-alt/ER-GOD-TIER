@@ -61,7 +61,7 @@ drops / strategy fields remain in the table as information.
 
 | kind | entities | Desc | Location | Map | Coords | Image | Stats | Effect | HP+Neg+Loc | Drops | Strategy | Req+Scale+Loc | Desc+Loc |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| boss | 280 | 97.1% | 100% | 54.6% | · | 74.3% | 99.3% | · | 98.6% | 90% | 98.6% | · | · |
+| boss | 280 | 97.1% | 100% | 87.1% | · | 82.1% | 99.6% | · | 98.6% | 88.6% | 98.6% | · | · |
 | weapon | 418 | 100% | 100% | 0% | · | 73% | · | · | · | · | · | 100% | · |
 | shield | 69 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | 100% | · |
 | armor | 565 | 100% | 100% | 0% | · | 95.6% | 100% | · | · | · | · | · | 100% |
@@ -71,11 +71,11 @@ drops / strategy fields remain in the table as information.
 | spirit | 63 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | · | 100% |
 | item | 441 | 100% | 100% | 0% | · | 91.6% | 100% | · | · | · | · | · | 100% |
 | material | 3 | 100% | 100% | 0% | · | 66.7% | · | · | · | · | · | · | · |
-| npc | 188 | 99.5% | 82.4% | 9% | · | 28.2% | 85.6% | · | · | · | · | · | · |
+| npc | 188 | 99.5% | 82.4% | 30.9% | · | 31.9% | 85.6% | · | · | · | · | · | · |
 | grace | 416 | 100% | 100% | · | 100% | · | · | · | · | · | · | · | · |
 | dungeon | 119 | 90.8% | 100% | 100% | · | 99.2% | · | · | · | · | · | · | · |
 | region | 312 | 99.4% | 99.7% | 0.6% | · | · | · | · | · | · | · | · | · |
-| enemy | 1326 | 100% | 99.2% | 0% | · | 0% | 96.4% | · | 91% | 7.3% | 0% | · | · |
+| enemy | 1276 | 100% | 99.2% | 0% | · | 28.2% | 96.4% | · | 91.2% | 44.7% | 0% | · | · |
 
 ## Spot checks
 
@@ -97,7 +97,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Status resist:** Poison 154 · Scarlet Rot 154 · Bleed 154 · Sleep 999 · Madness 999 · Curse 999
 
-**Drops:** 12,000 Runes · Talisman Pouch · 16,800 Runes · Viridian Amber Medallion 1 · Viridian Amber Medallion +1
+**Drops:** Talisman Pouch · Viridian Amber Medallion 1 · Viridian Amber Medallion +1
 
 **Strategy:** Health: 4,174 HP Defense: 103 Stance: 80 Parryable: Yes, but 2 parries are required per stance break Is vulnerable to a critical hit after being stance broken or parried Damage: Standard, Strike, Pierce, Holy Drops 12,000, Talisman Pouch (NG only) Negations (or Absorptions) Standard: 0 Slash: -10 Strike: 0 Pierce: 0 Magic: 0 Fire: 0 Lightning: 0 Holy: 40 The negation numbers are the&#160;% of your damage that gets blocked. For example, if a negation is 60, 40% of that damage by that type will go through and 60% will be negated. Bigger number = less damage.
 
@@ -119,7 +119,9 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Status resist:** Poison 542 · Scarlet Rot 542 · Bleed 154 · Sleep 252 · Madness 999 · Curse 999
 
-**Drops:** Malenia's Great Rune · Remembrance of the Rot Goddess · 480,000 Runes · Miquella's Needle · * Malenia's Great Rune
+**Runes:** 480000
+
+**Drops:** Malenia's Great Rune · Remembrance of the Rot Goddess · Miquella's Needle · * Malenia's Great Rune
 
 **Strategy:** Health: 33,251 HP (Phase 1: 18,473, Phase 2: 14,778 ) Defense: 123 Stance: 80 Parryable: Yes, but 3 parries are required per stance break Is vulnerable to a critical hit after being stance broken or parried Damage: Standard, Slash, Pierce (Phase 1), Standard, Slash, Pierce, Holy (Phase 2) Inflicts: Scarlet Rot (Phase 2) Drops 480,000, Malenia's Great Rune, Remembrance of the Rot Goddess Negations (or Absorptions) Standard: 10 Slash: 10 Strike: 10 Pierce: 10 Magic: 20 Fire: 0 (in water: 10 ) Lightning: 20 (in water: 10 ) Holy: 40 The negation numbers are the&#160;% of your dam…
 
@@ -141,7 +143,9 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Status resist:** Poison 154 · Scarlet Rot 112 · Bleed 154 · Sleep 252 · Madness 999 · Curse 999
 
-**Drops:** Radahn's Great Rune · Remembrance of the Starscourge · 70,000 Runes · Remembrance of the Starscourge, Radahn's Great Rune
+**Runes:** 70000
+
+**Drops:** Radahn's Great Rune · Remembrance of the Starscourge · Remembrance of the Starscourge, Radahn's Great Rune
 
 **Strategy:** Health: 9,572 HP Defense: 113 Stance: 200 Parryable: No Is vulnerable to a critical hit after being stance broken Damage: Standard, Pierce, Magic Drops 70,000, Remembrance of the Starscourge, Radahn's Great Rune Negations (or Absorptions) Standard: 10 Slash: 10 Strike: 10 Pierce: 0 Magic: 20 Fire: 20 Lightning: 20 Holy: 40 The negation numbers are the&#160;% of your damage that gets blocked. For example, if a negation is 60, 40% of that damage by that type will go through and 60% will be negated. Bigger number = less damage.
 
@@ -163,7 +167,9 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Status resist:** Poison 154 · Scarlet Rot 154 · Bleed 154 · Sleep 154 · Madness 999 · Curse 999
 
-**Drops:** Godrick's Great Rune · Remembrance of the Grafted · Godrick's Great Rune, Remembrance of the Grafted · 20,000 Runes
+**Runes:** 20000
+
+**Drops:** Godrick's Great Rune · Remembrance of the Grafted · Godrick's Great Rune, Remembrance of the Grafted
 
 **Strategy:** Health: 6,080 HP Defense: 105 Stance: 105 Parryable: No Is vulnerable to a critical hit after being stance broken Has increased defense during phase transition His Stormcaller attack deflects throwable items like arrows and pots. Damage: Standard, Strike (phase 1) Standard, Fire, Strike (phase 2) Drops 20,000, Godrick's Great Rune, Remembrance of the Grafted Negations (or Absorptions) Standard: 0 Slash: 0 Strike: 0 Pierce: 0 Magic: 20 Fire: 20 Lightning: 20 Holy: 40 The negation numbers are the&#160;% of your damage that gets blocked.
 
@@ -454,7 +460,7 @@ The ten records Task 119 names, printed straight from the built index.
 - (unresolved)
 - Miquella's Haligtree
 
-### enemy — description + location (enemies) (1316/1326)
+### enemy — description + location (enemies) (1266/1276)
 
 - Avionette Soldier
 - Banished Knight

@@ -47,7 +47,7 @@ PARAMDEX = os.path.join(OPEN, "paramdex")
 
 # MSB offsets (verified by the engine's extract_items.py / probe_msb_treasure.py)
 PART_POSITION = 0x20
-PART_NPC_PARAM_ID = 0x2A8
+PART_NPC_PARAM_ID = 0x2AC  # NPCParamID; 0x2A8 is ThinkParamID (often the same base id, sometimes 1)
 EVENT_TYPE_TREASURE = 4
 EV_TYPE = 0x0C
 EV_TYPEDATA_PTR = 0x20

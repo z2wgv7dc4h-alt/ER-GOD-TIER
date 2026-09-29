@@ -22,6 +22,7 @@ and the interactive engine's markers use, and can be drawn directly.
 Read-only against the install.
 """
 import argparse
+import re
 import json
 import os
 import struct
@@ -45,7 +46,7 @@ LEGACY = os.path.join(ROOT, "vendor", "elden-ring-map", "data", "legacy-conv.jso
 OUT = os.path.join(ROOT, "public", "sourced", "npc-placements.json")
 
 PART_POSITION = 0x20        # 3 x float32, local position
-PART_NPC_PARAM_ID = 0x2A8    # int32, NPCParamID
+PART_NPC_PARAM_ID = 0x2AC    # int32, NPCParamID (0x2A8 is ThinkParamID; verified: 0x2AC matches NpcParam for 1907/1956 enemy parts)
 
 TILE_WORLD = 256
 OFFSET_X = -7168
@@ -58,6 +59,15 @@ WORLD_BY_MASTER = {"M00": "overworld", "M01": "underground", "M10": "shadow"}
 # (20, 21, 28) are M10.
 SOTE_UNDERGROUND_AREAS = {22, 25, 40, 41, 42, 43}
 UNDERGROUND_SUFFIX = " · underground"
+
+
+JUNK = re.compile(r"^(human|talk dummy|.* dummy|c\d{4}|smithing table|grand altar of dragon communion|warrior jar|commoner)$", re.I)
+
+
+def base_name(name):
+    """"Needle Knight Leda (NPC) (Enir-Ilim)" -> "Needle Knight Leda"; "Godfrey- First Elden Lord" -> "Godfrey, First Elden Lord"."""
+    name = re.sub(r"\s*\(.*$", "", name or "").strip()
+    return re.sub(r"(\w)- ", r"\1, ", name)
 
 
 def map_area(map_id):
@@ -187,6 +197,11 @@ def main():
 
     names = npc_names()
     talkers = dialogue_npcs()
+    # A talker is a person, not one NpcParam row: Blaidd has several rows (one per
+    # quest stage) and only some are named by a talk script. Match by base name
+    # ("Needle Knight Leda (NPC) (Enir-Ilim)" -> "Needle Knight Leda").
+    talker_names = {base_name(names[int(t)]) for t in talkers if t.isdigit() and int(t) in names}
+    talker_names = {n for n in talker_names if n and not JUNK.match(n)}
     project = load_projector()
     print(f"NpcParam names: {len(names)}  dialogue NPCs: {len(talkers)}  projector: {'on' if project else 'OFF'}")
 
@@ -203,14 +218,14 @@ def main():
             continue
         for off, _n in m.entries("PARTS_PARAM_ST"):
             npc = m.i32(off + PART_NPC_PARAM_ID)
-            if npc not in names or str(npc) not in talkers:
+            if npc not in names or base_name(names[npc]) not in talker_names:
                 continue
             x, y, z = m.vec3(off + PART_POSITION)
             key = (npc, mid, round(x, 1), round(y, 1), round(z, 1))
             if key in seen:
                 continue
             seen.add(key)
-            name = names[npc]
+            name = base_name(names[npc])
             if map_area(mid) in SOTE_UNDERGROUND_AREAS:
                 # Task 128: read as underground on the Shadow surface map.
                 name += UNDERGROUND_SUFFIX

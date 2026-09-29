@@ -56,6 +56,7 @@ import fanSpirits from '../../public/sourced/open/fanapi/spirits.json'
 import fanItems from '../../public/sourced/open/fanapi/items.json'
 import fanNpcs from '../../public/sourced/open/fanapi/npcs.json'
 import fanLocations from '../../public/sourced/open/fanapi/locations.json'
+import fanCreatures from '../../public/sourced/open/fanapi/creatures.json'
 import magicData from '../../public/sourced/open/magic.json'
 import gapfillDoc from '../../public/sourced/open/gapfill.json'
 import mapExtras from '../../public/sourced/guide/map-extras.json'
@@ -140,6 +141,7 @@ type RosterBoss = {
   group?: string
   runes?: number | null
   about?: string | null
+  coords?: { x: number; y: number; map?: string | null } | null
 }
 type ChecklistItem = { name: string; description?: string; image?: string; effect?: string; type?: string }
 type ChecklistGrace = { name: string; region?: string; world?: string }
@@ -2240,6 +2242,119 @@ const NIGHTREIGN_TITLES = new Set(
   ((nightreignDoc as { records?: { title: string }[] }).records ?? []).map((r) => simpleNorm(r.title)),
 )
 
+/**
+ * Match every boss, enemy and NPC page to the data the repo already carries:
+ *
+ *  - enemies: engine placeholder rows (dummies, BuddyStone, Bonfire, the bare
+ *    player "Human") are not enemies and are dropped; placements, maps and region
+ *    come from the vanilla map files by the exact NpcParam id
+ *    (`open/msb-enemies.json`); drops/description from the vanilla wiki enemy
+ *    page and FanAPI creatures, and the image, by the enemy's base name
+ *    ("Red Bear (Boss) (Gravesite Plain …)" -> "Red Bear");
+ *  - bosses: the roster's rune reward and map pin for every fight, an image by
+ *    the fight's base name (encounters and variants share their boss's art);
+ *  - NPCs: region and map pin from the NPC placements, an image by name.
+ */
+const ENGINE_PLACEHOLDER = /^(human|buddystone|bonfire|c\d{4}|.* dummy)$/i
+function baseName(name: string): string {
+  return name.replace(/^\(.*?\)\s*/, '').replace(/\s*\(.*$/, '').replace(/\s*×\d+$/, '').trim()
+}
+function imageFor(name: string): string | undefined {
+  const index = imageIndex as Record<string, string>
+  return index[simpleNorm(name)] ?? index[simpleNorm(baseName(name))]
+}
+
+function enrichCreatures(): void {
+  // Vanilla placements per NpcParam id.
+  const placements = new Map<number, string[]>()
+  for (const row of msbEnemies as { id?: string; map?: string }[]) {
+    const npc = Number(row.id)
+    if (!npc || !row.map) continue
+    const list = placements.get(npc) ?? []
+    list.push(row.map)
+    placements.set(npc, list)
+  }
+  const wikiEnemies = new Map<string, { title: string; description?: string; drops?: string[]; location?: string }>()
+  for (const row of (wikiEnemyDoc as { records?: { title: string; description?: string; drops?: string[]; location?: string }[] }).records ?? []) {
+    wikiEnemies.set(simpleNorm(row.title), row)
+  }
+  const creatureDrops = new Map<string, string[]>()
+  for (const row of fanCreatures as { name: string; drops?: string[] }[]) {
+    if (row.drops?.length) creatureDrops.set(simpleNorm(row.name), row.drops)
+  }
+
+  for (const [id, record] of [...records]) {
+    if (record.kind !== 'enemy') continue
+    if (ENGINE_PLACEHOLDER.test(record.name.trim()) && !hasEntity(id)) {
+      records.delete(id)
+      continue
+    }
+    const npc = Number(id.split(':')[1])
+    const maps = placements.get(npc)
+    if (maps?.length) {
+      const distinct = [...new Set(maps)]
+      setStat(record, 'Placements', maps.length)
+      const located = describeMaps(distinct)
+      // The install's own placements outrank the older combat dump's map list.
+      if (located) record.location = located
+      const votes = new Map<string, number>()
+      for (const m of maps) {
+        const region = mapInfo(m)?.region
+        if (region) votes.set(region, (votes.get(region) ?? 0) + 1)
+      }
+      const region = voteWinner(votes)
+      if (region) record.region = region
+      source(record, 'msb-enemies')
+    }
+    const base = simpleNorm(baseName(record.name))
+    const wiki = wikiEnemies.get(base)
+    if (wiki) {
+      setText(record, 'description', wiki.description)
+      addDrops(record, wiki.drops ?? [])
+      source(record, 'wiki-db/enemy')
+    }
+    const drops = creatureDrops.get(base)
+    if (drops) {
+      addDrops(record, drops)
+      source(record, 'fanapi/creatures')
+    }
+    if (!record.image) record.image = imageFor(record.name)
+    // Rune rewards are not item drops ("Runes", "8561 Runes").
+    if (record.drops) {
+      record.drops = record.drops.filter((d) => !/^[\d,.\s]*runes?$/i.test(String(d).trim()))
+      if (!record.drops.length) delete record.drops
+    }
+  }
+
+  for (const row of bossRoster as RosterBoss[]) {
+    const record = records.get(row.id)
+    if (!record) continue
+    if (row.runes != null) setStat(record, 'Runes', row.runes)
+    const c = row.coords
+    if (!record.map && c && c.x >= 0 && c.x <= 100 && c.y >= 0 && c.y <= 100) {
+      record.map = { x: c.x, y: c.y, map: c.map ?? undefined }
+    }
+    if (!record.image) record.image = imageFor(row.name)
+  }
+
+  const npcPins = new Map<string, { map: string; px?: number; py?: number; world?: string }>()
+  for (const p of (npcPlacementsDoc as { placements?: { name: string; map: string; px?: number; py?: number; world?: string }[] }).placements ?? []) {
+    const key = simpleNorm(p.name.replace(/ · underground$/, ''))
+    if (!npcPins.has(key)) npcPins.set(key, p)
+  }
+  for (const record of records.values()) {
+    if (record.kind !== 'npc' && record.kind !== 'merchant') continue
+    const pin = npcPins.get(simpleNorm(record.name))
+    if (pin) {
+      if (!record.region) record.region = mapInfo(pin.map)?.region
+      if (!record.map && typeof pin.px === 'number' && typeof pin.py === 'number') {
+        record.map = { x: Math.round((pin.px / 10496) * 10000) / 100, y: Math.round((pin.py / 10496) * 10000) / 100, map: pin.map, world: pin.world }
+      }
+    }
+    if (!record.image) record.image = imageFor(record.name)
+  }
+}
+
 function foldFmgNpcRows(): void {
   const byName = new Map<string, string>()
   for (const [id, record] of records) {
@@ -2680,6 +2795,9 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   mergeGapfill()
 
   fillEnemyDescriptions()
+  enrichCreatures()
+  // Placements can give two variants of one enemy the same name + location.
+  dedupePrimary()
 
   // Related labels from the graph edges + a wiki Summary fallback for anything
   // still without a description.
@@ -2728,6 +2846,11 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   }
 
   for (const record of records.values()) {
+    // Rune rewards are not item drops ("120,000 Runes", "Runes"); the runes stat carries them.
+    if (record.drops) {
+      record.drops = record.drops.filter((d) => !/^[\d,.\s]*runes?(\s*\(ng[^)]*\))?$/i.test(String(d).trim()))
+      if (!record.drops.length) delete record.drops
+    }
     prune(record)
     // Repair dump casing ("Axe Of Godfrey") so every screen, not just the
     // entity panel, shows the game's spelling. Ids are unchanged.

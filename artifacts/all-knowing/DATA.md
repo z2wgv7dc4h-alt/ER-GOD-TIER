@@ -63,8 +63,9 @@ All under `public/sourced/` unless noted.
      holy 40; hp 2489; resist 542/542/154/252/999/999).
   2. MSB `PARTS_PARAM_ST` enemy parts give the authoritative `NPCParamID` per placement (located
      by matching ints against the real NpcParam id set — the field sits at entry +0x2ac, falling
-     back to +0x2a8). Placements are joined to the existing `open/msb-enemies.json` by
-     `(map, name)`; 7642 of 8827 placements resolve.
+     back to +0x2a8). `open/msb-enemies.json` now carries that NPCParamID per placement
+     (`scripts/extract-vanilla-open.py`, +0x2ac; +0x2a8 is the ThinkParamID), so the index joins
+     every placement to its enemy exactly: 2,270 of 2,271 combat rows, ~31k vanilla placements.
   3. Catalog bosses in `npc-combat.json` are excluded, so the two tables partition the roster.
   4. `poise` is NpcParam `superArmorDurability` (Task 17's boss `poise` source); negation is
      `round((1 - *DamageCutRate) * 100)`; status resistances map to `resist_*` fields.

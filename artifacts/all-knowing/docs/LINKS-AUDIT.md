@@ -50,34 +50,34 @@ table. The table below is the current traversal; the guards snapshot it.
 | boss.drops | ≥ 80% | 87.9% | PASS |
 | remembrance.boss | ≥ 90% | 100% | PASS |
 | remembrance.Enia trades | ≥ 90% | 100% | PASS |
-| region.contents | ≥ 30% | 31.7% | PASS |
+| region.contents | ≥ 30% | 33.3% | PASS |
 | material.source | ≥ 90% | 100% | PASS |
 | talisman.source | ≥ 90% | 91.8% | PASS |
-| weapon.source | ≥ 85% | 85.1% | PASS |
+| weapon.source | ≥ 85% | 86.2% | PASS |
 | spell.source | ≥ 90% | 96.3% | PASS |
-| npc.location | ≥ 65% | 75.4% | PASS |
+| npc.location | ≥ 65% | 77.4% | PASS |
 
 All guard minimums met.
 
 | kind | entities | source | drops | location | contents | region | stock | boss | trades |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| armor | 750 | 72.5% | · | · | · | · | · | · | · |
+| armor | 750 | 74.5% | · | · | · | · | · | · | · |
 | ash | 124 | 72.6% | · | · | · | · | · | · | · |
 | boss | 297 | · | 87.9% | 98.3% | · | · | · | · | · |
-| dungeon | 119 | · | · | · | 84.9% | · | · | · | · |
+| dungeon | 119 | · | · | · | 85.7% | · | · | · | · |
 | grace | 416 | · | · | · | · | 90.9% | · | · | · |
-| item | 1188 | 73.3% | · | · | · | · | · | · | · |
+| item | 1188 | 73.5% | · | · | · | · | · | · | · |
 | material | 3 | 100% | · | · | · | · | · | · | · |
 | merchant | 106 | · | · | · | · | · | 100% | · | · |
-| npc | 195 | · | · | 75.4% | · | · | · | · | · |
+| npc | 195 | · | · | 77.4% | · | · | · | · | · |
 | quest | 468 | · | · | 68.4% | · | · | · | · | · |
-| region | 312 | · | · | · | 31.7% | · | · | · | · |
+| region | 312 | · | · | · | 33.3% | · | · | · | · |
 | remembrance | 25 | · | · | · | · | · | · | 100% | 100% |
-| shield | 67 | 85.1% | · | · | · | · | · | · | · |
+| shield | 67 | 86.6% | · | · | · | · | · | · | · |
 | spell | 217 | 96.3% | · | · | · | · | · | · | · |
 | spirit | 79 | 87.3% | · | · | · | · | · | · | · |
 | talisman | 158 | 91.8% | · | · | · | · | · | · | · |
-| weapon | 443 | 85.1% | · | · | · | · | · | · | · |
+| weapon | 443 | 86.2% | · | · | · | · | · | · | · |
 
 ## Unlinked mentions
 
@@ -87,10 +87,10 @@ the links a plain renderer still owes.
 
 | surface | linkable | unlinked before | unlinked after |
 | --- | --- | --- | --- |
-| entity descriptions | 1266 | 0 | 0 |
+| entity descriptions | 1197 | 0 | 0 |
 | wiki sections | 1556 | 0 | 0 |
 | acquisition text | 1527 | 0 | 0 |
-| quest step actions | 605 | 577 | 0 |
+| quest step actions | 604 | 577 | 0 |
 | mechanics bodies | 181 | 0 | 0 |
 
 _Regenerated 2026-09-29._

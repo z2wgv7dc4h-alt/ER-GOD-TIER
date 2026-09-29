@@ -11,7 +11,11 @@ describe('npc placements', () => {
   it('keeps the placed talkers (not enemy spawns)', () => {
     expect(rows.length).toBeGreaterThan(1000)
     expect(rows.length).toBeLessThan(3000)
-    expect(new Set(rows.map((r) => r.npc)).size).toBe(95)
+    // Each person has several NpcParam rows (one per quest stage / variant, read at
+    // MSB +0x2AC); the placements name them by person.
+    const people = new Set(rows.map((r) => r.name.replace(/ · underground$/, '')))
+    expect(people.size).toBeGreaterThanOrEqual(100)
+    expect([...people].some((n) => n.includes('('))).toBe(false)
   })
 
   it('matches by name and summarises maps', () => {
