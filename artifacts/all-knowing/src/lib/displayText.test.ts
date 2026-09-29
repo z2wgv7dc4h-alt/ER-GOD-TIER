@@ -14,6 +14,10 @@ describe('displayName', () => {
     expect(displayName('church of elleh')).toBe('Church of Elleh')
   })
 
+  it("keeps the game's own spelling even when it capitalises connectives", () => {
+    expect(displayName('Grovel For Mercy')).toBe('Grovel For Mercy')
+  })
+
   it('keeps a correctly spelled name', () => {
     expect(displayName('Margit, the Fell Omen')).toBe('Margit, the Fell Omen')
   })

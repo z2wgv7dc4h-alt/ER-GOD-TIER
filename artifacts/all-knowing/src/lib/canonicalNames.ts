@@ -43,8 +43,8 @@ const MINOR_WORDS = new Set(['of', 'the', 'and', 'in', 'to', 'at', 'a', 'an', 'f
  * ("Ranni The Witch") are lowered as the game writes them ("Ranni the Witch").
  */
 export function displayName(name: string): string {
-  const canon = canonicalName(name)
-  if (canon !== name) return canon
+  const known = CANONICAL_BY_NAME.get(normalizeName(name))
+  if (known) return known
   const words = name.split(' ')
   if (!/[A-Z]/.test(name)) {
     return words.map((w, i) => (i > 0 && MINOR_WORDS.has(w) ? w : w.charAt(0).toUpperCase() + w.slice(1))).join(' ')

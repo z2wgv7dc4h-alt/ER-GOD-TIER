@@ -1,8 +1,11 @@
 import wikiManifest from '../../public/sourced/wiki/manifest.json'
 import { emptyCharacter } from '../data/seed'
 import { allRecords, entityIndexReady, type EntityRecord } from './entityIndex'
-import { status, type EntityKind } from './entityGraph'
+import { allEntities, status, type EntityKind } from './entityGraph'
 import { canonicalName, hasBadCasing } from './canonicalNames'
+import { kindStatus, NO_DATA, overlayEntity, trackActionLabel } from '../library/pageModel'
+import { scenarioCharacter } from './__fixtures__/scenarios/urmummytoilet'
+import type { Character } from '../types'
 import { isNavigationalWikiPage } from './wikiSearch'
 
 /**
@@ -27,6 +30,8 @@ export type PageIssue =
   | 'wrong-actions'
   | 'wiki-nav'
   | 'unreachable'
+  | 'junk'
+  | 'duplicate'
 
 export type PageAuditRow = {
   id: string
@@ -45,6 +50,8 @@ export type KindAudit = {
   genericStatus: number
   wrongActions: number
   wikiNav: number
+  junk: number
+  duplicate: number
 }
 
 export type PageAuditReport = {
@@ -122,6 +129,7 @@ export function pageDataFor(record: EntityRecord, fixed = true) {
 export function auditPages(opts: { fixed?: boolean } = {}): PageAuditReport {
   const fixed = opts.fixed ?? true
   const rows: PageAuditRow[] = []
+  const characters = fixed ? [emptyCharacter, scenarioCharacter()] : []
   if (entityIndexReady()) {
     for (const record of allRecords()) {
       const issues: PageIssue[] = []
@@ -129,7 +137,9 @@ export function auditPages(opts: { fixed?: boolean } = {}): PageAuditReport {
 
       if (!hasPlayerText(record) && !record.image) issues.push('empty')
 
-      if (!fixed) {
+      if (fixed) {
+        issues.push(...renderedIssues(record, characters))
+      } else {
         for (const field of textFields(record)) {
           const text = stripLinks(field)
           if (RAW_FACT_ID.test(text) || ASSET_CODE.test(text)) {
@@ -145,7 +155,30 @@ export function auditPages(opts: { fixed?: boolean } = {}): PageAuditReport {
         if (NAVIGATIONAL_BY_ENTITY.has(record.id)) issues.push('wiki-nav')
       }
 
-      rows.push({ id: record.id, kind: record.kind, name, issues })
+      rows.push({ id: record.id, kind: record.kind, name: fixed ? overlayEntity(record.id).name : name, issues })
+    }
+    if (fixed) {
+      // Graph ids the app links to that have no index row still open a page.
+      const indexed = new Set(rows.map((r) => r.id))
+      for (const e of allEntities()) {
+        if (indexed.has(e.id) || e.id.startsWith('wiki:')) continue
+        const stub: EntityRecord = { id: e.id, kind: e.kind, name: e.name, sources: [] }
+        const issues = renderedIssues(stub, characters)
+        const lore = overlayEntity(e.id).lore
+        if (!lore && !e.icon) issues.unshift('empty')
+        rows.push({ id: e.id, kind: e.kind, name: overlayEntity(e.id).name, issues })
+      }
+    }
+  }
+
+  if (fixed) {
+    // An NPC page with nothing of its own that shares a boss's name is the boss
+    // filed twice. NPCs with a questline you also fight (Patches, Millicent) keep both.
+    const bossNames = new Set(rows.filter((r) => r.kind === 'boss').map((r) => r.name.toLowerCase()))
+    for (const row of rows) {
+      if ((row.kind === 'npc' || row.kind === 'merchant') && row.issues.includes('empty') && bossNames.has(row.name.toLowerCase())) {
+        row.issues.push('duplicate')
+      }
     }
   }
 
@@ -161,6 +194,8 @@ export function auditPages(opts: { fixed?: boolean } = {}): PageAuditReport {
       genericStatus: 0,
       wrongActions: 0,
       wikiNav: 0,
+      junk: 0,
+      duplicate: 0,
     }
     entry.total += 1
     if (row.issues.length) entry.flagged += 1
@@ -170,6 +205,8 @@ export function auditPages(opts: { fixed?: boolean } = {}): PageAuditReport {
     if (row.issues.includes('generic-status')) entry.genericStatus += 1
     if (row.issues.includes('wrong-actions')) entry.wrongActions += 1
     if (row.issues.includes('wiki-nav')) entry.wikiNav += 1
+    if (row.issues.includes('junk')) entry.junk += 1
+    if (row.issues.includes('duplicate')) entry.duplicate += 1
     byKind.set(row.kind, entry)
   }
 
@@ -193,3 +230,40 @@ const OWNABLE_REFERENCE = new Set<EntityKind>([
 
 /** Kinds the old generic action footer gave a bogus "Mark owned" to. */
 const INVALID_ACTION_KINDS = new Set<EntityKind>(['region', 'dungeon', 'grace', 'npc', 'merchant'])
+
+/** Names that are character-creator/equip-slot placeholders, not game entities. */
+export const JUNK_NAME = /^(?:type d+|arms|body|head|legs|travel hairstyle|someone yet unseen)$/i
+
+const TITLE_CASE_CONNECTIVE = /s(?:Of|The|And|In|To|At|For|From)s/
+
+/**
+ * Every rule checked against what the page actually renders: the overlay's
+ * entity (name, region, lore), the kind status line for an empty and a mid-game
+ * character, and the track button. This is the same code the panel runs.
+ */
+function renderedIssues(record: EntityRecord, characters: Character[]): PageIssue[] {
+  const issues: PageIssue[] = []
+  const kind = record.kind as EntityKind
+  const entity = overlayEntity(record.id)
+  const texts = [entity.name, entity.lore ?? '']
+  let generic = false
+  for (const character of characters) {
+    const line = kindStatus(kind, status(record.id, character), entity, record, character)
+    texts.push(line.label, line.why)
+    if (!line.why.trim() || line.why === 'Available now.') generic = true
+  }
+  if (texts.some((t) => RAW_FACT_ID.test(stripLinks(t)) || ASSET_CODE.test(stripLinks(t)))) issues.push('raw-id')
+  // The game's own spelling always wins ("Grovel For Mercy" is how the game writes it).
+  const gameSpelling = canonicalName(entity.name.toLowerCase()) === entity.name
+  if (
+    entity.name === entity.name.toLowerCase() ||
+    (TITLE_CASE_CONNECTIVE.test(entity.name) && !gameSpelling) ||
+    hasBadCasing(entity.name)
+  ) issues.push('bad-casing')
+  if (generic || texts.some((t) => t.includes(NO_DATA))) issues.push('generic-status')
+  const track = trackActionLabel(kind, false)
+  if (track && /owned/i.test(track) && !OWNABLE.has(kind)) issues.push('wrong-actions')
+  if (NAVIGATIONAL_BY_ENTITY.has(record.id)) issues.push('wiki-nav')
+  if (JUNK_NAME.test(entity.name.trim())) issues.push('junk')
+  return issues
+}

@@ -1103,9 +1103,9 @@ function mergeGrace(name: string, forcedId?: string): string | undefined {
 
 /** Prefer the authored NPC locator ("Found at grace:x" / a note) over fan data. */
 function npcLocationFromSummary(summary: string | undefined): string | undefined {
-  if (!summary || summary === NO_DATA) return undefined
-  const match = summary.match(/^Found at (grace:[a-z0-9-]+)$/)
-  if (match) return getEntity(match[1]).name
+  if (!summary || summary === NO_DATA || summary === 'Location not recorded') return undefined
+  const match = summary.match(/^Found at (.+)$/)
+  if (match) return /^grace:[a-z0-9-]+$/.test(match[1]) ? getEntity(match[1]).name : match[1]
   return summary
 }
 

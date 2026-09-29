@@ -8,70 +8,74 @@ status, must only offer actions that fit the kind, and must never resolve to a
 wiki disambiguation/list/index page.
 
 **Before** reproduces the pre-Task-144 behaviour (raw dump names, the generic
-action footer, no navigation filter); **after** is the fixed build.
+action footer, no navigation filter). **After** runs every rule against what the
+page actually renders (`overlayEntity`, `kindStatus` and `trackActionLabel` in
+`src/library/pageModel.ts`, the code the entity panel itself uses) for an empty
+character and the mid-game scenario character, over every entity-index record
+and every entity-graph id the app can link to.
 
 ## Before
 
-| kind | entities | flagged | empty | raw ids | bad casing | generic status | wrong actions | wiki nav |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| enemy | 1312 | 1312 | 0 | 0 | 181 | 1312 | 0 | 0 |
-| item | 1201 | 72 | 4 | 0 | 68 | 0 | 0 | 0 |
-| armor | 768 | 196 | 80 | 0 | 121 | 0 | 0 | 0 |
-| quest | 456 | 1 | 0 | 0 | 1 | 0 | 0 | 0 |
-| weapon | 441 | 27 | 0 | 0 | 27 | 0 | 0 | 0 |
-| grace | 416 | 416 | 0 | 0 | 22 | 387 | 416 | 0 |
-| region | 311 | 311 | 0 | 0 | 27 | 302 | 311 | 0 |
-| boss | 242 | 134 | 0 | 0 | 4 | 133 | 0 | 0 |
-| spell | 224 | 39 | 5 | 0 | 34 | 0 | 0 | 0 |
-| npc | 221 | 221 | 27 | 0 | 23 | 221 | 221 | 0 |
-| talisman | 158 | 14 | 0 | 0 | 14 | 0 | 0 | 0 |
-| ash | 124 | 12 | 0 | 0 | 12 | 0 | 0 | 0 |
-| dungeon | 119 | 119 | 0 | 0 | 1 | 119 | 119 | 0 |
-| merchant | 106 | 106 | 0 | 0 | 3 | 0 | 106 | 0 |
-| spirit | 79 | 9 | 0 | 0 | 9 | 0 | 0 | 0 |
-| shield | 69 | 7 | 0 | 0 | 7 | 0 | 0 | 0 |
-| mechanic | 65 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| build | 28 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| gate | 10 | 10 | 0 | 0 | 0 | 10 | 0 | 0 |
-| ending | 5 | 5 | 0 | 0 | 0 | 5 | 0 | 0 |
-| material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **total** | **6358** | **3011** | 116 | 0 | 554 | 2489 | 1173 | 0 |
+| kind | entities | flagged | empty | raw ids | bad casing | generic status | wrong actions | wiki nav | junk rows | boss filed as NPC |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| enemy | 1312 | 1312 | 0 | 0 | 181 | 1312 | 0 | 0 | 0 | 0 |
+| item | 1201 | 72 | 4 | 0 | 68 | 0 | 0 | 0 | 0 | 0 |
+| armor | 768 | 196 | 80 | 0 | 121 | 0 | 0 | 0 | 0 | 0 |
+| quest | 456 | 1 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 |
+| weapon | 441 | 27 | 0 | 0 | 27 | 0 | 0 | 0 | 0 | 0 |
+| grace | 416 | 416 | 0 | 0 | 22 | 387 | 416 | 0 | 0 | 0 |
+| region | 311 | 311 | 0 | 0 | 27 | 302 | 311 | 0 | 0 | 0 |
+| boss | 242 | 134 | 0 | 0 | 4 | 133 | 0 | 0 | 0 | 0 |
+| spell | 224 | 39 | 5 | 0 | 34 | 0 | 0 | 0 | 0 | 0 |
+| npc | 221 | 221 | 27 | 0 | 23 | 221 | 221 | 0 | 0 | 0 |
+| talisman | 158 | 14 | 0 | 0 | 14 | 0 | 0 | 0 | 0 | 0 |
+| ash | 124 | 12 | 0 | 0 | 12 | 0 | 0 | 0 | 0 | 0 |
+| dungeon | 119 | 119 | 0 | 0 | 1 | 119 | 119 | 0 | 0 | 0 |
+| merchant | 106 | 106 | 0 | 0 | 3 | 0 | 106 | 0 | 0 | 0 |
+| spirit | 79 | 9 | 0 | 0 | 9 | 0 | 0 | 0 | 0 | 0 |
+| shield | 69 | 7 | 0 | 0 | 7 | 0 | 0 | 0 | 0 | 0 |
+| mechanic | 65 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| build | 28 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| gate | 10 | 10 | 0 | 0 | 0 | 10 | 0 | 0 | 0 | 0 |
+| ending | 5 | 5 | 0 | 0 | 0 | 5 | 0 | 0 | 0 | 0 |
+| material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **total** | **6358** | **3011** | 116 | 0 | 554 | 2489 | 1173 | 0 | 0 | 0 |
 
 ## After
 
-| kind | entities | flagged | empty | raw ids | bad casing | generic status | wrong actions | wiki nav |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| enemy | 1312 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| item | 1201 | 4 | 4 | 0 | 0 | 0 | 0 | 0 |
-| armor | 768 | 80 | 80 | 0 | 0 | 0 | 0 | 0 |
-| quest | 456 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| weapon | 441 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| grace | 416 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| region | 311 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| boss | 242 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| spell | 224 | 5 | 5 | 0 | 0 | 0 | 0 | 0 |
-| npc | 221 | 27 | 27 | 0 | 0 | 0 | 0 | 0 |
-| talisman | 158 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| ash | 124 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| dungeon | 119 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| merchant | 106 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| spirit | 79 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| shield | 69 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| mechanic | 65 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| build | 28 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| gate | 10 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| ending | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **total** | **6358** | **116** | 116 | 0 | 0 | 0 | 0 | 0 |
+| kind | entities | flagged | empty | raw ids | bad casing | generic status | wrong actions | wiki nav | junk rows | boss filed as NPC |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| enemy | 1312 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| item | 1204 | 6 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| armor | 768 | 80 | 80 | 0 | 0 | 0 | 0 | 0 | 5 | 0 |
+| quest | 472 | 5 | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| weapon | 441 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| grace | 416 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| region | 312 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| boss | 242 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| spell | 224 | 5 | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| npc | 221 | 27 | 27 | 0 | 0 | 0 | 0 | 0 | 16 | 0 |
+| talisman | 158 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| ash | 124 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| dungeon | 119 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| merchant | 106 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| spirit | 79 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| shield | 69 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| mechanic | 65 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| build | 28 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| gate | 10 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| ending | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **total** | **6378** | **123** | 123 | 0 | 0 | 0 | 0 | 0 | 21 | 0 |
 
-Task 144 removed **2895** flagged pages
-(empty, raw ids, bad casing, generic status, wrong actions, wiki nav).
+Task 144 removed **2888** flagged pages
+(empty, raw ids, bad casing, generic status, wrong actions, wiki nav, junk rows, boss filed as NPC).
 
-## Remaining empty pages — genuine data gaps, by name
+## Remaining empty pages, by name
 
 These entries have no description, location, stats, drops, sections or image in
-any source. They are real gaps in the shipped data, not builder faults, and are
-listed so they are visible rather than silently blank.
+the built entity index. Check the wiki corpus and its set pages before calling
+one a real data gap.
 
 ### armor (80)
 
@@ -186,6 +190,15 @@ listed so they are visible rather than silently blank.
 - Base Serpent Messmer
 - Radahn, Consort of Miquella
 
+### item (6)
+
+- Fetal Position
+- Let Us Go Together
+- May the Best Win
+- Ring of Miquella
+- Rennala's Great Rune
+- Sellen's Primal Glintstone
+
 ### spell (5)
 
 - Ancient Dragons' Light Spear
@@ -194,12 +207,13 @@ listed so they are visible rather than silently blank.
 - Golden Light Fortification
 - Smarag's Glint Breath
 
-### item (4)
+### quest (5)
 
-- Fetal Position
-- Let Us Go Together
-- May the Best Win
-- Ring of Miquella
+- Millicent — met at the Ancient Snow Valley Ruins
+- Millicent — met at the Elphael Prayer Room
+- Sellen — revived in the Three Sisters puppet
+- Sellen — true body found at Witchbane Ruins
+- Yura — met at the Second Church of Marika
 
 
 ## Every flagged page (after)
@@ -208,8 +222,8 @@ listed so they are visible rather than silently blank.
 | --- | --- | --- |
 | `item:ancient-dragons-light-spear` | spell | empty |
 | `item:ancient-dragons-light-strike` | spell | empty |
-| `item:arms` | armor | empty |
-| `item:body` | armor | empty |
+| `item:arms` | armor | empty, junk |
+| `item:body` | armor | empty, junk |
 | `item:broken-gold-mask` | armor | empty |
 | `item:fetal-position` | item | empty |
 | `item:fortissax-s-light-spear` | spell | empty |
@@ -224,7 +238,7 @@ listed so they are visible rather than silently blank.
 | `item:gravebird-armor` | armor | empty |
 | `item:gravebird-bracelets` | armor | empty |
 | `item:gravebird-helm` | armor | empty |
-| `item:head` | armor | empty |
+| `item:head` | armor | empty, junk |
 | `item:horned-warrior-gauntlets` | armor | empty |
 | `item:horned-warrior-greaves` | armor | empty |
 | `item:horned-warrior-helm` | armor | empty |
@@ -236,7 +250,7 @@ listed so they are visible rather than silently blank.
 | `item:iron-rivet-greaves` | armor | empty |
 | `item:leather-arm-wraps` | armor | empty |
 | `item:leather-leg-wraps` | armor | empty |
-| `item:legs` | armor | empty |
+| `item:legs` | armor | empty, junk |
 | `item:leontiel-s-armor` | armor | empty |
 | `item:leontiel-s-boots` | armor | empty |
 | `item:leontiel-s-hat` | armor | empty |
@@ -269,7 +283,7 @@ listed so they are visible rather than silently blank.
 | `item:steel-greaves` | armor | empty |
 | `item:steel-helm` | armor | empty |
 | `item:thiollier-s-trousers` | armor | empty |
-| `item:travel-hairstyle` | armor | empty |
+| `item:travel-hairstyle` | armor | empty, junk |
 | `item:type-1` | armor | empty |
 | `item:type-10` | armor | empty |
 | `item:type-11` | armor | empty |
@@ -295,22 +309,22 @@ listed so they are visible rather than silently blank.
 | `item:verdigris-helm` | armor | empty |
 | `item:young-lion-s-gauntlets` | armor | empty |
 | `item:young-lion-s-greaves` | armor | empty |
-| `npcs:10104137` | npc | empty |
-| `npcs:10204435` | npc | empty |
-| `npcs:10304533` | npc | empty |
-| `npcs:10403943` | npc | empty |
-| `npcs:10503542` | npc | empty |
-| `npcs:10711400` | npc | empty |
-| `npcs:10803550` | npc | empty |
-| `npcs:10903752` | npc | empty |
-| `npcs:11003654` | npc | empty |
-| `npcs:11103954` | npc | empty |
-| `npcs:11204737` | npc | empty |
-| `npcs:11305039` | npc | empty |
-| `npcs:11405136` | npc | empty |
-| `npcs:11505243` | npc | empty |
-| `npcs:11605254` | npc | empty |
-| `npcs:11705057` | npc | empty |
+| `npcs:10104137` | npc | empty, junk |
+| `npcs:10204435` | npc | empty, junk |
+| `npcs:10304533` | npc | empty, junk |
+| `npcs:10403943` | npc | empty, junk |
+| `npcs:10503542` | npc | empty, junk |
+| `npcs:10711400` | npc | empty, junk |
+| `npcs:10803550` | npc | empty, junk |
+| `npcs:10903752` | npc | empty, junk |
+| `npcs:11003654` | npc | empty, junk |
+| `npcs:11103954` | npc | empty, junk |
+| `npcs:11204737` | npc | empty, junk |
+| `npcs:11305039` | npc | empty, junk |
+| `npcs:11405136` | npc | empty, junk |
+| `npcs:11505243` | npc | empty, junk |
+| `npcs:11605254` | npc | empty, junk |
+| `npcs:11705057` | npc | empty, junk |
 | `npcs:121810` | npc | empty |
 | `npcs:136100` | npc | empty |
 | `npcs:137000` | npc | empty |
@@ -322,5 +336,11 @@ listed so they are visible rather than silently blank.
 | `npcs:904720001` | npc | empty |
 | `npcs:905130001` | npc | empty |
 | `npcs:905220001` | npc | empty |
+| `quest:millicent:mountains` | quest | empty |
+| `quest:millicent:elphael` | quest | empty |
+| `item:rennala-great-rune` | item | empty |
+| `quest:sellen:primal-glintstone` | quest | empty |
 
-_Regenerated 2026-09-28._
+_+3 more._
+
+_Regenerated 2026-09-29._

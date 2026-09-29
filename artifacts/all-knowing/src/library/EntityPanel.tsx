@@ -1,6 +1,6 @@
 import { lazy, Suspense, useMemo, useState } from 'react'
 import type { Remembrance } from '../knowledge/remembrances'
-import { getEntity, status, type EntityKind, type EntityState } from '../lib/entityGraph'
+import { getEntity, status, type EntityKind } from '../lib/entityGraph'
 import { useEnrichment, useEntityIndex } from '../lib/entityEnrich'
 import type { RemembranceOption } from '../lib/remembranceChoice'
 import type { Verdict } from '../lib/verdict'
@@ -19,70 +19,10 @@ const BossPrepCard = lazy(() => import('../combat/BossPrepCard').then((m) => ({ 
 // Task 144 §1 — the kind-specific body (location/grace/NPC/boss) is its own
 // chunk so the eager panel keeps the shared shell only.
 const EntityKinds = lazy(() => import('./EntityKinds'))
-import { knownFactIds } from '../lib/infer'
-import { areaFromFactId } from '../lib/areaContext'
+import { kindStatus, trackActionLabel } from './pageModel'
 import type { EntityRecord } from '../lib/entityIndex'
 import { attributeStats, isOwned, meetsRequirements, type AttributeKey, type CategoryId, type LibraryEntity } from './model'
 
-/**
- * Task 144 §1 — the status line fits the kind. A region is not "Owned", a grace
- * is "Discovered", a boss is "Defeated / Not yet / Can't reach yet", an item
- * says where to get it, and an NPC shows the current quest step.
- */
-function kindStatus(
-  kind: EntityKind,
-  info: { state: EntityState; why: string },
-  entity: LibraryEntity,
-  record: EntityRecord | undefined,
-  character: Character,
-): { label: string; why: string } {
-  const bossLike = kind === 'boss' || kind === 'enemy'
-  const done = info.state === 'done' || info.state === 'owned'
-  const inRegion = entity.region ? `In ${entity.region}.` : record?.location ? `${record.location}.` : ''
-  if (bossLike) {
-    if (done) return { label: 'Defeated', why: info.why }
-    if (info.state === 'locked' || info.state === 'missed' || info.state === 'ahead') {
-      return { label: "Can't reach yet", why: info.why }
-    }
-    if (info.state === 'unknown') return { label: 'Unknown', why: info.why }
-    return { label: 'Not yet', why: inRegion || 'Not defeated on this character.' }
-  }
-  if (kind === 'grace') {
-    if (done) return { label: 'Discovered', why: inRegion || info.why }
-    if (info.state === 'locked' || info.state === 'missed') return { label: 'Missed', why: info.why }
-    return { label: 'Not yet', why: inRegion || 'Not discovered on this character.' }
-  }
-  if (kind === 'npc' || kind === 'merchant') {
-    const known = knownFactIds(character)
-    const steps = record?.questSteps ?? []
-    const next = steps.find((s) => !(s.entityId && known.has(s.entityId)))
-    if (next) return { label: `Quest step ${next.order}`, why: next.title }
-    if (steps.length) return { label: 'Questline complete', why: steps[steps.length - 1]?.title ?? '' }
-    return { label: record?.stats?.Role ?? entity.subtype ?? 'NPC', why: entity.where || record?.location || 'No tracked quest steps.' }
-  }
-  if (kind === 'region' || kind === 'dungeon') {
-    if (done) return { label: 'Visited', why: inRegion || info.why }
-    // A grace, boss or item known inside the area proves it was visited.
-    const area = entity.name.toLowerCase()
-    const inside = area.length >= 4
-      ? [...knownFactIds(character)].find((id) => {
-          const at = areaFromFactId(id)
-          return [at?.region, at?.place].some((n) => n && (n.toLowerCase().includes(area) || (n.length >= 4 && area.includes(n.toLowerCase()))))
-        })
-      : undefined
-    if (inside) return { label: 'Visited', why: `Inferred — you reached ${getEntity(inside).name}.` }
-    if (info.state === 'ahead' || info.state === 'locked' || info.state === 'missed') return { label: "Can't reach yet", why: info.why }
-    return { label: 'Not visited yet', why: inRegion || 'Progress is counted below.' }
-  }
-  // item-shaped: weapons, armor, talismans, spells, ashes, spirits, items…
-  if (info.state === 'owned' || info.state === 'done') return { label: 'Owned', why: info.why }
-  if (info.state === 'locked' || info.state === 'missed' || info.state === 'ahead') {
-    return { label: info.state === 'missed' ? 'Missed' : 'Not yet', why: info.why }
-  }
-  const where = entity.where || record?.location
-  if (where) return { label: 'Where to get', why: where }
-  return { label: info.state === 'unknown' ? 'Unknown' : 'Not owned', why: info.state === 'available' ? 'Not on this character yet.' : info.why }
-}
 
 function EntityStatusStrip({
   factId,
@@ -608,9 +548,9 @@ export function EntityPanel({
 
         {!isBoss && !isNpc && !isGrace && !isLocation && (
           <>
-            {onOwnedChange && (
+            {onOwnedChange && trackActionLabel(panelKindValue, isOwnedValue) && (
               <button type="button" className={isOwnedValue ? 'chip on' : 'chip'} onClick={() => onOwnedChange(!isOwnedValue)}>
-                {isOwnedValue ? 'Mark not owned' : 'Mark owned'}
+                {trackActionLabel(panelKindValue, isOwnedValue)}
               </button>
             )}
             {onEquip && EQUIPPABLE.has(panelKindValue) && (

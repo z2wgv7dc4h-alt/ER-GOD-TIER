@@ -2,16 +2,16 @@ import { useEffect, useMemo, useState } from 'react'
 import { remembrances } from '../knowledge/remembrances'
 import type { Weapon } from '../lib/ar'
 import { areaFromFactId } from '../lib/areaContext'
-import { displayName } from '../lib/canonicalNames'
 import { getEntity, type EntityKind } from '../lib/entityGraph'
-import { getRecord, useEntityIndex } from '../lib/entityIndex'
+import { useEntityIndex } from '../lib/entityIndex'
 import { wikiPageForEntity } from '../lib/wikiSearch'
 import { applyFacts, denyFacts } from '../lib/infer'
 import { rankRemembrance, type RemembranceOption } from '../lib/remembranceChoice'
 import { gearVerdict, type Verdict } from '../lib/verdict'
 import { useWorkspace } from '../state'
 import { EntityPanel } from './EntityPanel'
-import type { CategoryId, LibraryEntity } from './model'
+import type { LibraryEntity } from './model'
+import { overlayEntity } from './pageModel'
 
 /**
  * Task 97 — the universal entity panel overlay.
@@ -23,32 +23,6 @@ import type { CategoryId, LibraryEntity } from './model'
  * Task 100 adds two pieces of the entity page here: the advisor verdict for a
  * weapon/armor/talisman, and the ranked Enia options for a remembrance.
  */
-
-const NO_DATA = 'No data for this entity yet.'
-
-const CATEGORY_BY_KIND: Record<EntityKind, CategoryId> = {
-  weapon: 'weapons',
-  shield: 'shields',
-  armor: 'armor',
-  talisman: 'talismans',
-  spell: 'sorceries',
-  ash: 'ashes',
-  spirit: 'spirits',
-  item: 'items',
-  material: 'items',
-  boss: 'bosses',
-  enemy: 'bosses',
-  npc: 'npcs',
-  grace: 'locations',
-  region: 'locations',
-  dungeon: 'locations',
-  quest: 'guides',
-  gate: 'guides',
-  ending: 'guides',
-  build: 'guides',
-  merchant: 'npcs',
-  mechanic: 'mechanics',
-}
 
 export function EntityOverlay() {
   const w = useWorkspace()
@@ -89,25 +63,12 @@ export function EntityOverlay() {
     return () => { cancelled = true }
   }, [entityId])
 
-  const entity = useMemo<LibraryEntity | null>(() => {
-    if (!entityId) return null
-    const e = getEntity(entityId)
-    // The panel's status line, grace "nearby" lists and region body all key off
-    // the region and a readable name, so resolve both here, not just the raw row.
-    const area = areaFromFactId(entityId)
-    const record = getRecord(e.id)
-    const region = e.kind === 'region' ? undefined : area?.region ?? record?.region
-    return {
-      id: e.id,
-      factId: e.id,
-      name: wikiTitle ?? displayName(record?.name && !/[A-Z]/.test(e.name) ? record.name : e.name),
-      category: CATEGORY_BY_KIND[e.kind],
-      subtype: e.kind,
-      icon: e.icon,
-      region,
-      lore: e.summary && e.summary !== NO_DATA && e.summary !== region ? e.summary : undefined,
-    }
-  }, [entityId, wikiTitle, indexReady])
+  // indexReady: re-resolve once the enrichment index arrives (better names/regions).
+  const entity = useMemo<LibraryEntity | null>(
+    () => (entityId ? overlayEntity(entityId, wikiTitle) : null),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [entityId, wikiTitle, indexReady],
+  )
 
   const verdict = useMemo<Verdict | null>(() => {
     if (!entityId || !entity) return null

@@ -46,8 +46,24 @@ describe('page audit (Task 144 §4)', () => {
     const region = before.byKind.find((k) => k.kind === 'region')
     expect(region?.wrongActions).toBe(1)
 
+    // "After" checks the rendered page: the name is repaired, but a raw id left in
+    // the description is still printed, so it must still be reported.
     const after = auditPages({ fixed: true })
-    expect(after.byKind.find((k) => k.kind === 'boss')?.flagged).toBe(0)
+    const bossAfter = after.byKind.find((k) => k.kind === 'boss')
+    expect(bossAfter?.badCasing).toBe(0)
+    expect(bossAfter?.rawId).toBe(1)
     expect(after.byKind.find((k) => k.kind === 'region')?.flagged).toBe(0)
+  })
+
+  it('flags junk placeholder rows and leaves a clean page unflagged', () => {
+    setEntityIndex(
+      new Map([
+        ['item:head', record({ id: 'item:head', kind: 'armor', name: 'Head' })],
+        ['quest:test', record({ id: 'quest:test', kind: 'quest', name: 'Test Quest', description: 'A quest.' })],
+      ]),
+    )
+    const after = auditPages({ fixed: true })
+    expect(after.flaggedRows.find((r) => r.id === 'item:head')?.issues).toContain('junk')
+    expect(after.flaggedRows.find((r) => r.id === 'quest:test')).toBeUndefined()
   })
 })

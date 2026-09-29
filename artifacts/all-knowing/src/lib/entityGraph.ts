@@ -473,7 +473,9 @@ function buildIndex(): Index {
     addEntity({ id: `merchant:${slug(m.vendor)}`, kind: 'merchant', name: m.vendor, summary: 'Merchant' })
   }
   for (const n of npcLocations) {
-    addEntity({ id: `npc:${n.npc}`, kind: 'npc', name: n.name, summary: n.note || `Found at ${n.graceId}` }, n.aliases)
+    // Graces are added above, so the grace's name is known here — never print its raw id.
+    const grace = entities.get(n.graceId)?.name ?? warpGraces.find((g) => g.id === n.graceId)?.name
+    addEntity({ id: `npc:${n.npc}`, kind: 'npc', name: n.name, summary: n.note || (grace ? `Found at ${grace}` : 'Location not recorded') }, n.aliases)
   }
 
   // --- synthetic damage types ----------------------------------------------

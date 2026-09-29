@@ -24,6 +24,8 @@ const COLUMNS = [
   ['genericStatus', 'generic status'],
   ['wrongActions', 'wrong actions'],
   ['wikiNav', 'wiki nav'],
+  ['junk', 'junk rows'],
+  ['duplicate', 'boss filed as NPC'],
 ]
 
 function renderTable(report) {
@@ -32,12 +34,12 @@ function renderTable(report) {
     '| --- | --- | --- | ' + COLUMNS.map(() => '---').join(' | ') + ' |',
   ]
   for (const k of report.byKind) {
-    const cells = COLUMNS.map(([key]) => k[key])
+    const cells = COLUMNS.map(([key]) => k[key] ?? 0)
     lines.push(`| ${k.kind} | ${k.total} | ${k.flagged} | ${cells.join(' | ')} |`)
   }
   lines.push(
     `| **total** | **${report.total}** | **${report.flagged}** | ${COLUMNS.map(([key]) =>
-      report.byKind.reduce((n, k) => n + k[key], 0),
+      report.byKind.reduce((n, k) => n + (k[key] ?? 0), 0),
     ).join(' | ')} |`,
   )
   return lines.join('\n')
@@ -95,7 +97,11 @@ status, must only offer actions that fit the kind, and must never resolve to a
 wiki disambiguation/list/index page.
 
 **Before** reproduces the pre-Task-144 behaviour (raw dump names, the generic
-action footer, no navigation filter); **after** is the fixed build.
+action footer, no navigation filter). **After** runs every rule against what the
+page actually renders (\`overlayEntity\`, \`kindStatus\` and \`trackActionLabel\` in
+\`src/library/pageModel.ts\`, the code the entity panel itself uses) for an empty
+character and the mid-game scenario character, over every entity-index record
+and every entity-graph id the app can link to.
 
 ## Before
 
@@ -108,11 +114,11 @@ ${renderTable(after)}
 Task 144 removed **${before.flagged - after.flagged}** flagged pages
 (${COLUMNS.map(([, label]) => label).join(', ')}).
 
-## Remaining empty pages — genuine data gaps, by name
+## Remaining empty pages, by name
 
 These entries have no description, location, stats, drops, sections or image in
-any source. They are real gaps in the shipped data, not builder faults, and are
-listed so they are visible rather than silently blank.
+the built entity index. Check the wiki corpus and its set pages before calling
+one a real data gap.
 
 ${renderEmpties(after)}
 
