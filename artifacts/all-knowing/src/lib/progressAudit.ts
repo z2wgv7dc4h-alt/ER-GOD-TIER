@@ -1,9 +1,11 @@
 import { byId } from '../knowledge/catalog'
 import { advise, strongerUpgrades } from './advisor'
-import { areaBosses, areaDontMiss, areaNpcs } from './areaHub'
-import { closeWorld, knownFactIds } from './infer'
+import { areaBosses, areaCompletion, areaDontMiss, areaGraces, areaNpcs } from './areaHub'
+import { canonicalFactId } from './aliases'
+import { resolvedFactIds } from './infer'
 import { activityLine, progressMeters } from './progressStats'
 import { scenarioCharacter } from './__fixtures__/scenarios/urmummytoilet'
+import { AUDIT_AREAS, progressionScenarios } from './__fixtures__/scenarios/progression'
 
 /**
  * Task 144 §4 — run the scenario characters through the Overview, Area and Now
@@ -46,23 +48,39 @@ export function auditScenario(name: string, character: ReturnType<typeof scenari
   }
 
   // 2. No raw ids / asset codes in player-facing names.
-  const names = [
-    ...character.evidence.map((e) => activityLine(e).name),
-    ...areaBosses(character, 'Stormveil').map((b) => b.name),
-    ...areaNpcs(character, 'Stormveil').map((n) => n.name),
-    ...areaDontMiss(character, 'Stormveil').map((d) => d.name),
-  ]
+  const names = character.evidence.map((e) => activityLine(e).name)
+  for (const area of AUDIT_AREAS) {
+    names.push(
+      ...areaBosses(character, area).map((b) => b.name),
+      ...areaNpcs(character, area).map((n) => n.name),
+      ...areaDontMiss(character, area).map((d) => d.name),
+    )
+  }
   for (const text of names) {
-    if (RAW_FACT_ID.test(text)) violations.push(`${name}: raw id in player text: ${text}`)
+    if (RAW_FACT_ID.test(text) || /^[A-Za-z]+:[a-z0-9]/.test(text)) violations.push(`${name}: raw id in player text: ${text}`)
   }
 
-  // 3. Inference consistency: every known fact's prerequisites are closed.
-  const known = knownFactIds(character)
-  const expected = new Set(closeWorld([...known], known))
-  for (const id of expected) {
-    const node = byId.get(id)
-    for (const req of node?.implies ?? []) {
-      if (!expected.has(req)) violations.push(`${name}: ${id} known but prerequisite ${req} not`)
+  // 3. Inference consistency, on what the screens show. Every area tick must
+  //    agree with the resolver, and a shown-done fact's prerequisite may only
+  //    be shown not-done when the player explicitly denied it.
+  const resolved = resolvedFactIds(character)
+  const denied = new Set((character.deniedFacts ?? []).map((id) => canonicalFactId(id)))
+  for (const area of AUDIT_AREAS) {
+    const rows = [...areaBosses(character, area), ...areaGraces(character, area)]
+    for (const row of rows) {
+      if (row.done !== resolved.has(canonicalFactId(row.id))) {
+        violations.push(`${name}: ${area} shows ${row.name} ${row.done ? 'done' : 'not done'}, resolver disagrees`)
+      }
+    }
+    const c = areaCompletion(character, area)
+    for (const [k, v] of Object.entries({ graces: c.graces, bosses: c.bosses, items: c.items, dungeons: c.dungeons })) {
+      if (v.have > v.total) violations.push(`${name}: ${area} ${k} ${v.have}/${v.total}`)
+    }
+  }
+  for (const id of resolved) {
+    for (const req of byId.get(id)?.implies ?? []) {
+      const r = canonicalFactId(req)
+      if (!resolved.has(r) && !denied.has(r)) violations.push(`${name}: ${id} done but prerequisite ${req} not`)
     }
   }
 
@@ -85,6 +103,9 @@ export function auditScenario(name: string, character: ReturnType<typeof scenari
 }
 
 export function runProgressAudit(): { scenarios: ProgressAudit[]; violations: string[] } {
-  const scenarios = [auditScenario('urmummytoilet', scenarioCharacter())]
+  const scenarios = [
+    auditScenario('urmummytoilet', scenarioCharacter()),
+    ...progressionScenarios.map((s) => auditScenario(s.name, s.character())),
+  ]
   return { scenarios, violations: scenarios.flatMap((s) => s.violations) }
 }
