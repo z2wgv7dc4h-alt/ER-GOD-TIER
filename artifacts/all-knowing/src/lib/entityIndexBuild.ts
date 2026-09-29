@@ -33,6 +33,7 @@ import wikiDoc from '../../public/sourced/open/wiki-sections.json'
 import coords from '../../public/sourced/open/coords.json'
 import bossXyz from '../../public/sourced/open/boss-xyz.json'
 import bossPins from '../../public/sourced/open/boss-pins.json'
+import enemyDropsDoc from '../../public/sourced/open/enemy-drops.json'
 import shops from '../../public/sourced/open/shops.json'
 import recipesDoc from '../../public/sourced/open/recipes.json'
 import fextDoc from '../../public/sourced/open/bosses-fextralife.json'
@@ -2282,6 +2283,11 @@ function enrichCreatures(): void {
   for (const row of fanCreatures as { name: string; drops?: string[] }[]) {
     if (row.drops?.length) creatureDrops.set(simpleNorm(row.name), row.drops)
   }
+  // Task 145 — the game's own drop tables, keyed by the record's NpcParam id.
+  const regulationDrops = new Map<number, { item: string; chance: number }[]>()
+  for (const row of (enemyDropsDoc as { rows: { npcParamId: number; drops: { item: string; chance: number }[] }[] }).rows) {
+    regulationDrops.set(row.npcParamId, row.drops)
+  }
 
   for (const [id, record] of [...records]) {
     if (record.kind !== 'enemy') continue
@@ -2290,6 +2296,12 @@ function enrichCreatures(): void {
       continue
     }
     const npc = Number(id.split(':')[1])
+    const regulation = regulationDrops.get(npc)
+    if (regulation?.length) {
+      addDrops(record, regulation.map((d) => d.item))
+      setStat(record, 'Drop rates', regulation.map((d) => `${d.item} ${d.chance}%`).join(' · '))
+      source(record, 'regulation/item-lots')
+    }
     const maps = placements.get(npc)
     if (maps?.length) {
       const distinct = [...new Set(maps)]
