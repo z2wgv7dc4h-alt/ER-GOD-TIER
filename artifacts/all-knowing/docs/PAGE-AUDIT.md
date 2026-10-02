@@ -19,56 +19,56 @@ and every entity-graph id the app can link to.
 | kind | entities | flagged | empty | raw ids | bad casing | generic status | wrong actions | wiki nav | junk rows | boss filed as NPC |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | enemy | 1276 | 1275 | 0 | 0 | 0 | 1275 | 0 | 0 | 0 | 0 |
-| item | 1187 | 4 | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| armor | 750 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| item | 1188 | 4 | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| armor | 751 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | quest | 468 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | weapon | 441 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | grace | 416 | 416 | 0 | 0 | 0 | 387 | 416 | 0 | 0 | 0 |
-| region | 311 | 311 | 0 | 0 | 0 | 302 | 311 | 0 | 0 | 0 |
+| region | 355 | 355 | 0 | 0 | 0 | 346 | 355 | 0 | 0 | 0 |
 | boss | 280 | 105 | 0 | 0 | 0 | 105 | 0 | 0 | 0 | 0 |
-| spell | 217 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| spell | 218 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | npc | 195 | 195 | 1 | 0 | 0 | 195 | 195 | 0 | 0 | 0 |
 | talisman | 158 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | ash | 124 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | dungeon | 119 | 119 | 0 | 0 | 0 | 119 | 119 | 0 | 0 | 0 |
 | merchant | 106 | 106 | 0 | 0 | 0 | 0 | 106 | 0 | 0 | 0 |
-| spirit | 79 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| spirit | 80 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | shield | 69 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | mechanic | 65 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | build | 28 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | gate | 10 | 10 | 0 | 0 | 0 | 10 | 0 | 0 | 0 | 0 |
 | ending | 5 | 5 | 0 | 0 | 0 | 5 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **total** | **6307** | **2546** | 5 | 0 | 0 | 2398 | 1147 | 0 | 0 | 0 |
+| **total** | **6355** | **2590** | 5 | 0 | 0 | 2442 | 1191 | 0 | 0 | 0 |
 
 ## After
 
 | kind | entities | flagged | empty | raw ids | bad casing | generic status | wrong actions | wiki nav | junk rows | boss filed as NPC |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | enemy | 1276 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| item | 1188 | 4 | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| armor | 750 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| item | 1189 | 4 | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| armor | 751 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | quest | 468 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | weapon | 441 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | grace | 416 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| region | 312 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| region | 356 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | boss | 280 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| spell | 217 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| spell | 218 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | npc | 195 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | talisman | 158 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | ash | 124 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | dungeon | 119 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | merchant | 106 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| spirit | 79 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| spirit | 80 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | shield | 69 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | mechanic | 65 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | build | 28 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | gate | 10 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | ending | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **total** | **6309** | **5** | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **total** | **6357** | **5** | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
-Task 144 removed **2541** flagged pages
+Task 144 removed **2585** flagged pages
 (empty, raw ids, bad casing, generic status, wrong actions, wiki nav, junk rows, boss filed as NPC).
 
 ## Remaining empty pages, by name
@@ -99,4 +99,4 @@ one a real data gap.
 | `item:ring-of-miquella` | item | empty |
 | `npcs:147100` | npc | empty |
 
-_Regenerated 2026-09-29._
+_Regenerated 2026-10-02._

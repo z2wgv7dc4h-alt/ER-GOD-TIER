@@ -362,6 +362,49 @@ for (const f of facts) {
   emit(f.id, f.id, f.name, rowAliases(f.name, f.aliases), 'authored')
 }
 
+// Task 146 — in-game spellings the PS5 reader sees. `game-name-aliases.json`
+// maps each verbatim FMG name (NpcName / PlaceName) to the record it belongs to,
+// so the reader resolves the string the game shows. The alias is stored in the
+// app's own normal form (`norm` here strips possessives; the runtime `aliases.ts`
+// norm does not) so `canonicalFactId` matches it exactly.
+const gameNameAliases = (() => {
+  try {
+    return read('src/data/game-name-aliases.json')
+  } catch {
+    return {}
+  }
+})()
+function appNorm(s) {
+  return String(s).toLowerCase().replace(/[^a-z0-9+]+/g, ' ').trim()
+}
+{
+  const rowBySlug = new Map(rows.map((r) => [r.slug, r]))
+  let attached = 0
+  let minted = 0
+  for (const [name, id] of Object.entries(gameNameAliases)) {
+    const alias = appNorm(name)
+    if (!alias) continue
+    // The verbatim in-game spelling names exactly one record. Strip it from any
+    // other row first, or a competing wiki redirect makes `canonicalFactId`
+    // ambiguous and the name no longer resolves (Promised Consort Radahn).
+    for (const r of rows) if (r.aliases.includes(alias)) r.aliases = r.aliases.filter((a) => a !== alias)
+    const row = rowBySlug.get(id)
+    if (row) {
+      if (!row.aliases.includes(alias)) {
+        row.aliases.push(alias)
+        row.aliases.sort()
+      }
+      attached++
+    } else {
+      const fresh = { engineId: id, slug: id, kind: kindOf(id), fmgName: name, aliases: [alias], source: 'game-name-aliases' }
+      rows.push(fresh)
+      rowBySlug.set(id, fresh)
+      minted++
+    }
+  }
+  console.log(`game-name aliases: ${attached} attached, ${minted} rows minted (${Object.keys(gameNameAliases).length} names)`)
+}
+
 // An engine id that names more than one fact (an NpcParam row shared by several
 // fights: the Godskin Apostle, Godfrey) cannot say which; the resolver keeps the
 // last row it reads, so it would pick one arbitrarily. Such rows are dropped.

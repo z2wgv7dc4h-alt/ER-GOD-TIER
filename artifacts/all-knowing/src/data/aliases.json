@@ -1088,8 +1088,7 @@
   "kind": "boss",
   "fmgName": "Ulcerated Tree Spirit (Fringefolk Hero's Grave)",
   "aliases": [
-   "putrid tree spirit boss",
-   "ulcerated tree spirit boss"
+   "putrid tree spirit boss"
   ],
   "source": "boss-roster"
  },
@@ -1429,7 +1428,8 @@
   "kind": "boss",
   "fmgName": "Putrid Grave Warden Duelist",
   "aliases": [
-   "putrid grave warden duelist"
+   "putrid grave warden duelist",
+   "putrid grave warden duelist boss"
   ],
   "source": "boss-roster"
  },
@@ -3054,6 +3054,8 @@
   "fmgName": "Night's Cavalry (Limgrave Boss)",
   "aliases": [
    "night cavalry",
+   "night s cavalry flail",
+   "night s cavalry glaive",
    "nights cavalry"
   ],
   "source": "paramdex-npc"
@@ -3154,7 +3156,9 @@
   "fmgName": "Crystalian",
   "aliases": [
    "crystalian",
-   "crystalian duo"
+   "crystalian duo",
+   "crystalian spear",
+   "crystalian staff"
   ],
   "source": "paramdex-npc"
  },
@@ -3176,7 +3180,8 @@
   "fmgName": "Grave Warden Duelist",
   "aliases": [
    "grave warden",
-   "grave warden duelist"
+   "grave warden duelist",
+   "grave warden duelist boss"
   ],
   "source": "paramdex-npc"
  },
@@ -3280,7 +3285,8 @@
   "fmgName": "Cemetery Shade (Weeping Peninsula)",
   "aliases": [
    "cemetary shade",
-   "cemetery shade"
+   "cemetery shade",
+   "cemetery shade boss"
   ],
   "source": "paramdex-npc"
  },
@@ -3313,6 +3319,8 @@
   "fmgName": "Cleanrot Knight (Shaded Castle)",
   "aliases": [
    "cleanrot knight",
+   "cleanrot knight sickle",
+   "cleanrot knight spear",
    "cleanrot knights"
   ],
   "source": "paramdex-npc"
@@ -3369,7 +3377,9 @@
   "fmgName": "Erdtree Burial Watchdog",
   "aliases": [
    "burial watchdog",
-   "erdtree burial watchdog"
+   "erdtree burial watchdog",
+   "erdtree burial watchdog scepter",
+   "erdtree burial watchdog sword"
   ],
   "source": "paramdex-npc"
  },
@@ -3415,7 +3425,9 @@
   "fmgName": "Mad Pumpkin Head",
   "aliases": [
    "mad pumpkin",
-   "mad pumpkin head"
+   "mad pumpkin head",
+   "mad pumpkin head flail",
+   "mad pumpkin head hammer"
   ],
   "source": "paramdex-npc"
  },
@@ -3437,7 +3449,8 @@
   "fmgName": "Stonedigger",
   "aliases": [
    "stonedigger",
-   "stonedigger troll"
+   "stonedigger troll",
+   "stonedigger troll boss"
   ],
   "source": "paramdex-npc"
  },
@@ -3582,7 +3595,8 @@
   "kind": "boss",
   "fmgName": "Wormface",
   "aliases": [
-   "wormface"
+   "wormface",
+   "wormface boss"
   ],
   "source": "paramdex-npc"
  },
@@ -3647,7 +3661,8 @@
   "fmgName": "Ulcerated Tree Spirit (Boss)",
   "aliases": [
    "ulcerated spirit",
-   "ulcerated tree spirit"
+   "ulcerated tree spirit",
+   "ulcerated tree spirit boss"
   ],
   "source": "paramdex-npc"
  },
@@ -3997,6 +4012,7 @@
   "aliases": [
    "valiant gargoyle",
    "valiant gargoyle duo",
+   "valiant gargoyle twinblade",
    "valiant gargoyles"
   ],
   "source": "paramdex-npc"
@@ -4216,7 +4232,8 @@
   "fmgName": "Midra, Lord of Frenzied Flame",
   "aliases": [
    "midra",
-   "midra lord of frenzied flame"
+   "midra lord of frenzied flame",
+   "midra lord of frenzied flame boss"
   ],
   "source": "paramdex-npc"
  },
@@ -4238,7 +4255,8 @@
   "fmgName": "Bayle the Dread",
   "aliases": [
    "bayle",
-   "bayle the dread"
+   "bayle the dread",
+   "bayle the dread boss"
   ],
   "source": "paramdex-npc"
  },
@@ -4260,7 +4278,8 @@
   "fmgName": "Messmer the Impaler",
   "aliases": [
    "messmer",
-   "messmer the impaler"
+   "messmer the impaler",
+   "messmer the impaler boss"
   ],
   "source": "paramdex-npc"
  },
@@ -4284,6 +4303,7 @@
   "aliases": [
    "metyr",
    "metyr mother of fingers",
+   "metyr mother of fingers boss",
    "mother of fingers"
   ],
   "source": "paramdex-npc"
@@ -4387,7 +4407,8 @@
   "fmgName": "Rellana, Twin Moon Knight",
   "aliases": [
    "rellana",
-   "rellana twin moon knight"
+   "rellana twin moon knight",
+   "rellana twin moon knight boss"
   ],
   "source": "paramdex-npc"
  },
@@ -8010,7 +8031,6 @@
   "fmgName": "Starscourge Radahn",
   "aliases": [
    "general radahn",
-   "promised consort radahn",
    "radahn",
    "radahn consort of miquella",
    "red lion general",
@@ -8190,7 +8210,8 @@
   "kind": "grace",
   "fmgName": "Giant's Gravepost",
   "aliases": [
-   "giant gravepost"
+   "giant gravepost",
+   "giants gravepost"
   ],
   "source": "hosted-graces"
  },
@@ -9361,7 +9382,9 @@
   "kind": "hunt",
   "fmgName": "Abductor Virgin (Swinging Sickle) & Abductor Virgin (Wheel)",
   "aliases": [
-   "abductor virgin abductor virgin"
+   "abductor virgin abductor virgin",
+   "abductor virgin swinging sickle",
+   "abductor virgin wheel"
   ],
   "source": "hunts"
  },
@@ -9371,7 +9394,8 @@
   "kind": "hunt",
   "fmgName": "Adan, Thief of Fire",
   "aliases": [
-   "adan thief of fire"
+   "adan thief of fire",
+   "adan thief of fire boss"
   ],
   "source": "hunts"
  },
@@ -9401,7 +9425,8 @@
   "kind": "hunt",
   "fmgName": "Ancient Dragon Senessax",
   "aliases": [
-   "ancient dragon senessax"
+   "ancient dragon senessax",
+   "ancient dragon senessax boss"
   ],
   "source": "hunts"
  },
@@ -9411,7 +9436,8 @@
   "kind": "hunt",
   "fmgName": "Battlemage Hugues",
   "aliases": [
-   "battlemage hugues"
+   "battlemage hugues",
+   "battlemage hugues boss"
   ],
   "source": "hunts"
  },
@@ -9421,7 +9447,9 @@
   "kind": "hunt",
   "fmgName": "Beastman of Farum Azula",
   "aliases": [
-   "beastman of farum azula"
+   "beastman of farum azula",
+   "beastman of farum azula cleaver",
+   "beastman of farum azula throwing knife"
   ],
   "source": "hunts"
  },
@@ -9446,7 +9474,8 @@
   "kind": "hunt",
   "fmgName": "Black Knight Edredd",
   "aliases": [
-   "black knight edredd"
+   "black knight edredd",
+   "black knight edredd boss"
   ],
   "source": "hunts"
  },
@@ -9456,7 +9485,8 @@
   "kind": "hunt",
   "fmgName": "Black Knight Garrew",
   "aliases": [
-   "black knight garrew"
+   "black knight garrew",
+   "black knight garrew boss"
   ],
   "source": "hunts"
  },
@@ -9486,7 +9516,8 @@
   "kind": "hunt",
   "fmgName": "Chief Bloodfiend",
   "aliases": [
-   "chief bloodfiend"
+   "chief bloodfiend",
+   "chief bloodfiend boss"
   ],
   "source": "hunts"
  },
@@ -9496,7 +9527,8 @@
   "kind": "hunt",
   "fmgName": "Commander Gaius",
   "aliases": [
-   "commander gaius"
+   "commander gaius",
+   "commander gaius boss"
   ],
   "source": "hunts"
  },
@@ -9506,7 +9538,8 @@
   "kind": "hunt",
   "fmgName": "Count Ymir, Mother of Fingers",
   "aliases": [
-   "count ymir mother of fingers"
+   "count ymir mother of fingers",
+   "count ymir mother of fingers boss"
   ],
   "source": "hunts"
  },
@@ -9516,7 +9549,8 @@
   "kind": "hunt",
   "fmgName": "Crucible Knight",
   "aliases": [
-   "crucible knight"
+   "crucible knight",
+   "tanith s knight"
   ],
   "source": "hunts"
  },
@@ -9526,7 +9560,8 @@
   "kind": "hunt",
   "fmgName": "Curseblade Labirith",
   "aliases": [
-   "curseblade labirith"
+   "curseblade labirith",
+   "curseblade labirith boss"
   ],
   "source": "hunts"
  },
@@ -9586,7 +9621,8 @@
   "kind": "hunt",
   "fmgName": "Demi-Human Queen Marigga",
   "aliases": [
-   "demi human queen marigga"
+   "demi human queen marigga",
+   "demi human queen marigga boss"
   ],
   "source": "hunts"
  },
@@ -9596,7 +9632,8 @@
   "kind": "hunt",
   "fmgName": "Demi-Human Swordmaster Onze",
   "aliases": [
-   "demi human swordmaster onze"
+   "demi human swordmaster onze",
+   "demi human swordmaster onze boss"
   ],
   "source": "hunts"
  },
@@ -9627,7 +9664,8 @@
   "kind": "hunt",
   "fmgName": "Esgar, Priest of Blood",
   "aliases": [
-   "esgar priest of blood"
+   "esgar priest of blood",
+   "esgar priest of blood boss"
   ],
   "source": "hunts"
  },
@@ -9677,7 +9715,8 @@
   "kind": "hunt",
   "fmgName": "Golden Hippopotamus",
   "aliases": [
-   "golden hippopotamus"
+   "golden hippopotamus",
+   "golden hippopotamus boss"
   ],
   "source": "hunts"
  },
@@ -9697,7 +9736,8 @@
   "kind": "hunt",
   "fmgName": "Jori, Elder Inquisitor",
   "aliases": [
-   "jori elder inquisitor"
+   "jori elder inquisitor",
+   "jori elder inquisitor boss"
   ],
   "source": "hunts"
  },
@@ -9752,7 +9792,8 @@
   "kind": "hunt",
   "fmgName": "Necromancer Garris",
   "aliases": [
-   "necromancer garris"
+   "necromancer garris",
+   "necromancer garris boss"
   ],
   "source": "hunts"
  },
@@ -9762,7 +9803,8 @@
   "kind": "hunt",
   "fmgName": "Patches",
   "aliases": [
-   "patches"
+   "patches",
+   "patches boss"
   ],
   "source": "hunts"
  },
@@ -9772,7 +9814,8 @@
   "kind": "hunt",
   "fmgName": "Putrescent Knight",
   "aliases": [
-   "putrescent knight"
+   "putrescent knight",
+   "putrescent knight boss"
   ],
   "source": "hunts"
  },
@@ -9812,7 +9855,8 @@
   "kind": "hunt",
   "fmgName": "Ralva the Great Red Bear",
   "aliases": [
-   "ralva the great red bear"
+   "ralva the great red bear",
+   "ralva the great red bear boss"
   ],
   "source": "hunts"
  },
@@ -9832,7 +9876,8 @@
   "kind": "hunt",
   "fmgName": "Romina, Saint of the Bud",
   "aliases": [
-   "romina saint of the bud"
+   "romina saint of the bud",
+   "romina saint of the bud boss"
   ],
   "source": "hunts"
  },
@@ -9842,7 +9887,8 @@
   "kind": "hunt",
   "fmgName": "Roundtable Knight Vyke",
   "aliases": [
-   "roundtable knight vyke"
+   "roundtable knight vyke",
+   "roundtable knight vyke boss"
   ],
   "source": "hunts"
  },
@@ -9862,7 +9908,8 @@
   "kind": "hunt",
   "fmgName": "Rugalea the Great Red Bear",
   "aliases": [
-   "rugalea the great red bear"
+   "rugalea the great red bear",
+   "rugalea the great red bear boss"
   ],
   "source": "hunts"
  },
@@ -9872,7 +9919,8 @@
   "kind": "hunt",
   "fmgName": "Scadutree Avatar",
   "aliases": [
-   "scadutree avatar"
+   "scadutree avatar",
+   "scadutree avatar boss"
   ],
   "source": "hunts"
  },
@@ -9892,7 +9940,8 @@
   "kind": "hunt",
   "fmgName": "Soldier of Godrick",
   "aliases": [
-   "soldier of godrick"
+   "soldier of godrick",
+   "soldier of godrick boss"
   ],
   "source": "hunts"
  },
@@ -9956,6 +10005,7 @@
   "fmgName": "Sanguine Noble",
   "aliases": [
    "sanguine noble",
+   "sanguine noble boss",
    "sanguine noble invader"
   ],
   "source": "paramdex-npc"
@@ -11656,6 +11706,208 @@
   "source": "names"
  },
  {
+  "engineId": "npc:blackguard-big-boggart",
+  "slug": "npc:blackguard-big-boggart",
+  "kind": "npc",
+  "fmgName": "Blackguard",
+  "aliases": [
+   "blackguard"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:blaidd",
+  "slug": "npc:blaidd",
+  "kind": "npc",
+  "fmgName": "Blaidd the Half-Wolf",
+  "aliases": [
+   "blaidd the half wolf"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:bloody-finger-hunter-yura",
+  "slug": "npc:bloody-finger-hunter-yura",
+  "kind": "npc",
+  "fmgName": "Yura, Hunter of Bloody Fingers",
+  "aliases": [
+   "yura hunter of bloody fingers"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:brother-corhyn",
+  "slug": "npc:brother-corhyn",
+  "kind": "npc",
+  "fmgName": "Scribe Corhyn",
+  "aliases": [
+   "scribe corhyn"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:finger-reader-crone",
+  "slug": "npc:finger-reader-crone",
+  "kind": "npc",
+  "fmgName": "Godwyn's Wet Nurse",
+  "aliases": [
+   "godwyn s wet nurse",
+   "keeper of forbidden lands"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:goldmask",
+  "slug": "npc:goldmask",
+  "kind": "npc",
+  "fmgName": "The Noble Goldmask",
+  "aliases": [
+   "the noble goldmask"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:great-jar",
+  "slug": "npc:great-jar",
+  "kind": "npc",
+  "fmgName": "Knight of the Great Jar",
+  "aliases": [
+   "knight of the great jar"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:hermit-merchant-ainsel-river",
+  "slug": "npc:hermit-merchant-ainsel-river",
+  "kind": "npc",
+  "fmgName": "Hermit Merchant",
+  "aliases": [
+   "hermit merchant"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:hyetta",
+  "slug": "npc:hyetta",
+  "kind": "npc",
+  "fmgName": "Finger Maiden Hyetta",
+  "aliases": [
+   "finger maiden hyetta"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:igon",
+  "slug": "npc:igon",
+  "kind": "npc",
+  "fmgName": "Drake Warrior Igon",
+  "aliases": [
+   "drake warrior igon"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:irina",
+  "slug": "npc:irina",
+  "kind": "npc",
+  "fmgName": "Irina of Morne",
+  "aliases": [
+   "irina of morne"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:isolated-merchant-dragonbarrow",
+  "slug": "npc:isolated-merchant-dragonbarrow",
+  "kind": "npc",
+  "fmgName": "Isolated Merchant",
+  "aliases": [
+   "isolated merchant"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:kenneth-haight",
+  "slug": "npc:kenneth-haight",
+  "kind": "npc",
+  "fmgName": "Kenneth Haight, Limgrave Heir",
+  "aliases": [
+   "kenneth haight limgrave heir"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:knight-diallos",
+  "slug": "npc:knight-diallos",
+  "kind": "npc",
+  "fmgName": "Potentate Diallos",
+  "aliases": [
+   "potentate diallos"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:nomadic-merchant-altus-plateau",
+  "slug": "npc:nomadic-merchant-altus-plateau",
+  "kind": "npc",
+  "fmgName": "Nomadic Merchant",
+  "aliases": [
+   "nomadic merchant"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:renna",
+  "slug": "npc:renna",
+  "kind": "npc",
+  "fmgName": "Renna the Witch",
+  "aliases": [
+   "renna the witch"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:roderika",
+  "slug": "npc:roderika",
+  "kind": "npc",
+  "fmgName": "Heartbroken Maiden",
+  "aliases": [
+   "heartbroken maiden",
+   "roderika spirit tuner"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:rya-the-scout",
+  "slug": "npc:rya-the-scout",
+  "kind": "npc",
+  "fmgName": "Zorayas the Scout",
+  "aliases": [
+   "zorayas the scout"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:two-fingers",
+  "slug": "npc:two-fingers",
+  "kind": "npc",
+  "fmgName": "The Two Fingers",
+  "aliases": [
+   "the two fingers"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:war-counselor-iji",
+  "slug": "npc:war-counselor-iji",
+  "kind": "npc",
+  "fmgName": "Smithing Master Iji",
+  "aliases": [
+   "smithing master iji"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
   "engineId": "quest:alexander:complete",
   "slug": "quest:alexander:complete",
   "kind": "quest",
@@ -12815,6 +13067,36 @@
   "source": "authored"
  },
  {
+  "engineId": "region:altus-bear-woods",
+  "slug": "region:altus-bear-woods",
+  "kind": "region",
+  "fmgName": "Altus, Bear Woods",
+  "aliases": [
+   "altus bear woods"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:ancient-ruins-under-stair",
+  "slug": "region:ancient-ruins-under-stair",
+  "kind": "region",
+  "fmgName": "Ancient Ruins, Under-Stair",
+  "aliases": [
+   "ancient ruins under stair"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:ancient-valley-ruins",
+  "slug": "region:ancient-valley-ruins",
+  "kind": "region",
+  "fmgName": "Ancient Valley Ruins",
+  "aliases": [
+   "ancient valley ruins"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
   "engineId": "region:caelid",
   "slug": "region:caelid",
   "kind": "region",
@@ -12825,6 +13107,96 @@
    "scarlet rot"
   ],
   "source": "authored"
+ },
+ {
+  "engineId": "region:caelid-colosseum",
+  "slug": "region:caelid-colosseum",
+  "kind": "region",
+  "fmgName": "Caelid Colosseum",
+  "aliases": [
+   "caelid colosseum"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:caelid-minor-erdtree",
+  "slug": "region:caelid-minor-erdtree",
+  "kind": "region",
+  "fmgName": "Caelid Minor Erdtree",
+  "aliases": [
+   "caelid minor erdtree"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:carian-study-hall",
+  "slug": "region:carian-study-hall",
+  "kind": "region",
+  "fmgName": "Carian Study Hall",
+  "aliases": [
+   "carian study hall"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:darklight-catacombs-lower-level",
+  "slug": "region:darklight-catacombs-lower-level",
+  "kind": "region",
+  "fmgName": "Darklight Catacombs, Lower Level",
+  "aliases": [
+   "darklight catacombs lower level"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:darkroad-sanctuary",
+  "slug": "region:darkroad-sanctuary",
+  "kind": "region",
+  "fmgName": "Darkroad Sanctuary",
+  "aliases": [
+   "darkroad sanctuary"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:demi-human-valley",
+  "slug": "region:demi-human-valley",
+  "kind": "region",
+  "fmgName": "Demi-Human Valley",
+  "aliases": [
+   "demi human valley"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:dominula-checkpoint",
+  "slug": "region:dominula-checkpoint",
+  "kind": "region",
+  "fmgName": "Dominula Checkpoint",
+  "aliases": [
+   "dominula checkpoint"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:dragonbarrow-minor-erdtree",
+  "slug": "region:dragonbarrow-minor-erdtree",
+  "kind": "region",
+  "fmgName": "Dragonbarrow Minor Erdtree",
+  "aliases": [
+   "dragonbarrow minor erdtree"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:drake-graveyard",
+  "slug": "region:drake-graveyard",
+  "kind": "region",
+  "fmgName": "Drake Graveyard",
+  "aliases": [
+   "drake graveyard"
+  ],
+  "source": "game-name-aliases"
  },
  {
   "engineId": "region:farum",
@@ -12839,6 +13211,36 @@
   "source": "authored"
  },
  {
+  "engineId": "region:fort-laiedd-south",
+  "slug": "region:fort-laiedd-south",
+  "kind": "region",
+  "fmgName": "Fort Laiedd South",
+  "aliases": [
+   "fort laiedd south"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:freezing-river",
+  "slug": "region:freezing-river",
+  "kind": "region",
+  "fmgName": "Freezing River",
+  "aliases": [
+   "freezing river"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:garden-beyond-the-bridge",
+  "slug": "region:garden-beyond-the-bridge",
+  "kind": "region",
+  "fmgName": "Garden Beyond the Bridge",
+  "aliases": [
+   "garden beyond the bridge"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
   "engineId": "region:haligtree",
   "slug": "region:haligtree",
   "kind": "region",
@@ -12851,6 +13253,76 @@
   "source": "authored"
  },
  {
+  "engineId": "region:hermit-village-cliff-road",
+  "slug": "region:hermit-village-cliff-road",
+  "kind": "region",
+  "fmgName": "Hermit Village Cliff Road",
+  "aliases": [
+   "hermit village cliff road"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:hidden-grave-north",
+  "slug": "region:hidden-grave-north",
+  "kind": "region",
+  "fmgName": "Hidden Grave North",
+  "aliases": [
+   "hidden grave north"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:hidden-grave-south",
+  "slug": "region:hidden-grave-south",
+  "kind": "region",
+  "fmgName": "Hidden Grave South",
+  "aliases": [
+   "hidden grave south"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:highway-lookout-tower",
+  "slug": "region:highway-lookout-tower",
+  "kind": "region",
+  "fmgName": "Highway Lookout Tower",
+  "aliases": [
+   "highway lookout tower"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:jagged-peak-cavern",
+  "slug": "region:jagged-peak-cavern",
+  "kind": "region",
+  "fmgName": "Jagged Peak Cavern",
+  "aliases": [
+   "jagged peak cavern"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:lake-minor-erdtree",
+  "slug": "region:lake-minor-erdtree",
+  "kind": "region",
+  "fmgName": "Lake Minor Erdtree",
+  "aliases": [
+   "lake minor erdtree"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:lake-north-of-the-greatbridge",
+  "slug": "region:lake-north-of-the-greatbridge",
+  "kind": "region",
+  "fmgName": "Lake North of the Greatbridge",
+  "aliases": [
+   "lake north of the greatbridge"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
   "engineId": "region:leyndell",
   "slug": "region:leyndell",
   "kind": "region",
@@ -12861,6 +13333,16 @@
    "royal capital"
   ],
   "source": "authored"
+ },
+ {
+  "engineId": "region:leyndell-ashen-capital",
+  "slug": "region:leyndell-ashen-capital",
+  "kind": "region",
+  "fmgName": "Leyndell, Ashen Capital",
+  "aliases": [
+   "leyndell ashen capital"
+  ],
+  "source": "game-name-aliases"
  },
  {
   "engineId": "region:limgrave",
@@ -12876,6 +13358,16 @@
   "source": "authored"
  },
  {
+  "engineId": "region:limgrave-colosseum",
+  "slug": "region:limgrave-colosseum",
+  "kind": "region",
+  "fmgName": "Limgrave Colosseum",
+  "aliases": [
+   "limgrave colosseum"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
   "engineId": "region:liurnia",
   "slug": "region:liurnia",
   "kind": "region",
@@ -12887,6 +13379,36 @@
    "the lakes"
   ],
   "source": "authored"
+ },
+ {
+  "engineId": "region:miyr-hanging-bell",
+  "slug": "region:miyr-hanging-bell",
+  "kind": "region",
+  "fmgName": "Miyr Hanging Bell",
+  "aliases": [
+   "miyr hanging bell"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:moorth-highway",
+  "slug": "region:moorth-highway",
+  "kind": "region",
+  "fmgName": "Moorth Highway",
+  "aliases": [
+   "moorth highway"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:mountaintop-minor-erdtree",
+  "slug": "region:mountaintop-minor-erdtree",
+  "kind": "region",
+  "fmgName": "Mountaintop Minor Erdtree",
+  "aliases": [
+   "mountaintop minor erdtree"
+  ],
+  "source": "game-name-aliases"
  },
  {
   "engineId": "region:mountaintops",
@@ -12901,6 +13423,66 @@
   "source": "authored"
  },
  {
+  "engineId": "region:northern-liurnia-lake-shore",
+  "slug": "region:northern-liurnia-lake-shore",
+  "kind": "region",
+  "fmgName": "Northern Liurnia Lake Shore",
+  "aliases": [
+   "northern liurnia lake shore"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:outer-wall-east",
+  "slug": "region:outer-wall-east",
+  "kind": "region",
+  "fmgName": "Outer Wall East",
+  "aliases": [
+   "outer wall east"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:outer-wall-minor-erdtree",
+  "slug": "region:outer-wall-minor-erdtree",
+  "kind": "region",
+  "fmgName": "Outer Wall Minor Erdtree",
+  "aliases": [
+   "outer wall minor erdtree"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:peninsula-minor-erdtree",
+  "slug": "region:peninsula-minor-erdtree",
+  "kind": "region",
+  "fmgName": "Peninsula Minor Erdtree",
+  "aliases": [
+   "peninsula minor erdtree"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:rauh-base-bear-woods",
+  "slug": "region:rauh-base-bear-woods",
+  "kind": "region",
+  "fmgName": "Rauh Base, Bear Woods",
+  "aliases": [
+   "rauh base bear woods"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:sending-gate",
+  "slug": "region:sending-gate",
+  "kind": "region",
+  "fmgName": "Sending Gate",
+  "aliases": [
+   "sending gate"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
   "engineId": "region:shadow",
   "slug": "region:shadow",
   "kind": "region",
@@ -12913,6 +13495,126 @@
    "sote"
   ],
   "source": "authored"
+ },
+ {
+  "engineId": "region:snowfield-minor-erdtree",
+  "slug": "region:snowfield-minor-erdtree",
+  "kind": "region",
+  "fmgName": "Snowfield Minor Erdtree",
+  "aliases": [
+   "snowfield minor erdtree"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:stargazer-s-ruins",
+  "slug": "region:stargazer-s-ruins",
+  "kind": "region",
+  "fmgName": "Stargazers' Ruins",
+  "aliases": [
+   "stargazers ruins"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:tenebrae-demesne",
+  "slug": "region:tenebrae-demesne",
+  "kind": "region",
+  "fmgName": "Tenebrae Demesne",
+  "aliases": [
+   "tenebrae demesne"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:the-rold-route",
+  "slug": "region:the-rold-route",
+  "kind": "region",
+  "fmgName": "The Rold Route",
+  "aliases": [
+   "the rold route"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:tombsward",
+  "slug": "region:tombsward",
+  "kind": "region",
+  "fmgName": "Tombsward",
+  "aliases": [
+   "tombsward"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:uld-minor-erdtree",
+  "slug": "region:uld-minor-erdtree",
+  "kind": "region",
+  "fmgName": "Uld Minor Erdtree",
+  "aliases": [
+   "uld minor erdtree"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:volcano-manor-request-istvan",
+  "slug": "region:volcano-manor-request-istvan",
+  "kind": "region",
+  "fmgName": "Volcano Manor Request: Istvan",
+  "aliases": [
+   "volcano manor request istvan"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:volcano-manor-request-juno-hoslow",
+  "slug": "region:volcano-manor-request-juno-hoslow",
+  "kind": "region",
+  "fmgName": "Volcano Manor Request: Juno Hoslow",
+  "aliases": [
+   "volcano manor request juno hoslow"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:volcano-manor-request-rileigh",
+  "slug": "region:volcano-manor-request-rileigh",
+  "kind": "region",
+  "fmgName": "Volcano Manor Request: Rileigh",
+  "aliases": [
+   "volcano manor request rileigh"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:volcano-manor-request-tragoth",
+  "slug": "region:volcano-manor-request-tragoth",
+  "kind": "region",
+  "fmgName": "Volcano Manor Request: Tragoth",
+  "aliases": [
+   "volcano manor request tragoth"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:volcano-manor-request-vargram",
+  "slug": "region:volcano-manor-request-vargram",
+  "kind": "region",
+  "fmgName": "Volcano Manor Request: Vargram",
+  "aliases": [
+   "volcano manor request vargram"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "region:wailing-dunes-south",
+  "slug": "region:wailing-dunes-south",
+  "kind": "region",
+  "fmgName": "Wailing Dunes South",
+  "aliases": [
+   "wailing dunes south"
+  ],
+  "source": "game-name-aliases"
  },
  {
   "engineId": "region:weeping",

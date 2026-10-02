@@ -10,6 +10,8 @@ import { itemEntityNameSet, matchWikiStepToBeat } from './questStepMatch'
 import type { EntityRecord, QuestStepEntry } from './entityIndex'
 import generatedAliases from '../data/aliases.json'
 import overridesJson from '../data/entity-overrides.json'
+import gameNameAliases from '../data/game-name-aliases.json'
+import gamePlaceRegions from '../data/game-place-regions.json'
 import dungeonsData from '../data/dungeons.json'
 import bossRoster from '../data/bosses.json'
 import imageIndex from '../data/image-index.json'
@@ -2517,6 +2519,182 @@ function mergeDungeon(row: { id?: string; name: string; region?: string; x?: num
 }
 
 // ---------------------------------------------------------------------------
+// Task 146 — restore the in-game names, missing items and quest pictures that
+// commit 07e7eb0 dropped. Each reads the repo's own committed data.
+// ---------------------------------------------------------------------------
+
+/** A checklist NPC quote that is a placeholder, not something to restore. */
+const PLACEHOLDER_QUOTE = /^(insert npc quote here\.?|\.{3}|…|no text|tba|\?{3})$/i
+
+/**
+ * Task 146 §1 — every PlaceName FMG row the PS5 map reader can show must resolve.
+ * `game-name-aliases.json` names the record each verbatim spelling belongs to; a
+ * `region:` target that does not exist yet is a place the index never built
+ * (Minor Erdtrees, colosseums, DLC sub-areas). Create it as a reference region
+ * with its committed parent region and, when the engine ships a pin, its coords.
+ */
+function seedGamePlaceRegions(): void {
+  const pinByName = new Map<string, { px: number; py: number; master?: string }>()
+  for (const m of (engineMarkersDoc as { markers?: { name?: string; px?: number; py?: number; master?: string }[] }).markers ?? []) {
+    const key = m.name ? simpleNorm(m.name) : ''
+    if (key && typeof m.px === 'number' && typeof m.py === 'number' && !pinByName.has(key)) {
+      pinByName.set(key, { px: m.px, py: m.py, master: m.master })
+    }
+  }
+  const parentByName = gamePlaceRegions as Record<string, string>
+  let created = 0
+  for (const [name, id] of Object.entries(gameNameAliases as Record<string, string>)) {
+    if (!id.startsWith('region:') || records.has(id)) continue
+    const record = ensure(id, 'region', name)
+    record.catalogue = false
+    const parent = parentByName[name]
+    if (parent) setText(record, 'location', parent)
+    const pin = pinByName.get(simpleNorm(name))
+    if (pin) {
+      const toPct = (v: number) => Math.round((v / 10496) * 10000) / 100
+      record.map = { x: toPct(pin.px), y: toPct(pin.py), world: pin.master === 'M10' ? 'shadow' : 'overworld' }
+    }
+    source(record, 'names/fmg-places')
+    addName(name, id)
+    created++
+  }
+  if (created) console.log(`game place regions: ${created} created`)
+}
+
+/** The in-game description from the FMG name row's own `info` line. */
+function fmgInfo(id: string): string | undefined {
+  return (namesData as FmgNameRow[]).find((row) => row.id === id)?.info?.trim() || undefined
+}
+
+/** An FMG goods/protector description that is really the spirit summon's. */
+const SPIRIT_SUMMON_DESC = /^(ashen remains in which spirits yet dwell|summons? spirit)/i
+
+/**
+ * Task 146 §2 — items the game's FMG tables carry but the index never built, plus
+ * a base/altered pair the name plane folded together. Descriptions come from the
+ * FMG `info` line; ids match the natural catalogue slug.
+ */
+function seedGameItems(): void {
+  // Twinned Armor: 600100 is the base chest piece (D's armor, alters into the
+  // 601100 "…(Altered)" row). The index kept the altered row under the base id.
+  const twinned = records.get('item:twinned-armor')
+  if (twinned && /altered/i.test(twinned.name)) {
+    records.delete('item:twinned-armor')
+    twinned.id = 'item:twinned-armor-altered'
+    records.set(twinned.id, twinned)
+    addName('Twinned Armor (Altered)', twinned.id)
+  }
+  if (hasEntity('item:twinned-armor')) {
+    const base = records.get('item:twinned-armor') ?? ensureEntity(getEntity('item:twinned-armor'))
+    base.kind = 'armor'
+    base.name = getEntity('item:twinned-armor').name
+    setText(base, 'description', fmgInfo('protector:600100'))
+    source(base, 'names/fmg-protector')
+  }
+  const altered = records.get('item:twinned-armor-altered')
+  if (altered) {
+    setText(altered, 'description', fmgInfo('protector:601100'))
+    source(altered, 'names/fmg-protector')
+  }
+
+  // Gold Sewing Needle (goods 8162) is a distinct item from the plain Sewing
+  // Needle (8161); the checklist folded both onto one record.
+  const gold = records.get('item:gold-sewing-needle') ?? ensure('item:gold-sewing-needle', 'item', 'Gold Sewing Needle')
+  gold.catalogue = false
+  setText(gold, 'description', fmgInfo('goods:8162'))
+  source(gold, 'names/fmg-goods')
+  addName('Gold Sewing Needle', gold.id)
+
+  // Pest-Thread Spears (goods 2007210) is the DLC incantation; the base-game
+  // "Pest Threads" checklist row shared its id. Move the base to its own id.
+  const pest = records.get('item:pest-thread-spears')
+  if (pest && simpleNorm(pest.name) !== 'pest thread spears') {
+    records.delete('item:pest-thread-spears')
+    pest.id = 'item:pest-threads'
+    records.set(pest.id, pest)
+    addName('Pest Threads', pest.id)
+  }
+  const spears = records.get('item:pest-thread-spears') ?? ensure('item:pest-thread-spears', 'spell', 'Pest-Thread Spears')
+  spears.kind = 'spell'
+  spears.catalogue = false
+  setText(spears, 'description', fmgInfo('goods:2007210'))
+  source(spears, 'names/fmg-goods')
+  addName('Pest-Thread Spears', spears.id)
+
+  // Perfumer Tricia (goods 217000) is the spirit summon, not the boss whose name
+  // it shares. Give the boss back its own line and keep the summon separate.
+  const boss = records.get('boss:perfumer-tricia')
+  if (boss && SPIRIT_SUMMON_DESC.test(boss.description ?? '')) delete boss.description
+  const spirit = records.get('item:perfumer-tricia') ?? ensure('item:perfumer-tricia', 'spirit', 'Perfumer Tricia')
+  spirit.kind = 'spirit'
+  spirit.catalogue = false
+  setText(spirit, 'description', fmgInfo('goods:217000'))
+  source(spirit, 'names/fmg-goods')
+  addName('Perfumer Tricia', spirit.id)
+}
+
+/**
+ * Task 146 §3 — commit 07e7eb0 dropped the real merchant quotes (Enia, Miriel).
+ * A vendor whose name is `<npc> - <stock>` never matched the NPC checklist row,
+ * so it lost the line. Restore the checklist quote for the vendor's base name;
+ * placeholder lines are skipped, never restored.
+ */
+function restoreMerchantQuotes(): void {
+  const quoteByNpc = new Map<string, string>()
+  for (const row of checklistNpcs as ChecklistNpc[]) {
+    const quote = row.quote?.trim()
+    if (!quote || PLACEHOLDER_QUOTE.test(quote)) continue
+    for (const key of [simpleNorm(row.name), simpleNorm(row.name.split(',')[0])]) {
+      if (key && !quoteByNpc.has(key)) quoteByNpc.set(key, quote)
+    }
+  }
+  let restored = 0
+  for (const record of records.values()) {
+    if (record.kind !== 'merchant') continue
+    // Drop a placeholder the earlier exact-name merge may have set.
+    if (record.description && PLACEHOLDER_QUOTE.test(record.description.trim())) {
+      delete record.description
+      continue
+    }
+    if (record.description) continue
+    const base = record.name.replace(/\s+-\s+.*$/, '').trim()
+    const quote = quoteByNpc.get(simpleNorm(base))
+    if (!quote) continue
+    setText(record, 'description', quote)
+    source(record, 'checklists/npcs')
+    restored++
+  }
+  if (restored) console.log(`merchant quotes restored: ${restored}`)
+}
+
+/**
+ * Task 146 §3 — the quest (`line:*`) pages carried the NPC's picture. Restore it
+ * from the repo image index by the line's name, else by one of its aliases (an
+ * ending like "Age of Order" is pictured by its NPC, Goldmask).
+ */
+function restoreLineImages(): void {
+  const aliasImage = new Map<string, string>()
+  for (const line of allLines) {
+    for (const alias of [line.name, ...(line.aliases ?? [])]) {
+      const img = (imageIndex as Record<string, string>)[simpleNorm(alias)]
+      if (img) {
+        aliasImage.set(`line:${line.id}`, img)
+        break
+      }
+    }
+  }
+  let restored = 0
+  for (const record of records.values()) {
+    if (!record.id.startsWith('line:') || record.image) continue
+    const img = imageFor(record.name) ?? aliasImage.get(record.id)
+    if (!img) continue
+    record.image = img
+    restored++
+  }
+  if (restored) console.log(`line images restored: ${restored}`)
+}
+
+// ---------------------------------------------------------------------------
 // Assemble
 // ---------------------------------------------------------------------------
 
@@ -2790,6 +2968,8 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   mergeBossEncounterEnemies()
   // After the FMG name-plane cleanup, so empty name rows are already folded away.
   shareQuestSteps()
+  // Task 146 §1 — place names the PS5 reader sees but the index never built.
+  seedGamePlaceRegions()
   enrichRegions()
 
   // Any other record the catalog places (quest beats, items) gets that region
@@ -2810,6 +2990,12 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   enrichCreatures()
   // Placements can give two variants of one enemy the same name + location.
   dedupePrimary()
+
+  // Task 146 §2/§3 — the missing items, the real merchant quotes and the quest
+  // pictures, restored from the committed sources after every merge has landed.
+  seedGameItems()
+  restoreMerchantQuotes()
+  restoreLineImages()
 
   // Related labels from the graph edges + a wiki Summary fallback for anything
   // still without a description.
