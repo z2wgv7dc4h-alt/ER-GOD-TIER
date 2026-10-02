@@ -53,7 +53,7 @@ table. The table below is the current traversal; the guards snapshot it.
 | region.contents | ≥ 30% | 33.3% | PASS |
 | material.source | ≥ 90% | 100% | PASS |
 | talisman.source | ≥ 90% | 91.8% | PASS |
-| weapon.source | ≥ 85% | 86.2% | PASS |
+| weapon.source | ≥ 85% | 89.6% | PASS |
 | spell.source | ≥ 90% | 96.3% | PASS |
 | npc.location | ≥ 65% | 77.4% | PASS |
 
@@ -61,23 +61,23 @@ All guard minimums met.
 
 | kind | entities | source | drops | location | contents | region | stock | boss | trades |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| armor | 750 | 74.5% | · | · | · | · | · | · | · |
+| armor | 750 | 85.9% | · | · | · | · | · | · | · |
 | ash | 124 | 72.6% | · | · | · | · | · | · | · |
 | boss | 297 | · | 87.9% | 98.3% | · | · | · | · | · |
 | dungeon | 119 | · | · | · | 85.7% | · | · | · | · |
 | grace | 416 | · | · | · | · | 90.9% | · | · | · |
-| item | 1188 | 73.5% | · | · | · | · | · | · | · |
+| item | 1188 | 74.2% | · | · | · | · | · | · | · |
 | material | 3 | 100% | · | · | · | · | · | · | · |
 | merchant | 106 | · | · | · | · | · | 100% | · | · |
 | npc | 195 | · | · | 77.4% | · | · | · | · | · |
 | quest | 468 | · | · | 68.4% | · | · | · | · | · |
 | region | 312 | · | · | · | 33.3% | · | · | · | · |
 | remembrance | 25 | · | · | · | · | · | · | 100% | 100% |
-| shield | 67 | 86.6% | · | · | · | · | · | · | · |
+| shield | 67 | 94% | · | · | · | · | · | · | · |
 | spell | 217 | 96.3% | · | · | · | · | · | · | · |
 | spirit | 79 | 87.3% | · | · | · | · | · | · | · |
 | talisman | 158 | 91.8% | · | · | · | · | · | · | · |
-| weapon | 443 | 86.2% | · | · | · | · | · | · | · |
+| weapon | 443 | 89.6% | · | · | · | · | · | · | · |
 
 ## Unlinked mentions
 
