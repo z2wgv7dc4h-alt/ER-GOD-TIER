@@ -1,5 +1,45 @@
 [
  {
+  "engineId": "area:1049390800",
+  "slug": "boss:nox-swordstress-and-nox-monk",
+  "kind": "boss",
+  "fmgName": "Nox Swordstress and Nox Monk",
+  "aliases": [],
+  "source": "boss-roster"
+ },
+ {
+  "engineId": "area:30100801",
+  "slug": "boss:crucible-ordovis",
+  "kind": "boss",
+  "fmgName": "Crucible Knight & Crucible Knight Ordovis",
+  "aliases": [],
+  "source": "boss-roster"
+ },
+ {
+  "engineId": "area:30120801",
+  "slug": "boss:perfumer-tricia",
+  "kind": "boss",
+  "fmgName": "Perfumer Tricia & Misbegotten Warrior",
+  "aliases": [],
+  "source": "boss-roster"
+ },
+ {
+  "engineId": "area:31150800",
+  "slug": "boss:demi-human-chiefs",
+  "kind": "boss",
+  "fmgName": "Demi-Human Chiefs",
+  "aliases": [],
+  "source": "boss-roster"
+ },
+ {
+  "engineId": "area:32050801",
+  "slug": "boss:crystalian-duo--altus-tunnel",
+  "kind": "boss",
+  "fmgName": "Crystalian (Spear) & Crystalian (Ringblade) (Altus Tunnel)",
+  "aliases": [],
+  "source": "boss-roster"
+ },
+ {
   "engineId": "boss:burial-tree-watchdog",
   "slug": "boss:erdtree-burial-watchdog--stormfoot-catacombs",
   "kind": "boss",
@@ -694,6 +734,14 @@
    "oneil"
   ],
   "source": "hosted-bosses"
+ },
+ {
+  "engineId": "bossflag:1049390800",
+  "slug": "boss:nox-swordstress-and-nox-monk",
+  "kind": "boss",
+  "fmgName": "Nox Swordstress and Nox Monk",
+  "aliases": [],
+  "source": "boss-roster"
  },
  {
   "engineId": "bossflag:1049520800",
@@ -1414,6 +1462,14 @@
   "source": "hosted-bosses"
  },
  {
+  "engineId": "bossflag:30100801",
+  "slug": "boss:crucible-ordovis",
+  "kind": "boss",
+  "fmgName": "Crucible Knight & Crucible Knight Ordovis",
+  "aliases": [],
+  "source": "boss-roster"
+ },
+ {
   "engineId": "bossflag:30110800",
   "slug": "boss:black-knife-assassin--deathtouched-catacombs",
   "kind": "boss",
@@ -1431,6 +1487,14 @@
    "perfumer tricia misbegotten warrior"
   ],
   "source": "hosted-bosses"
+ },
+ {
+  "engineId": "bossflag:30120801",
+  "slug": "boss:perfumer-tricia",
+  "kind": "boss",
+  "fmgName": "Perfumer Tricia & Misbegotten Warrior",
+  "aliases": [],
+  "source": "boss-roster"
  },
  {
   "engineId": "bossflag:30130800",
@@ -1533,6 +1597,14 @@
   "source": "boss-roster"
  },
  {
+  "engineId": "bossflag:31150800",
+  "slug": "boss:demi-human-chiefs",
+  "kind": "boss",
+  "fmgName": "Demi-Human Chiefs",
+  "aliases": [],
+  "source": "boss-roster"
+ },
+ {
   "engineId": "bossflag:31170800",
   "slug": "boss:guardian-golem",
   "kind": "boss",
@@ -1610,6 +1682,14 @@
  },
  {
   "engineId": "bossflag:32050800",
+  "slug": "boss:crystalian-duo--altus-tunnel",
+  "kind": "boss",
+  "fmgName": "Crystalian (Spear) & Crystalian (Ringblade) (Altus Tunnel)",
+  "aliases": [],
+  "source": "boss-roster"
+ },
+ {
+  "engineId": "bossflag:32050801",
   "slug": "boss:crystalian-duo--altus-tunnel",
   "kind": "boss",
   "fmgName": "Crystalian (Spear) & Crystalian (Ringblade) (Altus Tunnel)",

@@ -260,6 +260,22 @@ for (const b of bossXyz) {
   emit(b.id, seed.id, b.name, rowAliases(seed.name, seed.aliases, b.name), 'hosted-bosses')
   if (b.kill) emit(`bossflag:${b.kill}`, seed.id, b.name, rowAliases(seed.name, seed.aliases, b.name), 'hosted-bosses')
 }
+// Task 150 §4 — partner kill flags. A duo fight lists one GameAreaParam row per
+// member (Auriza's 30100800/30100801, Unsightly's 30120800/30120801, Altus
+// Tunnel's 32050800/32050801), but `boss-xyz.json` carries only the primary flag,
+// and two xyz names ("Demi-Human Chief ×2", "Nox Monk & Nox Swordstress") never
+// matched their page by name. Point each at the encounter page so the PC-save
+// kill flag resolves; the `area:` row gives the fight itself a page link.
+for (const [flag, slug, name] of [
+  [30100801, 'boss:crucible-ordovis', 'Crucible Knight & Crucible Knight Ordovis'],
+  [30120801, 'boss:perfumer-tricia', 'Perfumer Tricia & Misbegotten Warrior'],
+  [32050801, 'boss:crystalian-duo--altus-tunnel', 'Crystalian (Spear) & Crystalian (Ringblade) (Altus Tunnel)'],
+  [31150800, 'boss:demi-human-chiefs', 'Demi-Human Chiefs'],
+  [1049390800, 'boss:nox-swordstress-and-nox-monk', 'Nox Swordstress and Nox Monk'],
+]) {
+  emit(`bossflag:${flag}`, slug, name, [], 'boss-roster')
+  emit(`area:${flag}`, slug, name, [], 'boss-roster')
+}
 for (const key of Object.keys(npcCombat)) {
   const r = npcCombat[key]
   const fact = facts.find((f) => f.id === r.factId)
