@@ -405,6 +405,41 @@ function appNorm(s) {
   console.log(`game-name aliases: ${attached} attached, ${minted} rows minted (${Object.keys(gameNameAliases).length} names)`)
 }
 
+// Task 148 §1 — one page per enemy. The entity index is built first
+// (`npm run index:entities`); every surviving `enemy:<slug>` record is the merge
+// of all NpcParam rows that share its exact display name. Each old
+// `enemy:<npcParamId>` engine id (from the combat dump and the item-lot drop
+// table) is aliased onto that record, so links, photo matches and the enemy-drop
+// test keep resolving after the per-name merge.
+{
+  let index = null
+  try {
+    index = read('public/sourced/entity-index.json')
+  } catch {
+    index = null
+  }
+  if (index?.records) {
+    // rawNorm keeps parentheticals, so "Crab (Pot)" and "Crab" stay distinct.
+    const enemyByKey = new Map()
+    for (const [id, record] of Object.entries(index.records)) {
+      if (record.kind !== 'enemy') continue
+      const key = rawNorm(record.name)
+      if (key && !enemyByKey.has(key)) enemyByKey.set(key, id)
+    }
+    let attached = 0
+    const addEnemyAlias = (engineId, name) => {
+      if (engineId == null || !name) return
+      const target = enemyByKey.get(rawNorm(name))
+      if (!target) return
+      emit(engineId, target, name, [], 'enemy-name')
+      attached++
+    }
+    for (const row of read('public/sourced/enemy-combat.json')) addEnemyAlias(row.factId, row.name)
+    for (const row of read('public/sourced/open/enemy-drops.json').rows ?? []) addEnemyAlias(`enemy:${row.npcParamId}`, row.name)
+    console.log(`enemy aliases attached: ${attached}`)
+  }
+}
+
 // An engine id that names more than one fact (an NpcParam row shared by several
 // fights: the Godskin Apostle, Godfrey) cannot say which; the resolver keeps the
 // last row it reads, so it would pick one arbitrarily. Such rows are dropped.

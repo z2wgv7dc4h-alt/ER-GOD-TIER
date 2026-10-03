@@ -7,7 +7,7 @@ import { catalogueIdFor } from './catalogueIds'
 import { normalizeName } from './fanImage'
 import { displayName, JUNK_NAME } from './canonicalNames'
 import { itemEntityNameSet, matchWikiStepToBeat } from './questStepMatch'
-import type { EntityRecord, QuestStepEntry } from './entityIndex'
+import type { EnemyVariant, EntityRecord, QuestStepEntry } from './entityIndex'
 import generatedAliases from '../data/aliases.json'
 import overridesJson from '../data/entity-overrides.json'
 import gameNameAliases from '../data/game-name-aliases.json'
@@ -2990,6 +2990,8 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   enrichCreatures()
   // Placements can give two variants of one enemy the same name + location.
   dedupePrimary()
+  // Task 148 §1 — then one enemy page per exact display name.
+  mergeEnemyVariants()
 
   // Task 146 §2/§3 — the missing items, the real merchant quotes and the quest
   // pictures, restored from the committed sources after every merge has landed.
@@ -3307,6 +3309,86 @@ function mergeBossEncounterEnemies(): void {
     if (!boss) continue
     mergeRecords(boss, record)
     records.delete(id)
+  }
+}
+
+/** A drop-list entry that is a pointer, not a real dropped item. */
+const DROP_PLACEHOLDER = /^see #drops$/i
+
+/**
+ * Task 148 §1 — one page per enemy. Every surviving enemy record is folded onto
+ * one per *exact display name*; only identical names merge (a "(Boss)" row or a
+ * differently titled creature stays its own page). Placements, locations,
+ * regions and drops are unioned, the drop table is kept per placement in
+ * `variants` (never concatenated into a "Drop rates" stat), and every old
+ * `enemy:<npcParamId>` id stays resolvable through the generated alias plane.
+ */
+function mergeEnemyVariants(): void {
+  const dropsById = new Map<number, { item: string; chance: number }[]>()
+  for (const row of (enemyDropsDoc as { rows: { npcParamId: number; drops: { item: string; chance: number }[] }[] }).rows) {
+    dropsById.set(
+      row.npcParamId,
+      row.drops.map((d) => ({ item: d.item, chance: d.chance })),
+    )
+  }
+
+  const groups = new Map<string, EntityRecord[]>()
+  for (const record of records.values()) {
+    if (record.kind !== 'enemy') continue
+    record.name = displayName(record.name.trim()).replace(/\s+/g, ' ')
+    const list = groups.get(record.name) ?? []
+    list.push(record)
+    groups.set(record.name, list)
+  }
+
+  for (const [name, list] of groups) {
+    const wanted = `enemy:${slug(name)}` || 'enemy:unknown'
+    let keep = list.find((r) => r.id === wanted)
+    if (!keep) {
+      let target = wanted
+      let n = 2
+      while (records.has(target) && !list.includes(records.get(target)!)) target = `${wanted}-${n++}`
+      keep = [...list].sort((a, b) => filled(b) - filled(a) || a.id.localeCompare(b.id))[0]
+      records.delete(keep.id)
+      keep.id = target
+      records.set(target, keep)
+    }
+
+    const variants: EnemyVariant[] = []
+    const locations: string[] = []
+    const regions: string[] = []
+    const drops: string[] = []
+    for (const member of list) {
+      const npcMatch = /^enemy:(\d+)$/.exec(member.id)
+      const npcParamId = npcMatch ? Number(npcMatch[1]) : undefined
+      const memberDrops = npcParamId != null ? dropsById.get(npcParamId) ?? [] : []
+      variants.push({
+        ...(npcParamId != null ? { npcParamId } : {}),
+        ...(member.location ? { location: member.location } : {}),
+        ...(member.region ? { region: member.region } : {}),
+        drops: memberDrops,
+      })
+      if (member.location && !locations.includes(member.location)) locations.push(member.location)
+      if (member.region && !regions.includes(member.region)) regions.push(member.region)
+      for (const drop of memberDrops) if (!drops.includes(drop.item)) drops.push(drop.item)
+      for (const drop of member.drops ?? []) {
+        if (DROP_PLACEHOLDER.test(drop)) continue
+        if (!drops.includes(drop)) drops.push(drop)
+      }
+      if (member.id !== keep.id) {
+        mergeRecords(keep, member)
+        records.delete(member.id)
+      }
+      addName(member.name, keep.id)
+      addName(member.id, keep.id)
+    }
+
+    keep.variants = variants.length > 1 ? variants : undefined
+    if (locations.length) keep.location = locations.slice(0, 6).join(' · ')
+    if (regions.length) keep.region = regions.slice(0, 4).join(' · ')
+    if (drops.length) keep.drops = drops
+    // The per-placement drop table lives in `variants`, not as a concatenated stat.
+    if (keep.stats) delete keep.stats['Drop rates']
   }
 }
 

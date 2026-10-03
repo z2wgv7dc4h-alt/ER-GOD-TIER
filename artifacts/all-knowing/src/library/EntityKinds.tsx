@@ -302,10 +302,12 @@ function EncounterList({ groupId, character }: { groupId: string; character: Cha
 
 function BossSections({
   entity,
+  record,
   character,
   onShowWiki,
 }: {
   entity: LibraryEntity
+  record: EntityRecord | undefined
   character: Character
   onShowWiki: () => void
 }) {
@@ -314,16 +316,38 @@ function BossSections({
   const encounter = rosterRow(entity.factId)
   const isGroup = encountersOf(entity.factId).length > 0
   const ownEncounter = encounter && encounter.id === entity.factId && encounter.group ? encounter : undefined
+  // Task 148 §1 — a merged enemy carries one row per placement.
+  const variants = record?.kind === 'enemy' ? record.variants : undefined
+  const variantBlock =
+    variants && variants.length > 1 ? (
+      <Block title={`Variants (${variants.length})`}>
+        <Rows>
+          {variants.map((variant, index) => (
+            <li key={variant.npcParamId ?? index} className="note">
+              <strong>{variant.location ?? entity.region ?? entity.name}</strong>
+              {variant.region && variant.region !== (variant.location ?? entity.region) ? ` · ${variant.region}` : ''}
+              {variant.drops.length
+                ? ` · ${variant.drops.map((drop) => `${drop.item} ${drop.chance}%`).join(', ')}`
+                : ' · no drops recorded'}
+            </li>
+          ))}
+        </Rows>
+      </Block>
+    ) : null
   if (isGroup) return <EncounterList groupId={entity.factId} character={character} />
   if (!ownEncounter) {
     return (
-      <Block title="Wiki">
-        <button type="button" className="chip" onClick={onShowWiki}>Full wiki page</button>
-      </Block>
+      <>
+        {variantBlock}
+        <Block title="Wiki">
+          <button type="button" className="chip" onClick={onShowWiki}>Full wiki page</button>
+        </Block>
+      </>
     )
   }
   return (
     <>
+      {variantBlock}
       <Block title="About this fight">
         {ownEncounter.about && <p className="note">{ownEncounter.about}</p>}
         <p className="note">
@@ -354,7 +378,7 @@ export function EntityKinds({
   if (kind === 'region' || kind === 'dungeon') return <RegionSections entity={entity} character={character} />
   if (kind === 'grace') return <GraceSections entity={entity} character={character} />
   if (kind === 'npc' || kind === 'merchant') return <NpcSections entity={entity} record={record} character={character} onShowWiki={onShowWiki} />
-  if (kind === 'boss' || kind === 'enemy') return <BossSections entity={entity} character={character} onShowWiki={onShowWiki} />
+  if (kind === 'boss' || kind === 'enemy') return <BossSections entity={entity} record={record} character={character} onShowWiki={onShowWiki} />
   return null
 }
 

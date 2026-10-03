@@ -39,6 +39,20 @@ export type QuestStepEntry = {
   entityId?: string
 }
 
+/**
+ * Task 148 §1 — one placement of a merged enemy. A single creature type spawns
+ * from many NpcParam rows; the merged record keeps their per-placement location,
+ * region and drop table here instead of as near-duplicate pages.
+ */
+export type EnemyVariant = {
+  /** The NpcParam row this placement came from, when the source carries one. */
+  npcParamId?: number
+  location?: string
+  region?: string
+  /** Drop table from `open/enemy-drops.json` for this placement. */
+  drops: { item: string; chance: number }[]
+}
+
 export type EntityRecord = {
   /** Canonical `kind:slug` id. */
   id: string
@@ -63,6 +77,10 @@ export type EntityRecord = {
   stats?: Record<string, string>
   /** Boss drops. */
   drops?: string[]
+  /** Task 148 §1 — per-placement variants of a merged enemy. */
+  variants?: EnemyVariant[]
+  /** Task 148 §4 — the wiki lists this weapon/item/NPC as cut or unused. */
+  cut?: boolean
   /** Strategy / wiki excerpt. */
   strategy?: string
   /** Selected wiki/Fextralife section excerpts (≤600 chars each). */
