@@ -1595,6 +1595,49 @@ function buildWikiDescriptionMap(): Map<string, string> {
   return map
 }
 
+/** Prose the wiki uses on a page for content it cut before release. */
+const CUT_DESC = /was cut from|unattainable|cut content|unused content/i
+
+/**
+ * Task 148 §4 — page titles the wiki files under cut/unused content. Detection
+ * is `{{Infobox … Cut}}`, the `Unused Content` category, or the lead saying the
+ * content was cut. The record is flagged, never deleted.
+ */
+function buildCutNameSet(): Set<string> {
+  const docs: unknown[] = [
+    wikiBossDoc,
+    wikiEnemyDoc,
+    wikiNpcDoc,
+    wikiLocationDoc,
+    wikiRegionDoc,
+    wikiSkillDoc,
+    wikiDungeonDoc,
+    wikiItemDoc,
+    wikiWeaponDoc,
+    wikiArmorDoc,
+    wikiSpellDoc,
+    wikiTalismanDoc,
+    wikiAshDoc,
+    wikiSpiritDoc,
+  ]
+  const set = new Set<string>()
+  for (const doc of docs) {
+    for (const rec of wikiRecords(doc)) {
+      const categories = (rec.categories ?? []).join(' | ')
+      const cut =
+        /unused content|cut content|scrapped content|removed content/i.test(categories) ||
+        /\bcut\b/i.test(rec.infobox ?? '') ||
+        CUT_DESC.test(rec.description ?? '')
+      if (!cut) continue
+      for (const title of [rec.title, canonicalWikiTitle(rec.title)]) {
+        const key = simpleNorm(title)
+        if (key) set.add(key)
+      }
+    }
+  }
+  return set
+}
+
 /** Enrich an existing record with a wiki record's prose/url (never overwrites). */
 function enrichFromWiki(record: EntityRecord, rec: WikiRecord): void {
   setText(record, 'description', rec.description)
@@ -3102,6 +3145,7 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   }
 
   const wikiDescriptions = buildWikiDescriptionMap()
+  const cutNames = buildCutNameSet()
   for (const record of records.values()) {
     // Task 148 §2 — drop the dump's junk rows (Dummy Entity, "Type 7" armour
     // prototypes, "test gem") before they reach the page.
@@ -3138,6 +3182,12 @@ export function buildEntityIndex(): EntityIndexBuildResult {
           !DROP_PLACEHOLDER.test(String(d).trim()),
       )
       if (!record.drops.length) delete record.drops
+    }
+    // Task 148 §4 — content the wiki lists as cut/unused is flagged, not deleted.
+    if (cutNames.has(simpleNorm(record.name)) || (record.description && CUT_DESC.test(record.description))) {
+      record.cut = true
+      record.stats = record.stats ?? {}
+      record.stats.Status = 'Cut content (not obtainable)'
     }
     // Repair dump casing ("Axe Of Godfrey") so every screen, not just the
     // entity panel, shows the game's spelling. Ids are unchanged.
