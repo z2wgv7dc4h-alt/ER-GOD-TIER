@@ -202,6 +202,10 @@ export default defineConfig({
       },
     },
   },
+  // Task 150 §1: the save-parsing worker imports the alias loader, which awaits
+  // the runtime plane at module init. ES-module workers support top-level await;
+  // IIFE output (the Vite default) does not.
+  worker: { format: 'es' },
   server: {
     host: true,
     ...(https ? { https } : {}),

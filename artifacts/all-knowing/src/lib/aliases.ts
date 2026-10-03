@@ -1,6 +1,5 @@
 import hosted from '../data/hosted-graces.json'
 import hostedBossesJson from '../data/hosted-bosses.json'
-import generatedJson from '../data/aliases.json'
 import { warpGraces, type AtlasWorld, type WarpGrace } from '../knowledge/graces'
 import { encountersByGroup, facts, type Fact } from '../knowledge/catalog'
 import type { Campaign } from '../types'
@@ -133,29 +132,82 @@ export const allBossRows: BossRow[] = hostedBosses.map((b) => {
   }
 })
 
-export const generatedAliases = generatedJson as GeneratedAlias[]
+/**
+ * Task 150 §1 — the plane is no longer bundled. It ships as the data file
+ * `public/sourced/aliases.json` and is loaded once at module init (fetch in the
+ * browser / worker, `node:fs` under SSR + tests) so the synchronous
+ * `canonicalFactId` / search callers keep working but the 1.2 MB payload stays
+ * out of the JS chunks.
+ */
+export let generatedAliases: GeneratedAlias[] = []
 
 /** engine row id -> authored slug, from the generated alias plane. */
-const generatedEngineToSlug = new Map<string, string>()
+let generatedEngineToSlug = new Map<string, string>()
 /** First row per slug (rows are sorted by kind/engineId), for lookups + status. */
-const generatedBySlug = new Map<string, GeneratedAlias>()
+let generatedBySlug = new Map<string, GeneratedAlias>()
 /** Normalised name/alias -> slug, but only when unambiguous. */
-const generatedNameCounts = new Map<string, string[]>()
-for (const row of generatedAliases) {
-  if (row.engineId !== row.slug) generatedEngineToSlug.set(row.engineId, row.slug)
-  if (!generatedBySlug.has(row.slug)) generatedBySlug.set(row.slug, row)
-  for (const raw of [row.fmgName, ...row.aliases]) {
-    const n = norm(raw)
-    if (!n) continue
-    const list = generatedNameCounts.get(n) || []
-    if (!list.includes(row.slug)) list.push(row.slug)
-    generatedNameCounts.set(n, list)
+let generatedNameToSlug = new Map<string, string>()
+
+/** Replace the in-memory plane and rebuild every derived index. */
+export function setGeneratedAliases(rows: GeneratedAlias[]): void {
+  generatedAliases = rows
+  generatedEngineToSlug = new Map<string, string>()
+  generatedBySlug = new Map<string, GeneratedAlias>()
+  const nameCounts = new Map<string, string[]>()
+  for (const row of rows) {
+    if (row.engineId !== row.slug) generatedEngineToSlug.set(row.engineId, row.slug)
+    if (!generatedBySlug.has(row.slug)) generatedBySlug.set(row.slug, row)
+    for (const raw of [row.fmgName, ...row.aliases]) {
+      const n = norm(raw)
+      if (!n) continue
+      const list = nameCounts.get(n) || []
+      if (!list.includes(row.slug)) list.push(row.slug)
+      nameCounts.set(n, list)
+    }
+  }
+  generatedNameToSlug = new Map<string, string>()
+  for (const [name, slugs] of nameCounts) {
+    if (slugs.length === 1) generatedNameToSlug.set(name, slugs[0])
   }
 }
-const generatedNameToSlug = new Map<string, string>()
-for (const [name, slugs] of generatedNameCounts) {
-  if (slugs.length === 1) generatedNameToSlug.set(name, slugs[0])
+
+const ALIAS_URL = '/sourced/aliases.json'
+let generatedLoad: Promise<void> | null = null
+
+/** Load the alias plane once. Safe to call repeatedly. */
+export function loadGeneratedAliases(): Promise<void> {
+  if (generatedLoad) return generatedLoad
+  generatedLoad = (async () => {
+    try {
+      const node = (globalThis as {
+        process?: { versions?: { node?: string }; cwd?: () => string }
+      }).process
+      const isNode = !!node?.versions?.node
+      let rows: GeneratedAlias[]
+      if (isNode) {
+        // SSR (entity-index build) and Vitest run in Node; read the committed
+        // file directly. `@vite-ignore` keeps Node builtins out of the browser bundle.
+        const fsName = 'node:fs'
+        const pathName = 'node:path'
+        const { readFileSync } = await import(/* @vite-ignore */ fsName)
+        const { join } = await import(/* @vite-ignore */ pathName)
+        rows = JSON.parse(readFileSync(join(node!.cwd!(), 'public', 'sourced', 'aliases.json'), 'utf8'))
+      } else {
+        const res = await fetch(ALIAS_URL)
+        if (!res.ok) throw new Error(`aliases: ${res.status}`)
+        rows = await res.json()
+      }
+      setGeneratedAliases(rows)
+    } catch {
+      // A missing plane degrades to the curated grace/boss tables; never throw.
+    }
+  })()
+  return generatedLoad
 }
+
+// Block importers until the plane is in memory. ESM guarantees every module that
+// (transitively) imports this one runs its body only after this resolves.
+await loadGeneratedAliases()
 
 export function canonicalFactId(id: string, name?: string): string {
   if (seedByWarpId.has(id)) return seedByWarpId.get(id) as string
