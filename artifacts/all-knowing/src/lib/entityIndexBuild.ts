@@ -2856,6 +2856,64 @@ function restoreLineImages(): void {
 }
 
 // ---------------------------------------------------------------------------
+// Task 148 follow-up — remove the wiki's template lead sentences
+// ---------------------------------------------------------------------------
+
+/**
+ * A wiki template sentence that describes only the record's category
+ * ("Glintstone Dragon Adula is an optional boss in Elden Ring.", "The Battle Axe
+ * is an Axe, a melee armament ."). It is never real prose and must never ship.
+ */
+const TEMPLATE_DESC = /in Elden Ring\.|a melee armament/i
+
+/** Keep every sentence of `text` except the template ones, in order. */
+function stripTemplateSentences(text: string): string {
+  return text
+    .split(/(?<=[.!?])\s+/)
+    .map((sentence) => sentence.trim())
+    .filter((sentence) => sentence && !TEMPLATE_DESC.test(sentence))
+    .join(' ')
+    .trim()
+}
+
+/** The game's own text for a record name (exact match), else undefined. */
+let gameTextByName: Map<string, string> | undefined
+function gameTextFor(name: string): string | undefined {
+  if (!gameTextByName) {
+    gameTextByName = new Map()
+    for (const row of namesData as FmgNameRow[]) {
+      const key = simpleNorm(row.name)
+      if (!key || gameTextByName.has(key)) continue
+      const text = fmgDescription(row)
+      if (text && !TEMPLATE_DESC.test(text)) gameTextByName.set(key, text)
+    }
+  }
+  return gameTextByName.get(simpleNorm(name))
+}
+
+/**
+ * The first real sentence the wiki page carries after its template lead — the
+ * "Overview" prose behind a Summary line the build would otherwise discard.
+ */
+function nextWikiSentence(name: string): string | undefined {
+  const sections = lookupWiki(name)
+  if (!sections?.length) return undefined
+  for (const section of sections) {
+    if (!section.text) continue
+    const cleaned = cleanProse(section.text)
+    for (const raw of cleaned.split(/(?<=[.!?])\s+/)) {
+      const sentence = raw.trim()
+      if (sentence.length < 20) continue
+      if (TEMPLATE_DESC.test(sentence)) continue
+      // Skip list/bullet rows and anything with no words.
+      if (/^[-*·\d]/.test(sentence) || !/[a-z]/.test(sentence)) continue
+      return sentence
+    }
+  }
+  return undefined
+}
+
+// ---------------------------------------------------------------------------
 // Assemble
 // ---------------------------------------------------------------------------
 
@@ -3223,8 +3281,16 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     // only becomes "See #Drops" after pruning.
     prune(record)
     // A placeholder or one-word "description" ("drop", "merchant", "Caelid") is
-    // not a description; step 3 refills it from the wiki or it stays empty.
-    if (record.description && PLACEHOLDER_DESC.test(record.description.trim())) record.description = undefined
+    // not a description; step 3 refills it from the wiki or it stays empty. A
+    // bare region name (a quest beat's only text) is real locator data: keep it
+    // as the location instead of discarding it, so the page is not left empty.
+    if (record.description && PLACEHOLDER_DESC.test(record.description.trim())) {
+      const placeholder = record.description.trim()
+      if (!record.location && record.region && simpleNorm(placeholder) === simpleNorm(record.region)) {
+        record.location = placeholder
+      }
+      record.description = undefined
+    }
     const currentDescription = record.description?.trim()
     // Task 148 §3 — an empty or subjectless ("is a character …") description is
     // replaced with the wiki page's lead paragraph. The subject a broken lead
@@ -3236,6 +3302,31 @@ export function buildEntityIndex(): EntityIndexBuildResult {
         if (usableWikiDescription(text)) {
           record.description = text
           source(record, 'wiki-db')
+        }
+      }
+    }
+    // Task 148 follow-up — a wiki template sentence ("X is a … in Elden Ring.")
+    // is not a description. Drop every template sentence and keep the rest; when
+    // nothing real remains, use the game's own caption/info (exact name), then
+    // the wiki page's next real sentence, then leave the field empty. A template
+    // sentence is never written by the build.
+    if (record.description) {
+      const stripped = stripTemplateSentences(record.description)
+      if (stripped) {
+        record.description = stripped
+      } else {
+        const gameText = gameTextFor(record.name)
+        if (gameText) {
+          record.description = gameText
+          source(record, 'names/fmg')
+        } else {
+          const wikiSentence = nextWikiSentence(record.name)
+          if (wikiSentence) {
+            record.description = wikiSentence
+            source(record, 'wiki-sections')
+          } else {
+            record.description = undefined
+          }
         }
       }
     }

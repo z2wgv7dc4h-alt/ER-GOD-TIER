@@ -21,7 +21,7 @@ and every entity-graph id the app can link to.
 | item | 1187 | 4 | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | armor | 751 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | enemy | 607 | 607 | 0 | 0 | 0 | 607 | 0 | 0 | 0 | 0 |
-| quest | 468 | 41 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| quest | 468 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | weapon | 441 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | grace | 416 | 416 | 0 | 0 | 0 | 387 | 416 | 0 | 0 | 0 |
 | region | 355 | 355 | 0 | 0 | 0 | 346 | 355 | 0 | 0 | 0 |
@@ -39,7 +39,7 @@ and every entity-graph id the app can link to.
 | gate | 10 | 10 | 0 | 0 | 0 | 10 | 0 | 0 | 0 | 0 |
 | ending | 5 | 5 | 0 | 0 | 0 | 5 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **total** | **5685** | **1963** | 46 | 0 | 0 | 1774 | 1191 | 0 | 0 | 0 |
+| **total** | **5685** | **1922** | 5 | 0 | 0 | 1774 | 1191 | 0 | 0 | 0 |
 
 ## After
 
@@ -48,7 +48,7 @@ and every entity-graph id the app can link to.
 | item | 1188 | 4 | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | armor | 751 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | enemy | 607 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| quest | 468 | 41 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| quest | 468 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | weapon | 441 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | grace | 416 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | region | 356 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -66,7 +66,7 @@ and every entity-graph id the app can link to.
 | gate | 10 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | ending | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **total** | **5687** | **46** | 46 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **total** | **5687** | **5** | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
 Task 144 removed **1917** flagged pages
 (empty, raw ids, bad casing, generic status, wrong actions, wiki nav, junk rows, boss filed as NPC).
@@ -76,50 +76,6 @@ Task 144 removed **1917** flagged pages
 These entries have no description, location, stats, drops, sections or image in
 the built entity index. Check the wiki corpus and its set pages before calling
 one a real data gap.
-
-### quest (41)
-
-- Alexander — met at the Radahn festival
-- Alexander — met near Gael Tunnel
-- Alexander — freed from the Limgrave hole
-- Alexander — never freed in Limgrave
-- Boc — reassured with the Prattling Pate
-- Boc — met at the Coastal Cave
-- Boc — doubts his looks in Leyndell
-- Boc — freed from the illusory tree
-- Boc — gold sewing needle given
-- Boc — sent to seek rebirth
-- Diallos — wounded at Jarburg
-- Diallos — searching for Lanya
-- Diallos — Jarburg defended from the poachers
-- Dung Eater — made a Seluvis puppet
-- Edgar the Revenger defeated
-- The Erdtree burned at the Forge of the Giants
-- Fia — Weathered Dagger decided
-- Fia — held at the Roundtable
-- Hyetta — first Shabriri Grape given
-- Hyetta is dead this run
-- Hyetta — maiden of the Three Fingers
-- Jar-Bairn — vows to grow strong
-- Millicent is dead this run
-- Millicent — challenged at Elphael (red sign)
-- Millicent — aided at Dominula
-- Nepheli — found in despair after the Omenkiller
-- Nepheli — met in Stormveil
-- Nepheli — made a Seluvis puppet
-- Nepheli — Seluvis potion refused
-- Nepheli — spoken to at the Roundtable
-- Nepheli — crowned at Stormveil
-- Ranni — Blaidd met
-- Ranni — Blaidd's fate at the Rise
-- Ranni — Radahn festival opened Nokron
-- Ranni — Iji counselled
-- Ranni — Iji's last counsel
-- Ranni — Fingerslayer Blade recovered
-- Roderika — spirit tuning unlocked
-- Sellen — Lusat found
-- Sellen — both primeval sorcerers reported
-- Seluvis has the Fingerslayer Blade
 
 ### item (4)
 
@@ -142,46 +98,5 @@ one a real data gap.
 | `item:may-the-best-win` | item | empty |
 | `item:ring-of-miquella` | item | empty |
 | `npcs:147100` | npc | empty |
-| `quest:alexander:festival` | quest | empty |
-| `quest:alexander:gael` | quest | empty |
-| `quest:alexander:met` | quest | empty |
-| `quest:alexander:missed-limgrave` | quest | empty |
-| `quest:boc:beautiful` | quest | empty |
-| `quest:boc:cave` | quest | empty |
-| `quest:boc:doubt` | quest | empty |
-| `quest:boc:freed` | quest | empty |
-| `quest:boc:needle` | quest | empty |
-| `quest:boc:rebirth` | quest | empty |
-| `quest:diallos:concluded` | quest | empty |
-| `quest:diallos:lanya` | quest | empty |
-| `quest:diallos:poachers` | quest | empty |
-| `quest:dungeater:potioned` | quest | empty |
-| `quest:edgar:revenger` | quest | empty |
-| `quest:erdtree-burned` | quest | empty |
-| `quest:fia:dagger` | quest | empty |
-| `quest:fia:met` | quest | empty |
-| `quest:hyetta:grapes` | quest | empty |
-| `quest:hyetta:killed` | quest | empty |
-| `quest:hyetta:maiden` | quest | empty |
-| `quest:jarbairn:concluded` | quest | empty |
-| `quest:millicent-killed` | quest | empty |
-| `quest:millicent:betrayed` | quest | empty |
-| `quest:millicent:godskin` | quest | empty |
-| `quest:nepheli:despair` | quest | empty |
-| `quest:nepheli:met` | quest | empty |
-| `quest:nepheli:potioned` | quest | empty |
-| `quest:nepheli:refused-potion` | quest | empty |
-| `quest:nepheli:roundtable` | quest | empty |
-| `quest:nepheli:ruler` | quest | empty |
-| `quest:ranni:blaidd` | quest | empty |
-| `quest:ranni:blaidd-fate` | quest | empty |
-| `quest:ranni:festival` | quest | empty |
-| `quest:ranni:iji` | quest | empty |
-| `quest:ranni:iji-fate` | quest | empty |
-| `quest:ranni:nokron` | quest | empty |
-| `quest:roderika:tuner` | quest | empty |
-| `quest:sellen:lusat` | quest | empty |
-| `quest:sellen:primers` | quest | empty |
-| `quest:seluvis-blade` | quest | empty |
 
 _Regenerated 2026-10-03._

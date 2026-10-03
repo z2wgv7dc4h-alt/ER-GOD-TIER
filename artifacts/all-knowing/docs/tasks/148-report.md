@@ -166,3 +166,80 @@ Final gates (run once, in order):
    (non‑template) source text.
 5. **`Type 1–20` / `test gem 1–3`** were already absent before step 2 (earlier junk‑name logic);
    the guard is still asserted.
+
+---
+
+# Follow-up (post-§7 regressions)
+
+After the step-8 report commit. Two regressions fixed in `src/lib/entityIndexBuild.ts`
+(generators only); `public/sourced/entity-index.json` was regenerated.
+
+## 1. Empty pages back to the master baseline
+
+Task 148 §2 cleared a one-word placeholder description (`PLACEHOLDER_DESC`,
+including a bare region name). For 41 authored quest beats the region *was* the
+record's only player text, so clearing it left the page with no description,
+location, stats, drops or sections — `audit:pages` then flagged 46 empty pages
+(41 quest, 4 item, 1 npc) against 5 on master (78c285c). The fix: when the
+placeholder being cleared is exactly the record's own region, keep it as the
+record's **location** (location is player text and carries no template), then
+clear the description as before.
+
+| | master 78c285c | Task 148 §7 | after |
+| --- | ---: | ---: | ---: |
+| empty pages (`audit:pages`) | 5 | 46 | **5** |
+| — quest | 0 | 41 | **0** |
+| — item | 4 | 4 | 4 |
+| — npc | 1 | 1 | 1 |
+
+## 2. Wiki template descriptions removed
+
+A wiki lead that only states the category — `X is a … in Elden Ring.` or
+`X is an Axe, a melee armament .` — is not a description. The build now splits
+every description into sentences and drops any containing `in Elden Ring.` or
+`a melee armament`, keeping the rest. When nothing real remains it falls back to
+(1) the game's own caption/info text for an exact name match
+(`open/text/*Caption.json` / `*Info.json` via `names.json`), then (2) the first
+real sentence on the wiki page (`open/wiki-sections.json`, e.g. the Overview
+prose behind the Summary template), then (3) leaves the field empty. The build
+never writes a template sentence.
+
+| | before | after |
+| --- | ---: | ---: |
+| descriptions matching `/in Elden Ring\.\|a melee armament/` | 788 | **0** |
+| of those, real remainder kept | — | 103 |
+| rescued by the game's own text | — | 172 |
+| rescued by the next wiki sentence | — | 501 |
+| description emptied (other fields remain) | — | 12 |
+| quest records whose only text was a bare region name | 41 | 0 |
+
+The guard tests still pass: `entityCoverage` (boss/weapon/shield/armor/talisman/
+spell/ash/spirit/item 100%, npc/region/enemy ≥95%) and `entityIndexQuality`
+(regions ≥95%, enemies ≥90%, no empty location record) are unchanged. Catalogue
+item/armor/talisman/spell/ash/spirit records remain 100% description+location;
+npc 99.5%, region 98.4%, enemy 99.3% (description+location).
+
+New guard in `src/lib/auditFixes.test.ts`:
+no description matches `/in Elden Ring\.|a melee armament/`.
+
+## Follow-up gates (run once, in order)
+
+- `npm run index:entities` → **5685 records** (4450 KiB).
+- `npm run audit:pages` → **5687 entities, 5 flagged** (was 46); empties: 4 item, 1 npc.
+- `npm run audit:links` → **dead data 0, dead renderer 0, guard violations 0**.
+- `npx vitest run` → **198 files, 1408 passed, 11 skipped, 0 failed**.
+- `npm run lint` → **0 errors** (pre-existing warnings only).
+- `npm run build` → success (large-chunk warning only).
+
+## Follow-up assumptions
+
+1. A bare region name cleared from a description is real locator data, not prose;
+   it is restored to `location` (never back to `description`, which would trip the
+   §2 one-word guard). This is the only description-clearing change.
+2. "The next non-template wiki sentence" is read as the first real sentence in
+   `open/wiki-sections.json` for the page (Summary templates skipped, list rows
+   and sub-20-character fragments skipped). No sentence is synthesised.
+3. The measured template count is 788 on the Task 148 §7 index with the test
+   regex; the brief's 833 was not reproduced from the committed snapshot.
+4. A record whose description becomes empty is left empty; only the pre-existing
+   5 master-baseline pages remain flagged.

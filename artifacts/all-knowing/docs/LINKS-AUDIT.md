@@ -87,7 +87,7 @@ the links a plain renderer still owes.
 
 | surface | linkable | unlinked before | unlinked after |
 | --- | --- | --- | --- |
-| entity descriptions | 1004 | 0 | 0 |
+| entity descriptions | 968 | 0 | 0 |
 | wiki sections | 1679 | 0 | 0 |
 | acquisition text | 1577 | 0 | 0 |
 | quest step actions | 646 | 577 | 0 |

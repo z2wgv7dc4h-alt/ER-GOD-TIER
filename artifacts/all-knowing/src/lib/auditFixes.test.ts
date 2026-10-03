@@ -84,6 +84,15 @@ describe('Task 148 §2 — placeholder junk is gone', () => {
   })
 })
 
+describe('Task 148 follow-up — wiki template sentences are gone', () => {
+  it('has no description matching /in Elden Ring\\.|a melee armament/', () => {
+    const offenders = list
+      .filter((record) => /in Elden Ring\.|a melee armament/.test(record.description ?? ''))
+      .map((record) => `${record.id}: ${record.description}`)
+    expect(offenders, offenders.slice(0, 20).join('\n')).toEqual([])
+  })
+})
+
 describe('Task 148 §4 — cut content is flagged, not deleted', () => {
   it('flags the wiki Weapon Cut pages', () => {
     const wiki = JSON.parse(readFileSync(wikiWeaponPath, 'utf8')) as { records: { title: string; infobox: string }[] }
