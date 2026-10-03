@@ -1539,6 +1539,62 @@ function canonicalWikiTitle(title: string): string {
   return current
 }
 
+/**
+ * Task 148 §3 — true when a wiki lead is usable prose. Broken parses leak
+ * infobox fragments ("| res madness = }}"), a title-only sentence is a template
+ * ("X is a Crafting Material ."), and the task forbids a bare template sentence.
+ * A lead that begins mid-thought ("is a character …") is repaired by prefixing
+ * the record name, but only when it has real prose beyond the template clause.
+ */
+function usableWikiDescription(text: string): boolean {
+  const t = text.trim()
+  if (t.length < 20) return false
+  if (/[{}]/.test(t) || /^\s*[|,;:]/.test(t) || /\s=\s/.test(t)) return false
+  // A stray plural "s" or a subjectless "The is a …" is a broken lead, not prose.
+  if (/^[a-z]{1,3},/i.test(t) || /^the is an?\b/i.test(t)) return false
+  const sentences = t.split(/(?<=[.!?])\s+/).filter(Boolean)
+  // A one-clause lead that begins mid-thought has no subject to restore.
+  if (sentences.length <= 1 && SUBJECTLESS_DESC.test(t)) return false
+  return true
+}
+
+/** The message a subjectless wiki lead is missing ("… is/are …"). */
+const SUBJECTLESS_DESC = /^(?:is|are|was|were|has|have)\b/i
+
+/** One best wiki lead per page title, from every classified wiki-db kind. */
+function buildWikiDescriptionMap(): Map<string, string> {
+  const docs: unknown[] = [
+    wikiBossDoc,
+    wikiEnemyDoc,
+    wikiNpcDoc,
+    wikiLocationDoc,
+    wikiRegionDoc,
+    wikiSkillDoc,
+    wikiDungeonDoc,
+    wikiItemDoc,
+    wikiWeaponDoc,
+    wikiArmorDoc,
+    wikiSpellDoc,
+    wikiTalismanDoc,
+    wikiAshDoc,
+    wikiSpiritDoc,
+  ]
+  const map = new Map<string, string>()
+  for (const doc of docs) {
+    for (const rec of wikiRecords(doc)) {
+      const description = (rec.description ?? '').trim()
+      if (!usableWikiDescription(description)) continue
+      for (const title of [rec.title, canonicalWikiTitle(rec.title)]) {
+        const key = simpleNorm(title)
+        if (!key) continue
+        const current = map.get(key)
+        if (!current || description.length > current.length) map.set(key, description)
+      }
+    }
+  }
+  return map
+}
+
 /** Enrich an existing record with a wiki record's prose/url (never overwrites). */
 function enrichFromWiki(record: EntityRecord, rec: WikiRecord): void {
   setText(record, 'description', rec.description)
@@ -3045,6 +3101,7 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     if (!record.image && twin.image) record.image = twin.image
   }
 
+  const wikiDescriptions = buildWikiDescriptionMap()
   for (const record of records.values()) {
     // Task 148 §2 — drop the dump's junk rows (Dummy Entity, "Type 7" armour
     // prototypes, "test gem") before they reach the page.
@@ -3058,6 +3115,20 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     // A placeholder or one-word "description" ("drop", "merchant", "Caelid") is
     // not a description; step 3 refills it from the wiki or it stays empty.
     if (record.description && PLACEHOLDER_DESC.test(record.description.trim())) record.description = undefined
+    const currentDescription = record.description?.trim()
+    // Task 148 §3 — an empty or subjectless ("is a character …") description is
+    // replaced with the wiki page's lead paragraph. The subject a broken lead
+    // dropped is restored from the record name; a bare template is never used.
+    if (!currentDescription || SUBJECTLESS_DESC.test(currentDescription)) {
+      const wiki = wikiDescriptions.get(simpleNorm(record.name))
+      if (wiki) {
+        const text = SUBJECTLESS_DESC.test(wiki) ? `${record.name} ${wiki}` : wiki
+        if (usableWikiDescription(text)) {
+          record.description = text
+          source(record, 'wiki-db')
+        }
+      }
+    }
     // Rune rewards are not item drops ("120,000 Runes", "Runes"); the runes stat
     // carries them. "See #Drops" is a wiki pointer, never an item.
     if (record.drops) {
