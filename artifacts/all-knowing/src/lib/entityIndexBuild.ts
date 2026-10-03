@@ -1646,6 +1646,52 @@ function enrichFromWiki(record: EntityRecord, rec: WikiRecord): void {
   source(record, 'wiki-db')
 }
 
+/** A merchant field that is really the entity kind, not a place. */
+const MERCHANT_PLACEHOLDER = /^merchant$/i
+
+/**
+ * Task 148 §6 — merchants. A shop-inventory sub-row ("Brother Corhyn — Altus
+ * Plateau") inherits its base merchant's real description, region, pin and
+ * stats; a base merchant still missing prose takes the wiki Character page's
+ * lead. Only real text is written — a bare template is never invented.
+ */
+function enrichMerchants(): void {
+  const wikiByName = new Map<string, WikiRecord>()
+  for (const rec of wikiRecords(wikiNpcDoc)) {
+    const key = simpleNorm(rec.title)
+    if (key && !wikiByName.has(key)) wikiByName.set(key, rec)
+  }
+  const merchantByName = new Map<string, EntityRecord>()
+  for (const record of records.values()) {
+    if (record.kind === 'merchant' && !merchantByName.has(record.name)) merchantByName.set(record.name, record)
+  }
+  for (const record of records.values()) {
+    if (record.kind !== 'merchant') continue
+    const baseName = record.name.split(' - ')[0].trim()
+    const base = baseName !== record.name ? merchantByName.get(baseName) : undefined
+    if (base) {
+      if (!record.description && base.description) record.description = base.description
+      if (!record.region && base.region) record.region = base.region
+      if ((!record.location || MERCHANT_PLACEHOLDER.test(record.location)) && base.location) record.location = base.location
+      if (!record.map && base.map) record.map = { ...base.map }
+      if (base.stats) {
+        record.stats = record.stats ?? {}
+        for (const [label, value] of Object.entries(base.stats)) if (!record.stats[label]) record.stats[label] = value
+      }
+    }
+    const wiki = wikiByName.get(simpleNorm(baseName))
+    if (!wiki) continue
+    const wikiLocation = wiki.location || wiki.stats?.Location || wiki.region
+    if ((!record.location || MERCHANT_PLACEHOLDER.test(record.location)) && wikiLocation) record.location = wikiLocation
+    if (!record.region && (wiki.region || wikiLocation)) record.region = wiki.region || wikiLocation
+    const lead = (wiki.description ?? '').trim()
+    if (!record.description && usableWikiDescription(lead) && !SUBJECTLESS_DESC.test(lead)) {
+      record.description = lead
+      source(record, 'wiki-db')
+    }
+  }
+}
+
 function mergeWikiDb(): void {
   const redirects = (wikiRedirectDoc as { redirects?: { from: string; to: string }[] }).redirects ?? []
   const redirectAliases = new Map<string, string[]>()
@@ -1681,9 +1727,9 @@ function mergeWikiDb(): void {
     const bossId = resolveName(title, 'boss') ?? resolveName(title, 'invader')
     if (bossId && records.has(bossId)) {
       enrichFromWiki(records.get(bossId)!, rec)
+      setStat(records.get(bossId)!, 'Runes', rec.stats.Runes)
       continue
-    }
-    const id = resolveName(title, 'enemy') ?? `enemy:${slug(title)}`
+    }    const id = resolveName(title, 'enemy') ?? `enemy:${slug(title)}`
     const record = records.get(id) ?? ensure(id, 'enemy', title)
     if (record.kind === 'item') record.kind = 'enemy'
     enrichFromWiki(record, rec)
@@ -1703,6 +1749,7 @@ function mergeWikiDb(): void {
       const record = records.get(id)!
       enrichFromWiki(record, rec)
       setStat(record, 'HP', rec.stats.HP)
+      setStat(record, 'Runes', rec.stats.Runes)
       addDrops(record, rec.drops)
       if (!record.region && region) record.region = region
       continue
@@ -1711,6 +1758,7 @@ function mergeWikiDb(): void {
     const record = records.get(newId) ?? ensure(newId, 'boss', title)
     enrichFromWiki(record, rec)
     setStat(record, 'HP', rec.stats.HP)
+    setStat(record, 'Runes', rec.stats.Runes)
     addDrops(record, rec.drops)
     const finalLocation = record.location || location || region || title
     setText(record, 'location', finalLocation)
@@ -3087,6 +3135,8 @@ export function buildEntityIndex(): EntityIndexBuildResult {
 
   fillEnemyDescriptions()
   enrichCreatures()
+  // Task 148 §6 — merchants: base-merchant fields and their shop sub-rows.
+  enrichMerchants()
   // Placements can give two variants of one enemy the same name + location.
   dedupePrimary()
   // Task 148 §1 — then one enemy page per exact display name.
@@ -3118,10 +3168,12 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     const shared = records.get(row.group)
     if (!record || !shared) continue
     // Drops are per encounter (its wiki tab). Name-based merges above pooled every
-    // copy's drops onto it; the roster row is the authority, empty when unknown.
-    record.drops = row.drops.length ? [...row.drops] : undefined
+    // copy's drops onto it; a known roster row is the authority. When the roster
+    // has none the pooled source drops stay, filling the gap instead of blanking it.
+    if (row.drops.length) record.drops = [...row.drops]
     setText(record, 'strategy', shared.strategy)
     if (!record.image && shared.image) record.image = shared.image
+    if (!record.stats?.Runes && shared.stats?.Runes) setStat(record, 'Runes', shared.stats.Runes)
     for (const [label, value] of Object.entries(shared.stats ?? {})) {
       if (label === 'HP' || label === 'Drops' || label === 'Runes') continue
       setStat(record, label, value)

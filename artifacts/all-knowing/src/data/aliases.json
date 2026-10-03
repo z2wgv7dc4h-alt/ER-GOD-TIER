@@ -45184,7 +45184,7 @@
  },
  {
   "engineId": "goods:9381",
-  "slug": "item:perfumer-s-cookbook-13",
+  "slug": "item:perfumer-s-cookbook-1",
   "kind": "item",
   "fmgName": "Perfumer's Cookbook (1)",
   "aliases": [],
@@ -45259,14 +45259,6 @@
   "slug": "item:perfumer-s-cookbook-4",
   "kind": "item",
   "fmgName": "Perfumer's Cookbook [4]",
-  "aliases": [],
-  "source": "game-name-table"
- },
- {
-  "engineId": "goods:9393",
-  "slug": "item:perfumer-s-cookbook-13",
-  "kind": "item",
-  "fmgName": "Perfumer's Cookbook (13)",
   "aliases": [],
   "source": "game-name-table"
  },
@@ -50150,13 +50142,21 @@
   "source": "game-name-table"
  },
  {
-  "engineId": "item:perfumer-s-cookbook-13",
-  "slug": "item:perfumer-s-cookbook-13",
+  "engineId": "item:perfumer-s-cookbook-1",
+  "slug": "item:perfumer-s-cookbook-1",
   "kind": "item",
   "fmgName": "Perfumer's Cookbook (1)",
   "aliases": [
-   "perfumer cookbook 1",
-   "perfumer cookbook 13",
+   "perfumer cookbook 1"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "item:perfumer-s-cookbook-13",
+  "slug": "item:perfumer-s-cookbook-13",
+  "kind": "item",
+  "fmgName": "Perfumer's Cookbook (2)",
+  "aliases": [
    "perfumer cookbook 2"
   ],
   "source": "game-name-table"
