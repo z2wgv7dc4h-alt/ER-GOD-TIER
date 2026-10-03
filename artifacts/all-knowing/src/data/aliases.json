@@ -24089,54 +24089,6 @@
   "source": "enemy-name"
  },
  {
-  "engineId": "enemy:51800080",
-  "slug": "enemy:dummy-entity",
-  "kind": "enemy",
-  "fmgName": "Dummy Entity",
-  "aliases": [],
-  "source": "enemy-name"
- },
- {
-  "engineId": "enemy:51800081",
-  "slug": "enemy:dummy-entity",
-  "kind": "enemy",
-  "fmgName": "Dummy Entity",
-  "aliases": [],
-  "source": "enemy-name"
- },
- {
-  "engineId": "enemy:51800090",
-  "slug": "enemy:dummy-entity",
-  "kind": "enemy",
-  "fmgName": "Dummy Entity",
-  "aliases": [],
-  "source": "enemy-name"
- },
- {
-  "engineId": "enemy:51810085",
-  "slug": "enemy:dummy-entity",
-  "kind": "enemy",
-  "fmgName": "Dummy Entity",
-  "aliases": [],
-  "source": "enemy-name"
- },
- {
-  "engineId": "enemy:51810089",
-  "slug": "enemy:dummy-entity",
-  "kind": "enemy",
-  "fmgName": "Dummy Entity",
-  "aliases": [],
-  "source": "enemy-name"
- },
- {
-  "engineId": "enemy:51810099",
-  "slug": "enemy:dummy-entity",
-  "kind": "enemy",
-  "fmgName": "Dummy Entity",
-  "aliases": [],
-  "source": "enemy-name"
- },
- {
   "engineId": "enemy:51900000",
   "slug": "enemy:spider-scorpion",
   "kind": "enemy",
@@ -27445,14 +27397,6 @@
   "slug": "enemy:polyanna-adopted-daughter",
   "kind": "enemy",
   "fmgName": "Polyanna, Adopted Daughter",
-  "aliases": [],
-  "source": "enemy-name"
- },
- {
-  "engineId": "enemy:53400000",
-  "slug": "enemy:dummy-entity",
-  "kind": "enemy",
-  "fmgName": "Dummy Entity",
   "aliases": [],
   "source": "enemy-name"
  },

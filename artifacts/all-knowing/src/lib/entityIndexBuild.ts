@@ -3046,12 +3046,28 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   }
 
   for (const record of records.values()) {
-    // Rune rewards are not item drops ("120,000 Runes", "Runes"); the runes stat carries them.
+    // Task 148 §2 — drop the dump's junk rows (Dummy Entity, "Type 7" armour
+    // prototypes, "test gem") before they reach the page.
+    if (JUNK_RECORD_NAME.test(record.name.trim())) {
+      records.delete(record.id)
+      continue
+    }
+    // Strip wiki markup first: the pointer drop is stored as "See [[#Drops" and
+    // only becomes "See #Drops" after pruning.
+    prune(record)
+    // A placeholder or one-word "description" ("drop", "merchant", "Caelid") is
+    // not a description; step 3 refills it from the wiki or it stays empty.
+    if (record.description && PLACEHOLDER_DESC.test(record.description.trim())) record.description = undefined
+    // Rune rewards are not item drops ("120,000 Runes", "Runes"); the runes stat
+    // carries them. "See #Drops" is a wiki pointer, never an item.
     if (record.drops) {
-      record.drops = record.drops.filter((d) => !/^[\d,.\s]*runes?(\s*\(ng[^)]*\))?$/i.test(String(d).trim()))
+      record.drops = record.drops.filter(
+        (d) =>
+          !/^[\d,.\s]*runes?(\s*\(ng[^)]*\))?$/i.test(String(d).trim()) &&
+          !DROP_PLACEHOLDER.test(String(d).trim()),
+      )
       if (!record.drops.length) delete record.drops
     }
-    prune(record)
     // Repair dump casing ("Axe Of Godfrey") so every screen, not just the
     // entity panel, shows the game's spelling. Ids are unchanged.
     record.name = displayName(record.name)
@@ -3314,6 +3330,15 @@ function mergeBossEncounterEnemies(): void {
 
 /** A drop-list entry that is a pointer, not a real dropped item. */
 const DROP_PLACEHOLDER = /^see #drops$/i
+
+/** Task 148 §2 — junk/placeholder rows that are not real game content. */
+const JUNK_RECORD_NAME = /^(?:dummy entity|type \d+|test gem.*)$/i
+
+/**
+ * Task 148 §2 — a template fragment ("The is a …") or a bare token ("drop",
+ * "merchant", "other", a region name used as prose) is not a description.
+ */
+const PLACEHOLDER_DESC = /^(?:the is an?\b|\w+$)/i
 
 /**
  * Task 148 §1 — one page per enemy. Every surviving enemy record is folded onto
