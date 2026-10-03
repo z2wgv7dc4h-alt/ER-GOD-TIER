@@ -1539,23 +1539,37 @@ function canonicalWikiTitle(title: string): string {
   return current
 }
 
-/**
- * Task 148 §3 — true when a wiki lead is usable prose. Broken parses leak
- * infobox fragments ("| res madness = }}"), a title-only sentence is a template
- * ("X is a Crafting Material ."), and the task forbids a bare template sentence.
- * A lead that begins mid-thought ("is a character …") is repaired by prefixing
- * the record name, but only when it has real prose beyond the template clause.
- */
-function usableWikiDescription(text: string): boolean {
+/** A broken parse ("| res madness = }}") or a stray plural "s" is not prose. */
+function plausibleWikiLead(text: string): boolean {
   const t = text.trim()
   if (t.length < 20) return false
   if (/[{}]/.test(t) || /^\s*[|,;:]/.test(t) || /\s=\s/.test(t)) return false
-  // A stray plural "s" or a subjectless "The is a …" is a broken lead, not prose.
-  if (/^[a-z]{1,3},/i.test(t) || /^the is an?\b/i.test(t)) return false
+  if (/^[a-z]{1,3},/i.test(t)) return false
+  return true
+}
+
+/**
+ * Task 148 §3 — true when a wiki lead is usable prose *after repair*. A
+ * subjectless lead ("is a character …") or a stripped-subject "The is a …"
+ * carries its subject in the record name; a bare unrepairable template is not
+ * written. Broken parses never pass.
+ */
+function usableWikiDescription(text: string): boolean {
+  const t = text.trim()
+  if (!plausibleWikiLead(t)) return false
+  if (/^the is an?\b/i.test(t)) return false
   const sentences = t.split(/(?<=[.!?])\s+/).filter(Boolean)
   // A one-clause lead that begins mid-thought has no subject to restore.
   if (sentences.length <= 1 && SUBJECTLESS_DESC.test(t)) return false
   return true
+}
+
+/** Restore the subject a broken wiki lead dropped ("The is a …", "is a …"). */
+function repairWikiLead(text: string, name: string): string {
+  const t = text.trim()
+  if (/^the is\b/i.test(t)) return `${name} ${t.replace(/^the\s+/i, '')}`
+  if (SUBJECTLESS_DESC.test(t)) return `${name} ${t}`
+  return t
 }
 
 /** The message a subjectless wiki lead is missing ("… is/are …"). */
@@ -1583,7 +1597,7 @@ function buildWikiDescriptionMap(): Map<string, string> {
   for (const doc of docs) {
     for (const rec of wikiRecords(doc)) {
       const description = (rec.description ?? '').trim()
-      if (!usableWikiDescription(description)) continue
+      if (!plausibleWikiLead(description)) continue
       for (const title of [rec.title, canonicalWikiTitle(rec.title)]) {
         const key = simpleNorm(title)
         if (!key) continue
@@ -3215,10 +3229,10 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     // Task 148 §3 — an empty or subjectless ("is a character …") description is
     // replaced with the wiki page's lead paragraph. The subject a broken lead
     // dropped is restored from the record name; a bare template is never used.
-    if (!currentDescription || SUBJECTLESS_DESC.test(currentDescription)) {
+    if (!currentDescription || SUBJECTLESS_DESC.test(currentDescription) || /^the is\b/i.test(currentDescription)) {
       const wiki = wikiDescriptions.get(simpleNorm(record.name))
       if (wiki) {
-        const text = SUBJECTLESS_DESC.test(wiki) ? `${record.name} ${wiki}` : wiki
+        const text = repairWikiLead(wiki, record.name)
         if (usableWikiDescription(text)) {
           record.description = text
           source(record, 'wiki-db')
@@ -3540,7 +3554,7 @@ function mergeEnemyVariants(): void {
   }
 
   for (const [name, list] of groups) {
-    const wanted = `enemy:${slug(name)}` || 'enemy:unknown'
+    const wanted = slug(name) ? `enemy:${slug(name)}` : 'enemy:unknown'
     let keep = list.find((r) => r.id === wanted)
     if (!keep) {
       let target = wanted
