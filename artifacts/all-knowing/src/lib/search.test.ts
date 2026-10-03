@@ -27,9 +27,10 @@ describe('searchSync', () => {
     expect(hits.some((h) => h.source === 'shop')).toBe(true)
   })
 
-  it('matches boss pins', () => {
-    const hits = searchSync('tree sentinel')
-    expect(hits.some((h) => h.source === 'boss' && h.name === 'Tree Sentinel')).toBe(true)
+  it('matches boss pins without leaking plate coordinates', () => {
+    const hits = searchSync('putrescent knight')
+    expect(hits.some((h) => h.source === 'boss' && h.name === 'Putrescent Knight')).toBe(true)
+    for (const hit of hits) expect(hit.detail).not.toMatch(/\d+\.\d+\s*,\s*\d+\.\d+/)
   })
 
   it('matches missables', () => {
@@ -71,5 +72,47 @@ describe('search grouping', () => {
     }
     const ranks = sections.map((s) => rank(s.group))
     expect(ranks).toEqual([...ranks].sort((a, b) => a - b))
+  })
+})
+
+/** Task 152 — the four fixes found by clicking through the quick search. */
+describe('Task 152 — search result fixes', () => {
+  const QUERIES = ['Omen', 'Radahn', 'Godrick', 'Ranni', 'Limgrave', 'Smithing Stone']
+
+  it('files enemies under an Enemies group (§1)', () => {
+    expect(searchSync('omen').some((h) => h.group === 'Enemies' && h.id === 'enemy:omen')).toBe(true)
+    for (const q of ['Omen', 'Radahn', 'Godrick', 'Smithing Stone']) {
+      expect(searchSync(q).some((h) => h.group === 'Enemies'), q).toBe(true)
+    }
+  })
+
+  it('shows one row per resolved entity, so alias rows are never their own row (§2)', () => {
+    for (const q of QUERIES) {
+      const hits = searchSync(q)
+      expect(new Set(hits.map((h) => h.id)).size, q).toBe(hits.length)
+    }
+    // The boss, its kill-flag pin and its alias plane row collapse to one.
+    expect(searchSync('Omen').filter((h) => h.name === 'Margit, the Fell Omen')).toHaveLength(1)
+  })
+
+  it('never shows raw plate coordinates as a location (§2)', () => {
+    for (const q of QUERIES) {
+      for (const hit of searchSync(q)) {
+        expect(hit.detail, `${q}: ${hit.name}`).not.toMatch(/\d+\.\d+\s*,\s*\d+\.\d+/)
+      }
+    }
+  })
+
+  it('drops a grace that only repeats a boss name (§2)', () => {
+    for (const q of ['Omen', 'Margit', 'Godrick', 'Radahn']) {
+      const hits = searchSync(q)
+      const bossNames = new Set(hits.filter((h) => h.group === 'Bosses').map((h) => h.name.toLowerCase()))
+      expect(hits.filter((h) => h.group === 'Graces' && bossNames.has(h.name.toLowerCase())), q).toHaveLength(0)
+    }
+  })
+
+  it('matches on word starts, not mid-word (§3)', () => {
+    // "Omen" must not pull in "Haligtree Promenade" (prom-OMEN-ade).
+    expect(searchSync('omen').some((h) => h.id === 'grace:haligtree-promenade')).toBe(false)
   })
 })

@@ -72,18 +72,22 @@ describe('generated alias plane', () => {
 })
 
 describe('searchSync uses the generated alias plane', () => {
-  it('matches an item by an extracted name the catalog does not spell out', () => {
+  // Task 152 §2: when the curated catalog also carries the entity, the alias
+  // row is deduped into it — the result set still resolves the same id, but the
+  // source may be `seed`. The direct `matchGeneratedAliases` coverage above is
+  // what proves the plane itself.
+  it('surfaces an item the alias plane knows', () => {
     const hits = searchSync('haligtree secret medallion')
-    expect(hits.some((h) => h.source === 'alias' && h.id === 'item:haligtree-secret-medallion')).toBe(true)
+    expect(hits.some((h) => h.id === 'item:haligtree-secret-medallion')).toBe(true)
   })
 
-  it('matches an invader by its NpcParam engine id', () => {
+  it('matches an invader only the alias plane carries', () => {
     const hits = searchSync('npc:523430000')
     expect(hits.some((h) => h.source === 'alias' && h.id === 'invader:nerijus')).toBe(true)
   })
 
   it('matches a quest alias', () => {
     const hits = searchSync('radahn festival')
-    expect(hits.some((h) => h.source === 'alias' && h.id === 'quest:ranni:festival')).toBe(true)
+    expect(hits.some((h) => h.id === 'quest:ranni:festival')).toBe(true)
   })
 })

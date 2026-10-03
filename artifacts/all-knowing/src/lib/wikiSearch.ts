@@ -336,9 +336,22 @@ export function clearWikiCache(): void {
 /**
  * A short plain-text snippet around the first query term, for a result row.
  * The UI highlights the terms in the returned text itself.
+ *
+ * Task 152 §4 — the export keeps wiki markup: `[[link|alias]]`, `'''bold'''`,
+ * `**bold**`, `*italic*`, and the Japanese-gloss parenthetical the wiki leads
+ * entity pages with ("Omen** (忌み, *Imi,* …"). Strip all of it so a row reads
+ * "Omen are Enemies in Elden Ring." rather than raw markdown.
  */
 export function wikiSnippet(markdown: string, query: string, length = 180): string {
-  const text = markdown.replace(/\[\[[^\]|]*\|([^\]]+)\]\]/g, '$1').replace(/\[\[([^\]]+)\]\]/g, '$1').replace(/\s+/g, ' ').trim()
+  const text = markdown
+    .replace(/\[\[[^\]|]*\|([^\]]+)\]\]/g, '$1')
+    .replace(/\[\[([^\]]+)\]\]/g, '$1')
+    // Japanese gloss: a parenthetical that contains kana/kanji/fullwidth text.
+    .replace(/\([^)]*[\u3000-\u30ff\u3400-\u9fff\uff00-\uffef][^)]*\)/g, '')
+    .replace(/'{2,}/g, '')
+    .replace(/\*{1,3}|_{2,}/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
   if (text.length <= length) return text
   const terms = tokenize(query)
   const lower = text.toLowerCase()
