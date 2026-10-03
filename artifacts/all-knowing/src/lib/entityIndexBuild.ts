@@ -2892,26 +2892,117 @@ function gameTextFor(name: string): string | undefined {
 }
 
 /**
- * The first real sentence the wiki page carries after its template lead — the
- * "Overview" prose behind a Summary line the build would otherwise discard.
+ * Task 150 §2 — a sentence that only files the entity under a category
+ * ("Mohg, Lord of Blood and Mohg, the Omen are Bosses.") or restates its type is
+ * not a description. Long sentences that merely *begin* with a type word
+ * ("Luminary Mohg is a Demigod and a Shardbearer who is encountered…") are real.
  */
-function nextWikiSentence(name: string): string | undefined {
-  const sections = lookupWiki(name)
+const WIKI_DEFINITIONAL =
+  /^[^.]{0,70}\b(?:is|are)\b[^.]{0,30}\b(?:in Elden Ring|boss(?:es)?|demigod|shardbearer|spell|incantation|sorcery|item|weapon|armou?r|talisman|spirit ash|ash of war|location|dungeon|enemy|creature|painting|gesture|consumable|material|key item)\b\s*\.?$/i
+
+/** A wiki sentence that reads as real prose, not a fragment or a definition. */
+function acceptableLeadSentence(raw: string): boolean {
+  const sentence = raw.trim()
+  if (sentence.length < 20) return false
+  if (TEMPLATE_DESC.test(sentence)) return false
+  if (WIKI_DEFINITIONAL.test(sentence)) return false
+  if (/^[,;:]/.test(sentence) || /^(?:also|and|but|or|which|who|where)\b/i.test(sentence)) return false
+  // Skip list/bullet rows and anything with no words.
+  if (/^[-*·\d]/.test(sentence) || !/[a-z]/.test(sentence)) return false
+  return true
+}
+
+/** Section headings worth quoting first, in priority order. */
+const LEAD_HEADING_ORDER = ['overview', 'background', 'description', 'summary', 'characteristics', 'location', 'notes', 'trivia']
+
+/**
+ * Task 150 §2 — pages whose prose describes a record that has no page of its
+ * own. The Omen boss shares Mohg's character page; the Omen has no separate
+ * lead, so its page is the honest source (it names the Shunning-Grounds fight).
+ */
+const WIKI_PAGE_ALIAS: Record<string, string> = {
+  'mohg the omen': 'Mohg, Lord of Blood',
+}
+
+/**
+ * The first real sentence the wiki page carries for a name, preferring
+ * Overview/Background prose over a Summary line the build would discard. Used to
+ * fill a page whose description is empty or is only a place name.
+ */
+function wikiLead(name: string): string | undefined {
+  const alias = WIKI_PAGE_ALIAS[simpleNorm(name)]
+  let sections = alias ? lookupWiki(alias) : undefined
+  if (!sections?.length) sections = lookupWiki(name)
   if (!sections?.length) return undefined
-  for (const section of sections) {
+  const rank = (heading: string) => {
+    const i = LEAD_HEADING_ORDER.findIndex((h) => heading.toLowerCase().includes(h))
+    return i === -1 ? LEAD_HEADING_ORDER.length : i
+  }
+  const ordered = [...sections].sort((a, b) => rank(a.heading) - rank(b.heading))
+  for (const section of ordered) {
     if (!section.text) continue
     const cleaned = cleanProse(section.text)
     for (const raw of cleaned.split(/(?<=[.!?])\s+/)) {
-      const sentence = raw.trim()
-      if (sentence.length < 20) continue
-      if (TEMPLATE_DESC.test(sentence)) continue
-      // Skip list/bullet rows and anything with no words.
-      if (/^[-*·\d]/.test(sentence) || !/[a-z]/.test(sentence)) continue
-      return sentence
+      if (acceptableLeadSentence(raw)) return raw.trim()
     }
   }
   return undefined
 }
+
+/**
+ * Task 150 §2 — the Fextralife boss page's first real sentence, the last resort
+ * before a place-only description is dropped. Its "Boss"/"Location"/"Combat"
+ * notes lead with a usable line ("This is an optional boss, but it must be
+ * defeated to access …"); battle-data sections are skipped.
+ */
+function fextLead(name: string): string | undefined {
+  const row = lookupName(fextByName, name)
+  if (!row?.sections?.length) return undefined
+  for (const section of row.sections) {
+    const heading = (section.heading ?? '').toLowerCase()
+    if (/combat|guide|strategy|moveset|video|reward|lore item/.test(heading)) continue
+    const cleaned = cleanProse(section.text ?? '')
+    for (const raw of cleaned.split(/(?<=[.!?])\s+/)) {
+      if (acceptableLeadSentence(raw)) return raw.trim()
+    }
+  }
+  return undefined
+}
+
+/** True when the text is exactly the record's region or location (a place label). */
+function isPlaceText(record: EntityRecord): boolean {
+  const description = record.description?.trim()
+  if (!description) return false
+  return (
+    (!!record.region && simpleNorm(description) === simpleNorm(record.region)) ||
+    (!!record.location && simpleNorm(description) === simpleNorm(record.location))
+  )
+}
+
+/**
+ * Task 150 §2 — kinds whose records describe a single thing the wiki has a page
+ * for. `quest`/`line` records are step labels, not entities, so a wiki lead for
+ * the NPC would misdescribe the step; those only ever lose a place-only text.
+ */
+const FILLABLE_DESC_KINDS = new Set<EntityKind>([
+  'boss',
+  'dungeon',
+  'region',
+  'mechanic',
+  'build',
+  'ending',
+  'gate',
+  'weapon',
+  'npc',
+  'merchant',
+  'spirit',
+  'item',
+  'ash',
+  'armor',
+  'talisman',
+  'spell',
+  'enemy',
+])
 
 // ---------------------------------------------------------------------------
 // Assemble
@@ -3292,10 +3383,12 @@ export function buildEntityIndex(): EntityIndexBuildResult {
       record.description = undefined
     }
     const currentDescription = record.description?.trim()
-    // Task 148 §3 — an empty or subjectless ("is a character …") description is
-    // replaced with the wiki page's lead paragraph. The subject a broken lead
-    // dropped is restored from the record name; a bare template is never used.
-    if (!currentDescription || SUBJECTLESS_DESC.test(currentDescription) || /^the is\b/i.test(currentDescription)) {
+    const placeOnly = isPlaceText(record)
+    // Task 148 §3 + Task 150 §2 — an empty, subjectless ("is a character …") or
+    // place-only description is replaced with the wiki page's lead paragraph.
+    // The subject a broken lead dropped is restored from the record name; a bare
+    // template is never used.
+    if (!currentDescription || SUBJECTLESS_DESC.test(currentDescription) || /^the is\b/i.test(currentDescription) || placeOnly) {
       const wiki = wikiDescriptions.get(simpleNorm(record.name))
       if (wiki) {
         const text = repairWikiLead(wiki, record.name)
@@ -3306,29 +3399,31 @@ export function buildEntityIndex(): EntityIndexBuildResult {
       }
     }
     // Task 148 follow-up — a wiki template sentence ("X is a … in Elden Ring.")
-    // is not a description. Drop every template sentence and keep the rest; when
-    // nothing real remains, use the game's own caption/info (exact name), then
-    // the wiki page's next real sentence, then leave the field empty. A template
-    // sentence is never written by the build.
+    // is not a description. Drop every template sentence and keep the rest.
+    // A template sentence is never written by the build.
     if (record.description) {
       const stripped = stripTemplateSentences(record.description)
-      if (stripped) {
-        record.description = stripped
-      } else {
-        const gameText = gameTextFor(record.name)
-        if (gameText) {
-          record.description = gameText
-          source(record, 'names/fmg')
-        } else {
-          const wikiSentence = nextWikiSentence(record.name)
-          if (wikiSentence) {
-            record.description = wikiSentence
-            source(record, 'wiki-sections')
-          } else {
-            record.description = undefined
-          }
-        }
+      record.description = stripped || undefined
+    }
+    // Task 150 §2 — when nothing real survived (or the description is only the
+    // place name) take the game's own caption, then the wiki page's first real
+    // Overview/Background sentence, then the Fextralife page. Quest/line records
+    // are step labels and character names: wiki lore would misdescribe the step,
+    // so they are never given prose this way.
+    if ((!record.description || isPlaceText(record)) && FILLABLE_DESC_KINDS.has(record.kind)) {
+      const real = gameTextFor(record.name) ?? wikiLead(record.name) ?? fextLead(record.name)
+      if (real) {
+        record.description = real
+        source(record, 'wiki-sections')
       }
+    }
+    // A description that is only the place name is removed — the location
+    // already shows it — unless a real one was found above. When the record has
+    // no location yet, the place text moves there so the page is not left empty.
+    if (record.description && isPlaceText(record)) {
+      const place = record.description.trim()
+      if (!record.location) record.location = place
+      record.description = undefined
     }
     // Rune rewards are not item drops ("120,000 Runes", "Runes"); the runes stat
     // carries them. "See #Drops" is a wiki pointer, never an item.

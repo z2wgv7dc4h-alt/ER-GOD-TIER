@@ -105,3 +105,36 @@ describe('Task 148 §4 — cut content is flagged, not deleted', () => {
     expect(covered, `cut weapon pages not flagged: ${cutTitles.filter((t) => !covered.includes(t)).join(', ')}`).not.toEqual([])
   })
 })
+
+describe('Task 150 §2 — no place-only descriptions', () => {
+  it('never stores the region or location verbatim as the description', () => {
+    const offenders = list
+      .filter((record) => {
+        const description = String(record.description ?? '').trim()
+        if (!description) return false
+        return (
+          (!!record.region && rawNorm(description) === rawNorm(record.region)) ||
+          (!!record.location && rawNorm(description) === rawNorm(record.location))
+        )
+      })
+      .map((record) => `${record.id}: ${record.description}`)
+    expect(offenders, offenders.slice(0, 20).join('\n')).toEqual([])
+  })
+
+  it('still keeps the template guard', () => {
+    const offenders = list.filter((record) => /in Elden Ring\.|a melee armament/.test(record.description ?? ''))
+    expect(offenders.map((record) => record.id).slice(0, 20)).toEqual([])
+  })
+
+  it('gives the four named bosses a real description', () => {
+    for (const id of ['boss:radahn', 'boss:mohg-omen', 'boss:malenia', 'boss:astel']) {
+      const record = records[id]
+      expect(record, `${id} is missing`).toBeTruthy()
+      const description = String(record.description ?? '').trim()
+      expect(description.length, `${id} has no description`).toBeGreaterThan(20)
+      expect(/in Elden Ring\.|a melee armament/.test(description), `${id} is a template`).toBe(false)
+      expect(rawNorm(description) === rawNorm(record.region ?? ''), `${id} is a place-only description`).toBe(false)
+      expect(rawNorm(description) === rawNorm(record.location ?? ''), `${id} is a place-only description`).toBe(false)
+    }
+  })
+})
