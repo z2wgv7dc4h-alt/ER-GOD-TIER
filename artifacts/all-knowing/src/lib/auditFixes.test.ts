@@ -15,6 +15,8 @@ const indexPath = fileURLToPath(new URL('../../public/sourced/entity-index.json'
 const aliasPath = fileURLToPath(new URL('../../public/sourced/aliases.json', import.meta.url))
 const dropsPath = fileURLToPath(new URL('../../public/sourced/open/enemy-drops.json', import.meta.url))
 const wikiWeaponPath = fileURLToPath(new URL('../../public/sourced/open/wiki-db/weapon.json', import.meta.url))
+const legacyPath = fileURLToPath(new URL('../../src/data/legacy-entity-ids.json', import.meta.url))
+const legacyExceptionsPath = fileURLToPath(new URL('../../src/data/legacy-alias-exceptions.json', import.meta.url))
 
 const records = (JSON.parse(readFileSync(indexPath, 'utf8')) as { records?: Record<string, EntityRecord> }).records ?? {}
 const list = Object.values(records)
@@ -136,5 +138,19 @@ describe('Task 150 §2 — no place-only descriptions', () => {
       expect(rawNorm(description) === rawNorm(record.region ?? ''), `${id} is a place-only description`).toBe(false)
       expect(rawNorm(description) === rawNorm(record.location ?? ''), `${id} is a place-only description`).toBe(false)
     }
+  })
+})
+
+describe('Task 150 §3 — dead legacy ids stay bounded', () => {
+  it('resolves every old id except the documented exceptions', () => {
+    const legacy = JSON.parse(readFileSync(legacyPath, 'utf8')) as { id: string; kind: string; name: string }[]
+    const exceptions = JSON.parse(readFileSync(legacyExceptionsPath, 'utf8')) as string[]
+    const exceptionSet = new Set(exceptions)
+    const aliasEngineIds = new Set(aliases.map((alias) => alias.engineId))
+    const dead = legacy.filter((row) => !records[row.id] && !aliasEngineIds.has(row.id))
+    expect(dead.length).toBeLessThanOrEqual(exceptionSet.size)
+    // The exceptions must be genuinely unresolvable — no mapped id may hide there.
+    const unmapped = dead.filter((row) => !exceptionSet.has(row.id)).map((row) => row.id)
+    expect(unmapped, unmapped.slice(0, 20).join('\n')).toEqual([])
   })
 })

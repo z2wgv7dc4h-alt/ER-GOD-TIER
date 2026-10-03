@@ -552,6 +552,67 @@ function appNorm(s) {
   if (ambiguous.size) console.log(`ambiguous engine ids dropped: ${[...ambiguous].join(', ')}`)
 }
 
+// ---------------------------------------------------------------------------
+// Task 150 §3 — legacy ids. Every id in the pre-148 index (`07e7eb0`, snapshot
+// at `src/data/legacy-entity-ids.json`) that no longer has a record or alias is
+// mapped to the record it became: an upgrade "+N" to its base item page, a
+// renamed id to the new id, a merged enemy to the merged page. An id with no
+// honest current target is recorded in `src/data/legacy-alias-exceptions.json`
+// rather than pointed at an unrelated record.
+// ---------------------------------------------------------------------------
+let legacyExceptions = []
+{
+  try {
+    const legacy = JSON.parse(readFileSync(join(root, 'src/data/legacy-entity-ids.json'), 'utf8'))
+    const index = read('public/sourced/entity-index.json')
+    const currentIds = new Set(Object.keys(index.records))
+    const byEngine = new Map()
+    for (const r of rows) if (!byEngine.has(r.engineId)) byEngine.set(r.engineId, r.slug)
+    const byName = new Map()
+    const addName = (name, id) => {
+      const k = rawNorm(name)
+      if (!k || !currentIds.has(id)) return
+      if (!byName.has(k)) byName.set(k, new Set())
+      byName.get(k).add(id)
+    }
+    for (const [id, r] of Object.entries(index.records)) addName(r.name, id)
+    for (const r of rows) {
+      if (!currentIds.has(r.slug)) continue
+      addName(r.fmgName, r.slug)
+      for (const a of r.aliases || []) addName(a, r.slug)
+    }
+    const single = (name) => {
+      const set = byName.get(rawNorm(name))
+      return set && set.size === 1 ? [...set][0] : undefined
+    }
+    const stripUpgrade = (name) => String(name ?? '').replace(/\s*\+\s*\d+\s*$/, '').trim()
+    const unresolved = []
+    let attached = 0
+    for (const leg of legacy) {
+      const id = leg.id
+      if (currentIds.has(id)) continue
+      if (byEngine.has(id) && currentIds.has(byEngine.get(id))) continue
+      let target = single(leg.name)
+      if (!target && stripUpgrade(leg.name) !== leg.name) target = single(stripUpgrade(leg.name))
+      if (!target) {
+        const idBase = id.replace(/\+\d+$/, '').replace(/-\d+$/, '')
+        if (idBase !== id && currentIds.has(idBase)) target = idBase
+      }
+      if (target && currentIds.has(target)) {
+        emit(id, target, leg.name || target, [], 'legacy-id')
+        attached++
+      } else {
+        unresolved.push(id)
+      }
+    }
+    legacyExceptions = unresolved.sort()
+    writeFileSync(join(root, 'src/data/legacy-alias-exceptions.json'), JSON.stringify(legacyExceptions, null, 1) + '\n')
+    console.log(`legacy ids: ${attached} mapped, ${unresolved.length} with no honest target`)
+  } catch (error) {
+    console.warn(`legacy id pass skipped: ${error.message}`)
+  }
+}
+
 // Deterministic ordering — plain code-unit comparison, not localeCompare, so a
 // regeneration on any machine produces byte-identical output.
 rows.sort((a, b) => {

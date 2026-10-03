@@ -21,6 +21,14 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "boss:crystalians",
+  "slug": "boss:crystalian-duo--raya-lucaria-crystal-tunnel",
+  "kind": "boss",
+  "fmgName": "Crystalians",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "boss:elder-dragon-greyoll",
   "slug": "boss:elder-dragon-greyoll",
   "kind": "boss",
@@ -128,6 +136,14 @@
    "skeletal snail"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "boss:spirit-caller-snail",
+  "slug": "boss:spiritcaller-snail",
+  "kind": "boss",
+  "fmgName": "Spirit-Caller Snail",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "bossflag:10000800",
@@ -1672,6 +1688,158 @@
    "makar"
   ],
   "source": "hosted-bosses"
+ },
+ {
+  "engineId": "enemy:33501920",
+  "slug": "boss:crystalian-duo",
+  "kind": "boss",
+  "fmgName": "Crystalian (Spear)",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:33501930",
+  "slug": "boss:crystalian-duo",
+  "kind": "boss",
+  "fmgName": "Crystalian (Spear)",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:33502920",
+  "slug": "boss:crystalian-duo",
+  "kind": "boss",
+  "fmgName": "Crystalian (Staff)",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:42600940",
+  "slug": "boss:erdtree-burial-watchdog--minor-erdtree-catacombs",
+  "kind": "boss",
+  "fmgName": "Erdtree Burial Watchdog (Minor Erdtree Catacombs)",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:42601920",
+  "slug": "boss:erdtree-burial-watchdog--cliffbottom-catacombs",
+  "kind": "boss",
+  "fmgName": "Erdtree Burial Watchdog (Cliffbottom Catacombs)",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:42601940",
+  "slug": "boss:erdtree-burial-watchdog--minor-erdtree-catacombs",
+  "kind": "boss",
+  "fmgName": "Erdtree Burial Watchdog (Minor Erdtree Catacombs)",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:42602932",
+  "slug": "boss:erdtree-burial-watchdog--wyndham-catacombs",
+  "kind": "boss",
+  "fmgName": "Erdtree Burial Watchdog (Wyndham Catacombs)",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:43110010",
+  "slug": "boss:godrick-soldier",
+  "kind": "boss",
+  "fmgName": "Godrick Soldier",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:43110012",
+  "slug": "boss:godrick-soldier",
+  "kind": "boss",
+  "fmgName": "Godrick Soldier",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:43110013",
+  "slug": "boss:godrick-soldier",
+  "kind": "boss",
+  "fmgName": "Godrick Soldier",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:43110912",
+  "slug": "boss:godrick-soldier",
+  "kind": "boss",
+  "fmgName": "Godrick Soldier",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:43111110",
+  "slug": "boss:godrick-soldier",
+  "kind": "boss",
+  "fmgName": "Godrick Soldier",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:43111210",
+  "slug": "boss:godrick-soldier",
+  "kind": "boss",
+  "fmgName": "Godrick Soldier",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:43111310",
+  "slug": "boss:godrick-soldier",
+  "kind": "boss",
+  "fmgName": "Godrick Soldier",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:43112010",
+  "slug": "boss:godrick-soldier",
+  "kind": "boss",
+  "fmgName": "Godrick Soldier",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:43112110",
+  "slug": "boss:godrick-soldier",
+  "kind": "boss",
+  "fmgName": "Godrick Soldier",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:43114010",
+  "slug": "boss:godrick-soldier",
+  "kind": "boss",
+  "fmgName": "Godrick Soldier",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:43114013",
+  "slug": "boss:godrick-soldier",
+  "kind": "boss",
+  "fmgName": "Godrick Soldier",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:43511110",
+  "slug": "boss:godrick-knight",
+  "kind": "boss",
+  "fmgName": "Godrick Knight",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "hunt:ancestor-spirit",
@@ -4483,6 +4651,62 @@
   "source": "npc-combat"
  },
  {
+  "engineId": "npcs:136100",
+  "slug": "boss:fia-champions",
+  "kind": "boss",
+  "fmgName": "Fia's Champion",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "npcs:137000",
+  "slug": "boss:fia-champions",
+  "kind": "boss",
+  "fmgName": "Fia's Champion",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "npcs:137100",
+  "slug": "boss:fia-champions",
+  "kind": "boss",
+  "fmgName": "Fia's Champion",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "npcs:902190000",
+  "slug": "boss:radagon",
+  "kind": "boss",
+  "fmgName": "Radagon of the Golden Order",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "npcs:904720001",
+  "slug": "boss:godfrey",
+  "kind": "boss",
+  "fmgName": "Hoarah Loux, Warrior",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "npcs:905130001",
+  "slug": "boss:messmer",
+  "kind": "boss",
+  "fmgName": "Base Serpent Messmer",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "npcs:905220001",
+  "slug": "boss:consort",
+  "kind": "boss",
+  "fmgName": "Radahn, Consort of Miquella",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "damage:fire",
   "slug": "damage:fire",
   "kind": "damage",
@@ -4552,6 +4776,38 @@
    "shaded castle"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "boss:baleful-shadow",
+  "slug": "enemy:baleful-shadow",
+  "kind": "enemy",
+  "fmgName": "Baleful Shadow",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "boss:banished-knight",
+  "slug": "enemy:banished-knight",
+  "kind": "enemy",
+  "fmgName": "Banished Knight",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "boss:miranda-blossom",
+  "slug": "enemy:miranda-blossom",
+  "kind": "enemy",
+  "fmgName": "Miranda Blossom",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "boss:nox-nightmaiden",
+  "slug": "enemy:nox-nightmaiden",
+  "kind": "enemy",
+  "fmgName": "Nox Nightmaiden",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "enemy:20108562",
@@ -40754,6 +41010,14 @@
   "source": "boss-roster"
  },
  {
+  "engineId": "boss:beastmen-of-farum-azula",
+  "slug": "hunt:beastman-of-farum-azula--dragonbarrow-cave",
+  "kind": "hunt",
+  "fmgName": "Beastmen of Farum Azula",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "boss:fell-twins",
   "slug": "hunt:fell-twin-x2",
   "kind": "hunt",
@@ -42499,6 +42763,14 @@
    "mad tongue alberich"
   ],
   "source": "paramdex-npc"
+ },
+ {
+  "engineId": "npcs:900000521",
+  "slug": "invader:vyke",
+  "kind": "invader",
+  "fmgName": "Vyke the Dragonspear",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "accessories:1231",
@@ -45403,6 +45675,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:albinauric-ashes-1",
+  "slug": "item:albinauric-ashes",
+  "kind": "item",
+  "fmgName": "Albinauric Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:albinauric-ashes-10",
+  "slug": "item:albinauric-ashes",
+  "kind": "item",
+  "fmgName": "Albinauric Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:albinauric-ashes-2",
+  "slug": "item:albinauric-ashes",
+  "kind": "item",
+  "fmgName": "Albinauric Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:albinauric-ashes-3",
+  "slug": "item:albinauric-ashes",
+  "kind": "item",
+  "fmgName": "Albinauric Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:albinauric-ashes-4",
+  "slug": "item:albinauric-ashes",
+  "kind": "item",
+  "fmgName": "Albinauric Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:albinauric-ashes-5",
+  "slug": "item:albinauric-ashes",
+  "kind": "item",
+  "fmgName": "Albinauric Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:albinauric-ashes-6",
+  "slug": "item:albinauric-ashes",
+  "kind": "item",
+  "fmgName": "Albinauric Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:albinauric-ashes-7",
+  "slug": "item:albinauric-ashes",
+  "kind": "item",
+  "fmgName": "Albinauric Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:albinauric-ashes-8",
+  "slug": "item:albinauric-ashes",
+  "kind": "item",
+  "fmgName": "Albinauric Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:albinauric-ashes-9",
+  "slug": "item:albinauric-ashes",
+  "kind": "item",
+  "fmgName": "Albinauric Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:amber-draught",
   "slug": "item:amber-draught",
   "kind": "item",
@@ -45411,6 +45763,86 @@
    "amber draught"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:ancestral-follower-ashes-1",
+  "slug": "item:ancestral-follower-ashes",
+  "kind": "item",
+  "fmgName": "Ancestral Follower Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancestral-follower-ashes-10",
+  "slug": "item:ancestral-follower-ashes",
+  "kind": "item",
+  "fmgName": "Ancestral Follower Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancestral-follower-ashes-2",
+  "slug": "item:ancestral-follower-ashes",
+  "kind": "item",
+  "fmgName": "Ancestral Follower Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancestral-follower-ashes-3",
+  "slug": "item:ancestral-follower-ashes",
+  "kind": "item",
+  "fmgName": "Ancestral Follower Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancestral-follower-ashes-4",
+  "slug": "item:ancestral-follower-ashes",
+  "kind": "item",
+  "fmgName": "Ancestral Follower Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancestral-follower-ashes-5",
+  "slug": "item:ancestral-follower-ashes",
+  "kind": "item",
+  "fmgName": "Ancestral Follower Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancestral-follower-ashes-6",
+  "slug": "item:ancestral-follower-ashes",
+  "kind": "item",
+  "fmgName": "Ancestral Follower Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancestral-follower-ashes-7",
+  "slug": "item:ancestral-follower-ashes",
+  "kind": "item",
+  "fmgName": "Ancestral Follower Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancestral-follower-ashes-8",
+  "slug": "item:ancestral-follower-ashes",
+  "kind": "item",
+  "fmgName": "Ancestral Follower Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancestral-follower-ashes-9",
+  "slug": "item:ancestral-follower-ashes",
+  "kind": "item",
+  "fmgName": "Ancestral Follower Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:ancient-dragon-apostle-s-cookbook-1",
@@ -45463,6 +45895,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:ancient-dragon-florissax-1",
+  "slug": "item:ancient-dragon-florissax",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Florissax +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-florissax-10",
+  "slug": "item:ancient-dragon-florissax",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Florissax +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-florissax-2",
+  "slug": "item:ancient-dragon-florissax",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Florissax +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-florissax-3",
+  "slug": "item:ancient-dragon-florissax",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Florissax +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-florissax-4",
+  "slug": "item:ancient-dragon-florissax",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Florissax +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-florissax-5",
+  "slug": "item:ancient-dragon-florissax",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Florissax +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-florissax-6",
+  "slug": "item:ancient-dragon-florissax",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Florissax +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-florissax-7",
+  "slug": "item:ancient-dragon-florissax",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Florissax +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-florissax-8",
+  "slug": "item:ancient-dragon-florissax",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Florissax +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-florissax-9",
+  "slug": "item:ancient-dragon-florissax",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Florissax +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:ancient-dragon-knight-kristoff",
   "slug": "item:ancient-dragon-knight-kristoff",
   "kind": "item",
@@ -45471,6 +45983,86 @@
    "kristoff"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:ancient-dragon-knight-kristoff-1",
+  "slug": "item:ancient-dragon-knight-kristoff",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Knight Kristoff +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-knight-kristoff-10",
+  "slug": "item:ancient-dragon-knight-kristoff",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Knight Kristoff +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-knight-kristoff-2",
+  "slug": "item:ancient-dragon-knight-kristoff",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Knight Kristoff +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-knight-kristoff-3",
+  "slug": "item:ancient-dragon-knight-kristoff",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Knight Kristoff +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-knight-kristoff-4",
+  "slug": "item:ancient-dragon-knight-kristoff",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Knight Kristoff +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-knight-kristoff-5",
+  "slug": "item:ancient-dragon-knight-kristoff",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Knight Kristoff +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-knight-kristoff-6",
+  "slug": "item:ancient-dragon-knight-kristoff",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Knight Kristoff +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-knight-kristoff-7",
+  "slug": "item:ancient-dragon-knight-kristoff",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Knight Kristoff +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-knight-kristoff-8",
+  "slug": "item:ancient-dragon-knight-kristoff",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Knight Kristoff +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:ancient-dragon-knight-kristoff-9",
+  "slug": "item:ancient-dragon-knight-kristoff",
+  "kind": "item",
+  "fmgName": "Ancient Dragon Knight Kristoff +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:ancient-dragon-knight-s-cookbook-1",
@@ -45522,6 +46114,86 @@
    "asr antspur rapier"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:archer-ashes-1",
+  "slug": "item:archer-ashes",
+  "kind": "item",
+  "fmgName": "Archer Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:archer-ashes-10",
+  "slug": "item:archer-ashes",
+  "kind": "item",
+  "fmgName": "Archer Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:archer-ashes-2",
+  "slug": "item:archer-ashes",
+  "kind": "item",
+  "fmgName": "Archer Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:archer-ashes-3",
+  "slug": "item:archer-ashes",
+  "kind": "item",
+  "fmgName": "Archer Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:archer-ashes-4",
+  "slug": "item:archer-ashes",
+  "kind": "item",
+  "fmgName": "Archer Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:archer-ashes-5",
+  "slug": "item:archer-ashes",
+  "kind": "item",
+  "fmgName": "Archer Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:archer-ashes-6",
+  "slug": "item:archer-ashes",
+  "kind": "item",
+  "fmgName": "Archer Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:archer-ashes-7",
+  "slug": "item:archer-ashes",
+  "kind": "item",
+  "fmgName": "Archer Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:archer-ashes-8",
+  "slug": "item:archer-ashes",
+  "kind": "item",
+  "fmgName": "Archer Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:archer-ashes-9",
+  "slug": "item:archer-ashes",
+  "kind": "item",
+  "fmgName": "Archer Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:armorer-s-cookbook-1",
@@ -46598,6 +47270,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:avionette-soldier-ashes-1",
+  "slug": "item:avionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Avionette Soldier Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:avionette-soldier-ashes-10",
+  "slug": "item:avionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Avionette Soldier Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:avionette-soldier-ashes-2",
+  "slug": "item:avionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Avionette Soldier Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:avionette-soldier-ashes-3",
+  "slug": "item:avionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Avionette Soldier Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:avionette-soldier-ashes-4",
+  "slug": "item:avionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Avionette Soldier Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:avionette-soldier-ashes-5",
+  "slug": "item:avionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Avionette Soldier Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:avionette-soldier-ashes-6",
+  "slug": "item:avionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Avionette Soldier Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:avionette-soldier-ashes-7",
+  "slug": "item:avionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Avionette Soldier Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:avionette-soldier-ashes-8",
+  "slug": "item:avionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Avionette Soldier Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:avionette-soldier-ashes-9",
+  "slug": "item:avionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Avionette Soldier Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:axe-of-godfrey",
   "slug": "item:axe-of-godfrey",
   "kind": "item",
@@ -46621,6 +47373,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:azula-beastman-ashes-1",
+  "slug": "item:azula-beastman-ashes",
+  "kind": "item",
+  "fmgName": "Azula Beastman Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:azula-beastman-ashes-10",
+  "slug": "item:azula-beastman-ashes",
+  "kind": "item",
+  "fmgName": "Azula Beastman Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:azula-beastman-ashes-2",
+  "slug": "item:azula-beastman-ashes",
+  "kind": "item",
+  "fmgName": "Azula Beastman Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:azula-beastman-ashes-3",
+  "slug": "item:azula-beastman-ashes",
+  "kind": "item",
+  "fmgName": "Azula Beastman Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:azula-beastman-ashes-4",
+  "slug": "item:azula-beastman-ashes",
+  "kind": "item",
+  "fmgName": "Azula Beastman Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:azula-beastman-ashes-5",
+  "slug": "item:azula-beastman-ashes",
+  "kind": "item",
+  "fmgName": "Azula Beastman Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:azula-beastman-ashes-6",
+  "slug": "item:azula-beastman-ashes",
+  "kind": "item",
+  "fmgName": "Azula Beastman Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:azula-beastman-ashes-7",
+  "slug": "item:azula-beastman-ashes",
+  "kind": "item",
+  "fmgName": "Azula Beastman Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:azula-beastman-ashes-8",
+  "slug": "item:azula-beastman-ashes",
+  "kind": "item",
+  "fmgName": "Azula Beastman Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:azula-beastman-ashes-9",
+  "slug": "item:azula-beastman-ashes",
+  "kind": "item",
+  "fmgName": "Azula Beastman Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:bandit-s-curved-sword",
   "slug": "item:bandit-s-curved-sword",
   "kind": "item",
@@ -46641,6 +47473,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:banished-knight-engvall-1",
+  "slug": "item:banished-knight-engvall",
+  "kind": "item",
+  "fmgName": "Banished Knight Engvall +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-engvall-10",
+  "slug": "item:banished-knight-engvall",
+  "kind": "item",
+  "fmgName": "Banished Knight Engvall +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-engvall-2",
+  "slug": "item:banished-knight-engvall",
+  "kind": "item",
+  "fmgName": "Banished Knight Engvall +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-engvall-3",
+  "slug": "item:banished-knight-engvall",
+  "kind": "item",
+  "fmgName": "Banished Knight Engvall +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-engvall-4",
+  "slug": "item:banished-knight-engvall",
+  "kind": "item",
+  "fmgName": "Banished Knight Engvall +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-engvall-5",
+  "slug": "item:banished-knight-engvall",
+  "kind": "item",
+  "fmgName": "Banished Knight Engvall +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-engvall-6",
+  "slug": "item:banished-knight-engvall",
+  "kind": "item",
+  "fmgName": "Banished Knight Engvall +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-engvall-7",
+  "slug": "item:banished-knight-engvall",
+  "kind": "item",
+  "fmgName": "Banished Knight Engvall +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-engvall-8",
+  "slug": "item:banished-knight-engvall",
+  "kind": "item",
+  "fmgName": "Banished Knight Engvall +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-engvall-9",
+  "slug": "item:banished-knight-engvall",
+  "kind": "item",
+  "fmgName": "Banished Knight Engvall +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:banished-knight-oleg",
   "slug": "item:banished-knight-oleg",
   "kind": "item",
@@ -46650,6 +47562,86 @@
    "oleg"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:banished-knight-oleg-1",
+  "slug": "item:banished-knight-oleg",
+  "kind": "item",
+  "fmgName": "Banished Knight Oleg +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-oleg-10",
+  "slug": "item:banished-knight-oleg",
+  "kind": "item",
+  "fmgName": "Banished Knight Oleg +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-oleg-2",
+  "slug": "item:banished-knight-oleg",
+  "kind": "item",
+  "fmgName": "Banished Knight Oleg +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-oleg-3",
+  "slug": "item:banished-knight-oleg",
+  "kind": "item",
+  "fmgName": "Banished Knight Oleg +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-oleg-4",
+  "slug": "item:banished-knight-oleg",
+  "kind": "item",
+  "fmgName": "Banished Knight Oleg +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-oleg-5",
+  "slug": "item:banished-knight-oleg",
+  "kind": "item",
+  "fmgName": "Banished Knight Oleg +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-oleg-6",
+  "slug": "item:banished-knight-oleg",
+  "kind": "item",
+  "fmgName": "Banished Knight Oleg +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-oleg-7",
+  "slug": "item:banished-knight-oleg",
+  "kind": "item",
+  "fmgName": "Banished Knight Oleg +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-oleg-8",
+  "slug": "item:banished-knight-oleg",
+  "kind": "item",
+  "fmgName": "Banished Knight Oleg +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:banished-knight-oleg-9",
+  "slug": "item:banished-knight-oleg",
+  "kind": "item",
+  "fmgName": "Banished Knight Oleg +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:banished-knight-s-greatsword",
@@ -46753,6 +47745,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:battlemage-hugues-1",
+  "slug": "item:battlemage-hugues",
+  "kind": "item",
+  "fmgName": "Battlemage Hugues +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:battlemage-hugues-10",
+  "slug": "item:battlemage-hugues",
+  "kind": "item",
+  "fmgName": "Battlemage Hugues +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:battlemage-hugues-2",
+  "slug": "item:battlemage-hugues",
+  "kind": "item",
+  "fmgName": "Battlemage Hugues +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:battlemage-hugues-3",
+  "slug": "item:battlemage-hugues",
+  "kind": "item",
+  "fmgName": "Battlemage Hugues +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:battlemage-hugues-4",
+  "slug": "item:battlemage-hugues",
+  "kind": "item",
+  "fmgName": "Battlemage Hugues +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:battlemage-hugues-5",
+  "slug": "item:battlemage-hugues",
+  "kind": "item",
+  "fmgName": "Battlemage Hugues +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:battlemage-hugues-6",
+  "slug": "item:battlemage-hugues",
+  "kind": "item",
+  "fmgName": "Battlemage Hugues +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:battlemage-hugues-7",
+  "slug": "item:battlemage-hugues",
+  "kind": "item",
+  "fmgName": "Battlemage Hugues +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:battlemage-hugues-8",
+  "slug": "item:battlemage-hugues",
+  "kind": "item",
+  "fmgName": "Battlemage Hugues +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:battlemage-hugues-9",
+  "slug": "item:battlemage-hugues",
+  "kind": "item",
+  "fmgName": "Battlemage Hugues +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:beast-claw-spell",
   "slug": "item:beast-claw-spell",
   "kind": "item",
@@ -46805,6 +47877,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:bigmouth-imp-ashes-1",
+  "slug": "item:bigmouth-imp-ashes",
+  "kind": "item",
+  "fmgName": "Bigmouth Imp Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bigmouth-imp-ashes-10",
+  "slug": "item:bigmouth-imp-ashes",
+  "kind": "item",
+  "fmgName": "Bigmouth Imp Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bigmouth-imp-ashes-2",
+  "slug": "item:bigmouth-imp-ashes",
+  "kind": "item",
+  "fmgName": "Bigmouth Imp Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bigmouth-imp-ashes-3",
+  "slug": "item:bigmouth-imp-ashes",
+  "kind": "item",
+  "fmgName": "Bigmouth Imp Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bigmouth-imp-ashes-4",
+  "slug": "item:bigmouth-imp-ashes",
+  "kind": "item",
+  "fmgName": "Bigmouth Imp Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bigmouth-imp-ashes-5",
+  "slug": "item:bigmouth-imp-ashes",
+  "kind": "item",
+  "fmgName": "Bigmouth Imp Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bigmouth-imp-ashes-6",
+  "slug": "item:bigmouth-imp-ashes",
+  "kind": "item",
+  "fmgName": "Bigmouth Imp Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bigmouth-imp-ashes-7",
+  "slug": "item:bigmouth-imp-ashes",
+  "kind": "item",
+  "fmgName": "Bigmouth Imp Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bigmouth-imp-ashes-8",
+  "slug": "item:bigmouth-imp-ashes",
+  "kind": "item",
+  "fmgName": "Bigmouth Imp Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bigmouth-imp-ashes-9",
+  "slug": "item:bigmouth-imp-ashes",
+  "kind": "item",
+  "fmgName": "Bigmouth Imp Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:black-blade",
   "slug": "item:black-blade",
   "kind": "item",
@@ -46835,6 +47987,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:black-knife-tiche-1",
+  "slug": "item:black-knife-tiche",
+  "kind": "item",
+  "fmgName": "Black Knife Tiche +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knife-tiche-10",
+  "slug": "item:black-knife-tiche",
+  "kind": "item",
+  "fmgName": "Black Knife Tiche +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knife-tiche-2",
+  "slug": "item:black-knife-tiche",
+  "kind": "item",
+  "fmgName": "Black Knife Tiche +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knife-tiche-3",
+  "slug": "item:black-knife-tiche",
+  "kind": "item",
+  "fmgName": "Black Knife Tiche +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knife-tiche-4",
+  "slug": "item:black-knife-tiche",
+  "kind": "item",
+  "fmgName": "Black Knife Tiche +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knife-tiche-5",
+  "slug": "item:black-knife-tiche",
+  "kind": "item",
+  "fmgName": "Black Knife Tiche +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knife-tiche-6",
+  "slug": "item:black-knife-tiche",
+  "kind": "item",
+  "fmgName": "Black Knife Tiche +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knife-tiche-7",
+  "slug": "item:black-knife-tiche",
+  "kind": "item",
+  "fmgName": "Black Knife Tiche +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knife-tiche-8",
+  "slug": "item:black-knife-tiche",
+  "kind": "item",
+  "fmgName": "Black Knife Tiche +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knife-tiche-9",
+  "slug": "item:black-knife-tiche",
+  "kind": "item",
+  "fmgName": "Black Knife Tiche +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:black-knight-captain-huw",
   "slug": "item:black-knight-captain-huw",
   "kind": "item",
@@ -46843,6 +48075,86 @@
    "huw"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:black-knight-captain-huw-1",
+  "slug": "item:black-knight-captain-huw",
+  "kind": "item",
+  "fmgName": "Black Knight Captain Huw +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-captain-huw-10",
+  "slug": "item:black-knight-captain-huw",
+  "kind": "item",
+  "fmgName": "Black Knight Captain Huw +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-captain-huw-2",
+  "slug": "item:black-knight-captain-huw",
+  "kind": "item",
+  "fmgName": "Black Knight Captain Huw +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-captain-huw-3",
+  "slug": "item:black-knight-captain-huw",
+  "kind": "item",
+  "fmgName": "Black Knight Captain Huw +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-captain-huw-4",
+  "slug": "item:black-knight-captain-huw",
+  "kind": "item",
+  "fmgName": "Black Knight Captain Huw +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-captain-huw-5",
+  "slug": "item:black-knight-captain-huw",
+  "kind": "item",
+  "fmgName": "Black Knight Captain Huw +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-captain-huw-6",
+  "slug": "item:black-knight-captain-huw",
+  "kind": "item",
+  "fmgName": "Black Knight Captain Huw +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-captain-huw-7",
+  "slug": "item:black-knight-captain-huw",
+  "kind": "item",
+  "fmgName": "Black Knight Captain Huw +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-captain-huw-8",
+  "slug": "item:black-knight-captain-huw",
+  "kind": "item",
+  "fmgName": "Black Knight Captain Huw +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-captain-huw-9",
+  "slug": "item:black-knight-captain-huw",
+  "kind": "item",
+  "fmgName": "Black Knight Captain Huw +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:black-knight-commander-andreas",
@@ -46855,6 +48167,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:black-knight-commander-andreas-1",
+  "slug": "item:black-knight-commander-andreas",
+  "kind": "item",
+  "fmgName": "Black Knight Commander Andreas +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-commander-andreas-10",
+  "slug": "item:black-knight-commander-andreas",
+  "kind": "item",
+  "fmgName": "Black Knight Commander Andreas +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-commander-andreas-2",
+  "slug": "item:black-knight-commander-andreas",
+  "kind": "item",
+  "fmgName": "Black Knight Commander Andreas +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-commander-andreas-3",
+  "slug": "item:black-knight-commander-andreas",
+  "kind": "item",
+  "fmgName": "Black Knight Commander Andreas +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-commander-andreas-4",
+  "slug": "item:black-knight-commander-andreas",
+  "kind": "item",
+  "fmgName": "Black Knight Commander Andreas +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-commander-andreas-5",
+  "slug": "item:black-knight-commander-andreas",
+  "kind": "item",
+  "fmgName": "Black Knight Commander Andreas +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-commander-andreas-6",
+  "slug": "item:black-knight-commander-andreas",
+  "kind": "item",
+  "fmgName": "Black Knight Commander Andreas +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-commander-andreas-7",
+  "slug": "item:black-knight-commander-andreas",
+  "kind": "item",
+  "fmgName": "Black Knight Commander Andreas +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-commander-andreas-8",
+  "slug": "item:black-knight-commander-andreas",
+  "kind": "item",
+  "fmgName": "Black Knight Commander Andreas +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:black-knight-commander-andreas-9",
+  "slug": "item:black-knight-commander-andreas",
+  "kind": "item",
+  "fmgName": "Black Knight Commander Andreas +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:blackflame-monk-amon",
   "slug": "item:blackflame-monk-amon",
   "kind": "item",
@@ -46865,6 +48257,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:blackflame-monk-amon-1",
+  "slug": "item:blackflame-monk-amon",
+  "kind": "item",
+  "fmgName": "Blackflame Monk Amon +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:blackflame-monk-amon-10",
+  "slug": "item:blackflame-monk-amon",
+  "kind": "item",
+  "fmgName": "Blackflame Monk Amon +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:blackflame-monk-amon-2",
+  "slug": "item:blackflame-monk-amon",
+  "kind": "item",
+  "fmgName": "Blackflame Monk Amon +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:blackflame-monk-amon-3",
+  "slug": "item:blackflame-monk-amon",
+  "kind": "item",
+  "fmgName": "Blackflame Monk Amon +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:blackflame-monk-amon-4",
+  "slug": "item:blackflame-monk-amon",
+  "kind": "item",
+  "fmgName": "Blackflame Monk Amon +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:blackflame-monk-amon-5",
+  "slug": "item:blackflame-monk-amon",
+  "kind": "item",
+  "fmgName": "Blackflame Monk Amon +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:blackflame-monk-amon-6",
+  "slug": "item:blackflame-monk-amon",
+  "kind": "item",
+  "fmgName": "Blackflame Monk Amon +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:blackflame-monk-amon-7",
+  "slug": "item:blackflame-monk-amon",
+  "kind": "item",
+  "fmgName": "Blackflame Monk Amon +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:blackflame-monk-amon-8",
+  "slug": "item:blackflame-monk-amon",
+  "kind": "item",
+  "fmgName": "Blackflame Monk Amon +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:blackflame-monk-amon-9",
+  "slug": "item:blackflame-monk-amon",
+  "kind": "item",
+  "fmgName": "Blackflame Monk Amon +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:bloodfiend-hexer-s-ashes",
   "slug": "item:bloodfiend-hexer-s-ashes",
   "kind": "item",
@@ -46873,6 +48345,86 @@
    "bloodfiend hexer ashes"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:bloodfiend-hexer-s-ashes-1",
+  "slug": "item:bloodfiend-hexer-s-ashes",
+  "kind": "item",
+  "fmgName": "Bloodfiend Hexer's Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodfiend-hexer-s-ashes-10",
+  "slug": "item:bloodfiend-hexer-s-ashes",
+  "kind": "item",
+  "fmgName": "Bloodfiend Hexer's Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodfiend-hexer-s-ashes-2",
+  "slug": "item:bloodfiend-hexer-s-ashes",
+  "kind": "item",
+  "fmgName": "Bloodfiend Hexer's Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodfiend-hexer-s-ashes-3",
+  "slug": "item:bloodfiend-hexer-s-ashes",
+  "kind": "item",
+  "fmgName": "Bloodfiend Hexer's Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodfiend-hexer-s-ashes-4",
+  "slug": "item:bloodfiend-hexer-s-ashes",
+  "kind": "item",
+  "fmgName": "Bloodfiend Hexer's Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodfiend-hexer-s-ashes-5",
+  "slug": "item:bloodfiend-hexer-s-ashes",
+  "kind": "item",
+  "fmgName": "Bloodfiend Hexer's Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodfiend-hexer-s-ashes-6",
+  "slug": "item:bloodfiend-hexer-s-ashes",
+  "kind": "item",
+  "fmgName": "Bloodfiend Hexer's Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodfiend-hexer-s-ashes-7",
+  "slug": "item:bloodfiend-hexer-s-ashes",
+  "kind": "item",
+  "fmgName": "Bloodfiend Hexer's Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodfiend-hexer-s-ashes-8",
+  "slug": "item:bloodfiend-hexer-s-ashes",
+  "kind": "item",
+  "fmgName": "Bloodfiend Hexer's Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodfiend-hexer-s-ashes-9",
+  "slug": "item:bloodfiend-hexer-s-ashes",
+  "kind": "item",
+  "fmgName": "Bloodfiend Hexer's Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:bloodhound-claws",
@@ -46893,6 +48445,86 @@
    "floh"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:bloodhound-knight-floh-1",
+  "slug": "item:bloodhound-knight-floh",
+  "kind": "item",
+  "fmgName": "Bloodhound Knight Floh +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodhound-knight-floh-10",
+  "slug": "item:bloodhound-knight-floh",
+  "kind": "item",
+  "fmgName": "Bloodhound Knight Floh +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodhound-knight-floh-2",
+  "slug": "item:bloodhound-knight-floh",
+  "kind": "item",
+  "fmgName": "Bloodhound Knight Floh +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodhound-knight-floh-3",
+  "slug": "item:bloodhound-knight-floh",
+  "kind": "item",
+  "fmgName": "Bloodhound Knight Floh +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodhound-knight-floh-4",
+  "slug": "item:bloodhound-knight-floh",
+  "kind": "item",
+  "fmgName": "Bloodhound Knight Floh +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodhound-knight-floh-5",
+  "slug": "item:bloodhound-knight-floh",
+  "kind": "item",
+  "fmgName": "Bloodhound Knight Floh +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodhound-knight-floh-6",
+  "slug": "item:bloodhound-knight-floh",
+  "kind": "item",
+  "fmgName": "Bloodhound Knight Floh +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodhound-knight-floh-7",
+  "slug": "item:bloodhound-knight-floh",
+  "kind": "item",
+  "fmgName": "Bloodhound Knight Floh +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodhound-knight-floh-8",
+  "slug": "item:bloodhound-knight-floh",
+  "kind": "item",
+  "fmgName": "Bloodhound Knight Floh +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:bloodhound-knight-floh-9",
+  "slug": "item:bloodhound-knight-floh",
+  "kind": "item",
+  "fmgName": "Bloodhound Knight Floh +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:bloodhound-s-fang",
@@ -47128,6 +48760,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:clayman-ashes-1",
+  "slug": "item:clayman-ashes",
+  "kind": "item",
+  "fmgName": "Clayman Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:clayman-ashes-10",
+  "slug": "item:clayman-ashes",
+  "kind": "item",
+  "fmgName": "Clayman Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:clayman-ashes-2",
+  "slug": "item:clayman-ashes",
+  "kind": "item",
+  "fmgName": "Clayman Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:clayman-ashes-3",
+  "slug": "item:clayman-ashes",
+  "kind": "item",
+  "fmgName": "Clayman Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:clayman-ashes-4",
+  "slug": "item:clayman-ashes",
+  "kind": "item",
+  "fmgName": "Clayman Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:clayman-ashes-5",
+  "slug": "item:clayman-ashes",
+  "kind": "item",
+  "fmgName": "Clayman Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:clayman-ashes-6",
+  "slug": "item:clayman-ashes",
+  "kind": "item",
+  "fmgName": "Clayman Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:clayman-ashes-7",
+  "slug": "item:clayman-ashes",
+  "kind": "item",
+  "fmgName": "Clayman Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:clayman-ashes-8",
+  "slug": "item:clayman-ashes",
+  "kind": "item",
+  "fmgName": "Clayman Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:clayman-ashes-9",
+  "slug": "item:clayman-ashes",
+  "kind": "item",
+  "fmgName": "Clayman Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:clayman-s-harpoon",
   "slug": "item:clayman-s-harpoon",
   "kind": "item",
@@ -47167,6 +48879,86 @@
    "finlay"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:cleanrot-knight-finlay-1",
+  "slug": "item:cleanrot-knight-finlay",
+  "kind": "item",
+  "fmgName": "Cleanrot Knight Finlay +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:cleanrot-knight-finlay-10",
+  "slug": "item:cleanrot-knight-finlay",
+  "kind": "item",
+  "fmgName": "Cleanrot Knight Finlay +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:cleanrot-knight-finlay-2",
+  "slug": "item:cleanrot-knight-finlay",
+  "kind": "item",
+  "fmgName": "Cleanrot Knight Finlay +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:cleanrot-knight-finlay-3",
+  "slug": "item:cleanrot-knight-finlay",
+  "kind": "item",
+  "fmgName": "Cleanrot Knight Finlay +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:cleanrot-knight-finlay-4",
+  "slug": "item:cleanrot-knight-finlay",
+  "kind": "item",
+  "fmgName": "Cleanrot Knight Finlay +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:cleanrot-knight-finlay-5",
+  "slug": "item:cleanrot-knight-finlay",
+  "kind": "item",
+  "fmgName": "Cleanrot Knight Finlay +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:cleanrot-knight-finlay-6",
+  "slug": "item:cleanrot-knight-finlay",
+  "kind": "item",
+  "fmgName": "Cleanrot Knight Finlay +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:cleanrot-knight-finlay-7",
+  "slug": "item:cleanrot-knight-finlay",
+  "kind": "item",
+  "fmgName": "Cleanrot Knight Finlay +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:cleanrot-knight-finlay-8",
+  "slug": "item:cleanrot-knight-finlay",
+  "kind": "item",
+  "fmgName": "Cleanrot Knight Finlay +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:cleanrot-knight-finlay-9",
+  "slug": "item:cleanrot-knight-finlay",
+  "kind": "item",
+  "fmgName": "Cleanrot Knight Finlay +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:cleanrot-knight-s-sword",
@@ -47293,6 +49085,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:crystalian-ashes-1",
+  "slug": "item:crystalian-ashes",
+  "kind": "item",
+  "fmgName": "Crystalian Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:crystalian-ashes-10",
+  "slug": "item:crystalian-ashes",
+  "kind": "item",
+  "fmgName": "Crystalian Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:crystalian-ashes-2",
+  "slug": "item:crystalian-ashes",
+  "kind": "item",
+  "fmgName": "Crystalian Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:crystalian-ashes-3",
+  "slug": "item:crystalian-ashes",
+  "kind": "item",
+  "fmgName": "Crystalian Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:crystalian-ashes-4",
+  "slug": "item:crystalian-ashes",
+  "kind": "item",
+  "fmgName": "Crystalian Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:crystalian-ashes-5",
+  "slug": "item:crystalian-ashes",
+  "kind": "item",
+  "fmgName": "Crystalian Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:crystalian-ashes-6",
+  "slug": "item:crystalian-ashes",
+  "kind": "item",
+  "fmgName": "Crystalian Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:crystalian-ashes-7",
+  "slug": "item:crystalian-ashes",
+  "kind": "item",
+  "fmgName": "Crystalian Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:crystalian-ashes-8",
+  "slug": "item:crystalian-ashes",
+  "kind": "item",
+  "fmgName": "Crystalian Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:crystalian-ashes-9",
+  "slug": "item:crystalian-ashes",
+  "kind": "item",
+  "fmgName": "Crystalian Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:curseblade-meera",
   "slug": "item:curseblade-meera",
   "kind": "item",
@@ -47301,6 +49173,86 @@
    "meera"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:curseblade-meera-1",
+  "slug": "item:curseblade-meera",
+  "kind": "item",
+  "fmgName": "Curseblade Meera +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:curseblade-meera-10",
+  "slug": "item:curseblade-meera",
+  "kind": "item",
+  "fmgName": "Curseblade Meera +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:curseblade-meera-2",
+  "slug": "item:curseblade-meera",
+  "kind": "item",
+  "fmgName": "Curseblade Meera +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:curseblade-meera-3",
+  "slug": "item:curseblade-meera",
+  "kind": "item",
+  "fmgName": "Curseblade Meera +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:curseblade-meera-4",
+  "slug": "item:curseblade-meera",
+  "kind": "item",
+  "fmgName": "Curseblade Meera +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:curseblade-meera-5",
+  "slug": "item:curseblade-meera",
+  "kind": "item",
+  "fmgName": "Curseblade Meera +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:curseblade-meera-6",
+  "slug": "item:curseblade-meera",
+  "kind": "item",
+  "fmgName": "Curseblade Meera +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:curseblade-meera-7",
+  "slug": "item:curseblade-meera",
+  "kind": "item",
+  "fmgName": "Curseblade Meera +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:curseblade-meera-8",
+  "slug": "item:curseblade-meera",
+  "kind": "item",
+  "fmgName": "Curseblade Meera +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:curseblade-meera-9",
+  "slug": "item:curseblade-meera",
+  "kind": "item",
+  "fmgName": "Curseblade Meera +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:curseblade-s-cirque",
@@ -47373,6 +49325,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:demi-human-ashes-1",
+  "slug": "item:demi-human-ashes",
+  "kind": "item",
+  "fmgName": "Demi-Human Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-ashes-10",
+  "slug": "item:demi-human-ashes",
+  "kind": "item",
+  "fmgName": "Demi-Human Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-ashes-2",
+  "slug": "item:demi-human-ashes",
+  "kind": "item",
+  "fmgName": "Demi-Human Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-ashes-3",
+  "slug": "item:demi-human-ashes",
+  "kind": "item",
+  "fmgName": "Demi-Human Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-ashes-4",
+  "slug": "item:demi-human-ashes",
+  "kind": "item",
+  "fmgName": "Demi-Human Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-ashes-5",
+  "slug": "item:demi-human-ashes",
+  "kind": "item",
+  "fmgName": "Demi-Human Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-ashes-6",
+  "slug": "item:demi-human-ashes",
+  "kind": "item",
+  "fmgName": "Demi-Human Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-ashes-7",
+  "slug": "item:demi-human-ashes",
+  "kind": "item",
+  "fmgName": "Demi-Human Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-ashes-8",
+  "slug": "item:demi-human-ashes",
+  "kind": "item",
+  "fmgName": "Demi-Human Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-ashes-9",
+  "slug": "item:demi-human-ashes",
+  "kind": "item",
+  "fmgName": "Demi-Human Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:demi-human-swordsman-yosh",
   "slug": "item:demi-human-swordsman-yosh",
   "kind": "item",
@@ -47383,6 +49415,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:demi-human-swordsman-yosh-1",
+  "slug": "item:demi-human-swordsman-yosh",
+  "kind": "item",
+  "fmgName": "Demi-Human Swordsman Yosh +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-swordsman-yosh-10",
+  "slug": "item:demi-human-swordsman-yosh",
+  "kind": "item",
+  "fmgName": "Demi-Human Swordsman Yosh +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-swordsman-yosh-2",
+  "slug": "item:demi-human-swordsman-yosh",
+  "kind": "item",
+  "fmgName": "Demi-Human Swordsman Yosh +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-swordsman-yosh-3",
+  "slug": "item:demi-human-swordsman-yosh",
+  "kind": "item",
+  "fmgName": "Demi-Human Swordsman Yosh +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-swordsman-yosh-4",
+  "slug": "item:demi-human-swordsman-yosh",
+  "kind": "item",
+  "fmgName": "Demi-Human Swordsman Yosh +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-swordsman-yosh-5",
+  "slug": "item:demi-human-swordsman-yosh",
+  "kind": "item",
+  "fmgName": "Demi-Human Swordsman Yosh +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-swordsman-yosh-6",
+  "slug": "item:demi-human-swordsman-yosh",
+  "kind": "item",
+  "fmgName": "Demi-Human Swordsman Yosh +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-swordsman-yosh-7",
+  "slug": "item:demi-human-swordsman-yosh",
+  "kind": "item",
+  "fmgName": "Demi-Human Swordsman Yosh +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-swordsman-yosh-8",
+  "slug": "item:demi-human-swordsman-yosh",
+  "kind": "item",
+  "fmgName": "Demi-Human Swordsman Yosh +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:demi-human-swordsman-yosh-9",
+  "slug": "item:demi-human-swordsman-yosh",
+  "kind": "item",
+  "fmgName": "Demi-Human Swordsman Yosh +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:depraved-perfumer-carmaan",
   "slug": "item:depraved-perfumer-carmaan",
   "kind": "item",
@@ -47391,6 +49503,86 @@
    "carmaan"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:depraved-perfumer-carmaan-1",
+  "slug": "item:depraved-perfumer-carmaan",
+  "kind": "item",
+  "fmgName": "Depraved Perfumer Carmaan +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:depraved-perfumer-carmaan-10",
+  "slug": "item:depraved-perfumer-carmaan",
+  "kind": "item",
+  "fmgName": "Depraved Perfumer Carmaan +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:depraved-perfumer-carmaan-2",
+  "slug": "item:depraved-perfumer-carmaan",
+  "kind": "item",
+  "fmgName": "Depraved Perfumer Carmaan +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:depraved-perfumer-carmaan-3",
+  "slug": "item:depraved-perfumer-carmaan",
+  "kind": "item",
+  "fmgName": "Depraved Perfumer Carmaan +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:depraved-perfumer-carmaan-4",
+  "slug": "item:depraved-perfumer-carmaan",
+  "kind": "item",
+  "fmgName": "Depraved Perfumer Carmaan +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:depraved-perfumer-carmaan-5",
+  "slug": "item:depraved-perfumer-carmaan",
+  "kind": "item",
+  "fmgName": "Depraved Perfumer Carmaan +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:depraved-perfumer-carmaan-6",
+  "slug": "item:depraved-perfumer-carmaan",
+  "kind": "item",
+  "fmgName": "Depraved Perfumer Carmaan +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:depraved-perfumer-carmaan-7",
+  "slug": "item:depraved-perfumer-carmaan",
+  "kind": "item",
+  "fmgName": "Depraved Perfumer Carmaan +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:depraved-perfumer-carmaan-8",
+  "slug": "item:depraved-perfumer-carmaan",
+  "kind": "item",
+  "fmgName": "Depraved Perfumer Carmaan +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:depraved-perfumer-carmaan-9",
+  "slug": "item:depraved-perfumer-carmaan",
+  "kind": "item",
+  "fmgName": "Depraved Perfumer Carmaan +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:devourer-s-scepter",
@@ -47411,6 +49603,166 @@
    "ornis"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:divine-bird-warrior-ornis-1",
+  "slug": "item:divine-bird-warrior-ornis",
+  "kind": "item",
+  "fmgName": "Divine Bird Warrior Ornis +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:divine-bird-warrior-ornis-10",
+  "slug": "item:divine-bird-warrior-ornis",
+  "kind": "item",
+  "fmgName": "Divine Bird Warrior Ornis +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:divine-bird-warrior-ornis-2",
+  "slug": "item:divine-bird-warrior-ornis",
+  "kind": "item",
+  "fmgName": "Divine Bird Warrior Ornis +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:divine-bird-warrior-ornis-3",
+  "slug": "item:divine-bird-warrior-ornis",
+  "kind": "item",
+  "fmgName": "Divine Bird Warrior Ornis +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:divine-bird-warrior-ornis-4",
+  "slug": "item:divine-bird-warrior-ornis",
+  "kind": "item",
+  "fmgName": "Divine Bird Warrior Ornis +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:divine-bird-warrior-ornis-5",
+  "slug": "item:divine-bird-warrior-ornis",
+  "kind": "item",
+  "fmgName": "Divine Bird Warrior Ornis +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:divine-bird-warrior-ornis-6",
+  "slug": "item:divine-bird-warrior-ornis",
+  "kind": "item",
+  "fmgName": "Divine Bird Warrior Ornis +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:divine-bird-warrior-ornis-7",
+  "slug": "item:divine-bird-warrior-ornis",
+  "kind": "item",
+  "fmgName": "Divine Bird Warrior Ornis +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:divine-bird-warrior-ornis-8",
+  "slug": "item:divine-bird-warrior-ornis",
+  "kind": "item",
+  "fmgName": "Divine Bird Warrior Ornis +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:divine-bird-warrior-ornis-9",
+  "slug": "item:divine-bird-warrior-ornis",
+  "kind": "item",
+  "fmgName": "Divine Bird Warrior Ornis +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dolores-the-sleeping-arrow-puppet-1",
+  "slug": "item:dolores-the-sleeping-arrow-puppet",
+  "kind": "item",
+  "fmgName": "Dolores the Sleeping Arrow Puppet +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dolores-the-sleeping-arrow-puppet-10",
+  "slug": "item:dolores-the-sleeping-arrow-puppet",
+  "kind": "item",
+  "fmgName": "Dolores the Sleeping Arrow Puppet +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dolores-the-sleeping-arrow-puppet-2",
+  "slug": "item:dolores-the-sleeping-arrow-puppet",
+  "kind": "item",
+  "fmgName": "Dolores the Sleeping Arrow Puppet +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dolores-the-sleeping-arrow-puppet-3",
+  "slug": "item:dolores-the-sleeping-arrow-puppet",
+  "kind": "item",
+  "fmgName": "Dolores the Sleeping Arrow Puppet +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dolores-the-sleeping-arrow-puppet-4",
+  "slug": "item:dolores-the-sleeping-arrow-puppet",
+  "kind": "item",
+  "fmgName": "Dolores the Sleeping Arrow Puppet +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dolores-the-sleeping-arrow-puppet-5",
+  "slug": "item:dolores-the-sleeping-arrow-puppet",
+  "kind": "item",
+  "fmgName": "Dolores the Sleeping Arrow Puppet +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dolores-the-sleeping-arrow-puppet-6",
+  "slug": "item:dolores-the-sleeping-arrow-puppet",
+  "kind": "item",
+  "fmgName": "Dolores the Sleeping Arrow Puppet +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dolores-the-sleeping-arrow-puppet-7",
+  "slug": "item:dolores-the-sleeping-arrow-puppet",
+  "kind": "item",
+  "fmgName": "Dolores the Sleeping Arrow Puppet +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dolores-the-sleeping-arrow-puppet-8",
+  "slug": "item:dolores-the-sleeping-arrow-puppet",
+  "kind": "item",
+  "fmgName": "Dolores the Sleeping Arrow Puppet +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dolores-the-sleeping-arrow-puppet-9",
+  "slug": "item:dolores-the-sleeping-arrow-puppet",
+  "kind": "item",
+  "fmgName": "Dolores the Sleeping Arrow Puppet +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:dragon-greatclaw",
@@ -47498,6 +49850,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:dung-eater-puppet-1",
+  "slug": "item:dung-eater-puppet",
+  "kind": "item",
+  "fmgName": "Dung Eater Puppet +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dung-eater-puppet-10",
+  "slug": "item:dung-eater-puppet",
+  "kind": "item",
+  "fmgName": "Dung Eater Puppet +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dung-eater-puppet-2",
+  "slug": "item:dung-eater-puppet",
+  "kind": "item",
+  "fmgName": "Dung Eater Puppet +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dung-eater-puppet-3",
+  "slug": "item:dung-eater-puppet",
+  "kind": "item",
+  "fmgName": "Dung Eater Puppet +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dung-eater-puppet-4",
+  "slug": "item:dung-eater-puppet",
+  "kind": "item",
+  "fmgName": "Dung Eater Puppet +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dung-eater-puppet-5",
+  "slug": "item:dung-eater-puppet",
+  "kind": "item",
+  "fmgName": "Dung Eater Puppet +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dung-eater-puppet-6",
+  "slug": "item:dung-eater-puppet",
+  "kind": "item",
+  "fmgName": "Dung Eater Puppet +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dung-eater-puppet-7",
+  "slug": "item:dung-eater-puppet",
+  "kind": "item",
+  "fmgName": "Dung Eater Puppet +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dung-eater-puppet-8",
+  "slug": "item:dung-eater-puppet",
+  "kind": "item",
+  "fmgName": "Dung Eater Puppet +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:dung-eater-puppet-9",
+  "slug": "item:dung-eater-puppet",
+  "kind": "item",
+  "fmgName": "Dung Eater Puppet +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:eclipse-shotel",
   "slug": "item:eclipse-shotel",
   "kind": "item",
@@ -47580,6 +50012,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:fanged-imp-ashes-1",
+  "slug": "item:fanged-imp-ashes",
+  "kind": "item",
+  "fmgName": "Fanged Imp Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fanged-imp-ashes-10",
+  "slug": "item:fanged-imp-ashes",
+  "kind": "item",
+  "fmgName": "Fanged Imp Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fanged-imp-ashes-2",
+  "slug": "item:fanged-imp-ashes",
+  "kind": "item",
+  "fmgName": "Fanged Imp Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fanged-imp-ashes-3",
+  "slug": "item:fanged-imp-ashes",
+  "kind": "item",
+  "fmgName": "Fanged Imp Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fanged-imp-ashes-4",
+  "slug": "item:fanged-imp-ashes",
+  "kind": "item",
+  "fmgName": "Fanged Imp Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fanged-imp-ashes-5",
+  "slug": "item:fanged-imp-ashes",
+  "kind": "item",
+  "fmgName": "Fanged Imp Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fanged-imp-ashes-6",
+  "slug": "item:fanged-imp-ashes",
+  "kind": "item",
+  "fmgName": "Fanged Imp Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fanged-imp-ashes-7",
+  "slug": "item:fanged-imp-ashes",
+  "kind": "item",
+  "fmgName": "Fanged Imp Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fanged-imp-ashes-8",
+  "slug": "item:fanged-imp-ashes",
+  "kind": "item",
+  "fmgName": "Fanged Imp Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fanged-imp-ashes-9",
+  "slug": "item:fanged-imp-ashes",
+  "kind": "item",
+  "fmgName": "Fanged Imp Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:festive-hood-altered",
   "slug": "item:festive-hood-altered",
   "kind": "item",
@@ -47620,6 +50132,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:finger-maiden-therolina-puppet-1",
+  "slug": "item:finger-maiden-therolina-puppet",
+  "kind": "item",
+  "fmgName": "Finger Maiden Therolina Puppet +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:finger-maiden-therolina-puppet-10",
+  "slug": "item:finger-maiden-therolina-puppet",
+  "kind": "item",
+  "fmgName": "Finger Maiden Therolina Puppet +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:finger-maiden-therolina-puppet-2",
+  "slug": "item:finger-maiden-therolina-puppet",
+  "kind": "item",
+  "fmgName": "Finger Maiden Therolina Puppet +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:finger-maiden-therolina-puppet-3",
+  "slug": "item:finger-maiden-therolina-puppet",
+  "kind": "item",
+  "fmgName": "Finger Maiden Therolina Puppet +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:finger-maiden-therolina-puppet-4",
+  "slug": "item:finger-maiden-therolina-puppet",
+  "kind": "item",
+  "fmgName": "Finger Maiden Therolina Puppet +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:finger-maiden-therolina-puppet-5",
+  "slug": "item:finger-maiden-therolina-puppet",
+  "kind": "item",
+  "fmgName": "Finger Maiden Therolina Puppet +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:finger-maiden-therolina-puppet-6",
+  "slug": "item:finger-maiden-therolina-puppet",
+  "kind": "item",
+  "fmgName": "Finger Maiden Therolina Puppet +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:finger-maiden-therolina-puppet-7",
+  "slug": "item:finger-maiden-therolina-puppet",
+  "kind": "item",
+  "fmgName": "Finger Maiden Therolina Puppet +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:finger-maiden-therolina-puppet-8",
+  "slug": "item:finger-maiden-therolina-puppet",
+  "kind": "item",
+  "fmgName": "Finger Maiden Therolina Puppet +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:finger-maiden-therolina-puppet-9",
+  "slug": "item:finger-maiden-therolina-puppet",
+  "kind": "item",
+  "fmgName": "Finger Maiden Therolina Puppet +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:finger-weaver-s-cookbook-1",
   "slug": "item:finger-weaver-s-cookbook-1",
   "kind": "item",
@@ -47640,6 +50232,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:fingercreeper-ashes-1",
+  "slug": "item:fingercreeper-ashes",
+  "kind": "item",
+  "fmgName": "Fingercreeper Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fingercreeper-ashes-10",
+  "slug": "item:fingercreeper-ashes",
+  "kind": "item",
+  "fmgName": "Fingercreeper Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fingercreeper-ashes-2",
+  "slug": "item:fingercreeper-ashes",
+  "kind": "item",
+  "fmgName": "Fingercreeper Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fingercreeper-ashes-3",
+  "slug": "item:fingercreeper-ashes",
+  "kind": "item",
+  "fmgName": "Fingercreeper Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fingercreeper-ashes-4",
+  "slug": "item:fingercreeper-ashes",
+  "kind": "item",
+  "fmgName": "Fingercreeper Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fingercreeper-ashes-5",
+  "slug": "item:fingercreeper-ashes",
+  "kind": "item",
+  "fmgName": "Fingercreeper Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fingercreeper-ashes-6",
+  "slug": "item:fingercreeper-ashes",
+  "kind": "item",
+  "fmgName": "Fingercreeper Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fingercreeper-ashes-7",
+  "slug": "item:fingercreeper-ashes",
+  "kind": "item",
+  "fmgName": "Fingercreeper Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fingercreeper-ashes-8",
+  "slug": "item:fingercreeper-ashes",
+  "kind": "item",
+  "fmgName": "Fingercreeper Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fingercreeper-ashes-9",
+  "slug": "item:fingercreeper-ashes",
+  "kind": "item",
+  "fmgName": "Fingercreeper Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:fire-knight-hilde",
   "slug": "item:fire-knight-hilde",
   "kind": "item",
@@ -47649,6 +50321,166 @@
    "hilde"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:fire-knight-hilde-1",
+  "slug": "item:fire-knight-hilde",
+  "kind": "item",
+  "fmgName": "Fire Knight Hilde +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-hilde-10",
+  "slug": "item:fire-knight-hilde",
+  "kind": "item",
+  "fmgName": "Fire Knight Hilde +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-hilde-2",
+  "slug": "item:fire-knight-hilde",
+  "kind": "item",
+  "fmgName": "Fire Knight Hilde +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-hilde-3",
+  "slug": "item:fire-knight-hilde",
+  "kind": "item",
+  "fmgName": "Fire Knight Hilde +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-hilde-4",
+  "slug": "item:fire-knight-hilde",
+  "kind": "item",
+  "fmgName": "Fire Knight Hilde +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-hilde-5",
+  "slug": "item:fire-knight-hilde",
+  "kind": "item",
+  "fmgName": "Fire Knight Hilde +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-hilde-6",
+  "slug": "item:fire-knight-hilde",
+  "kind": "item",
+  "fmgName": "Fire Knight Hilde +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-hilde-7",
+  "slug": "item:fire-knight-hilde",
+  "kind": "item",
+  "fmgName": "Fire Knight Hilde +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-hilde-8",
+  "slug": "item:fire-knight-hilde",
+  "kind": "item",
+  "fmgName": "Fire Knight Hilde +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-hilde-9",
+  "slug": "item:fire-knight-hilde",
+  "kind": "item",
+  "fmgName": "Fire Knight Hilde +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-queelign-1",
+  "slug": "item:fire-knight-queelign",
+  "kind": "item",
+  "fmgName": "Fire Knight Queelign +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-queelign-10",
+  "slug": "item:fire-knight-queelign",
+  "kind": "item",
+  "fmgName": "Fire Knight Queelign +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-queelign-2",
+  "slug": "item:fire-knight-queelign",
+  "kind": "item",
+  "fmgName": "Fire Knight Queelign +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-queelign-3",
+  "slug": "item:fire-knight-queelign",
+  "kind": "item",
+  "fmgName": "Fire Knight Queelign +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-queelign-4",
+  "slug": "item:fire-knight-queelign",
+  "kind": "item",
+  "fmgName": "Fire Knight Queelign +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-queelign-5",
+  "slug": "item:fire-knight-queelign",
+  "kind": "item",
+  "fmgName": "Fire Knight Queelign +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-queelign-6",
+  "slug": "item:fire-knight-queelign",
+  "kind": "item",
+  "fmgName": "Fire Knight Queelign +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-queelign-7",
+  "slug": "item:fire-knight-queelign",
+  "kind": "item",
+  "fmgName": "Fire Knight Queelign +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-queelign-8",
+  "slug": "item:fire-knight-queelign",
+  "kind": "item",
+  "fmgName": "Fire Knight Queelign +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-knight-queelign-9",
+  "slug": "item:fire-knight-queelign",
+  "kind": "item",
+  "fmgName": "Fire Knight Queelign +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:fire-knight-s-cookbook-1",
@@ -47669,6 +50501,86 @@
    "fire knight cookbook 2"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:fire-monk-ashes-1",
+  "slug": "item:fire-monk-ashes",
+  "kind": "item",
+  "fmgName": "Fire Monk Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-monk-ashes-10",
+  "slug": "item:fire-monk-ashes",
+  "kind": "item",
+  "fmgName": "Fire Monk Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-monk-ashes-2",
+  "slug": "item:fire-monk-ashes",
+  "kind": "item",
+  "fmgName": "Fire Monk Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-monk-ashes-3",
+  "slug": "item:fire-monk-ashes",
+  "kind": "item",
+  "fmgName": "Fire Monk Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-monk-ashes-4",
+  "slug": "item:fire-monk-ashes",
+  "kind": "item",
+  "fmgName": "Fire Monk Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-monk-ashes-5",
+  "slug": "item:fire-monk-ashes",
+  "kind": "item",
+  "fmgName": "Fire Monk Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-monk-ashes-6",
+  "slug": "item:fire-monk-ashes",
+  "kind": "item",
+  "fmgName": "Fire Monk Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-monk-ashes-7",
+  "slug": "item:fire-monk-ashes",
+  "kind": "item",
+  "fmgName": "Fire Monk Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-monk-ashes-8",
+  "slug": "item:fire-monk-ashes",
+  "kind": "item",
+  "fmgName": "Fire Monk Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:fire-monk-ashes-9",
+  "slug": "item:fire-monk-ashes",
+  "kind": "item",
+  "fmgName": "Fire Monk Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:flamberge",
@@ -47702,6 +50614,102 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:flask-of-cerulean-tears-1",
+  "slug": "item:flask-of-cerulean-tears",
+  "kind": "item",
+  "fmgName": "Flask of Cerulean Tears +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-cerulean-tears-10",
+  "slug": "item:flask-of-cerulean-tears",
+  "kind": "item",
+  "fmgName": "Flask of Cerulean Tears +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-cerulean-tears-11",
+  "slug": "item:flask-of-cerulean-tears",
+  "kind": "item",
+  "fmgName": "Flask of Cerulean Tears +11",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-cerulean-tears-12",
+  "slug": "item:flask-of-cerulean-tears",
+  "kind": "item",
+  "fmgName": "Flask of Cerulean Tears +12",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-cerulean-tears-2",
+  "slug": "item:flask-of-cerulean-tears",
+  "kind": "item",
+  "fmgName": "Flask of Cerulean Tears +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-cerulean-tears-3",
+  "slug": "item:flask-of-cerulean-tears",
+  "kind": "item",
+  "fmgName": "Flask of Cerulean Tears +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-cerulean-tears-4",
+  "slug": "item:flask-of-cerulean-tears",
+  "kind": "item",
+  "fmgName": "Flask of Cerulean Tears +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-cerulean-tears-5",
+  "slug": "item:flask-of-cerulean-tears",
+  "kind": "item",
+  "fmgName": "Flask of Cerulean Tears +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-cerulean-tears-6",
+  "slug": "item:flask-of-cerulean-tears",
+  "kind": "item",
+  "fmgName": "Flask of Cerulean Tears +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-cerulean-tears-7",
+  "slug": "item:flask-of-cerulean-tears",
+  "kind": "item",
+  "fmgName": "Flask of Cerulean Tears +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-cerulean-tears-8",
+  "slug": "item:flask-of-cerulean-tears",
+  "kind": "item",
+  "fmgName": "Flask of Cerulean Tears +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-cerulean-tears-9",
+  "slug": "item:flask-of-cerulean-tears",
+  "kind": "item",
+  "fmgName": "Flask of Cerulean Tears +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:flask-of-crimson-tears",
   "slug": "item:flask-of-crimson-tears",
   "kind": "item",
@@ -47712,6 +50720,102 @@
    "red flask"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:flask-of-crimson-tears-1",
+  "slug": "item:flask-of-crimson-tears",
+  "kind": "item",
+  "fmgName": "Flask of Crimson Tears +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-crimson-tears-10",
+  "slug": "item:flask-of-crimson-tears",
+  "kind": "item",
+  "fmgName": "Flask of Crimson Tears +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-crimson-tears-11",
+  "slug": "item:flask-of-crimson-tears",
+  "kind": "item",
+  "fmgName": "Flask of Crimson Tears +11",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-crimson-tears-12",
+  "slug": "item:flask-of-crimson-tears",
+  "kind": "item",
+  "fmgName": "Flask of Crimson Tears +12",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-crimson-tears-2",
+  "slug": "item:flask-of-crimson-tears",
+  "kind": "item",
+  "fmgName": "Flask of Crimson Tears +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-crimson-tears-3",
+  "slug": "item:flask-of-crimson-tears",
+  "kind": "item",
+  "fmgName": "Flask of Crimson Tears +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-crimson-tears-4",
+  "slug": "item:flask-of-crimson-tears",
+  "kind": "item",
+  "fmgName": "Flask of Crimson Tears +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-crimson-tears-5",
+  "slug": "item:flask-of-crimson-tears",
+  "kind": "item",
+  "fmgName": "Flask of Crimson Tears +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-crimson-tears-6",
+  "slug": "item:flask-of-crimson-tears",
+  "kind": "item",
+  "fmgName": "Flask of Crimson Tears +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-crimson-tears-7",
+  "slug": "item:flask-of-crimson-tears",
+  "kind": "item",
+  "fmgName": "Flask of Crimson Tears +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-crimson-tears-8",
+  "slug": "item:flask-of-crimson-tears",
+  "kind": "item",
+  "fmgName": "Flask of Crimson Tears +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:flask-of-crimson-tears-9",
+  "slug": "item:flask-of-crimson-tears",
+  "kind": "item",
+  "fmgName": "Flask of Crimson Tears +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:flask-of-wondrous-physick",
@@ -48013,6 +51117,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:giant-rat-ashes-1",
+  "slug": "item:giant-rat-ashes",
+  "kind": "item",
+  "fmgName": "Giant Rat Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:giant-rat-ashes-10",
+  "slug": "item:giant-rat-ashes",
+  "kind": "item",
+  "fmgName": "Giant Rat Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:giant-rat-ashes-2",
+  "slug": "item:giant-rat-ashes",
+  "kind": "item",
+  "fmgName": "Giant Rat Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:giant-rat-ashes-3",
+  "slug": "item:giant-rat-ashes",
+  "kind": "item",
+  "fmgName": "Giant Rat Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:giant-rat-ashes-4",
+  "slug": "item:giant-rat-ashes",
+  "kind": "item",
+  "fmgName": "Giant Rat Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:giant-rat-ashes-5",
+  "slug": "item:giant-rat-ashes",
+  "kind": "item",
+  "fmgName": "Giant Rat Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:giant-rat-ashes-6",
+  "slug": "item:giant-rat-ashes",
+  "kind": "item",
+  "fmgName": "Giant Rat Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:giant-rat-ashes-7",
+  "slug": "item:giant-rat-ashes",
+  "kind": "item",
+  "fmgName": "Giant Rat Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:giant-rat-ashes-8",
+  "slug": "item:giant-rat-ashes",
+  "kind": "item",
+  "fmgName": "Giant Rat Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:giant-rat-ashes-9",
+  "slug": "item:giant-rat-ashes",
+  "kind": "item",
+  "fmgName": "Giant Rat Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:giant-s-red-braid",
   "slug": "item:giant-s-red-braid",
   "kind": "item",
@@ -48124,6 +51308,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:glintstone-sorcerer-ashes-1",
+  "slug": "item:glintstone-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Glintstone Sorcerer Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:glintstone-sorcerer-ashes-10",
+  "slug": "item:glintstone-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Glintstone Sorcerer Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:glintstone-sorcerer-ashes-2",
+  "slug": "item:glintstone-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Glintstone Sorcerer Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:glintstone-sorcerer-ashes-3",
+  "slug": "item:glintstone-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Glintstone Sorcerer Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:glintstone-sorcerer-ashes-4",
+  "slug": "item:glintstone-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Glintstone Sorcerer Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:glintstone-sorcerer-ashes-5",
+  "slug": "item:glintstone-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Glintstone Sorcerer Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:glintstone-sorcerer-ashes-6",
+  "slug": "item:glintstone-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Glintstone Sorcerer Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:glintstone-sorcerer-ashes-7",
+  "slug": "item:glintstone-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Glintstone Sorcerer Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:glintstone-sorcerer-ashes-8",
+  "slug": "item:glintstone-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Glintstone Sorcerer Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:glintstone-sorcerer-ashes-9",
+  "slug": "item:glintstone-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Glintstone Sorcerer Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:glovewort-picker-s-bell-bearing-1",
   "slug": "item:glovewort-picker-s-bell-bearing-1",
   "kind": "item",
@@ -48132,6 +51396,86 @@
    "glovewort picker"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:godrick-soldier-ashes-1",
+  "slug": "item:godrick-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Godrick Soldier Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:godrick-soldier-ashes-10",
+  "slug": "item:godrick-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Godrick Soldier Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:godrick-soldier-ashes-2",
+  "slug": "item:godrick-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Godrick Soldier Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:godrick-soldier-ashes-3",
+  "slug": "item:godrick-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Godrick Soldier Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:godrick-soldier-ashes-4",
+  "slug": "item:godrick-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Godrick Soldier Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:godrick-soldier-ashes-5",
+  "slug": "item:godrick-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Godrick Soldier Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:godrick-soldier-ashes-6",
+  "slug": "item:godrick-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Godrick Soldier Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:godrick-soldier-ashes-7",
+  "slug": "item:godrick-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Godrick Soldier Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:godrick-soldier-ashes-8",
+  "slug": "item:godrick-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Godrick Soldier Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:godrick-soldier-ashes-9",
+  "slug": "item:godrick-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Godrick Soldier Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:godskin-peeler",
@@ -48271,6 +51615,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:gravebird-ashes-1",
+  "slug": "item:gravebird-ashes",
+  "kind": "item",
+  "fmgName": "Gravebird Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:gravebird-ashes-10",
+  "slug": "item:gravebird-ashes",
+  "kind": "item",
+  "fmgName": "Gravebird Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:gravebird-ashes-2",
+  "slug": "item:gravebird-ashes",
+  "kind": "item",
+  "fmgName": "Gravebird Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:gravebird-ashes-3",
+  "slug": "item:gravebird-ashes",
+  "kind": "item",
+  "fmgName": "Gravebird Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:gravebird-ashes-4",
+  "slug": "item:gravebird-ashes",
+  "kind": "item",
+  "fmgName": "Gravebird Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:gravebird-ashes-5",
+  "slug": "item:gravebird-ashes",
+  "kind": "item",
+  "fmgName": "Gravebird Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:gravebird-ashes-6",
+  "slug": "item:gravebird-ashes",
+  "kind": "item",
+  "fmgName": "Gravebird Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:gravebird-ashes-7",
+  "slug": "item:gravebird-ashes",
+  "kind": "item",
+  "fmgName": "Gravebird Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:gravebird-ashes-8",
+  "slug": "item:gravebird-ashes",
+  "kind": "item",
+  "fmgName": "Gravebird Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:gravebird-ashes-9",
+  "slug": "item:gravebird-ashes",
+  "kind": "item",
+  "fmgName": "Gravebird Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:gravity-stone-peddler-s-bell-bearing",
   "slug": "item:gravity-stone-peddler-s-bell-bearing",
   "kind": "item",
@@ -48331,6 +51755,14 @@
    "omenkiller cleaver"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:great-rune-of-the-unborn",
+  "slug": "item:rennala-great-rune",
+  "kind": "item",
+  "fmgName": "Great Rune of the Unborn",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:great-stars",
@@ -48494,6 +51926,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:greatshield-soldier-ashes-1",
+  "slug": "item:greatshield-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Greatshield Soldier Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:greatshield-soldier-ashes-10",
+  "slug": "item:greatshield-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Greatshield Soldier Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:greatshield-soldier-ashes-2",
+  "slug": "item:greatshield-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Greatshield Soldier Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:greatshield-soldier-ashes-3",
+  "slug": "item:greatshield-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Greatshield Soldier Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:greatshield-soldier-ashes-4",
+  "slug": "item:greatshield-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Greatshield Soldier Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:greatshield-soldier-ashes-5",
+  "slug": "item:greatshield-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Greatshield Soldier Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:greatshield-soldier-ashes-6",
+  "slug": "item:greatshield-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Greatshield Soldier Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:greatshield-soldier-ashes-7",
+  "slug": "item:greatshield-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Greatshield Soldier Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:greatshield-soldier-ashes-8",
+  "slug": "item:greatshield-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Greatshield Soldier Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:greatshield-soldier-ashes-9",
+  "slug": "item:greatshield-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Greatshield Soldier Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:greatsword",
   "slug": "item:greatsword",
   "kind": "item",
@@ -48525,6 +52037,86 @@
    "secret medallion"
   ],
   "source": "authored"
+ },
+ {
+  "engineId": "item:haligtree-soldier-ashes-1",
+  "slug": "item:haligtree-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Haligtree Soldier Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:haligtree-soldier-ashes-10",
+  "slug": "item:haligtree-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Haligtree Soldier Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:haligtree-soldier-ashes-2",
+  "slug": "item:haligtree-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Haligtree Soldier Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:haligtree-soldier-ashes-3",
+  "slug": "item:haligtree-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Haligtree Soldier Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:haligtree-soldier-ashes-4",
+  "slug": "item:haligtree-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Haligtree Soldier Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:haligtree-soldier-ashes-5",
+  "slug": "item:haligtree-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Haligtree Soldier Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:haligtree-soldier-ashes-6",
+  "slug": "item:haligtree-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Haligtree Soldier Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:haligtree-soldier-ashes-7",
+  "slug": "item:haligtree-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Haligtree Soldier Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:haligtree-soldier-ashes-8",
+  "slug": "item:haligtree-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Haligtree Soldier Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:haligtree-soldier-ashes-9",
+  "slug": "item:haligtree-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Haligtree Soldier Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:halo-scythe",
@@ -48635,6 +52227,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:horned-warrior-ashes-1",
+  "slug": "item:horned-warrior-ashes",
+  "kind": "item",
+  "fmgName": "Horned Warrior Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:horned-warrior-ashes-10",
+  "slug": "item:horned-warrior-ashes",
+  "kind": "item",
+  "fmgName": "Horned Warrior Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:horned-warrior-ashes-2",
+  "slug": "item:horned-warrior-ashes",
+  "kind": "item",
+  "fmgName": "Horned Warrior Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:horned-warrior-ashes-3",
+  "slug": "item:horned-warrior-ashes",
+  "kind": "item",
+  "fmgName": "Horned Warrior Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:horned-warrior-ashes-4",
+  "slug": "item:horned-warrior-ashes",
+  "kind": "item",
+  "fmgName": "Horned Warrior Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:horned-warrior-ashes-5",
+  "slug": "item:horned-warrior-ashes",
+  "kind": "item",
+  "fmgName": "Horned Warrior Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:horned-warrior-ashes-6",
+  "slug": "item:horned-warrior-ashes",
+  "kind": "item",
+  "fmgName": "Horned Warrior Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:horned-warrior-ashes-7",
+  "slug": "item:horned-warrior-ashes",
+  "kind": "item",
+  "fmgName": "Horned Warrior Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:horned-warrior-ashes-8",
+  "slug": "item:horned-warrior-ashes",
+  "kind": "item",
+  "fmgName": "Horned Warrior Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:horned-warrior-ashes-9",
+  "slug": "item:horned-warrior-ashes",
+  "kind": "item",
+  "fmgName": "Horned Warrior Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:hoslow-s-oath",
   "slug": "item:hoslow-s-oath",
   "kind": "item",
@@ -48714,6 +52386,86 @@
    "impenetrable thorns sorcery"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:inquisitor-ashes-1",
+  "slug": "item:inquisitor-ashes",
+  "kind": "item",
+  "fmgName": "Inquisitor Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:inquisitor-ashes-10",
+  "slug": "item:inquisitor-ashes",
+  "kind": "item",
+  "fmgName": "Inquisitor Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:inquisitor-ashes-2",
+  "slug": "item:inquisitor-ashes",
+  "kind": "item",
+  "fmgName": "Inquisitor Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:inquisitor-ashes-3",
+  "slug": "item:inquisitor-ashes",
+  "kind": "item",
+  "fmgName": "Inquisitor Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:inquisitor-ashes-4",
+  "slug": "item:inquisitor-ashes",
+  "kind": "item",
+  "fmgName": "Inquisitor Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:inquisitor-ashes-5",
+  "slug": "item:inquisitor-ashes",
+  "kind": "item",
+  "fmgName": "Inquisitor Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:inquisitor-ashes-6",
+  "slug": "item:inquisitor-ashes",
+  "kind": "item",
+  "fmgName": "Inquisitor Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:inquisitor-ashes-7",
+  "slug": "item:inquisitor-ashes",
+  "kind": "item",
+  "fmgName": "Inquisitor Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:inquisitor-ashes-8",
+  "slug": "item:inquisitor-ashes",
+  "kind": "item",
+  "fmgName": "Inquisitor Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:inquisitor-ashes-9",
+  "slug": "item:inquisitor-ashes",
+  "kind": "item",
+  "fmgName": "Inquisitor Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:inquisitor-s-girandole",
@@ -48808,6 +52560,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:jarwight-puppet-1",
+  "slug": "item:jarwight-puppet",
+  "kind": "item",
+  "fmgName": "Jarwight Puppet +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jarwight-puppet-10",
+  "slug": "item:jarwight-puppet",
+  "kind": "item",
+  "fmgName": "Jarwight Puppet +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jarwight-puppet-2",
+  "slug": "item:jarwight-puppet",
+  "kind": "item",
+  "fmgName": "Jarwight Puppet +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jarwight-puppet-3",
+  "slug": "item:jarwight-puppet",
+  "kind": "item",
+  "fmgName": "Jarwight Puppet +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jarwight-puppet-4",
+  "slug": "item:jarwight-puppet",
+  "kind": "item",
+  "fmgName": "Jarwight Puppet +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jarwight-puppet-5",
+  "slug": "item:jarwight-puppet",
+  "kind": "item",
+  "fmgName": "Jarwight Puppet +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jarwight-puppet-6",
+  "slug": "item:jarwight-puppet",
+  "kind": "item",
+  "fmgName": "Jarwight Puppet +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jarwight-puppet-7",
+  "slug": "item:jarwight-puppet",
+  "kind": "item",
+  "fmgName": "Jarwight Puppet +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jarwight-puppet-8",
+  "slug": "item:jarwight-puppet",
+  "kind": "item",
+  "fmgName": "Jarwight Puppet +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jarwight-puppet-9",
+  "slug": "item:jarwight-puppet",
+  "kind": "item",
+  "fmgName": "Jarwight Puppet +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:jawbone-axe",
   "slug": "item:jawbone-axe",
   "kind": "item",
@@ -48829,6 +52661,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:jol-n-and-anna-1",
+  "slug": "item:jol-n-and-anna",
+  "kind": "item",
+  "fmgName": "Jolán and Anna +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jol-n-and-anna-10",
+  "slug": "item:jol-n-and-anna",
+  "kind": "item",
+  "fmgName": "Jolán and Anna +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jol-n-and-anna-2",
+  "slug": "item:jol-n-and-anna",
+  "kind": "item",
+  "fmgName": "Jolán and Anna +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jol-n-and-anna-3",
+  "slug": "item:jol-n-and-anna",
+  "kind": "item",
+  "fmgName": "Jolán and Anna +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jol-n-and-anna-4",
+  "slug": "item:jol-n-and-anna",
+  "kind": "item",
+  "fmgName": "Jolán and Anna +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jol-n-and-anna-5",
+  "slug": "item:jol-n-and-anna",
+  "kind": "item",
+  "fmgName": "Jolán and Anna +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jol-n-and-anna-6",
+  "slug": "item:jol-n-and-anna",
+  "kind": "item",
+  "fmgName": "Jolán and Anna +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jol-n-and-anna-7",
+  "slug": "item:jol-n-and-anna",
+  "kind": "item",
+  "fmgName": "Jolán and Anna +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jol-n-and-anna-8",
+  "slug": "item:jol-n-and-anna",
+  "kind": "item",
+  "fmgName": "Jolán and Anna +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:jol-n-and-anna-9",
+  "slug": "item:jol-n-and-anna",
+  "kind": "item",
+  "fmgName": "Jolán and Anna +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:kaiden-sellsword-ashes",
   "slug": "item:kaiden-sellsword-ashes",
   "kind": "item",
@@ -48837,6 +52749,86 @@
    "northern mercenary ashes"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:kaiden-sellsword-ashes-1",
+  "slug": "item:kaiden-sellsword-ashes",
+  "kind": "item",
+  "fmgName": "Kaiden Sellsword Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kaiden-sellsword-ashes-10",
+  "slug": "item:kaiden-sellsword-ashes",
+  "kind": "item",
+  "fmgName": "Kaiden Sellsword Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kaiden-sellsword-ashes-2",
+  "slug": "item:kaiden-sellsword-ashes",
+  "kind": "item",
+  "fmgName": "Kaiden Sellsword Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kaiden-sellsword-ashes-3",
+  "slug": "item:kaiden-sellsword-ashes",
+  "kind": "item",
+  "fmgName": "Kaiden Sellsword Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kaiden-sellsword-ashes-4",
+  "slug": "item:kaiden-sellsword-ashes",
+  "kind": "item",
+  "fmgName": "Kaiden Sellsword Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kaiden-sellsword-ashes-5",
+  "slug": "item:kaiden-sellsword-ashes",
+  "kind": "item",
+  "fmgName": "Kaiden Sellsword Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kaiden-sellsword-ashes-6",
+  "slug": "item:kaiden-sellsword-ashes",
+  "kind": "item",
+  "fmgName": "Kaiden Sellsword Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kaiden-sellsword-ashes-7",
+  "slug": "item:kaiden-sellsword-ashes",
+  "kind": "item",
+  "fmgName": "Kaiden Sellsword Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kaiden-sellsword-ashes-8",
+  "slug": "item:kaiden-sellsword-ashes",
+  "kind": "item",
+  "fmgName": "Kaiden Sellsword Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kaiden-sellsword-ashes-9",
+  "slug": "item:kaiden-sellsword-ashes",
+  "kind": "item",
+  "fmgName": "Kaiden Sellsword Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:karolos-glintstone-crown",
@@ -48859,6 +52851,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:kindred-of-rot-ashes-1",
+  "slug": "item:kindred-of-rot-ashes",
+  "kind": "item",
+  "fmgName": "Kindred of Rot Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kindred-of-rot-ashes-10",
+  "slug": "item:kindred-of-rot-ashes",
+  "kind": "item",
+  "fmgName": "Kindred of Rot Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kindred-of-rot-ashes-2",
+  "slug": "item:kindred-of-rot-ashes",
+  "kind": "item",
+  "fmgName": "Kindred of Rot Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kindred-of-rot-ashes-3",
+  "slug": "item:kindred-of-rot-ashes",
+  "kind": "item",
+  "fmgName": "Kindred of Rot Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kindred-of-rot-ashes-4",
+  "slug": "item:kindred-of-rot-ashes",
+  "kind": "item",
+  "fmgName": "Kindred of Rot Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kindred-of-rot-ashes-5",
+  "slug": "item:kindred-of-rot-ashes",
+  "kind": "item",
+  "fmgName": "Kindred of Rot Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kindred-of-rot-ashes-6",
+  "slug": "item:kindred-of-rot-ashes",
+  "kind": "item",
+  "fmgName": "Kindred of Rot Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kindred-of-rot-ashes-7",
+  "slug": "item:kindred-of-rot-ashes",
+  "kind": "item",
+  "fmgName": "Kindred of Rot Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kindred-of-rot-ashes-8",
+  "slug": "item:kindred-of-rot-ashes",
+  "kind": "item",
+  "fmgName": "Kindred of Rot Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:kindred-of-rot-ashes-9",
+  "slug": "item:kindred-of-rot-ashes",
+  "kind": "item",
+  "fmgName": "Kindred of Rot Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:knight-s-greatsword",
   "slug": "item:knight-s-greatsword",
   "kind": "item",
@@ -48868,6 +52940,86 @@
    "kgs knight greatsword"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:land-squirt-ashes-1",
+  "slug": "item:land-squirt-ashes",
+  "kind": "item",
+  "fmgName": "Land Squirt Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:land-squirt-ashes-10",
+  "slug": "item:land-squirt-ashes",
+  "kind": "item",
+  "fmgName": "Land Squirt Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:land-squirt-ashes-2",
+  "slug": "item:land-squirt-ashes",
+  "kind": "item",
+  "fmgName": "Land Squirt Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:land-squirt-ashes-3",
+  "slug": "item:land-squirt-ashes",
+  "kind": "item",
+  "fmgName": "Land Squirt Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:land-squirt-ashes-4",
+  "slug": "item:land-squirt-ashes",
+  "kind": "item",
+  "fmgName": "Land Squirt Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:land-squirt-ashes-5",
+  "slug": "item:land-squirt-ashes",
+  "kind": "item",
+  "fmgName": "Land Squirt Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:land-squirt-ashes-6",
+  "slug": "item:land-squirt-ashes",
+  "kind": "item",
+  "fmgName": "Land Squirt Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:land-squirt-ashes-7",
+  "slug": "item:land-squirt-ashes",
+  "kind": "item",
+  "fmgName": "Land Squirt Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:land-squirt-ashes-8",
+  "slug": "item:land-squirt-ashes",
+  "kind": "item",
+  "fmgName": "Land Squirt Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:land-squirt-ashes-9",
+  "slug": "item:land-squirt-ashes",
+  "kind": "item",
+  "fmgName": "Land Squirt Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:large-club",
@@ -48900,6 +53052,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:latenna-the-albinauric-1",
+  "slug": "item:latenna-the-albinauric",
+  "kind": "item",
+  "fmgName": "Latenna the Albinauric +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:latenna-the-albinauric-10",
+  "slug": "item:latenna-the-albinauric",
+  "kind": "item",
+  "fmgName": "Latenna the Albinauric +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:latenna-the-albinauric-2",
+  "slug": "item:latenna-the-albinauric",
+  "kind": "item",
+  "fmgName": "Latenna the Albinauric +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:latenna-the-albinauric-3",
+  "slug": "item:latenna-the-albinauric",
+  "kind": "item",
+  "fmgName": "Latenna the Albinauric +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:latenna-the-albinauric-4",
+  "slug": "item:latenna-the-albinauric",
+  "kind": "item",
+  "fmgName": "Latenna the Albinauric +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:latenna-the-albinauric-5",
+  "slug": "item:latenna-the-albinauric",
+  "kind": "item",
+  "fmgName": "Latenna the Albinauric +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:latenna-the-albinauric-6",
+  "slug": "item:latenna-the-albinauric",
+  "kind": "item",
+  "fmgName": "Latenna the Albinauric +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:latenna-the-albinauric-7",
+  "slug": "item:latenna-the-albinauric",
+  "kind": "item",
+  "fmgName": "Latenna the Albinauric +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:latenna-the-albinauric-8",
+  "slug": "item:latenna-the-albinauric",
+  "kind": "item",
+  "fmgName": "Latenna the Albinauric +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:latenna-the-albinauric-9",
+  "slug": "item:latenna-the-albinauric",
+  "kind": "item",
+  "fmgName": "Latenna the Albinauric +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:lazuli-glintstone-sword",
   "slug": "item:lazuli-glintstone-sword",
   "kind": "item",
@@ -48911,6 +53143,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:leyndell-soldier-ashes-1",
+  "slug": "item:leyndell-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Leyndell Soldier Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:leyndell-soldier-ashes-10",
+  "slug": "item:leyndell-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Leyndell Soldier Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:leyndell-soldier-ashes-2",
+  "slug": "item:leyndell-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Leyndell Soldier Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:leyndell-soldier-ashes-3",
+  "slug": "item:leyndell-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Leyndell Soldier Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:leyndell-soldier-ashes-4",
+  "slug": "item:leyndell-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Leyndell Soldier Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:leyndell-soldier-ashes-5",
+  "slug": "item:leyndell-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Leyndell Soldier Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:leyndell-soldier-ashes-6",
+  "slug": "item:leyndell-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Leyndell Soldier Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:leyndell-soldier-ashes-7",
+  "slug": "item:leyndell-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Leyndell Soldier Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:leyndell-soldier-ashes-8",
+  "slug": "item:leyndell-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Leyndell Soldier Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:leyndell-soldier-ashes-9",
+  "slug": "item:leyndell-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Leyndell Soldier Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:lhutel-the-headless",
   "slug": "item:lhutel-the-headless",
   "kind": "item",
@@ -48919,6 +53231,166 @@
    "lhutel"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:lhutel-the-headless-1",
+  "slug": "item:lhutel-the-headless",
+  "kind": "item",
+  "fmgName": "Lhutel the Headless +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lhutel-the-headless-10",
+  "slug": "item:lhutel-the-headless",
+  "kind": "item",
+  "fmgName": "Lhutel the Headless +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lhutel-the-headless-2",
+  "slug": "item:lhutel-the-headless",
+  "kind": "item",
+  "fmgName": "Lhutel the Headless +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lhutel-the-headless-3",
+  "slug": "item:lhutel-the-headless",
+  "kind": "item",
+  "fmgName": "Lhutel the Headless +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lhutel-the-headless-4",
+  "slug": "item:lhutel-the-headless",
+  "kind": "item",
+  "fmgName": "Lhutel the Headless +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lhutel-the-headless-5",
+  "slug": "item:lhutel-the-headless",
+  "kind": "item",
+  "fmgName": "Lhutel the Headless +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lhutel-the-headless-6",
+  "slug": "item:lhutel-the-headless",
+  "kind": "item",
+  "fmgName": "Lhutel the Headless +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lhutel-the-headless-7",
+  "slug": "item:lhutel-the-headless",
+  "kind": "item",
+  "fmgName": "Lhutel the Headless +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lhutel-the-headless-8",
+  "slug": "item:lhutel-the-headless",
+  "kind": "item",
+  "fmgName": "Lhutel the Headless +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lhutel-the-headless-9",
+  "slug": "item:lhutel-the-headless",
+  "kind": "item",
+  "fmgName": "Lhutel the Headless +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lone-wolf-ashes-1",
+  "slug": "item:lone-wolf-ashes",
+  "kind": "item",
+  "fmgName": "Lone Wolf Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lone-wolf-ashes-10",
+  "slug": "item:lone-wolf-ashes",
+  "kind": "item",
+  "fmgName": "Lone Wolf Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lone-wolf-ashes-2",
+  "slug": "item:lone-wolf-ashes",
+  "kind": "item",
+  "fmgName": "Lone Wolf Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lone-wolf-ashes-3",
+  "slug": "item:lone-wolf-ashes",
+  "kind": "item",
+  "fmgName": "Lone Wolf Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lone-wolf-ashes-4",
+  "slug": "item:lone-wolf-ashes",
+  "kind": "item",
+  "fmgName": "Lone Wolf Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lone-wolf-ashes-5",
+  "slug": "item:lone-wolf-ashes",
+  "kind": "item",
+  "fmgName": "Lone Wolf Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lone-wolf-ashes-6",
+  "slug": "item:lone-wolf-ashes",
+  "kind": "item",
+  "fmgName": "Lone Wolf Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lone-wolf-ashes-7",
+  "slug": "item:lone-wolf-ashes",
+  "kind": "item",
+  "fmgName": "Lone Wolf Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lone-wolf-ashes-8",
+  "slug": "item:lone-wolf-ashes",
+  "kind": "item",
+  "fmgName": "Lone Wolf Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:lone-wolf-ashes-9",
+  "slug": "item:lone-wolf-ashes",
+  "kind": "item",
+  "fmgName": "Lone Wolf Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:longhaft-axe",
@@ -49014,6 +53486,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:mad-pumpkin-head-ashes-1",
+  "slug": "item:mad-pumpkin-head-ashes",
+  "kind": "item",
+  "fmgName": "Mad Pumpkin Head Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mad-pumpkin-head-ashes-10",
+  "slug": "item:mad-pumpkin-head-ashes",
+  "kind": "item",
+  "fmgName": "Mad Pumpkin Head Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mad-pumpkin-head-ashes-2",
+  "slug": "item:mad-pumpkin-head-ashes",
+  "kind": "item",
+  "fmgName": "Mad Pumpkin Head Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mad-pumpkin-head-ashes-3",
+  "slug": "item:mad-pumpkin-head-ashes",
+  "kind": "item",
+  "fmgName": "Mad Pumpkin Head Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mad-pumpkin-head-ashes-4",
+  "slug": "item:mad-pumpkin-head-ashes",
+  "kind": "item",
+  "fmgName": "Mad Pumpkin Head Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mad-pumpkin-head-ashes-5",
+  "slug": "item:mad-pumpkin-head-ashes",
+  "kind": "item",
+  "fmgName": "Mad Pumpkin Head Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mad-pumpkin-head-ashes-6",
+  "slug": "item:mad-pumpkin-head-ashes",
+  "kind": "item",
+  "fmgName": "Mad Pumpkin Head Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mad-pumpkin-head-ashes-7",
+  "slug": "item:mad-pumpkin-head-ashes",
+  "kind": "item",
+  "fmgName": "Mad Pumpkin Head Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mad-pumpkin-head-ashes-8",
+  "slug": "item:mad-pumpkin-head-ashes",
+  "kind": "item",
+  "fmgName": "Mad Pumpkin Head Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mad-pumpkin-head-ashes-9",
+  "slug": "item:mad-pumpkin-head-ashes",
+  "kind": "item",
+  "fmgName": "Mad Pumpkin Head Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:magma-blade",
   "slug": "item:magma-blade",
   "kind": "item",
@@ -49053,6 +53605,166 @@
    "mbb maliketh black blade"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:man-fly-ashes-1",
+  "slug": "item:man-fly-ashes",
+  "kind": "item",
+  "fmgName": "Man-Fly Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-fly-ashes-10",
+  "slug": "item:man-fly-ashes",
+  "kind": "item",
+  "fmgName": "Man-Fly Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-fly-ashes-2",
+  "slug": "item:man-fly-ashes",
+  "kind": "item",
+  "fmgName": "Man-Fly Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-fly-ashes-3",
+  "slug": "item:man-fly-ashes",
+  "kind": "item",
+  "fmgName": "Man-Fly Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-fly-ashes-4",
+  "slug": "item:man-fly-ashes",
+  "kind": "item",
+  "fmgName": "Man-Fly Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-fly-ashes-5",
+  "slug": "item:man-fly-ashes",
+  "kind": "item",
+  "fmgName": "Man-Fly Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-fly-ashes-6",
+  "slug": "item:man-fly-ashes",
+  "kind": "item",
+  "fmgName": "Man-Fly Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-fly-ashes-7",
+  "slug": "item:man-fly-ashes",
+  "kind": "item",
+  "fmgName": "Man-Fly Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-fly-ashes-8",
+  "slug": "item:man-fly-ashes",
+  "kind": "item",
+  "fmgName": "Man-Fly Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-fly-ashes-9",
+  "slug": "item:man-fly-ashes",
+  "kind": "item",
+  "fmgName": "Man-Fly Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-serpent-ashes-1",
+  "slug": "item:man-serpent-ashes",
+  "kind": "item",
+  "fmgName": "Man-Serpent Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-serpent-ashes-10",
+  "slug": "item:man-serpent-ashes",
+  "kind": "item",
+  "fmgName": "Man-Serpent Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-serpent-ashes-2",
+  "slug": "item:man-serpent-ashes",
+  "kind": "item",
+  "fmgName": "Man-Serpent Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-serpent-ashes-3",
+  "slug": "item:man-serpent-ashes",
+  "kind": "item",
+  "fmgName": "Man-Serpent Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-serpent-ashes-4",
+  "slug": "item:man-serpent-ashes",
+  "kind": "item",
+  "fmgName": "Man-Serpent Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-serpent-ashes-5",
+  "slug": "item:man-serpent-ashes",
+  "kind": "item",
+  "fmgName": "Man-Serpent Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-serpent-ashes-6",
+  "slug": "item:man-serpent-ashes",
+  "kind": "item",
+  "fmgName": "Man-Serpent Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-serpent-ashes-7",
+  "slug": "item:man-serpent-ashes",
+  "kind": "item",
+  "fmgName": "Man-Serpent Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-serpent-ashes-8",
+  "slug": "item:man-serpent-ashes",
+  "kind": "item",
+  "fmgName": "Man-Serpent Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:man-serpent-ashes-9",
+  "slug": "item:man-serpent-ashes",
+  "kind": "item",
+  "fmgName": "Man-Serpent Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:mantis-blade",
@@ -49316,6 +54028,166 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:marionette-soldier-ashes-1",
+  "slug": "item:marionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Marionette Soldier Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:marionette-soldier-ashes-10",
+  "slug": "item:marionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Marionette Soldier Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:marionette-soldier-ashes-2",
+  "slug": "item:marionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Marionette Soldier Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:marionette-soldier-ashes-3",
+  "slug": "item:marionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Marionette Soldier Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:marionette-soldier-ashes-4",
+  "slug": "item:marionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Marionette Soldier Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:marionette-soldier-ashes-5",
+  "slug": "item:marionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Marionette Soldier Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:marionette-soldier-ashes-6",
+  "slug": "item:marionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Marionette Soldier Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:marionette-soldier-ashes-7",
+  "slug": "item:marionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Marionette Soldier Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:marionette-soldier-ashes-8",
+  "slug": "item:marionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Marionette Soldier Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:marionette-soldier-ashes-9",
+  "slug": "item:marionette-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Marionette Soldier Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mausoleum-soldier-ashes-1",
+  "slug": "item:mausoleum-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Mausoleum Soldier Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mausoleum-soldier-ashes-10",
+  "slug": "item:mausoleum-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Mausoleum Soldier Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mausoleum-soldier-ashes-2",
+  "slug": "item:mausoleum-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Mausoleum Soldier Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mausoleum-soldier-ashes-3",
+  "slug": "item:mausoleum-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Mausoleum Soldier Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mausoleum-soldier-ashes-4",
+  "slug": "item:mausoleum-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Mausoleum Soldier Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mausoleum-soldier-ashes-5",
+  "slug": "item:mausoleum-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Mausoleum Soldier Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mausoleum-soldier-ashes-6",
+  "slug": "item:mausoleum-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Mausoleum Soldier Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mausoleum-soldier-ashes-7",
+  "slug": "item:mausoleum-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Mausoleum Soldier Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mausoleum-soldier-ashes-8",
+  "slug": "item:mausoleum-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Mausoleum Soldier Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mausoleum-soldier-ashes-9",
+  "slug": "item:mausoleum-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Mausoleum Soldier Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:meat-peddler-s-bell-bearing",
   "slug": "item:meat-peddler-s-bell-bearing",
   "kind": "item",
@@ -49346,6 +54218,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:messmer-soldier-ashes-1",
+  "slug": "item:messmer-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Messmer Soldier Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:messmer-soldier-ashes-10",
+  "slug": "item:messmer-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Messmer Soldier Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:messmer-soldier-ashes-2",
+  "slug": "item:messmer-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Messmer Soldier Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:messmer-soldier-ashes-3",
+  "slug": "item:messmer-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Messmer Soldier Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:messmer-soldier-ashes-4",
+  "slug": "item:messmer-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Messmer Soldier Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:messmer-soldier-ashes-5",
+  "slug": "item:messmer-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Messmer Soldier Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:messmer-soldier-ashes-6",
+  "slug": "item:messmer-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Messmer Soldier Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:messmer-soldier-ashes-7",
+  "slug": "item:messmer-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Messmer Soldier Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:messmer-soldier-ashes-8",
+  "slug": "item:messmer-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Messmer Soldier Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:messmer-soldier-ashes-9",
+  "slug": "item:messmer-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Messmer Soldier Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:meteoric-ore-blade",
   "slug": "item:meteoric-ore-blade",
   "kind": "item",
@@ -49354,6 +54306,86 @@
    "mob meteoric ore blade"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:mimic-tear-ashes-1",
+  "slug": "item:mimic-tear-ashes",
+  "kind": "item",
+  "fmgName": "Mimic Tear Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mimic-tear-ashes-10",
+  "slug": "item:mimic-tear-ashes",
+  "kind": "item",
+  "fmgName": "Mimic Tear Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mimic-tear-ashes-2",
+  "slug": "item:mimic-tear-ashes",
+  "kind": "item",
+  "fmgName": "Mimic Tear Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mimic-tear-ashes-3",
+  "slug": "item:mimic-tear-ashes",
+  "kind": "item",
+  "fmgName": "Mimic Tear Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mimic-tear-ashes-4",
+  "slug": "item:mimic-tear-ashes",
+  "kind": "item",
+  "fmgName": "Mimic Tear Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mimic-tear-ashes-5",
+  "slug": "item:mimic-tear-ashes",
+  "kind": "item",
+  "fmgName": "Mimic Tear Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mimic-tear-ashes-6",
+  "slug": "item:mimic-tear-ashes",
+  "kind": "item",
+  "fmgName": "Mimic Tear Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mimic-tear-ashes-7",
+  "slug": "item:mimic-tear-ashes",
+  "kind": "item",
+  "fmgName": "Mimic Tear Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mimic-tear-ashes-8",
+  "slug": "item:mimic-tear-ashes",
+  "kind": "item",
+  "fmgName": "Mimic Tear Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:mimic-tear-ashes-9",
+  "slug": "item:mimic-tear-ashes",
+  "kind": "item",
+  "fmgName": "Mimic Tear Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:minor-erdtree-spell",
@@ -49376,6 +54408,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:miranda-sprout-ashes-1",
+  "slug": "item:miranda-sprout-ashes",
+  "kind": "item",
+  "fmgName": "Miranda Sprout Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:miranda-sprout-ashes-10",
+  "slug": "item:miranda-sprout-ashes",
+  "kind": "item",
+  "fmgName": "Miranda Sprout Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:miranda-sprout-ashes-2",
+  "slug": "item:miranda-sprout-ashes",
+  "kind": "item",
+  "fmgName": "Miranda Sprout Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:miranda-sprout-ashes-3",
+  "slug": "item:miranda-sprout-ashes",
+  "kind": "item",
+  "fmgName": "Miranda Sprout Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:miranda-sprout-ashes-4",
+  "slug": "item:miranda-sprout-ashes",
+  "kind": "item",
+  "fmgName": "Miranda Sprout Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:miranda-sprout-ashes-5",
+  "slug": "item:miranda-sprout-ashes",
+  "kind": "item",
+  "fmgName": "Miranda Sprout Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:miranda-sprout-ashes-6",
+  "slug": "item:miranda-sprout-ashes",
+  "kind": "item",
+  "fmgName": "Miranda Sprout Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:miranda-sprout-ashes-7",
+  "slug": "item:miranda-sprout-ashes",
+  "kind": "item",
+  "fmgName": "Miranda Sprout Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:miranda-sprout-ashes-8",
+  "slug": "item:miranda-sprout-ashes",
+  "kind": "item",
+  "fmgName": "Miranda Sprout Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:miranda-sprout-ashes-9",
+  "slug": "item:miranda-sprout-ashes",
+  "kind": "item",
+  "fmgName": "Miranda Sprout Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:mis-ricorde",
   "slug": "item:mis-ricorde",
   "kind": "item",
@@ -49384,6 +54496,14 @@
    "misericorde"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:misericorde",
+  "slug": "item:mis-ricorde",
+  "kind": "item",
+  "fmgName": "Misericorde",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:missionary-s-cookbook-1",
@@ -49547,6 +54667,166 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:nepheli-loux-puppet-1",
+  "slug": "item:nepheli-loux-puppet",
+  "kind": "item",
+  "fmgName": "Nepheli Loux Puppet +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nepheli-loux-puppet-10",
+  "slug": "item:nepheli-loux-puppet",
+  "kind": "item",
+  "fmgName": "Nepheli Loux Puppet +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nepheli-loux-puppet-2",
+  "slug": "item:nepheli-loux-puppet",
+  "kind": "item",
+  "fmgName": "Nepheli Loux Puppet +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nepheli-loux-puppet-3",
+  "slug": "item:nepheli-loux-puppet",
+  "kind": "item",
+  "fmgName": "Nepheli Loux Puppet +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nepheli-loux-puppet-4",
+  "slug": "item:nepheli-loux-puppet",
+  "kind": "item",
+  "fmgName": "Nepheli Loux Puppet +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nepheli-loux-puppet-5",
+  "slug": "item:nepheli-loux-puppet",
+  "kind": "item",
+  "fmgName": "Nepheli Loux Puppet +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nepheli-loux-puppet-6",
+  "slug": "item:nepheli-loux-puppet",
+  "kind": "item",
+  "fmgName": "Nepheli Loux Puppet +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nepheli-loux-puppet-7",
+  "slug": "item:nepheli-loux-puppet",
+  "kind": "item",
+  "fmgName": "Nepheli Loux Puppet +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nepheli-loux-puppet-8",
+  "slug": "item:nepheli-loux-puppet",
+  "kind": "item",
+  "fmgName": "Nepheli Loux Puppet +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nepheli-loux-puppet-9",
+  "slug": "item:nepheli-loux-puppet",
+  "kind": "item",
+  "fmgName": "Nepheli Loux Puppet +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nightmaiden-swordstress-puppets-1",
+  "slug": "item:nightmaiden-swordstress-puppets",
+  "kind": "item",
+  "fmgName": "Nightmaiden & Swordstress Puppets +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nightmaiden-swordstress-puppets-10",
+  "slug": "item:nightmaiden-swordstress-puppets",
+  "kind": "item",
+  "fmgName": "Nightmaiden & Swordstress Puppets +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nightmaiden-swordstress-puppets-2",
+  "slug": "item:nightmaiden-swordstress-puppets",
+  "kind": "item",
+  "fmgName": "Nightmaiden & Swordstress Puppets +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nightmaiden-swordstress-puppets-3",
+  "slug": "item:nightmaiden-swordstress-puppets",
+  "kind": "item",
+  "fmgName": "Nightmaiden & Swordstress Puppets +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nightmaiden-swordstress-puppets-4",
+  "slug": "item:nightmaiden-swordstress-puppets",
+  "kind": "item",
+  "fmgName": "Nightmaiden & Swordstress Puppets +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nightmaiden-swordstress-puppets-5",
+  "slug": "item:nightmaiden-swordstress-puppets",
+  "kind": "item",
+  "fmgName": "Nightmaiden & Swordstress Puppets +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nightmaiden-swordstress-puppets-6",
+  "slug": "item:nightmaiden-swordstress-puppets",
+  "kind": "item",
+  "fmgName": "Nightmaiden & Swordstress Puppets +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nightmaiden-swordstress-puppets-7",
+  "slug": "item:nightmaiden-swordstress-puppets",
+  "kind": "item",
+  "fmgName": "Nightmaiden & Swordstress Puppets +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nightmaiden-swordstress-puppets-8",
+  "slug": "item:nightmaiden-swordstress-puppets",
+  "kind": "item",
+  "fmgName": "Nightmaiden & Swordstress Puppets +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nightmaiden-swordstress-puppets-9",
+  "slug": "item:nightmaiden-swordstress-puppets",
+  "kind": "item",
+  "fmgName": "Nightmaiden & Swordstress Puppets +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:nightrider-flail",
   "slug": "item:nightrider-flail",
   "kind": "item",
@@ -49586,6 +54866,166 @@
    "nss noble slender sword"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:noble-sorcerer-ashes-1",
+  "slug": "item:noble-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Noble Sorcerer Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:noble-sorcerer-ashes-10",
+  "slug": "item:noble-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Noble Sorcerer Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:noble-sorcerer-ashes-2",
+  "slug": "item:noble-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Noble Sorcerer Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:noble-sorcerer-ashes-3",
+  "slug": "item:noble-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Noble Sorcerer Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:noble-sorcerer-ashes-4",
+  "slug": "item:noble-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Noble Sorcerer Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:noble-sorcerer-ashes-5",
+  "slug": "item:noble-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Noble Sorcerer Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:noble-sorcerer-ashes-6",
+  "slug": "item:noble-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Noble Sorcerer Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:noble-sorcerer-ashes-7",
+  "slug": "item:noble-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Noble Sorcerer Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:noble-sorcerer-ashes-8",
+  "slug": "item:noble-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Noble Sorcerer Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:noble-sorcerer-ashes-9",
+  "slug": "item:noble-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Noble Sorcerer Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nomad-ashes-1",
+  "slug": "item:nomad-ashes",
+  "kind": "item",
+  "fmgName": "Nomad Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nomad-ashes-10",
+  "slug": "item:nomad-ashes",
+  "kind": "item",
+  "fmgName": "Nomad Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nomad-ashes-2",
+  "slug": "item:nomad-ashes",
+  "kind": "item",
+  "fmgName": "Nomad Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nomad-ashes-3",
+  "slug": "item:nomad-ashes",
+  "kind": "item",
+  "fmgName": "Nomad Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nomad-ashes-4",
+  "slug": "item:nomad-ashes",
+  "kind": "item",
+  "fmgName": "Nomad Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nomad-ashes-5",
+  "slug": "item:nomad-ashes",
+  "kind": "item",
+  "fmgName": "Nomad Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nomad-ashes-6",
+  "slug": "item:nomad-ashes",
+  "kind": "item",
+  "fmgName": "Nomad Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nomad-ashes-7",
+  "slug": "item:nomad-ashes",
+  "kind": "item",
+  "fmgName": "Nomad Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nomad-ashes-8",
+  "slug": "item:nomad-ashes",
+  "kind": "item",
+  "fmgName": "Nomad Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:nomad-ashes-9",
+  "slug": "item:nomad-ashes",
+  "kind": "item",
+  "fmgName": "Nomad Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:nomadic-warrior-s-cookbook-1",
@@ -50090,6 +55530,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:omenkiller-rollo-1",
+  "slug": "item:omenkiller-rollo",
+  "kind": "item",
+  "fmgName": "Omenkiller Rollo +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:omenkiller-rollo-10",
+  "slug": "item:omenkiller-rollo",
+  "kind": "item",
+  "fmgName": "Omenkiller Rollo +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:omenkiller-rollo-2",
+  "slug": "item:omenkiller-rollo",
+  "kind": "item",
+  "fmgName": "Omenkiller Rollo +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:omenkiller-rollo-3",
+  "slug": "item:omenkiller-rollo",
+  "kind": "item",
+  "fmgName": "Omenkiller Rollo +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:omenkiller-rollo-4",
+  "slug": "item:omenkiller-rollo",
+  "kind": "item",
+  "fmgName": "Omenkiller Rollo +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:omenkiller-rollo-5",
+  "slug": "item:omenkiller-rollo",
+  "kind": "item",
+  "fmgName": "Omenkiller Rollo +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:omenkiller-rollo-6",
+  "slug": "item:omenkiller-rollo",
+  "kind": "item",
+  "fmgName": "Omenkiller Rollo +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:omenkiller-rollo-7",
+  "slug": "item:omenkiller-rollo",
+  "kind": "item",
+  "fmgName": "Omenkiller Rollo +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:omenkiller-rollo-8",
+  "slug": "item:omenkiller-rollo",
+  "kind": "item",
+  "fmgName": "Omenkiller Rollo +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:omenkiller-rollo-9",
+  "slug": "item:omenkiller-rollo",
+  "kind": "item",
+  "fmgName": "Omenkiller Rollo +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:onyx-lord-s-greatsword",
   "slug": "item:onyx-lord-s-greatsword",
   "kind": "item",
@@ -50108,6 +55628,86 @@
    "magic bubble"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:oracle-envoy-ashes-1",
+  "slug": "item:oracle-envoy-ashes",
+  "kind": "item",
+  "fmgName": "Oracle Envoy Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:oracle-envoy-ashes-10",
+  "slug": "item:oracle-envoy-ashes",
+  "kind": "item",
+  "fmgName": "Oracle Envoy Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:oracle-envoy-ashes-2",
+  "slug": "item:oracle-envoy-ashes",
+  "kind": "item",
+  "fmgName": "Oracle Envoy Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:oracle-envoy-ashes-3",
+  "slug": "item:oracle-envoy-ashes",
+  "kind": "item",
+  "fmgName": "Oracle Envoy Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:oracle-envoy-ashes-4",
+  "slug": "item:oracle-envoy-ashes",
+  "kind": "item",
+  "fmgName": "Oracle Envoy Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:oracle-envoy-ashes-5",
+  "slug": "item:oracle-envoy-ashes",
+  "kind": "item",
+  "fmgName": "Oracle Envoy Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:oracle-envoy-ashes-6",
+  "slug": "item:oracle-envoy-ashes",
+  "kind": "item",
+  "fmgName": "Oracle Envoy Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:oracle-envoy-ashes-7",
+  "slug": "item:oracle-envoy-ashes",
+  "kind": "item",
+  "fmgName": "Oracle Envoy Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:oracle-envoy-ashes-8",
+  "slug": "item:oracle-envoy-ashes",
+  "kind": "item",
+  "fmgName": "Oracle Envoy Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:oracle-envoy-ashes-9",
+  "slug": "item:oracle-envoy-ashes",
+  "kind": "item",
+  "fmgName": "Oracle Envoy Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:ordovis-s-greatsword",
@@ -50130,6 +55730,86 @@
    "oss ornamental straight sword"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:page-ashes-1",
+  "slug": "item:page-ashes",
+  "kind": "item",
+  "fmgName": "Page Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:page-ashes-10",
+  "slug": "item:page-ashes",
+  "kind": "item",
+  "fmgName": "Page Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:page-ashes-2",
+  "slug": "item:page-ashes",
+  "kind": "item",
+  "fmgName": "Page Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:page-ashes-3",
+  "slug": "item:page-ashes",
+  "kind": "item",
+  "fmgName": "Page Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:page-ashes-4",
+  "slug": "item:page-ashes",
+  "kind": "item",
+  "fmgName": "Page Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:page-ashes-5",
+  "slug": "item:page-ashes",
+  "kind": "item",
+  "fmgName": "Page Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:page-ashes-6",
+  "slug": "item:page-ashes",
+  "kind": "item",
+  "fmgName": "Page Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:page-ashes-7",
+  "slug": "item:page-ashes",
+  "kind": "item",
+  "fmgName": "Page Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:page-ashes-8",
+  "slug": "item:page-ashes",
+  "kind": "item",
+  "fmgName": "Page Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:page-ashes-9",
+  "slug": "item:page-ashes",
+  "kind": "item",
+  "fmgName": "Page Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:parrying-dagger",
@@ -50162,6 +55842,14 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:perfumer-s-cookbook-2",
+  "slug": "item:perfumer-s-cookbook-13",
+  "kind": "item",
+  "fmgName": "Perfumer's Cookbook [2]",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:perfumer-s-cookbook-3",
   "slug": "item:perfumer-s-cookbook-3",
   "kind": "item",
@@ -50180,6 +55868,86 @@
    "perfumer cookbook 4"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:perfumer-tricia-1",
+  "slug": "item:perfumer-tricia",
+  "kind": "item",
+  "fmgName": "Perfumer Tricia +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:perfumer-tricia-10",
+  "slug": "item:perfumer-tricia",
+  "kind": "item",
+  "fmgName": "Perfumer Tricia +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:perfumer-tricia-2",
+  "slug": "item:perfumer-tricia",
+  "kind": "item",
+  "fmgName": "Perfumer Tricia +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:perfumer-tricia-3",
+  "slug": "item:perfumer-tricia",
+  "kind": "item",
+  "fmgName": "Perfumer Tricia +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:perfumer-tricia-4",
+  "slug": "item:perfumer-tricia",
+  "kind": "item",
+  "fmgName": "Perfumer Tricia +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:perfumer-tricia-5",
+  "slug": "item:perfumer-tricia",
+  "kind": "item",
+  "fmgName": "Perfumer Tricia +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:perfumer-tricia-6",
+  "slug": "item:perfumer-tricia",
+  "kind": "item",
+  "fmgName": "Perfumer Tricia +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:perfumer-tricia-7",
+  "slug": "item:perfumer-tricia",
+  "kind": "item",
+  "fmgName": "Perfumer Tricia +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:perfumer-tricia-8",
+  "slug": "item:perfumer-tricia",
+  "kind": "item",
+  "fmgName": "Perfumer Tricia +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:perfumer-tricia-9",
+  "slug": "item:perfumer-tricia",
+  "kind": "item",
+  "fmgName": "Perfumer Tricia +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:pest-s-glaive",
@@ -50302,6 +56070,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:putrid-corpse-ashes-1",
+  "slug": "item:putrid-corpse-ashes",
+  "kind": "item",
+  "fmgName": "Putrid Corpse Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:putrid-corpse-ashes-10",
+  "slug": "item:putrid-corpse-ashes",
+  "kind": "item",
+  "fmgName": "Putrid Corpse Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:putrid-corpse-ashes-2",
+  "slug": "item:putrid-corpse-ashes",
+  "kind": "item",
+  "fmgName": "Putrid Corpse Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:putrid-corpse-ashes-3",
+  "slug": "item:putrid-corpse-ashes",
+  "kind": "item",
+  "fmgName": "Putrid Corpse Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:putrid-corpse-ashes-4",
+  "slug": "item:putrid-corpse-ashes",
+  "kind": "item",
+  "fmgName": "Putrid Corpse Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:putrid-corpse-ashes-5",
+  "slug": "item:putrid-corpse-ashes",
+  "kind": "item",
+  "fmgName": "Putrid Corpse Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:putrid-corpse-ashes-6",
+  "slug": "item:putrid-corpse-ashes",
+  "kind": "item",
+  "fmgName": "Putrid Corpse Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:putrid-corpse-ashes-7",
+  "slug": "item:putrid-corpse-ashes",
+  "kind": "item",
+  "fmgName": "Putrid Corpse Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:putrid-corpse-ashes-8",
+  "slug": "item:putrid-corpse-ashes",
+  "kind": "item",
+  "fmgName": "Putrid Corpse Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:putrid-corpse-ashes-9",
+  "slug": "item:putrid-corpse-ashes",
+  "kind": "item",
+  "fmgName": "Putrid Corpse Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:radagon-s-scarseal",
   "slug": "item:radagon-s-scarseal",
   "kind": "item",
@@ -50310,6 +56158,86 @@
    "radagon rune"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:radahn-soldier-ashes-1",
+  "slug": "item:radahn-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Radahn Soldier Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:radahn-soldier-ashes-10",
+  "slug": "item:radahn-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Radahn Soldier Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:radahn-soldier-ashes-2",
+  "slug": "item:radahn-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Radahn Soldier Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:radahn-soldier-ashes-3",
+  "slug": "item:radahn-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Radahn Soldier Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:radahn-soldier-ashes-4",
+  "slug": "item:radahn-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Radahn Soldier Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:radahn-soldier-ashes-5",
+  "slug": "item:radahn-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Radahn Soldier Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:radahn-soldier-ashes-6",
+  "slug": "item:radahn-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Radahn Soldier Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:radahn-soldier-ashes-7",
+  "slug": "item:radahn-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Radahn Soldier Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:radahn-soldier-ashes-8",
+  "slug": "item:radahn-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Radahn Soldier Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:radahn-soldier-ashes-9",
+  "slug": "item:radahn-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Radahn Soldier Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:radiant-gold-mask",
@@ -50372,6 +56300,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:raya-lucaria-soldier-ashes-1",
+  "slug": "item:raya-lucaria-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Raya Lucaria Soldier Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:raya-lucaria-soldier-ashes-10",
+  "slug": "item:raya-lucaria-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Raya Lucaria Soldier Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:raya-lucaria-soldier-ashes-2",
+  "slug": "item:raya-lucaria-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Raya Lucaria Soldier Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:raya-lucaria-soldier-ashes-3",
+  "slug": "item:raya-lucaria-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Raya Lucaria Soldier Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:raya-lucaria-soldier-ashes-4",
+  "slug": "item:raya-lucaria-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Raya Lucaria Soldier Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:raya-lucaria-soldier-ashes-5",
+  "slug": "item:raya-lucaria-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Raya Lucaria Soldier Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:raya-lucaria-soldier-ashes-6",
+  "slug": "item:raya-lucaria-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Raya Lucaria Soldier Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:raya-lucaria-soldier-ashes-7",
+  "slug": "item:raya-lucaria-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Raya Lucaria Soldier Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:raya-lucaria-soldier-ashes-8",
+  "slug": "item:raya-lucaria-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Raya Lucaria Soldier Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:raya-lucaria-soldier-ashes-9",
+  "slug": "item:raya-lucaria-soldier-ashes",
+  "kind": "item",
+  "fmgName": "Raya Lucaria Soldier Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:redmane-knight-ogha",
   "slug": "item:redmane-knight-ogha",
   "kind": "item",
@@ -50380,6 +56388,86 @@
    "ogha"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:redmane-knight-ogha-1",
+  "slug": "item:redmane-knight-ogha",
+  "kind": "item",
+  "fmgName": "Redmane Knight Ogha +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:redmane-knight-ogha-10",
+  "slug": "item:redmane-knight-ogha",
+  "kind": "item",
+  "fmgName": "Redmane Knight Ogha +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:redmane-knight-ogha-2",
+  "slug": "item:redmane-knight-ogha",
+  "kind": "item",
+  "fmgName": "Redmane Knight Ogha +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:redmane-knight-ogha-3",
+  "slug": "item:redmane-knight-ogha",
+  "kind": "item",
+  "fmgName": "Redmane Knight Ogha +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:redmane-knight-ogha-4",
+  "slug": "item:redmane-knight-ogha",
+  "kind": "item",
+  "fmgName": "Redmane Knight Ogha +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:redmane-knight-ogha-5",
+  "slug": "item:redmane-knight-ogha",
+  "kind": "item",
+  "fmgName": "Redmane Knight Ogha +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:redmane-knight-ogha-6",
+  "slug": "item:redmane-knight-ogha",
+  "kind": "item",
+  "fmgName": "Redmane Knight Ogha +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:redmane-knight-ogha-7",
+  "slug": "item:redmane-knight-ogha",
+  "kind": "item",
+  "fmgName": "Redmane Knight Ogha +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:redmane-knight-ogha-8",
+  "slug": "item:redmane-knight-ogha",
+  "kind": "item",
+  "fmgName": "Redmane Knight Ogha +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:redmane-knight-ogha-9",
+  "slug": "item:redmane-knight-ogha",
+  "kind": "item",
+  "fmgName": "Redmane Knight Ogha +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:regalia-of-eochaid",
@@ -50526,6 +56614,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:rotten-stray-ashes-1",
+  "slug": "item:rotten-stray-ashes",
+  "kind": "item",
+  "fmgName": "Rotten Stray Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:rotten-stray-ashes-10",
+  "slug": "item:rotten-stray-ashes",
+  "kind": "item",
+  "fmgName": "Rotten Stray Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:rotten-stray-ashes-2",
+  "slug": "item:rotten-stray-ashes",
+  "kind": "item",
+  "fmgName": "Rotten Stray Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:rotten-stray-ashes-3",
+  "slug": "item:rotten-stray-ashes",
+  "kind": "item",
+  "fmgName": "Rotten Stray Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:rotten-stray-ashes-4",
+  "slug": "item:rotten-stray-ashes",
+  "kind": "item",
+  "fmgName": "Rotten Stray Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:rotten-stray-ashes-5",
+  "slug": "item:rotten-stray-ashes",
+  "kind": "item",
+  "fmgName": "Rotten Stray Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:rotten-stray-ashes-6",
+  "slug": "item:rotten-stray-ashes",
+  "kind": "item",
+  "fmgName": "Rotten Stray Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:rotten-stray-ashes-7",
+  "slug": "item:rotten-stray-ashes",
+  "kind": "item",
+  "fmgName": "Rotten Stray Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:rotten-stray-ashes-8",
+  "slug": "item:rotten-stray-ashes",
+  "kind": "item",
+  "fmgName": "Rotten Stray Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:rotten-stray-ashes-9",
+  "slug": "item:rotten-stray-ashes",
+  "kind": "item",
+  "fmgName": "Rotten Stray Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:royal-greatsword",
   "slug": "item:royal-greatsword",
   "kind": "item",
@@ -50609,6 +56777,14 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:sellen-s-primal-glintstone",
+  "slug": "item:primal-glintstone",
+  "kind": "item",
+  "fmgName": "Sellen's Primal Glintstone",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:serpent-god-s-curved-sword",
   "slug": "item:serpent-god-s-curved-sword",
   "kind": "item",
@@ -50669,6 +56845,166 @@
    "ss short sword"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:skeletal-bandit-ashes-1",
+  "slug": "item:skeletal-bandit-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Bandit Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-bandit-ashes-10",
+  "slug": "item:skeletal-bandit-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Bandit Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-bandit-ashes-2",
+  "slug": "item:skeletal-bandit-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Bandit Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-bandit-ashes-3",
+  "slug": "item:skeletal-bandit-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Bandit Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-bandit-ashes-4",
+  "slug": "item:skeletal-bandit-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Bandit Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-bandit-ashes-5",
+  "slug": "item:skeletal-bandit-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Bandit Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-bandit-ashes-6",
+  "slug": "item:skeletal-bandit-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Bandit Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-bandit-ashes-7",
+  "slug": "item:skeletal-bandit-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Bandit Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-bandit-ashes-8",
+  "slug": "item:skeletal-bandit-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Bandit Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-bandit-ashes-9",
+  "slug": "item:skeletal-bandit-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Bandit Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-militiaman-ashes-1",
+  "slug": "item:skeletal-militiaman-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Militiaman Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-militiaman-ashes-10",
+  "slug": "item:skeletal-militiaman-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Militiaman Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-militiaman-ashes-2",
+  "slug": "item:skeletal-militiaman-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Militiaman Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-militiaman-ashes-3",
+  "slug": "item:skeletal-militiaman-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Militiaman Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-militiaman-ashes-4",
+  "slug": "item:skeletal-militiaman-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Militiaman Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-militiaman-ashes-5",
+  "slug": "item:skeletal-militiaman-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Militiaman Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-militiaman-ashes-6",
+  "slug": "item:skeletal-militiaman-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Militiaman Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-militiaman-ashes-7",
+  "slug": "item:skeletal-militiaman-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Militiaman Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-militiaman-ashes-8",
+  "slug": "item:skeletal-militiaman-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Militiaman Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:skeletal-militiaman-ashes-9",
+  "slug": "item:skeletal-militiaman-ashes",
+  "kind": "item",
+  "fmgName": "Skeletal Militiaman Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:skill-barbaric-roar",
@@ -50735,6 +57071,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:soldjars-of-fortune-ashes-1",
+  "slug": "item:soldjars-of-fortune-ashes",
+  "kind": "item",
+  "fmgName": "Soldjars of Fortune Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:soldjars-of-fortune-ashes-10",
+  "slug": "item:soldjars-of-fortune-ashes",
+  "kind": "item",
+  "fmgName": "Soldjars of Fortune Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:soldjars-of-fortune-ashes-2",
+  "slug": "item:soldjars-of-fortune-ashes",
+  "kind": "item",
+  "fmgName": "Soldjars of Fortune Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:soldjars-of-fortune-ashes-3",
+  "slug": "item:soldjars-of-fortune-ashes",
+  "kind": "item",
+  "fmgName": "Soldjars of Fortune Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:soldjars-of-fortune-ashes-4",
+  "slug": "item:soldjars-of-fortune-ashes",
+  "kind": "item",
+  "fmgName": "Soldjars of Fortune Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:soldjars-of-fortune-ashes-5",
+  "slug": "item:soldjars-of-fortune-ashes",
+  "kind": "item",
+  "fmgName": "Soldjars of Fortune Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:soldjars-of-fortune-ashes-6",
+  "slug": "item:soldjars-of-fortune-ashes",
+  "kind": "item",
+  "fmgName": "Soldjars of Fortune Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:soldjars-of-fortune-ashes-7",
+  "slug": "item:soldjars-of-fortune-ashes",
+  "kind": "item",
+  "fmgName": "Soldjars of Fortune Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:soldjars-of-fortune-ashes-8",
+  "slug": "item:soldjars-of-fortune-ashes",
+  "kind": "item",
+  "fmgName": "Soldjars of Fortune Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:soldjars-of-fortune-ashes-9",
+  "slug": "item:soldjars-of-fortune-ashes",
+  "kind": "item",
+  "fmgName": "Soldjars of Fortune Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:somberstone-miner-s-bell-bearing",
   "slug": "item:somberstone-miner-s-bell-bearing",
   "kind": "item",
@@ -50743,6 +57159,86 @@
    "somberstone miner"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:spider-scorpion-ashes-1",
+  "slug": "item:spider-scorpion-ashes",
+  "kind": "item",
+  "fmgName": "Spider Scorpion Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spider-scorpion-ashes-10",
+  "slug": "item:spider-scorpion-ashes",
+  "kind": "item",
+  "fmgName": "Spider Scorpion Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spider-scorpion-ashes-2",
+  "slug": "item:spider-scorpion-ashes",
+  "kind": "item",
+  "fmgName": "Spider Scorpion Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spider-scorpion-ashes-3",
+  "slug": "item:spider-scorpion-ashes",
+  "kind": "item",
+  "fmgName": "Spider Scorpion Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spider-scorpion-ashes-4",
+  "slug": "item:spider-scorpion-ashes",
+  "kind": "item",
+  "fmgName": "Spider Scorpion Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spider-scorpion-ashes-5",
+  "slug": "item:spider-scorpion-ashes",
+  "kind": "item",
+  "fmgName": "Spider Scorpion Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spider-scorpion-ashes-6",
+  "slug": "item:spider-scorpion-ashes",
+  "kind": "item",
+  "fmgName": "Spider Scorpion Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spider-scorpion-ashes-7",
+  "slug": "item:spider-scorpion-ashes",
+  "kind": "item",
+  "fmgName": "Spider Scorpion Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spider-scorpion-ashes-8",
+  "slug": "item:spider-scorpion-ashes",
+  "kind": "item",
+  "fmgName": "Spider Scorpion Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spider-scorpion-ashes-9",
+  "slug": "item:spider-scorpion-ashes",
+  "kind": "item",
+  "fmgName": "Spider Scorpion Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:spiked-caestus",
@@ -50773,6 +57269,86 @@
    "ss spiked spear"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:spirit-jellyfish-ashes-1",
+  "slug": "item:spirit-jellyfish-ashes",
+  "kind": "item",
+  "fmgName": "Spirit Jellyfish Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spirit-jellyfish-ashes-10",
+  "slug": "item:spirit-jellyfish-ashes",
+  "kind": "item",
+  "fmgName": "Spirit Jellyfish Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spirit-jellyfish-ashes-2",
+  "slug": "item:spirit-jellyfish-ashes",
+  "kind": "item",
+  "fmgName": "Spirit Jellyfish Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spirit-jellyfish-ashes-3",
+  "slug": "item:spirit-jellyfish-ashes",
+  "kind": "item",
+  "fmgName": "Spirit Jellyfish Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spirit-jellyfish-ashes-4",
+  "slug": "item:spirit-jellyfish-ashes",
+  "kind": "item",
+  "fmgName": "Spirit Jellyfish Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spirit-jellyfish-ashes-5",
+  "slug": "item:spirit-jellyfish-ashes",
+  "kind": "item",
+  "fmgName": "Spirit Jellyfish Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spirit-jellyfish-ashes-6",
+  "slug": "item:spirit-jellyfish-ashes",
+  "kind": "item",
+  "fmgName": "Spirit Jellyfish Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spirit-jellyfish-ashes-7",
+  "slug": "item:spirit-jellyfish-ashes",
+  "kind": "item",
+  "fmgName": "Spirit Jellyfish Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spirit-jellyfish-ashes-8",
+  "slug": "item:spirit-jellyfish-ashes",
+  "kind": "item",
+  "fmgName": "Spirit Jellyfish Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:spirit-jellyfish-ashes-9",
+  "slug": "item:spirit-jellyfish-ashes",
+  "kind": "item",
+  "fmgName": "Spirit Jellyfish Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:spiritgrave-stone",
@@ -50928,6 +57504,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:stormhawk-deenh-1",
+  "slug": "item:stormhawk-deenh",
+  "kind": "item",
+  "fmgName": "Stormhawk Deenh +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:stormhawk-deenh-10",
+  "slug": "item:stormhawk-deenh",
+  "kind": "item",
+  "fmgName": "Stormhawk Deenh +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:stormhawk-deenh-2",
+  "slug": "item:stormhawk-deenh",
+  "kind": "item",
+  "fmgName": "Stormhawk Deenh +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:stormhawk-deenh-3",
+  "slug": "item:stormhawk-deenh",
+  "kind": "item",
+  "fmgName": "Stormhawk Deenh +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:stormhawk-deenh-4",
+  "slug": "item:stormhawk-deenh",
+  "kind": "item",
+  "fmgName": "Stormhawk Deenh +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:stormhawk-deenh-5",
+  "slug": "item:stormhawk-deenh",
+  "kind": "item",
+  "fmgName": "Stormhawk Deenh +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:stormhawk-deenh-6",
+  "slug": "item:stormhawk-deenh",
+  "kind": "item",
+  "fmgName": "Stormhawk Deenh +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:stormhawk-deenh-7",
+  "slug": "item:stormhawk-deenh",
+  "kind": "item",
+  "fmgName": "Stormhawk Deenh +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:stormhawk-deenh-8",
+  "slug": "item:stormhawk-deenh",
+  "kind": "item",
+  "fmgName": "Stormhawk Deenh +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:stormhawk-deenh-9",
+  "slug": "item:stormhawk-deenh",
+  "kind": "item",
+  "fmgName": "Stormhawk Deenh +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:string-seller-s-bell-bearing",
   "slug": "item:string-seller-s-bell-bearing",
   "kind": "item",
@@ -50960,6 +57616,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:swordhand-of-night-jol-n-1",
+  "slug": "item:swordhand-of-night-jol-n",
+  "kind": "item",
+  "fmgName": "Swordhand of Night Jolán +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:swordhand-of-night-jol-n-10",
+  "slug": "item:swordhand-of-night-jol-n",
+  "kind": "item",
+  "fmgName": "Swordhand of Night Jolán +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:swordhand-of-night-jol-n-2",
+  "slug": "item:swordhand-of-night-jol-n",
+  "kind": "item",
+  "fmgName": "Swordhand of Night Jolán +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:swordhand-of-night-jol-n-3",
+  "slug": "item:swordhand-of-night-jol-n",
+  "kind": "item",
+  "fmgName": "Swordhand of Night Jolán +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:swordhand-of-night-jol-n-4",
+  "slug": "item:swordhand-of-night-jol-n",
+  "kind": "item",
+  "fmgName": "Swordhand of Night Jolán +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:swordhand-of-night-jol-n-5",
+  "slug": "item:swordhand-of-night-jol-n",
+  "kind": "item",
+  "fmgName": "Swordhand of Night Jolán +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:swordhand-of-night-jol-n-6",
+  "slug": "item:swordhand-of-night-jol-n",
+  "kind": "item",
+  "fmgName": "Swordhand of Night Jolán +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:swordhand-of-night-jol-n-7",
+  "slug": "item:swordhand-of-night-jol-n",
+  "kind": "item",
+  "fmgName": "Swordhand of Night Jolán +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:swordhand-of-night-jol-n-8",
+  "slug": "item:swordhand-of-night-jol-n",
+  "kind": "item",
+  "fmgName": "Swordhand of Night Jolán +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:swordhand-of-night-jol-n-9",
+  "slug": "item:swordhand-of-night-jol-n",
+  "kind": "item",
+  "fmgName": "Swordhand of Night Jolán +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:tarnished-golden-sunflower",
   "slug": "item:tarnished-golden-sunflower",
   "kind": "item",
@@ -50978,6 +57714,86 @@
    "taylew"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:taylew-the-golem-smith-1",
+  "slug": "item:taylew-the-golem-smith",
+  "kind": "item",
+  "fmgName": "Taylew the Golem Smith +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:taylew-the-golem-smith-10",
+  "slug": "item:taylew-the-golem-smith",
+  "kind": "item",
+  "fmgName": "Taylew the Golem Smith +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:taylew-the-golem-smith-2",
+  "slug": "item:taylew-the-golem-smith",
+  "kind": "item",
+  "fmgName": "Taylew the Golem Smith +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:taylew-the-golem-smith-3",
+  "slug": "item:taylew-the-golem-smith",
+  "kind": "item",
+  "fmgName": "Taylew the Golem Smith +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:taylew-the-golem-smith-4",
+  "slug": "item:taylew-the-golem-smith",
+  "kind": "item",
+  "fmgName": "Taylew the Golem Smith +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:taylew-the-golem-smith-5",
+  "slug": "item:taylew-the-golem-smith",
+  "kind": "item",
+  "fmgName": "Taylew the Golem Smith +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:taylew-the-golem-smith-6",
+  "slug": "item:taylew-the-golem-smith",
+  "kind": "item",
+  "fmgName": "Taylew the Golem Smith +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:taylew-the-golem-smith-7",
+  "slug": "item:taylew-the-golem-smith",
+  "kind": "item",
+  "fmgName": "Taylew the Golem Smith +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:taylew-the-golem-smith-8",
+  "slug": "item:taylew-the-golem-smith",
+  "kind": "item",
+  "fmgName": "Taylew the Golem Smith +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:taylew-the-golem-smith-9",
+  "slug": "item:taylew-the-golem-smith",
+  "kind": "item",
+  "fmgName": "Taylew the Golem Smith +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:terra-magica",
@@ -51090,6 +57906,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:twinsage-sorcerer-ashes-1",
+  "slug": "item:twinsage-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Twinsage Sorcerer Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:twinsage-sorcerer-ashes-10",
+  "slug": "item:twinsage-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Twinsage Sorcerer Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:twinsage-sorcerer-ashes-2",
+  "slug": "item:twinsage-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Twinsage Sorcerer Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:twinsage-sorcerer-ashes-3",
+  "slug": "item:twinsage-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Twinsage Sorcerer Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:twinsage-sorcerer-ashes-4",
+  "slug": "item:twinsage-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Twinsage Sorcerer Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:twinsage-sorcerer-ashes-5",
+  "slug": "item:twinsage-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Twinsage Sorcerer Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:twinsage-sorcerer-ashes-6",
+  "slug": "item:twinsage-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Twinsage Sorcerer Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:twinsage-sorcerer-ashes-7",
+  "slug": "item:twinsage-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Twinsage Sorcerer Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:twinsage-sorcerer-ashes-8",
+  "slug": "item:twinsage-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Twinsage Sorcerer Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:twinsage-sorcerer-ashes-9",
+  "slug": "item:twinsage-sorcerer-ashes",
+  "kind": "item",
+  "fmgName": "Twinsage Sorcerer Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:urumi",
   "slug": "item:urumi",
   "kind": "item",
@@ -51133,6 +58029,86 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:vulgar-militia-ashes-1",
+  "slug": "item:vulgar-militia-ashes",
+  "kind": "item",
+  "fmgName": "Vulgar Militia Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:vulgar-militia-ashes-10",
+  "slug": "item:vulgar-militia-ashes",
+  "kind": "item",
+  "fmgName": "Vulgar Militia Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:vulgar-militia-ashes-2",
+  "slug": "item:vulgar-militia-ashes",
+  "kind": "item",
+  "fmgName": "Vulgar Militia Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:vulgar-militia-ashes-3",
+  "slug": "item:vulgar-militia-ashes",
+  "kind": "item",
+  "fmgName": "Vulgar Militia Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:vulgar-militia-ashes-4",
+  "slug": "item:vulgar-militia-ashes",
+  "kind": "item",
+  "fmgName": "Vulgar Militia Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:vulgar-militia-ashes-5",
+  "slug": "item:vulgar-militia-ashes",
+  "kind": "item",
+  "fmgName": "Vulgar Militia Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:vulgar-militia-ashes-6",
+  "slug": "item:vulgar-militia-ashes",
+  "kind": "item",
+  "fmgName": "Vulgar Militia Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:vulgar-militia-ashes-7",
+  "slug": "item:vulgar-militia-ashes",
+  "kind": "item",
+  "fmgName": "Vulgar Militia Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:vulgar-militia-ashes-8",
+  "slug": "item:vulgar-militia-ashes",
+  "kind": "item",
+  "fmgName": "Vulgar Militia Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:vulgar-militia-ashes-9",
+  "slug": "item:vulgar-militia-ashes",
+  "kind": "item",
+  "fmgName": "Vulgar Militia Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:vulgar-militia-saw",
   "slug": "item:vulgar-militia-saw",
   "kind": "item",
@@ -51163,6 +58139,166 @@
    "vyke spear"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:wandering-noble-ashes-1",
+  "slug": "item:wandering-noble-ashes",
+  "kind": "item",
+  "fmgName": "Wandering Noble Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:wandering-noble-ashes-10",
+  "slug": "item:wandering-noble-ashes",
+  "kind": "item",
+  "fmgName": "Wandering Noble Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:wandering-noble-ashes-2",
+  "slug": "item:wandering-noble-ashes",
+  "kind": "item",
+  "fmgName": "Wandering Noble Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:wandering-noble-ashes-3",
+  "slug": "item:wandering-noble-ashes",
+  "kind": "item",
+  "fmgName": "Wandering Noble Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:wandering-noble-ashes-4",
+  "slug": "item:wandering-noble-ashes",
+  "kind": "item",
+  "fmgName": "Wandering Noble Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:wandering-noble-ashes-5",
+  "slug": "item:wandering-noble-ashes",
+  "kind": "item",
+  "fmgName": "Wandering Noble Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:wandering-noble-ashes-6",
+  "slug": "item:wandering-noble-ashes",
+  "kind": "item",
+  "fmgName": "Wandering Noble Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:wandering-noble-ashes-7",
+  "slug": "item:wandering-noble-ashes",
+  "kind": "item",
+  "fmgName": "Wandering Noble Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:wandering-noble-ashes-8",
+  "slug": "item:wandering-noble-ashes",
+  "kind": "item",
+  "fmgName": "Wandering Noble Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:wandering-noble-ashes-9",
+  "slug": "item:wandering-noble-ashes",
+  "kind": "item",
+  "fmgName": "Wandering Noble Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:warhawk-ashes-1",
+  "slug": "item:warhawk-ashes",
+  "kind": "item",
+  "fmgName": "Warhawk Ashes +1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:warhawk-ashes-10",
+  "slug": "item:warhawk-ashes",
+  "kind": "item",
+  "fmgName": "Warhawk Ashes +10",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:warhawk-ashes-2",
+  "slug": "item:warhawk-ashes",
+  "kind": "item",
+  "fmgName": "Warhawk Ashes +2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:warhawk-ashes-3",
+  "slug": "item:warhawk-ashes",
+  "kind": "item",
+  "fmgName": "Warhawk Ashes +3",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:warhawk-ashes-4",
+  "slug": "item:warhawk-ashes",
+  "kind": "item",
+  "fmgName": "Warhawk Ashes +4",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:warhawk-ashes-5",
+  "slug": "item:warhawk-ashes",
+  "kind": "item",
+  "fmgName": "Warhawk Ashes +5",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:warhawk-ashes-6",
+  "slug": "item:warhawk-ashes",
+  "kind": "item",
+  "fmgName": "Warhawk Ashes +6",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:warhawk-ashes-7",
+  "slug": "item:warhawk-ashes",
+  "kind": "item",
+  "fmgName": "Warhawk Ashes +7",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:warhawk-ashes-8",
+  "slug": "item:warhawk-ashes",
+  "kind": "item",
+  "fmgName": "Warhawk Ashes +8",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "item:warhawk-ashes-9",
+  "slug": "item:warhawk-ashes",
+  "kind": "item",
+  "fmgName": "Warhawk Ashes +9",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:warhawk-s-talon",
@@ -51869,6 +59005,14 @@
    "dolores the sleeping arrow"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "npc:edgar",
+  "slug": "npc:castellan-edgar",
+  "kind": "npc",
+  "fmgName": "Edgar",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "npc:fell-god",
@@ -53998,6 +61142,22 @@
    "thiollier met at the three path cross"
   ],
   "source": "authored"
+ },
+ {
+  "engineId": "quest:volcano-manor-apparition-step-1",
+  "slug": "quest:tanith-volcano-manor-proprietress-step-1",
+  "kind": "quest",
+  "fmgName": "Volcano Manor — step 1",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "quest:volcano-manor-apparition-step-3",
+  "slug": "quest:tanith-volcano-manor-proprietress-step-3",
+  "kind": "quest",
+  "fmgName": "Volcano Manor — step 3",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "quest:ymir:concluded",
