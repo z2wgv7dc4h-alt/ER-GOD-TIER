@@ -74,7 +74,7 @@ All under `public/sourced/` unless noted.
 
 ## Guide (aether-auto/er-guide)
 
-- `guide/items.json` 2.4k items with acquisition
+- `guide/items.json` 2,490 items with acquisition
 - `guide/catalog.json` slim search copy
 - `guide/regions/` 25 grace-to-grace routes
 - `guide/legs.json` 124 legs
@@ -150,14 +150,14 @@ See `docs/REVIEW.md`.
   synchronously imported one (`canonicalFactId` / `searchSync`). Regenerate with
   `node scripts/gen-aliases.mjs` from the game-derived dumps above; see `docs/ALIAS-PLANE.md`.
   Committed because it is name/id-only derived data, not shipped game art.
-- **Task 55 completeness pass:** the generator also reads `checklists/hunts.json` (kind `hunt`) and
+- **Task 55 completeness pass:** the generator also reads `src/data/hunts.json` (kind `hunt`) and
   maps every `BonfireWarpParam` row to an authored **catalog** grace when no `graces.ts` seed exists
   (`grace:120208` → `grace:night-sacred-ground`). Strict parenthetical-preserving matching makes
   `goods:8175/8176` resolve to `item:haligtree-medallion-left/-right`.
 - **Task 73 warp stubs:** every remaining warp gets a name-derived `grace:{slug}` alias row
   (`source: 'grace-stub'`) — no catalog fact, no pin, no implications — and an authored id still
-  wins on a collision. Output is now **1273 rows / ~274 KB**; **unmatched warps 360 → 0**, bosses
-  79/215. Engine-backed by catalog prefix: grace 25/25, boss 87/88, item 89/91, invader 22/24. Run
+  wins on a collision. Output is now **7120 rows / ~1.3 MB**; **unmatched warps 0/418**, bosses
+  2/209. Engine-backed by catalog prefix: grace 25/25, boss 173/175, item 93/94, invader 22/24. Run
   twice = byte-identical (the `docs/ALIAS-PLANE.md` table is the live snapshot).
   `searchSync("church of elleh")` / `("elleh")` both hit `grace:elleh`; 10k lot ids are not put in
   `searchSync`.

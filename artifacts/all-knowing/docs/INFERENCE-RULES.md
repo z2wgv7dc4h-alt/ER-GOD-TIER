@@ -662,4 +662,4 @@ _None._
 | `capture:crafting:cookbook` | `craftable item visible on the Item Crafting page` | `<cookbook that unlocks it>` | certain | 0.85 | `inferCookbooks` maps a read recipe to the cookbook(s) that taught it (`ps5Crafting.ts`). | — |
 | `capture:map:region` | `painted map fragment / discovered underground grace` | `<the region reached>` | certain | 0.9 | Task 138: `mapfrag:* -> region` and underground `grace -> region` chains in `inferChains.ts`. | — |
 
-_Regenerated 2026-09-29._
+_Regenerated 2026-10-03._

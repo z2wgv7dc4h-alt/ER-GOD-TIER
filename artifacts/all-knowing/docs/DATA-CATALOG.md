@@ -6,11 +6,10 @@ Consumer detection greps the quoted literals, fetch URLs and path fragments load
 
 ## Summary
 
-- **391** data files catalogued, **63.6 MB** (plus **2356** images in 17 groups, **24.0 MB**).
+- **393** data files catalogued, **66.1 MB** (plus **2356** images in 17 groups, **24.0 MB**).
 - **77** flagged **UNUSED** (no `src/`/`scripts/` consumer).
 - **41** marked **REDUNDANT** (superseded by a source the app loads).
-- **SQLite wiki DB** `data/raw/er-mcp.db` — **46.9 MB**, 21 tables/views, 4939 pages. Gitignored; see `data/raw/README.md`.
-- Entity index snapshot (2026-09-29T10:36:42.742Z): dungeon 119 · grace 416 · boss 280 · quest 468 · ending 5 · merchant 106 · region 311 · material 3 · mechanic 65 · build 28 · npc 195 · gate 10 · shield 69 · weapon 441 · talisman 158 · spell 217 · ash 124 · spirit 79 · item 1187 · armor 750 · enemy 1276.
+- Entity index snapshot (2026-10-03T18:11:54.657Z): dungeon 119 · grace 416 · boss 280 · quest 468 · ending 5 · merchant 106 · region 355 · material 3 · mechanic 65 · build 28 · npc 195 · gate 10 · shield 69 · weapon 441 · talisman 158 · spell 218 · ash 124 · spirit 80 · item 1187 · armor 751 · enemy 607.
 
 ## Unused sources (quick list)
 
@@ -140,134 +139,7 @@ Consumer detection greps the quoted literals, fetch URLs and path fragments load
 
 ## SQLite wiki database — `data/raw/er-mcp.db`
 
-A versioned Fandom-wiki snapshot (source `teoucsb82/elden-ring-mcp`, release `data-2026.09.21`). Tables below are the typed views; `scripts/export-mcp-db.py` currently mines only pages/sections/acquisition/quests. **Task 131 §3** extends `scripts/build-entity-index.mjs` to mine the rest.
-
-Last sync: **2026-09-21T12:45:28.446Z**, source `fandom`, 4939 pages.
-
-### Tables
-
-| table | rows | columns | notes / consumers |
-| --- | --- | --- | --- |
-| `acquisition` | 2609 | page_id, method, location_text, nearest_grace, prereqs, missable | Item → how obtained (method, location, nearest grace, prereqs, missable). `scripts/export-mcp-db.py` → open/acquisition.json → src/lib/acquisition.ts |
-| `armor` | 680 | page_id, name, slot, weight, poise, effects | Parsed armor infobox rows (slot, weight, poise, effects). **Unused.** |
-| `bosses` | 165 | page_id, name, location, hp, runes, drops | Parsed boss rows (location, HP, runes, drops). **Unused.** |
-| `dlc_categories` | 127 | title | Category titles flagged as Shadow of the Erdtree. |
-| `dlc_report` | 7 | signal, hits, at | DLC signal counts from the scrape. |
-| `entities` | 1694 | page_id, type, name | Typed pages (weapon/armor/spell/boss/talisman). **Unused** — no src/script reads it. |
-| `extract_failures` | 0 | — | Extraction error log (currently empty). |
-| `pages` | 4939 | id, source, title, url, revid, fetched_at, license, patch, wikitext, dlc | One row per Fandom wiki page (title, url, revid, wikitext, DLC flags). `scripts/export-mcp-db.py` → open/wiki-sections.json → open/acquisition.json → open/npc-quests.json → open/recipes.json → open/secrets.json |
-| `quests` | 341 | page_id, npc, step_ord, location, action, breaks_quest | NPC quest steps (order, location, action, breaks quest). `scripts/export-mcp-db.py` → open/npc-quests.json → src/lib/npcQuests.ts |
-| `redirects` | 2730 | source, from_title, to_title, fragment | Wiki redirect titles → target title + fragment. **Unused** — Task 131 §3 mines these as aliases. |
-| `sections` | 21885 | id, page_id, ord, heading, markdown | Ordered wikitext sections; the prose half of every page. `scripts/export-mcp-db.py` → open/wiki-sections.json → open/recipes.json → open/secrets.json |
-| `sections_fts` | 21885 | title, heading, markdown | FTS5 full-text index over sections (title, heading, markdown). `(tooling / human search only)` |
-| `sections_fts_config` | 1 | k, v | FTS5 shadow table (auto-maintained). |
-| `sections_fts_content` | 21885 | id, c0, c1, c2 | FTS5 shadow table (auto-maintained). |
-| `sections_fts_data` | 3121 | id, block | FTS5 shadow table (auto-maintained). |
-| `sections_fts_docsize` | 21885 | id, sz | FTS5 shadow table (auto-maintained). |
-| `sections_fts_idx` | 2397 | segid, term, pgno | FTS5 shadow table (auto-maintained). |
-| `spells` | 213 | page_id, name, spell_type, sub_type, fp_cost, stamina_cost, slots_used, int_req, fai_req, arc_req | Parsed sorcery/incantation rows (FP/stamina, slots, requirements, effect). **Unused.** |
-| `sync_state` | 1 | source, last_run, pages | Last sync timestamp + page count per source. |
-| `talismans` | 156 | page_id, name, weight, effect, summary | Parsed talisman rows (weight, effect, summary). **Unused.** |
-| `weapons` | 480 | page_id, name, weapon_type, weight, str_req, dex_req, int_req, fai_req, arc_req, str_scale | Parsed weapon infobox rows (type, weight, requirements, scaling, skill). **Unused.** |
-
-### DLC signals
-
-| signal | hits |
-| --- | --- |
-| `override` | 7 |
-| `hub_page` | 31 |
-| `sote_template` | 661 |
-| `sote_link` | 69 |
-| `title_suffix` | 22 |
-| `category` | 123 |
-| `index_link` | 508 |
-
-### Infobox types in `pages.wikitext`
-
-Counts of `{{Infobox <Type>}}` across all 4,939 pages (a page can carry one infobox). This is the per-kind page census Task 131 §3 classifies against.
-
-| infobox type | pages |
-| --- | --- |
-| `{{Infobox Item}}` | 1789 |
-| `{{Infobox Armor}}` | 680 |
-| `{{Infobox Location}}` | 496 |
-| `{{Infobox Weapon}}` | 480 |
-| `{{Infobox Enemy}}` | 346 |
-| `{{Infobox Boss}}` | 259 |
-| `{{Infobox Character}}` | 198 |
-| `{{Infobox Item ERN}}` | 119 |
-| `{{Infobox Lore}}` | 106 |
-| `{{Infobox Faction}}` | 60 |
-| `{{Infobox Dungeon}}` | 46 |
-| `{{Infobox empty}}` | 42 |
-| `{{Infobox Trophy}}` | 42 |
-| `{{Infobox Object}}` | 36 |
-| `{{Infobox Patch Notes}}` | 30 |
-| `{{Infobox Weapon Cut}}` | 18 |
-| `{{Infobox School}}` | 18 |
-| `{{Infobox Class}}` | 17 |
-| `{{Infobox Game}}` | 16 |
-| `{{Infobox Evergaol}}` | 10 |
-| `{{Infobox Hero}}` | 10 |
-| `{{Infobox Subregion}}` | 9 |
-| `{{Infobox legacy dungeon}}` | 6 |
-| `{{Infobox Region}}` | 5 |
-| `{{Infobox book}}` | 5 |
-| `{{Infobox Weapon ERN}}` | 5 |
-| `{{Infobox Glitch}}` | 5 |
-| `{{Infobox Mechanic}}` | 4 |
-| `{{Infobox Boss ERN}}` | 4 |
-| `{{Infobox Company}}` | 2 |
-| `{{Infobox Real Person}}` | 2 |
-| `{{Infobox Effect}}` | 1 |
-| `{{Infobox PlayerRole}}` | 1 |
-| `{{Infobox legacy_dungeon}}` | 1 |
-| `{{Infobox Character--}}` | 1 |
-
-### Top categories in `pages.wikitext`
-
-| category | pages |
-| --- | --- |
-| Characters | 268 |
-| Locations | 256 |
-| Key Items | 217 |
-| Enemies | 195 |
-| Skill | 190 |
-| NPC | 145 |
-| Bosses | 144 |
-| Info Items | 107 |
-| Armor Sets | 106 |
-| Lore | 104 |
-| Factions | 95 |
-| Unique Skill | 92 |
-| Unused Content | 89 |
-| Tools | 86 |
-| Concepts | 81 |
-| Nightreign Bosses | 71 |
-| Cookbooks | 69 |
-| Flora | 67 |
-| Relics | 67 |
-| Shadow of the Erdtree Locations | 63 |
-| Elden Ring dialogue | 59 |
-| Harvestables | 54 |
-| Weapons | 52 |
-| Gestures | 49 |
-| Bell Bearings | 47 |
-| Unseen Characters | 45 |
-| Achievements/Trophies | 43 |
-| Subregions | 43 |
-| Tarnished | 42 |
-| Merchants | 41 |
-| Objects | 41 |
-| Ashes of War | 37 |
-| Chalices | 37 |
-| Sites of Grace | 35 |
-| Crystal Tears | 35 |
-| Arrows | 34 |
-| Nightreign Characters | 34 |
-| Gameplay | 33 |
-| Melee Armaments | 33 |
-| Cooperators | 32 |
+_DB not present. Copy it to `data/raw/er-mcp.db` (gitignored) — see `data/raw/README.md`._
 
 ## `public/sourced/**`
 
@@ -297,62 +169,62 @@ Counts of `{{Infobox <Type>}}` across all 4,939 pages (a page can carry one info
 
 | path | size | records | shape / fields | entity kinds | consumed by |
 | --- | --- | --- | --- | --- | --- |
-| `public/sourced/.gitkeep` | 96 B | — | binary | — | **REDUNDANT** → directory placeholder, not data |
-| `public/sourced/aliases.json` | 264.1 KB | 1233 | array[1233] · engineId, slug, kind, fmgName, aliases, source | by `kind`: boss, grace, hunt, invader, item, quest, region | `scripts/gen-aliases.mjs`<br>`src/lib/aliases.gen.test.ts`<br>`src/lib/pwa.test.ts`<br>`src/lib/pwa.ts`<br>`src/settings/dataFreshness.test.ts`<br>`src/settings/dataFreshness.ts` |
+| `public/sourced/.gitkeep` | 97 B | — | binary | — | **REDUNDANT** → directory placeholder, not data |
+| `public/sourced/aliases.json` | 1.3 MB | 7120 | array[7120] · engineId, slug, kind, fmgName, aliases, source | by `kind`: boss, damage, dungeon, enemy, grace, hunt, invader, item, line, mechanic, npc, npcs, quest, region | `scripts/gen-aliases.mjs`<br>`src/lib/aliases.gen.test.ts`<br>`src/lib/aliases.ts`<br>`src/lib/auditFixes.test.ts`<br>`src/lib/pwa.test.ts`<br>`src/lib/pwa.ts`<br>`src/settings/dataFreshness.test.ts`<br>`src/settings/dataFreshness.ts` |
 | `public/sourced/armory-bosses.json` | 20.3 KB | 122 | array[122] · name, region, type, phase, notes, parryable | armor, boss, enemy, location | `scripts/build-boss-roster.mjs`<br>`src/lib/armory.ts`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/fanImage.test.ts`<br>`src/lib/pwa.ts`<br>`src/settings/dataFreshness.ts` |
 | `public/sourced/armory-weapons.json` | 98.7 KB | 402 | array[402] · name, type, dlc, skill, weight, req, where | weapon, armor, spell, quest | `src/lib/armory.ts`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/fanImage.test.ts`<br>`src/lib/ps5Capture.ocr.test.ts`<br>`src/lib/ps5Capture.ts`<br>`src/lib/pwa.ts`<br>`src/settings/dataFreshness.ts` |
 | `public/sourced/checklists/ammos.json` | 26.3 KB | 53 | array[53] · id, name, image, description, type, attackPower, passive | spell, ammo, image | **REDUNDANT** → public/sourced/open/fanapi/ammos.json (same 53 rows; FanAPI loader) |
 | `public/sourced/checklists/armors.json` | 417.2 KB | 568 | array[568] · id, name, image, description, category, dmgNegation, resistance, weight | armor, spell, quest, image | `src/lib/entityIndexBuild.ts` |
 | `public/sourced/checklists/ashes.json` | 44.5 KB | 90 | array[90] · id, name, image, description, affinity, skill | ash, image | `src/lib/entityIndexBuild.ts`<br>`src/lib/openData.ts` |
-| `public/sourced/checklists/bosses.json` | 21.5 KB | 106 | array[106] · name, region, location, drops | boss, location, item | `scripts/build-boss-roster.mjs`<br>`src/lib/entityIndexBuild.ts` |
+| `public/sourced/checklists/bosses.json` | 22.5 KB | 106 | array[106] · name, region, location, drops | boss, location, item | `scripts/build-boss-roster.mjs`<br>`src/lib/entityIndexBuild.ts` |
 | `public/sourced/checklists/classes.json` | 5.6 KB | 14 | array[14] · id, name, image, description, stats | class, image | **REDUNDANT** → public/sourced/open/fanapi/classes.json (same 14 rows; FanAPI loader) |
 | `public/sourced/checklists/creatures.json` | 44.5 KB | 115 | array[115] · id, name, image, description, location, drops | enemy, location, item, image | `src/lib/entityIndexBuild.ts` |
-| `public/sourced/checklists/graces.json` | 57.4 KB | 418 | array[418] · id, warpId, name, region, world | grace, location | `scripts/accuracy-audit.mjs`<br>`scripts/gen-aliases.mjs`<br>`src/lib/aliases.test.ts`<br>`src/lib/entityIndexBuild.ts` |
+| `public/sourced/checklists/graces.json` | 60.2 KB | 418 | array[418] · id, warpId, name, region, world | grace, location | `scripts/accuracy-audit.mjs`<br>`scripts/gen-aliases.mjs`<br>`src/lib/aliases.test.ts`<br>`src/lib/entityIndexBuild.ts` |
 | `public/sourced/checklists/incantations.json` | 45.9 KB | 98 | array[98] · id, name, image, description, type, cost, slots, effects, requires | spell, image | `src/lib/entityIndexBuild.ts` |
 | `public/sourced/checklists/items.json` | 162.3 KB | 462 | array[462] · id, name, image, description, type, effect | item, hunt, image | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanImage.test.ts` |
-| `public/sourced/checklists/locations.json` | 32.8 KB | 177 | array[177] · name, region, blurb | location | `scripts/gen-dungeons.mjs`<br>`src/lib/entityIndexBuild.ts` |
+| `public/sourced/checklists/locations.json` | 33.6 KB | 177 | array[177] · name, region, blurb | location | `scripts/gen-dungeons.mjs`<br>`src/lib/entityIndexBuild.ts` |
 | `public/sourced/checklists/npcs.json` | 16.4 KB | 55 | array[55] · id, name, image, quote, location, role | npc, location, merchant, item, image | `src/lib/entityIndexBuild.ts` |
 | `public/sourced/checklists/shields.json` | 58.8 KB | 69 | array[69] · id, name, image, description, attack, defence, scalesWith, requiredAttributes, category, weight | shield, enemy, image | `src/lib/entityIndexBuild.ts` |
 | `public/sourced/checklists/sorceries.json` | 36.9 KB | 71 | array[71] · id, name, image, description, type, cost, slots, effects, requires | spell, quest, image | `src/lib/entityIndexBuild.ts` |
 | `public/sourced/checklists/spirits.json` | 27.8 KB | 64 | array[64] · id, name, image, description, fpCost, hpCost, effect | ash, spirit, image | `src/lib/entityIndexBuild.ts` |
 | `public/sourced/checklists/talismans.json` | 27.5 KB | 87 | array[87] · id, name, image, description, effect | talisman, ammo, image | `src/lib/entityIndexBuild.ts`<br>`src/lib/entityIndexQuality.test.ts` |
 | `public/sourced/checklists/weapons.json` | 282.1 KB | 307 | array[307] · id, name, image, description, attack, defence, scalesWith, requiredAttributes, category, weight | weapon, image | `src/lib/entityIndexBuild.ts` |
-| `public/sourced/enemy-combat.json` | 790.5 KB | 2271 | array[2271] · factId, name, npcRow, paramName, model, baseHp, poise, negation, resist, placements, maps | spell, boss, enemy, npc, location, params | `scripts/build-boss-roster.mjs`<br>`src/lib/enemy.test.ts`<br>`src/lib/enemy.ts`<br>`src/lib/entityIndexBuild.ts` |
-| `public/sourced/entity-index.json` | 4.5 MB | 4 | object{generatedAt, counts, unmatched, records} | weapon, shield, armor, talisman, spell, spirit, boss, enemy, npc, quest, grace, dungeon, location, merchant, recipe, material, item, build, image, text | `scripts/accuracy-audit.mjs`<br>`scripts/build-boss-roster.mjs`<br>`scripts/build-entity-index.mjs`<br>`scripts/entity-coverage.mjs`<br>`scripts/links-audit.mjs`<br>`scripts/page-audit.mjs`<br>`scripts/progress-audit.mjs`<br>`src/lib/bossRoster.test.ts`<br>`src/lib/entityCoverage.test.ts`<br>`src/lib/entityEnrich.ts`<br>`src/lib/entityGraph.ts`<br>`src/lib/entityIndex.ts`<br>`src/lib/entityIndexQuality.test.ts`<br>`src/lib/entityStringification.test.tsx`<br>`src/lib/linksAudit.test.ts`<br>`src/lib/progressAudit.test.ts`<br>`src/lib/ps5Scanner.ocr.test.ts`<br>`src/lib/pwa.test.ts`<br>`src/lib/vanillaData.guard.test.ts` |
+| `public/sourced/enemy-combat.json` | 790.5 KB | 2271 | array[2271] · factId, name, npcRow, paramName, model, baseHp, poise, negation, resist, placements, maps | spell, boss, enemy, npc, location, params | `scripts/build-boss-roster.mjs`<br>`scripts/gen-aliases.mjs`<br>`src/lib/enemy.test.ts`<br>`src/lib/enemy.ts`<br>`src/lib/entityIndexBuild.ts` |
+| `public/sourced/entity-index.json` | 4.4 MB | 4 | object{generatedAt, counts, unmatched, records} | weapon, shield, armor, talisman, spell, spirit, boss, enemy, npc, quest, grace, dungeon, location, merchant, recipe, material, item, build, image, text | `scripts/accuracy-audit.mjs`<br>`scripts/build-boss-roster.mjs`<br>`scripts/build-entity-index.mjs`<br>`scripts/entity-coverage.mjs`<br>`scripts/gen-aliases.mjs`<br>`scripts/links-audit.mjs`<br>`scripts/page-audit.mjs`<br>`scripts/progress-audit.mjs`<br>`src/lib/auditFixes.test.ts`<br>`src/lib/bossRoster.test.ts`<br>`src/lib/entityCoverage.test.ts`<br>`src/lib/entityEnrich.ts`<br>`src/lib/entityGraph.ts`<br>`src/lib/entityIndex.ts`<br>`src/lib/entityIndexQuality.test.ts`<br>`src/lib/entityStringification.test.tsx`<br>`src/lib/gameNames.test.ts`<br>`src/lib/linksAudit.test.ts`<br>`src/lib/progressAudit.test.ts`<br>`src/lib/ps5Scanner.ocr.test.ts`<br>`src/lib/pwa.test.ts`<br>`src/lib/vanillaData.guard.test.ts` |
 | `public/sourced/guide/catalog.json` | 721.6 KB | 2490 | array[2490] · id, name, category, dlc, missable, quest, how, world | ammo, quest, item | `src/lib/achievements.test.ts`<br>`src/lib/blessings.test.ts`<br>`src/lib/blessings.ts`<br>`src/lib/guide.ts`<br>`src/lib/pwa.test.ts`<br>`src/lib/pwa.ts`<br>`src/settings/dataFreshness.ts` |
-| `public/sourced/guide/expected-counts.json` | 204 B | 9 | object{golden-seed, sacred-tear, memory-stone, larval-tear, stonesword-key, scadutree-fragment, revered-spirit-ash, great-rune} | spirit, whetblade | **REDUNDANT** → public/sourced/guide/catalog.json (catalogue counts) |
+| `public/sourced/guide/expected-counts.json` | 215 B | 9 | object{golden-seed, sacred-tear, memory-stone, larval-tear, stonesword-key, scadutree-fragment, revered-spirit-ash, great-rune} | spirit, whetblade | **REDUNDANT** → public/sourced/guide/catalog.json (catalogue counts) |
 | `public/sourced/guide/items.json` | 2.4 MB | 2490 | array[2490] · id, name, category, dlc, acquisition, missable, quest, map, wikiUrl | ammo, quest, item | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanImage.test.ts` |
 | `public/sourced/guide/legs.json` | 48.8 KB | 124 | array[124] · region, id, from, to, summary | quest, location | `src/knowledge/regionRoutes.test.ts`<br>`src/knowledge/regionRoutes.ts`<br>`src/lib/guide.ts`<br>`src/lib/pwa.ts`<br>`src/settings/dataFreshness.ts`<br>`src/shell/AreaChip.tsx` |
-| `public/sourced/guide/map-extras.json` | 345.9 KB | 1246 | object{graces, locations, smithingStones} · graces[429], locations[313], smithingStones[504] · code, markerId, name, lat, lng | location | `scripts/gen-dungeons.mjs`<br>`src/lib/entityIndexBuild.ts` |
+| `public/sourced/guide/map-extras.json` | 357.7 KB | 1246 | object{graces, locations, smithingStones} · graces[429], locations[313], smithingStones[504] · code, markerId, name, lat, lng | location | `scripts/gen-dungeons.mjs`<br>`src/lib/entityIndexBuild.ts` |
 | `public/sourced/guide/missable-index.json` | 2.3 KB | 11 | array[11] · id, lockedBy, note | weapon, location | **REDUNDANT** → public/sourced/guide/missables.json + guide/items.json (missable flags) |
 | `public/sourced/guide/missables.json` | 2.6 KB | 2 | object{_doc, _entries} | weapon, talisman, ammo, whetblade, quest, location, item | `src/knowledge/gates.ts` |
-| `public/sourced/guide/overrides.json` | 2.5 KB | 2 | object{_doc, _entries} | weapon, shield, armor, talisman, ash, spirit, ammo, item | **REDUNDANT** → src/data/entity-overrides.json (entity-index override table) |
-| `public/sourced/guide/regions/01-limgrave.json` | 40.7 KB | 178 | object{id, name, order, legs, cleanup} · legs[12], cleanup[166] · id, from, to, summary, steps | cookbook, quest, grace, location, merchant, recipe, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/02-weeping-peninsula.json` | 19.1 KB | 18 | object{id, name, order, legs, cleanup} · legs[5], cleanup[13] · id, from, to, summary, steps | boss, quest, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/03-stormveil.json` | 17.0 KB | 46 | object{id, name, order, legs, cleanup} · legs[6], cleanup[40] · id, from, to, summary, steps | talisman, spell, ash, boss, npc, quest, grace, dungeon, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/04-liurnia.json` | 47.3 KB | 241 | object{id, name, order, legs, cleanup} · legs[12], cleanup[229] · id, from, to, summary, steps | spell, quest, grace, location, merchant, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/05-siofra-river.json` | 7.5 KB | 14 | object{id, name, order, legs, cleanup} · legs[3], cleanup[11] · id, from, to, summary, steps | talisman, spell, boss, quest, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/06-caelid.json` | 31.5 KB | 32 | object{id, name, order, legs, cleanup} · legs[6], cleanup[26] · id, from, to, summary, steps | armor, talisman, spell, cookbook, grace, dungeon, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/07-dragonbarrow.json` | 10.8 KB | 5 | object{id, name, order, legs, cleanup} · legs[3], cleanup[2] · id, from, to, summary, steps | weapon, spell, ammo, boss, quest, grace, dungeon, location, merchant, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/08-nokron.json` | 9.6 KB | 10 | object{id, name, order, legs, cleanup} · legs[4], cleanup[6] · id, from, to, summary, steps | weapon, grace, location, item, build, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/09-ainsel.json` | 12.5 KB | 16 | object{id, name, order, legs, cleanup} · legs[4], cleanup[12] · id, from, to, summary, steps | boss, npc, quest, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/10-altus.json` | 29.8 KB | 44 | object{id, name, order, legs, cleanup} · legs[7], cleanup[37] · id, from, to, summary, steps | weapon, boss, npc, quest, grace, dungeon, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/11-mt-gelmir.json` | 31.0 KB | 27 | object{id, name, order, legs, cleanup} · legs[5], cleanup[22] · id, from, to, summary, steps | weapon, spell, ammo, cookbook, crystal-tear, npc, quest, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/12-leyndell.json` | 37.7 KB | 95 | object{id, name, order, legs, cleanup} · legs[6], cleanup[89] · id, from, to, summary, steps | armor, boss, quest, dungeon, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/13-deeproot.json` | 7.4 KB | 7 | object{id, name, order, legs, cleanup} · legs[2], cleanup[5] · id, from, to, summary, steps | weapon, talisman, ammo, boss, quest, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/14-mountaintops.json` | 15.0 KB | 104 | object{id, name, order, legs, cleanup} · legs[6], cleanup[98] · id, from, to, summary, steps | spell, bell-bearing, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/15-consecrated-snowfield.json` | 13.5 KB | 30 | object{id, name, order, legs, cleanup} · legs[4], cleanup[26] · id, from, to, summary, steps | cookbook, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/overrides.json` | 2.6 KB | 2 | object{_doc, _entries} | weapon, shield, armor, talisman, ash, spirit, ammo, item | **REDUNDANT** → src/data/entity-overrides.json (entity-index override table) |
+| `public/sourced/guide/regions/01-limgrave.json` | 41.6 KB | 178 | object{id, name, order, legs, cleanup} · legs[12], cleanup[166] · id, from, to, summary, steps | cookbook, quest, grace, location, merchant, recipe, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/02-weeping-peninsula.json` | 19.6 KB | 18 | object{id, name, order, legs, cleanup} · legs[5], cleanup[13] · id, from, to, summary, steps | boss, quest, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/03-stormveil.json` | 17.4 KB | 46 | object{id, name, order, legs, cleanup} · legs[6], cleanup[40] · id, from, to, summary, steps | talisman, spell, ash, boss, npc, quest, grace, dungeon, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/04-liurnia.json` | 48.3 KB | 241 | object{id, name, order, legs, cleanup} · legs[12], cleanup[229] · id, from, to, summary, steps | spell, quest, grace, location, merchant, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/05-siofra-river.json` | 7.7 KB | 14 | object{id, name, order, legs, cleanup} · legs[3], cleanup[11] · id, from, to, summary, steps | talisman, spell, boss, quest, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/06-caelid.json` | 32.3 KB | 32 | object{id, name, order, legs, cleanup} · legs[6], cleanup[26] · id, from, to, summary, steps | armor, talisman, spell, cookbook, grace, dungeon, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/07-dragonbarrow.json` | 11.1 KB | 5 | object{id, name, order, legs, cleanup} · legs[3], cleanup[2] · id, from, to, summary, steps | weapon, spell, ammo, boss, quest, grace, dungeon, location, merchant, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/08-nokron.json` | 9.8 KB | 10 | object{id, name, order, legs, cleanup} · legs[4], cleanup[6] · id, from, to, summary, steps | weapon, grace, location, item, build, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/09-ainsel.json` | 12.8 KB | 16 | object{id, name, order, legs, cleanup} · legs[4], cleanup[12] · id, from, to, summary, steps | boss, npc, quest, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/10-altus.json` | 30.5 KB | 44 | object{id, name, order, legs, cleanup} · legs[7], cleanup[37] · id, from, to, summary, steps | weapon, boss, npc, quest, grace, dungeon, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/11-mt-gelmir.json` | 31.7 KB | 27 | object{id, name, order, legs, cleanup} · legs[5], cleanup[22] · id, from, to, summary, steps | weapon, spell, ammo, cookbook, crystal-tear, npc, quest, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/12-leyndell.json` | 38.7 KB | 95 | object{id, name, order, legs, cleanup} · legs[6], cleanup[89] · id, from, to, summary, steps | armor, boss, quest, dungeon, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/13-deeproot.json` | 7.6 KB | 7 | object{id, name, order, legs, cleanup} · legs[2], cleanup[5] · id, from, to, summary, steps | weapon, talisman, ammo, boss, quest, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/14-mountaintops.json` | 15.4 KB | 104 | object{id, name, order, legs, cleanup} · legs[6], cleanup[98] · id, from, to, summary, steps | spell, bell-bearing, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/15-consecrated-snowfield.json` | 13.8 KB | 30 | object{id, name, order, legs, cleanup} · legs[4], cleanup[26] · id, from, to, summary, steps | cookbook, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
 | `public/sourced/guide/regions/16-mohgwyn.json` | 3.8 KB | 14 | object{id, name, order, legs, cleanup} · legs[2], cleanup[12] · id, from, to, summary, steps | talisman, npc, quest, grace, location, item, hunt, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/17-haligtree.json` | 17.6 KB | 26 | object{id, name, order, legs, cleanup} · legs[5], cleanup[21] · id, from, to, summary, steps | ash, quest, grace, dungeon, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/18-dlc-gravesite.json` | 33.7 KB | 12 | object{id, name, order, dlc, legs, cleanup} · legs[7], cleanup[5] · id, from, to, summary, steps | ash, spirit, grace, location, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/19-dlc-scadu-altus.json` | 61.6 KB | 150 | object{id, name, order, dlc, legs, cleanup} · legs[7], cleanup[143] · id, from, to, summary, steps | npc, quest, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/20-dlc-south.json` | 9.5 KB | 20 | object{id, name, order, dlc, legs, cleanup} · legs[4], cleanup[16] · id, from, to, summary, steps | weapon, spirit, cookbook, npc, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/21-dlc-west.json` | 18.1 KB | 31 | object{id, name, order, dlc, legs, cleanup} · legs[5], cleanup[26] · id, from, to, summary, steps | armor, cookbook, boss, quest, grace, dungeon, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/22-dlc-enir-ilim.json` | 8.7 KB | 38 | object{id, name, order, dlc, legs, cleanup} · legs[2], cleanup[36] · id, from, to, summary, steps | ash, spirit, boss, enemy, npc, quest, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/23-farum-azula.json` | 18.2 KB | 22 | object{id, name, order, legs, cleanup} · legs[4], cleanup[18] · id, from, to, summary, steps | quest, grace, location, item, build, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/24-ashen-capital.json` | 11.5 KB | 18 | object{id, name, order, legs, cleanup} · legs[3], cleanup[15] · id, from, to, summary, steps | talisman, spell, spirit, boss, enemy, quest, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/guide/regions/99-unsorted.json` | 104 B | 0 | object{id, name, order, legs, cleanup} | location | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
-| `public/sourced/maps/README.md` | 631 B | — | .md | — | **REDUNDANT** → documentation, not data |
+| `public/sourced/guide/regions/17-haligtree.json` | 17.9 KB | 26 | object{id, name, order, legs, cleanup} · legs[5], cleanup[21] · id, from, to, summary, steps | ash, quest, grace, dungeon, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/18-dlc-gravesite.json` | 34.5 KB | 12 | object{id, name, order, dlc, legs, cleanup} · legs[7], cleanup[5] · id, from, to, summary, steps | ash, spirit, grace, location, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/19-dlc-scadu-altus.json` | 62.8 KB | 150 | object{id, name, order, dlc, legs, cleanup} · legs[7], cleanup[143] · id, from, to, summary, steps | npc, quest, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/20-dlc-south.json` | 9.7 KB | 20 | object{id, name, order, dlc, legs, cleanup} · legs[4], cleanup[16] · id, from, to, summary, steps | weapon, spirit, cookbook, npc, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/21-dlc-west.json` | 18.4 KB | 31 | object{id, name, order, dlc, legs, cleanup} · legs[5], cleanup[26] · id, from, to, summary, steps | armor, cookbook, boss, quest, grace, dungeon, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/22-dlc-enir-ilim.json` | 8.9 KB | 38 | object{id, name, order, dlc, legs, cleanup} · legs[2], cleanup[36] · id, from, to, summary, steps | ash, spirit, boss, enemy, npc, quest, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/23-farum-azula.json` | 18.5 KB | 22 | object{id, name, order, legs, cleanup} · legs[4], cleanup[18] · id, from, to, summary, steps | quest, grace, location, item, build, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/24-ashen-capital.json` | 11.7 KB | 18 | object{id, name, order, legs, cleanup} · legs[3], cleanup[15] · id, from, to, summary, steps | talisman, spell, spirit, boss, enemy, quest, grace, location, item, text | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/guide/regions/99-unsorted.json` | 110 B | 0 | object{id, name, order, legs, cleanup} | location | **REDUNDANT** → public/sourced/guide/legs.json (124 legs) + guide/items.json (cleanup) |
+| `public/sourced/maps/README.md` | 652 B | — | .md | — | **REDUNDANT** → documentation, not data |
 | `public/sourced/maps/m-ashen.jpg` | 438.5 KB | — | .jpg | — | `src/knowledge/graces.ts` |
 | `public/sourced/maps/m-shadow.jpg` | 490.6 KB | — | .jpg | — | `src/knowledge/graces.ts` |
 | `public/sourced/maps/m0-overworld.jpg` | 4.1 MB | — | .jpg | — | `src/knowledge/graces.ts`<br>`src/lib/ps5MapReference.ts`<br>`src/lib/pwa.test.ts` |
@@ -374,25 +246,26 @@ Counts of `{{Infobox <Type>}}` across all 4,939 pages (a page can carry one info
 | `public/sourced/open/dialogue-owners.json` | 84.6 KB | 3 | object{note, npcs, byLine} | npc, merchant, text | `src/lib/dialogueOwners.ts` |
 | `public/sourced/open/eldenringmap.json` | 53.6 KB | 454 | object{source, frame, graces, dungeons, merchants, collectibles, nightBosses} · graces[350], dungeons[64], merchants[19], nightBosses[21] · name, region, world, x, y | location | `src/lib/entityIndexBuild.ts` |
 | `public/sourced/open/enemies.json` | 90.5 KB | 1226 | array[1226] · id, name | grace | `src/lib/openData.ts`<br>`src/lib/vanillaData.guard.test.ts` |
+| `public/sourced/open/enemy-drops.json` | 1.2 MB | 4086 | object{source, rows} · rows[4086] · npcParamId, name, drops | armor, enemy, npc, item | `scripts/gen-aliases.mjs`<br>`src/lib/auditFixes.test.ts`<br>`src/lib/enemyDrops.test.ts`<br>`src/lib/entityIndexBuild.ts` |
 | `public/sourced/open/engine-markers.json` | 619.2 KB | 4866 | object{source, graces, markers, items} · graces[413], markers[1106], items[3347] · name, px, py | — | `scripts/build-boss-roster.mjs`<br>`src/lib/engineMarkers.ts`<br>`src/lib/engineMasters.test.ts`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/ps5Map.eval.ocr.test.ts`<br>`src/lib/ps5MapCapture.ts` |
 | `public/sourced/open/ercl-items.json` | 38.1 KB | 3 | object{source, version, categories} | spell, item | `src/lib/packs.test.ts`<br>`src/lib/packs.ts` |
-| `public/sourced/open/fanapi/SOURCE.json` | 144 B | 2 | object{source, fields} | image | `src/lib/fanapiData.ts (dynamic 14-set loader)` |
-| `public/sourced/open/fanapi/ammos.json` | 4.6 KB | 53 | array[53] · name, type, passive | ammo | `src/lib/fanapiData.ts (dynamic 14-set loader)` |
-| `public/sourced/open/fanapi/armors.json` | 225.7 KB | 568 | array[568] · name, category, weight, poise, dmgNegation, resistance | armor, spell | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
-| `public/sourced/open/fanapi/ashes.json` | 8.2 KB | 90 | array[90] · name, affinity, skill | ash | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)`<br>`src/lib/openData.ts` |
-| `public/sourced/open/fanapi/bosses.json` | 25.8 KB | 106 | array[106] · name, region, location, hp, drops | boss, location, item | `scripts/build-boss-roster.mjs`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
-| `public/sourced/open/fanapi/classes.json` | 3.7 KB | 14 | array[14] · name, level, stats | class | `src/lib/fanapiData.ts (dynamic 14-set loader)` |
-| `public/sourced/open/fanapi/creatures.json` | 18.3 KB | 115 | array[115] · name, location, drops | enemy, dungeon, location, item | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
-| `public/sourced/open/fanapi/items.json` | 53.6 KB | 462 | array[462] · name, type, effect | quest, item | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanImage.test.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
-| `public/sourced/open/fanapi/locations.json` | 12.8 KB | 177 | array[177] · name, region | dungeon, location | `scripts/gen-dungeons.mjs`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
-| `public/sourced/open/fanapi/npcs.json` | 5.8 KB | 55 | array[55] · name, location, role | npc, location, item | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
-| `public/sourced/open/fanapi/shields.json` | 6.3 KB | 69 | array[69] · name, category, weight | shield | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
-| `public/sourced/open/fanapi/spells.json` | 40.4 KB | 169 | array[169] · name, type, cost, slots, requires, effect | spell | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
-| `public/sourced/open/fanapi/spirits.json` | 8.2 KB | 64 | array[64] · name, fpCost, hpCost, effect | ash, spirit | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
-| `public/sourced/open/fanapi/talismans.json` | 8.2 KB | 87 | array[87] · name, effect | talisman, spirit | `src/lib/entityIndexBuild.ts`<br>`src/lib/entityIndexQuality.test.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
-| `public/sourced/open/fanapi/weapons.json` | 26.0 KB | 307 | array[307] · name, category, weight | weapon | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
+| `public/sourced/open/fanapi/SOURCE.json` | 148 B | 2 | object{source, fields} | image | `src/lib/fanapiData.ts (dynamic 14-set loader)` |
+| `public/sourced/open/fanapi/ammos.json` | 4.9 KB | 53 | array[53] · name, type, passive | ammo | `src/lib/fanapiData.ts (dynamic 14-set loader)` |
+| `public/sourced/open/fanapi/armors.json` | 238.5 KB | 568 | array[568] · name, category, weight, poise, dmgNegation, resistance | armor, spell | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
+| `public/sourced/open/fanapi/ashes.json` | 8.7 KB | 90 | array[90] · name, affinity, skill | ash | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)`<br>`src/lib/openData.ts` |
+| `public/sourced/open/fanapi/bosses.json` | 27.0 KB | 106 | array[106] · name, region, location, hp, drops | boss, location, item | `scripts/build-boss-roster.mjs`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
+| `public/sourced/open/fanapi/classes.json` | 3.9 KB | 14 | array[14] · name, level, stats | class | `src/lib/fanapiData.ts (dynamic 14-set loader)` |
+| `public/sourced/open/fanapi/creatures.json` | 19.2 KB | 115 | array[115] · name, location, drops | enemy, dungeon, location, item | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
+| `public/sourced/open/fanapi/items.json` | 55.9 KB | 462 | array[462] · name, type, effect | quest, item | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanImage.test.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
+| `public/sourced/open/fanapi/locations.json` | 13.5 KB | 177 | array[177] · name, region | dungeon, location | `scripts/gen-dungeons.mjs`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
+| `public/sourced/open/fanapi/npcs.json` | 6.1 KB | 55 | array[55] · name, location, role | npc, location, item | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
+| `public/sourced/open/fanapi/shields.json` | 6.6 KB | 69 | array[69] · name, category, weight | shield | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
+| `public/sourced/open/fanapi/spells.json` | 42.4 KB | 169 | array[169] · name, type, cost, slots, requires, effect | spell | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
+| `public/sourced/open/fanapi/spirits.json` | 8.6 KB | 64 | array[64] · name, fpCost, hpCost, effect | ash, spirit | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
+| `public/sourced/open/fanapi/talismans.json` | 8.5 KB | 87 | array[87] · name, effect | talisman, spirit | `src/lib/entityIndexBuild.ts`<br>`src/lib/entityIndexQuality.test.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
+| `public/sourced/open/fanapi/weapons.json` | 27.5 KB | 307 | array[307] · name, category, weight | weapon | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanapiData.ts (dynamic 14-set loader)` |
 | `public/sourced/open/game-areas.json` | 23.0 KB | 210 | array[210] · id, flag, region, name | location | `src/lib/entityIndexBuild.ts`<br>`src/lib/openData.ts` |
-| `public/sourced/open/gapfill.json` | 18.0 KB | 54 | object{_doc, records} · records[54] · name, prefix, kind, hp, negation, drops, location, strategy, source, note | spell, boss, enemy, npc, dungeon, location, item, hunt | `src/lib/entityIndexBuild.ts` |
+| `public/sourced/open/gapfill.json` | 18.4 KB | 54 | object{_doc, records} · records[54] · name, prefix, kind, hp, negation, drops, location, strategy, source, note | spell, boss, enemy, npc, dungeon, location, item, hunt | `src/lib/entityIndexBuild.ts` |
 | `public/sourced/open/gathering-nodes.json` | 3.9 MB | 20222 | array[20222] · model, name, map, area, p1, p2, p3, x, y, z, entity_id, instance_id | enemy, location | `src/lib/gatheringNodes.test.ts`<br>`src/lib/gatheringNodes.ts`<br>`src/lib/vanillaData.guard.test.ts` |
 | `public/sourced/open/grace-xyz.json` | 64.2 KB | 422 | array[422] · areaNo, gridX, gridZ, x, y, z, subCategoryId, subRegion, tabId, majorRegion | grace, location | `scripts/build-boss-roster.mjs`<br>`src/lib/chestFacts.test.ts`<br>`src/lib/chestFacts.ts`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/gatheringNodes.test.ts`<br>`src/lib/gatheringNodes.ts`<br>`src/lib/vanillaData.guard.test.ts` |
 | `public/sourced/open/guides-fextralife.json` | 442.7 KB | 27 | object{source, pages} · pages[27] · slug, title, url, sections | spell, ash, spirit, bell-bearing, whetblade, material, text | `src/lib/gideon.guides.test.ts`<br>`src/lib/guides.test.ts`<br>`src/lib/guides.ts` |
@@ -401,108 +274,108 @@ Counts of `{{Infobox <Type>}}` across all 4,939 pages (a page can carry one info
 | `public/sourced/open/map-lots.json` | 190.9 KB | 2723 | array[2723] · id, name | location | `src/lib/entityIndexBuild.ts` |
 | `public/sourced/open/map-place-names.json` | 2.8 KB | 11 | object{generatedBy, source, masterPx, locales, tierMinZoom, labels} · locales[2], labels[9] | location | `scripts/build-boss-roster.mjs`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/mapBanners.test.ts`<br>`src/lib/placeNames.test.ts`<br>`src/lib/placeNames.ts` |
 | `public/sourced/open/map-points.json` | 45.4 KB | 471 | array[471] · id, flag, name | grace, location | `src/lib/entityIndexBuild.ts` |
-| `public/sourced/open/map-regions.json` | 461.4 KB | 1637 | object{m10_00_00_00, m10_01_00_00, m11_00_00_00, m11_05_00_00, m11_10_00_00, m12_01_00_00, m12_02_00_00, m12_03_00_00} · m10_00_00_00[14], m10_01_00_00[2], m11_00_00_00[16], m11_05_00_00[18], m11_10_00_00[6], m12_01_00_00[20], m12_02_00_00[23], m12_03_00_00[6], m12_04_00_00[2], m12_05_00_00[10], m12_07_00_00[20], m12_08_00_00[1], m12_09_00_00[2], m13_00_00_00[16], m14_00_00_00[13], m15_00_00_00[7], m16_00_00_00[22], m18_00_00_00[9], m20_00_00_00[7], m20_01_00_00[8], m21_00_00_00[9], m21_01_00_00[11], m21_02_00_00[3], m22_00_00_00[6], m28_00_00_00[14], m30_00_00_00[4], m30_01_00_00[3], m30_02_00_00[2], m30_03_00_00[2], m30_04_00_00[2], m30_05_00_00[3], m30_06_00_00[3], m30_07_00_00[1], m30_08_00_00[6], m30_09_00_00[5], m30_10_00_00[4], m30_11_00_00[2], m30_12_00_00[3], m30_13_00_00[3], m30_14_00_00[2], m30_15_00_00[2], m30_16_00_00[5], m30_17_00_00[6], m30_18_00_00[4], m30_19_00_00[2], m30_20_00_00[7], m31_00_00_00[2], m31_01_00_00[2], m31_02_00_00[1], m31_03_00_00[2], m31_04_00_00[3], m31_05_00_00[6], m31_06_00_00[3], m31_07_00_00[5], m31_08_00_00[2], m31_09_00_00[3], m31_10_00_00[3], m31_11_00_00[5], m31_12_00_00[6], m31_15_00_00[3], m31_17_00_00[4], m31_18_00_00[2], m31_19_00_00[4], m31_20_00_00[6], m31_21_00_00[4], m31_22_00_00[3], m32_00_00_00[3], m32_01_00_00[3], m32_02_00_00[2], m32_04_00_00[5], m32_05_00_00[3], m32_07_00_00[8], m32_08_00_00[3], m32_11_00_00[4], m34_10_00_00[6], m34_11_00_00[7], m34_12_00_00[6], m34_13_00_00[8], m34_14_00_00[10], m34_15_00_00[1], m35_00_00_00[16], m39_20_00_00[7], m40_00_00_00[5], m40_01_00_00[2], m40_02_00_00[2], m41_00_00_00[8], m41_01_00_00[7], m41_02_00_00[7], m42_00_00_00[3], m42_01_00_00[1], m42_02_00_00[1], m42_03_00_00[1], m43_00_00_00[5], m43_01_00_00[6], m60_08_10_02[3], m60_09_11_02[1], m60_12_09_02[1], m60_13_09_02[2], m60_13_13_02[1], m60_17_24_01[1], m60_33_40_00[1], m60_33_42_00[3], m60_33_43_00[1], m60_33_44_00[1], m60_33_45_00[1], m60_33_47_00[1], m60_34_41_00[3], m60_34_42_00[2], m60_34_43_00[1], m60_34_44_00[1], m60_34_48_00[2], m60_34_49_00[2], m60_34_50_00[5], m60_34_51_00[1], m60_35_41_00[2], m60_35_42_00[4], m60_35_44_00[1], m60_35_46_00[2], m60_35_47_00[1], m60_35_48_00[2], m60_35_50_00[11], m60_35_54_00[1], m60_36_41_00[5], m60_36_42_00[1], m60_36_43_00[1], m60_36_47_00[2], m60_36_48_00[1], m60_36_49_00[5], m60_36_50_00[12], m60_36_51_00[1], m60_36_52_00[4], m60_36_53_00[1], m60_37_42_00[1], m60_37_44_00[1], m60_37_46_00[1], m60_37_48_00[3], m60_37_49_00[1], m60_37_50_00[4], m60_37_51_00[3], m60_37_52_00[7], m60_37_54_00[2], m60_37_55_00[1], m60_38_41_00[1], m60_38_42_00[1], m60_38_45_00[1], m60_38_46_00[2], m60_38_48_00[3], m60_38_49_00[2], m60_38_50_00[6], m60_38_51_00[4], m60_38_52_00[1], m60_38_54_00[5], m60_39_39_00[1], m60_39_41_00[1], m60_39_42_00[1], m60_39_44_00[1], m60_39_48_00[3], m60_39_50_00[1], m60_39_52_00[1], m60_39_53_00[6], m60_39_54_00[3], m60_40_39_00[1], m60_40_51_00[1], m60_40_53_00[3], m60_40_55_00[1], m60_41_32_00[1], m60_41_33_00[2], m60_41_35_00[1], m60_41_37_00[10], m60_41_38_00[1], m60_41_50_00[2], m60_41_53_00[3], m60_41_54_00[2], m60_41_55_00[2], m60_42_32_00[2], m60_42_33_00[1], m60_42_34_00[1], m60_42_35_00[1], m60_42_36_00[1], m60_42_37_00[14], m60_42_38_00[3], m60_42_40_00[2], m60_42_51_00[2], m60_42_52_00[8], m60_42_53_00[2], m60_42_54_00[1], m60_43_30_00[1], m60_43_31_00[3], m60_43_33_00[1], m60_43_34_00[4], m60_43_35_00[2], m60_43_36_00[1], m60_43_38_00[7], m60_43_39_00[8], m60_43_50_00[2], m60_43_53_00[8], m60_44_33_00[2], m60_44_34_00[2], m60_44_35_00[1], m60_44_36_00[2], m60_44_36_10[2], m60_44_38_00[1], m60_44_38_10[1], m60_44_53_00[1], m60_44_53_10[1], m60_45_33_00[1], m60_45_36_10[1], m60_45_37_00[4], m60_45_37_10[4], m60_45_39_00[1], m60_45_39_10[1], m60_45_52_00[2], m60_45_52_10[2], m60_46_36_00[1], m60_46_36_10[1], m60_46_38_00[7], m60_46_38_10[7], m60_46_39_00[9], m60_46_39_10[9], m60_46_40_00[5], m60_47_38_00[3], m60_47_38_10[3], m60_47_40_00[3], m60_47_42_00[2], m60_47_51_00[1], m60_47_55_00[1], m60_47_55_10[1], m60_47_58_00[1], m60_48_36_00[1], m60_48_37_00[1], m60_48_38_00[1], m60_48_39_00[9], m60_48_40_00[10], m60_48_41_00[1], m60_48_57_00[1], m60_49_37_00[1], m60_49_38_00[6], m60_49_39_00[27], m60_49_40_00[15], m60_49_52_00[2], m60_49_53_00[4], m60_49_54_00[1], m60_50_38_00[1], m60_50_39_00[15], m60_50_53_00[3], m60_50_56_00[8], m60_50_57_00[1], m60_51_36_00[5], m60_51_39_00[4], m60_51_40_00[8], m60_51_43_00[1], m60_51_53_00[1], m60_51_55_00[1], m60_51_56_00[3], m60_51_57_00[2], m60_51_58_00[1], m60_52_40_00[1], m60_52_41_00[1], m60_52_53_00[1], m60_52_55_00[1], m60_52_56_00[1], m60_52_57_00[3], m60_53_56_00[1], m60_54_53_00[1], m60_54_55_00[1], m61_12_09_02[1], m61_44_41_00[1], m61_44_45_00[3], m61_44_45_10[3], m61_44_46_00[5], m61_44_46_10[5], m61_45_41_00[1], m61_45_42_00[4], m61_45_44_00[10], m61_45_44_10[10], m61_45_45_00[4], m61_45_45_10[4], m61_45_46_00[5], m61_45_46_10[5], m61_45_47_00[2], m61_45_47_10[2], m61_45_48_00[4], m61_46_38_00[3], m61_46_39_00[1], m61_46_40_00[20], m61_46_41_00[2], m61_46_42_00[2], m61_46_43_00[2], m61_46_44_00[13], m61_46_44_10[13], m61_46_45_00[16], m61_46_45_10[16], m61_46_46_00[3], m61_46_46_10[3], m61_46_47_00[5], m61_46_47_10[5], m61_46_48_00[1], m61_47_35_00[1], m61_47_36_00[1], m61_47_39_00[2], m61_47_40_00[2], m61_47_41_00[13], m61_47_42_00[7], m61_47_43_00[4], m61_47_44_00[18], m61_47_44_10[18], m61_47_45_00[10], m61_47_45_10[10], m61_47_46_00[15], m61_47_46_10[15], m61_47_47_00[2], m61_47_47_10[2], m61_47_48_00[2], m61_48_37_00[4], m61_48_38_00[6], m61_48_39_00[10], m61_48_40_00[6], m61_48_41_00[16], m61_48_42_00[2], m61_48_43_00[14], m61_48_44_00[23], m61_48_45_00[2], m61_48_47_00[4], m61_48_48_00[4], m61_49_38_00[11], m61_49_39_00[6], m61_49_40_00[6], m61_49_42_00[11], m61_49_43_00[12], m61_49_44_00[7], m61_49_46_00[1], m61_49_47_00[3], m61_49_48_00[7], m61_49_49_00[3], m61_50_38_00[2], m61_50_39_00[2], m61_50_40_00[6], m61_50_41_00[2], m61_50_42_00[4], m61_50_43_00[19], m61_50_44_00[20], m61_50_45_00[10], m61_50_46_00[2], m61_50_47_00[4], m61_50_48_00[5], m61_51_41_00[4], m61_51_43_00[9], m61_51_44_00[14], m61_51_45_00[7], m61_51_46_00[4], m61_51_47_00[10], m61_51_49_00[1], m61_52_40_00[2], m61_52_41_00[2], m61_52_43_00[5], m61_53_41_00[5], m61_53_46_00[2], m61_53_47_00[1], m61_53_48_00[1], m61_54_39_00[3] · kind, pos, rot, shape, dims, wmpId | location | `src/lib/entityIndexBuild.ts` |
+| `public/sourced/open/map-regions.json` | 492.6 KB | 1637 | object{m10_00_00_00, m10_01_00_00, m11_00_00_00, m11_05_00_00, m11_10_00_00, m12_01_00_00, m12_02_00_00, m12_03_00_00} · m10_00_00_00[14], m10_01_00_00[2], m11_00_00_00[16], m11_05_00_00[18], m11_10_00_00[6], m12_01_00_00[20], m12_02_00_00[23], m12_03_00_00[6], m12_04_00_00[2], m12_05_00_00[10], m12_07_00_00[20], m12_08_00_00[1], m12_09_00_00[2], m13_00_00_00[16], m14_00_00_00[13], m15_00_00_00[7], m16_00_00_00[22], m18_00_00_00[9], m20_00_00_00[7], m20_01_00_00[8], m21_00_00_00[9], m21_01_00_00[11], m21_02_00_00[3], m22_00_00_00[6], m28_00_00_00[14], m30_00_00_00[4], m30_01_00_00[3], m30_02_00_00[2], m30_03_00_00[2], m30_04_00_00[2], m30_05_00_00[3], m30_06_00_00[3], m30_07_00_00[1], m30_08_00_00[6], m30_09_00_00[5], m30_10_00_00[4], m30_11_00_00[2], m30_12_00_00[3], m30_13_00_00[3], m30_14_00_00[2], m30_15_00_00[2], m30_16_00_00[5], m30_17_00_00[6], m30_18_00_00[4], m30_19_00_00[2], m30_20_00_00[7], m31_00_00_00[2], m31_01_00_00[2], m31_02_00_00[1], m31_03_00_00[2], m31_04_00_00[3], m31_05_00_00[6], m31_06_00_00[3], m31_07_00_00[5], m31_08_00_00[2], m31_09_00_00[3], m31_10_00_00[3], m31_11_00_00[5], m31_12_00_00[6], m31_15_00_00[3], m31_17_00_00[4], m31_18_00_00[2], m31_19_00_00[4], m31_20_00_00[6], m31_21_00_00[4], m31_22_00_00[3], m32_00_00_00[3], m32_01_00_00[3], m32_02_00_00[2], m32_04_00_00[5], m32_05_00_00[3], m32_07_00_00[8], m32_08_00_00[3], m32_11_00_00[4], m34_10_00_00[6], m34_11_00_00[7], m34_12_00_00[6], m34_13_00_00[8], m34_14_00_00[10], m34_15_00_00[1], m35_00_00_00[16], m39_20_00_00[7], m40_00_00_00[5], m40_01_00_00[2], m40_02_00_00[2], m41_00_00_00[8], m41_01_00_00[7], m41_02_00_00[7], m42_00_00_00[3], m42_01_00_00[1], m42_02_00_00[1], m42_03_00_00[1], m43_00_00_00[5], m43_01_00_00[6], m60_08_10_02[3], m60_09_11_02[1], m60_12_09_02[1], m60_13_09_02[2], m60_13_13_02[1], m60_17_24_01[1], m60_33_40_00[1], m60_33_42_00[3], m60_33_43_00[1], m60_33_44_00[1], m60_33_45_00[1], m60_33_47_00[1], m60_34_41_00[3], m60_34_42_00[2], m60_34_43_00[1], m60_34_44_00[1], m60_34_48_00[2], m60_34_49_00[2], m60_34_50_00[5], m60_34_51_00[1], m60_35_41_00[2], m60_35_42_00[4], m60_35_44_00[1], m60_35_46_00[2], m60_35_47_00[1], m60_35_48_00[2], m60_35_50_00[11], m60_35_54_00[1], m60_36_41_00[5], m60_36_42_00[1], m60_36_43_00[1], m60_36_47_00[2], m60_36_48_00[1], m60_36_49_00[5], m60_36_50_00[12], m60_36_51_00[1], m60_36_52_00[4], m60_36_53_00[1], m60_37_42_00[1], m60_37_44_00[1], m60_37_46_00[1], m60_37_48_00[3], m60_37_49_00[1], m60_37_50_00[4], m60_37_51_00[3], m60_37_52_00[7], m60_37_54_00[2], m60_37_55_00[1], m60_38_41_00[1], m60_38_42_00[1], m60_38_45_00[1], m60_38_46_00[2], m60_38_48_00[3], m60_38_49_00[2], m60_38_50_00[6], m60_38_51_00[4], m60_38_52_00[1], m60_38_54_00[5], m60_39_39_00[1], m60_39_41_00[1], m60_39_42_00[1], m60_39_44_00[1], m60_39_48_00[3], m60_39_50_00[1], m60_39_52_00[1], m60_39_53_00[6], m60_39_54_00[3], m60_40_39_00[1], m60_40_51_00[1], m60_40_53_00[3], m60_40_55_00[1], m60_41_32_00[1], m60_41_33_00[2], m60_41_35_00[1], m60_41_37_00[10], m60_41_38_00[1], m60_41_50_00[2], m60_41_53_00[3], m60_41_54_00[2], m60_41_55_00[2], m60_42_32_00[2], m60_42_33_00[1], m60_42_34_00[1], m60_42_35_00[1], m60_42_36_00[1], m60_42_37_00[14], m60_42_38_00[3], m60_42_40_00[2], m60_42_51_00[2], m60_42_52_00[8], m60_42_53_00[2], m60_42_54_00[1], m60_43_30_00[1], m60_43_31_00[3], m60_43_33_00[1], m60_43_34_00[4], m60_43_35_00[2], m60_43_36_00[1], m60_43_38_00[7], m60_43_39_00[8], m60_43_50_00[2], m60_43_53_00[8], m60_44_33_00[2], m60_44_34_00[2], m60_44_35_00[1], m60_44_36_00[2], m60_44_36_10[2], m60_44_38_00[1], m60_44_38_10[1], m60_44_53_00[1], m60_44_53_10[1], m60_45_33_00[1], m60_45_36_10[1], m60_45_37_00[4], m60_45_37_10[4], m60_45_39_00[1], m60_45_39_10[1], m60_45_52_00[2], m60_45_52_10[2], m60_46_36_00[1], m60_46_36_10[1], m60_46_38_00[7], m60_46_38_10[7], m60_46_39_00[9], m60_46_39_10[9], m60_46_40_00[5], m60_47_38_00[3], m60_47_38_10[3], m60_47_40_00[3], m60_47_42_00[2], m60_47_51_00[1], m60_47_55_00[1], m60_47_55_10[1], m60_47_58_00[1], m60_48_36_00[1], m60_48_37_00[1], m60_48_38_00[1], m60_48_39_00[9], m60_48_40_00[10], m60_48_41_00[1], m60_48_57_00[1], m60_49_37_00[1], m60_49_38_00[6], m60_49_39_00[27], m60_49_40_00[15], m60_49_52_00[2], m60_49_53_00[4], m60_49_54_00[1], m60_50_38_00[1], m60_50_39_00[15], m60_50_53_00[3], m60_50_56_00[8], m60_50_57_00[1], m60_51_36_00[5], m60_51_39_00[4], m60_51_40_00[8], m60_51_43_00[1], m60_51_53_00[1], m60_51_55_00[1], m60_51_56_00[3], m60_51_57_00[2], m60_51_58_00[1], m60_52_40_00[1], m60_52_41_00[1], m60_52_53_00[1], m60_52_55_00[1], m60_52_56_00[1], m60_52_57_00[3], m60_53_56_00[1], m60_54_53_00[1], m60_54_55_00[1], m61_12_09_02[1], m61_44_41_00[1], m61_44_45_00[3], m61_44_45_10[3], m61_44_46_00[5], m61_44_46_10[5], m61_45_41_00[1], m61_45_42_00[4], m61_45_44_00[10], m61_45_44_10[10], m61_45_45_00[4], m61_45_45_10[4], m61_45_46_00[5], m61_45_46_10[5], m61_45_47_00[2], m61_45_47_10[2], m61_45_48_00[4], m61_46_38_00[3], m61_46_39_00[1], m61_46_40_00[20], m61_46_41_00[2], m61_46_42_00[2], m61_46_43_00[2], m61_46_44_00[13], m61_46_44_10[13], m61_46_45_00[16], m61_46_45_10[16], m61_46_46_00[3], m61_46_46_10[3], m61_46_47_00[5], m61_46_47_10[5], m61_46_48_00[1], m61_47_35_00[1], m61_47_36_00[1], m61_47_39_00[2], m61_47_40_00[2], m61_47_41_00[13], m61_47_42_00[7], m61_47_43_00[4], m61_47_44_00[18], m61_47_44_10[18], m61_47_45_00[10], m61_47_45_10[10], m61_47_46_00[15], m61_47_46_10[15], m61_47_47_00[2], m61_47_47_10[2], m61_47_48_00[2], m61_48_37_00[4], m61_48_38_00[6], m61_48_39_00[10], m61_48_40_00[6], m61_48_41_00[16], m61_48_42_00[2], m61_48_43_00[14], m61_48_44_00[23], m61_48_45_00[2], m61_48_47_00[4], m61_48_48_00[4], m61_49_38_00[11], m61_49_39_00[6], m61_49_40_00[6], m61_49_42_00[11], m61_49_43_00[12], m61_49_44_00[7], m61_49_46_00[1], m61_49_47_00[3], m61_49_48_00[7], m61_49_49_00[3], m61_50_38_00[2], m61_50_39_00[2], m61_50_40_00[6], m61_50_41_00[2], m61_50_42_00[4], m61_50_43_00[19], m61_50_44_00[20], m61_50_45_00[10], m61_50_46_00[2], m61_50_47_00[4], m61_50_48_00[5], m61_51_41_00[4], m61_51_43_00[9], m61_51_44_00[14], m61_51_45_00[7], m61_51_46_00[4], m61_51_47_00[10], m61_51_49_00[1], m61_52_40_00[2], m61_52_41_00[2], m61_52_43_00[5], m61_53_41_00[5], m61_53_46_00[2], m61_53_47_00[1], m61_53_48_00[1], m61_54_39_00[3] · kind, pos, rot, shape, dims, wmpId | location | `src/lib/entityIndexBuild.ts` |
 | `public/sourced/open/medusa-route.json` | 341.4 KB | 9 | object{source, acts} · acts[9] · id, order, name, summary, lore, chapters | spell, dungeon, location | `src/lib/gideon.medusa.test.ts`<br>`src/lib/medusaRoute.test.ts`<br>`src/lib/medusaRoute.ts` |
 | `public/sourced/open/msb-enemies.json` | 2.9 MB | 31388 | array[31388] · id, map, x, z, model, name | enemy | `src/lib/entityIndexBuild.ts`<br>`src/lib/vanillaData.guard.test.ts` |
 | `public/sourced/open/names.json` | 914.7 KB | 8767 | array[8767] · id, kind, name, info | by `kind`: accessories, arts, gems, goods, npcs, places, protector, weapon | `scripts/build-boss-roster.mjs`<br>`scripts/gen-aliases.mjs`<br>`src/knowledge/loot.test.ts`<br>`src/lib/canonicalNames.ts`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/openData.ts`<br>`src/lib/pwa.ts`<br>`src/lib/regulation.test.ts`<br>`src/lib/regulation.ts`<br>`src/settings/dataFreshness.ts` |
 | `public/sourced/open/npc-quests.json` | 116.9 KB | 68 | object{source, quests} · quests[68] · npc, url, steps | npc, quest, grace, location, text | `scripts/accuracy-audit.mjs`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/npcQuests.test.ts`<br>`src/lib/npcQuests.ts` |
-| `public/sourced/open/paramdex/ActionButtonParam.txt` | 7.6 KB | 353 | text · 1000 Retrieve lost runes | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/AiSoundParam.txt` | 192 B | 11 | text · 1000 Slow Walk | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/AssetEnvironmentGeometryParam.txt` | 2.6 KB | 111 | text · 96201 Aurora Borealis (Blue-Green) | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/AtkParam_Npc.txt` | 370.5 KB | 11577 | text · 0 Impact | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/AtkParam_Pc.txt` | 313.7 KB | 9411 | text · 0 Impact: Oppose | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/AttackElementCorrectParam.txt` | 10.2 KB | 167 | text · 10000 Physical: STR + | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/BaseChrSelectMenuParam.txt` | 240 B | 15 | text · 1000 [CNT] Knight | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/BehaviorParam.txt` | 373.2 KB | 12922 | text · 149500 [Tibia Mariner] | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/BehaviorParam_PC.txt` | 439.2 KB | 12464 | text · 550 Base Behavior - | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/BonfireWarpParam.txt` | 19.3 KB | 419 | text · 100000 [Stormveil Castle] Godrick | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/BonfireWarpSubCategoryParam.txt` | 1.2 KB | 55 | text · 6800 Gravesite Plain | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/BonfireWarpTabParam.txt` | 428 B | 19 | text · 6800 Gravesite Plain | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/BuddyParam.txt` | 3.9 KB | 153 | text · 20000000 Black Knife Tiche | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/BuddyStoneParam.txt` | 11.1 KB | 238 | text · 10000100 Stormveil Castle | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/BudgetParam.txt` | 64 B | 1 | text · 0 Default (delete not | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Bullet.txt` | 470.3 KB | 12920 | text · 0 Smithscript Spear - | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/CalcCorrectGraph.txt` | 1.3 KB | 49 | text · 0 Default | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/CameraFadeParam.txt` | 227 B | 6 | text · 1 半透明（背の高いパーツ） | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/CharMakeMenuListItemParam.txt` | 5.4 KB | 225 | text · 100 Build - Standard | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/CharMakeMenuTopParam.txt` | 2.8 KB | 164 | text · 2 Name | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/CharaInitParam.txt` | 7.5 KB | 260 | text · 2400 Gift - None | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/ChrActivateConditionParam.txt` | 137 B | 7 | text · 0 Always | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/ChrModelParam.txt` | 5.5 KB | 266 | text · 2010 Blaidd | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/ClearCountCorrectParam.txt` | 56 B | 8 | text · 0 NG+0 | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/DefaultKeyAssign.txt` | 14.6 KB | 373 | text · 0 DebugMenu：モード切替 | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/EnemyCommonParam.txt` | 16 B | 1 | text · 0 Configuration | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/EquipMtrlSetParam.txt` | 15.2 KB | 380 | text · 0 None | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/EquipParamAccessory.txt` | 4.1 KB | 155 | text · 1000 Crimson Amber Medallion | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/EquipParamCustomWeapon.txt` | 64.9 KB | 1608 | text · 10 Longsword +6 - | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/EquipParamGem.txt` | 7.2 KB | 242 | text · 10 test gem 1 | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/ActionButtonParam.txt` | 7.9 KB | 353 | text · 1000 Retrieve lost runes | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/AiSoundParam.txt` | 203 B | 11 | text · 1000 Slow Walk | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/AssetEnvironmentGeometryParam.txt` | 2.8 KB | 111 | text · 96201 Aurora Borealis (Blue-Green) | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/AtkParam_Npc.txt` | 381.9 KB | 11577 | text · 0 Impact | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/AtkParam_Pc.txt` | 322.9 KB | 9411 | text · 0 Impact: Oppose | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/AttackElementCorrectParam.txt` | 10.4 KB | 167 | text · 10000 Physical: STR + | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/BaseChrSelectMenuParam.txt` | 255 B | 15 | text · 1000 [CNT] Knight | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/BehaviorParam.txt` | 385.8 KB | 12922 | text · 149500 [Tibia Mariner] | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/BehaviorParam_PC.txt` | 451.4 KB | 12464 | text · 550 Base Behavior - | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/BonfireWarpParam.txt` | 19.7 KB | 419 | text · 100000 [Stormveil Castle] Godrick | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/BonfireWarpSubCategoryParam.txt` | 1.3 KB | 55 | text · 6800 Gravesite Plain | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/BonfireWarpTabParam.txt` | 447 B | 19 | text · 6800 Gravesite Plain | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/BuddyParam.txt` | 4.0 KB | 153 | text · 20000000 Black Knife Tiche | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/BuddyStoneParam.txt` | 11.3 KB | 238 | text · 10000100 Stormveil Castle | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/BudgetParam.txt` | 65 B | 1 | text · 0 Default (delete not | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Bullet.txt` | 482.9 KB | 12920 | text · 0 Smithscript Spear - | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/CalcCorrectGraph.txt` | 1.4 KB | 49 | text · 0 Default | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/CameraFadeParam.txt` | 233 B | 6 | text · 1 半透明（背の高いパーツ） | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/CharMakeMenuListItemParam.txt` | 5.7 KB | 225 | text · 100 Build - Standard | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/CharMakeMenuTopParam.txt` | 2.9 KB | 164 | text · 2 Name | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/CharaInitParam.txt` | 7.7 KB | 260 | text · 2400 Gift - None | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/ChrActivateConditionParam.txt` | 144 B | 7 | text · 0 Always | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/ChrModelParam.txt` | 5.7 KB | 266 | text · 2010 Blaidd | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/ClearCountCorrectParam.txt` | 64 B | 8 | text · 0 NG+0 | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/DefaultKeyAssign.txt` | 14.9 KB | 373 | text · 0 DebugMenu：モード切替 | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/EnemyCommonParam.txt` | 17 B | 1 | text · 0 Configuration | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/EquipMtrlSetParam.txt` | 15.6 KB | 380 | text · 0 None | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/EquipParamAccessory.txt` | 4.2 KB | 155 | text · 1000 Crimson Amber Medallion | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/EquipParamCustomWeapon.txt` | 66.4 KB | 1608 | text · 10 Longsword +6 - | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/EquipParamGem.txt` | 7.5 KB | 242 | text · 10 test gem 1 | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
 | `public/sourced/open/paramdex/EquipParamGoods.txt` | 65.5 KB | 2184 | text · 100 Tarnished's Furled Finger | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
 | `public/sourced/open/paramdex/EquipParamProtector.txt` | 21.0 KB | 786 | text · 1000 Type 1 | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
 | `public/sourced/open/paramdex/EquipParamWeapon.txt` | 110.2 KB | 3528 | text · 110000 Unarmed | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs`<br>`src/lib/regulation.test.ts` |
-| `public/sourced/open/paramdex/FaceParam.txt` | 17.6 KB | 565 | text · 0 0: Test Male | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/FaceRangeParam.txt` | 20 B | 2 | text · 1 Minimum | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/FeTextEffectParam.txt` | 615 B | 30 | text · 1 DEMIGOD FELLED | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/GameAreaParam.txt` | 11.3 KB | 210 | text · 10000800 [Stormveil Castle] Godrick | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/GameSystemCommonParam.txt` | 16 B | 1 | text · 0 Configuration | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_AAQuality.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_AAQuality_ps4.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_AAQuality_xboxone.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_DOFQuality.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_DOFQuality_ps4.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_DOFQuality_xboxone.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_DecalQuality.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_EffectQuality.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_EffectQuality_ps4.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_EffectQuality_xboxone.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_LightingQuality.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_LightingQuality_ps4.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_LightingQuality_ps5.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_LightingQuality_scarlett.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_LightingQuality_xboxone.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_MotionBlurQuality.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_MotionBlurQuality_ps4.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_MotionBlurQuality_xboxone.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_RaytracingQuality.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_RaytracingQuality_ps5.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_RaytracingQuality_scarlett.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_ReflectionQuality.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_ReflectionQuality_ps4.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_ReflectionQuality_xboxone.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/FaceParam.txt` | 18.1 KB | 565 | text · 0 0: Test Male | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/FaceRangeParam.txt` | 22 B | 2 | text · 1 Minimum | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/FeTextEffectParam.txt` | 645 B | 30 | text · 1 DEMIGOD FELLED | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/GameAreaParam.txt` | 11.5 KB | 210 | text · 10000800 [Stormveil Castle] Godrick | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/GameSystemCommonParam.txt` | 17 B | 1 | text · 0 Configuration | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_AAQuality.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_AAQuality_ps4.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_AAQuality_xboxone.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_DOFQuality.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_DOFQuality_ps4.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_DOFQuality_xboxone.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_DecalQuality.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_EffectQuality.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_EffectQuality_ps4.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_EffectQuality_xboxone.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_LightingQuality.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_LightingQuality_ps4.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_LightingQuality_ps5.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_LightingQuality_scarlett.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_LightingQuality_xboxone.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_MotionBlurQuality.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_MotionBlurQuality_ps4.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_MotionBlurQuality_xboxone.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_RaytracingQuality.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_RaytracingQuality_ps5.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_RaytracingQuality_scarlett.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_ReflectionQuality.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_ReflectionQuality_ps4.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_ReflectionQuality_xboxone.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
 | `public/sourced/open/paramdex/Gconfig_SSAOQuality.txt` | 0 B | 0 | text ·  | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_SSAOQuality_ps4.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_SSAOQuality_xboxone.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_ShaderQuality.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_ShaderQuality_ps4.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_ShaderQuality_xboxone.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_ShadowQuality.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_ShadowQuality_ps4.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_ShadowQuality_xboxone.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_TextureFilterQuality.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_TextureFilterQuality_ps4.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_TextureFilterQuality_xboxone.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_VolumetricEffectQuality.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_VolumetricEffectQuality_ps4.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_VolumetricEffectQuality_xboxone.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Gconfig_WaterQuality.txt` | 40 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/GestureParam.txt` | 805 B | 51 | text · 0 Bow | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/GraphicsCommonParam.txt` | 16 B | 1 | text · 0 Configuration | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/GrassTypeParam.txt` | 1.6 KB | 93 | text · 7 Green Grass | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_SSAOQuality_ps4.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_SSAOQuality_xboxone.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_ShaderQuality.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_ShaderQuality_ps4.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_ShaderQuality_xboxone.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_ShadowQuality.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_ShadowQuality_ps4.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_ShadowQuality_xboxone.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_TextureFilterQuality.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_TextureFilterQuality_ps4.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_TextureFilterQuality_xboxone.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_VolumetricEffectQuality.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_VolumetricEffectQuality_ps4.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_VolumetricEffectQuality_xboxone.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Gconfig_WaterQuality.txt` | 45 B | 5 | text · 0 Disable | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/GestureParam.txt` | 856 B | 51 | text · 0 Bow | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/GraphicsCommonParam.txt` | 17 B | 1 | text · 0 Configuration | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/GrassTypeParam.txt` | 1.7 KB | 93 | text · 7 Green Grass | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
 | `public/sourced/open/paramdex/GrassTypeParam_Lv1.txt` | 1.1 KB | 54 | text · 7 Green Grass | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
 | `public/sourced/open/paramdex/GrassTypeParam_Lv2.txt` | 1.1 KB | 54 | text · 7 Green Grass | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/HitMtrlParam.txt` | 207 B | 18 | text · 0 None | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/ItemLotParam_enemy.txt` | 188.9 KB | 4992 | text · 0 Head | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/ItemLotParam_map.txt` | 196.9 KB | 5118 | text · 2 Flask of Crimson | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/KeyAssignMenuItemParam.txt` | 657 B | 29 | text · 1 Move | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/KnowledgeLoadScreenItemParam.txt` | 1.3 KB | 67 | text · 1 Crouching | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/Magic.txt` | 11.4 KB | 317 | text · 4000 [Sorcery] Glintstone Pebble | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/MapDefaultInfoParam.txt` | 17.8 KB | 330 | text · 10000000 Stormveil Castle | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/HitMtrlParam.txt` | 225 B | 18 | text · 0 None | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/ItemLotParam_enemy.txt` | 193.7 KB | 4992 | text · 0 Head | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/ItemLotParam_map.txt` | 201.9 KB | 5118 | text · 2 Flask of Crimson | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/KeyAssignMenuItemParam.txt` | 686 B | 29 | text · 1 Move | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/KnowledgeLoadScreenItemParam.txt` | 1.4 KB | 67 | text · 1 Crouching | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/Magic.txt` | 11.7 KB | 317 | text · 4000 [Sorcery] Glintstone Pebble | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/MapDefaultInfoParam.txt` | 18.1 KB | 330 | text · 10000000 Stormveil Castle | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
 | `public/sourced/open/paramdex/MapGdRegionDrawParam.txt` | 1.6 KB | 64 | text · 1000 Stormveil Castle | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/MapGdRegionInfoParam.txt` | 8.6 KB | 173 | text · 10000000 Stormveil Castle | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/MapNameTexParam.txt` | 604 B | 32 | text · 10 Limgrave | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/NpcParam.txt` | 179.3 KB | 6864 | text · 1 Human | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs`<br>`src/lib/regulation.test.ts` |
-| `public/sourced/open/paramdex/ShopLineupParam.txt` | 54.0 KB | 1261 | text · 100000 [Gatekeeper Gostoc] Festering | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/WorldMapPlaceNameParam.txt` | 195 B | 9 | text · 8000000 Limgrave | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
-| `public/sourced/open/paramdex/WorldMapPointParam.txt` | 24.7 KB | 471 | text · 78500 Guidance of Grace: | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/MapGdRegionInfoParam.txt` | 8.8 KB | 173 | text · 10000000 Stormveil Castle | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/MapNameTexParam.txt` | 636 B | 32 | text · 10 Limgrave | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/NpcParam.txt` | 186.0 KB | 6864 | text · 1 Human | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs`<br>`src/lib/regulation.test.ts` |
+| `public/sourced/open/paramdex/ShopLineupParam.txt` | 55.3 KB | 1261 | text · 100000 [Gatekeeper Gostoc] Festering | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/WorldMapPlaceNameParam.txt` | 204 B | 9 | text · 8000000 Limgrave | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
+| `public/sourced/open/paramdex/WorldMapPointParam.txt` | 25.1 KB | 471 | text · 78500 Guidance of Grace: | — | `scripts/extract-paramdex-names.py`<br>`scripts/gen-aliases.mjs` |
 | `public/sourced/open/place-names.json` | 35.2 KB | 1006 | id→string map[1006] | dungeon, location | `src/lib/entityIndexBuild.ts`<br>`src/lib/vanillaData.guard.test.ts` |
 | `public/sourced/open/recipes.json` | 25.3 KB | 124 | object{source, recipes} · recipes[124] · id, name, materials, url | spell, recipe, material | `src/lib/entityGraph.test.ts`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/recipes.test.ts`<br>`src/lib/recipes.ts` |
 | `public/sourced/open/region-levels.json` | 37.6 KB | 10 | object{source, areas} · areas[10] · area, levelMin, levelMax, upgradeMin, upgradeMax, steps | weapon, talisman, spell, ash, spirit, boss, npc, quest, grace, dungeon, location, merchant, recipe, material, hunt, text | `src/lib/beforeYouGo.test.ts`<br>`src/lib/combat.test.ts`<br>`src/lib/gideon.level.test.ts`<br>`src/lib/likelyInferences.ts`<br>`src/lib/regionLevels.ts` |
@@ -552,7 +425,7 @@ Counts of `{{Infobox <Type>}}` across all 4,939 pages (a page can carry one info
 | `public/sourced/open/wiki-db/boss.json` | 55.7 KB | 110 | object{source, kind, count, records} · records[110] · id, title, kind, infobox, url, dlc, categories, region, location, description, drops, stats | boss, location, item | `scripts/build-boss-roster.mjs`<br>`src/lib/entityIndexBuild.ts` |
 | `public/sourced/open/wiki-db/class.json` | 7.8 KB | 17 | object{source, kind, count, records} · records[17] · id, title, kind, infobox, url, dlc, categories, region, location, description, drops, stats | weapon, spell, boss, enemy, location, item, class | **REDUNDANT** → public/sourced/open/fanapi/classes.json + src/data build tables |
 | `public/sourced/open/wiki-db/dungeon.json` | 21.1 KB | 63 | object{source, kind, count, records} · records[63] · id, title, kind, infobox, url, dlc, categories, region, location, description, drops, stats | dungeon, location, item | `src/lib/entityIndexBuild.ts` |
-| `public/sourced/open/wiki-db/enemy.json` | 89.7 KB | 171 | object{source, kind, count, records} · records[171] · id, title, kind, infobox, url, dlc, categories, region, location, description, drops, stats | enemy, location, item | `src/lib/entityIndexBuild.ts` |
+| `public/sourced/open/wiki-db/enemy.json` | 89.7 KB | 171 | object{source, kind, count, records} · records[171] · id, title, kind, infobox, url, dlc, categories, region, location, description, drops, stats | enemy, location, item | `src/lib/enemyDrops.test.ts`<br>`src/lib/entityIndexBuild.ts` |
 | `public/sourced/open/wiki-db/faction.json` | 16.8 KB | 53 | object{source, kind, count, records} · records[53] · id, title, kind, infobox, url, dlc, categories, region, location, description, drops, stats | location, item | **REDUNDANT** → src/knowledge/catalog.ts facts (factions) |
 | `public/sourced/open/wiki-db/gesture.json` | 15.1 KB | 48 | object{source, kind, count, records} · records[48] · id, title, kind, infobox, url, dlc, categories, region, location, description, drops, stats | gesture, location, item | **REDUNDANT** → public/sourced/guide/catalog.json (gestures) |
 | `public/sourced/open/wiki-db/item.json` | 388.1 KB | 974 | object{source, kind, count, records} · records[974] · id, title, kind, infobox, url, dlc, categories, region, location, description, drops, stats | location, item | `src/lib/entityIndexBuild.ts` |
@@ -570,7 +443,7 @@ Counts of `{{Infobox <Type>}}` across all 4,939 pages (a page can carry one info
 | `public/sourced/open/wiki-db/spirit.json` | 29.1 KB | 73 | object{source, kind, count, records} · records[73] · id, title, kind, infobox, url, dlc, categories, region, location, description, drops, stats | ash, spirit, location, item | `src/lib/entityIndexBuild.ts` |
 | `public/sourced/open/wiki-db/summary.json` | 528 B | 4 | object{source, kinds, skipped, redirects} | weapon, armor, talisman, spell, spirit, gesture, boss, enemy, npc, dungeon, location, item, class | **REDUNDANT** → per-kind wiki-db/*.json (export manifest) |
 | `public/sourced/open/wiki-db/talisman.json` | 66.2 KB | 156 | object{source, kind, count, records} · records[156] · id, title, kind, infobox, url, dlc, categories, region, location, description, drops, stats | talisman, location, item | `src/lib/entityIndexBuild.ts` |
-| `public/sourced/open/wiki-db/weapon.json` | 174.5 KB | 498 | object{source, kind, count, records} · records[498] · id, title, kind, infobox, url, dlc, categories, region, location, description, drops, stats | weapon, location, item | `src/lib/entityIndexBuild.ts` |
+| `public/sourced/open/wiki-db/weapon.json` | 174.5 KB | 498 | object{source, kind, count, records} · records[498] · id, title, kind, infobox, url, dlc, categories, region, location, description, drops, stats | weapon, location, item | `src/lib/auditFixes.test.ts`<br>`src/lib/entityIndexBuild.ts` |
 | `public/sourced/open/wiki-sections.json` | 5.9 MB | 19174 | object{source, sections} · sections[19174] · id, page, heading, text | text | `scripts/links-audit.mjs`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/wikiText.test.ts`<br>`src/lib/wikiText.ts` |
 | `public/sourced/open/world-lots.json` | 516.8 KB | 3458 | array[3458] · flag, lot, map, x, y, z, name, cat, src | quest | `src/lib/chestFacts.test.ts`<br>`src/lib/coords.ts`<br>`src/lib/openData.ts`<br>`src/lib/pwa.test.ts`<br>`src/lib/vanillaData.guard.test.ts` |
 | `public/sourced/regulation-vanilla-v1.17.json` | 1.1 MB | 3302 | object{calcCorrectGraphs, attackElementCorrects, reinforceTypes, statusSpEffectParams, scalingTiers, weapons} · scalingTiers[6], weapons[3296] · 0, 1 | params | `src/build/libraryVerdict.test.ts`<br>`src/build/presets.test.ts`<br>`src/build/smithing.test.ts`<br>`src/lib/advisor.test.ts`<br>`src/lib/ar.ts`<br>`src/lib/combat.test.ts`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/gideon.advisor.test.ts`<br>`src/lib/gideon.eval.test.ts`<br>`src/lib/gideon.upgrade.test.ts`<br>`src/lib/pwa.test.ts`<br>`src/lib/pwa.ts`<br>`src/lib/regulation.test.ts`<br>`src/lib/respecAdvice.test.ts`<br>`src/lib/softCaps.ts`<br>`src/lib/upgradeAdvice.test.ts`<br>`src/lib/weaponCompare.test.ts`<br>`src/lib/weaponStats.test.ts`<br>`src/settings/dataFreshness.ts` |
@@ -659,34 +532,38 @@ Counts of `{{Infobox <Type>}}` across all 4,939 pages (a page can carry one info
 
 | path | size | records | shape / fields | entity kinds | consumed by |
 | --- | --- | --- | --- | --- | --- |
-| `src/data/aliases.json` | 264.1 KB | 1233 | array[1233] · engineId, slug, kind, fmgName, aliases, source | by `kind`: boss, grace, hunt, invader, item, quest, region | `scripts/build-boss-roster.mjs`<br>`scripts/gen-aliases.mjs`<br>`scripts/gen-dungeons.mjs`<br>`src/lib/aliases.gen.test.ts`<br>`src/lib/aliases.test.ts`<br>`src/lib/aliases.ts`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/vanillaData.guard.test.ts` |
-| `src/data/bosses.json` | 136.6 KB | 220 | array[220] · id, name, campaign, region, location, grace, tier, requiredForEnding, drops, coords, hp, runes | boss, quest, grace, location, item, hunt | `scripts/build-boss-roster.mjs`<br>`scripts/gen-aliases.mjs`<br>`src/knowledge/catalog.ts`<br>`src/lib/bossRoster.ts`<br>`src/lib/entityGraph.ts`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/vanillaData.guard.test.ts` |
+| `src/data/aliases.json` | 1.3 MB | 7120 | array[7120] · engineId, slug, kind, fmgName, aliases, source | by `kind`: boss, damage, dungeon, enemy, grace, hunt, invader, item, line, mechanic, npc, npcs, quest, region | `scripts/build-boss-roster.mjs`<br>`scripts/gen-aliases.mjs`<br>`scripts/gen-dungeons.mjs`<br>`src/lib/aliases.gen.test.ts`<br>`src/lib/aliases.test.ts`<br>`src/lib/auditFixes.test.ts`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/vanillaData.guard.test.ts` |
+| `src/data/bosses.json` | 142.2 KB | 220 | array[220] · id, name, campaign, region, location, grace, tier, requiredForEnding, drops, coords, hp, runes | boss, quest, grace, location, item, hunt | `scripts/build-boss-roster.mjs`<br>`scripts/gen-aliases.mjs`<br>`src/knowledge/catalog.ts`<br>`src/lib/bossRoster.ts`<br>`src/lib/entityGraph.ts`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/vanillaData.guard.test.ts` |
 | `src/data/dungeons.json` | 46.9 KB | 119 | array[119] · id, name, kind, region, world, x, y, bosses, loot, keys, levers, impSeals | by `kind`: catacomb, cave, divine-tower, evergaol, gaol, hero-grave, legacy, ruins, tunnel | `scripts/build-boss-roster.mjs`<br>`scripts/gen-dungeons.mjs`<br>`src/lib/dungeons.ts`<br>`src/lib/entityIndexBuild.ts` |
 | `src/data/entity-overrides.json` | 1.9 KB | 0 | object{_doc, _typos_doc, aliases, typos, skip} | armor, spell, boss, location, hunt, params, alias | `src/lib/entityIndexBuild.ts` |
 | `src/data/event-flag-bst.json` | 173.4 KB | 11920 | array[11920] · 0, 1 | — | `src/lib/sl2/facts.ts` |
+| `src/data/game-name-aliases.json` | 6.8 KB | 120 | object{Abductor Virgin (Swinging Sickle), Abductor Virgin (Wheel), Adan, Thief of Fire (Boss), Altus, Bear Woods, Ancient Dragon Senessax (Boss), Ancient Ruins, Under-Stair, Ancient Valley Ruins, Battlemage Hugues (Boss)} | boss, npc, location, hunt, alias | `scripts/gen-aliases.mjs`<br>`src/lib/entityIndexBuild.ts` |
+| `src/data/game-place-regions.json` | 2.7 KB | 47 | object{_doc, Peninsula Minor Erdtree, Lake Minor Erdtree, Uld Minor Erdtree, Fort Laiedd South, Hermit Village Cliff Road, Outer Wall Minor Erdtree, Outer Wall East} | ammo, dungeon, location, build, alias, text | `src/lib/entityIndexBuild.ts` |
 | `src/data/grace-flags.json` | 8.9 KB | 412 | object{grace:100000, grace:100001, grace:100002, grace:100003, grace:100004, grace:100005, grace:100006, grace:100007} | grace | `src/lib/sl2/facts.ts` |
 | `src/data/hosted-bosses.json` | 43.1 KB | 209 | array[209] · id, name, flag, kill, map, x, y, z | boss | `src/lib/aliases.ts`<br>`src/lib/sl2/facts.ts`<br>`src/lib/vanillaData.guard.test.ts` |
-| `src/data/hosted-graces.json` | 57.4 KB | 418 | array[418] · id, warpId, name, region, world | grace, location | `src/lib/aliases.ts` |
-| `src/data/hunts.json` | 37.0 KB | 207 | array[207] · id, name, place, region, flag, campaign | location, hunt | `scripts/build-boss-roster.mjs`<br>`scripts/gen-aliases.mjs`<br>`scripts/gen-dungeons.mjs`<br>`src/knowledge/completion.test.ts`<br>`src/knowledge/completion.ts`<br>`src/lib/armory.ts`<br>`src/lib/sl2/facts.ts` |
+| `src/data/hosted-graces.json` | 60.2 KB | 418 | array[418] · id, warpId, name, region, world | grace, location | `src/lib/aliases.ts` |
+| `src/data/hunts.json` | 38.7 KB | 207 | array[207] · id, name, place, region, flag, campaign | location, hunt | `scripts/build-boss-roster.mjs`<br>`scripts/gen-aliases.mjs`<br>`scripts/gen-dungeons.mjs`<br>`src/knowledge/completion.test.ts`<br>`src/knowledge/completion.ts`<br>`src/lib/armory.ts`<br>`src/lib/sl2/facts.ts` |
 | `src/data/image-index.json` | 167.4 KB | 2104 | object{hand axe, jawbone axe, forked hatchet, iron cleaver, battle axe, ripple blade, icerind hatchet, sacrificial axe} | weapon, grace, image | `src/lib/entityIndexBuild.ts`<br>`src/lib/fanImage.test.ts`<br>`src/lib/fanImage.ts`<br>`src/lib/ps5Icons.ocr.test.ts`<br>`src/lib/ps5Icons.ts` |
+| `src/data/legacy-alias-exceptions.json` | 4.9 KB | 196 | array[196] | boss, alias | `scripts/gen-aliases.mjs`<br>`src/lib/auditFixes.test.ts` |
+| `src/data/legacy-entity-ids.json` | 579.4 KB | 7786 | array[7786] · id, kind, name | by `kind`: armor, ash, boss, build, dungeon, ending, enemy, gate, grace, item, material, mechanic, merchant, npc, quest, region, shield, spell, spirit, talisman, weapon | `scripts/gen-aliases.mjs`<br>`src/lib/auditFixes.test.ts` |
 | `src/data/seed.ts` | 5.5 KB | — | TypeScript module | — | `scripts/ui-crawl.mjs`<br>`src/lib/related.ts` |
 
 ## `src/knowledge/*.ts` exports
 
 | module | size | exports | imported by |
 | --- | --- | --- | --- |
-| `src/knowledge/awesome.ts` | 8.7 KB | `ResourceRole`, `AwesomeResource`, `awesomeResources`, `awesomeByRole` | `src/library/Guides.tsx` |
+| `src/knowledge/awesome.ts` | 9.0 KB | `ResourceRole`, `AwesomeResource`, `awesomeResources`, `awesomeByRole` | `src/library/Guides.tsx` |
 | `src/knowledge/bossPins.ts` | 21.4 KB | `bossPins`, `findBossPin` | `src/lib/gideon.ts`<br>`src/lib/omnibox.ts`<br>`src/lib/search.ts` |
-| `src/knowledge/buildLibrary.test.ts` | 3.4 KB | — | **UNUSED** |
+| `src/knowledge/buildLibrary.test.ts` | 3.5 KB | — | **UNUSED** |
 | `src/knowledge/builds.test.ts` | 4.7 KB | — | **UNUSED** |
 | `src/knowledge/builds.ts` | 28.4 KB | `PatchFlag`, `OpBuild`, `opBuilds`, `LEVEL_PLAN_LEVELS`, `LevelPlan`, `scaleStats`, `levelPlanFor`, `levelPlansFor` | `src/Build.tsx`<br>`src/Gideon.tsx`<br>`src/build/KitLibraryPanels.tsx`<br>`src/lib/advisor.ts`<br>`src/lib/buildHunt.test.ts`<br>`src/lib/buildHunt.ts`<br>`src/lib/entityGraph.ts`<br>`src/lib/gideon.test.ts`<br>`src/lib/gideon.ts`<br>`src/lib/gideonLlm.ts`<br>`src/lib/gideonTools.ts`<br>`src/lib/respecAdvice.ts`<br>`src/library/BuildPlanner.tsx` |
-| `src/knowledge/catalog.ts` | 76.0 KB | `regulation`, `FactKind`, `Fact`, `facts`, `regionFactFor`, `bossEncounterRows`, `encountersByGroup`, `byId`, `normalize`, `matchFacts`, `matchMany`, `interview` | `src/QoL.tsx`<br>`src/Reckon.tsx`<br>`src/build/smithing.ts`<br>`src/lib/advisor.ts`<br>`src/lib/aliases.ts`<br>`src/lib/areaContext.ts`<br>`src/lib/areaHub.ts`<br>`src/lib/beatPins.ts`<br>`src/lib/bossEncounters.test.ts`<br>`src/lib/buildHunt.ts`<br>`src/lib/catalogueIds.ts`<br>`src/lib/chestFacts.ts`<br>`src/lib/combat.ts`<br>`src/lib/completionView.ts`<br>`src/lib/coop.test.ts`<br>`src/lib/entityGraph.ts`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/fanImage.test.ts`<br>`src/lib/gideon.ts`<br>`src/lib/gideonLlm.ts`<br>`src/lib/goods.ts`<br>`src/lib/infer.ts`<br>`src/lib/inferChains.test.ts`<br>`src/lib/inferenceAudit.ts`<br>`src/lib/interlink.ts`<br>`src/lib/links.ts`<br>`src/lib/linksAudit.ts`<br>`src/lib/ocr.ts`<br>`src/lib/omnibox.ts`<br>`src/lib/packet.ts`<br>`src/lib/progressAudit.ts`<br>`src/lib/ps5Scanner.ts`<br>`src/lib/quickLog.ts`<br>`src/lib/regionLeftovers.ts`<br>`src/lib/regulation.test.ts`<br>`src/lib/related.ts`<br>`src/lib/remembranceChoice.ts`<br>`src/lib/scenarioInference.test.ts`<br>`src/lib/search.ts`<br>`src/lib/setupWizard.ts`<br>`src/lib/spoilers.ts`<br>`src/lib/warpSlugs.test.ts`<br>`src/library/BossFacts.tsx`<br>`src/library/catalog.ts`<br>`src/library/pageModel.ts`<br>`src/map/notes.ts`<br>`src/map/pins.ts`<br>`src/shell/JourneyArea.tsx`<br>`src/shell/JourneyNow.tsx`<br>`src/shell/RecommendedCard.tsx` |
+| `src/knowledge/catalog.ts` | 76.7 KB | `regulation`, `FactKind`, `Fact`, `facts`, `regionFactFor`, `bossEncounterRows`, `encountersByGroup`, `byId`, `normalize`, `matchFacts`, `matchMany`, `interview` | `src/QoL.tsx`<br>`src/Reckon.tsx`<br>`src/build/smithing.ts`<br>`src/lib/advisor.ts`<br>`src/lib/aliases.ts`<br>`src/lib/areaContext.ts`<br>`src/lib/areaHub.ts`<br>`src/lib/beatPins.ts`<br>`src/lib/bossEncounters.test.ts`<br>`src/lib/buildHunt.ts`<br>`src/lib/catalogueIds.ts`<br>`src/lib/chestFacts.ts`<br>`src/lib/combat.ts`<br>`src/lib/completionView.ts`<br>`src/lib/coop.test.ts`<br>`src/lib/entityGraph.ts`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/fanImage.test.ts`<br>`src/lib/gideon.ts`<br>`src/lib/gideonLlm.ts`<br>`src/lib/goods.ts`<br>`src/lib/infer.ts`<br>`src/lib/inferChains.test.ts`<br>`src/lib/inferenceAudit.ts`<br>`src/lib/interlink.ts`<br>`src/lib/links.ts`<br>`src/lib/linksAudit.ts`<br>`src/lib/ocr.ts`<br>`src/lib/omnibox.ts`<br>`src/lib/packet.ts`<br>`src/lib/progressAudit.ts`<br>`src/lib/ps5Scanner.ts`<br>`src/lib/quickLog.ts`<br>`src/lib/regionLeftovers.ts`<br>`src/lib/regulation.test.ts`<br>`src/lib/related.ts`<br>`src/lib/remembranceChoice.ts`<br>`src/lib/scenarioInference.test.ts`<br>`src/lib/search.ts`<br>`src/lib/setupWizard.ts`<br>`src/lib/spoilers.ts`<br>`src/lib/warpSlugs.test.ts`<br>`src/library/BossFacts.tsx`<br>`src/library/catalog.ts`<br>`src/library/pageModel.ts`<br>`src/map/notes.ts`<br>`src/map/pins.ts`<br>`src/shell/JourneyArea.tsx`<br>`src/shell/JourneyNow.tsx`<br>`src/shell/RecommendedCard.tsx` |
 | `src/knowledge/collectibles.ts` | 16.1 KB | `Collectible`, `scadutreeFragments`, `mapFragments`, `flaskUpgrades` | `src/lib/blessings.test.ts`<br>`src/lib/completionView.ts`<br>`src/lib/gideon.ts`<br>`src/lib/openData.ts`<br>`src/lib/ps5MapFragments.ts`<br>`src/library/Guides.tsx`<br>`src/shell/MeOverview.tsx` |
 | `src/knowledge/completion.test.ts` | 3.4 KB | — | **UNUSED** |
 | `src/knowledge/completion.ts` | 4.5 KB | `CompleteHow`, `completionRules`, `FieldHunt`, `canonicalHunts`, `fieldHunts` | `src/lib/gideon.ts`<br>`src/shell/MeOverview.tsx` |
-| `src/knowledge/dungeons.test.ts` | 1.8 KB | — | **UNUSED** |
+| `src/knowledge/dungeons.test.ts` | 1.9 KB | — | **UNUSED** |
 | `src/knowledge/dungeons.ts` | 3.8 KB | `DungeonStep`, `Dungeon`, `dungeons`, `DungeonPlan`, `stepKnown`, `dungeonPlan`, `dungeonGrace` | `src/Dungeon.tsx`<br>`src/lib/areaHub.ts`<br>`src/lib/entityGraph.ts` |
-| `src/knowledge/endings.test.ts` | 10.7 KB | — | **UNUSED** |
+| `src/knowledge/endings.test.ts` | 10.9 KB | — | **UNUSED** |
 | `src/knowledge/endings.ts` | 14.4 KB | `PlanStep`, `EndingRoute`, `endings`, `findEnding`, `knownSet`, `completionIds`, `isStepDone`, `nextCompletionId`, `planRoute` | `src/Quests.tsx`<br>`src/lib/beatPins.test.ts`<br>`src/lib/gideon.ts`<br>`src/lib/gideonHeader.ts`<br>`src/lib/gideonLlm.ts`<br>`src/lib/inferChains.test.ts`<br>`src/lib/lockWarnings.ts`<br>`src/shell/JourneyNow.tsx` |
 | `src/knowledge/equipLoad.ts` | 3.0 KB | `MIN_EQUIP_LOAD_ENDURANCE`, `MAX_EQUIP_LOAD`, `maxEquipLoad`, `LoadClass`, `loadClass` | `src/build/statPlanner.ts`<br>`src/lib/gearSheet.test.ts`<br>`src/lib/gearSheet.ts` |
 | `src/knowledge/gates.test.ts` | 10.4 KB | — | **UNUSED** |
@@ -694,8 +571,8 @@ Counts of `{{Infobox <Type>}}` across all 4,939 pages (a page can carry one info
 | `src/knowledge/graces.ts` | 10.0 KB | `AtlasWorld`, `WarpGrace`, `warpGraces`, `nextGraces`, `matchWarp`, `worlds` | `src/Atlas.tsx`<br>`src/QoL.tsx`<br>`src/lib/advisor.ts`<br>`src/lib/aliases.ts`<br>`src/lib/areaContext.ts`<br>`src/lib/areaHub.ts`<br>`src/lib/beatPins.test.ts`<br>`src/lib/beatPins.ts`<br>`src/lib/completionView.ts`<br>`src/lib/engineMarkers.ts`<br>`src/lib/entityGraph.ts`<br>`src/lib/gatePins.ts`<br>`src/lib/gatheringNodes.ts`<br>`src/lib/interlink.ts`<br>`src/lib/leftoverPins.test.ts`<br>`src/lib/leftoverPins.ts`<br>`src/lib/leftovers.ts`<br>`src/lib/ps5MapGraces.ts`<br>`src/lib/ps5MapRegistration.ts`<br>`src/lib/quickLog.ts`<br>`src/lib/regionLeftovers.ts`<br>`src/lib/related.ts`<br>`src/lib/setupWizard.ts`<br>`src/lib/spoilers.ts`<br>`src/map/MapNotes.tsx`<br>`src/map/follow.ts`<br>`src/map/notes.ts`<br>`src/map/pins.ts`<br>`src/map/resultPins.ts`<br>`src/shell/AreaChip.tsx`<br>`src/shell/JourneyArea.tsx` |
 | `src/knowledge/idIntegrity.test.ts` | 1.0 KB | — | **UNUSED** |
 | `src/knowledge/inferChains.ts` | 12.8 KB | `InferChain`, `inferChains`, `chainsFor`, `explainInference` | `src/lib/entityGraph.ts`<br>`src/lib/infer.ts`<br>`src/lib/inferChains.test.ts`<br>`src/lib/inferenceAudit.ts`<br>`src/lib/linksAudit.ts`<br>`src/lib/scenarioInference.test.ts`<br>`src/lib/setupWizard.ts` |
-| `src/knowledge/loot.test.ts` | 3.1 KB | — | **UNUSED** |
-| `src/knowledge/loot.ts` | 27.3 KB | `LootKind`, `Loot`, `loot`, `matchLoot` | `src/build/smithing.ts`<br>`src/lib/advisor.ts`<br>`src/lib/areaHub.ts`<br>`src/lib/beatPins.ts`<br>`src/lib/buildHunt.ts`<br>`src/lib/combat.ts`<br>`src/lib/completionView.ts`<br>`src/lib/entityGraph.ts`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/gatePins.ts`<br>`src/lib/gideon.ts`<br>`src/lib/goods.ts`<br>`src/lib/interlink.ts`<br>`src/lib/leftoverPins.ts`<br>`src/lib/leftovers.ts`<br>`src/lib/linksAudit.ts`<br>`src/lib/omnibox.ts`<br>`src/lib/regionLeftovers.ts`<br>`src/lib/related.ts`<br>`src/lib/remembranceChoice.ts`<br>`src/lib/search.ts`<br>`src/map/pins.ts` |
+| `src/knowledge/loot.test.ts` | 3.2 KB | — | **UNUSED** |
+| `src/knowledge/loot.ts` | 27.5 KB | `LootKind`, `Loot`, `loot`, `matchLoot` | `src/build/smithing.ts`<br>`src/lib/advisor.ts`<br>`src/lib/areaHub.ts`<br>`src/lib/beatPins.ts`<br>`src/lib/buildHunt.ts`<br>`src/lib/combat.ts`<br>`src/lib/completionView.ts`<br>`src/lib/entityGraph.ts`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/gatePins.ts`<br>`src/lib/gideon.ts`<br>`src/lib/goods.ts`<br>`src/lib/interlink.ts`<br>`src/lib/leftoverPins.ts`<br>`src/lib/leftovers.ts`<br>`src/lib/linksAudit.ts`<br>`src/lib/omnibox.ts`<br>`src/lib/regionLeftovers.ts`<br>`src/lib/related.ts`<br>`src/lib/remembranceChoice.ts`<br>`src/lib/search.ts`<br>`src/map/pins.ts` |
 | `src/knowledge/mechanics.test.ts` | 2.6 KB | — | **UNUSED** |
 | `src/knowledge/mechanics.ts` | 46.1 KB | `MechanicCategory`, `MechanicCard`, `mechanics`, `mechanicById`, `mechanicSummary`, `mechanicTerms` | `src/lib/entityGraph.ts`<br>`src/lib/glossary.ts`<br>`src/lib/linksAudit.ts`<br>`src/library/Guides.tsx`<br>`src/library/catalog.ts`<br>`src/peek/Term.tsx`<br>`src/peek/peekData.ts` |
 | `src/knowledge/medusa.ts` | 9.8 KB | `medusaChapters` | `src/Gideon.tsx`<br>`src/MedusaRoute.tsx`<br>`src/lib/gideon.ts` |
@@ -710,10 +587,10 @@ Counts of `{{Infobox <Type>}}` across all 4,939 pages (a page can carry one info
 | `src/knowledge/pvp.ts` | 63.0 KB | `PvpMode`, `PvpBracket`, `PvpLoadout`, `PvpBuild`, `pvpBuilds`, `PvpMatchup`, `pvpMatchups` | `src/Build.tsx`<br>`src/Gideon.tsx`<br>`src/build/KitLibraryPanels.tsx`<br>`src/lib/advisor.ts`<br>`src/lib/buildHunt.test.ts`<br>`src/lib/gideon.ts`<br>`src/lib/gideonLlm.ts`<br>`src/lib/gideonTools.ts`<br>`src/lib/respecAdvice.ts`<br>`src/library/BuildPlanner.tsx` |
 | `src/knowledge/pvp116.test.ts` | 6.2 KB | — | **UNUSED** |
 | `src/knowledge/pvpTech.ts` | 12.6 KB | `PvpTechCategory`, `PvpTech`, `pvpTech` | `src/Build.tsx`<br>`src/build/KitLibraryPanels.tsx` |
-| `src/knowledge/questLines.test.ts` | 4.5 KB | — | **UNUSED** |
+| `src/knowledge/questLines.test.ts` | 4.6 KB | — | **UNUSED** |
 | `src/knowledge/questlineOrder.test.ts` | 5.0 KB | — | **UNUSED** |
 | `src/knowledge/regionRoutes.test.ts` | 1.6 KB | — | **UNUSED** |
-| `src/knowledge/regionRoutes.ts` | 6.2 KB | `ROUTE_REGIONS`, `RouteRegion`, `routeGroupFor`, `routeIndexFor`, `isDlcRegion`, `isAlwaysReachable`, `regionsAdjacent`, `regionReachableFrom` | `src/lib/advisor.ts` |
+| `src/knowledge/regionRoutes.ts` | 6.4 KB | `ROUTE_REGIONS`, `RouteRegion`, `routeGroupFor`, `routeIndexFor`, `isDlcRegion`, `isAlwaysReachable`, `regionsAdjacent`, `regionReachableFrom` | `src/lib/advisor.ts` |
 | `src/knowledge/remembrances.test.ts` | 1.5 KB | — | **UNUSED** |
 | `src/knowledge/remembrances.ts` | 10.3 KB | `RemembranceReward`, `Remembrance`, `remembrances`, `findRemembrance`, `remembranceCount` | `src/lib/entityGraph.ts`<br>`src/lib/gideon.ts`<br>`src/lib/linksAudit.ts`<br>`src/lib/remembranceChoice.test.ts`<br>`src/lib/remembranceChoice.ts`<br>`src/library/EntityOverlay.tsx`<br>`src/library/EntityPanel.tsx` |
 | `src/knowledge/setupInference.test.ts` | 3.0 KB | — | **UNUSED** |
@@ -730,10 +607,6 @@ Committed engine inputs (paramdefs, MFG category maps, event-flag BST). The engi
 | path | size | records | shape / fields | entity kinds | consumed by |
 | --- | --- | --- | --- | --- | --- |
 | `vendor/elden-ring-map/data/eventflag_bst.txt` | 161.7 KB | 11920 | text · 1045540,6223 | — | `vendor/elden-ring-map/server/index.js`<br>`vendor/elden-ring-map/tools/er_save.py` |
-| `vendor/elden-ring-map/data/items.json` | 881.8 KB | 3349 | object{locales, markers} · locales[2], markers[3347] | merchant, item | `scripts/export-engine-markers.mjs`<br>`scripts/ingest-fanapi.mjs`<br>`scripts/ingest-packs.py`<br>`src/lib/entityIndexBuild.ts`<br>`src/lib/fanImage.test.ts`<br>`src/lib/fanapiData.test.ts`<br>`vendor/elden-ring-map/server/index.js`<br>`vendor/elden-ring-map/tools/extract_items.py`<br>`vendor/elden-ring-map/tools/fetch_tips.py` |
-| `vendor/elden-ring-map/data/legacy-conv.json` | 21.8 KB | 202 | object{rows, undergroundBlocks} · rows[196], undergroundBlocks[6] · src, srcPos, dst, dstPos, base | merchant | `scripts/extract-npc-placements.py`<br>`vendor/elden-ring-map/server/index.js`<br>`vendor/elden-ring-map/tools/build_markers.py` |
-| `vendor/elden-ring-map/data/map-banners.json` | 3.8 KB | 62 | object{generatedBy, source, masterPx, scale, matchMin, knownLabels, banners, unlabeled} · banners[9], unplacedSubcategories[53] · id, master, px, py, rect, confidence, source, name, textId | location, merchant, params, text | `src/lib/mapBanners.test.ts`<br>`vendor/elden-ring-map/tools/find_map_banners.py` |
-| `vendor/elden-ring-map/data/markers.json` | 552.8 KB | 2688 | object{locales, markers} · locales[2], markers[2686] | merchant | `scripts/export-engine-markers.mjs`<br>`scripts/extract-vanilla-open.py`<br>`scripts/gen-dungeons.mjs`<br>`scripts/merge-engine-markers.py`<br>`src/lib/regulation.test.ts`<br>`vendor/elden-ring-map/server/index.js`<br>`vendor/elden-ring-map/tools/build_markers.py`<br>`vendor/elden-ring-map/tools/fetch_tips.py`<br>`vendor/elden-ring-map/tools/find_map_banners.py`<br>`vendor/elden-ring-map/tools/verify_markers.py` |
 | `vendor/elden-ring-map/data/mfg/_piece_final_map.json` | 13.3 KB | 43 | array[43] · lotId, flag, type, entityId, collectedFlag, map, x, y, z, source, handlerId | merchant | `vendor/elden-ring-map/tools/extract_items.py`<br>`vendor/elden-ring-map/tools/extract_pieces.py` |
 | `vendor/elden-ring-map/data/mfg/ember_pieces.json` | 71.9 KB | 316 | array[316] · map, name, model, x, y, z, entity_id, instance_id | merchant | `vendor/elden-ring-map/tools/extract_items.py`<br>`vendor/elden-ring-map/tools/extract_pieces.py` |
 | `vendor/elden-ring-map/data/mfg/goods_crafting_ids.json` | 1.0 KB | 142 | array[142] | merchant, recipe, item | `scripts/erlib/mfg_categories.py`<br>`vendor/elden-ring-map/tools/extract_items.py`<br>`vendor/elden-ring-map/tools/extract_pieces.py` |
@@ -747,7 +620,8 @@ Committed engine inputs (paramdefs, MFG category maps, event-flag BST). The engi
 | `vendor/elden-ring-map/data/mfg/weapon_ammo_ids.json` | 730 B | 73 | array[73] | weapon, ammo, merchant | `scripts/erlib/mfg_categories.py`<br>`vendor/elden-ring-map/tools/extract_items.py`<br>`vendor/elden-ring-map/tools/extract_pieces.py` |
 | `vendor/elden-ring-map/data/paramdefs/BonfireWarpParam.xml` | 21.5 KB | 77 | paramdef XML · BONFIRE_WARP_PARAM_ST | — | `scripts/extract-vanilla-open.py`<br>`vendor/elden-ring-map paramdef reader (scripts/erlib/paramdef.py)` |
 | `vendor/elden-ring-map/data/paramdefs/GameAreaParam.xml` | 10.6 KB | 32 | paramdef XML · GAME_AREA_PARAM_ST | — | `scripts/extract-vanilla-open.py`<br>`vendor/elden-ring-map paramdef reader (scripts/erlib/paramdef.py)` |
-| `vendor/elden-ring-map/data/paramdefs/ItemLotParam.xml` | 20.5 KB | 73 | paramdef XML · ITEMLOT_PARAM_ST | — | `scripts/extract-vanilla-open.py`<br>`vendor/elden-ring-map paramdef reader (scripts/erlib/paramdef.py)`<br>`vendor/elden-ring-map/tools/extract_items.py` |
+| `vendor/elden-ring-map/data/paramdefs/ItemLotParam.xml` | 20.5 KB | 73 | paramdef XML · ITEMLOT_PARAM_ST | — | `scripts/extract-enemy-drops.py`<br>`scripts/extract-vanilla-open.py`<br>`vendor/elden-ring-map paramdef reader (scripts/erlib/paramdef.py)`<br>`vendor/elden-ring-map/tools/extract_items.py` |
+| `vendor/elden-ring-map/data/paramdefs/NpcParam.xml` | 97.8 KB | 318 | paramdef XML · NPC_PARAM_ST | — | `scripts/extract-enemy-drops.py`<br>`vendor/elden-ring-map paramdef reader (scripts/erlib/paramdef.py)` |
 | `vendor/elden-ring-map/data/paramdefs/WorldMapLegacyConvParam.xml` | 5.5 KB | 20 | paramdef XML · WORLD_MAP_LEGACY_CONV_PARAM_ST | — | `vendor/elden-ring-map paramdef reader (scripts/erlib/paramdef.py)`<br>`vendor/elden-ring-map/tools/extract_items.py`<br>`vendor/elden-ring-map/tools/extract_pieces.py` |
 | `vendor/elden-ring-map/data/paramdefs/WorldMapPieceParam.xml` | 5.7 KB | 16 | paramdef XML · WORLD_MAP_PIECE_PARAM_ST | — | `vendor/elden-ring-map paramdef reader (scripts/erlib/paramdef.py)` |
 | `vendor/elden-ring-map/data/paramdefs/WorldMapPlaceNameParam.xml` | 3.5 KB | 13 | paramdef XML · WORLD_MAP_PLACE_NAME_PARAM_ST | — | `vendor/elden-ring-map paramdef reader (scripts/erlib/paramdef.py)` |
@@ -759,20 +633,20 @@ Entity kinds where the application’s entity graph (`public/sourced/entity-inde
 
 | kind | app records | richest source | source records | gap | note |
 | --- | --- | --- | --- | --- | --- |
-| weapon | 441 | names.json kind=weapon (FMG rows) | 3722 | **+3281** | App is the deduped base-weapon catalogue; the 3722 FMG rows are upgrade/affinity variants of those bases. Typed DB weapons: 480 (79 shields); EquipParamWeapon names: 3529. |
-| shield | 69 | data/raw/er-mcp.db weapons (shield types) | 79 | **+10** | App shield rows are the FanAPI catalogue (69); the DB count includes upgrade variants of the same shields. |
-| armor | 750 | data/raw/er-mcp.db armor | 680 | -70 | FMG protector rows: 788; save-ids armor: 729. |
-| talisman | 158 | data/raw/er-mcp.db talismans | 156 | -2 | FMG accessory rows: 157; save-ids talisman: 154. |
-| spell | 217 | public/sourced/open/magic.json | 317 | **+100** | App covers the player catalogue; magic.json's extra rows are duplicated/non-player spell ids. DB spells: 213; FanAPI spells: 169. |
+| weapon | 441 | names.json kind=weapon (FMG rows) | 3722 | **+3281** | App is the deduped base-weapon catalogue; the 3722 FMG rows are upgrade/affinity variants of those bases. Typed DB weapons: 0 (0 shields); EquipParamWeapon names: 3529. |
+| shield | 69 | data/raw/er-mcp.db weapons (shield types) | 0 | -69 | App shield rows are the FanAPI catalogue (69); the DB count includes upgrade variants of the same shields. |
+| armor | 751 | data/raw/er-mcp.db armor | 0 | -751 | FMG protector rows: 788; save-ids armor: 729. |
+| talisman | 158 | data/raw/er-mcp.db talismans | 0 | -158 | FMG accessory rows: 157; save-ids talisman: 154. |
+| spell | 218 | public/sourced/open/magic.json | 317 | **+99** | App covers the player catalogue; magic.json's extra rows are duplicated/non-player spell ids. DB spells: 0; FanAPI spells: 169. |
 | ash | 124 | public/sourced/open/save-ids.json ids.aow | 116 | -8 | Player Ashes of War only; the 265 FMG arts rows include non-player/unique weapon skills. FanAPI/checklist ashes: 90. |
-| spirit | 79 | public/sourced/checklists/spirits.json | 64 | -15 | FanAPI spirits: 64. |
-| item | 1187 | data/raw/er-mcp.db acquisition | 2609 | **+1422** | App covers all goods; the acquisition count is rows not items (multi-location + non-item rows). guide items: 2490; FMG goods: 2221; DB Infobox Item pages: 1789. |
-| boss | 280 | public/sourced/open/boss-xyz.json / checklists/bosses.json | 209 | -71 | hosted-bosses: 209; hunts: 207; DB bosses: 165; Fextralife: 163. |
-| npc | 195 | names.json kind=npcs / DB Infobox Character | 482 | **+287** | DB Infobox Character pages: 198; dialogue speakers: 260; FanAPI npcs: 55. |
-| location/region | 311 | DB Infobox Location | 496 | **+185** | checklists locations: 177; FMG places: 1006. |
+| spirit | 80 | public/sourced/checklists/spirits.json | 64 | -16 | FanAPI spirits: 64. |
+| item | 1187 | data/raw/er-mcp.db acquisition | 0 | -1187 | App covers all goods; the acquisition count is rows not items (multi-location + non-item rows). guide items: 2490; FMG goods: 2221; DB Infobox Item pages: 0. |
+| boss | 280 | public/sourced/open/boss-xyz.json / checklists/bosses.json | 209 | -71 | hosted-bosses: 209; hunts: 207; DB bosses: 0; Fextralife: 163. |
+| npc | 195 | names.json kind=npcs / DB Infobox Character | 482 | **+287** | DB Infobox Character pages: 0; dialogue speakers: 260; FanAPI npcs: 55. |
+| location/region | 355 | DB Infobox Location | 0 | -355 | checklists locations: 177; FMG places: 1006. |
 | grace | 416 | checklists/graces.json (BonfireWarpParam) | 418 | **+2** | Every warp row. |
-| dungeon | 119 | src/data/dungeons.json | 119 | 0 | DB dungeon+evergaol pages: 56. |
-| quest | 468 | data/raw/er-mcp.db quests (steps) | 341 | -127 | Step rows across 68 NPCs. |
-| enemy | 1276 | public/sourced/open/msb-enemies.json | 31388 | **+30112** | App seeds every one of the 2271 enemy-combat NpcParam rows; the MSB dump is per-placement instances, not distinct enemies. |
+| dungeon | 119 | src/data/dungeons.json | 119 | 0 | DB dungeon+evergaol pages: 0. |
+| quest | 468 | data/raw/er-mcp.db quests (steps) | 0 | -468 | Step rows across 68 NPCs. |
+| enemy | 607 | public/sourced/open/msb-enemies.json | 31388 | **+30781** | App seeds every one of the 2271 enemy-combat NpcParam rows; the MSB dump is per-placement instances, not distinct enemies. |
 
-_Regenerated 2026-09-29._
+_Regenerated 2026-10-03._

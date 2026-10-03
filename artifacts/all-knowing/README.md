@@ -14,15 +14,15 @@ The atlas is [egormagurin/EldenRingMap](https://github.com/egormagurin/EldenRing
 
 ## Features
 
-**Shell** — four sections: **Tarnished** (overview / update / profiles), **Journey** (now / map / quests), **Library** (search / builds / pvp / guides) and **Gideon**. A shared header carries the section tabs, command search and character chip; a phone gets four bottom tabs, desktop gets an optional Gideon dock. The old off-canvas Tarnished rail is gone. `#/journey/map` URL hashes keep reload and back working, and every old room still resolves through `setModule`.  
+**Shell** — four sections: **Tarnished** (overview / gear / setup / profiles), **Journey** (now / area / map / quests), **Library** (search / builds / pvp / guides) and **Gideon**. A shared header carries the section tabs, command search and character chip; a phone gets four bottom tabs, desktop gets an optional Gideon dock. The old off-canvas Tarnished rail is gone. `#/journey/map` URL hashes keep reload and back working, and every old room still resolves through `setModule`.  
 **Reckoning** — interview, warp-list paste, on-device Tesseract, inference with undo.  
 **PS5 capture** — no save needed: the setup wizard reads the status screen (level, runes, attributes), the live camera scanner reads the inventory and equipment screens, and the map photo reader reads a photographed map / grace list into discoveries. All OCR runs on-device.  
 **Atlas** — plates or live engine, leftover / gate / hunt pins, phone job chips. Plates also carry our grounded EldenRingMap-pack pins (dungeons, merchants, night bosses, collectibles). Fails closed: if the embed fails it shows the plate and a banner, never a blank iframe. The live engine has marker **search**, per-category toggles (all/none) and hide-found/labels/icons; our NPC placements sit under a dedicated **NPCs** category that defaults off.  
-**Builds** — Clark AR, soft caps and a one-AR first paint with the active hunt (missing pieces ordered by the kit's route). **Library → Kit** holds the OP/PvP list, AR detail, matchup, broken-tricks tech and `akb1.` codes. Show on map targets the first pinnable missing piece.  
+**Builds** — Clark AR, soft caps and a one-AR first paint with the active hunt (missing pieces ordered by the kit's route). **Library → Builds / PvP** holds the OP/PvP list, AR detail, matchup, broken-tricks tech and `akb1.` codes. Show on map targets the first pinnable missing piece.  
 **Goods paste** — paste an item list; one confident catalog/loot hit per line marks, anything else stays unknown (no OCR).  
 **Quests** — the same `allLines()` graph Gideon plans, incl. the remaining companion lines; confirm before a lockout. Journey → Now's “N open · M locked” line opens this archive.  
 **Codex** — guide, chests, merchants, achievement-shaped sets, SotE meters — plus the data pass: **full game text** with verbatim **dialogue** search + per-speaker cards, **weapon requirements/scaling/attack**, **EldenRingMap locations**, the **ER Checklist** item lists, **Medusa's 100% route** steps, **NPC placements**, and **boss drops** (163 bosses, base + SotE). Opened from Library → Search or a `/` search hit, never its own top tab.  
-**Gideon** — router, chat + idle chips + command palette; the current beat · one gate · Show/Done dashboard is Journey → Now, and Gideon also docks on wide desktops. Quotes **verbatim dialogue** for a named speaker, answers **Medusa route** steps, and falls back to **placed-NPC maps**. Optional local LLM behind an env key.  
+**Gideon** — router, chat + idle chips + command palette; the current beat · one gate · Show/Done dashboard is Journey → Now, and Gideon also docks on wide desktops. Quotes **verbatim dialogue** for a named speaker, answers **Medusa route** steps, and falls back to **placed-NPC maps**. Optional hosted LLM behind an env key (DeepSeek or Meta Muse Spark, chosen by config).  
 **Companions** — where-is-it locator for eight NPCs, region “what did I miss here”, a Stormveil checklist, and a co-op mode that drops Mimic / Torrent advice.  
 **Vault** — profiles, packet copy/paste/QR, PWA offline shell.  
 **Offline everything** — Settings → Tarnished → Profiles → **Data & offline** downloads the whole `public/sourced/**` data plane (entity index, wiki pages + search index, open dumps, images) into a dedicated Cache Storage bucket with a files/MB progress bar. Resumable, removable, and the service worker serves `sourced/**` cache-first from it, so the wiki, search and Gideon's wiki answers work with no connection. Storage used/quota is shown and persistence is requested.  
@@ -172,9 +172,9 @@ Four sections (keys `1`–`4`, or the phone's four bottom tabs). The legacy five
 
 | Section | Sub-views | Job |
 |---|---|---|
-| Tarnished | Overview · Update · Profiles | Where am I at? Character, progress, saves, profiles |
-| Journey | Now · Map · Quests | What now / where / working towards |
-| Library | Search · Builds · Kit | What do I know / what should I build |
+| Tarnished | Overview · Gear · Setup · Profiles | Where am I at? Character, progress, saves, profiles |
+| Journey | Now · Area · Map · Quests | What now / where / working towards |
+| Library | Search · Builds · PvP · Guides | What do I know / what should I build |
 | Gideon | — | Ask me anything (full chat) |
 
 Every old room still opens through the compat shim, so Cursor/Thread/Related/command-palette links

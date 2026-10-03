@@ -38,13 +38,13 @@ that consume it, and an **UNUSED** flag.
   boss-fight NPC name rows fold into the real record via wiki redirects; names are repaired
   (`displayName`, never dropping a bracketed qualifier). The shipped index had gone stale vs the
   code — rebuild it (`npm run index:entities`) whenever builder/graph/catalog/source data changes.
-- **Bosses fought in several places are one entity per encounter** (33 bosses → 101 encounters;
-  Night's Cavalry ×9, Tree Sentinel, Deathbird…). `scripts/build-boss-roster.mjs` keys each by the
-  game's kill flag, gives it `<shared id>--<place>`, its own map pin (boss-list → boss-pins) and its
-  own HP / runes / drops / description from the wiki's per-encounter tabs
-  (`scripts/export-boss-encounters.py` → `open/wiki-db/boss-encounters.json`, 76 matched) or its own
-  wiki page when it has a distinct name (4). 23 encounters have no per-location drop in any source
-  and show none. Each encounter is a catalog fact implying only its own region; the shared id implies
+- **Bosses fought in several places are one entity per encounter** (220 encounters across 33
+  same-name groups; Night's Cavalry ×9, Tree Sentinel, Deathbird…). `scripts/build-boss-roster.mjs`
+  keys each by the game's kill flag, gives it `<shared id>--<place>`, its own map pin (boss-list →
+  boss-pins) and its own HP / runes / drops / description from the wiki's per-encounter tabs
+  (`scripts/export-boss-encounters.py` → `open/wiki-db/boss-encounters.json`) or its own wiki page
+  when it has a distinct name. 189 encounters carry per-location drops; only 9 boss pages show none.
+  Each encounter is a catalog fact implying only its own region; the shared id implies
   nothing location-specific and counts as known once any encounter is (`knownFactIds`). The shared
   page shows "N of M defeated" and lists every location; you log encounters, not the shared id.
   A shared id logged before this change shows "Logged — which one?".
@@ -211,7 +211,7 @@ Every room is still its own lazy chunk.
 - `maps/m1-underground.jpg` (+ hi / armory variants)
 
 ### Guide (aether-auto/er-guide)
-- `guide/items.json` — 2437 items, acquisition text, missable/quest, map lat/lng
+- `guide/items.json` — 2490 items, acquisition text, missable/quest, map lat/lng
 - `guide/catalog.json` — slim
 - `guide/regions/` — 25 routes (01-limgrave … 24-ashen-capital + unsorted)
 - `guide/legs.json` — 124 grace→grace legs
@@ -224,9 +224,9 @@ Every room is still its own lazy chunk.
 | `open/names.json` | ~8770 EN FMG names, base + SotE + Tarnished Pack (`scripts/extract-fmg-names.py`) |
 | `open/shops.json` | 1261 ShopLineup rows |
 | `open/world-lots.json` | 10011 unique lots: flag, lot, map, x/y/z, name |
-| `open/boss-xyz.json` | 215 named bosses + clear/kill flags + XYZ |
+| `open/boss-xyz.json` | 209 named bosses + clear/kill flags + XYZ |
 | `open/boss-pins.json` | 109 projected onto overworld/shadow plates |
-| `open/enemies.json` | 520 EN names |
+| `open/enemies.json` | 1226 EN names |
 | `open/msb-enemies.json` | 8827 placed enemies — **not loaded at runtime** |
 | `open/game-areas.json` | 210 GameAreaParam |
 | `open/map-points.json` | 471 WorldMapPoint names |
