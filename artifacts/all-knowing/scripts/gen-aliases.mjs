@@ -440,6 +440,102 @@ function appNorm(s) {
   }
 }
 
+// Task 148 §5 — the game's own FMG name tables and the wiki redirects. A real
+// name (or redirect title) is attached to the one index record it names. A name
+// two records could claim, an upgrade tier ("+N"), a weapon affinity variant and
+// an alias another record already owns are all skipped.
+{
+  let index = null
+  try {
+    index = read('public/sourced/entity-index.json')
+  } catch {
+    index = null
+  }
+  if (index?.records) {
+    const idsByKey = new Map()
+    const addKey = (key, id) => {
+      if (!key) return
+      const set = idsByKey.get(key) ?? new Set()
+      set.add(id)
+      idsByKey.set(key, set)
+    }
+    for (const [id, record] of Object.entries(index.records)) {
+      addKey(norm(record.name), id)
+      addKey(rawNorm(record.name), id)
+    }
+    const rowBySlug = new Map(rows.map((r) => [r.slug, r]))
+    const owned = new Set()
+    const own = (value) => {
+      for (const key of [norm(value), rawNorm(value)]) if (key) owned.add(key)
+    }
+    for (const row of rows) {
+      own(row.fmgName)
+      own(row.slug.includes(':') ? row.slug.split(':').slice(1).join(':') : row.slug)
+      for (const alias of row.aliases) own(alias)
+    }
+    const singleTarget = (name) => {
+      for (const key of [norm(name), rawNorm(name)]) {
+        const set = idsByKey.get(key)
+        if (set && set.size === 1) return [...set][0]
+      }
+      return undefined
+    }
+    const attachAlias = (aliasName, id) => {
+      const key = rawNorm(aliasName)
+      if (key.length < 3 || owned.has(key)) return false
+      // Never point a name at a record other than the one it already names.
+      const resolved = singleTarget(aliasName)
+      if (resolved && resolved !== id) return false
+      let aliasRow = rowBySlug.get(id)
+      if (!aliasRow) {
+        aliasRow = { engineId: id, slug: id, kind: kindOf(id), fmgName: aliasName, aliases: [], source: 'game-name-table' }
+        rows.push(aliasRow)
+        rowBySlug.set(id, aliasRow)
+      }
+      if (!aliasRow.aliases.includes(key)) {
+        aliasRow.aliases.push(key)
+        aliasRow.aliases.sort()
+      }
+      own(aliasName)
+      return true
+    }
+
+    // Wiki redirects whose target was not already a row: attach the redirect
+    // title to the one index record the target names.
+    const toByFrom = new Map(redirects.map((r) => [rawNorm(r.from), r.to]))
+    const resolveTarget = (title, depth = 0) => {
+      if (depth > 4) return title
+      const next = toByFrom.get(rawNorm(title))
+      return next && rawNorm(next) !== rawNorm(title) ? resolveTarget(next, depth + 1) : title
+    }
+    let redirectsAttached = 0
+    for (const redirect of redirects) {
+      const id = singleTarget(resolveTarget(redirect.to))
+      if (id && attachAlias(redirect.from, id)) redirectsAttached++
+    }
+
+    // The FMG name tables — only the real names the report names as missing
+    // (maps, notes, cookbooks, DLC Ashes of War, NPC titles), plus redirects.
+    // Upgrade tiers, affinity variants and "Smithing Stone [N]" are skipped.
+    let namesAttached = 0
+    for (const row of namesJson) {
+      const name = String(row.name ?? '').trim()
+      if (!name || /\+\s*\d+\s*$/.test(name) || /^smithing stone \[\d+\]$/i.test(name)) continue
+      const category = kindOf(row.id)
+      const isAsh = category === 'gems' && /^ash of war\b/i.test(name)
+      const wanted = /^map\b/i.test(name) || /^note\b/i.test(name) || /cookbook/i.test(name) || isAsh || category === 'npcs'
+      if (!wanted) continue
+      const target = singleTarget(name)
+      if (!target) continue
+      if (attachAlias(name, target)) {
+        emit(row.id, target, name, [], 'game-name-table')
+        namesAttached++
+      }
+    }
+    console.log(`game-name-table aliases: ${namesAttached} names, ${redirectsAttached} redirects`)
+  }
+}
+
 // An engine id that names more than one fact (an NpcParam row shared by several
 // fights: the Godskin Apostle, Godfrey) cannot say which; the resolver keeps the
 // last row it reads, so it would pick one arbitrarily. Such rows are dropped.
