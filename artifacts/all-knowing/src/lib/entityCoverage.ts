@@ -84,7 +84,11 @@ export const GUARD_MINIMUMS: { kind: EntityKind; field: string; min: number; lab
   // the search-only magic.json spells already are.
   { kind: 'npc', field: 'description', min: 95, label: 'description (characters)' },
   { kind: 'region', field: 'descriptionLocation', min: 95, label: 'description + location (locations)' },
-  { kind: 'enemy', field: 'descriptionLocation', min: 95, label: 'description + location (enemies)' },
+  // Task 151 §1 — the generated "X is a hostile creature encountered in …" line
+  // is gone. The un-notable creatures the wiki has no prose for (Goat, Catapult,
+  // Watling Stars…) now carry no description rather than an invented one, so the
+  // enemy bar is the honest "most named foes are described" floor, not 95%.
+  { kind: 'enemy', field: 'descriptionLocation', min: 90, label: 'description + location (enemies)' },
 ]
 
 function fieldsFor(kind: EntityKind, records: (EntityRecord | undefined)[]): Record<string, FieldCoverage> {

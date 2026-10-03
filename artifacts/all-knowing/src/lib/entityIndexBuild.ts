@@ -29,6 +29,7 @@ import checklistItems from '../../public/sourced/checklists/items.json'
 import checklistNpcs from '../../public/sourced/checklists/npcs.json'
 import checklistGraces from '../../public/sourced/checklists/graces.json'
 import checklistLocations from '../../public/sourced/checklists/locations.json'
+import checklistCreatures from '../../public/sourced/checklists/creatures.json'
 
 import acquisitionDoc from '../../public/sourced/open/acquisition.json'
 import wikiDoc from '../../public/sourced/open/wiki-sections.json'
@@ -562,6 +563,23 @@ function lookupName<T>(map: Map<string, T>, name: string): T | undefined {
     if (hit) return hit
   }
   return undefined
+}
+
+/**
+ * Task 151 §2 — the FanAPI creature plane carries a real, unique description
+ * for many enemies ("The Giant Bats of Limgrave are nocturnal creatures…"). It
+ * is a description fallback after the wiki, per the task's source order.
+ */
+const creatureDescriptionByName = new Map<string, string>()
+for (const row of checklistCreatures as { name: string; description?: string }[]) {
+  const text = row.description?.trim()
+  if (text && text.length >= 20) {
+    for (const key of mapKeys(row.name)) if (key && !creatureDescriptionByName.has(key)) creatureDescriptionByName.set(key, text)
+  }
+}
+
+function creatureLead(name: string): string | undefined {
+  return lookupName(creatureDescriptionByName, name)
 }
 
 function lookupWiki(name: string): WikiSection[] | undefined {
@@ -1558,6 +1576,11 @@ function usableWikiDescription(text: string): boolean {
   const t = text.trim()
   if (!plausibleWikiLead(t)) return false
   if (/^the is an?\b/i.test(t)) return false
+  // Task 151 §1 — a bare category/placement definition ("X is a location within
+  // the Realm of Shadow in Shadow of the Erdtree.") is a wiki template repeated
+  // across a whole family, not prose; the record's own Overview is used instead.
+  if (WIKI_DEFINITIONAL.test(t)) return false
+  if (PLACE_DEFINITIONAL.test(t)) return false
   const sentences = t.split(/(?<=[.!?])\s+/).filter(Boolean)
   // A one-clause lead that begins mid-thought has no subject to restore.
   if (sentences.length <= 1 && SUBJECTLESS_DESC.test(t)) return false
@@ -1971,16 +1994,24 @@ const CAPTIONS_BY_KIND: Record<string, Record<string, string>> = {
 }
 
 /**
- * The in-game description for an FMG name row: its own `info` line, else the
- * caption text of the same id in the same kind's caption file (ids overlap
- * across kinds, so the kind must match). Placeholder captions are ignored.
+ * The in-game description for an FMG name row. Task 151 §1/§2 — the `info` line
+ * is the short effect summary ("Offer to Twin Maiden Husks for new item
+ * access"), shared verbatim by a whole family of goods; the caption of the same
+ * id is the game's own unique flavour prose. Prefer the caption for goods so a
+ * bell bearing or cookbook carries real text, and keep the effect line as the
+ * caption's fallback. Other kinds (weapons, armour, Ashes of War) keep their
+ * `info` line, which is the game's caption family the task allows.
  */
 function fmgDescription(row: FmgNameRow): string | undefined {
-  if (row.info) return row.info
   const num = row.id?.split(':')[1]
-  const text = num ? CAPTIONS_BY_KIND[row.kind]?.[num]?.trim() : undefined
-  if (!text || /^\[?ERROR\]?$|^%null%$|^no text$/i.test(text)) return undefined
-  return text.replace(/\n{3,}/g, '\n\n')
+  const caption = num ? CAPTIONS_BY_KIND[row.kind]?.[num]?.trim() : undefined
+  const usableCaption = caption && !/^\[?ERROR\]?$|^%null%$|^no text$/i.test(caption) ? caption : undefined
+  if (row.kind === 'goods' && usableCaption && usableCaption.length >= 20) {
+    return usableCaption.replace(/\n{3,}/g, '\n\n')
+  }
+  if (row.info) return row.info
+  if (usableCaption) return usableCaption.replace(/\n{3,}/g, '\n\n')
+  return undefined
 }
 
 function mergeFmgNames(): void {
@@ -2004,9 +2035,17 @@ function mergeFmgNames(): void {
   }
   for (const row of rows) {
     if (row.kind === 'goods') {
+      // Task 151 §1 — a spirit-ash / flask upgrade row ("… +1") must not become
+      // its own record: the alias plane already folds the name onto the base id,
+      // which would otherwise rename the base page. `foldUpgrades` builds the
+      // upgrade table from this very row.
+      if (/\s\+\d+$/.test(row.name) && (/^summons?\b/i.test(row.info ?? '') || FLASK_NAME_RE.test(row.name.replace(/\s\+\d+$/, '').trim()))) continue
       const id = catalogueIdFor('item', row.name)
       const record = records.get(id) ?? ensureKind(id, 'item', row.name)
       setText(record, 'description', fmgDescription(row))
+      // The short `info` line is a real effect fact; keep it as a stat now that
+      // the caption owns the prose.
+      setStat(record, 'Effect', row.info)
       source(record, 'names/fmg-goods')
     } else if (row.kind === 'npcs') {
       const exact = mapKeys(row.name).map((key) => nameIndex.get(key)).find((id) => id && hasEntity(id) && getEntity(id).kind === 'npc')
@@ -2648,28 +2687,6 @@ function usableEnemyDescription(text: string | undefined, name: string): boolean
   return true
 }
 
-/**
- * Task 132 §4 — every enemy needs a description that is not just its name. Use
- * the wiki page prose when the extractor recovered real text, else a grounded
- * line built from where it is found and its own HP/status table.
- */
-function fillEnemyDescriptions(): void {
-  for (const record of records.values()) {
-    if (record.kind !== 'enemy') continue
-    if (usableEnemyDescription(record.description, record.name)) continue
-    const base = record.name.replace(/\s*\((?:boss|npc|enemy)\)\s*$/i, '').trim()
-    const where = record.location || record.region
-    let text = where
-      ? `${base} is a hostile creature encountered in ${where}.`
-      : `${base} is a hostile creature encountered in the Lands Between.`
-    const bits: string[] = []
-    if (record.stats?.HP) bits.push(`HP ${record.stats.HP}`)
-    if (record.stats?.['Status resist']) bits.push(`status resistances of ${record.stats['Status resist']}`)
-    if (bits.length) text += ` It has ${bits.join(' and ')}.`
-    record.description = text
-  }
-}
-
 function mergeDungeon(row: { id?: string; name: string; region?: string; x?: number; y?: number; bosses?: string[] }): void {
   const id = `dungeon:${row.id ?? slug(row.name)}`
   if (!hasEntity(id)) return
@@ -2906,11 +2923,34 @@ function acceptableLeadSentence(raw: string): boolean {
   if (sentence.length < 20) return false
   if (TEMPLATE_DESC.test(sentence)) return false
   if (WIKI_DEFINITIONAL.test(sentence)) return false
+  if (PLACE_DEFINITIONAL.test(sentence)) return false
   if (/^[,;:]/.test(sentence) || /^(?:also|and|but|or|which|who|where)\b/i.test(sentence)) return false
   // Skip list/bullet rows and anything with no words.
   if (/^[-*·\d]/.test(sentence) || !/[a-z]/.test(sentence)) return false
   return true
 }
+
+/**
+ * Task 151 §1 — drop the wiki's category/placement definition sentences ("X is
+ * a location within the Realm of Shadow in Shadow of the Erdtree.", "X is a
+ * Location in Elden Ring.") from a lead, so a place page keeps only its real
+ * Overview prose. Scoped to place-like kinds where the record can be refilled.
+ */
+function stripDefinitionalSentences(text: string): string {
+  return text
+    .split(/(?<=[.!?])\s+/)
+    .map((sentence) => sentence.trim())
+    .filter((sentence) => sentence && !WIKI_DEFINITIONAL.test(sentence) && !PLACE_DEFINITIONAL.test(sentence))
+    .join(' ')
+    .trim()
+}
+
+/**
+ * A wiki placement definition ("X is a location in Shadow of the Erdtree.",
+ * "X is a location within the Realm of Shadow…"). Its only fact is that the page
+ * is a place, which `location`/`region` already carry.
+ */
+const PLACE_DEFINITIONAL = /\b(?:is|are)\s+(?:an?\s+)?(?:location|place|subregion|region|area|site)\b/i
 
 /** Section headings worth quoting first, in priority order. */
 const LEAD_HEADING_ORDER = ['overview', 'background', 'description', 'summary', 'characteristics', 'location', 'notes', 'trivia']
@@ -2984,10 +3024,11 @@ function isPlaceText(record: EntityRecord): boolean {
  * for. `quest`/`line` records are step labels, not entities, so a wiki lead for
  * the NPC would misdescribe the step; those only ever lose a place-only text.
  */
-const FILLABLE_DESC_KINDS = new Set<EntityKind>([
+const FILLABLE_DESC_KINDS = new Set<string>([
   'boss',
   'dungeon',
   'region',
+  'grace',
   'mechanic',
   'build',
   'ending',
@@ -3003,6 +3044,9 @@ const FILLABLE_DESC_KINDS = new Set<EntityKind>([
   'spell',
   'enemy',
 ])
+
+/** Place-like kinds whose lead may be a wiki category definition (Task 151 §1). */
+const PLACE_DESC_KINDS = new Set<string>(['region', 'dungeon', 'grace'])
 
 // ---------------------------------------------------------------------------
 // Assemble
@@ -3296,7 +3340,6 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   // lowest-priority fallback. `setText`/`setStat` only write when absent.
   mergeGapfill()
 
-  fillEnemyDescriptions()
   enrichCreatures()
   // Task 148 §6 — merchants: base-merchant fields and their shop sub-rows.
   enrichMerchants()
@@ -3382,6 +3425,12 @@ export function buildEntityIndex(): EntityIndexBuildResult {
       }
       record.description = undefined
     }
+    // Task 151 §1 — a place whose only lead is the wiki's category template
+    // ("X is a location within the Realm of Shadow…") loses it here so the lead
+    // fallback below can quote the page's real Overview prose instead.
+    if (record.description && PLACE_DESC_KINDS.has(record.kind)) {
+      record.description = stripDefinitionalSentences(record.description) || undefined
+    }
     const currentDescription = record.description?.trim()
     const placeOnly = isPlaceText(record)
     // Task 148 §3 + Task 150 §2 — an empty, subjectless ("is a character …") or
@@ -3411,7 +3460,10 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     // are step labels and character names: wiki lore would misdescribe the step,
     // so they are never given prose this way.
     if ((!record.description || isPlaceText(record)) && FILLABLE_DESC_KINDS.has(record.kind)) {
-      const real = gameTextFor(record.name) ?? wikiLead(record.name) ?? fextLead(record.name)
+      const real =
+        record.kind === 'enemy'
+          ? wikiLead(record.name) ?? creatureLead(record.name) ?? fextLead(record.name) ?? gameTextFor(record.name)
+          : gameTextFor(record.name) ?? wikiLead(record.name) ?? fextLead(record.name)
       if (real) {
         record.description = real
         source(record, 'wiki-sections')
@@ -3564,6 +3616,21 @@ function isFoldableUpgrade(record: EntityRecord, baseName: string): boolean {
 
 function foldUpgrades(): void {
   const pattern = /^(.*?)\s+\+(\d+)$/
+  const baseIdFor = (baseName: string): string | undefined => {
+    const catalogue = catalogueIdFor('item', baseName)
+    if (records.has(catalogue)) return catalogue
+    for (const key of mapKeys(baseName)) {
+      const candidate = nameIndex.get(key)
+      if (candidate && records.has(candidate)) return candidate
+    }
+    return undefined
+  }
+  const addLevel = (base: EntityRecord, level: number, name: string, effect: string | undefined): void => {
+    base.upgradeLevels = base.upgradeLevels ?? []
+    if (!base.upgradeLevels.some((row) => row.level === level && row.name === name)) {
+      base.upgradeLevels.push({ level, name, effect })
+    }
+  }
   for (const record of [...records.values()]) {
     const match = pattern.exec(record.name)
     if (!match) continue
@@ -3571,24 +3638,29 @@ function foldUpgrades(): void {
     const level = Number(match[2])
     if (!baseName || !Number.isFinite(level)) continue
     if (!isFoldableUpgrade(record, baseName)) continue
-    let baseId: string | undefined = records.get(catalogueIdFor('item', baseName)) ? catalogueIdFor('item', baseName) : undefined
-    if (!baseId) {
-      for (const key of mapKeys(baseName)) {
-        const candidate = nameIndex.get(key)
-        if (candidate && records.has(candidate)) {
-          baseId = candidate
-          break
-        }
-      }
-    }
+    const baseId = baseIdFor(baseName)
     const base = baseId ? records.get(baseId) : undefined
     if (!base || base.id === record.id) continue
-    base.upgradeLevels = base.upgradeLevels ?? []
-    if (!base.upgradeLevels.some((row) => row.level === level && row.name === record.name)) {
-      base.upgradeLevels.push({ level, name: record.name, effect: record.description })
-    }
+    addLevel(base, level, record.name, record.description)
     addName(record.name, base.id)
     records.delete(record.id)
+  }
+  // Task 151 §1 — the alias plane resolves an upgrade "+N" name straight to its
+  // base id, so the FMG goods row never becomes its own record and `foldUpgrades`
+  // above cannot see it. Build those levels from the FMG goods plane itself, so
+  // spirit-ash and flask upgrades keep their upgrade table on the base page.
+  for (const row of namesData as FmgNameRow[]) {
+    if (row.kind !== 'goods') continue
+    const match = pattern.exec(row.name)
+    if (!match) continue
+    const baseName = match[1].trim()
+    const level = Number(match[2])
+    if (!baseName || !Number.isFinite(level)) continue
+    if (!/^summons?\b/i.test(row.info ?? '') && !FLASK_NAME_RE.test(baseName)) continue
+    const baseId = baseIdFor(baseName)
+    const base = baseId ? records.get(baseId) : undefined
+    if (!base) continue
+    addLevel(base, level, row.name, row.info)
   }
   for (const record of records.values()) if (record.upgradeLevels) record.upgradeLevels.sort((a, b) => a.level - b.level)
 }

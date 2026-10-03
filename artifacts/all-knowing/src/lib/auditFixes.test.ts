@@ -154,3 +154,45 @@ describe('Task 150 §3 — dead legacy ids stay bounded', () => {
     expect(unmapped, unmapped.slice(0, 20).join('\n')).toEqual([])
   })
 })
+
+describe('Task 151 §3 — the builder writes no filler, and shares no prose family', () => {
+  /**
+   * The game's own text for a category, repeated verbatim by design. These are
+   * the only descriptions allowed to appear on more than 25 records:
+   *  - Ash of War: the "Grants affinities and skills to an armament" caption the
+   *    game itself prints for every Ash of War.
+   *  - Gesture: the "Locks the player character in place during the animation."
+   *    animation label the wiki carries for every gesture that has no cutscene.
+   * Nothing else may repeat: a shared sentence means the builder invented it.
+   */
+  const ALLOWED_SHARED_FAMILIES = [
+    'grants affinities and skills to an armament',
+    'locks the player character in place during the animation',
+  ]
+
+  it('has no generated enemy, place or item-access sentence', () => {
+    const offenders = list
+      .filter((record) => /is a hostile creature encountered|is a location in [A-Z]|for new item access/.test(record.description ?? ''))
+      .map((record) => `${record.id}: ${record.description}`)
+    expect(offenders, offenders.slice(0, 20).join('\n')).toEqual([])
+  })
+
+  it('shares no normalised description across more than 25 records except the game-caption families', () => {
+    const groups = new Map<string, string[]>()
+    for (const record of list) {
+      const description = String(record.description ?? '').trim()
+      if (!description) continue
+      const name = rawNorm(record.name)
+      let key = rawNorm(description)
+      if (name) key = key.split(name).join('x').trim()
+      const ids = groups.get(key) ?? []
+      ids.push(record.id)
+      groups.set(key, ids)
+    }
+    const offenders = [...groups.entries()]
+      .filter(([key, ids]) => ids.length > 25 && !ALLOWED_SHARED_FAMILIES.includes(key))
+      .sort((a, b) => b[1].length - a[1].length)
+      .map(([key, ids]) => `${ids.length} × ${key}`)
+    expect(offenders, offenders.slice(0, 20).join('\n')).toEqual([])
+  })
+})
