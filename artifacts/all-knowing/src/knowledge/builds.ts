@@ -150,7 +150,7 @@ export const opBuilds: OpBuild[] = [
       { id: 'godfrey-icon', name: 'Godfrey Icon', kind: 'talisman' },
       { id: 'alex', name: 'Shard of Alexander', kind: 'talisman' },
     ],
-    need: ['loot:dark-moon', 'loot:magic-scorpion', 'loot:godfrey-icon'],
+    need: ['loot:dark-moon-gs', 'loot:magic-scorpion', 'loot:godfrey-icon'],
     route: ['loot:dark-moon-gs', 'loot:magic-scorpion', 'loot:godfrey-icon', 'loot:shard-alexander'],
   },
   {
@@ -232,7 +232,7 @@ export const opBuilds: OpBuild[] = [
       { id: 'millicent', name: 'Millicent’s Prosthesis', kind: 'talisman' },
       { id: 'exult', name: "Lord of Blood's Exultation", kind: 'talisman' },
     ],
-    need: ['loot:godskin-peeler', 'loot:eleonora-poleblade', 'loot:millicent-prosthesis'],
+    need: ['loot:godskin-peeler', 'loot:eleonora-poleblade', 'item:millicent-prosthesis'],
   },
   {
     id: 'build:greatshield-poke',
