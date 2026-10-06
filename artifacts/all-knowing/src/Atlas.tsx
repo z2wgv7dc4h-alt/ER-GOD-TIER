@@ -33,6 +33,7 @@ import { addNote, noteMarkers, notesForWorld, readNotes, removeNote } from './ma
 import { watchPins } from './watch/watchlist'
 import { heatCells, heatRadius } from './map/heat'
 import { focusViewBox, followFocus, graceFocus } from './map/follow'
+import { resolveFocusTarget } from './map/focusTarget'
 import { MapNotesPanel, NoteEditor } from './map/MapNotes'
 import type { MapMarker } from './types'
 
@@ -130,8 +131,15 @@ export function AtlasWorkspace() {
     const t = window.setTimeout(() => setShowDown(true), 1500)
     return () => window.clearTimeout(t)
   }, [engineDown, embedFailed])
-  const [world, setWorld] = useState<AtlasWorld>(
-    w.character.answers.dlc === 'sote' ? 'shadow' : 'overworld',
+  const coords = useCoords()
+  // Task 155: a "Show on map" request resolves to the layer/centre/zoom the map
+  // must adopt. Shared by every entry point; see map/focusTarget.ts.
+  const focusPlan = useMemo(
+    () => resolveFocusTarget(w.mapFocus?.id ?? null, { coords }),
+    [w.mapFocus, coords],
+  )
+  const [world, setWorld] = useState<AtlasWorld>(() =>
+    focusPlan.kind === 'placed' ? focusPlan.layer : w.character.answers.dlc === 'sote' ? 'shadow' : 'overworld',
   )
   const [sideOpen, setSideOpen] = useState(false)
   const [layersOpen, setLayersOpen] = useState(false)
@@ -139,7 +147,17 @@ export function AtlasWorkspace() {
   // makes them look scattered over nothing. Hold the pin layer until it's ready.
   const [artReady, setArtReady] = useState(false)
   useEffect(() => { setArtReady(false) }, [world])
-  const coords = useCoords()
+  // Adopt the focus target's layer once per request (coords load lazily, so a
+  // fresh open may not know it on the first render). Applying it once lets the
+  // player then switch plates without the effect dragging them back.
+  const appliedFocus = useRef<number | null>(null)
+  useEffect(() => {
+    if (focusPlan.kind !== 'placed') return
+    const token = w.mapFocus?.at ?? null
+    if (token == null || appliedFocus.current === token) return
+    appliedFocus.current = token
+    if (focusPlan.layer !== world) setWorld(focusPlan.layer)
+  }, [focusPlan, world, w.mapFocus])
   const placeNameDoc = usePlaceNames()
   const enginePins = useEnginePins(world, !engineLive)
   // Task 111 §1/§2: session result pins and vault-backed custom notes.
@@ -327,18 +345,23 @@ export function AtlasWorkspace() {
     () => (w.showHeat ? heatCells(allPins, (id) => factState(w.character, id) === 'true') : []),
     [w.showHeat, allPins, w.character],
   )
-  // §3: follow the live dot / current area; else centre a chosen result pin.
+  // §3: follow the live dot / current area; then a "Show on map" request; else
+  // centre a chosen result pin.
   const focusPin = w.selectedMarkerId
     ? resultList.find((m) => m.id === w.selectedMarkerId) ?? noteList.find((m) => m.id === w.selectedMarkerId)
     : undefined
   const followPoint = w.follow ? followFocus({ currentArea: w.currentArea, engine: w.engineState }) : null
+  const planPoint = focusPlan.kind === 'placed'
+    ? { x: focusPlan.center.x, y: focusPlan.center.y, world: focusPlan.layer }
+    : null
   const focus = !engineLive
-    ? followPoint ?? (focusPin ? { x: focusPin.x, y: focusPin.y, world } : null)
+    ? followPoint ?? planPoint ?? (focusPin ? { x: focusPin.x, y: focusPin.y, world } : null)
     : null
   const focusHere = focus && focus.world === world
+  const focusZoom = focusPlan.kind === 'placed' && focusPlan.layer === world ? focusPlan.zoom : 2.4
   const viewBox = plate
     ? focusHere
-      ? focusViewBox(focus!, vw, vh)
+      ? focusViewBox(focus!, vw, vh, focusZoom)
       : `0 0 ${vw} ${vh}`
     : '0 0 100 80'
 
@@ -585,6 +608,19 @@ export function AtlasWorkspace() {
                 </g>
               )
             })}
+            {/* Task 155 — the Show-on-map target: a halo + label on top of every
+                layer so the marker is found even when its id is not a visible pin. */}
+            {(!plate || artReady) && focusHere && focusPlan.kind === 'placed' && (() => {
+              const px = (focusPlan.center.x / 100) * vw
+              const py = (focusPlan.center.y / 100) * vh
+              return (
+                <g className="pin focus-pin" aria-label={`${focusPlan.name} on map`}>
+                  <circle className="pin-pulse" cx={px} cy={py} r={3.6 * k} fill="none" stroke="#ffe9a8" strokeWidth={0.5 * k} />
+                  <circle cx={px} cy={py} r={1.7 * k} fill="#ffe9a8" stroke="#c9a227" strokeWidth={0.32 * k} />
+                  <text x={px + 2.6 * k} y={py + 0.8 * k}>{focusPlan.name}</text>
+                </g>
+              )
+            })()}
           </svg>
           </div>
         )}
@@ -597,6 +633,13 @@ export function AtlasWorkspace() {
             onSave={saveNote}
             onCancel={() => setNoteDraft(null)}
           />
+        )}
+        {/* Task 155: a Show-on-map target with no grounded position never opens
+            on a silent nothing — name the region we can still show. */}
+        {!engineLive && focusPlan.kind === 'region' && (
+          <div className="atlas-banner focus-banner" role="status">
+            {focusPlan.message}
+          </div>
         )}
         {/* Task 82: the engine never fails silently — a visible banner says why
             the static plate is showing, and it differs for a down engine vs a

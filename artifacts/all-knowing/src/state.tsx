@@ -51,6 +51,10 @@ type Workspace = {
   setCharacter: (c: Character) => void
   selectedMarkerId: string | null
   setSelectedMarkerId: (id: string | null) => void
+  /** Task 155: the last "Show on map" request, consumed by the Atlas to focus. */
+  mapFocus: { id: string; at: number } | null
+  /** Task 155: select `id` and open the Atlas centred/zoomed on it. */
+  focusOnMap: (id: string) => void
   /** Task 97: the entity whose universal panel overlay is open, or null. */
   entityId: string | null
   openEntity: (id: string) => void
@@ -185,6 +189,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   )
   const [glance, setGlance] = useState(false)
   const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(bootProfile.ui.selectedMarkerId)
+  const [mapFocus, setMapFocus] = useState<{ id: string; at: number } | null>(null)
   const [entityId, setEntityId] = useState<string | null>(() =>
     parseEntityHash(typeof window !== 'undefined' ? window.location.hash : ''),
   )
@@ -281,6 +286,19 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setModuleState(locationToModule(next, subId))
   }
 
+  /**
+   * Task 155 — "Show on map": select the target, record a focus request the
+   * Atlas consumes (layer + centre + zoom), then open the Atlas. Every entry
+   * point routes through here so the behaviour cannot drift.
+   */
+  function focusOnMap(id: string) {
+    if (!id) return
+    setSelectedMarkerId(id)
+    setRecentFacts((r) => pushRecent(r, id))
+    setMapFocus({ id, at: Date.now() })
+    navigateModule('map')
+  }
+
   // Hash routing: the URL is `#/section/sub` (plus the Task 97 `?e=` entity
   // param), so reloads and the back button work.
   useEffect(() => {
@@ -364,6 +382,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         setSelectedMarkerId(id)
         if (id) setRecentFacts((r) => pushRecent(r, id))
       },
+      mapFocus,
+      focusOnMap,
       entityId,
       openEntity,
       closeEntity,
@@ -415,7 +435,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [module, section, sub, character, selectedMarkerId, entityId, currentArea, layers, showLeftovers, showGates, follow, showHeat, showWatch, missingOnly, query, engineStatus, engineState, engineMarkers, history, helpOpen, dockOpen, glance, resume, recentFacts, vault],
+    [module, section, sub, character, selectedMarkerId, mapFocus, entityId, currentArea, layers, showLeftovers, showGates, follow, showHeat, showWatch, missingOnly, query, engineStatus, engineState, engineMarkers, history, helpOpen, dockOpen, glance, resume, recentFacts, vault],
   )
 
   return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>

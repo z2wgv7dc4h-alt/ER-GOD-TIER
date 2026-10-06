@@ -641,7 +641,7 @@ export function PickupBar() {
 }
 
 export function Recents() {
-  const { recentFacts, setSelectedMarkerId, setModule } = useWorkspace()
+  const { recentFacts, setSelectedMarkerId, setModule, focusOnMap } = useWorkspace()
   if (!recentFacts.length) return null
   return (
     <section className="recent-panel">
@@ -653,8 +653,13 @@ export function Recents() {
               type="button"
               className="recent-item"
               onClick={() => {
+                const mod = moduleFor(id)
+                if (mod === 'map') {
+                  focusOnMap(id)
+                  return
+                }
                 setSelectedMarkerId(id)
-                setModule(moduleFor(id))
+                setModule(mod)
               }}
             >
               <span>{labelOf(id)}</span>
@@ -796,7 +801,7 @@ export function StatEdit() {
 }
 
 export function WhisperGrace() {
-  const { character, setSelectedMarkerId, setModule } = useWorkspace()
+  const { character, focusOnMap } = useWorkspace()
   const last = typeof character.answers.lastGrace === 'string' ? character.answers.lastGrace : undefined
   const have = new Set(character.discoveredGraces)
   const next = nextGraces(have, last)
@@ -810,10 +815,7 @@ export function WhisperGrace() {
             key={g.id}
             type="button"
             className="chip"
-            onClick={() => {
-              setSelectedMarkerId(g.id)
-              setModule('map')
-            }}
+            onClick={() => focusOnMap(g.id)}
           >
             {g.name}
           </button>

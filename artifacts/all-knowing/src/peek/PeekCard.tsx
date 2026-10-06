@@ -208,8 +208,7 @@ export function PeekCard({ target, onClose }: { target: PeekTarget; onClose: () 
   }
 
   function showOnMap() {
-    w?.setSelectedMarkerId(info.id)
-    w?.setModule('map')
+    w?.focusOnMap(info.id)
     onClose()
   }
 

@@ -113,8 +113,7 @@ export function EntityOverlay() {
           onOwnedChange={changeOwned}
           onTradeOption={(factId) => setCharacter(applyFacts(character, [factId], 'answer', 'Enia trade'))}
           onShowOnMap={() => {
-            w.setSelectedMarkerId(entityId)
-            w.setModule('map')
+            w.focusOnMap(entityId)
             w.closeEntity()
           }}
           onEquip={() => {

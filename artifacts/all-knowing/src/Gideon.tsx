@@ -99,9 +99,13 @@ export function Gideon() {
     const autoNav = !isPhone && w.dockOpen && w.section !== 'gideon'
     const navActions: GideonAction[] = []
     if (autoNav) {
-      if (act.module) w.setModule(act.module)
-      if (act.factId && (act.navigateNow || act.module === 'map' || /show|take me|pin/i.test(text))) {
-        w.setSelectedMarkerId(act.factId)
+      if (act.factId && act.module === 'map') {
+        w.focusOnMap(act.factId)
+      } else {
+        if (act.module) w.setModule(act.module)
+        if (act.factId && (act.navigateNow || /show|take me|pin/i.test(text))) {
+          w.setSelectedMarkerId(act.factId)
+        }
       }
     } else if (act.factId && act.module === 'map') {
       navActions.push({ type: 'showOnMap', id: act.factId })
@@ -165,8 +169,7 @@ export function Gideon() {
   /** Run a navigation-only action immediately (no confirm needed). */
   function runNav(action: GideonAction) {
     if (action.type === 'showOnMap') {
-      w.setSelectedMarkerId(action.id)
-      w.setModule('map')
+      w.focusOnMap(action.id)
     } else if (action.type === 'open') {
       w.openEntity(action.id)
     } else if (action.type === 'showPlan') {
@@ -318,7 +321,7 @@ export function Gideon() {
               type="button"
               className={watch.includes(e.id) ? 'chip on' : 'chip'}
               onClick={() => {
-                if (e.grace) { w.setSelectedMarkerId(e.grace); w.setModule('map') }
+                if (e.grace) w.focusOnMap(e.grace)
                 w.setCharacter(toggleWatch(w.character, e.id))
               }}
             >

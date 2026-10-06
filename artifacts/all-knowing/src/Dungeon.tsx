@@ -8,7 +8,7 @@ import { factState, useWorkspace } from './state'
  * slug actually exists in the authored graces.
  */
 export function DungeonChecklist({ dungeonId }: { dungeonId?: string }) {
-  const { character, setCharacter, setModule, setSelectedMarkerId } = useWorkspace()
+  const { character, setCharacter, focusOnMap } = useWorkspace()
   const dungeon = dungeons.find((d) => d.id === dungeonId) ?? dungeons[0]
   if (!dungeon) return null
   const plan = dungeonPlan(character, dungeon)
@@ -42,10 +42,7 @@ export function DungeonChecklist({ dungeonId }: { dungeonId?: string }) {
                   <button
                     type="button"
                     className="chip"
-                    onClick={() => {
-                      setSelectedMarkerId(grace.id)
-                      setModule('map')
-                    }}
+                    onClick={() => focusOnMap(grace.id)}
                   >
                     Show on map
                   </button>

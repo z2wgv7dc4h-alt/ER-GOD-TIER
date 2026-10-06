@@ -31,10 +31,7 @@ export function WatchlistCard() {
                 <button
                   type="button"
                   className="chip"
-                  onClick={() => {
-                    w.setSelectedMarkerId(pin.id)
-                    w.setModule('map')
-                  }}
+                  onClick={() => w.focusOnMap(pin.id)}
                 >
                   Show on map
                 </button>

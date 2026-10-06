@@ -335,7 +335,7 @@ const SMITH_TARGETS = [5, 10, 15, 20, 25]
  * rows the repo already knows and a Show-on-map action when a source has a pin.
  */
 export function SmithingTracker() {
-  const { character, setCharacter, setSelectedMarkerId, setModule, showLeftovers, toggleLeftovers } = useWorkspace()
+  const { character, setCharacter, focusOnMap, showLeftovers, toggleLeftovers } = useWorkspace()
   const weapons = useWeapons()
   const coords = useCoords()
   const [target, setTarget] = useState(25)
@@ -348,8 +348,7 @@ export function SmithingTracker() {
   function showOnMap(factId: string) {
     if (!watchlistOf(character).includes(factId)) setCharacter(toggleWatch(character, factId))
     if (!showLeftovers) toggleLeftovers()
-    setSelectedMarkerId(factId)
-    setModule('map')
+    focusOnMap(factId)
   }
 
   return (

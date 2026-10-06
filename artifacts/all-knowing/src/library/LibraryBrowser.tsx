@@ -937,10 +937,7 @@ export function LibraryBrowser() {
                   w.setCurrentArea({ ...area, factId: selected.factId, source: 'map', at: Date.now() })
                 }
               }}
-              onShowOnMap={() => {
-                w.setSelectedMarkerId(selected.factId)
-                w.setModule('map')
-              }}
+              onShowOnMap={() => w.focusOnMap(selected.factId)}
             />
           </aside>
         )}

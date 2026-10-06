@@ -101,8 +101,8 @@ export function JourneyArea() {
       graces[0]?.id ??
       w.currentArea?.factId ??
       warpGraces.find((g) => regionMatches(g.region, area))?.id
-    if (target) w.setSelectedMarkerId(target)
-    w.setModule('map')
+    if (target) w.focusOnMap(target)
+    else w.setModule('map')
   }
 
   if (!area) {

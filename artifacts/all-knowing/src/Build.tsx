@@ -107,7 +107,7 @@ function KitGroup({
 }
 
 function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
-  const { character, setCharacter, setModule, setSelectedMarkerId, showLeftovers, toggleLeftovers, go } = useWorkspace()
+  const { character, setCharacter, focusOnMap, showLeftovers, toggleLeftovers, go } = useWorkspace()
   const coords = useCoords()
   const preview = estimateDefense(character)
   const allBuilds = useMemo(() => [...opBuilds, ...pvpBuilds], [])
@@ -124,8 +124,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
   const showOnMap = (factId: string) => {
     if (!watchlistOf(character).includes(factId)) setCharacter(toggleWatch(character, factId))
     if (!showLeftovers) toggleLeftovers()
-    setSelectedMarkerId(factId)
-    setModule('map')
+    focusOnMap(factId)
   }
   const [weapons, setWeapons] = useState<Weapon[] | null>(null)
   const [arError, setArError] = useState<string | null>(null)
@@ -402,8 +401,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
               onClick={() => {
                 const next = markers.find((m) => m.kind === 'boss' && !isCollected(character, m))
                 if (!next) return
-                setSelectedMarkerId(next.id)
-                setModule('map')
+                focusOnMap(next.id)
               }}
             >
               Show on atlas
@@ -512,8 +510,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
                         const t = hunt.pinTarget!
                         if (!watchlistOf(character).includes(t.factId)) setCharacter(toggleWatch(character, t.factId))
                         if (!showLeftovers) toggleLeftovers()
-                        setSelectedMarkerId(t.factId)
-                        setModule('map')
+                        focusOnMap(t.factId)
                       }}
                     >
                       Show on map · {hunt.pinTarget.name}
@@ -540,8 +537,7 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
                                   setCharacter(toggleWatch(character, p.factId))
                                 }
                                 if (!showLeftovers) toggleLeftovers()
-                                setSelectedMarkerId(p.factId)
-                                setModule('map')
+                                focusOnMap(p.factId)
                               }}
                             >
                               Show on map

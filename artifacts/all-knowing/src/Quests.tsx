@@ -42,7 +42,7 @@ function doneCount(character: Character, line: Line): number {
 }
 
 export function QuestWorkspace() {
-  const { character, setCharacter, setModule, query, selectedMarkerId, setSelectedMarkerId } = useWorkspace()
+  const { character, setCharacter, focusOnMap, query, selectedMarkerId, setSelectedMarkerId } = useWorkspace()
   const coords = useCoords()
   const [activeId, setActiveId] = useState<string | null>(null)
   const [pendingLock, setPendingLock] = useState<{ factId: string; warnings: LockWarning[] } | null>(null)
@@ -153,10 +153,7 @@ export function QuestWorkspace() {
                         <button
                           type="button"
                           className="chip"
-                          onClick={() => {
-                            setSelectedMarkerId(factId)
-                            setModule('map')
-                          }}
+                          onClick={() => focusOnMap(factId)}
                         >
                           Show on map
                         </button>

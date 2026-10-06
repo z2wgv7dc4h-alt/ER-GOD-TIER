@@ -73,7 +73,7 @@ function CharacterCard() {
  * crowds the first paint; each row links into the universal entity page.
  */
 function MissingDrilldown() {
-  const { character, setMissingOnly, setSelectedMarkerId, setModule } = useWorkspace()
+  const { character, setMissingOnly, setModule, focusOnMap } = useWorkspace()
   const categories = useMemo(() => completionCategories(character), [character])
   const [open, setOpen] = useState<string | null>(null)
 
@@ -102,8 +102,9 @@ function MissingDrilldown() {
                     disabled={c.missing.length === 0}
                     onClick={() => {
                       setMissingOnly(true)
-                      setSelectedMarkerId(c.missing[0]?.id ?? null)
-                      setModule('map')
+                      const target = c.missing[0]?.id
+                      if (target) focusOnMap(target)
+                      else setModule('map')
                     }}
                   >
                     Show all on map

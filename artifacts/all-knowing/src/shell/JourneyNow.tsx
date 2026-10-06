@@ -139,10 +139,7 @@ export function JourneyNow() {
                         title={s.name}
                         subtitle={s.source}
                         chevron
-                        onClick={() => {
-                          w.setSelectedMarkerId(s.id)
-                          w.setModule('map')
-                        }}
+                        onClick={() => w.focusOnMap(s.id)}
                       />
                     ))}
                   </div>
@@ -172,10 +169,7 @@ export function JourneyNow() {
                 {header.factId && (
                   <Button
                     variant="primary"
-                    onClick={() => {
-                      w.setSelectedMarkerId(showPin?.id ?? header.factId!)
-                      w.setModule('map')
-                    }}
+                    onClick={() => w.focusOnMap(showPin?.id ?? header.factId!)}
                   >
                     Show on map
                   </Button>
@@ -281,10 +275,7 @@ export function JourneyNow() {
                 title={o.name}
                 subtitle={o.sub}
                 chevron
-                onClick={() => {
-                  w.setSelectedMarkerId(o.target)
-                  w.setModule('map')
-                }}
+                onClick={() => w.focusOnMap(o.target)}
               />
             ))}
             <SeeAllButton total={missed.length} expanded={leftovers.expanded} onToggle={leftovers.toggle} />

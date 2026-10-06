@@ -506,11 +506,14 @@ button { cursor: pointer; }
    zooms art and pins together; the pulse marks a fresh result. */
 image.atlas-art-img { background: #050403; }
 .atlas-focus { cursor: crosshair; }
-.pin.result .pin-pulse {
+.pin.result .pin-pulse,
+.pin.focus-pin .pin-pulse {
   transform-box: fill-box;
   transform-origin: center;
   animation: atlas-pulse 1.6s ease-out infinite;
 }
+/* Task 155: stack the region fallback above the fail-closed engine banner. */
+.atlas-banner.focus-banner { bottom: 56px; border-color: #e4c36a; }
 @keyframes atlas-pulse {
   0% { transform: scale(0.45); opacity: 0.95; }
   75% { transform: scale(2.1); opacity: 0; }

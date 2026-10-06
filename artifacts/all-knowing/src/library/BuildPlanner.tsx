@@ -135,8 +135,7 @@ export function BuildPlanner() {
     if (!factId) return
     if (!watchlistOf(w.character).includes(factId)) w.setCharacter(toggleWatch(w.character, factId))
     if (!w.showLeftovers) w.toggleLeftovers()
-    w.setSelectedMarkerId(factId)
-    w.setModule('map')
+    w.focusOnMap(factId)
   }
 
   // Task 118 §3 — an upgrade row, shared by the first-open list and the

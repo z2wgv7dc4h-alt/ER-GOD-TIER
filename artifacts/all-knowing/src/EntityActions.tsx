@@ -10,13 +10,13 @@ import { WatchButton } from './watch/WatchButton'
  * `applyFacts`) rather than introducing a second link system.
  */
 export function EntityActions({ id, name }: { id: string; name?: string }) {
-  const { character, setCharacter, setModule, setSelectedMarkerId, go } = useWorkspace()
+  const { character, setCharacter, setModule, setSelectedMarkerId, focusOnMap, go } = useWorkspace()
   const label = name || labelOf(id)
   const known = factState(character, id) === 'true'
 
   return (
     <div className="opts entity-actions" role="group" aria-label={`Actions for ${label}`}>
-      <button type="button" className="chip" onClick={() => { setSelectedMarkerId(id); setModule('map') }}>
+      <button type="button" className="chip" onClick={() => focusOnMap(id)}>
         Show on map
       </button>
       <button
