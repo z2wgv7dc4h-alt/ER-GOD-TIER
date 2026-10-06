@@ -885,7 +885,7 @@ def process(posts: list[dict], meta: dict) -> dict:
         source_counts[src] += 1
         type_counts[kind] += 1
         openings[kind][opening_of(title)] += 1
-        for ent in entities:
+        for ent in sorted(entities):
             entity_counts[ent] += 1
         for term in unresolved:
             key = normalize_name(term)
