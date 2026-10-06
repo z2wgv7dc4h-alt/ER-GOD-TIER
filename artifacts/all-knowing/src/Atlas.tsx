@@ -34,6 +34,9 @@ import { watchPins } from './watch/watchlist'
 import { heatCells, heatRadius } from './map/heat'
 import { fitViewBox, focusViewBox, followFocus, graceFocus } from './map/follow'
 import { resolveFocusTarget, FOCUS_ZOOM } from './map/focusTarget'
+import { engineFocusMessage, type EngineFocus } from './map/engineFocus'
+import { byId } from './knowledge/catalog'
+import { canonicalFactId } from './lib/aliases'
 import {
   sourceHowTo,
   useItemSourceResolver,
@@ -78,7 +81,15 @@ function stateFill(state: FactState, kind: MapMarker['kind']) {
  * (or errors), we do not leave a silent blank canvas — the caller swaps in the
  * static plate and a different banner.
  */
-function EngineEmbed({ onFail, follow = false }: { onFail: () => void; follow?: boolean }) {
+function EngineEmbed({
+  onFail,
+  follow = false,
+  focus = null,
+}: {
+  onFail: () => void
+  follow?: boolean
+  focus?: EngineFocus | null
+}) {
   const [loaded, setLoaded] = useState(false)
   const frameRef = useRef<HTMLIFrameElement>(null)
   useEffect(() => {
@@ -106,11 +117,21 @@ function EngineEmbed({ onFail, follow = false }: { onFail: () => void; follow?: 
     if (!loaded) return
     frameRef.current?.contentWindow?.postMessage({ type: 'all-knowing:follow', on: follow }, '*')
   }, [loaded, follow])
+  // Task 158: "Show on map" must zoom the map the player actually sees — the
+  // live engine iframe (the static plate was the only path Task 155 reached).
+  // Each request carries its own token so pressing the button again re-focuses.
+  const sentFocus = useRef<number | null>(null)
+  useEffect(() => {
+    if (!loaded || !focus || sentFocus.current === focus.at) return
+    sentFocus.current = focus.at
+    frameRef.current?.contentWindow?.postMessage({ type: 'all-knowing:focus', ...focus }, '*')
+  }, [loaded, focus])
   return (
     <iframe
       ref={frameRef}
       title="Elden Ring live map"
       className="engine-frame"
+      data-focus={focus ? `${focus.master ?? ''}:${focus.id}` : undefined}
       src={`${MAP_ENGINE_BASE}/?embed=1`}
       onLoad={() => setLoaded(true)}
       onError={onFail}
@@ -218,6 +239,26 @@ export function AtlasWorkspace() {
     return null
   }, [sources, sourceIndex, focusPlan, focusId])
   const howTo = itemQuery ? sourceHowTo(itemQuery, sources) : ''
+  // Task 158: the same resolved target, translated into the live engine's frame
+  // for the embedded map (which draws its own canvas and ignores the static
+  // plate's viewBox). Null when there is nothing to place or no request.
+  const engineFocus: EngineFocus | null = useMemo(() => {
+    if (!w.mapFocus || !focusId) return null
+    const fact = byId.get(canonicalFactId(focusId)) ?? byId.get(focusId)
+    if (activePlaced) {
+      return engineFocusMessage({
+        at: w.mapFocus.at,
+        id: focusId,
+        name: activePlaced.name,
+        kind: fact?.kind,
+        layer: activePlaced.layer,
+        center: activePlaced.center,
+      })
+    }
+    // The host could not ground it, but the engine may still know the name.
+    const name = focusPlan.kind === 'none' ? getEntity(focusId).name : focusPlan.name
+    return { at: w.mapFocus.at, id: focusId, name, kind: fact?.kind }
+  }, [activePlaced, focusId, w.mapFocus, focusPlan])
   const [world, setWorld] = useState<AtlasWorld>(() =>
     activePlaced ? activePlaced.layer : w.character.answers.dlc === 'sote' ? 'shadow' : 'overworld',
   )
@@ -526,7 +567,7 @@ export function AtlasWorkspace() {
             plate. The engine's pins are drawn inside its own iframe, so the
             two pin sets never share a view. */}
         {engineLive ? (
-          <EngineEmbed onFail={failEmbed} follow={w.follow} />
+          <EngineEmbed onFail={failEmbed} follow={w.follow} focus={engineFocus} />
         ) : (
           <div className="atlas-plate">
             {plate && !artReady && <p className="note atlas-loading">Loading map…</p>}
