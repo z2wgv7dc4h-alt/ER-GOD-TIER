@@ -127,6 +127,8 @@ const state = {
   iconImgs: new Map(),  // icon key -> HTMLImageElement, loaded lazily
   showIcons: true,      // draw real sprites instead of coloured dots
   followPlayer: false,  // keep re-centring on the player until told to stop
+  pendingFocus: null,   // All-Knowing Task 158: a focus request that arrived before boot
+  hostFocus: null,      // ...its fallback point, drawn as a ring when no pin matches
 };
 
 /** Load an icon once, redrawing when it arrives; null until it is ready. */
@@ -286,6 +288,10 @@ async function boot() {
   applyPrefsToUi(prefs);
   buildSavePicker();
   connect();
+
+  // All-Knowing Task 158: a focus request that raced the async boot is applied
+  // now that the map and marker list exist.
+  if (state.pendingFocus) { const d = state.pendingFocus; state.pendingFocus = null; focusFromHost(d); }
 
   // Language changes only ever affect text, so nothing needs reloading.
   I18n.onChange(() => {
@@ -502,6 +508,20 @@ function drawMarkers(ctx, m) {
 
   drawFragmentRect(ctx, m);
   drawPlayer(ctx, m);
+  // All-Knowing Task 158: a host "Show on map" point that matched no pin (e.g.
+  // a specific item pickup) still gets a visible ring.
+  if (state.hostFocus && state.hostFocus.master === state.master) {
+    const [hx, hy] = m.toScreen(state.hostFocus.px, state.hostFocus.py);
+    ctx.beginPath();
+    ctx.arc(hx, hy, 13, 0, Math.PI * 2);
+    ctx.strokeStyle = '#ffe9a8';
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(hx, hy, 3.6, 0, Math.PI * 2);
+    ctx.fillStyle = '#ffe9a8';
+    ctx.fill();
+  }
   ctx.restore();
 }
 
@@ -671,7 +691,56 @@ function recentreOnPlayer() {
 window.addEventListener('message', (ev) => {
   const d = ev && ev.data;
   if (d && d.type === 'all-knowing:follow') setFollow(!!d.on);
+  // All-Knowing Task 158: the host's "Show on map" focuses a pin in the engine.
+  if (d && d.type === 'all-knowing:focus') focusFromHost(d);
 });
+
+// How close the host's "Show on map" flies. Above the cluster threshold
+// (0.28) so the target is a single pin, and above 0.85 so its label draws -
+// the same scale the engine's own search results use.
+const HOST_FOCUS_SCALE = 1.4;
+
+/**
+ * All-Knowing Task 158: focus a host-supplied target on the map.
+ *
+ * Resolves by exact engine id, then by display name (preferring the host's
+ * category), and only then falls back to the host's master-pixel point, which
+ * is drawn as a ring. Switches the world when the pin lives on another plate,
+ * flies in, and highlights the pin with its popup. A request that arrives
+ * before boot() has loaded markers is queued (state.pendingFocus) and applied
+ * once the map exists, so coming from another tab still lands on the target.
+ */
+function focusFromHost(d) {
+  if (!d) return;
+  if (!map || !state.markers.length) { state.pendingFocus = d; return; }
+  const norm = (x) => ((x.names && (x.names.en || x.names[I18n.lang])) || x.name || '').toLowerCase();
+  const wantedName = String(d.name || '').trim().toLowerCase();
+  let m = (d.id && state.byId.get(d.id)) || null;
+  if (!m && wantedName) {
+    const exact = state.markers.filter((x) => norm(x) === wantedName);
+    const pool = exact.length ? exact : state.markers.filter((x) => {
+      const nm = norm(x);
+      return nm && (nm.includes(wantedName) || wantedName.includes(nm));
+    });
+    m = (d.kind && pool.find((x) => x.cat === d.kind)) || pool[0] || null;
+  }
+  let fallback = false;
+  if (!m && typeof d.px === 'number' && typeof d.py === 'number' && d.master) {
+    m = { id: d.id || 'host:focus', px: d.px, py: d.py, master: d.master,
+          cat: 'region', names: { en: d.name || '' } };
+    fallback = true;
+  }
+  if (!m || typeof m.px !== 'number') return;
+  // The marker's own master wins over the host's guess; a hidden/absent master
+  // (e.g. the host's Ashen layer) is left to the engine's current plate.
+  const master = m.master || d.master;
+  if (master && master !== state.master && !isHiddenMaster(master)) switchMaster(master);
+  if (!state.enabled.has(m.cat)) { state.enabled.add(m.cat); buildCategories(); refreshCounts(); }
+  state.hostFocus = fallback ? { px: m.px, py: m.py, master: state.master } : null;
+  map.flyTo(m.px, m.py, Math.max(map.scale, HOST_FOCUS_SCALE));
+  if (fallback) map.requestDraw();
+  else setTimeout(() => showPopup(m), 460);
+}
 
 function drawPlayer(ctx, m) {
   const target = playerTarget();

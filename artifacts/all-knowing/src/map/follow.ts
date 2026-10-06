@@ -56,3 +56,41 @@ export function focusViewBox(focus: Focus, vw: number, vh: number, zoom = 2.4): 
   const y = Math.min(Math.max(cy - height / 2, 0), Math.max(0, vh - height))
   return `${x} ${y} ${width} ${height}`
 }
+
+/**
+ * Task 156 — a viewBox that contains every point of a multi-spawn source (an
+ * enemy drop with many placements), with a margin so the outermost pin is not on
+ * the edge. Falls back to a single-point focus when only one point is supplied.
+ */
+export function fitViewBox(
+  points: { x: number; y: number }[],
+  vw: number,
+  vh: number,
+  margin = 0.12,
+): string {
+  if (!points.length) return `0 0 ${vw} ${vh}`
+  if (points.length === 1) return focusViewBox({ ...points[0], world: 'overworld' }, vw, vh, 3.4)
+  const xs = points.map((p) => (p.x / 100) * vw)
+  const ys = points.map((p) => (p.y / 100) * vh)
+  const minX = Math.min(...xs)
+  const maxX = Math.max(...xs)
+  const minY = Math.min(...ys)
+  const maxY = Math.max(...ys)
+  const padX = Math.max((maxX - minX) * margin, vw / 60)
+  const padY = Math.max((maxY - minY) * margin, vh / 60)
+  let width = maxX - minX + padX * 2
+  let height = maxY - minY + padY * 2
+  // Keep a sane maximum zoom-out and a minimum zoom-in around tiny clusters.
+  const maxW = vw / 1.6
+  const maxH = vh / 1.6
+  if (width > maxW || height > maxH) {
+    const s = Math.min(maxW / width, maxH / height)
+    width *= s
+    height *= s
+  }
+  const cx = (minX + maxX) / 2
+  const cy = (minY + maxY) / 2
+  const x = Math.min(Math.max(cx - width / 2, 0), Math.max(0, vw - width))
+  const y = Math.min(Math.max(cy - height / 2, 0), Math.max(0, vh - height))
+  return `${x} ${y} ${width} ${height}`
+}

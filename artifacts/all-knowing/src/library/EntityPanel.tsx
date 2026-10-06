@@ -1,6 +1,6 @@
 import { lazy, Suspense, useMemo, useState } from 'react'
 import type { Remembrance } from '../knowledge/remembrances'
-import { getEntity, status, type EntityKind } from '../lib/entityGraph'
+import { edges, getEntity, status, type EntityKind } from '../lib/entityGraph'
 import { useEnrichment, useEntityIndex } from '../lib/entityEnrich'
 import type { RemembranceOption } from '../lib/remembranceChoice'
 import type { Verdict } from '../lib/verdict'
@@ -169,7 +169,15 @@ export function EntityPanel({
   // Task 119 §3: read the enriched record first; skeleton (not "No data") while
   // the one index fetch is still in flight.
   const record = useEnrichment(statusFactId)
-  const { ready: indexReady } = useEntityIndex()
+  const { ready: indexReady, version: indexVersion } = useEntityIndex()
+  // Task 156 — an item with no location text, no map row and no source edge has
+  // nothing to show, so the map action is dropped rather than opening on nothing.
+  const hasMapSource = useMemo(() => {
+    if (record?.location || record?.map) return true
+    return edges(statusFactId).some((e) =>
+      ['soldBy', 'droppedBy', 'foundIn', 'craftedFrom', 'tradedFor', 'sells', 'drops'].includes(e.rel),
+    )
+  }, [record, statusFactId, indexVersion])
   const panelKindValue = panelKind(entity, statusFactId, kind)
   const isBoss = panelKindValue === 'boss' || panelKindValue === 'enemy'
   const isNpc = panelKindValue === 'npc' || panelKindValue === 'merchant'
@@ -563,7 +571,7 @@ export function EntityPanel({
                 {compareActive ? 'Pinned to compare' : 'Compare'}
               </button>
             )}
-            {onShowOnMap && (
+            {onShowOnMap && hasMapSource && (
               <button type="button" className="chip" onClick={onShowOnMap}>
                 Show where
               </button>

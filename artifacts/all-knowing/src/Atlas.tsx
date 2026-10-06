@@ -32,8 +32,19 @@ import { resultMarkers, useResultPins } from './map/resultPins'
 import { addNote, noteMarkers, notesForWorld, readNotes, removeNote } from './map/notes'
 import { watchPins } from './watch/watchlist'
 import { heatCells, heatRadius } from './map/heat'
-import { focusViewBox, followFocus, graceFocus } from './map/follow'
-import { resolveFocusTarget } from './map/focusTarget'
+import { fitViewBox, focusViewBox, followFocus, graceFocus } from './map/follow'
+import { resolveFocusTarget, FOCUS_ZOOM } from './map/focusTarget'
+import { engineFocusMessage, type EngineFocus } from './map/engineFocus'
+import { byId } from './knowledge/catalog'
+import { canonicalFactId } from './lib/aliases'
+import {
+  sourceHowTo,
+  useItemSourceResolver,
+  type BossDropRow,
+  type ItemSource,
+} from './map/itemSources'
+import { getEntity } from './lib/entityGraph'
+import { allRecords, getRecord, useEntityIndex } from './lib/entityIndex'
 import { MapNotesPanel, NoteEditor } from './map/MapNotes'
 import type { MapMarker } from './types'
 
@@ -70,7 +81,15 @@ function stateFill(state: FactState, kind: MapMarker['kind']) {
  * (or errors), we do not leave a silent blank canvas — the caller swaps in the
  * static plate and a different banner.
  */
-function EngineEmbed({ onFail, follow = false }: { onFail: () => void; follow?: boolean }) {
+function EngineEmbed({
+  onFail,
+  follow = false,
+  focus = null,
+}: {
+  onFail: () => void
+  follow?: boolean
+  focus?: EngineFocus | null
+}) {
   const [loaded, setLoaded] = useState(false)
   const frameRef = useRef<HTMLIFrameElement>(null)
   useEffect(() => {
@@ -98,11 +117,21 @@ function EngineEmbed({ onFail, follow = false }: { onFail: () => void; follow?: 
     if (!loaded) return
     frameRef.current?.contentWindow?.postMessage({ type: 'all-knowing:follow', on: follow }, '*')
   }, [loaded, follow])
+  // Task 158: "Show on map" must zoom the map the player actually sees — the
+  // live engine iframe (the static plate was the only path Task 155 reached).
+  // Each request carries its own token so pressing the button again re-focuses.
+  const sentFocus = useRef<number | null>(null)
+  useEffect(() => {
+    if (!loaded || !focus || sentFocus.current === focus.at) return
+    sentFocus.current = focus.at
+    frameRef.current?.contentWindow?.postMessage({ type: 'all-knowing:focus', ...focus }, '*')
+  }, [loaded, focus])
   return (
     <iframe
       ref={frameRef}
       title="Elden Ring live map"
       className="engine-frame"
+      data-focus={focus ? `${focus.master ?? ''}:${focus.id}` : undefined}
       src={`${MAP_ENGINE_BASE}/?embed=1`}
       onLoad={() => setLoaded(true)}
       onError={onFail}
@@ -138,8 +167,100 @@ export function AtlasWorkspace() {
     () => resolveFocusTarget(w.mapFocus?.id ?? null, { coords }),
     [w.mapFocus, coords],
   )
+  // Task 156 — when the focused entity is an item with no world pickup, resolve
+  // its SOURCE (boss/vendor/enemy/craft). The resolver returns every grounded
+  // target in a fixed order; the first one with points is what the map opens on.
+  const { version: indexVersion } = useEntityIndex()
+  const focusId = w.mapFocus?.id ?? null
+  const focusRecord = focusId ? getRecord(getEntity(focusId).id) : undefined
+  const bossDrops = useMemo<BossDropRow[]>(() => {
+    if (!indexVersion) return []
+    return allRecords()
+      .filter((r) => r.kind === 'boss' && (r.drops?.length || r.map))
+      .map((r) => ({
+        id: r.id,
+        name: r.name,
+        drops: r.drops,
+        map: r.map ? { x: r.map.x, y: r.map.y, world: r.map.world } : undefined,
+        region: r.region,
+      }))
+  }, [indexVersion])
+  const itemResolver = useItemSourceResolver(bossDrops)
+  const itemQuery = useMemo(
+    () =>
+      focusId
+        ? {
+            id: focusId,
+            name: focusPlan.kind === 'none' ? getEntity(focusId).name : focusPlan.name,
+            region: focusPlan.kind === 'region' ? focusPlan.region : focusRecord?.region,
+            how: focusRecord?.location,
+            map: focusRecord?.map,
+          }
+        : null,
+    [focusId, focusPlan, focusRecord],
+  )
+  const sources: ItemSource[] = useMemo(
+    () => (itemResolver && itemQuery ? itemResolver(itemQuery) : []),
+    [itemResolver, itemQuery],
+  )
+  const [sourceIndex, setSourceIndex] = useState(0)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { setSourceIndex(0) }, [w.mapFocus?.at])
+  type ActivePlaced = {
+    id: string
+    name: string
+    layer: AtlasWorld
+    center: { x: number; y: number }
+    zoom: number
+    points: { x: number; y: number }[]
+  }
+  const activePlaced: ActivePlaced | null = useMemo(() => {
+    const chosen = sources.length ? sources[Math.min(sourceIndex, sources.length - 1)] : null
+    if (chosen && chosen.points.length) {
+      return {
+        id: focusId!,
+        name: chosen.label,
+        layer: chosen.world,
+        center: chosen.points[0],
+        zoom: FOCUS_ZOOM,
+        points: chosen.points,
+      }
+    }
+    if (focusPlan.kind === 'placed') {
+      return {
+        id: focusId ?? focusPlan.id,
+        name: focusPlan.name,
+        layer: focusPlan.layer,
+        center: focusPlan.center,
+        zoom: focusPlan.zoom,
+        points: [focusPlan.center],
+      }
+    }
+    return null
+  }, [sources, sourceIndex, focusPlan, focusId])
+  const howTo = itemQuery ? sourceHowTo(itemQuery, sources) : ''
+  // Task 158: the same resolved target, translated into the live engine's frame
+  // for the embedded map (which draws its own canvas and ignores the static
+  // plate's viewBox). Null when there is nothing to place or no request.
+  const engineFocus: EngineFocus | null = useMemo(() => {
+    if (!w.mapFocus || !focusId) return null
+    const fact = byId.get(canonicalFactId(focusId)) ?? byId.get(focusId)
+    if (activePlaced) {
+      return engineFocusMessage({
+        at: w.mapFocus.at,
+        id: focusId,
+        name: activePlaced.name,
+        kind: fact?.kind,
+        layer: activePlaced.layer,
+        center: activePlaced.center,
+      })
+    }
+    // The host could not ground it, but the engine may still know the name.
+    const name = focusPlan.kind === 'none' ? getEntity(focusId).name : focusPlan.name
+    return { at: w.mapFocus.at, id: focusId, name, kind: fact?.kind }
+  }, [activePlaced, focusId, w.mapFocus, focusPlan])
   const [world, setWorld] = useState<AtlasWorld>(() =>
-    focusPlan.kind === 'placed' ? focusPlan.layer : w.character.answers.dlc === 'sote' ? 'shadow' : 'overworld',
+    activePlaced ? activePlaced.layer : w.character.answers.dlc === 'sote' ? 'shadow' : 'overworld',
   )
   const [sideOpen, setSideOpen] = useState(false)
   const [layersOpen, setLayersOpen] = useState(false)
@@ -152,12 +273,12 @@ export function AtlasWorkspace() {
   // player then switch plates without the effect dragging them back.
   const appliedFocus = useRef<number | null>(null)
   useEffect(() => {
-    if (focusPlan.kind !== 'placed') return
+    if (!activePlaced) return
     const token = w.mapFocus?.at ?? null
     if (token == null || appliedFocus.current === token) return
     appliedFocus.current = token
-    if (focusPlan.layer !== world) setWorld(focusPlan.layer)
-  }, [focusPlan, world, w.mapFocus])
+    if (activePlaced.layer !== world) setWorld(activePlaced.layer)
+  }, [activePlaced, world, w.mapFocus])
   const placeNameDoc = usePlaceNames()
   const enginePins = useEnginePins(world, !engineLive)
   // Task 111 §1/§2: session result pins and vault-backed custom notes.
@@ -351,17 +472,19 @@ export function AtlasWorkspace() {
     ? resultList.find((m) => m.id === w.selectedMarkerId) ?? noteList.find((m) => m.id === w.selectedMarkerId)
     : undefined
   const followPoint = w.follow ? followFocus({ currentArea: w.currentArea, engine: w.engineState }) : null
-  const planPoint = focusPlan.kind === 'placed'
-    ? { x: focusPlan.center.x, y: focusPlan.center.y, world: focusPlan.layer }
+  const planPoint = activePlaced
+    ? { x: activePlaced.center.x, y: activePlaced.center.y, world: activePlaced.layer }
     : null
   const focus = !engineLive
     ? followPoint ?? planPoint ?? (focusPin ? { x: focusPin.x, y: focusPin.y, world } : null)
     : null
   const focusHere = focus && focus.world === world
-  const focusZoom = focusPlan.kind === 'placed' && focusPlan.layer === world ? focusPlan.zoom : 2.4
+  const focusZoom = activePlaced && activePlaced.layer === world ? activePlaced.zoom : 2.4
   const viewBox = plate
     ? focusHere
-      ? focusViewBox(focus!, vw, vh, focusZoom)
+      ? activePlaced && activePlaced.points.length > 1
+        ? fitViewBox(activePlaced.points, vw, vh)
+        : focusViewBox(focus!, vw, vh, focusZoom)
       : `0 0 ${vw} ${vh}`
     : '0 0 100 80'
 
@@ -444,7 +567,7 @@ export function AtlasWorkspace() {
             plate. The engine's pins are drawn inside its own iframe, so the
             two pin sets never share a view. */}
         {engineLive ? (
-          <EngineEmbed onFail={failEmbed} follow={w.follow} />
+          <EngineEmbed onFail={failEmbed} follow={w.follow} focus={engineFocus} />
         ) : (
           <div className="atlas-plate">
             {plate && !artReady && <p className="note atlas-loading">Loading map…</p>}
@@ -609,18 +732,38 @@ export function AtlasWorkspace() {
               )
             })}
             {/* Task 155 — the Show-on-map target: a halo + label on top of every
-                layer so the marker is found even when its id is not a visible pin. */}
-            {(!plate || artReady) && focusHere && focusPlan.kind === 'placed' && (() => {
-              const px = (focusPlan.center.x / 100) * vw
-              const py = (focusPlan.center.y / 100) * vh
-              return (
-                <g className="pin focus-pin" aria-label={`${focusPlan.name} on map`}>
-                  <circle className="pin-pulse" cx={px} cy={py} r={3.6 * k} fill="none" stroke="#ffe9a8" strokeWidth={0.5 * k} />
-                  <circle cx={px} cy={py} r={1.7 * k} fill="#ffe9a8" stroke="#c9a227" strokeWidth={0.32 * k} />
-                  <text x={px + 2.6 * k} y={py + 0.8 * k}>{focusPlan.name}</text>
-                </g>
-              )
-            })()}
+                layer so the marker is found even when its id is not a visible pin.
+                Task 156 — a multi-source target (an enemy drop) draws every spawn. */}
+            {(!plate || artReady) && focusHere && activePlaced && activePlaced.layer === world && (
+              <g className="pin focus-pin" aria-label={`${activePlaced.name} on map`}>
+                {activePlaced.points.map((p, i) => (
+                  <circle
+                    key={`spawn:${i}`}
+                    className={i === 0 ? 'pin-pulse' : undefined}
+                    cx={(p.x / 100) * vw}
+                    cy={(p.y / 100) * vh}
+                    r={(i === 0 ? 3.6 : 2.2) * k}
+                    fill="none"
+                    stroke="#ffe9a8"
+                    strokeWidth={(i === 0 ? 0.5 : 0.35) * k}
+                  />
+                ))}
+                {activePlaced.points.map((p, i) => (
+                  <circle
+                    key={`spawndot:${i}`}
+                    cx={(p.x / 100) * vw}
+                    cy={(p.y / 100) * vh}
+                    r={1.4 * k}
+                    fill="#ffe9a8"
+                    stroke="#c9a227"
+                    strokeWidth={0.3 * k}
+                  />
+                ))}
+                <text x={(activePlaced.center.x / 100) * vw + 2.6 * k} y={(activePlaced.center.y / 100) * vh + 0.8 * k}>
+                  {activePlaced.name}
+                </text>
+              </g>
+            )}
           </svg>
           </div>
         )}
@@ -634,11 +777,28 @@ export function AtlasWorkspace() {
             onCancel={() => setNoteDraft(null)}
           />
         )}
-        {/* Task 155: a Show-on-map target with no grounded position never opens
-            on a silent nothing — name the region we can still show. */}
-        {!engineLive && focusPlan.kind === 'region' && (
+        {/* Task 155/156: a Show-on-map target with no grounded position never
+            opens on a silent nothing — name the region and how to get it. */}
+        {!engineLive && !activePlaced && (focusPlan.kind === 'region' || howTo) && (
           <div className="atlas-banner focus-banner" role="status">
-            {focusPlan.message}
+            {focusPlan.kind === 'region' && !howTo
+              ? focusPlan.message
+              : `No exact location — ${howTo || (focusPlan.kind === 'region' ? focusPlan.message : 'search the field.')}`}
+          </div>
+        )}
+        {/* Task 156 — several sources for one item: pick which to show. */}
+        {!engineLive && sources.length > 1 && (
+          <div className="atlas-banner focus-banner atlas-sources" role="group" aria-label="Where to find it">
+            {sources.map((s, i) => (
+              <button
+                key={`${s.kind}:${s.label}:${i}`}
+                type="button"
+                className={i === Math.min(sourceIndex, sources.length - 1) ? 'chip on' : 'chip'}
+                onClick={() => setSourceIndex(i)}
+              >
+                {s.label}
+              </button>
+            ))}
           </div>
         )}
         {/* Task 82: the engine never fails silently — a visible banner says why
