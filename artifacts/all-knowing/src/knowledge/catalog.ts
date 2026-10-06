@@ -128,7 +128,7 @@ export const facts: Fact[] = [
   { id: 'quest:ranni:nokron', kind: 'quest', name: 'Ranni — Fingerslayer Blade recovered', aliases: [], region: 'Nokron', campaign: 'base', implies: ['quest:ranni:festival'] },
   { id: 'quest:ranni:statue', kind: 'quest', name: 'Ranni — Carian Study Hall inverted', aliases: [], region: 'Liurnia', campaign: 'base', implies: ['quest:ranni:service'] },
   { id: 'quest:ranni:ring', kind: 'quest', name: 'Ranni — Dark Moon Ring placed', aliases: ['age of stars'], region: 'Moonlight Altar', campaign: 'base', implies: ['item:dark-moon-ring'] },
-  { id: 'quest:boc:needle', kind: 'quest', name: 'Boc — gold sewing needle given', aliases: ['boc'], region: 'Altus', campaign: 'base', implies: [] },
+  { id: 'quest:boc:needle', kind: 'quest', name: 'Boc — gold sewing needle given', aliases: ['boc'], region: 'Altus', campaign: 'base', implies: ['item:sewing-needle'] },
   { id: 'quest:millicent:needle', kind: 'quest', name: 'Millicent — unalloyed needle', aliases: ['millicent'], region: 'Caelid', campaign: 'base', implies: ['region:caelid'] },
   { id: 'quest:rya:amnion', kind: 'quest', name: 'Rya — Serpent’s Amnion', aliases: ['rya'], region: 'Volcano Manor', campaign: 'base', implies: [] },
 
@@ -337,7 +337,7 @@ export const facts: Fact[] = [
   { id: 'quest:fia:met', kind: 'quest', name: 'Fia — held at the Roundtable', aliases: [], region: 'Roundtable', campaign: 'base', implies: [] },
   { id: 'quest:fia:dagger', kind: 'quest', name: 'Fia — Weathered Dagger decided', aliases: [], region: 'Roundtable', campaign: 'base', implies: [] },
   { id: 'quest:fia:cursemark', kind: 'quest', name: 'Fia — Cursemark of Death given', aliases: [], region: 'Deeproot Depths', campaign: 'base', implies: [] },
-  { id: 'quest:fia:concluded', kind: 'quest', name: 'Fia — Death-Prince line concluded', aliases: [], region: 'Deeproot Depths', campaign: 'base', implies: [] },
+  { id: 'quest:fia:concluded', kind: 'quest', name: 'Fia — Death-Prince line concluded', aliases: [], region: 'Deeproot Depths', campaign: 'base', implies: ['boss:fortissax'] },
   { id: 'quest:d:brother', kind: 'quest', name: "D's brother met in Deeproot", aliases: [], region: 'Deeproot Depths', campaign: 'base', implies: [] },
 
   // Dung Eater — seedbeds, potion fork, blessing / curse.
@@ -505,6 +505,8 @@ const REGION_FACT: [RegExp, string][] = [
   [/farum azula/i, 'region:farum'],
   [/haligtree|elphael/i, 'region:haligtree'],
   [/gravesite|scadu|cerulean|jagged peak|rauh|belurat|charo|abyssal|enir-ilim|shadow keep|hinterland|finger ruins|stone coffin/i, 'region:shadow'],
+  [/siofra/i, 'region:siofra-river'],
+  [/ainsel/i, 'region:ainsel-river'],
 ]
 
 export function regionFactFor(region: string): string | undefined {
