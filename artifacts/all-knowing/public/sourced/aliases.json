@@ -4779,14 +4779,6 @@
   "source": "legacy-id"
  },
  {
-  "engineId": "npcs:905220001",
-  "slug": "boss:consort",
-  "kind": "boss",
-  "fmgName": "Radahn, Consort of Miquella",
-  "aliases": [],
-  "source": "legacy-id"
- },
- {
   "engineId": "damage:fire",
   "slug": "damage:fire",
   "kind": "damage",
@@ -36783,6 +36775,22 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "enemy:44700938",
+  "slug": "grace:160006",
+  "kind": "grace",
+  "fmgName": "Abductor Virgin (Boss)",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:44701938",
+  "slug": "grace:160006",
+  "kind": "grace",
+  "fmgName": "Abductor Virgin (Boss)",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "grace:100000",
   "slug": "grace:godrick-grace",
   "kind": "grace",
@@ -36800,7 +36808,7 @@
  },
  {
   "engineId": "grace:100001",
-  "slug": "grace:margit-the-fell-omen",
+  "slug": "grace:100001",
   "kind": "grace",
   "fmgName": "Margit, the Fell Omen",
   "aliases": [
@@ -36809,7 +36817,7 @@
    "margit the fell omen",
    "the fell omen"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:100002",
@@ -36824,23 +36832,23 @@
  },
  {
   "engineId": "grace:100003",
-  "slug": "grace:gateside-chamber",
+  "slug": "grace:100003",
   "kind": "grace",
   "fmgName": "Gateside Chamber",
   "aliases": [
    "gateside chamber"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:100004",
-  "slug": "grace:stormveil-cliffside",
+  "slug": "grace:100004",
   "kind": "grace",
   "fmgName": "Stormveil Cliffside",
   "aliases": [
    "stormveil cliffside"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:100005",
@@ -36854,53 +36862,53 @@
  },
  {
   "engineId": "grace:100006",
-  "slug": "grace:liftside-chamber",
+  "slug": "grace:100006",
   "kind": "grace",
   "fmgName": "Liftside Chamber",
   "aliases": [
    "liftside chamber"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:100007",
-  "slug": "grace:secluded-cell",
+  "slug": "grace:100007",
   "kind": "grace",
   "fmgName": "Secluded Cell",
   "aliases": [
    "secluded cell"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:100008",
-  "slug": "grace:stormveil-main-gate",
+  "slug": "grace:100008",
   "kind": "grace",
   "fmgName": "Stormveil Main Gate",
   "aliases": [
    "stormveil main gate"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:110000",
-  "slug": "grace:elden-throne",
+  "slug": "grace:110000",
   "kind": "grace",
   "fmgName": "Elden Throne",
   "aliases": [
    "elden throne"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:110001",
-  "slug": "grace:erdtree-sanctuary",
+  "slug": "grace:110001",
   "kind": "grace",
   "fmgName": "Erdtree Sanctuary",
   "aliases": [
    "erdtree sanctuary"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:110002",
@@ -36914,33 +36922,33 @@
  },
  {
   "engineId": "grace:110003",
-  "slug": "grace:lower-capital-church",
+  "slug": "grace:110003",
   "kind": "grace",
   "fmgName": "Lower Capital Church",
   "aliases": [
    "lower capital church"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:110004",
-  "slug": "grace:avenue-balcony",
+  "slug": "grace:110004",
   "kind": "grace",
   "fmgName": "Avenue Balcony",
   "aliases": [
    "avenue balcony"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:110005",
-  "slug": "grace:west-capital-rampart",
+  "slug": "grace:110005",
   "kind": "grace",
   "fmgName": "West Capital Rampart",
   "aliases": [
    "west capital rampart"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:110007",
@@ -36955,43 +36963,43 @@
  },
  {
   "engineId": "grace:110008",
-  "slug": "grace:fortified-manor-first-floor",
+  "slug": "grace:110008",
   "kind": "grace",
   "fmgName": "Fortified Manor, First Floor",
   "aliases": [
    "fortified manor first floor"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:110009",
-  "slug": "grace:divine-bridge",
+  "slug": "grace:110009",
   "kind": "grace",
   "fmgName": "Divine Bridge",
   "aliases": [
    "divine bridge"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:110500",
-  "slug": "grace:elden-throne",
+  "slug": "grace:110500",
   "kind": "grace",
   "fmgName": "Elden Throne",
   "aliases": [
    "elden throne"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:110501",
-  "slug": "grace:erdtree-sanctuary",
+  "slug": "grace:110501",
   "kind": "grace",
   "fmgName": "Erdtree Sanctuary",
   "aliases": [
    "erdtree sanctuary"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:110502",
@@ -37027,33 +37035,33 @@
  },
  {
   "engineId": "grace:110505",
-  "slug": "grace:divine-bridge",
+  "slug": "grace:110505",
   "kind": "grace",
   "fmgName": "Divine Bridge",
   "aliases": [
    "divine bridge"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:111000",
-  "slug": "grace:table-of-lost-grace",
+  "slug": "grace:111000",
   "kind": "grace",
   "fmgName": "Table of Lost Grace",
   "aliases": [
    "table of lost grace"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120100",
-  "slug": "grace:dragonkin-soldier-of-nokstella",
+  "slug": "grace:120100",
   "kind": "grace",
   "fmgName": "Dragonkin Soldier of Nokstella",
   "aliases": [
    "dragonkin soldier of nokstella"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120101",
@@ -37068,94 +37076,94 @@
  },
  {
   "engineId": "grace:120102",
-  "slug": "grace:ainsel-river-sluice-gate",
+  "slug": "grace:120102",
   "kind": "grace",
   "fmgName": "Ainsel River Sluice Gate",
   "aliases": [
    "ainsel river sluice gate"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120103",
-  "slug": "grace:ainsel-river-downstream",
+  "slug": "grace:120103",
   "kind": "grace",
   "fmgName": "Ainsel River Downstream",
   "aliases": [
    "ainsel river downstream"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120104",
-  "slug": "grace:ainsel-river-main",
+  "slug": "grace:120104",
   "kind": "grace",
   "fmgName": "Ainsel River Main",
   "aliases": [
    "ainsel river main"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120105",
-  "slug": "grace:nokstella-eternal-city",
+  "slug": "grace:120105",
   "kind": "grace",
   "fmgName": "Nokstella, Eternal City",
   "aliases": [
    "nokstella",
    "nokstella eternal city"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120106",
-  "slug": "grace:lake-of-rot-shoreside",
+  "slug": "grace:120106",
   "kind": "grace",
   "fmgName": "Lake of Rot Shoreside",
   "aliases": [
    "lake of rot shoreside"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120108",
-  "slug": "grace:grand-cloister",
+  "slug": "grace:120108",
   "kind": "grace",
   "fmgName": "Grand Cloister",
   "aliases": [
    "grand cloister"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120109",
-  "slug": "grace:nokstella-waterfall-basin",
+  "slug": "grace:120109",
   "kind": "grace",
   "fmgName": "Nokstella Waterfall Basin",
   "aliases": [
    "nokstella waterfall basin"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120200",
-  "slug": "grace:great-waterfall-basin",
+  "slug": "grace:120200",
   "kind": "grace",
   "fmgName": "Great Waterfall Basin",
   "aliases": [
    "great waterfall basin"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120201",
-  "slug": "grace:mimic-tear",
+  "slug": "grace:120201",
   "kind": "grace",
   "fmgName": "Mimic Tear",
   "aliases": [
    "mimic tear"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120203",
@@ -37170,33 +37178,33 @@
  },
  {
   "engineId": "grace:120204",
-  "slug": "grace:worshippers-woods",
+  "slug": "grace:120204",
   "kind": "grace",
   "fmgName": "Worshippers' Woods",
   "aliases": [
    "worshippers woods"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120206",
-  "slug": "grace:ancestral-woods",
+  "slug": "grace:120206",
   "kind": "grace",
   "fmgName": "Ancestral Woods",
   "aliases": [
    "ancestral woods"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120207",
-  "slug": "grace:aqueduct-facing-cliffs",
+  "slug": "grace:120207",
   "kind": "grace",
   "fmgName": "Aqueduct,Facing Cliffs",
   "aliases": [
    "aqueduct facing cliffs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120208",
@@ -37211,13 +37219,13 @@
  },
  {
   "engineId": "grace:120209",
-  "slug": "grace:below-the-well",
+  "slug": "grace:120209",
   "kind": "grace",
   "fmgName": "Below the Well",
   "aliases": [
    "below the well"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120300",
@@ -37231,13 +37239,13 @@
  },
  {
   "engineId": "grace:120301",
-  "slug": "grace:root-facing-cliffs",
+  "slug": "grace:120301",
   "kind": "grace",
   "fmgName": "Root,Facing Cliffs",
   "aliases": [
    "root facing cliffs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120302",
@@ -37264,84 +37272,84 @@
  },
  {
   "engineId": "grace:120304",
-  "slug": "grace:the-nameless-eternal-city",
+  "slug": "grace:120304",
   "kind": "grace",
   "fmgName": "The Nameless Eternal City",
   "aliases": [
    "nameless eternal city",
    "the nameless eternal city"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120305",
-  "slug": "grace:across-the-roots",
+  "slug": "grace:120305",
   "kind": "grace",
   "fmgName": "Across the Roots",
   "aliases": [
    "across the roots"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120400",
-  "slug": "grace:astel-naturalborn-of-the-void",
+  "slug": "grace:120400",
   "kind": "grace",
   "fmgName": "Astel, Naturalborn of the Void",
   "aliases": [
    "astel naturalborn of the void"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120500",
-  "slug": "grace:cocoon-of-the-empyrean",
+  "slug": "grace:120500",
   "kind": "grace",
   "fmgName": "Cocoon of the Empyrean",
   "aliases": [
    "cocoon of the empyrean"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120501",
-  "slug": "grace:palace-approach-ledge-road",
+  "slug": "grace:120501",
   "kind": "grace",
   "fmgName": "Palace Approach Ledge,Road",
   "aliases": [
    "palace approach ledge road"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120502",
-  "slug": "grace:dynasty-mausoleum-entrance",
+  "slug": "grace:120502",
   "kind": "grace",
   "fmgName": "Dynasty Mausoleum Entrance",
   "aliases": [
    "dynasty mausoleum entrance"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120503",
-  "slug": "grace:dynasty-mausoleum-midpoint",
+  "slug": "grace:120503",
   "kind": "grace",
   "fmgName": "Dynasty Mausoleum Midpoint",
   "aliases": [
    "dynasty mausoleum midpoint"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120700",
-  "slug": "grace:siofra-river-well-depths",
+  "slug": "grace:120700",
   "kind": "grace",
   "fmgName": "Siofra River Well Depths",
   "aliases": [
    "siofra river well depths"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:120701",
@@ -37356,7 +37364,7 @@
  },
  {
   "engineId": "grace:130000",
-  "slug": "grace:maliketh-the-black-blade",
+  "slug": "grace:130000",
   "kind": "grace",
   "fmgName": "Maliketh, the Black Blade",
   "aliases": [
@@ -37364,11 +37372,11 @@
    "maliketh",
    "maliketh the black blade"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:130001",
-  "slug": "grace:dragonlord-placidusax",
+  "slug": "grace:130001",
   "kind": "grace",
   "fmgName": "Dragonlord Placidusax",
   "aliases": [
@@ -37377,7 +37385,7 @@
    "dragonlord placidusax",
    "placidusax"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:130002",
@@ -37403,63 +37411,63 @@
  },
  {
   "engineId": "grace:130004",
-  "slug": "grace:crumbling-beast-grave-depths",
+  "slug": "grace:130004",
   "kind": "grace",
   "fmgName": "Crumbling Beast Grave Depths",
   "aliases": [
    "crumbling beast grave depths"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:130005",
-  "slug": "grace:tempest-facing-balcony",
+  "slug": "grace:130005",
   "kind": "grace",
   "fmgName": "Tempest,Facing Balcony",
   "aliases": [
    "tempest facing balcony"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:130006",
-  "slug": "grace:dragon-temple",
+  "slug": "grace:130006",
   "kind": "grace",
   "fmgName": "Dragon Temple",
   "aliases": [
    "dragon temple"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:130007",
-  "slug": "grace:dragon-temple-transept",
+  "slug": "grace:130007",
   "kind": "grace",
   "fmgName": "Dragon Temple Transept",
   "aliases": [
    "dragon temple transept"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:130008",
-  "slug": "grace:dragon-temple-lift",
+  "slug": "grace:130008",
   "kind": "grace",
   "fmgName": "Dragon Temple Lift",
   "aliases": [
    "dragon temple lift"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:130009",
-  "slug": "grace:dragon-temple-rooftop",
+  "slug": "grace:130009",
   "kind": "grace",
   "fmgName": "Dragon Temple Rooftop",
   "aliases": [
    "dragon temple rooftop"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:130010",
@@ -37474,13 +37482,13 @@
  },
  {
   "engineId": "grace:140000",
-  "slug": "grace:raya-lucaria-grand-library",
+  "slug": "grace:140000",
   "kind": "grace",
   "fmgName": "Raya Lucaria Grand Library",
   "aliases": [
    "raya lucaria grand library"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:140001",
@@ -37494,53 +37502,53 @@
  },
  {
   "engineId": "grace:140002",
-  "slug": "grace:church-of-the-cuckoo",
+  "slug": "grace:140002",
   "kind": "grace",
   "fmgName": "Church of the Cuckoo",
   "aliases": [
    "church of the cuckoo"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:140003",
-  "slug": "grace:schoolhouse-classroom",
+  "slug": "grace:140003",
   "kind": "grace",
   "fmgName": "Schoolhouse Classroom",
   "aliases": [
    "schoolhouse classroom"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:150000",
-  "slug": "grace:malenia-goddess-of-rot",
+  "slug": "grace:150000",
   "kind": "grace",
   "fmgName": "Malenia, Goddess of Rot",
   "aliases": [
    "malenia goddess of rot"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:150001",
-  "slug": "grace:prayer-room",
+  "slug": "grace:150001",
   "kind": "grace",
   "fmgName": "Prayer Room",
   "aliases": [
    "prayer room"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:150002",
-  "slug": "grace:elphael-inner-wall",
+  "slug": "grace:150002",
   "kind": "grace",
   "fmgName": "Elphael Inner Wall",
   "aliases": [
    "elphael inner wall"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:150003",
@@ -37555,33 +37563,33 @@
  },
  {
   "engineId": "grace:150004",
-  "slug": "grace:haligtree-roots",
+  "slug": "grace:150004",
   "kind": "grace",
   "fmgName": "Haligtree Roots",
   "aliases": [
    "haligtree roots"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:150005",
-  "slug": "grace:haligtree-promenade",
+  "slug": "grace:150005",
   "kind": "grace",
   "fmgName": "Haligtree Promenade",
   "aliases": [
    "haligtree promenade"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:150006",
-  "slug": "grace:haligtree-canopy",
+  "slug": "grace:150006",
   "kind": "grace",
   "fmgName": "Haligtree Canopy",
   "aliases": [
    "haligtree canopy"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:150007",
@@ -37606,7 +37614,7 @@
  },
  {
   "engineId": "grace:160000",
-  "slug": "grace:rykard-lord-of-blasphemy",
+  "slug": "grace:160000",
   "kind": "grace",
   "fmgName": "Rykard, Lord of Blasphemy",
   "aliases": [
@@ -37616,63 +37624,63 @@
    "rykard",
    "rykard lord of blasphemy"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:160001",
-  "slug": "grace:temple-of-eiglay",
+  "slug": "grace:160001",
   "kind": "grace",
   "fmgName": "Temple of Eiglay",
   "aliases": [
    "eiglay",
    "temple of eiglay"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:160002",
-  "slug": "grace:volcano-manor",
+  "slug": "grace:160002",
   "kind": "grace",
   "fmgName": "Volcano Manor",
   "aliases": [
    "prison town",
    "volcano manor"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:160003",
-  "slug": "grace:prison-town-church",
+  "slug": "grace:160003",
   "kind": "grace",
   "fmgName": "Prison Town Church",
   "aliases": [
    "prison town church"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:160004",
-  "slug": "grace:guest-hall",
+  "slug": "grace:160004",
   "kind": "grace",
   "fmgName": "Guest Hall",
   "aliases": [
    "guest hall"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:160005",
-  "slug": "grace:audience-pathway",
+  "slug": "grace:160005",
   "kind": "grace",
   "fmgName": "Audience Pathway",
   "aliases": [
    "audience pathway"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:160006",
-  "slug": "grace:abductor-virgin",
+  "slug": "grace:160006",
   "kind": "grace",
   "fmgName": "Abductor Virgin",
   "aliases": [
@@ -37681,58 +37689,58 @@
    "abductor virgins",
    "iron virgin"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:160007",
-  "slug": "grace:subterranean-inquisition-chamber",
+  "slug": "grace:160007",
   "kind": "grace",
   "fmgName": "Subterranean Inquisition Chamber",
   "aliases": [
    "subterranean inquisition chamber"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:180000",
-  "slug": "grace:cave-of-knowledge",
+  "slug": "grace:180000",
   "kind": "grace",
   "fmgName": "Cave of Knowledge",
   "aliases": [
    "cave of knowledge",
    "cave of knowledge grace"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:180001",
-  "slug": "grace:stranded-graveyard",
+  "slug": "grace:180001",
   "kind": "grace",
   "fmgName": "Stranded Graveyard",
   "aliases": [
    "stranded graveyard"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:190000",
-  "slug": "grace:fractured-marika",
+  "slug": "grace:190000",
   "kind": "grace",
   "fmgName": "Fractured Marika",
   "aliases": [
    "fractured marika"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:200000",
-  "slug": "grace:theatre-of-the-divine-beast",
+  "slug": "grace:200000",
   "kind": "grace",
   "fmgName": "Theatre of the Divine Beast",
   "aliases": [
    "theatre of the divine beast"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:200001",
@@ -37747,33 +37755,33 @@
  },
  {
   "engineId": "grace:200002",
-  "slug": "grace:small-private-altar",
+  "slug": "grace:200002",
   "kind": "grace",
   "fmgName": "Small Private Altar",
   "aliases": [
    "small private altar"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:200003",
-  "slug": "grace:stagefront",
+  "slug": "grace:200003",
   "kind": "grace",
   "fmgName": "Stagefront",
   "aliases": [
    "stagefront"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:200100",
-  "slug": "grace:gate-of-divinity",
+  "slug": "grace:200100",
   "kind": "grace",
   "fmgName": "Gate of Divinity",
   "aliases": [
    "gate of divinity"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:200102",
@@ -37788,43 +37796,43 @@
  },
  {
   "engineId": "grace:200103",
-  "slug": "grace:first-rise",
+  "slug": "grace:200103",
   "kind": "grace",
   "fmgName": "First Rise",
   "aliases": [
    "first rise"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:200104",
-  "slug": "grace:spiral-rise",
+  "slug": "grace:200104",
   "kind": "grace",
   "fmgName": "Spiral Rise",
   "aliases": [
    "spiral rise"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:200105",
-  "slug": "grace:cleansing-chamber-anteroom",
+  "slug": "grace:200105",
   "kind": "grace",
   "fmgName": "Cleansing Chamber Anteroom",
   "aliases": [
    "cleansing chamber anteroom"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:200106",
-  "slug": "grace:divine-gate-front-staircase",
+  "slug": "grace:200106",
   "kind": "grace",
   "fmgName": "Divine Gate Front Staircase",
   "aliases": [
    "divine gate front staircase"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:210001",
@@ -37839,715 +37847,715 @@
  },
  {
   "engineId": "grace:210002",
-  "slug": "grace:shadow-keep-main-gate",
+  "slug": "grace:210002",
   "kind": "grace",
   "fmgName": "Shadow Keep Main Gate",
   "aliases": [
    "shadow keep main gate"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:210006",
-  "slug": "grace:church-district-entrance",
+  "slug": "grace:210006",
   "kind": "grace",
   "fmgName": "Church District Entrance",
   "aliases": [
    "church district entrance"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:210007",
-  "slug": "grace:sunken-chapel",
+  "slug": "grace:210007",
   "kind": "grace",
   "fmgName": "Sunken Chapel",
   "aliases": [
    "sunken chapel"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:210008",
-  "slug": "grace:tree-worship-passage",
+  "slug": "grace:210008",
   "kind": "grace",
   "fmgName": "Tree,Worship Passage",
   "aliases": [
    "tree worship passage"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:210009",
-  "slug": "grace:tree-worship-sanctum",
+  "slug": "grace:210009",
   "kind": "grace",
   "fmgName": "Tree,Worship Sanctum",
   "aliases": [
    "tree worship sanctum"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:210100",
-  "slug": "grace:messmer-s-dark-chamber",
+  "slug": "grace:210100",
   "kind": "grace",
   "fmgName": "Messmer's Dark Chamber",
   "aliases": [
    "messmer dark chamber"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:210101",
-  "slug": "grace:storehouse-first-floor",
+  "slug": "grace:210101",
   "kind": "grace",
   "fmgName": "Storehouse, First Floor",
   "aliases": [
    "storehouse first floor"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:210102",
-  "slug": "grace:storehouse-fourth-floor",
+  "slug": "grace:210102",
   "kind": "grace",
   "fmgName": "Storehouse, Fourth Floor",
   "aliases": [
    "storehouse fourth floor"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:210103",
-  "slug": "grace:storehouse-seventh-floor",
+  "slug": "grace:210103",
   "kind": "grace",
   "fmgName": "Storehouse, Seventh Floor",
   "aliases": [
    "storehouse seventh floor"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:210104",
-  "slug": "grace:dark-chamber-entrance",
+  "slug": "grace:210104",
   "kind": "grace",
   "fmgName": "Dark Chamber Entrance",
   "aliases": [
    "dark chamber entrance"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:210105",
-  "slug": "grace:storehouse-back-section",
+  "slug": "grace:210105",
   "kind": "grace",
   "fmgName": "Storehouse, Back Section",
   "aliases": [
    "storehouse back section"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:210106",
-  "slug": "grace:storehouse-loft",
+  "slug": "grace:210106",
   "kind": "grace",
   "fmgName": "Storehouse, Loft",
   "aliases": [
    "storehouse loft"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:210201",
-  "slug": "grace:west-rampart",
+  "slug": "grace:210201",
   "kind": "grace",
   "fmgName": "West Rampart",
   "aliases": [
    "west rampart"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:220000",
-  "slug": "grace:garden-of-deep-purple",
+  "slug": "grace:220000",
   "kind": "grace",
   "fmgName": "Garden of Deep Purple",
   "aliases": [
    "garden of deep purple"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:220001",
-  "slug": "grace:stone-coffin-fissure",
+  "slug": "grace:220001",
   "kind": "grace",
   "fmgName": "Stone Coffin Fissure",
   "aliases": [
    "stone coffin fissure"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:220002",
-  "slug": "grace:fissure-cross",
+  "slug": "grace:220002",
   "kind": "grace",
   "fmgName": "Fissure Cross",
   "aliases": [
    "fissure cross"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:220003",
-  "slug": "grace:fissure-waypoint",
+  "slug": "grace:220003",
   "kind": "grace",
   "fmgName": "Fissure Waypoint",
   "aliases": [
    "fissure waypoint"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:220004",
-  "slug": "grace:fissure-depths",
+  "slug": "grace:220004",
   "kind": "grace",
   "fmgName": "Fissure Depths",
   "aliases": [
    "fissure depths"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:250000",
-  "slug": "grace:finger-birthing-grounds",
+  "slug": "grace:250000",
   "kind": "grace",
   "fmgName": "Finger Birthing Grounds",
   "aliases": [
    "finger birthing grounds"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:280000",
-  "slug": "grace:discussion-chamber",
+  "slug": "grace:280000",
   "kind": "grace",
   "fmgName": "Discussion Chamber",
   "aliases": [
    "discussion chamber"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:280001",
-  "slug": "grace:manse-hall",
+  "slug": "grace:280001",
   "kind": "grace",
   "fmgName": "Manse Hall",
   "aliases": [
    "manse hall"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:280002",
-  "slug": "grace:midra-s-library",
+  "slug": "grace:280002",
   "kind": "grace",
   "fmgName": "Midra's Library",
   "aliases": [
    "midra library"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:280003",
-  "slug": "grace:second-floor-chamber",
+  "slug": "grace:280003",
   "kind": "grace",
   "fmgName": "Second Floor Chamber",
   "aliases": [
    "second floor chamber"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:300000",
-  "slug": "grace:tombsward-catacombs",
+  "slug": "grace:300000",
   "kind": "grace",
   "fmgName": "Tombsward Catacombs",
   "aliases": [
    "tombsward catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:300100",
-  "slug": "grace:impaler-s-catacombs",
+  "slug": "grace:300100",
   "kind": "grace",
   "fmgName": "Impaler's Catacombs",
   "aliases": [
    "impaler catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:300200",
-  "slug": "grace:stormfoot-catacombs",
+  "slug": "grace:300200",
   "kind": "grace",
   "fmgName": "Stormfoot Catacombs",
   "aliases": [
    "stormfoot catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:300400",
-  "slug": "grace:murkwater-catacombs",
+  "slug": "grace:300400",
   "kind": "grace",
   "fmgName": "Murkwater Catacombs",
   "aliases": [
    "murkwater catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:300500",
-  "slug": "grace:black-knife-catacombs",
+  "slug": "grace:300500",
   "kind": "grace",
   "fmgName": "Black Knife Catacombs",
   "aliases": [
    "black knife catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:300600",
-  "slug": "grace:cliffbottom-catacombs",
+  "slug": "grace:300600",
   "kind": "grace",
   "fmgName": "Cliffbottom Catacombs",
   "aliases": [
    "cliffbottom catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:300700",
-  "slug": "grace:wyndham-catacombs",
+  "slug": "grace:300700",
   "kind": "grace",
   "fmgName": "Wyndham Catacombs",
   "aliases": [
    "wyndham catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:300800",
-  "slug": "grace:sainted-hero-s-grave",
+  "slug": "grace:300800",
   "kind": "grace",
   "fmgName": "Sainted Hero's Grave",
   "aliases": [
    "sainted hero grave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:300900",
-  "slug": "grace:gelmir-hero-s-grave",
+  "slug": "grace:300900",
   "kind": "grace",
   "fmgName": "Gelmir Hero's Grave",
   "aliases": [
    "gelmir hero grave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:301000",
-  "slug": "grace:auriza-hero-s-grave",
+  "slug": "grace:301000",
   "kind": "grace",
   "fmgName": "Auriza Hero's Grave",
   "aliases": [
    "auriza hero grave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:301100",
-  "slug": "grace:deathtouched-catacombs",
+  "slug": "grace:301100",
   "kind": "grace",
   "fmgName": "Deathtouched Catacombs",
   "aliases": [
    "deathtouched catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:301200",
-  "slug": "grace:unsightly-catacombs",
+  "slug": "grace:301200",
   "kind": "grace",
   "fmgName": "Unsightly Catacombs",
   "aliases": [
    "unsightly catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:301300",
-  "slug": "grace:auriza-side-tomb",
+  "slug": "grace:301300",
   "kind": "grace",
   "fmgName": "Auriza Side Tomb",
   "aliases": [
    "auriza side tomb"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:301400",
-  "slug": "grace:minor-erdtree-catacombs",
+  "slug": "grace:301400",
   "kind": "grace",
   "fmgName": "Minor Erdtree Catacombs",
   "aliases": [
    "minor erdtree catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:301500",
-  "slug": "grace:caelid-catacombs",
+  "slug": "grace:301500",
   "kind": "grace",
   "fmgName": "Caelid Catacombs",
   "aliases": [
    "caelid catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:301600",
-  "slug": "grace:war-dead-catacombs",
+  "slug": "grace:301600",
   "kind": "grace",
   "fmgName": "War,Dead Catacombs",
   "aliases": [
    "war dead catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:301700",
-  "slug": "grace:giant-conquering-hero-s-grave",
+  "slug": "grace:301700",
   "kind": "grace",
   "fmgName": "Giant,Conquering Hero's Grave",
   "aliases": [
    "giant conquering hero grave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:301800",
-  "slug": "grace:giants-mountaintop-catacombs",
+  "slug": "grace:301800",
   "kind": "grace",
   "fmgName": "Giants' Mountaintop Catacombs",
   "aliases": [
    "giants mountaintop catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:301900",
-  "slug": "grace:consecrated-snowfield-catacombs",
+  "slug": "grace:301900",
   "kind": "grace",
   "fmgName": "Consecrated Snowfield Catacombs",
   "aliases": [
    "consecrated snowfield catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:302000",
-  "slug": "grace:hidden-path-to-the-haligtree",
+  "slug": "grace:302000",
   "kind": "grace",
   "fmgName": "Hidden Path to the Haligtree",
   "aliases": [
    "hidden path to the haligtree"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:310000",
-  "slug": "grace:murkwater-cave",
+  "slug": "grace:310000",
   "kind": "grace",
   "fmgName": "Murkwater Cave",
   "aliases": [
    "murkwater cave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:310100",
-  "slug": "grace:earthbore-cave",
+  "slug": "grace:310100",
   "kind": "grace",
   "fmgName": "Earthbore Cave",
   "aliases": [
    "earthbore cave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:310200",
-  "slug": "grace:tombsward-cave",
+  "slug": "grace:310200",
   "kind": "grace",
   "fmgName": "Tombsward Cave",
   "aliases": [
    "tombsward cave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:310300",
-  "slug": "grace:groveside-cave",
+  "slug": "grace:310300",
   "kind": "grace",
   "fmgName": "Groveside Cave",
   "aliases": [
    "groveside cave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:310400",
-  "slug": "grace:stillwater-cave",
+  "slug": "grace:310400",
   "kind": "grace",
   "fmgName": "Stillwater Cave",
   "aliases": [
    "stillwater cave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:310500",
-  "slug": "grace:lakeside-crystal-cave",
+  "slug": "grace:310500",
   "kind": "grace",
   "fmgName": "Lakeside Crystal Cave",
   "aliases": [
    "lakeside crystal cave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:310600",
-  "slug": "grace:academy-crystal-cave",
+  "slug": "grace:310600",
   "kind": "grace",
   "fmgName": "Academy Crystal Cave",
   "aliases": [
    "academy crystal cave",
    "academy crystal tunnel"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:310700",
-  "slug": "grace:seethewater-cave",
+  "slug": "grace:310700",
   "kind": "grace",
   "fmgName": "Seethewater Cave",
   "aliases": [
    "seethewater cave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:310900",
-  "slug": "grace:volcano-cave",
+  "slug": "grace:310900",
   "kind": "grace",
   "fmgName": "Volcano Cave",
   "aliases": [
    "volcano cave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:311000",
-  "slug": "grace:dragonbarrow-cave",
+  "slug": "grace:311000",
   "kind": "grace",
   "fmgName": "Dragonbarrow Cave",
   "aliases": [
    "dragonbarrow cave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:311100",
-  "slug": "grace:sellia-hideaway",
+  "slug": "grace:311100",
   "kind": "grace",
   "fmgName": "Sellia Hideaway",
   "aliases": [
    "sellia hideaway"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:311200",
-  "slug": "grace:cave-of-the-forlorn",
+  "slug": "grace:311200",
   "kind": "grace",
   "fmgName": "Cave of the Forlorn",
   "aliases": [
    "cave of the forlorn"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:311500",
-  "slug": "grace:coastal-cave",
+  "slug": "grace:311500",
   "kind": "grace",
   "fmgName": "Coastal Cave",
   "aliases": [
    "coastal cave",
    "dissenter cave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:311700",
-  "slug": "grace:highroad-cave",
+  "slug": "grace:311700",
   "kind": "grace",
   "fmgName": "Highroad Cave",
   "aliases": [
    "highroad cave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:311800",
-  "slug": "grace:perfumer-s-grotto",
+  "slug": "grace:311800",
   "kind": "grace",
   "fmgName": "Perfumer's Grotto",
   "aliases": [
    "perfumer grotto"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:311900",
-  "slug": "grace:sage-s-cave",
+  "slug": "grace:311900",
   "kind": "grace",
   "fmgName": "Sage's Cave",
   "aliases": [
    "sage cave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:312000",
-  "slug": "grace:abandoned-cave",
+  "slug": "grace:312000",
   "kind": "grace",
   "fmgName": "Abandoned Cave",
   "aliases": [
    "abandoned cave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:312100",
-  "slug": "grace:gaol-cave",
+  "slug": "grace:312100",
   "kind": "grace",
   "fmgName": "Gaol Cave",
   "aliases": [
    "gaol cave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:312200",
-  "slug": "grace:spiritcaller-s-cave",
+  "slug": "grace:312200",
   "kind": "grace",
   "fmgName": "Spiritcaller's Cave",
   "aliases": [
    "spiritcaller cave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:320000",
-  "slug": "grace:morne-tunnel",
+  "slug": "grace:320000",
   "kind": "grace",
   "fmgName": "Morne Tunnel",
   "aliases": [
    "morne tunnel"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:320100",
-  "slug": "grace:limgrave-tunnels",
+  "slug": "grace:320100",
   "kind": "grace",
   "fmgName": "Limgrave Tunnels",
   "aliases": [
    "limgrave tunnels"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:320200",
-  "slug": "grace:raya-lucaria-crystal-tunnel",
+  "slug": "grace:320200",
   "kind": "grace",
   "fmgName": "Raya Lucaria Crystal Tunnel",
   "aliases": [
    "raya lucaria crystal tunnel"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:320400",
-  "slug": "grace:old-altus-tunnel",
+  "slug": "grace:320400",
   "kind": "grace",
   "fmgName": "Old Altus Tunnel",
   "aliases": [
    "old altus tunnel"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:320500",
-  "slug": "grace:altus-tunnel",
+  "slug": "grace:320500",
   "kind": "grace",
   "fmgName": "Altus Tunnel",
   "aliases": [
    "altus tunnel"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:320700",
-  "slug": "grace:gael-tunnel",
+  "slug": "grace:320700",
   "kind": "grace",
   "fmgName": "Gael Tunnel",
   "aliases": [
    "gael tunnel"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:320701",
-  "slug": "grace:rear-gael-tunnel-entrance",
+  "slug": "grace:320701",
   "kind": "grace",
   "fmgName": "Rear Gael Tunnel Entrance",
   "aliases": [
    "rear gael tunnel entrance"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:320800",
-  "slug": "grace:sellia-crystal-tunnel",
+  "slug": "grace:320800",
   "kind": "grace",
   "fmgName": "Sellia Crystal Tunnel",
   "aliases": [
    "sellia crystal tunnel"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:321100",
-  "slug": "grace:yelough-anix-tunnel",
+  "slug": "grace:321100",
   "kind": "grace",
   "fmgName": "Yelough Anix Tunnel",
   "aliases": [
    "yelough anix tunnel"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:341000",
@@ -38572,343 +38580,343 @@
  },
  {
   "engineId": "grace:341100",
-  "slug": "grace:study-hall-entrance",
+  "slug": "grace:341100",
   "kind": "grace",
   "fmgName": "Study Hall Entrance",
   "aliases": [
    "study hall entrance"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:341101",
-  "slug": "grace:liurnia-tower-bridge",
+  "slug": "grace:341101",
   "kind": "grace",
   "fmgName": "Liurnia Tower Bridge",
   "aliases": [
    "liurnia tower bridge"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:341102",
-  "slug": "grace:divine-tower-of-liurnia",
+  "slug": "grace:341102",
   "kind": "grace",
   "fmgName": "Divine Tower of Liurnia",
   "aliases": [
    "divine tower of liurnia"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:341200",
-  "slug": "grace:divine-tower-of-west-altus",
+  "slug": "grace:341200",
   "kind": "grace",
   "fmgName": "Divine Tower of West Altus",
   "aliases": [
    "divine tower of west altus"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:341201",
-  "slug": "grace:sealed-tunnel",
+  "slug": "grace:341201",
   "kind": "grace",
   "fmgName": "Sealed Tunnel",
   "aliases": [
    "sealed tunnel"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:341202",
-  "slug": "grace:divine-tower-of-west-altus-gate",
+  "slug": "grace:341202",
   "kind": "grace",
   "fmgName": "Divine Tower of West Altus: Gate",
   "aliases": [
    "divine tower of west altus gate"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:341301",
-  "slug": "grace:divine-tower-of-caelid-basement",
+  "slug": "grace:341301",
   "kind": "grace",
   "fmgName": "Divine Tower of Caelid: Basement",
   "aliases": [
    "divine tower of caelid basement"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:341302",
-  "slug": "grace:divine-tower-of-caelid-center",
+  "slug": "grace:341302",
   "kind": "grace",
   "fmgName": "Divine Tower of Caelid: Center",
   "aliases": [
    "divine tower of caelid center"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:341400",
-  "slug": "grace:divine-tower-of-east-altus-gate",
+  "slug": "grace:341400",
   "kind": "grace",
   "fmgName": "Divine Tower of East Altus: Gate",
   "aliases": [
    "divine tower of east altus gate"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:341401",
-  "slug": "grace:divine-tower-of-east-altus",
+  "slug": "grace:341401",
   "kind": "grace",
   "fmgName": "Divine Tower of East Altus",
   "aliases": [
    "divine tower of east altus"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:341500",
-  "slug": "grace:isolated-divine-tower",
+  "slug": "grace:341500",
   "kind": "grace",
   "fmgName": "Isolated Divine Tower",
   "aliases": [
    "isolated divine tower"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:350000",
-  "slug": "grace:cathedral-of-the-forsaken",
+  "slug": "grace:350000",
   "kind": "grace",
   "fmgName": "Cathedral of the Forsaken",
   "aliases": [
    "cathedral of the forsaken"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:350001",
-  "slug": "grace:underground-roadside",
+  "slug": "grace:350001",
   "kind": "grace",
   "fmgName": "Underground Roadside",
   "aliases": [
    "underground roadside"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:350002",
-  "slug": "grace:forsaken-depths",
+  "slug": "grace:350002",
   "kind": "grace",
   "fmgName": "Forsaken Depths",
   "aliases": [
    "forsaken depths"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:350003",
-  "slug": "grace:leyndell-catacombs",
+  "slug": "grace:350003",
   "kind": "grace",
   "fmgName": "Leyndell Catacombs",
   "aliases": [
    "leyndell catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:350004",
-  "slug": "grace:frenzied-flame-proscription",
+  "slug": "grace:350004",
   "kind": "grace",
   "fmgName": "Frenzied Flame Proscription",
   "aliases": [
    "frenzied flame proscription"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:390000",
-  "slug": "grace:magma-wyrm-makar",
+  "slug": "grace:390000",
   "kind": "grace",
   "fmgName": "Magma Wyrm Makar",
   "aliases": [
    "magma wyrm makar"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:390001",
-  "slug": "grace:ruin-strewn-precipice",
+  "slug": "grace:390001",
   "kind": "grace",
   "fmgName": "Ruin,Strewn Precipice",
   "aliases": [
    "ruin strewn precipice"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:390002",
-  "slug": "grace:ruin-strewn-precipice-overlook",
+  "slug": "grace:390002",
   "kind": "grace",
   "fmgName": "Ruin,Strewn Precipice Overlook",
   "aliases": [
    "ruin strewn precipice overlook"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:400000",
-  "slug": "grace:fog-rift-catacombs",
+  "slug": "grace:400000",
   "kind": "grace",
   "fmgName": "Fog Rift Catacombs",
   "aliases": [
    "fog rift catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:400100",
-  "slug": "grace:scorpion-river-catacombs",
+  "slug": "grace:400100",
   "kind": "grace",
   "fmgName": "Scorpion River Catacombs",
   "aliases": [
    "scorpion river catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:400200",
-  "slug": "grace:darklight-catacombs",
+  "slug": "grace:400200",
   "kind": "grace",
   "fmgName": "Darklight Catacombs",
   "aliases": [
    "darklight catacombs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:410000",
-  "slug": "grace:belurat-gaol",
+  "slug": "grace:410000",
   "kind": "grace",
   "fmgName": "Belurat Gaol",
   "aliases": [
    "belurat gaol"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:410100",
-  "slug": "grace:bonny-gaol",
+  "slug": "grace:410100",
   "kind": "grace",
   "fmgName": "Bonny Gaol",
   "aliases": [
    "bonny gaol"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:410200",
-  "slug": "grace:lamenter-s-gaol",
+  "slug": "grace:410200",
   "kind": "grace",
   "fmgName": "Lamenter's Gaol",
   "aliases": [
    "lamenter gaol"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:420000",
-  "slug": "grace:ruined-forge-lava-intake",
+  "slug": "grace:420000",
   "kind": "grace",
   "fmgName": "Ruined Forge Lava Intake",
   "aliases": [
    "ruined forge lava intake"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:420200",
-  "slug": "grace:ruined-forge-of-starfall-past",
+  "slug": "grace:420200",
   "kind": "grace",
   "fmgName": "Ruined Forge of Starfall Past",
   "aliases": [
    "ruined forge of starfall past"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:420300",
-  "slug": "grace:taylew-s-ruined-forge",
+  "slug": "grace:420300",
   "kind": "grace",
   "fmgName": "Taylew's Ruined Forge",
   "aliases": [
    "taylew ruined forge"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:430000",
-  "slug": "grace:rivermouth-cave",
+  "slug": "grace:430000",
   "kind": "grace",
   "fmgName": "Rivermouth Cave",
   "aliases": [
    "rivermouth cave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:430100",
-  "slug": "grace:dragon-s-pit",
+  "slug": "grace:430100",
   "kind": "grace",
   "fmgName": "Dragon's Pit",
   "aliases": [
    "dragon pit"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:430101",
-  "slug": "grace:dragon-s-pit-terminus",
+  "slug": "grace:430101",
   "kind": "grace",
   "fmgName": "Dragon's Pit Terminus",
   "aliases": [
    "dragon pit terminus"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61413200",
-  "slug": "grace:isolated-merchant-s-shack",
+  "slug": "grace:61413200",
   "kind": "grace",
   "fmgName": "Isolated Merchant's Shack",
   "aliases": [
    "isolated merchant shack"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61413300",
-  "slug": "grace:fourth-church-of-marika",
+  "slug": "grace:61413300",
   "kind": "grace",
   "fmgName": "Fourth Church of Marika",
   "aliases": [
    "fourth church of marika"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61413500",
-  "slug": "grace:church-of-dragon-communion",
+  "slug": "grace:61413500",
   "kind": "grace",
   "fmgName": "Church of Dragon Communion",
   "aliases": [
    "church of dragon communion"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61413800",
@@ -38924,13 +38932,13 @@
  },
  {
   "engineId": "grace:61423300",
-  "slug": "grace:weeping-evergaol",
+  "slug": "grace:61423300",
   "kind": "grace",
   "fmgName": "Weeping Evergaol",
   "aliases": [
    "weeping evergaol"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61423600",
@@ -38978,43 +38986,43 @@
  },
  {
   "engineId": "grace:61433000",
-  "slug": "grace:morne-moangrave",
+  "slug": "grace:61433000",
   "kind": "grace",
   "fmgName": "Morne Moangrave",
   "aliases": [
    "morne moangrave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61433100",
-  "slug": "grace:castle-morne-lift",
+  "slug": "grace:61433100",
   "kind": "grace",
   "fmgName": "Castle Morne Lift",
   "aliases": [
    "castle morne lift"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61433101",
-  "slug": "grace:behind-the-castle",
+  "slug": "grace:61433101",
   "kind": "grace",
   "fmgName": "Behind the Castle",
   "aliases": [
    "behind the castle"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61433102",
-  "slug": "grace:beside-the-rampart-gaol",
+  "slug": "grace:61433102",
   "kind": "grace",
   "fmgName": "Beside the Rampart Gaol",
   "aliases": [
    "beside the rampart gaol"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61433400",
@@ -39029,13 +39037,13 @@
  },
  {
   "engineId": "grace:61433500",
-  "slug": "grace:seaside-ruins",
+  "slug": "grace:61433500",
   "kind": "grace",
   "fmgName": "Seaside Ruins",
   "aliases": [
    "seaside ruins"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61433700",
@@ -39050,13 +39058,13 @@
  },
  {
   "engineId": "grace:61433800",
-  "slug": "grace:murkwater-coast",
+  "slug": "grace:61433800",
   "kind": "grace",
   "fmgName": "Murkwater Coast",
   "aliases": [
    "murkwater coast"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61433900",
@@ -39082,53 +39090,53 @@
  },
  {
   "engineId": "grace:61443301",
-  "slug": "grace:south-of-the-lookout-tower",
+  "slug": "grace:61443301",
   "kind": "grace",
   "fmgName": "South of the Lookout Tower",
   "aliases": [
    "south of the lookout tower"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61443302",
-  "slug": "grace:ailing-village-outskirts",
+  "slug": "grace:61443302",
   "kind": "grace",
   "fmgName": "Ailing Village Outskirts",
   "aliases": [
    "ailing village outskirts"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61443400",
-  "slug": "grace:bridge-of-sacrifice",
+  "slug": "grace:61443400",
   "kind": "grace",
   "fmgName": "Bridge of Sacrifice",
   "aliases": [
    "bridge of sacrifice"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61443500",
-  "slug": "grace:agheel-lake-south",
+  "slug": "grace:61443500",
   "kind": "grace",
   "fmgName": "Agheel Lake South",
   "aliases": [
    "agheel lake south"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61443600",
-  "slug": "grace:waypoint-ruins-cellar",
+  "slug": "grace:61443600",
   "kind": "grace",
   "fmgName": "Waypoint Ruins Cellar",
   "aliases": [
    "waypoint ruins cellar"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61443700",
@@ -39143,73 +39151,73 @@
  },
  {
   "engineId": "grace:61443800",
-  "slug": "grace:artist-s-shack",
+  "slug": "grace:61443800",
   "kind": "grace",
   "fmgName": "Artist's Shack",
   "aliases": [
    "artist shack"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61443900",
-  "slug": "grace:summonwater-village-outskirts",
+  "slug": "grace:61443900",
   "kind": "grace",
   "fmgName": "Summonwater Village Outskirts",
   "aliases": [
    "summonwater village outskirts"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61453300",
-  "slug": "grace:beside-the-crater-pocked-glade",
+  "slug": "grace:61453300",
   "kind": "grace",
   "fmgName": "Beside the Crater,Pocked Glade",
   "aliases": [
    "beside the crater pocked glade"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61453600",
-  "slug": "grace:fort-haight-west",
+  "slug": "grace:61453600",
   "kind": "grace",
   "fmgName": "Fort Haight West",
   "aliases": [
    "fort haight west"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61454100",
-  "slug": "grace:cliffroad-terminus",
+  "slug": "grace:61454100",
   "kind": "grace",
   "fmgName": "Cliffroad Terminus",
   "aliases": [
    "cliffroad terminus"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61454200",
-  "slug": "grace:main-gate-cross",
+  "slug": "grace:61454200",
   "kind": "grace",
   "fmgName": "Main Gate Cross",
   "aliases": [
    "main gate cross"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61463800",
-  "slug": "grace:third-church-of-marika",
+  "slug": "grace:61463800",
   "kind": "grace",
   "fmgName": "Third Church of Marika",
   "aliases": [
    "third church of marika"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61464000",
@@ -39237,13 +39245,13 @@
  },
  {
   "engineId": "grace:61464400",
-  "slug": "grace:greatbridge-north",
+  "slug": "grace:61464400",
   "kind": "grace",
   "fmgName": "Greatbridge, North",
   "aliases": [
    "greatbridge north"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61474100",
@@ -39259,23 +39267,23 @@
  },
  {
   "engineId": "grace:61474300",
-  "slug": "grace:ellac-river-cave",
+  "slug": "grace:61474300",
   "kind": "grace",
   "fmgName": "Ellac River Cave",
   "aliases": [
    "ellac river cave"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61474400",
-  "slug": "grace:castle-front",
+  "slug": "grace:61474400",
   "kind": "grace",
   "fmgName": "Castle Front",
   "aliases": [
    "castle front"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61474401",
@@ -39290,206 +39298,206 @@
  },
  {
   "engineId": "grace:61484200",
-  "slug": "grace:pillar-path-waypoint",
+  "slug": "grace:61484200",
   "kind": "grace",
   "fmgName": "Pillar Path Waypoint",
   "aliases": [
    "pillar path waypoint"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61484300",
-  "slug": "grace:pillar-path-cross",
+  "slug": "grace:61484300",
   "kind": "grace",
   "fmgName": "Pillar Path Cross",
   "aliases": [
    "pillar path cross"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61484400",
-  "slug": "grace:ensis-moongazing-grounds",
+  "slug": "grace:61484400",
   "kind": "grace",
   "fmgName": "Ensis Moongazing Grounds",
   "aliases": [
    "ensis moongazing grounds"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:61484401",
-  "slug": "grace:castle-lord-s-chamber",
+  "slug": "grace:61484401",
   "kind": "grace",
   "fmgName": "Castle,Lord's Chamber",
   "aliases": [
    "castle lord chamber"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62334000",
-  "slug": "grace:altar-south",
+  "slug": "grace:62334000",
   "kind": "grace",
   "fmgName": "Altar South",
   "aliases": [
    "altar south"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62334400",
-  "slug": "grace:revenger-s-shack",
+  "slug": "grace:62334400",
   "kind": "grace",
   "fmgName": "Revenger's Shack",
   "aliases": [
    "revenger shack"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62334600",
-  "slug": "grace:foot-of-the-four-belfries",
+  "slug": "grace:62334600",
   "kind": "grace",
   "fmgName": "Foot of the Four Belfries",
   "aliases": [
    "foot of the four belfries"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62334700",
-  "slug": "grace:the-four-belfries",
+  "slug": "grace:62334700",
   "kind": "grace",
   "fmgName": "The Four Belfries",
   "aliases": [
    "four belfries",
    "the four belfries"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62344100",
-  "slug": "grace:moonlight-altar",
+  "slug": "grace:62344100",
   "kind": "grace",
   "fmgName": "Moonlight Altar",
   "aliases": [
    "moonlight altar"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62344200",
-  "slug": "grace:village-of-the-albinaurics",
+  "slug": "grace:62344200",
   "kind": "grace",
   "fmgName": "Village of the Albinaurics",
   "aliases": [
    "albinauric village",
    "village of the albinaurics"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62344300",
-  "slug": "grace:converted-tower",
+  "slug": "grace:62344300",
   "kind": "grace",
   "fmgName": "Converted Tower",
   "aliases": [
    "converted tower"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62344400",
-  "slug": "grace:temple-quarter",
+  "slug": "grace:62344400",
   "kind": "grace",
   "fmgName": "Temple Quarter",
   "aliases": [
    "temple quarter"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62344600",
-  "slug": "grace:crystalline-woods",
+  "slug": "grace:62344600",
   "kind": "grace",
   "fmgName": "Crystalline Woods",
   "aliases": [
    "crystalline woods"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62344701",
-  "slug": "grace:sorcerer-s-isle",
+  "slug": "grace:62344701",
   "kind": "grace",
   "fmgName": "Sorcerer's Isle",
   "aliases": [
    "sorcerer isle"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62344800",
-  "slug": "grace:kingsrealm-ruins",
+  "slug": "grace:62344800",
   "kind": "grace",
   "fmgName": "Kingsrealm Ruins",
   "aliases": [
    "kingsrealm ruins"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62344900",
-  "slug": "grace:road-to-the-manor",
+  "slug": "grace:62344900",
   "kind": "grace",
   "fmgName": "Road to the Manor",
   "aliases": [
    "road to the manor"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62345000",
-  "slug": "grace:ranni-s-rise",
+  "slug": "grace:62345000",
   "kind": "grace",
   "fmgName": "Ranni's Rise",
   "aliases": [
    "ranni chamber",
    "ranni rise"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62345001",
-  "slug": "grace:ranni-s-chamber",
+  "slug": "grace:62345001",
   "kind": "grace",
   "fmgName": "Ranni's Chamber",
   "aliases": [
    "ranni chamber"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62354200",
-  "slug": "grace:cathedral-of-manus-celes",
+  "slug": "grace:62354200",
   "kind": "grace",
   "fmgName": "Cathedral of Manus Celes",
   "aliases": [
    "cathedral of manus celes"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62354300",
-  "slug": "grace:folly-on-the-lake",
+  "slug": "grace:62354300",
   "kind": "grace",
   "fmgName": "Folly on the Lake",
   "aliases": [
    "folly on the lake"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62354500",
@@ -39505,154 +39513,154 @@
  },
  {
   "engineId": "grace:62354600",
-  "slug": "grace:main-academy-gate",
+  "slug": "grace:62354600",
   "kind": "grace",
   "fmgName": "Main Academy Gate",
   "aliases": [
    "main academy gate"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62354700",
-  "slug": "grace:east-gate-bridge-trestle",
+  "slug": "grace:62354700",
   "kind": "grace",
   "fmgName": "East Gate Bridge Trestle",
   "aliases": [
    "east gate bridge trestle"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62355000",
-  "slug": "grace:manor-upper-level",
+  "slug": "grace:62355000",
   "kind": "grace",
   "fmgName": "Manor Upper Level",
   "aliases": [
    "manor upper level"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62355001",
-  "slug": "grace:manor-lower-level",
+  "slug": "grace:62355001",
   "kind": "grace",
   "fmgName": "Manor Lower Level",
   "aliases": [
    "manor lower level"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62355002",
-  "slug": "grace:royal-moongazing-grounds",
+  "slug": "grace:62355002",
   "kind": "grace",
   "fmgName": "Royal Moongazing Grounds",
   "aliases": [
    "royal moongazing grounds"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62355003",
-  "slug": "grace:main-caria-manor-gate",
+  "slug": "grace:62355003",
   "kind": "grace",
   "fmgName": "Main Caria Manor Gate",
   "aliases": [
    "main caria manor gate"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62364100",
-  "slug": "grace:slumbering-wolf-s-shack",
+  "slug": "grace:62364100",
   "kind": "grace",
   "fmgName": "Slumbering Wolf's Shack",
   "aliases": [
    "slumbering wolf shack"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62364300",
-  "slug": "grace:boilprawn-shack",
+  "slug": "grace:62364300",
   "kind": "grace",
   "fmgName": "Boilprawn Shack",
   "aliases": [
    "boilprawn shack"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62364301",
-  "slug": "grace:fallen-ruins-of-the-lake",
+  "slug": "grace:62364301",
   "kind": "grace",
   "fmgName": "Fallen Ruins of the Lake",
   "aliases": [
    "fallen ruins of the lake"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62364500",
-  "slug": "grace:gate-town-north",
+  "slug": "grace:62364500",
   "kind": "grace",
   "fmgName": "Gate Town North",
   "aliases": [
    "gate town north"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62364800",
-  "slug": "grace:east-raya-lucaria-gate",
+  "slug": "grace:62364800",
   "kind": "grace",
   "fmgName": "East Raya Lucaria Gate",
   "aliases": [
    "east raya lucaria gate"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62364900",
-  "slug": "grace:bellum-church",
+  "slug": "grace:62364900",
   "kind": "grace",
   "fmgName": "Bellum Church",
   "aliases": [
    "bellum church"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62364901",
-  "slug": "grace:the-ravine",
+  "slug": "grace:62364901",
   "kind": "grace",
   "fmgName": "The Ravine",
   "aliases": [
    "ravine",
    "the ravine"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62365000",
-  "slug": "grace:behind-caria-manor",
+  "slug": "grace:62365000",
   "kind": "grace",
   "fmgName": "Behind Caria Manor",
   "aliases": [
    "behind caria manor"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62374200",
-  "slug": "grace:scenic-isle",
+  "slug": "grace:62374200",
   "kind": "grace",
   "fmgName": "Scenic Isle",
   "aliases": [
    "scenic isle"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62374400",
@@ -39681,23 +39689,23 @@
  },
  {
   "engineId": "grace:62374800",
-  "slug": "grace:mausoleum-compound",
+  "slug": "grace:62374800",
   "kind": "grace",
   "fmgName": "Mausoleum Compound",
   "aliases": [
    "mausoleum compound"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62374900",
-  "slug": "grace:church-of-inhibition",
+  "slug": "grace:62374900",
   "kind": "grace",
   "fmgName": "Church of Inhibition",
   "aliases": [
    "church of inhibition"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62384000",
@@ -39712,73 +39720,73 @@
  },
  {
   "engineId": "grace:62384100",
-  "slug": "grace:laskyar-ruins",
+  "slug": "grace:62384100",
   "kind": "grace",
   "fmgName": "Laskyar Ruins",
   "aliases": [
    "laskyar ruins"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62384300",
-  "slug": "grace:gate-town-bridge",
+  "slug": "grace:62384300",
   "kind": "grace",
   "fmgName": "Gate Town Bridge",
   "aliases": [
    "gate town bridge"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62384500",
-  "slug": "grace:artist-s-shack",
+  "slug": "grace:62384500",
   "kind": "grace",
   "fmgName": "Artist's Shack",
   "aliases": [
    "artist shack"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62384501",
-  "slug": "grace:eastern-liurnia-lake-shore",
+  "slug": "grace:62384501",
   "kind": "grace",
   "fmgName": "Eastern Liurnia Lake Shore",
   "aliases": [
    "eastern liurnia lake shore"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62384600",
-  "slug": "grace:eastern-tableland",
+  "slug": "grace:62384600",
   "kind": "grace",
   "fmgName": "Eastern Tableland",
   "aliases": [
    "eastern tableland"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62384700",
-  "slug": "grace:ruined-labyrinth",
+  "slug": "grace:62384700",
   "kind": "grace",
   "fmgName": "Ruined Labyrinth",
   "aliases": [
    "ruined labyrinth"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62384800",
-  "slug": "grace:frenzied-flame-village-outskirts",
+  "slug": "grace:62384800",
   "kind": "grace",
   "fmgName": "Frenzied Flame Village Outskirts",
   "aliases": [
    "frenzied flame village outskirts"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62385000",
@@ -39793,135 +39801,135 @@
  },
  {
   "engineId": "grace:62385001",
-  "slug": "grace:ravine-veiled-village",
+  "slug": "grace:62385001",
   "kind": "grace",
   "fmgName": "Ravine,Veiled Village",
   "aliases": [
    "ravine veiled village"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62394000",
-  "slug": "grace:lake-facing-cliffs",
+  "slug": "grace:62394000",
   "kind": "grace",
   "fmgName": "Lake,Facing Cliffs",
   "aliases": [
    "lake facing cliffs"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62394100",
-  "slug": "grace:liurnia-highway-south",
+  "slug": "grace:62394100",
   "kind": "grace",
   "fmgName": "Liurnia Highway South",
   "aliases": [
    "liurnia highway south"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62394200",
-  "slug": "grace:liurnia-highway-north",
+  "slug": "grace:62394200",
   "kind": "grace",
   "fmgName": "Liurnia Highway North",
   "aliases": [
    "liurnia highway north"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:62394400",
-  "slug": "grace:jarburg",
+  "slug": "grace:62394400",
   "kind": "grace",
   "fmgName": "Jarburg",
   "aliases": [
    "jarburg"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63355300",
-  "slug": "grace:seethewater-terminus",
+  "slug": "grace:63355300",
   "kind": "grace",
   "fmgName": "Seethewater Terminus",
   "aliases": [
    "seethewater terminus"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63365200",
-  "slug": "grace:craftman-s-shack",
+  "slug": "grace:63365200",
   "kind": "grace",
   "fmgName": "Craftman's Shack",
   "aliases": [
    "craftman shack"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63365401",
-  "slug": "grace:ninth-mt-gelmir-campsite",
+  "slug": "grace:63365401",
   "kind": "grace",
   "fmgName": "Ninth Mt. Gelmir Campsite",
   "aliases": [
    "ninth mt gelmir campsite"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63365402",
-  "slug": "grace:road-of-iniquity",
+  "slug": "grace:63365402",
   "kind": "grace",
   "fmgName": "Road of Iniquity",
   "aliases": [
    "road of iniquity"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63375100",
-  "slug": "grace:abandoned-coffin",
+  "slug": "grace:63375100",
   "kind": "grace",
   "fmgName": "Abandoned Coffin",
   "aliases": [
    "abandoned coffin"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63375200",
-  "slug": "grace:seethewater-river",
+  "slug": "grace:63375200",
   "kind": "grace",
   "fmgName": "Seethewater River",
   "aliases": [
    "seethewater river"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63375300",
-  "slug": "grace:primeval-sorcerer-azur",
+  "slug": "grace:63375300",
   "kind": "grace",
   "fmgName": "Primeval Sorcerer Azur",
   "aliases": [
    "azur",
    "primeval sorcerer azur"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63385002",
-  "slug": "grace:altus-plateau",
+  "slug": "grace:63385002",
   "kind": "grace",
   "fmgName": "Altus Plateau",
   "aliases": [
    "altus",
    "altus plateau"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63385100",
@@ -39935,153 +39943,153 @@
  },
  {
   "engineId": "grace:63385400",
-  "slug": "grace:first-mt-gelmir-campsite",
+  "slug": "grace:63385400",
   "kind": "grace",
   "fmgName": "First Mt. Gelmir Campsite",
   "aliases": [
    "first mt gelmir campsite"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63395100",
-  "slug": "grace:altus-highway-junction",
+  "slug": "grace:63395100",
   "kind": "grace",
   "fmgName": "Altus Highway Junction",
   "aliases": [
    "altus highway junction"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63395300",
-  "slug": "grace:bridge-of-iniquity",
+  "slug": "grace:63395300",
   "kind": "grace",
   "fmgName": "Bridge of Iniquity",
   "aliases": [
    "bridge of iniquity"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63395400",
-  "slug": "grace:shaded-castle-ramparts",
+  "slug": "grace:63395400",
   "kind": "grace",
   "fmgName": "Shaded Castle Ramparts",
   "aliases": [
    "shaded castle ramparts"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63395401",
-  "slug": "grace:shaded-castle-inner-gate",
+  "slug": "grace:63395401",
   "kind": "grace",
   "fmgName": "Shaded castle Inner Gate",
   "aliases": [
    "shaded castle inner gate"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63395402",
-  "slug": "grace:castellan-s-hall",
+  "slug": "grace:63395402",
   "kind": "grace",
   "fmgName": "Castellan's Hall",
   "aliases": [
    "castellan hall"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63405200",
-  "slug": "grace:forest-spanning-greatbridge",
+  "slug": "grace:63405200",
   "kind": "grace",
   "fmgName": "Forest,Spanning Greatbridge",
   "aliases": [
    "forest spanning greatbridge"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63405300",
-  "slug": "grace:bower-of-bounty",
+  "slug": "grace:63405300",
   "kind": "grace",
   "fmgName": "Bower of Bounty",
   "aliases": [
    "bower of bounty"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63405400",
-  "slug": "grace:road-of-iniquity-side-path",
+  "slug": "grace:63405400",
   "kind": "grace",
   "fmgName": "Road of Iniquity Side Path",
   "aliases": [
    "road of iniquity side path"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63415201",
-  "slug": "grace:rampartside-path",
+  "slug": "grace:63415201",
   "kind": "grace",
   "fmgName": "Rampartside Path",
   "aliases": [
    "rampartside path"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63415400",
-  "slug": "grace:windmill-village",
+  "slug": "grace:63415400",
   "kind": "grace",
   "fmgName": "Windmill Village",
   "aliases": [
    "windmill village"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63425100",
-  "slug": "grace:outer-wall-phantom-tree",
+  "slug": "grace:63425100",
   "kind": "grace",
   "fmgName": "Outer Wall Phantom Tree",
   "aliases": [
    "outer wall phantom tree"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63425500",
-  "slug": "grace:windmill-heights",
+  "slug": "grace:63425500",
   "kind": "grace",
   "fmgName": "Windmill Heights",
   "aliases": [
    "windmill heights"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63435000",
-  "slug": "grace:minor-erdtree-church",
+  "slug": "grace:63435000",
   "kind": "grace",
   "fmgName": "Minor Erdtree Church",
   "aliases": [
    "minor erdtree church"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63435300",
-  "slug": "grace:hermit-merchant-s-shack",
+  "slug": "grace:63435300",
   "kind": "grace",
   "fmgName": "Hermit Merchant's Shack",
   "aliases": [
    "hermit merchant shack"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:63435301",
@@ -40128,204 +40136,204 @@
  },
  {
   "engineId": "grace:64473900",
-  "slug": "grace:fort-gael-north",
+  "slug": "grace:64473900",
   "kind": "grace",
   "fmgName": "Fort Gael North",
   "aliases": [
    "fort gael north"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64474000",
-  "slug": "grace:caelem-ruins",
+  "slug": "grace:64474000",
   "kind": "grace",
   "fmgName": "Caelem Ruins",
   "aliases": [
    "caelem ruins"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64483600",
-  "slug": "grace:cathedral-of-dragon-communion",
+  "slug": "grace:64483600",
   "kind": "grace",
   "fmgName": "Cathedral of Dragon Communion",
   "aliases": [
    "cathedral of dragon communion"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64483700",
-  "slug": "grace:caelid-highway-south",
+  "slug": "grace:64483700",
   "kind": "grace",
   "fmgName": "Caelid Highway South",
   "aliases": [
    "caelid highway south"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64483800",
-  "slug": "grace:aeonia-swamp-shore",
+  "slug": "grace:64483800",
   "kind": "grace",
   "fmgName": "Aeonia Swamp Shore",
   "aliases": [
    "aeonia swamp shore"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64483801",
-  "slug": "grace:astray-from-caelid-highway-north",
+  "slug": "grace:64483801",
   "kind": "grace",
   "fmgName": "Astray from Caelid Highway North",
   "aliases": [
    "astray from caelid highway north"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64483900",
-  "slug": "grace:smoldering-wall",
+  "slug": "grace:64483900",
   "kind": "grace",
   "fmgName": "Smoldering Wall",
   "aliases": [
    "smoldering wall"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64484000",
-  "slug": "grace:deep-siofra-well",
+  "slug": "grace:64484000",
   "kind": "grace",
   "fmgName": "Deep Siofra Well",
   "aliases": [
    "deep siofra well",
    "siofra deep river well"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64484001",
-  "slug": "grace:dragonbarrow-west",
+  "slug": "grace:64484001",
   "kind": "grace",
   "fmgName": "Dragonbarrow West",
   "aliases": [
    "dragonbarrow west"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64484100",
-  "slug": "grace:isolated-merchant-s-shack",
+  "slug": "grace:64484100",
   "kind": "grace",
   "fmgName": "Isolated Merchant's Shack",
   "aliases": [
    "isolated merchant shack"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64493700",
-  "slug": "grace:southern-aeonia-swamp-bank",
+  "slug": "grace:64493700",
   "kind": "grace",
   "fmgName": "Southern Aeonia Swamp Bank",
   "aliases": [
    "southern aeonia swamp bank"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64493800",
-  "slug": "grace:heart-of-aeonia",
+  "slug": "grace:64493800",
   "kind": "grace",
   "fmgName": "Heart of Aeonia",
   "aliases": [
    "heart of aeonia"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64493801",
-  "slug": "grace:inner-aeonia",
+  "slug": "grace:64493801",
   "kind": "grace",
   "fmgName": "Inner Aeonia",
   "aliases": [
    "inner aeonia"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64493900",
-  "slug": "grace:sellia-backstreets",
+  "slug": "grace:64493900",
   "kind": "grace",
   "fmgName": "Sellia Backstreets",
   "aliases": [
    "sellia backstreets"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64493901",
-  "slug": "grace:chair-crypt-of-sellia",
+  "slug": "grace:64493901",
   "kind": "grace",
   "fmgName": "Chair,Crypt of Sellia",
   "aliases": [
    "chair crypt of sellia"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64493902",
-  "slug": "grace:sellia-under-stair",
+  "slug": "grace:64493902",
   "kind": "grace",
   "fmgName": "Sellia Under,Stair",
   "aliases": [
    "sellia under stair"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64503600",
-  "slug": "grace:impassable-greatbridge",
+  "slug": "grace:64503600",
   "kind": "grace",
   "fmgName": "Impassable Greatbridge",
   "aliases": [
    "impassable greatbridge"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64503800",
-  "slug": "grace:church-of-the-plague",
+  "slug": "grace:64503800",
   "kind": "grace",
   "fmgName": "Church of the Plague",
   "aliases": [
    "church of the plague"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64504000",
-  "slug": "grace:dragonbarrow-fork",
+  "slug": "grace:64504000",
   "kind": "grace",
   "fmgName": "Dragonbarrow Fork",
   "aliases": [
    "dragonbarrow fork"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64513600",
-  "slug": "grace:redmane-castle-plaza",
+  "slug": "grace:64513600",
   "kind": "grace",
   "fmgName": "Redmane Castle Plaza",
   "aliases": [
    "redmane castle plaza"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64513601",
@@ -40340,27 +40348,27 @@
  },
  {
   "engineId": "grace:64513900",
-  "slug": "grace:fort-faroth",
+  "slug": "grace:64513900",
   "kind": "grace",
   "fmgName": "Fort Faroth",
   "aliases": [
    "fort faroth"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64514300",
-  "slug": "grace:bestial-sanctum",
+  "slug": "grace:64514300",
   "kind": "grace",
   "fmgName": "Bestial Sanctum",
   "aliases": [
    "bestial sanctum"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64523800",
-  "slug": "grace:starscourge-radahn",
+  "slug": "grace:64523800",
   "kind": "grace",
   "fmgName": "Starscourge Radahn",
   "aliases": [
@@ -40370,28 +40378,28 @@
    "red lion general",
    "starscourge radahn"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64524100",
-  "slug": "grace:lenne-s-rise",
+  "slug": "grace:64524100",
   "kind": "grace",
   "fmgName": "Lenne's Rise",
   "aliases": [
    "lenne",
    "lenne rise"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:64524200",
-  "slug": "grace:farum-greatbridge",
+  "slug": "grace:64524200",
   "kind": "grace",
   "fmgName": "Farum Greatbridge",
   "aliases": [
    "farum greatbridge"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:65475100",
@@ -40405,24 +40413,24 @@
  },
  {
   "engineId": "grace:65475800",
-  "slug": "grace:apostate-derelict",
+  "slug": "grace:65475800",
   "kind": "grace",
   "fmgName": "Apostate Derelict",
   "aliases": [
    "apostate derelict"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:65485700",
-  "slug": "grace:ordina-liturgical-town",
+  "slug": "grace:65485700",
   "kind": "grace",
   "fmgName": "Ordina, Liturgical Town",
   "aliases": [
    "ordina",
    "ordina liturgical town"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:65495300",
@@ -40438,94 +40446,94 @@
  },
  {
   "engineId": "grace:65495301",
-  "slug": "grace:grand-lift-of-rold",
+  "slug": "grace:65495301",
   "kind": "grace",
   "fmgName": "Grand Lift of Rold",
   "aliases": [
    "grand lift of rold"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:65495400",
-  "slug": "grace:consecrated-snowfield",
+  "slug": "grace:65495400",
   "kind": "grace",
   "fmgName": "Consecrated Snowfield",
   "aliases": [
    "consecrated snowfield",
    "snowfield"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:65495500",
-  "slug": "grace:inner-consecrated-snowfield",
+  "slug": "grace:65495500",
   "kind": "grace",
   "fmgName": "Inner Consecrated Snowfield",
   "aliases": [
    "inner consecrated snowfield"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:65515300",
-  "slug": "grace:church-of-repose",
+  "slug": "grace:65515300",
   "kind": "grace",
   "fmgName": "Church of Repose",
   "aliases": [
    "church of repose"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:65515600",
-  "slug": "grace:ancient-snow-valley-ruins",
+  "slug": "grace:65515600",
   "kind": "grace",
   "fmgName": "Ancient Snow Valley Ruins",
   "aliases": [
    "ancient snow valley ruins"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:65515700",
-  "slug": "grace:snow-valley-ruins-overlook",
+  "slug": "grace:65515700",
   "kind": "grace",
   "fmgName": "Snow Valley Ruins Overlook",
   "aliases": [
    "snow valley ruins overlook"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:65515701",
-  "slug": "grace:castle-sol-main-gate",
+  "slug": "grace:65515701",
   "kind": "grace",
   "fmgName": "Castle Sol Main Gate",
   "aliases": [
    "castle sol main gate"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:65515702",
-  "slug": "grace:church-of-the-eclipse",
+  "slug": "grace:65515702",
   "kind": "grace",
   "fmgName": "Church of the Eclipse",
   "aliases": [
    "church of the eclipse"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:65515703",
-  "slug": "grace:castle-sol-rooftop",
+  "slug": "grace:65515703",
   "kind": "grace",
   "fmgName": "Castle Sol Rooftop",
   "aliases": [
    "castle sol rooftop"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:65525300",
@@ -40551,34 +40559,34 @@
  },
  {
   "engineId": "grace:65525600",
-  "slug": "grace:whiteridge-road",
+  "slug": "grace:65525600",
   "kind": "grace",
   "fmgName": "Whiteridge Road",
   "aliases": [
    "whiteridge road"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:65525700",
-  "slug": "grace:freezing-lake",
+  "slug": "grace:65525700",
   "kind": "grace",
   "fmgName": "Freezing Lake",
   "aliases": [
    "freezing lake"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:65535200",
-  "slug": "grace:fire-giant",
+  "slug": "grace:65535200",
   "kind": "grace",
   "fmgName": "Fire Giant",
   "aliases": [
    "fire giant",
    "fire giants"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:65545300",
@@ -40593,106 +40601,106 @@
  },
  {
   "engineId": "grace:65545500",
-  "slug": "grace:first-church-of-marika",
+  "slug": "grace:65545500",
   "kind": "grace",
   "fmgName": "First Church of Marika",
   "aliases": [
    "first church of marika"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:68463900",
-  "slug": "grace:cerulean-coast-west",
+  "slug": "grace:68463900",
   "kind": "grace",
   "fmgName": "Cerulean Coast West",
   "aliases": [
    "cerulean coast west"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:68473600",
-  "slug": "grace:the-fissure",
+  "slug": "grace:68473600",
   "kind": "grace",
   "fmgName": "The Fissure",
   "aliases": [
    "fissure",
    "the fissure"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:68474101",
-  "slug": "grace:ellac-river-downstream",
+  "slug": "grace:68474101",
   "kind": "grace",
   "fmgName": "Ellac River Downstream",
   "aliases": [
    "ellac river downstream"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:68483700",
-  "slug": "grace:cerulean-coast-cross",
+  "slug": "grace:68483700",
   "kind": "grace",
   "fmgName": "Cerulean Coast Cross",
   "aliases": [
    "cerulean coast cross"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:68483900",
-  "slug": "grace:cerulean-coast",
+  "slug": "grace:68483900",
   "kind": "grace",
   "fmgName": "Cerulean Coast",
   "aliases": [
    "cerulean coast",
    "finger ruins of rhia grace"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:68483901",
-  "slug": "grace:charo-s-hidden-grave",
+  "slug": "grace:68483901",
   "kind": "grace",
   "fmgName": "Charo's Hidden Grave",
   "aliases": [
    "charo hidden grave",
    "hidden grave of charo"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:68484300",
-  "slug": "grace:divided-falls",
+  "slug": "grace:68484300",
   "kind": "grace",
   "fmgName": "Divided Falls",
   "aliases": [
    "divided falls"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:68493900",
-  "slug": "grace:grand-altar-of-dragon-communion",
+  "slug": "grace:68493900",
   "kind": "grace",
   "fmgName": "Grand Altar of Dragon Communion",
   "aliases": [
    "grand altar of dragon communion"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:68503800",
-  "slug": "grace:finger-ruins-of-rhia",
+  "slug": "grace:68503800",
   "kind": "grace",
   "fmgName": "Finger Ruins of Rhia",
   "aliases": [
    "finger ruins of rhia"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:68504200",
@@ -40708,13 +40716,13 @@
  },
  {
   "engineId": "grace:68514200",
-  "slug": "grace:woodland-trail",
+  "slug": "grace:68514200",
   "kind": "grace",
   "fmgName": "Woodland Trail",
   "aliases": [
    "woodland trail"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:68524000",
@@ -40729,224 +40737,224 @@
  },
  {
   "engineId": "grace:68524300",
-  "slug": "grace:forsaken-graveyard",
+  "slug": "grace:68524300",
   "kind": "grace",
   "fmgName": "Forsaken Graveyard",
   "aliases": [
    "forsaken graveyard"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:68533900",
-  "slug": "grace:jagged-peak-mountainside",
+  "slug": "grace:68533900",
   "kind": "grace",
   "fmgName": "Jagged Peak Mountainside",
   "aliases": [
    "jagged peak mountainside"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:68534100",
-  "slug": "grace:church-ruins",
+  "slug": "grace:68534100",
   "kind": "grace",
   "fmgName": "Church Ruins",
   "aliases": [
    "church ruins"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:68543900",
-  "slug": "grace:jagged-peak-summit",
+  "slug": "grace:68543900",
   "kind": "grace",
   "fmgName": "Jagged Peak Summit",
   "aliases": [
    "jagged peak summit"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:68553900",
-  "slug": "grace:rest-of-the-dread-dragon",
+  "slug": "grace:68553900",
   "kind": "grace",
   "fmgName": "Rest of the Dread Dragon",
   "aliases": [
    "rest of the dead dragon",
    "rest of the dread dragon"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69444500",
-  "slug": "grace:ancient-ruins-grand-stairway",
+  "slug": "grace:69444500",
   "kind": "grace",
   "fmgName": "Ancient Ruins, Grand Stairway",
   "aliases": [
    "ancient ruins grand stairway"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69444501",
-  "slug": "grace:church-of-the-bud",
+  "slug": "grace:69444501",
   "kind": "grace",
   "fmgName": "Church of the Bud",
   "aliases": [
    "church of the bud"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69444600",
-  "slug": "grace:church-of-the-bud-main-entrance",
+  "slug": "grace:69444600",
   "kind": "grace",
   "fmgName": "Church of the Bud, Main Entrance",
   "aliases": [
    "church of the bud main entrance"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69454501",
-  "slug": "grace:rauh-ancient-ruins-west",
+  "slug": "grace:69454501",
   "kind": "grace",
   "fmgName": "Rauh Ancient Ruins, West",
   "aliases": [
    "rauh ancient ruins west"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69454600",
-  "slug": "grace:temple-town-ruins",
+  "slug": "grace:69454600",
   "kind": "grace",
   "fmgName": "Temple Town Ruins",
   "aliases": [
    "temple town ruins"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69454700",
-  "slug": "grace:ravine-north",
+  "slug": "grace:69454700",
   "kind": "grace",
   "fmgName": "Ravine North",
   "aliases": [
    "ravine north"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69464700",
-  "slug": "grace:rauh-ancient-ruins-east",
+  "slug": "grace:69464700",
   "kind": "grace",
   "fmgName": "Rauh Ancient Ruins, East",
   "aliases": [
    "rauh ancient ruins east"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69474500",
-  "slug": "grace:scadu-altus-west",
+  "slug": "grace:69474500",
   "kind": "grace",
   "fmgName": "Scadu Altus, West",
   "aliases": [
    "scadu altus west"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69474700",
-  "slug": "grace:viaduct-minor-tower",
+  "slug": "grace:69474700",
   "kind": "grace",
   "fmgName": "Viaduct Minor Tower",
   "aliases": [
    "viaduct minor tower"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69484500",
-  "slug": "grace:highroad-cross",
+  "slug": "grace:69484500",
   "kind": "grace",
   "fmgName": "Highroad Cross",
   "aliases": [
    "highroad cross"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69484700",
-  "slug": "grace:ancient-ruins-base",
+  "slug": "grace:69484700",
   "kind": "grace",
   "fmgName": "Ancient Ruins Base",
   "aliases": [
    "ancient ruins base"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69494300",
-  "slug": "grace:moorth-highway-south",
+  "slug": "grace:69494300",
   "kind": "grace",
   "fmgName": "Moorth Highway, South",
   "aliases": [
    "moorth highway south"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69494301",
-  "slug": "grace:fort-of-reprimand",
+  "slug": "grace:69494301",
   "kind": "grace",
   "fmgName": "Fort of Reprimand",
   "aliases": [
    "fort of reprimand"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69494302",
-  "slug": "grace:behind-the-fort-of-reprimand",
+  "slug": "grace:69494302",
   "kind": "grace",
   "fmgName": "Behind the Fort of Reprimand",
   "aliases": [
    "behind the fort of reprimand"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69494400",
-  "slug": "grace:moorth-ruins",
+  "slug": "grace:69494400",
   "kind": "grace",
   "fmgName": "Moorth Ruins",
   "aliases": [
    "moorth ruins"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69494401",
-  "slug": "grace:bonny-village",
+  "slug": "grace:69494401",
   "kind": "grace",
   "fmgName": "Bonny Village",
   "aliases": [
    "bonny village"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69494700",
-  "slug": "grace:castle-watering-hole",
+  "slug": "grace:69494700",
   "kind": "grace",
   "fmgName": "Castle Watering Hole",
   "aliases": [
    "castle watering hole"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69494800",
@@ -40960,114 +40968,114 @@
  },
  {
   "engineId": "grace:69494801",
-  "slug": "grace:shadow-keep-back-gate",
+  "slug": "grace:69494801",
   "kind": "grace",
   "fmgName": "Shadow Keep, Back Gate",
   "aliases": [
    "shadow keep back gate"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69504300",
-  "slug": "grace:scaduview-cross",
+  "slug": "grace:69504300",
   "kind": "grace",
   "fmgName": "Scaduview Cross",
   "aliases": [
    "scaduview cross"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69504400",
-  "slug": "grace:recluses-river-downstream",
+  "slug": "grace:69504400",
   "kind": "grace",
   "fmgName": "Recluses' River Downstream",
   "aliases": [
    "recluses river downstream"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69504500",
-  "slug": "grace:recluses-river-upstream",
+  "slug": "grace:69504500",
   "kind": "grace",
   "fmgName": "Recluses' River Upstream",
   "aliases": [
    "recluses river upstream"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69504800",
-  "slug": "grace:hinterland",
+  "slug": "grace:69504800",
   "kind": "grace",
   "fmgName": "Hinterland",
   "aliases": [
    "hinterland"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69504801",
-  "slug": "grace:scadutree-base",
+  "slug": "grace:69504801",
   "kind": "grace",
   "fmgName": "Scadutree Base",
   "aliases": [
    "scadutree base"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69514400",
-  "slug": "grace:bridge-leading-to-the-village",
+  "slug": "grace:69514400",
   "kind": "grace",
   "fmgName": "Bridge Leading to the Village",
   "aliases": [
    "bridge leading to the village"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69514500",
-  "slug": "grace:cathedral-of-manus-metyr",
+  "slug": "grace:69514500",
   "kind": "grace",
   "fmgName": "Cathedral of Manus Metyr",
   "aliases": [
    "cathedral of manus metyr",
    "manus metyr"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69514700",
-  "slug": "grace:church-district-highroad",
+  "slug": "grace:69514700",
   "kind": "grace",
   "fmgName": "Church District Highroad",
   "aliases": [
    "church district highroad"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69514800",
-  "slug": "grace:fingerstone-hill",
+  "slug": "grace:69514800",
   "kind": "grace",
   "fmgName": "Fingerstone Hill",
   "aliases": [
    "fingerstone hill"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "grace:69514801",
-  "slug": "grace:hinterland-bridge",
+  "slug": "grace:69514801",
   "kind": "grace",
   "fmgName": "Hinterland Bridge",
   "aliases": [
    "hinterland bridge"
   ],
-  "source": "grace-stub"
+  "source": "entity-index"
  },
  {
   "engineId": "boss:abductor-virgins",

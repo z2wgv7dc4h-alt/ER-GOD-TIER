@@ -30,6 +30,22 @@ const here = dirname(fileURLToPath(import.meta.url))
 const root = join(here, '..')
 const read = (rel) => JSON.parse(readFileSync(join(root, rel), 'utf8'))
 
+// Task 160 — the enrichment index is the authority for a grace's real record id.
+// A warp with no authored slug must map to the `grace:<warpId>` record the index
+// already holds, never to a synthetic `grace:<name-slug>` stub the app cannot open.
+let indexRecords = {}
+try {
+  indexRecords = read('public/sourced/entity-index.json').records ?? {}
+} catch {
+  indexRecords = {}
+}
+const indexGraceByName = new Map()
+for (const [id, record] of Object.entries(indexRecords)) {
+  if (record.kind !== 'grace' || !record.name) continue
+  const key = String(record.name).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+  if (key && !indexGraceByName.has(key)) indexGraceByName.set(key, id)
+}
+
 /**
  * Loose normal form: lowercase, drop possessives/parentheticals/punctuation.
  * Used for the alias strings and the fallback name match.
@@ -192,6 +208,16 @@ for (const g of checklistsGraces) {
   // engine warp id still canonicalises and search finds it. These carry no
   // implication edges and no pin; a pin exists only where `graces.ts`/`coords`
   // already names the grace.
+  // Task 160: when the enrichment index already carries a real record for this
+  // warp (its `grace:<warpId>` id), map the engine id onto that record instead
+  // of minting a ghost slug the app has no page for.
+  const indexed =
+    (indexRecords[`grace:${g.warpId}`] && `grace:${g.warpId}`) ||
+    indexGraceByName.get(g.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim())
+  if (indexed) {
+    emit(`grace:${g.warpId}`, indexed, g.name, rowAliases(g.name, [], g.name), 'entity-index')
+    continue
+  }
   const slug = slugify(g.name)
   if (!slug) {
     unmatchedGraces.push(g)
