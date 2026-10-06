@@ -97,4 +97,4 @@ one a real data gap.
 | `item:may-the-best-win` | item | empty |
 | `npcs:147100` | npc | empty |
 
-_Regenerated 2026-10-03._
+_Regenerated 2026-10-06._
