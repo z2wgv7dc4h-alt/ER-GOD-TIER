@@ -316,6 +316,13 @@ button { cursor: pointer; }
 .now-cards { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 8px; }
 .now-cards .panel,
 .now-cards .medusa-route { border: 1px solid var(--line); background: var(--bg-raised); padding: 20px 22px; }
+/* Task 165 §21 — the "last resort" cards collapse behind one disclosure so the
+   goal card owns the phone's first paint. */
+.now-tail { grid-column: 1 / -1; }
+.now-tail > summary { cursor: pointer; padding: 6px 2px; color: var(--muted); }
+.now-tail[open] { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.now-tail .panel,
+.now-tail .medusa-route { border: 1px solid var(--line); background: var(--bg-raised); padding: 20px 22px; }
 .now-beat {
   font-family: var(--font-display);
   font-size: 18px;
