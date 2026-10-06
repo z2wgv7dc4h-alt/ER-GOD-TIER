@@ -12,7 +12,6 @@ import { toggleWatch, watchlistOf } from '../lib/leftovers'
 import { SOFT_CAPS, softCapLabel, type StatKey } from '../lib/softCaps'
 import { useWorkspace } from '../state'
 import type { Stats } from '../types'
-import { LevelUpCalculator, LoadoutPresets, SmithingTracker, StatPlanner } from '../build/BuildPowerTools'
 import { EntityLink } from '../EntityLink'
 import { Term } from '../peek/Term'
 import './advisor.css'
@@ -372,22 +371,6 @@ export function BuildPlanner() {
             </div>
           </div>
         )}
-      </BuildSection>
-
-      <BuildSection title="Stat planner">
-        <StatPlanner />
-      </BuildSection>
-
-      <BuildSection title="Level-up calculator">
-        <LevelUpCalculator />
-      </BuildSection>
-
-      <BuildSection title="Smithing tracker">
-        <SmithingTracker />
-      </BuildSection>
-
-      <BuildSection title="Loadout presets">
-        <LoadoutPresets />
       </BuildSection>
 
       <BuildSection title="Gear picks">

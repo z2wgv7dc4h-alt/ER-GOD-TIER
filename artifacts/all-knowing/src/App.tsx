@@ -26,10 +26,8 @@ import { WorkspaceProvider, useWorkspace } from './state'
 
 // Each room is a separate chunk, loaded only when its section/sub is opened.
 const AtlasWorkspace = lazy(() => import('./Atlas').then((m) => ({ default: m.AtlasWorkspace })))
-const BuildWorkspace = lazy(() => import('./Build').then((m) => ({ default: m.BuildWorkspace })))
-const BuildKits = lazy(() => import('./Build').then((m) => ({ default: m.BuildKits })))
+const BuildsPage = lazy(() => import('./Build').then((m) => ({ default: m.BuildsPage })))
 const PvpWorkspace = lazy(() => import('./Build').then((m) => ({ default: m.PvpWorkspace })))
-const BuildPlanner = lazy(() => import('./library/BuildPlanner').then((m) => ({ default: m.BuildPlanner })))
 // The Gear sheet resolves entity details through the library catalogue, so it
 // stays a lazy chunk rather than dragging FanAPI/regulation into the shell.
 const MeGear = lazy(() => import('./shell/MeGear').then((m) => ({ default: m.MeGear })))
@@ -89,15 +87,7 @@ function ShellContent() {
     return <JourneyNow />
   }
   if (section === 'library') {
-    if (sub === 'builds') {
-      return (
-        <div className="builds-page">
-          <BuildPlanner />
-          <BuildWorkspace />
-          <BuildKits />
-        </div>
-      )
-    }
+    if (sub === 'builds') return <BuildsPage />
     if (sub === 'pvp') return <PvpWorkspace />
     if (sub === 'guides') return <Guides />
     return <CodexWorkspace />

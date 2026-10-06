@@ -20,7 +20,7 @@ vi.mock('../Reckon', () => ({ ReckonWorkspace: () => null }))
 import { demoCharacter, emptyCharacter } from '../data/seed'
 import { applyFacts } from '../lib/infer'
 import type { Character, ModuleId, Section, Sub } from '../types'
-import { BuildWorkspace, BuildKits, PvpWorkspace } from '../Build'
+import { BuildWorkspace, BuildKits, BuildCalculator, PvpWorkspace } from '../Build'
 import { Guides } from '../library/Guides'
 import { Gideon } from '../Gideon'
 import { QuestWorkspace } from '../Quests'
@@ -140,11 +140,13 @@ describe('Task 92 coverage: every feature has a home', () => {
     expect(html).toContain('Build hunt')
   })
 
-  it('row 6 — Builds owns the planner, OP kits, damage calc and compare; PvP owns builds and tech', () => {
+  it('row 6 — Kits/Compare owns the kits and compare; Calculator owns the damage calc; PvP owns builds and tech', () => {
     const builds = render(<BuildKits />, { section: 'library', sub: 'builds' })
-    for (const group of ['OP kits', 'Damage calculator', 'Weapon compare']) {
+    for (const group of ['OP kits', 'Weapon compare']) {
       expect(builds, group).toContain(group)
     }
+    const calc = render(<BuildCalculator />, { section: 'library', sub: 'builds' })
+    expect(calc).toContain('Damage calculator')
     const pvp = render(<PvpWorkspace />, { section: 'library', sub: 'pvp' })
     for (const group of ['PvP builds', 'PvP matchups', 'Tech &amp; cheese']) {
       expect(pvp, group).toContain(group)
@@ -160,8 +162,8 @@ describe('Task 92 coverage: every feature has a home', () => {
   })
 
   it('row 8 — Weak to / resists in the Builds matchup', () => {
-    const kit = render(<BuildKits />, { section: 'library', sub: 'builds' })
-    expect(kit).toContain('Weak to / resists')
+    const calc = render(<BuildCalculator />, { section: 'library', sub: 'builds' })
+    expect(calc).toContain('Weak to / resists')
   })
 
   it('row 9 — every screenshot shot type is listed on Tarnished › Update', () => {
