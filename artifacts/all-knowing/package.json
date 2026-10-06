@@ -8,7 +8,7 @@
     "start:live": "node scripts/dev-stack.mjs --live-memory",
     "dev": "vite",
     "cert": "node scripts/make-dev-cert.mjs",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node scripts/build-engine.mjs",
     "lint": "oxlint",
     "test": "vitest run",
     "test:bundle": "npm run build && vitest run src/lib/bundleBudget.test.ts",

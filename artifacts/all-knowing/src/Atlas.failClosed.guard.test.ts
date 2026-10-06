@@ -22,7 +22,7 @@ describe('Atlas fails closed (Task 82)', () => {
   })
 
   it('shows a distinct banner for a down engine vs a failed embed', () => {
-    expect(atlas).toContain('Map engine offline (:8099)')
+    expect(atlas).toContain('The engine files are not in this build')
     expect(atlas).toContain('Live map embed failed')
     expect(css).toContain('.atlas-banner')
   })

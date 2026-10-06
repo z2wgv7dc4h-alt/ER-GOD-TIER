@@ -15,9 +15,11 @@
  *   bucket (`SOURCED_OFFLINE_CACHE`). It fills lazily at runtime and can be
  *   warmed whole by Settings → Data & offline, so the wiki/search/Gideon work
  *   with no connection without forcing the full data plane onto first load.
- * - The EldenRingMap engine (`/engine/*` in dev, `127.0.0.1:8099` in prod) is
- *   deliberately NetworkOnly. Live save sync needs the engine, and Task 06's
- *   offline detection must keep seeing real failures instead of a cached response.
+ * - The EldenRingMap engine's static files (`/engine/**`) ship in the production
+ *   build (Task 159) and are cache-first into the same offline bucket, so the
+ *   tiled map works offline on the phone. Only the live SSE endpoint
+ *   (`/engine/api/events`) is NetworkOnly: the PC save reader / player dot must
+ *   keep seeing real failures, and it is never cached.
  * - Fonts are self-hosted under `/fonts/*.woff2` (Task 58) and precached by the
  *   output glob, so there is no cross-origin font request to cache at runtime.
  */
@@ -32,8 +34,19 @@ import type { VitePWAOptions } from 'vite-plugin-pwa'
  */
 export const SOURCED_OFFLINE_CACHE = 'ak-sourced-offline'
 
-/** The map engine must never be served from a cache. Matches dev proxy + prod base. */
-export const ENGINE_URL_PATTERN = /(\/engine\/)|(\/er-map\/)|(127\.0\.0\.1:8099)/
+/**
+ * The live SSE stream (PC save reader / player dot) must never be cached, so a
+ * real failure stays visible. Covers the shipped route and the external engine.
+ */
+export const ENGINE_EVENTS_PATTERN =
+  /(\/(engine|er-map)\/api\/events)|(127\.0\.0\.1:8099\/api\/events)/
+
+/**
+ * The engine's static files — HTML/JS/CSS, icons, tiles and the generated
+ * `/api/{markers,saves,place-names,state}` shims. Shipped in `dist/engine`
+ * (Task 159) and cached first so the live map works offline.
+ */
+export const ENGINE_STATIC_PATTERN = /(\/engine\/)|(\/er-map\/)|(127\.0\.0\.1:8099)/
 
 /** Small JSON precached on install so first-load-offline still shows real data. */
 export const PRECACHE_DATA = [
@@ -58,16 +71,31 @@ export const pwaOptions: Partial<VitePWAOptions> = {
   includeAssets: [...PRECACHE_DATA],
   workbox: {
     globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,woff,woff2,ttf,webmanifest}'],
-    // `sourced/` is either precached explicitly (small JSON above) or runtime
-    // cached lazily. Never sweep the whole data plane into the precache manifest.
-    globIgnores: ['**/sourced/**'],
+    // `sourced/` and the shipped engine tree are either precached explicitly
+    // (small JSON above) or runtime cached lazily. Never sweep the whole data
+    // plane — least of all the engine's ~7,000 tiles — into the install precache.
+    globIgnores: ['**/sourced/**', '**/engine/**'],
     navigateFallback: '/index.html',
     navigateFallbackDenylist: [/^\/engine\//, /^\/er-map\//, /^\/sourced\//, /^\/api\//],
     cleanupOutdatedCaches: true,
     runtimeCaching: [
       {
-        urlPattern: ENGINE_URL_PATTERN,
+        // The SSE stream is the only engine request that must reach the network.
+        urlPattern: ENGINE_EVENTS_PATTERN,
         handler: 'NetworkOnly',
+      },
+      {
+        // The shipped engine files (Task 159): HTML/JS/CSS, icons, tiles and the
+        // static `/api/*` shims. Cache-first with a background revalidate so an
+        // offline phone still draws the live map and picks up rebuilds next load.
+        urlPattern: ENGINE_STATIC_PATTERN,
+        handler: 'StaleWhileRevalidate',
+        options: {
+          cacheName: SOURCED_OFFLINE_CACHE,
+          cacheableResponse: { statuses: [0, 200] },
+          // ~7,000 tiles + ~3,000 named markers on top of the sourced tree.
+          expiration: { maxEntries: 20000, maxAgeSeconds: 60 * 60 * 24 * 365 },
+        },
       },
       {
         // Every sourced file — JSON dumps, wiki pages, search chunks, map
@@ -79,9 +107,9 @@ export const pwaOptions: Partial<VitePWAOptions> = {
         options: {
           cacheName: SOURCED_OFFLINE_CACHE,
           cacheableResponse: { statuses: [0, 200] },
-          // The text corpus alone is 36 tables, and the whole sourced tree is
-          // ~2,700 files / ~83 MB; keep ample room and a long lifetime.
-          expiration: { maxEntries: 4000, maxAgeSeconds: 60 * 60 * 24 * 365 },
+          // The whole sourced tree is ~5,400 files / ~100 MB; keep ample room
+          // and a long lifetime.
+          expiration: { maxEntries: 20000, maxAgeSeconds: 60 * 60 * 24 * 365 },
         },
       },
     ],

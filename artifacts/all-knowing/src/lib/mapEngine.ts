@@ -3,11 +3,22 @@ import { emptyStats } from '../data/seed'
 import { canonicalFactId } from './aliases'
 import { REGULATION_STAMP } from './regulation'
 
-/** Dev: our own Vite server serves the engine at /engine (no separate process).
- *  Prod: a locally-run engine, or the same static route on the host. */
-export const MAP_ENGINE_BASE =
-  import.meta.env.VITE_MAP_ENGINE ??
-  (import.meta.env.DEV ? '/engine' : 'http://127.0.0.1:8099')
+/**
+ * Task 159: the engine now ships as static app assets under `/engine` in every
+ * build (see `scripts/build-engine.mjs`). Dev, preview and the installed PWA all
+ * load it from the same origin, so it works on the phone with no PC process.
+ * `VITE_MAP_ENGINE` is the escape hatch for an external engine (e.g. a running
+ * save reader on `http://127.0.0.1:8099`).
+ */
+export const MAP_ENGINE_BASE = import.meta.env.VITE_MAP_ENGINE ?? '/engine'
+
+/**
+ * The tiled map's own manifest. It only exists once the engine's tiles were
+ * extracted and shipped, so it is the honest "the live map can actually draw"
+ * signal — an engine shell without tiles would render a blank canvas, and the
+ * static plate is the better fallback.
+ */
+export const ENGINE_PROBE_PATH = '/tiles/manifest.json'
 
 export type EngineMarker = {
   id: string
@@ -69,7 +80,7 @@ export function engineBanner(status: EngineStatus, state: EngineState | null): E
       label: 'Map engine · connected',
       detail: liveMemory
         ? 'reading ER0000.sl2 and the live player position (read-only, offline only)'
-        : 'reading ER0000.sl2 and serving the live map',
+        : 'the live map files are installed; the PC save reader adds the live player dot',
       liveMemory,
     }
   }
@@ -77,14 +88,14 @@ export function engineBanner(status: EngineStatus, state: EngineState | null): E
     return {
       tone: 'idle',
       label: 'Map engine · connecting',
-      detail: 'looking for the local map server',
+      detail: 'looking for the installed map files',
       liveMemory,
     }
   }
   return {
     tone: 'idle',
     label: 'Offline — using static plates',
-    detail: 'start the engine with npm start for the live map; on a phone the plates are expected',
+    detail: 'the live map files are not installed in this build — showing the saved map plates',
     liveMemory,
   }
 }
@@ -166,9 +177,50 @@ export async function fetchEngineMarkers(): Promise<EngineMarker[]> {
   return doc.markers || []
 }
 
+/** Does the engine's static tree load (tiles manifest reachable)? */
+export async function probeEngine(): Promise<boolean> {
+  if (typeof fetch !== 'function') return false
+  try {
+    const res = await fetch(`${MAP_ENGINE_BASE}${ENGINE_PROBE_PATH}`)
+    return res.ok
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Task 159 status rule. The engine is *live* as soon as its files load, whether
+ * that is the shipped static assets or a running PC save reader. The SSE stream
+ * only adds save-derived state and the live player dot; its absence must not
+ * downgrade an engine whose files are present. Before the probe answers we are
+ * still `connecting`; only a failed probe with no SSE leaves us on the plates.
+ */
+export function resolveEngineStatus(opts: {
+  probed: boolean
+  staticUp: boolean
+  sseUp: boolean
+}): EngineStatus {
+  if (opts.staticUp || opts.sseUp) return 'live'
+  return opts.probed ? 'offline' : 'connecting'
+}
+
 export function subscribeEngine(onState: (s: EngineState) => void, onStatus: (s: EngineStatus) => void) {
-  onStatus('connecting')
+  let staticUp = false
+  let sseUp = false
+  let probed = false
   let closed = false
+  const emit = () => {
+    if (!closed) onStatus(resolveEngineStatus({ probed, staticUp, sseUp }))
+  }
+  onStatus('connecting')
+  // The engine ships as app assets, so "are the files there?" is the primary
+  // signal. It is independent of the (optional, PC-only) save reader.
+  void probeEngine().then((ok) => {
+    if (closed) return
+    staticUp = ok
+    probed = true
+    emit()
+  })
   let es: EventSource | null = null
   // Defer opening the stream by one task. React StrictMode runs every effect
   // twice in development; opening synchronously meant the throwaway first mount
@@ -178,10 +230,20 @@ export function subscribeEngine(onState: (s: EngineState) => void, onStatus: (s:
     if (closed) return
     es = new EventSource(`${MAP_ENGINE_BASE}/api/events`)
     es.addEventListener('state', (ev) => {
-      onStatus('live')
-      onState(JSON.parse((ev as MessageEvent).data))
+      sseUp = true
+      emit()
+      try {
+        onState(JSON.parse((ev as MessageEvent).data))
+      } catch {
+        /* ignore a malformed frame */
+      }
     })
-    es.onerror = () => onStatus('offline')
+    // A failed stream only removes the live save state; `emit()` keeps `live`
+    // while the engine's files are reachable.
+    es.onerror = () => {
+      sseUp = false
+      emit()
+    }
   }, 0)
   return () => {
     closed = true

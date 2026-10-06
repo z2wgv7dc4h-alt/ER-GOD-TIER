@@ -111,17 +111,27 @@ and they already solved it.
 
 ## All-Knowing additions to the engine
 
-**The engine now runs inside our own dev/preview server** — no second process, no
-`npm run map`. The tiled map is static (`web/` + `web/tiles/` + a markers JSON), so
-`vite.config.ts`'s `all-knowing-map-engine` plugin serves `/engine/**` and answers the
-`/api/{markers,state,events,saves}` the engine's frontend calls (markers from the
-generated `data/*.json`; state/saves empty). `MAP_ENGINE_BASE` is `/engine` in dev, so the
-Atlas iframe and the marker bridge are same-origin. `npm run dev` alone shows the live
-tiled map — on the phone too, because the PC serves it over the LAN.
+**The engine runs inside our own app, dev and production** — no second process, no
+`npm run map`. `MAP_ENGINE_BASE` is `/engine` everywhere, so the Atlas iframe and
+the marker bridge are same-origin.
 
-Only the **live save reader and live player dot** need the Node engine (`node
-server/index.js`, `npm run map`) — those are PC-only and are *not* required for the map.
-The browser already parses `.sl2` itself (`src/lib/save.ts`).
+- **Dev / preview:** `vite.config.ts`'s `all-knowing-map-engine` plugin serves
+  `/engine/**` and answers the `/api/{markers,state,events,saves}` the engine's
+  frontend calls (markers from the generated `data/*.json`; state/saves empty).
+- **Production build (Task 159):** `scripts/build-engine.mjs` copies the engine's
+  static `web/` tree (plus `web/tiles/**` when extracted) into `dist/engine/` and
+  writes static `/api/{markers,saves,place-names,state}` shims. The installed PWA
+  and any static host serve the live map with no PC running; offline, the service
+  worker serves `/engine/**` cache-first, and Settings → "Download everything for
+  offline" warms it.
+
+`src/lib/mapEngine.ts` decides the status by probing `tiles/manifest.json`: if the
+engine's files load, the map is **live** whether or not a save reader is up. Only
+the **live save reader and live player dot** need the Node engine (`node
+server/index.js`, `npm run map`) — those are PC-only extras (SSE `/api/events`) and
+are *not* required for the map. The static plate is kept only as the fallback when
+the engine files fail to load. The browser already parses `.sl2` itself
+(`src/lib/save.ts`).
 
 The engine is absorbed as a plain runtime dependency here: `erlib` lives under `scripts/erlib/`
 (our extractors import it; the engine tools carry a one-line path shim), the upstream repo shell
@@ -196,10 +206,11 @@ future JS-side hide (not just a CSS query) fails the suite.
 `AtlasWorkspace` fails closed (Task 82): it only draws the live `?embed=1` iframe while the engine is
 actually up, and otherwise shows the static plate plus a visible banner — never a silent iframe.
 
-1. Engine up? `npm start` starts it on :8099; `npm run map` runs the engine alone.
-2. Banner "offline (:8099)": nothing is listening — start it; on a phone the plates are expected.
-3. Banner "embed failed": the server answered but the iframe never loaded in 8s — restart, reload.
+1. Engine up? The probe looks for `tiles/manifest.json`. If the engine's files load, the map is live.
+2. Banner "not in this build": `dist/engine` has no tiles — run `npm run map:setup` then `npm run build`.
+3. Banner "embed failed": the files answered but the iframe never loaded in 8s — reload.
 4. Plate with no pins: the plates need `public/sourced/open/coords.json`; live pins live in the iframe.
 5. Tiles missing: run the engine tools (`tools/extract_tiles.py`, `tools/build_markers.py`) once against your install.
-6. Tiles are never shipped, and we do not invent them — an unextracted install draws nothing.
+6. Tiles are never committed, and we do not invent them — an unextracted install draws nothing.
 7. The banner is a status, not an error wall: the static plate is a supported view, not a failure.
+8. No live player dot? That is the PC save reader (`npm run map`) only; the map itself does not need it.

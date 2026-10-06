@@ -810,8 +810,8 @@ export function AtlasWorkspace() {
             role="status"
             title={
               embedFailed
-                ? 'Live map embed failed — restart the map engine (npm start) and reload.'
-                : 'Map engine offline (:8099) — start it with npm start.'
+                ? 'Live map embed failed — reload to try again.'
+                : 'The engine files are not in this build — showing the saved map plate.'
             }
           >
             {embedFailed
