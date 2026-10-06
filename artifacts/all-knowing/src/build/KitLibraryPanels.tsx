@@ -3,8 +3,20 @@ import type { Character } from '../types'
 import type { CoordPin } from '../lib/coords'
 import { STAT_KEYS } from '../lib/level'
 import { buildHunt } from '../lib/buildHunt'
+import { EntityLink } from '../EntityLink'
 import { levelPlansFor, opBuilds } from '../knowledge/builds'
-import { pvpBuilds, pvpMatchups, type PvpBracket, type PvpBuild } from '../knowledge/pvp'
+import {
+  PVP_BRACKETS,
+  bracketForLevel,
+  matchupsForBuild,
+  modeMatches,
+  pvpBuilds,
+  pvpMatchups,
+  type PvpBracket,
+  type PvpBuild,
+  type PvpMode,
+  type PvpModeFilter,
+} from '../knowledge/pvp'
 import { pvpTech } from '../knowledge/pvpTech'
 
 /**
@@ -15,8 +27,6 @@ import { pvpTech } from '../knowledge/pvpTech'
  */
 
 type SetCharacter = (c: Character) => void
-
-const BRACKETS: PvpBracket[] = ['RL30-50', 'RL60-90', 'RL125', 'RL150']
 
 function planLine(stats: Record<string, number>): string {
   return STAT_KEYS.map((k) => `${k.slice(0, 3)} ${stats[k]}`).join(' · ')
@@ -135,6 +145,11 @@ export function OpKitPanel({
   )
 }
 
+/**
+ * The reference loadout is prose: the gear/spells the build's source describes.
+ * It is *not* what "Use this build" equips — that is the resolvable `kit`, shown
+ * by `PvpAppliedKit` first, so the displayed and applied gear always agree.
+ */
 function PvpLoadoutBlock({ build }: { build: PvpBuild }) {
   const l = build.loadout
   return (
@@ -174,18 +189,140 @@ function PvpLoadoutBlock({ build }: { build: PvpBuild }) {
   )
 }
 
-/** PvP builds with bracket filter chips; each card expands to the full loadout. */
+/** The resolvable gear "Use this build" actually equips (Task 164 §6). */
+function PvpAppliedKit({ build }: { build: PvpBuild }) {
+  return (
+    <div className="kit-detail">
+      <div className="kicker">Gear applied to your character</div>
+      <ul className="list">
+        {build.kit.map((slot) => (
+          <li key={slot.id} style={{ cursor: 'default' }}>
+            <span>{slot.kind}</span>
+            <span>
+              {slot.name}
+              {slot.upgrade ? ` +${slot.upgrade}` : ''}
+              {slot.affinity ? ` · ${slot.affinity}` : ''}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <p className="note">"Use this build" sets these pieces, the stat spread and the level.</p>
+      <p className="note">The reference gear below is what the source describes; it is not equipped.</p>
+    </div>
+  )
+}
+
+/**
+ * Task 164 §5 — the build's `kit` + `need` run through `buildHunt`, so the
+ * missing pieces get an item page and, where a `loot.ts` row pins it, a
+ * Show-on-map link. Free-text loadout entries stay text and are never invented.
+ */
+function PvpFarmBlock({
+  character,
+  build,
+  coords,
+  onShowOnMap,
+}: {
+  character: Character
+  build: PvpBuild
+  coords: CoordPin[]
+  onShowOnMap?: (factId: string) => void
+}) {
+  const hunt = useMemo(() => buildHunt(character, build, coords), [character, build, coords])
+  return (
+    <div className="kit-detail">
+      <div className="kicker">Farm the missing pieces</div>
+      {hunt.missing.length === 0 ? (
+        <p className="note">Every seeded piece of this build is already logged on this character.</p>
+      ) : (
+        <>
+          <p className="note">
+            {hunt.missing.length} missing · {hunt.pins.length} with a map pin. Tap a name to open its page.
+          </p>
+          <ul className="list">
+            {hunt.missing.map((p) => (
+              <li key={p.factId} style={{ display: 'block', cursor: 'default' }}>
+                <EntityLink id={p.factId}>{p.name}</EntityLink>
+                <div className="opts" style={{ marginTop: 4 }}>
+                  {p.pin && onShowOnMap ? (
+                    <button type="button" className="chip" onClick={() => onShowOnMap(p.factId)}>
+                      Show on map
+                    </button>
+                  ) : (
+                    <span className="note">{p.pin ? 'pinned' : 'no known pin'}</span>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      {hunt.unresolved.length > 0 && (
+        <p className="note">
+          No row yet for {hunt.unresolved.length} id{hunt.unresolved.length === 1 ? '' : 's'} — listed, not dropped.
+        </p>
+      )}
+    </div>
+  )
+}
+
+/** Task 164 §7 — the matchup corpus ranked for this build's keywords. */
+function PvpBuildMatchups({ build }: { build: PvpBuild }) {
+  const ranked = useMemo(() => matchupsForBuild(build), [build])
+  return (
+    <div className="kit-detail">
+      <div className="kicker">Matchups for this build</div>
+      {ranked.length === 0 ? (
+        <p className="note">No matchup in the corpus shares this build's keywords.</p>
+      ) : (
+        <>
+          <p className="note">Ranked by how many of this build's keywords each threat matches.</p>
+          <ul className="list">
+            {ranked.map(({ matchup, score }) => (
+              <li key={matchup.id} style={{ display: 'block', cursor: 'default' }}>
+                <span>
+                  {matchup.threat} <em className="dim">{score} match{score === 1 ? '' : 'es'}</em>
+                </span>
+                <p className="note" style={{ margin: '4px 0 0' }}>{matchup.tell}</p>
+                <p className="note" style={{ margin: '4px 0 0' }}>
+                  <strong>Gear swap.</strong> {matchup.gearSwap}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </div>
+  )
+}
+
+const MODE_LABELS: Record<PvpMode, string> = { invade: 'Invade', duel: 'Duel', both: 'Both' }
+
+/**
+ * Task 164 §4–7 — PvP builds with a mode filter, a bracket filter that defaults
+ * to the character's own level, the applied kit and its farm route, the reference
+ * loadout, and the matchups ranked for this build.
+ */
 export function PvpBuildPanel({
   character,
   setCharacter,
+  coords = [],
+  onShowOnMap,
 }: {
   character: Character
   setCharacter: SetCharacter
+  coords?: CoordPin[]
+  onShowOnMap?: (factId: string) => void
 }) {
-  const [bracket, setBracket] = useState<PvpBracket | 'all'>('all')
+  const myBracket = bracketForLevel(character.level)
+  const [bracket, setBracket] = useState<PvpBracket | 'all'>(myBracket)
+  const [mode, setMode] = useState<PvpModeFilter>('all')
   const shown = useMemo(
-    () => (bracket === 'all' ? pvpBuilds : pvpBuilds.filter((b) => b.bracket === bracket)),
-    [bracket],
+    () =>
+      pvpBuilds.filter(
+        (b) => (bracket === 'all' || b.bracket === bracket) && modeMatches(b.mode, mode),
+      ),
+    [bracket, mode],
   )
   return (
     <div>
@@ -195,9 +332,9 @@ export function PvpBuildPanel({
           className={bracket === 'all' ? 'chip on' : 'chip'}
           onClick={() => setBracket('all')}
         >
-          All
+          All levels
         </button>
-        {BRACKETS.map((b) => (
+        {PVP_BRACKETS.map((b) => (
           <button
             key={b}
             type="button"
@@ -207,7 +344,36 @@ export function PvpBuildPanel({
             {b} · {pvpBuilds.filter((x) => x.bracket === b).length}
           </button>
         ))}
+        <button
+          type="button"
+          className={bracket === myBracket ? 'chip on' : 'chip'}
+          onClick={() => setBracket(myBracket)}
+        >
+          My level · RL{character.level}
+        </button>
       </div>
+      <div className="opts">
+        <button
+          type="button"
+          className={mode === 'all' ? 'chip on' : 'chip'}
+          onClick={() => setMode('all')}
+        >
+          All modes
+        </button>
+        {(Object.keys(MODE_LABELS) as PvpMode[]).map((m) => (
+          <button
+            key={m}
+            type="button"
+            className={mode === m ? 'chip on' : 'chip'}
+            onClick={() => setMode(m)}
+          >
+            {MODE_LABELS[m]}
+          </button>
+        ))}
+      </div>
+      <p className="note">
+        Showing {shown.length} of {pvpBuilds.length} builds. Default bracket is your level ({myBracket}).
+      </p>
       <div className="kit-cards">
         {shown.map((b) => (
           <details key={b.id} className="kit-card">
@@ -216,7 +382,10 @@ export function PvpBuildPanel({
               <em className="dim">{b.bracket} · {b.mode} · {b.tag}</em>
               <span className="kit-pitch note">{b.why}</span>
             </summary>
+            <PvpAppliedKit build={b} />
+            <PvpFarmBlock character={character} build={b} coords={coords} onShowOnMap={onShowOnMap} />
             <PvpLoadoutBlock build={b} />
+            <PvpBuildMatchups build={b} />
             <button
               type="button"
               className="chip gold"
