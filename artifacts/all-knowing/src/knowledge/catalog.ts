@@ -107,7 +107,7 @@ export const facts: Fact[] = [
   { id: 'item:fingerslayer', kind: 'item', name: 'Fingerslayer Blade', aliases: ['fingerslayer'], region: 'Nokron', campaign: 'base', implies: ['boss:radahn'], usedIn: ['quest:ranni:nokron'] },
   { id: 'item:carian-inverted', kind: 'item', name: 'Carian Inverted Statue', aliases: ['inverted statue'], region: 'Liurnia', campaign: 'base', implies: ['quest:ranni:service'], usedIn: ['quest:ranni:statue'] },
   { id: 'item:sewing-needle', kind: 'item', name: 'Gold Sewing Needle', aliases: ['sewing needle', 'golden sewing needle'], region: 'Church of Vows', campaign: 'base', implies: [], usedIn: ['quest:boc:needle'] },
-  { id: 'item:haligtree-secret-medallion', kind: 'item', name: 'Haligtree Secret Medallion', aliases: ['secret medallion', 'haligtree medallion'], region: 'Consecrated Snowfield', campaign: 'base', implies: ['region:haligtree'] },
+  { id: 'item:haligtree-secret-medallion', kind: 'item', name: 'Haligtree Secret Medallion', aliases: ['secret medallion', 'haligtree medallion'], region: 'Consecrated Snowfield', campaign: 'base', implies: [] },
   { id: 'item:dusk-medallion', kind: 'item', name: 'Dectus Medallion', aliases: ['dectus', 'grand lift of dectus'], region: 'Altus', campaign: 'base', implies: ['region:altus'] },
   { id: 'item:rotted-wing', kind: 'item', name: 'Unalloyed Gold Needle', aliases: ['unalloyed needle', 'millicent needle'], region: 'Caelid', campaign: 'base', implies: ['quest:millicent:needle'] },
   { id: 'item:serpent-amnion', kind: 'item', name: "Serpent's Amnion", aliases: ['amnion'], region: 'Volcano Manor', campaign: 'base', implies: ['quest:rya:amnion'] },

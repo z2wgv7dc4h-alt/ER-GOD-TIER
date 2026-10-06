@@ -174,6 +174,16 @@ export const inferChains: InferChain[] = [
     confidence: 0.9,
     why: 'Both halves of the Haligtree Secret Medallion are held, so the secret path to the Consecrated Snowfield is open.',
   },
+  // Task 160 — keep the "holding the medallion proves the Haligtree lift is
+  // open" conclusion, but as a one-way chain: the catalog row no longer implies
+  // the region, so the catalog implication graph has no
+  // region:haligtree ⇄ item:haligtree-secret-medallion cycle.
+  {
+    whenFact: 'item:haligtree-secret-medallion',
+    implies: ['region:haligtree'],
+    confidence: 0.8,
+    why: 'The Haligtree Secret Medallion is held, so the lift to the Consecrated Snowfield and Miquella’s Haligtree is open.',
+  },
   // Task 94 — Setup wizard rules. Great Rune → shardbearer and remembrance →
   // boss already live on their catalog rows (see `catalog.ts`); these are the
   // rules that were missing. Dectus follows the same compound rule as Haligtree.
