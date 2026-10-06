@@ -421,14 +421,66 @@ function fuzzyEntity(name: string): string | undefined {
   return best
 }
 
-/** Resolve a source name to a canonical graph id, or null when nothing matches. */
+const OWNED_RESOLVE_KINDS = new Set<EntityKind>([
+  'item', 'weapon', 'shield', 'armor', 'talisman', 'spell', 'ash', 'spirit', 'material',
+])
+const PLACE_RESOLVE_KINDS = new Set<EntityKind>(['region', 'grace', 'dungeon'])
+
+/**
+ * Task 160 — a name shared by several kinds must resolve only within the kind
+ * the caller asked for. `resolveName('Patches', 'boss')` used to fall through to
+ * whichever entity the name index happened to hold first (the `line:patches`
+ * quest page), so a boss/wiki row merged its data — including shop stock — onto
+ * the quest line. The prefix now gates the name index, the canonical candidate
+ * and the fuzzy fallback.
+ */
+function kindMatchesResolvePrefix(kind: EntityKind, prefix: string): boolean {
+  switch (prefix) {
+    case 'boss':
+    case 'invader':
+    case 'hunt':
+    case 'area':
+    case 'bossflag':
+      return kind === 'boss' || kind === 'enemy'
+    case 'enemy':
+      return kind === 'enemy' || kind === 'boss'
+    case 'npc':
+      return kind === 'npc'
+    case 'merchant':
+      return kind === 'merchant'
+    case 'grace':
+    case 'point':
+      return kind === 'grace'
+    case 'region':
+    case 'location':
+      return PLACE_RESOLVE_KINDS.has(kind)
+    case 'dungeon':
+      return kind === 'dungeon'
+    case 'quest':
+    case 'line':
+      return kind === 'quest' || kind === 'ending'
+    case 'gate':
+      return kind === 'gate'
+    case 'build':
+      return kind === 'build'
+    case 'mechanic':
+    case 'damage':
+      return kind === 'mechanic'
+    case 'item':
+    case 'loot':
+      return OWNED_RESOLVE_KINDS.has(kind)
+    default:
+      return true
+  }
+}
+
 function resolveName(name: string, prefix: string): string | undefined {
   const direct = mapKeys(name).map((key) => nameIndex.get(key)).find(Boolean)
-  if (direct && hasEntity(direct)) return direct
+  if (direct && hasEntity(direct) && kindMatchesResolvePrefix(getEntity(direct).kind, prefix)) return direct
   const candidate = canonicalEntityId(`${prefix}:${slug(name)}`, name)
-  if (hasEntity(candidate)) return candidate
+  if (hasEntity(candidate) && kindMatchesResolvePrefix(getEntity(candidate).kind, prefix)) return candidate
   const fuzzy = fuzzyEntity(name)
-  if (fuzzy && hasEntity(fuzzy)) return fuzzy
+  if (fuzzy && hasEntity(fuzzy) && kindMatchesResolvePrefix(getEntity(fuzzy).kind, prefix)) return fuzzy
   return undefined
 }
 
