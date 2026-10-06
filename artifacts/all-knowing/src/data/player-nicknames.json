@@ -1,0 +1,20 @@
+{
+ "calid": "region:caelid",
+ "godric": "boss:godrick",
+ "goldfrey": "boss:godfrey",
+ "granssax": "item:bolt-of-gransax",
+ "liurna": "region:liurnia",
+ "lyndell": "region:leyndell",
+ "melania": "boss:malenia",
+ "mesmer": "boss:messmer",
+ "nagakibas": "item:nagakiba",
+ "nagikiba": "item:nagakiba",
+ "pcr": "boss:consort",
+ "physic": "item:flask-of-wondrous-physick",
+ "radhan": "boss:radahn",
+ "renala": "boss:rennala",
+ "renalla": "boss:rennala",
+ "rennalla": "boss:rennala",
+ "stormveil": "dungeon:stormveil",
+ "waterfowl": "boss:malenia"
+}
