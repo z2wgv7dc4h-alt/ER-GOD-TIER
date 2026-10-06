@@ -306,6 +306,14 @@ let cachedIndex: Index | null = null
 let cachedVersion = -1
 let cachedEnrichVersion = -1
 
+/** Kinds a `drops` / `sells` edge may honestly point at (Task 160). */
+const OWNED_EDGE_KINDS = new Set<EntityKind>([
+  'item', 'weapon', 'shield', 'armor', 'talisman', 'spell', 'ash', 'spirit', 'material',
+])
+
+/** Kinds a `foundIn` place edge may honestly point at (Task 160). */
+const PLACE_EDGE_KINDS = new Set<EntityKind>(['region', 'grace', 'dungeon'])
+
 function ensureIndex(): Index {
   // Task 122 §C: the enrichment index is a second source of entities, so the
   // cache keys on both the supplement version and the index version.
@@ -338,9 +346,30 @@ function buildIndex(): Index {
   const idAlias = new Map<string, string>()
 
   // Task 132 §2 — when two kinds share a display name, the character kinds win
-  // in the order npc > boss > quest > enemy, so e.g. "Patches" opens the NPC
-  // (with combat stats merged in) rather than a bare invader row.
-  const NAME_PRIORITY: Record<string, number> = { npc: 0, boss: 1, quest: 2, enemy: 3 }
+  // in the order npc > boss > region/grace/dungeon > quest > enemy, so e.g.
+  // "Patches" opens the NPC (with combat stats merged in) rather than a bare
+  // invader row.
+  // Task 160 — a place name is owned by the place, not by a quest line whose
+  // alias happens to be that place ("Weeping Peninsula" -> line:irina), and an
+  // ownable item outranks the same-named mechanics glossary card ("Rune Arc").
+  const NAME_PRIORITY: Record<string, number> = {
+    npc: 0,
+    boss: 1,
+    region: 1.5,
+    grace: 1.5,
+    dungeon: 1.5,
+    quest: 2,
+    enemy: 3,
+    item: 4,
+    weapon: 4,
+    shield: 4,
+    armor: 4,
+    talisman: 4,
+    spell: 4,
+    ash: 4,
+    spirit: 4,
+    material: 4,
+  }
   const namePriority = (kind: EntityKind): number => NAME_PRIORITY[kind] ?? 5
 
   const addEntity = (entity: EntitySummary, aliases: string[] = [], registerName = true) => {
@@ -560,6 +589,30 @@ function buildIndex(): Index {
   // Edges
   // -------------------------------------------------------------------------
 
+  // Task 160 — a drop / merchant stock string names an *item*, not whatever
+  // same-named reference card (a mechanic, a quest line) won the name index.
+  // Resolve such strings only against ownable entities, then fall back to the
+  // item id the string would canonicalise to.
+  const ownedByName = new Map<string, string>()
+  for (const [id, entity] of entities) {
+    if (!OWNED_EDGE_KINDS.has(entity.kind)) continue
+    const n = normalize(entity.name)
+    if (n && !ownedByName.has(n)) ownedByName.set(n, id)
+  }
+  const resolveOwned = (name: string): string | undefined => {
+    const direct = ownedByName.get(normalize(name))
+    if (direct) return direct
+    const candidate = canonicalFactId(`item:${slug(name)}`, name)
+    const entity = entities.get(candidate)
+    if (entity && OWNED_EDGE_KINDS.has(entity.kind)) return candidate
+    return undefined
+  }
+  const resolvePlace = (name: string): string | undefined => {
+    const id = byName.get(normalize(name))
+    const entity = id ? entities.get(id) : undefined
+    return entity && PLACE_EDGE_KINDS.has(entity.kind) ? id : undefined
+  }
+
   const forward = new Map<string, Edge[]>()
   const push = (from: string, edge: Edge) => {
     const list = forward.get(from)
@@ -593,7 +646,7 @@ function buildIndex(): Index {
   for (const f of facts) {
     for (const x of f.implies) push(f.id, { rel: 'requires', to: canon(x), label: nameOf(x), source: 'catalog' })
     for (const x of f.drops ?? []) push(f.id, { rel: 'drops', to: canon(x), label: nameOf(x), source: 'catalog' })
-    const region = f.region ? byName.get(normalize(f.region)) : undefined
+    const region = f.region ? resolvePlace(f.region) : undefined
     if (region && region !== f.id) push(f.id, { rel: 'foundIn', to: region, label: f.region, source: 'catalog' })
   }
 
@@ -624,7 +677,7 @@ function buildIndex(): Index {
       if (best) push(from, { rel: 'foundIn', to: canon(best.id), label: best.name, source: 'entity-index' })
     }
     for (const drop of record.drops ?? []) {
-      const to = byName.get(normalize(drop))
+      const to = resolveOwned(drop)
       if (to && to !== from) push(from, { rel: 'drops', to: canon(to), label: drop, source: 'entity-index' })
     }
   }
@@ -632,7 +685,7 @@ function buildIndex(): Index {
   // loot: where it is found
   for (const l of loot) {
     const itemId = idAlias.get(l.id) ?? canon(l.id)
-    const region = byName.get(normalize(l.region))
+    const region = resolvePlace(l.region)
     if (region && region !== itemId) push(itemId, { rel: 'foundIn', to: region, label: l.region, source: 'loot' })
     if (l.grace) push(itemId, { rel: 'foundIn', to: canon(l.grace), label: `Near ${nameOf(l.grace)}`, source: 'loot' })
   }
@@ -641,12 +694,12 @@ function buildIndex(): Index {
   for (const m of merchants) {
     const merchantId = `merchant:${slug(m.vendor)}`
     for (const stock of m.stock) {
-      const itemId = byName.get(normalize(stock))
+      const itemId = resolveOwned(stock)
       if (itemId) push(itemId, { rel: 'soldBy', to: merchantId, label: m.vendor, source: 'merchants' })
     }
   }
   for (const s of supplement.shops ?? []) {
-    const itemId = byName.get(normalize(s.item))
+    const itemId = resolveOwned(s.item)
     if (itemId) push(itemId, { rel: 'soldBy', to: `merchant:${slug(s.vendor)}`, label: s.vendor, source: 'shops' })
   }
 
@@ -760,6 +813,9 @@ function buildIndex(): Index {
       if (!span.id) continue
       const to = canon(span.id)
       if (to === entity.id) continue
+      // A prose match must land on a real entity; the alias plane can carry a
+      // slug the graph has no record for (a ghost grace stub).
+      if (!entities.has(to)) continue
       push(entity.id, { rel: 'relatedLore', to, label: span.text, source: 'interlink' })
     }
   }
