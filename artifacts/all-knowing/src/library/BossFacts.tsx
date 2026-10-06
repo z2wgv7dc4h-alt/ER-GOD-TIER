@@ -50,6 +50,18 @@ type BestWeapon = {
   damageType: string
 }
 
+/**
+ * Task 165 §3 — one glance line for a boss: what it is weak to and what the
+ * character's best armament actually does after negation. Returns null when the
+ * data holds neither, so an empty fight never prints a template sentence.
+ */
+export function bossGlance(weakLabels: string[], best: { name: string; effective: number } | null): string | null {
+  const parts: string[] = []
+  if (weakLabels.length) parts.push(`Weak to ${weakLabels.join(' / ')}`)
+  if (best) parts.push(`${best.name} does ${best.effective}`)
+  return parts.length ? parts.join(' · ') : null
+}
+
 export function BossFacts({
   factId,
   name,
@@ -138,6 +150,9 @@ export function BossFacts({
     [combat],
   )
 
+  const weakLabels = useMemo(() => weak.map((t) => damageTypeLabels[t]), [weak])
+  const glance = bossGlance(weakLabels, best)
+
   if (!combat && !fext && !armory && !record) return null
   const enrichedHp = !combat && record?.stats?.HP
   const enrichedNegation = !combat && record?.stats?.Negation
@@ -151,6 +166,14 @@ export function BossFacts({
 
   return (
     <>
+      {/* Task 165 §3 — the mid-fight glance line, directly under the status
+          strip: weakness and what the equipped armament actually deals. */}
+      {glance && (
+        <div className="lib-panel-block boss-glance">
+          <p className="note boss-glance-line">{glance}</p>
+        </div>
+      )}
+
       {enrichedHp && (
         <div className="lib-panel-block">
           <div className="kicker">Combat profile · enriched</div>
