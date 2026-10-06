@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import { gideonModel, hasGideonKey } from '../lib/muse'
+import { gideonModel, gideonUsageSummary, hasGideonKey } from '../lib/muse'
 import { testGideonConnection, type ConnectionResult } from './gideonTest'
 import {
   downloadEverythingForOffline,
@@ -71,10 +71,19 @@ function Toggle({ label, on, onChange, title }: { label: string; on: boolean; on
   )
 }
 
+/** "Last answer: N calls · X tokens (Y cached)" (Task 153 §6). */
+function usageLine(
+  label: string,
+  t: { calls: number; prompt: number; completion: number; cached: number },
+): string {
+  return `${label}: ${t.calls} calls · ${t.prompt + t.completion} tokens (${t.cached} cached)`
+}
+
 function GideonTest() {
   const [result, setResult] = useState<ConnectionResult | null>(null)
   const [busy, setBusy] = useState(false)
   const configured = hasGideonKey()
+  const usage = gideonUsageSummary()
   return (
     <>
       <SettingItem label="Gideon AI key" hint="The deterministic router always works; the model is used only for open-ended questions.">
@@ -101,6 +110,12 @@ function GideonTest() {
           {result.detail}
         </p>
       )}
+      <p className="note" role="status">
+        {usageLine('Last answer', usage.last)}
+      </p>
+      <p className="note" role="status">
+        {usageLine('Today', usage.today)}
+      </p>
     </>
   )
 }

@@ -39,11 +39,50 @@ export function buildGrounding(
   character: Character,
   memory: GideonMemory = {},
   area?: AreaSignal | null,
+  mode: 'full' | 'slim' = 'full',
 ): Grounding {
   const factIds = new Set<string>()
   const allBuilds = [...opBuilds, ...pvpBuilds]
   const buildIds = new Set(allBuilds.map((b) => b.id))
   const goalIds = new Set(allLines.map((l) => l.id))
+
+  const hits = searchSync(question).slice(0, 8)
+  for (const h of hits) factIds.add(h.id)
+  for (const g of matchAllWarps(question).slice(0, 5)) factIds.add(g.id)
+
+  // Task 153 §1 — with the tool harness in play the model can fetch the detail
+  // it needs, so the grounding pack carries only the character summary and the
+  // ids the deterministic router already matched (names + ids, no long text).
+  if (mode === 'slim') {
+    const goalLine = (memory.goalId ? allLines.find((l) => l.id === memory.goalId) : undefined) || findLine(question)
+    const seen = new Set<string>()
+    const ids: { id: string; name: string }[] = []
+    const pushId = (id?: string, name?: string) => {
+      if (!id || seen.has(id) || ids.length >= 12) return
+      const label = name ?? byId.get(id)?.name
+      if (!label) return
+      seen.add(id)
+      ids.push({ id, name: label })
+      factIds.add(id)
+    }
+    for (const h of hits) pushId(h.id, h.name)
+    for (const f of matchMany(question).slice(0, 8)) pushId(f.id, f.name)
+    for (const w of matchAllWarps(question).slice(0, 5)) pushId(w.id, w.name)
+
+    const pack = {
+      character: {
+        level: character.level,
+        stats: character.stats,
+        gear: character.loadout
+          .map((s) => ({ name: s.name, slot: s.slot ?? null, upgrade: s.upgrade ?? null }))
+          .slice(0, 12),
+        area: area?.region ? areaLabel(area) : null,
+        goal: memory.goalId ?? goalLine?.id ?? null,
+      },
+      ids,
+    }
+    return { text: JSON.stringify(pack), factIds, buildIds, goalIds }
+  }
 
   const survey = stillAvailable(character)
   const lines = [...survey.active, ...survey.open, ...survey.locked, ...survey.done].slice(0, 24).map((r) => ({
@@ -68,10 +107,6 @@ export function buildGrounding(
         detours: plan.detours,
       }
     : null
-
-  const hits = searchSync(question).slice(0, 8)
-  for (const h of hits) factIds.add(h.id)
-  for (const g of matchAllWarps(question).slice(0, 5)) factIds.add(g.id)
 
   const slice: Fact[] = []
   const pushFact = (f?: Fact) => {
@@ -272,9 +307,33 @@ function validateActions(raw: unknown, g: Grounding, dropped: string[]): GideonA
  * `allowedUrls` is the set of urls a `web_search` result produced this turn;
  * sources outside it (including an empty set) are dropped.
  */
-export function validateGideonAct(raw: unknown, g: Grounding, allowedUrls: Iterable<string> = []): Validation {
+export function validateGideonAct(
+  raw: unknown,
+  g: Grounding,
+  allowedUrls: Iterable<string> = [],
+  extraIds: Iterable<string> = [],
+): Validation {
   const rejected: string[] = []
   const dropped: string[] = []
+  // Task 153 §1 — ids the agent learned by calling a tool are real (they came
+  // from our own data), so fold them into the allowed sets before validating.
+  const extra = new Set<string>()
+  for (const id of extraIds) {
+    if (typeof id !== 'string' || !id.trim()) continue
+    const rawId = id.trim()
+    extra.add(rawId)
+    const resolved = resolveEntityId(rawId)
+    if (resolved) extra.add(resolved)
+    extra.add(canonicalFactId(rawId))
+  }
+  if (extra.size) {
+    g = {
+      text: g.text,
+      factIds: new Set([...g.factIds, ...extra]),
+      buildIds: new Set([...g.buildIds, ...extra]),
+      goalIds: new Set([...g.goalIds, ...extra]),
+    }
+  }
   if (!raw || typeof raw !== 'object') return { act: null, rejected: ['response'], dropped }
   const r = raw as Record<string, unknown>
   const rawSay = typeof r.say === 'string' ? r.say.trim() : ''

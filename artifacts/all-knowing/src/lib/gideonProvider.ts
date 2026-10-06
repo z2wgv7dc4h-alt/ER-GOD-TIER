@@ -23,7 +23,8 @@ export const DEEPSEEK_MODEL = 'deepseek-chat'
 export const DEFAULT_GIDEON_TIMEOUT_MS = 45000
 
 const DEFAULT_REASONING_EFFORT = 'minimal'
-const DEFAULT_MAX_TOKENS = 1200
+/** Task 153 §4 — a Gideon answer is 1-4 sentences; 500 tokens is ample. */
+const DEFAULT_MAX_TOKENS = 500
 const CACHE_KEY = 'all-knowing-gideon'
 
 const STAT_KEYS = ['vigor', 'mind', 'endurance', 'strength', 'dexterity', 'intelligence', 'faith', 'arcane'] as const
@@ -147,6 +148,8 @@ export type GideonProvider = {
   devProxyBase: string
   /** Does the vendor expose an OpenAI `/responses` endpoint? */
   supportsResponses: boolean
+  /** Can the transport carry callable tools (OpenAI-style `tools`)? */
+  supportsTools: boolean
   /** Can the model take image input? */
   supportsVision: boolean
   /** Can decoding be constrained to a strict JSON schema? */
@@ -173,6 +176,7 @@ const META_PROVIDER: GideonProvider = {
   defaultModel: DEFAULT_GIDEON_MODEL,
   devProxyBase: '/gideon-llm/v1',
   supportsResponses: true,
+  supportsTools: true,
   supportsVision: true,
   supportsStrictSchema: true,
   completionBodies(messages, opts, model) {
@@ -250,6 +254,7 @@ const DEEPSEEK_PROVIDER: GideonProvider = {
   defaultModel: DEEPSEEK_MODEL,
   devProxyBase: '/gideon-llm-deepseek/v1',
   supportsResponses: false,
+  supportsTools: true,
   supportsVision: false,
   supportsStrictSchema: false,
   completionBodies(messages, opts, model) {

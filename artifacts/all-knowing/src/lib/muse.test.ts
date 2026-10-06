@@ -77,7 +77,8 @@ describe('callGideonLlm', () => {
     expect(body.messages).toEqual(messages)
     // Reasoning model: shortest pass + room for the JSON act + cache affinity.
     expect(body.reasoning_effort).toBe('minimal')
-    expect(body.max_tokens).toBeGreaterThanOrEqual(1000)
+    // Task 153 §4 lowered the default answer cap from 1200 to 500.
+    expect(body.max_tokens).toBe(500)
     expect(body.prompt_cache_key).toBe('all-knowing-gideon')
   })
 
@@ -100,7 +101,8 @@ describe('callGideonLlm', () => {
     expect(body.input).toEqual(messages)
     expect(body.messages).toBeUndefined()
     expect(body.reasoning).toEqual({ effort: 'minimal' })
-    expect(body.max_output_tokens).toBeGreaterThanOrEqual(1000)
+    // Task 153 §4: default answer cap is now 500.
+    expect(body.max_output_tokens).toBe(500)
   })
 
   it('throws (so the router takes over) on other HTTP errors', async () => {

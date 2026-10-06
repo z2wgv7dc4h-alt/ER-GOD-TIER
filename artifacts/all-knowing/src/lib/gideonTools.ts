@@ -43,17 +43,20 @@ export type ToolDef = {
   function: { name: string; description: string; parameters: Record<string, unknown> }
 }
 
-const str = (description: string) => ({ type: 'string', description })
+/** A string parameter; the description is dropped when it only restates the name. */
+const str = (description?: string) => (description ? { type: 'string', description } : { type: 'string' })
 
+/** Task 153 §2 — one-sentence descriptions and name-only parameters keep the
+ * tool schema small; the array order below is the canonical, cache-stable order. */
 export const GIDEON_TOOLS: ToolDef[] = [
   {
     type: 'function',
     function: {
       name: 'search',
-      description: 'Resolve a name (item, boss, grace, quest, region) to real fact ids. Use before naming any entity.',
+      description: 'Resolve a name (item, boss, grace, quest, region) to real fact ids.',
       parameters: {
         type: 'object',
-        properties: { q: str('name to look up'), kind: str('optional entity kind filter, e.g. boss, grace, item, weapon, npc') },
+        properties: { q: str(), kind: str('entity kind filter, e.g. boss, grace, weapon') },
         required: ['q'],
         additionalProperties: false,
       },
@@ -63,130 +66,130 @@ export const GIDEON_TOOLS: ToolDef[] = [
     type: 'function',
     function: {
       name: 'here',
-      description: 'What is still open in the current or named region (quests, loot, gates). Use for "what did I miss / before I go".',
-      parameters: { type: 'object', properties: { q: str('optional region or question') }, required: [], additionalProperties: false },
+      description: 'What is still open in the current or named region.',
+      parameters: { type: 'object', properties: { q: str() }, required: [], additionalProperties: false },
     },
   },
   {
     type: 'function',
     function: {
       name: 'level_check',
-      description: 'Recommended level band for a region plus whether the character is over/under-levelled, and what to do before leaving.',
-      parameters: { type: 'object', properties: { q: str('optional region') }, required: [], additionalProperties: false },
+      description: 'Recommended level band for a region and whether the character is over/under-levelled.',
+      parameters: { type: 'object', properties: { q: str() }, required: [], additionalProperties: false },
     },
   },
   {
     type: 'function',
     function: {
       name: 'boss',
-      description: 'A boss: hp, locations, drops, and its fight guide/strategy.',
-      parameters: { type: 'object', properties: { name: str('boss name') }, required: ['name'], additionalProperties: false },
+      description: 'A boss: HP, locations, drops and its fight strategy.',
+      parameters: { type: 'object', properties: { name: str() }, required: ['name'], additionalProperties: false },
     },
   },
   {
     type: 'function',
     function: {
       name: 'guide',
-      description: 'Mechanics/guide text (upgrades, smithing, status effects, stats, damage types, …).',
-      parameters: { type: 'object', properties: { q: str('what you want to know') }, required: ['q'], additionalProperties: false },
+      description: 'Mechanics or guide text (upgrades, smithing, status effects, stats, damage types).',
+      parameters: { type: 'object', properties: { q: str() }, required: ['q'], additionalProperties: false },
     },
   },
   {
     type: 'function',
     function: {
       name: 'upgrade',
-      description: 'Weapon upgrade/AR advice for this character, on-archetype with their active kit. Omit weapon to list best wieldable weapons.',
-      parameters: { type: 'object', properties: { weapon: str('optional weapon name') }, required: [], additionalProperties: false },
+      description: 'Weapon upgrade/AR advice for this character; omit weapon to list the best wieldable weapons.',
+      parameters: { type: 'object', properties: { weapon: str('weapon name') }, required: [], additionalProperties: false },
     },
   },
   {
     type: 'function',
     function: {
       name: 'enemy',
-      description: 'Combat profile for a boss or enemy: HP, poise, damage-negation (weak/strong), status resistances.',
-      parameters: { type: 'object', properties: { name: str('boss/enemy name') }, required: ['name'], additionalProperties: false },
+      description: 'Combat profile for a boss or enemy: HP, poise, damage negation and status resistances.',
+      parameters: { type: 'object', properties: { name: str() }, required: ['name'], additionalProperties: false },
     },
   },
   {
     type: 'function',
     function: {
       name: 'find_item',
-      description: 'Where to find a named item: nearest Site of Grace, how it is obtained (drop/chest/merchant/ground/quest), and whether it is missable.',
-      parameters: { type: 'object', properties: { name: str('item name') }, required: ['name'], additionalProperties: false },
+      description: 'Where to find a named item: nearest grace, how it is obtained, and whether it is missable.',
+      parameters: { type: 'object', properties: { name: str() }, required: ['name'], additionalProperties: false },
     },
   },
   {
     type: 'function',
     function: {
       name: 'secrets',
-      description: 'Illusory / hidden walls by area, and what is behind them.',
-      parameters: { type: 'object', properties: { q: str('optional area or text') }, required: [], additionalProperties: false },
+      description: 'Illusory or hidden walls by area, and what is behind them.',
+      parameters: { type: 'object', properties: { q: str() }, required: [], additionalProperties: false },
     },
   },
   {
     type: 'function',
     function: {
       name: 'wiki',
-      description: 'Search the full Elden Ring wiki text for anything else — a mechanic, an enemy, a location, a boss detail, a term.',
-      parameters: { type: 'object', properties: { q: str('what to look up') }, required: ['q'], additionalProperties: false },
+      description: 'Search the bundled wiki text for a mechanic, enemy, location, boss detail or term.',
+      parameters: { type: 'object', properties: { q: str() }, required: ['q'], additionalProperties: false },
     },
   },
   {
     type: 'function',
     function: {
       name: 'wiki_search',
-      description: 'Full-text search of the whole Elden Ring wiki. Returns the top sections with the page, heading, a <=600 character excerpt and the page entity id. Use for how/where/lore/what questions the other tools do not cover, then cite the page.',
-      parameters: { type: 'object', properties: { q: str('what to search the wiki for') }, required: ['q'], additionalProperties: false },
+      description: 'Full-text search of the wiki; returns top sections with page, heading and entity id.',
+      parameters: { type: 'object', properties: { q: str() }, required: ['q'], additionalProperties: false },
     },
   },
   {
     type: 'function',
     function: {
       name: 'wiki_page',
-      description: 'The full wiki page for an entity or wiki id: its sections with headings and prose. Accepts a fact id (boss:margit) or a wiki:<slug> page id.',
-      parameters: { type: 'object', properties: { id: str('fact id or wiki:<slug>') }, required: ['id'], additionalProperties: false },
+      description: 'The full wiki page for a fact id or wiki:<slug> id.',
+      parameters: { type: 'object', properties: { id: str() }, required: ['id'], additionalProperties: false },
     },
   },
   {
     type: 'function',
     function: {
       name: 'recipe',
-      description: 'Crafting recipe for a named craftable item: the materials and quantities required.',
-      parameters: { type: 'object', properties: { name: str('craftable item name') }, required: ['name'], additionalProperties: false },
+      description: 'Crafting recipe for a named craftable item: its materials and quantities.',
+      parameters: { type: 'object', properties: { name: str() }, required: ['name'], additionalProperties: false },
     },
   },
   {
     type: 'function',
     function: {
       name: 'quest_steps',
-      description: 'Step-by-step walkthrough for a named NPC quest (ordered locations + actions, and which step breaks it).',
-      parameters: { type: 'object', properties: { npc: str('NPC name') }, required: ['npc'], additionalProperties: false },
+      description: 'Step-by-step walkthrough for a named NPC quest.',
+      parameters: { type: 'object', properties: { npc: str() }, required: ['npc'], additionalProperties: false },
     },
   },
   {
     type: 'function',
     function: {
       name: 'dialogue',
-      description: 'Verbatim in-game dialogue for a named NPC (only lines that are attributed).',
-      parameters: { type: 'object', properties: { speaker: str('NPC name') }, required: ['speaker'], additionalProperties: false },
+      description: 'Verbatim attributed in-game dialogue for a named NPC.',
+      parameters: { type: 'object', properties: { speaker: str() }, required: ['speaker'], additionalProperties: false },
     },
   },
   {
     type: 'function',
     function: {
       name: 'get_entity',
-      description: 'One entity by fact id: name, kind, summary, this character’s status, and its key graph edges. Use to ground any [[id]] you cite.',
-      parameters: { type: 'object', properties: { id: str('fact id, e.g. boss:godrick') }, required: ['id'], additionalProperties: false },
+      description: 'One entity by fact id: name, kind, summary, status and key graph edges.',
+      parameters: { type: 'object', properties: { id: str() }, required: ['id'], additionalProperties: false },
     },
   },
   {
     type: 'function',
     function: {
       name: 'edges',
-      description: 'The relationship edges of an entity: drops / soldBy / foundIn / requires / unlocks / locks / weakTo / resists / partOfQuest / nextBeat / craftedFrom / tradedFor / upgradeMaterial / goodForBuild / relatedLore (and inverses like droppedBy, sells, contains).',
+      description: 'The relationship edges of an entity (drops, locks, weakTo, quest beats, …).',
       parameters: {
         type: 'object',
-        properties: { id: str('fact id'), rel: str('optional edge relation to filter by') },
+        properties: { id: str(), rel: str('edge relation to filter by') },
         required: ['id'],
         additionalProperties: false,
       },
@@ -196,15 +199,15 @@ export const GIDEON_TOOLS: ToolDef[] = [
     type: 'function',
     function: {
       name: 'where',
-      description: 'Where an entity is: acquisition text (method, location, nearest grace, missable) and the map target (region/world + plate x,y) when known.',
-      parameters: { type: 'object', properties: { id: str('fact id') }, required: ['id'], additionalProperties: false },
+      description: 'Where an entity is: acquisition text and the map target when known.',
+      parameters: { type: 'object', properties: { id: str() }, required: ['id'], additionalProperties: false },
     },
   },
   {
     type: 'function',
     function: {
       name: 'character',
-      description: 'The current Tarnished: level, stats, loadout, owned facts, progress summary, current area, and current goals.',
+      description: 'The current Tarnished: level, stats, loadout, owned facts, progress and goals.',
       parameters: { type: 'object', properties: {}, required: [], additionalProperties: false },
     },
   },
@@ -212,10 +215,10 @@ export const GIDEON_TOOLS: ToolDef[] = [
     type: 'function',
     function: {
       name: 'advise',
-      description: 'The Task 96 advisor for this character: kind upgrades | gear | todo | respec. respec also takes a build id.',
+      description: 'The advisor for this character: kind upgrades | gear | todo | respec.',
       parameters: {
         type: 'object',
-        properties: { kind: str('upgrades | gear | todo | respec'), build: str('optional build id for respec') },
+        properties: { kind: str('upgrades | gear | todo | respec'), build: str('build id for respec') },
         required: ['kind'],
         additionalProperties: false,
       },
@@ -225,11 +228,60 @@ export const GIDEON_TOOLS: ToolDef[] = [
     type: 'function',
     function: {
       name: 'quest',
-      description: 'A quest line by id (e.g. line:ranni or ranni): its beats with done / next / locked state.',
-      parameters: { type: 'object', properties: { id: str('quest line id or name') }, required: ['id'], additionalProperties: false },
+      description: 'A quest line by id: its beats with done / next / locked state.',
+      parameters: { type: 'object', properties: { id: str() }, required: ['id'], additionalProperties: false },
     },
   },
 ]
+
+/** Task 153 §2 — the intent flags `askGideon` already computes, used to trim the
+ * tool list to a per-question subset. */
+export type GideonIntent = {
+  combat?: boolean
+  placements?: boolean
+  guides?: boolean
+  weapons?: boolean
+  levels?: boolean
+  dialogue?: boolean
+  medusa?: boolean
+  quests?: boolean
+}
+
+/** Always present: entity search + lookup + the open-ended wiki search. */
+const CORE_TOOLS = ['search', 'get_entity', 'wiki_search']
+
+const TOOLS_BY_INTENT: { key: keyof GideonIntent; tools: string[] }[] = [
+  { key: 'combat', tools: ['boss', 'enemy'] },
+  { key: 'placements', tools: ['find_item', 'where', 'here'] },
+  { key: 'guides', tools: ['guide', 'wiki'] },
+  { key: 'weapons', tools: ['upgrade', 'advise'] },
+  { key: 'levels', tools: ['level_check', 'here', 'advise'] },
+  { key: 'dialogue', tools: ['dialogue'] },
+  { key: 'medusa', tools: ['quest', 'quest_steps'] },
+  { key: 'quests', tools: ['quest', 'quest_steps', 'recipe'] },
+]
+
+/** Max tools in one request (Task 153 §2). */
+export const MAX_GIDEON_TOOLS = 8
+
+/**
+ * The tool subset for a question: the always-on core plus the groups its intent
+ * flags select, capped at 8. The result is filtered back through `GIDEON_TOOLS`
+ * so the order is always the canonical one — identical intent sets produce an
+ * identical array and the request prefix stays cacheable.
+ */
+export function selectGideonTools(intents: GideonIntent = {}): ToolDef[] {
+  const wanted = new Set<string>(CORE_TOOLS)
+  for (const { key, tools } of TOOLS_BY_INTENT) {
+    if (intents[key]) for (const name of tools) wanted.add(name)
+  }
+  const selected = new Set<string>(CORE_TOOLS)
+  for (const tool of GIDEON_TOOLS) {
+    if (selected.size >= MAX_GIDEON_TOOLS) break
+    if (wanted.has(tool.function.name)) selected.add(tool.function.name)
+  }
+  return GIDEON_TOOLS.filter((tool) => selected.has(tool.function.name))
+}
 
 export type ToolContext = { character: Character; memory: GideonMemory; area?: AreaSignal | null }
 

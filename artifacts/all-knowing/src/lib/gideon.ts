@@ -34,7 +34,8 @@ import {
   type BossCombat,
 } from './enemy'
 import { factState } from '../state'
-import { callGideonLlm, hasGideonKey, type ChatMessage } from './muse'
+import { beginGideonUsage, callGideonLlm, endGideonUsage, hasGideonKey, type ChatMessage } from './muse'
+import { gideonProvider } from './gideonProvider'
 import { askGideonAgent } from './gideonAgent'
 import { buildGrounding, gideonMessages, validateGideonAct } from './gideonLlm'
 import { askGideonWiki } from './gideonWiki'
@@ -1471,6 +1472,54 @@ export function isFastLookup(
   return false
 }
 
+// --- Task 153 §7: session answer cache -------------------------------------
+const ANSWER_CACHE_MAX = 50
+const answerCache = new Map<string, GideonAct>()
+
+/** Key: the normalised question plus the character / area state that shaped it. */
+function answerCacheKey(
+  question: string,
+  character: Character,
+  memory: GideonMemory,
+  area?: AreaSignal | null,
+): string {
+  const q = question.toLowerCase().replace(/\s+/g, ' ').trim()
+  const state = JSON.stringify({
+    level: character.level,
+    stats: character.stats,
+    gear: character.loadout.map((s) => `${s.slot ?? ''}:${s.id}`),
+    bosses: character.defeatedBosses,
+    graces: character.discoveredGraces,
+    items: character.collectedItems,
+    quests: character.completedQuestSteps,
+    goal: memory.goalId ?? '',
+    area: area ? `${area.region ?? ''}|${area.place ?? ''}` : '',
+  })
+  return `${q}\u0000${state}`
+}
+
+function cacheAnswer(key: string, act: GideonAct): void {
+  if (answerCache.size >= ANSWER_CACHE_MAX) {
+    const oldest = answerCache.keys().next().value
+    if (oldest !== undefined) answerCache.delete(oldest)
+  }
+  answerCache.set(key, act)
+}
+
+/** Test seam: drop every cached answer. */
+export function clearGideonAnswerCache(): void {
+  answerCache.clear()
+}
+
+/** An HTTP/transport failure, as opposed to the harness simply being absent. */
+function isGideonApiError(err: unknown): boolean {
+  const msg = err instanceof Error ? err.message : String(err)
+  return (
+    /Gideon (LLM|responses) HTTP \d+/i.test(msg) ||
+    /Failed to fetch|NetworkError|fetch failed|AbortError|timed out/i.test(msg)
+  )
+}
+
 let warnedNoKey = false
 
 /**
@@ -1527,17 +1576,51 @@ export async function askGideon(
     return fromWiki()
   }
 
+  const intents = {
+    combat: wantsCombat,
+    placements: wantsPlacements,
+    guides: wantsGuides,
+    weapons: wantsWeapons,
+    levels: wantsLevels,
+    dialogue: wantsDialogue,
+    medusa: wantsMedusa,
+  }
+
+  // Task 153 §7 — an identical question against an unchanged character / area
+  // state is answered from the session cache: no API call at all.
+  const cacheKey = answerCacheKey(question, character, memory, area)
+  const cached = answerCache.get(cacheKey)
+  if (cached) return cached
+
+  // The counter lives in muse.ts; a test or older build may not export it.
   try {
-    const grounding = buildGrounding(question, character, memory, area)
+    beginGideonUsage()
+  } catch {
+    /* usage counter unavailable */
+  }
+  try {
     // Tool-calling harness first: Muse can call our deterministic functions and
-    // answer from real data. If the harness is unavailable, fall back to a plain
-    // completion, then the router.
-    try {
-      const agentAct = await askGideonAgent(question, character, memory, history, area)
-      if (agentAct) return agentAct
-    } catch (agentErr) {
-      console.warn('[gideon] tool harness unavailable; plain completion.', agentErr)
+    // answer from real data. Task 153 §1 gives it the slim grounding pack; §3
+    // sends an API/HTTP failure straight to the wiki/router, never a second full
+    // completion.
+    if (gideonProvider().supportsTools) {
+      try {
+        const agentAct = await askGideonAgent(question, character, memory, history, area, intents)
+        if (agentAct) {
+          cacheAnswer(cacheKey, agentAct)
+          return agentAct
+        }
+      } catch (agentErr) {
+        if (isGideonApiError(agentErr)) {
+          console.warn('[gideon] agent call failed; using the wiki/router.', agentErr)
+          return fromWiki()
+        }
+        console.warn('[gideon] tool harness unavailable; plain completion.', agentErr)
+      }
     }
+    // Plain no-tools completion: a provider without tool support (or a harness
+    // that could not start). It keeps the full grounding pack.
+    const grounding = buildGrounding(question, character, memory, area)
     const raw = await callGideonLlm(gideonMessages(question, grounding, history))
     const { act, rejected } = validateGideonAct(raw, grounding)
     if (!act) {
@@ -1548,5 +1631,11 @@ export async function askGideon(
   } catch (err) {
     console.warn('[gideon] Muse call failed; using the wiki/router.', err)
     return fromWiki()
+  } finally {
+    try {
+      endGideonUsage()
+    } catch {
+      /* usage counter unavailable */
+    }
   }
 }
