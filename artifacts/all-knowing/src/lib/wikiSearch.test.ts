@@ -108,4 +108,11 @@ describe('Task 133 §1/§3 — full-text search over the exported corpus', () =>
     expect(snippet).toContain('Margit')
     expect(snippet).not.toContain('[[')
   })
+
+  it('strips bold/italics and the Japanese-gloss parenthetical (Task 152 §4)', () => {
+    const snippet = wikiSnippet('Omen** (忌み, *Imi,* or 忌み子, *Imigo*) are Enemies in Elden Ring.', 'omen')
+    expect(snippet).toBe('Omen are Enemies in Elden Ring.')
+    const linky = wikiSnippet("'''Godrick''' the Grafted** (ゴドリック, *Godorikku*) is a boss.", 'godrick')
+    expect(linky).toBe('Godrick the Grafted is a boss.')
+  })
 })
