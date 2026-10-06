@@ -39,11 +39,11 @@ any alias from the alias plane. Existing pictures are never replaced. It filled
   picture it resolves the Fandom page from `.scratch/er-mcp.db` (exact title,
   then redirect/normalised), reads the infobox `image =` file, resolves the real
   `static.wikia` URL through the MediaWiki API, downloads at ≤1 request/second
-  and writes a 256px WebP. 44 portraits.
+  and writes a 256px WebP. 46 portraits.
 - New `public/sourced/open/boss-images.json` (name -> path) consumed by
   `fillBossImages()` in the builder, before the existing per-location encounter
   inheritance, so all 96 `--` encounter pages inherit their group's portrait.
-- New files in `public/sourced/images/bosses/` and 44 entries in
+- New files in `public/sourced/images/bosses/` and 46 entries in
   `src/data/image-index.json` (ingest-images.py key form).
 
 ## Coverage before → after (record.image OR image-index match)
@@ -79,7 +79,7 @@ any alias from the alias plane. Existing pictures are never replaced. It filled
 ## Files / size added
 
 - `public/sourced/images/game-icons/**` — 2634 WebP, **14.17 MB**
-- `public/sourced/images/bosses/**` — 44 new WebP, ~0.15 MB added (dir 0.68 MB)
+- `public/sourced/images/bosses/**` — 46 new WebP, ~0.39 MB added (dir 0.68 MB)
 - `public/sourced/open/item-icons.json` — 190 KB
 - `public/sourced/open/boss-images.json` — 3.5 KB
 - `vendor/elden-ring-map/data/paramdefs/*.xml` — 5 new defs
