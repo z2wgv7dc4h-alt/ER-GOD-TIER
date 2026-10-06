@@ -15,6 +15,12 @@ import gamePlaceRegions from '../data/game-place-regions.json'
 import dungeonsData from '../data/dungeons.json'
 import bossRoster from '../data/bosses.json'
 import imageIndex from '../data/image-index.json'
+// Task 154 — game-text name -> icon id, from `scripts/extract-item-icons.py`.
+// The icon files are 128px WebP under public/sourced/images/game-icons/.
+import itemIconsJson from '../../public/sourced/open/item-icons.json'
+// Task 154 step 3 — boss name -> locally cached Fandom portrait, filled by
+// `scripts/ingest-boss-images.py`.
+import bossImagesJson from '../../public/sourced/open/boss-images.json'
 
 import checklistBosses from '../../public/sourced/checklists/bosses.json'
 import checklistWeapons from '../../public/sourced/checklists/weapons.json'
@@ -316,6 +322,90 @@ for (const row of generatedAliases as { fmgName: string; slug: string; aliases: 
 for (const [name, id] of Object.entries(overrides.aliases ?? {})) nameIndex.set(simpleNorm(name), id)
 
 const entityList = allEntities()
+
+/**
+ * Task 154 — item-like records without a picture take the game's own icon.
+ * `item-icons.json` keys are the game text-table names, so look a record up by
+ * its exact (normalised) name, then by any alias from the alias plane.
+ */
+const GAME_ICON_KINDS = new Set(['weapon', 'shield', 'armor', 'talisman', 'spell', 'ash', 'spirit', 'item', 'material', 'ammo'])
+
+const gameIconByName = new Map<string, number>()
+
+/** Every key a record or game name may be filed under for an icon lookup. */
+function iconKeys(name: string): string[] {
+  const variants = [name, name.replace(/\[[^\]]*\]/g, ' ')] // "Grave Glovewort [1]" -> base
+  const keys: string[] = []
+  for (const variant of variants) keys.push(...mapKeys(variant), baseNorm(variant))
+  return keys
+}
+
+for (const [name, iconId] of Object.entries(itemIconsJson as Record<string, number>)) {
+  for (const key of iconKeys(name)) {
+    if (key && !gameIconByName.has(key)) gameIconByName.set(key, iconId)
+  }
+}
+for (const row of generatedAliases as { kind: string; fmgName: string; aliases: string[] }[]) {
+  if (row.kind !== 'item') continue
+  const icon = iconKeys(row.fmgName)
+    .map((key) => gameIconByName.get(key))
+    .find((value) => value != null)
+  if (icon == null) continue
+  for (const alias of row.aliases) {
+    for (const key of iconKeys(alias)) {
+      if (key && !gameIconByName.has(key)) gameIconByName.set(key, icon)
+    }
+  }
+}
+
+function gameIconFor(name: string): number | undefined {
+  // The Library keeps a few rows under their wiki heading ("Ash of War: X",
+  // "Skill: X"); the game's own icon is filed under the bare art name.
+  const variants = [
+    name,
+    name.replace(/^ash(?:es)? of war:\s*/i, ''),
+    name.replace(/^skill:\s*/i, ''),
+  ]
+  for (const variant of variants) {
+    for (const key of iconKeys(variant)) {
+      const iconId = key ? gameIconByName.get(key) : undefined
+      if (iconId != null) return iconId
+    }
+  }
+  return undefined
+}
+
+function fillGameIcons(): void {
+  let filled = 0
+  for (const record of records.values()) {
+    if (record.image || !GAME_ICON_KINDS.has(record.kind)) continue
+    const iconId = gameIconFor(record.name)
+    if (iconId == null) continue
+    record.image = `/sourced/images/game-icons/${iconId}.webp`
+    filled++
+  }
+  if (filled) console.log(`game icons filled: ${filled}`)
+}
+
+/** Task 154 step 3 — the Fandom portraits for bosses the FanAPI never had. */
+const bossImageByName = new Map<string, string>()
+for (const [name, path] of Object.entries(bossImagesJson as Record<string, string>)) {
+  for (const key of iconKeys(name)) if (key && !bossImageByName.has(key)) bossImageByName.set(key, path)
+}
+
+function fillBossImages(): void {
+  let filled = 0
+  for (const record of records.values()) {
+    if (record.image || record.kind !== 'boss') continue
+    const path = iconKeys(record.name)
+      .map((key) => bossImageByName.get(key))
+      .find((value) => value != null)
+    if (!path) continue
+    record.image = path
+    filled++
+  }
+  if (filled) console.log(`boss images filled: ${filled}`)
+}
 
 /** Fuzzy fallback: best entity name at or above 0.92. */
 function fuzzyEntity(name: string): string | undefined {
@@ -3366,6 +3456,9 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     }
   }
 
+  // Task 154 step 3 — base boss portraits before the encounter inheritance below.
+  fillBossImages()
+
   // An encounter borrows what is true of every copy of its boss — strategy and
   // the combat profile — from the shared record, without overwriting its own.
   for (const row of bossRoster as RosterBoss[]) {
@@ -3497,6 +3590,9 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     // entity panel, shows the game's spelling. Ids are unchanged.
     record.name = displayName(record.name)
   }
+
+  // Task 154 — give every item-like record without a picture the game's own icon.
+  fillGameIcons()
 
   const byKind: Record<string, number> = {}
   for (const record of records.values()) byKind[record.kind] = (byKind[record.kind] ?? 0) + 1
