@@ -24,8 +24,8 @@ and every entity-graph id the app can link to.
 | quest | 468 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | weapon | 441 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | grace | 416 | 416 | 0 | 0 | 0 | 387 | 416 | 0 | 0 | 0 |
-| region | 355 | 355 | 0 | 0 | 0 | 346 | 355 | 0 | 0 | 0 |
-| boss | 280 | 105 | 0 | 0 | 0 | 105 | 0 | 0 | 0 | 0 |
+| region | 355 | 355 | 0 | 0 | 0 | 347 | 355 | 0 | 0 | 0 |
+| boss | 280 | 106 | 0 | 0 | 0 | 106 | 0 | 0 | 0 | 0 |
 | spell | 218 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | npc | 195 | 195 | 1 | 0 | 0 | 195 | 195 | 0 | 0 | 0 |
 | talisman | 158 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -39,7 +39,7 @@ and every entity-graph id the app can link to.
 | gate | 10 | 10 | 0 | 0 | 0 | 10 | 0 | 0 | 0 | 0 |
 | ending | 5 | 5 | 0 | 0 | 0 | 5 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **total** | **5685** | **1919** | 2 | 0 | 0 | 1774 | 1191 | 0 | 0 | 0 |
+| **total** | **5685** | **1920** | 2 | 0 | 0 | 1776 | 1191 | 0 | 0 | 0 |
 
 ## After
 
@@ -68,7 +68,7 @@ and every entity-graph id the app can link to.
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | **total** | **5687** | **2** | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
-Task 144 removed **1917** flagged pages
+Task 144 removed **1918** flagged pages
 (empty, raw ids, bad casing, generic status, wrong actions, wiki nav, junk rows, boss filed as NPC).
 
 ## Remaining empty pages, by name
