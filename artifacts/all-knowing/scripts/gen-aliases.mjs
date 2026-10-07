@@ -697,6 +697,14 @@ let legacyExceptions = []
       return set && set.size === 1 ? [...set][0] : undefined
     }
     const stripUpgrade = (name) => String(name ?? '').replace(/\s*\+\s*\d+\s*$/, '').trim()
+    // Task 160 FIX 13 — reference pages a later build folded onto a renamed NPC
+    // or an authored quest beat. Their old ids must still resolve to the record
+    // that absorbed the content (never a bare exception).
+    const legacyRedirects = new Map([
+      ['npc:edgar', 'npc:castellan-edgar'],
+      ['quest:irina-of-morne-step-2', 'quest:edgar:letter'],
+      ['quest:irina-of-morne-step-3', 'quest:irina:met'],
+    ])
     const unresolved = []
     let attached = 0
     for (const leg of legacy) {
@@ -715,6 +723,7 @@ let legacyExceptions = []
         const asDungeon = `dungeon:${id.slice('region:'.length)}`
         if (currentIds.has(asDungeon)) target = asDungeon
       }
+      if (!target) target = legacyRedirects.get(id)
       if (target && currentIds.has(target)) {
         emit(id, target, leg.name || target, [], 'legacy-id')
         attached++

@@ -59664,9 +59664,10 @@
   "engineId": "npc:castellan-edgar",
   "slug": "npc:castellan-edgar",
   "kind": "npc",
-  "fmgName": "Castellan Edgar",
+  "fmgName": "Edgar",
   "aliases": [
-   "castellan edgar"
+   "castellan edgar",
+   "edgar"
   ],
   "source": "game-name-table"
  },
@@ -59732,6 +59733,14 @@
    "dolores the sleeping arrow"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "npc:edgar",
+  "slug": "npc:castellan-edgar",
+  "kind": "npc",
+  "fmgName": "Edgar",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "npc:fell-god",
@@ -61205,6 +61214,22 @@
    "igon summoned at the bayle fog gate"
   ],
   "source": "authored"
+ },
+ {
+  "engineId": "quest:irina-of-morne-step-2",
+  "slug": "quest:edgar:letter",
+  "kind": "quest",
+  "fmgName": "Irina — step 2",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "quest:irina-of-morne-step-3",
+  "slug": "quest:irina:met",
+  "kind": "quest",
+  "fmgName": "Irina — step 3",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "quest:irina:castle",
