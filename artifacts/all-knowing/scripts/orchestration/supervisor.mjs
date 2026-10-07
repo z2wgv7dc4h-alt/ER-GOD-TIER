@@ -32,9 +32,52 @@ const merged = (id) => {
   const rep = path.join(WT, `task-${id}`, 'artifacts', 'all-knowing', 'docs', 'tasks', `${id}-report.md`)
   return anc.status === 0 && fs.existsSync(rep) && fs.readFileSync(rep, 'utf8').includes('ALL ITEMS DONE')
 }
+// Newest mtime of any tracked/untracked file change in the worktree (git status), so a long silent
+// command that is still writing files (e.g. a scraper) is not mistaken for a stall.
+const lastActivity = (id, log) => {
+  const dir = path.join(WT, `task-${id}`)
+  let t = fs.statSync(log).mtimeMs
+  const st = spawnSync('git', ['-C', dir, 'status', '--porcelain', '-uall'], { windowsHide: true, encoding: 'utf8' }).stdout
+  for (const line of st.split(String.fromCharCode(10)).filter(Boolean).slice(0, 400)) {
+    try { t = Math.max(t, fs.statSync(path.join(dir, line.slice(3).replace(/^"|"$/g, ''))).mtimeMs) } catch {}
+  }
+  for (const d of ['.scratch']) {
+    try { for (const f of fs.readdirSync(path.join(dir, 'artifacts', 'all-knowing', d), { recursive: true }).slice(-200))
+      t = Math.max(t, fs.statSync(path.join(dir, 'artifacts', 'all-knowing', d, String(f))).mtimeMs) } catch {}
+  }
+  return t
+}
+// On DONE: merge master into the task branch and run the gates there, so Claude only has to read the
+// result and fast-forward. Result goes to supervisor.log as GATES PASS / GATES FAIL.
+const gated = new Set()
+function runGates(id) {
+  if (gated.has(id)) return
+  gated.add(id)
+  const dir = path.join(WT, `task-${id}`, 'artifacts', 'all-knowing')
+  const out = path.join(WT, `gates-${id}.txt`)
+  const script = `if ! git merge --no-edit master >/dev/null 2>&1; then
+  bad=$(git diff --name-only --diff-filter=U | grep -vE 'public/sourced/(entity-index|aliases)\.json|src/data/aliases\.json|docs/(PAGE-AUDIT|LINKS-AUDIT|ENTITY-COVERAGE|PROGRESS-AUDIT|INFERENCE-RULES|DATA-CATALOG|GIDEON-EVAL)\.md|offline-manifest\.json')
+  if [ -n "$bad" ]; then git merge --abort; echo "MERGE-CONFLICT: $bad"; exit 1; fi
+  git diff --name-only --diff-filter=U | xargs -r git checkout --theirs -- ; git add -A; git commit -qm "Task ${id}: merge master (generated files taken from master, regenerated below)"
+  node scripts/gen-aliases.mjs >/dev/null 2>&1; npm run audit:pages >/dev/null 2>&1; npm run audit:links >/dev/null 2>&1
+fi
+npm run index:entities >/dev/null 2>&1; git add -A public/sourced docs >/dev/null 2>&1; git commit -qm "Task ${id}: rebuild index after merging master" >/dev/null 2>&1
+npx tsc -b >/dev/null 2>&1 || { echo TSC-FAIL; exit 1; }
+npx vitest run 2>&1 | grep -E "Tests |FAIL" | head -5
+npx vitest run >/dev/null 2>&1 || { echo TESTS-FAIL; exit 1; }
+npm run lint >/dev/null 2>&1 || { echo LINT-FAIL; exit 1; }
+npm run build >/dev/null 2>&1 || { echo BUILD-FAIL; exit 1; }
+npx vitest run src/lib/bundleBudget.test.ts >/dev/null 2>&1 || { echo BUNDLE-FAIL; exit 1; }
+echo ALL-GATES-PASS`
+  fs.writeFileSync(path.join(WT, `.gates-${id}.sh`), script)
+  const fd = fs.openSync(out, 'w')
+  const c = spawn('C:/Program Files/Git/bin/bash.exe', [path.join(WT, `.gates-${id}.sh`)], { cwd: dir, windowsHide: true, stdio: ['ignore', fd, fd] })
+  c.on('exit', (code) => { fs.closeSync(fd); emit(id, code === 0 ? `GATES PASS — fast-forward merge ready (${out})` : `GATES FAIL — see ${out}`) })
+}
 const kill = (child) => spawnSync('taskkill', ['/T', '/F', '/PID', String(child.pid)], { windowsHide: true })
 
 function launch(id, prompt) {
+  gated.delete(id)
   const dir = path.join(WT, `task-${id}`, 'artifacts', 'all-knowing')
   const n = fs.readdirSync(WT).filter((f) => f.startsWith(`task-${id}`) && f.endsWith('.log')).length
   const log = path.join(WT, `task-${id}-${n}.log`)
@@ -61,7 +104,7 @@ function tick() {
     if (merged(id)) continue
     const r = runs.get(id)
     if (r) {
-      const age = Date.now() - fs.statSync(r.log).mtimeMs
+      const age = Date.now() - lastActivity(id, r.log)
       if (age > STALL_MS || Date.now() - r.started > TIMEOUT_MS) {
         kill(r.child); runs.delete(id)
         if (bump(`s${id}`) > 2) { emit(id, 'FAILED — stalled 3 times, needs Claude'); continue }
@@ -71,7 +114,7 @@ function tick() {
       continue
     }
     const rep = path.join(WT, `task-${id}`, 'artifacts', 'all-knowing', 'docs', 'tasks', `${id}-report.md`)
-    if (fs.existsSync(rep) && fs.readFileSync(rep, 'utf8').includes('ALL ITEMS DONE')) { emit(id, 'DONE — ready to verify+merge'); continue }
+    if (fs.existsSync(rep) && fs.readFileSync(rep, 'utf8').includes('ALL ITEMS DONE')) { emit(id, 'DONE — running gates on merge with master'); runGates(id); continue }
     if (!fs.existsSync(path.join(WT, `task-${id}`))) { emit(id, 'NO WORKTREE — needs Claude'); continue }
     if (deps !== '-' && !deps.split(',').every(merged)) continue
     if (runs.size >= MAX) continue

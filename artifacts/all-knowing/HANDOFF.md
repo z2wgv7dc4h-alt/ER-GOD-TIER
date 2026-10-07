@@ -7,7 +7,7 @@ Read this before writing code. Do not invent a second kernel.
 Local-first PWA. One `Character` is the world; every screen is a view of it.
 
 ```
-Sections  Tarnished (overview / update / profiles) · Journey (now / map / quests)
+Sections  Tarnished (overview / gear / setup / profiles) · Journey (now / area / map / quests)
           Library (search / builds / pvp / guides) · Gideon
 Routing   #/section/sub, entity overlay via ?e=<factId>; old rooms resolve through setModule
 Phone     four bottom tabs · Desktop: header tabs + optional Gideon dock
@@ -32,7 +32,7 @@ that same module, so change page text there, not inside the components.
 1. er-guide lat/lng → `public/sourced/open/coords.json`
 2. Goblins XYZ + `m60`/`m61` tiles × 256 → `boss-pins.json`
 
-Do not average them. Pickup XYZ lives in `world-lots.json` (10,011 rows) and is not on the JPG except the 109 boss pins.
+Do not average them. Pickup XYZ lives in `world-lots.json` (3,458 rows) and is not on the JPG except the 109 boss pins.
 One projection per view (Task 09 Part C): the engine iframe and the static plate never render at
 once, and the detail panel resolves its target in the active view only (`src/lib/atlasSelection.ts`) —
 so Found/Unknown/Not-there and Thread act on the entity shown, engine or plate, never a hidden pin.
@@ -40,8 +40,8 @@ so Found/Unknown/Not-there and Thread act on the entity shown, engine or plate, 
 Full game text: `open/text/` (36 FMG tables, 34,053 strings) incl. verbatim `TalkMsg` dialogue,
 dumped by `scripts/extract-game-text.py`; `src/lib/gameText.ts` loads lazily, Codex dialogue search in
 `src/Dialogue.tsx`. Speaker attribution: `open/dialogue-owners.json` joins ESD `TalkID` -> MSB PARTS
-`TalkID` -> `NPCParamID` -> name, naming 95 speakers / 1,952 lines. Ceiling is inherent — ESDs reference
-only 2,129 of the 9,818 TalkMsg lines; the rest are menu/cutscene/UI, not attributed. No speaker invented.
+`TalkID` -> `NPCParamID` -> name, naming 146 speakers / 2,083 lines. Ceiling is inherent — ESDs reference
+only 2,083 of the 9,818 TalkMsg lines; the rest are menu/cutscene/UI, not attributed. No speaker invented.
 
 Weapon numeric params: already in `regulation-vanilla-v1.17.json` (3,296 rows: requirements, attack,
 scaling) and decoded by `src/lib/ar.ts` for AR; `src/lib/weaponStats.ts` + `src/WeaponStats.tsx`
@@ -51,7 +51,7 @@ surface requirements/scaling/base attack in the Codex (previously only FanAPI we
 
 - **Game text** `open/text/` (36 FMG tables, 34,053 strings) — `scripts/extract-game-text.py`;
   `src/lib/gameText.ts` loader; verbatim dialogue search `src/Dialogue.tsx`.
-- **Dialogue owners** `open/dialogue-owners.json` (95 speakers / 1,952 lines) — ESD `TalkID` -> MSB
+- **Dialogue owners** `open/dialogue-owners.json` (146 speakers / 2,083 lines) — ESD `TalkID` -> MSB
   PARTS `TalkID` -> `NPCParamID` -> name (`scripts/extract-dialogue-owners.py`). Gideon quotes real
   lines (`src/lib/dialogueQuote.ts`); `findMedusaStep` answers route steps.
 - **Local packs** `open/ercl-items.json` (154 talismans, 129 incantations, …) and
@@ -59,7 +59,7 @@ surface requirements/scaling/base attack in the Codex (previously only FanAPI we
   `src/lib/packs.ts` / `src/lib/medusaRoute.ts`. The map engine's own markers/items are exported to
   `open/engine-markers.json` (`scripts/export-engine-markers.mjs`, `src/lib/engineMarkers.ts`); the
   Nexus "EldenRingMap" pack is the same project and was dropped as a duplicate.
-- **NPC placements** `sourced/npc-placements.json` (1,370 placements, 95 talkers) — projected to the
+- **NPC placements** `sourced/npc-placements.json` (1,331 placements, 111 talkers) — projected to the
   engine pixel frame with the engine affine + `legacy-conv.json` (`scripts/extract-npc-placements.py`);
   `src/lib/npcPlacements.ts`; Gideon "where is X" fallback.
 - **Boss drops** `open/bosses-fextralife.json` (163 bosses, 161 with drops, base + SotE) scraped from
@@ -82,11 +82,13 @@ co-op filtering (`answers.coop`). Both the Gideon strip and Quests read the one 
 `buildHunt` turns a kit into `{ have, missing, pins, unresolved }`; `beatPin` resolves a plan beat to
 an existing pin for **Show**. `searchSync` remains the last resort.
 
-Optional LLM: Meta Muse Spark 1.3 Contributor (`src/lib/muse.ts`, `VITE_GIDEON_API_KEY`), same Act
-JSON, router-first. Pinned to contributor 1.3; `reasoning_effort: 'minimal'` + a stable
-`prompt_cache_key` keep it fast (Meta docs: none→400, max is Standard-only). One open session — prior
-turns are sent as history. Ground with `planRoute`, `stillAvailable`, `searchSync`. No invented ids;
-sentences naming an ungrounded id are stripped.
+Optional LLM: provider is config-selected (`VITE_GIDEON_PROVIDER`, `src/lib/gideonProvider.ts`) —
+**DeepSeek** (`deepseek-chat`, dev proxy `/gideon-llm-deepseek`) is the documented setup, **Meta Muse
+Spark 1.3 Contributor** (`muse-spark-1.3-contributor`, dev proxy `/gideon-llm`) the fallback. Both use
+`src/lib/muse.ts` + `VITE_GIDEON_API_KEY`, the same Act JSON, router-first. Meta is pinned to
+contributor 1.3; `reasoning_effort: 'minimal'` + a stable `prompt_cache_key` keep it fast (Meta docs:
+none→400, max is Standard-only). One open session — prior turns are sent as history. Ground with
+`planRoute`, `stillAvailable`, `searchSync`. No invented ids; sentences naming an ungrounded id are stripped.
 
 Harness (`src/lib/gideonAgent.ts`, `src/lib/gideonTools.ts`): the model is given our deterministic
 functions as **tools** — search, here, level_check, boss, guide, upgrade, dialogue — runs them on real
@@ -133,7 +135,7 @@ Inventory: `DATA.md`.
 
 ## Next (in order)
 
-Live list is `HANDOFF-CLAUDE.md` §6–§8. As of this data pass the open threads are:
+Live list is `docs/STATUS.md` §Next. As of this data pass the open threads are:
 
 1. Dungeon interiors (bosses are XYZ-only today).
 2. `canonicalFactId` audit across every fact category (bosses improved, the rest not).
@@ -146,7 +148,7 @@ Uploads, save edits, FromSoftware tile archives, invented AR, Nightreign v1.
 
 ## Sources
 
-External research is allowed without restriction. Facts, locations-in-prose, build ideas, one-line citations, and source data may be fetched, scraped, or downloaded from anywhere on the internet — in-repo dumps, the user's run, Fextralife, wiki.gg, MapGenie, YouTube, Discord, patch notes. Each row should still carry its source (a title or URL is enough). Accuracy rules still apply: param numbers, item names-as-ids, and pin coordinates come only from in-repo regulation / names.json / coords / loot / catalog, and do not invent lat/lng, event flags, or lockouts. Full policy: `HANDOFF-CLAUDE.md` §4.
+External research is allowed without restriction. Facts, locations-in-prose, build ideas, one-line citations, and source data may be fetched, scraped, or downloaded from anywhere on the internet — in-repo dumps, the user's run, Fextralife, wiki.gg, MapGenie, YouTube, Discord, patch notes. Each row should still carry its source (a title or URL is enough). Accuracy rules still apply: param numbers, item names-as-ids, and pin coordinates come only from in-repo regulation / names.json / coords / loot / catalog, and do not invent lat/lng, event flags, or lockouts. Full policy: `CLAUDE.md` (and the archived `docs/history/HANDOFF-CLAUDE-2026-10.md`).
 
 ## Run
 

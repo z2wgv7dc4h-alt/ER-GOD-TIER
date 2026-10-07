@@ -26,11 +26,13 @@ All-Knowing does not vendor Google Drive folders. It treats the list as a source
 
 ## Ingest jobs still open
 
-- Script: pull Elden Refs / Carian Archive strings → `src/knowledge/aliases.json`.
+- ~~Script: pull Elden Refs / Carian Archive strings → aliases.~~ **Closed (Task 14):** both
+  sources are redundant with the in-repo `open/names.json`; the alias plane is generated from the
+  game-derived dumps instead (`scripts/gen-aliases.mjs` → `public/sourced/aliases.json`, see `docs/ALIAS-PLANE.md`).
 - Script: diff RubyRed filenames against `extract_icons` output → missing/cut report.
 - Done: import the EanNewton NPC sheet to `src/knowledge/npc-display.ts` as **cosmetic display cards only**
   (`scripts/ingest-npc-display.mjs`). This is player-model level/stat allocation, not combat stats. It is
-  kept out of the Build lab; `NpcParam` absorb is still ERDB, not this sheet (see `docs/REVIEW.md`).
+  kept out of the Build lab; `NpcParam` absorb is still ERDB, not this sheet (see `docs/history/REVIEW-2026-09.md`).
 - Script: column-diff EanNewton tracker vs `catalog.ts` facts.
 
 Until those run, Codex lists every resource with its job so nothing on the awesome list is a dead link.

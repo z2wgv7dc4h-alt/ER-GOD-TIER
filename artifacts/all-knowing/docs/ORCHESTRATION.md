@@ -29,6 +29,10 @@ work in git worktrees. A Node supervisor runs the queue unattended. The owner do
 - Restarts a run whose log is silent 10 min (max 2), resumes a run that exited without finishing (max 3),
   then reports FAILED. Stops starting runs on "Insufficient Balance" (tell the owner).
 - "DONE" = `docs/tasks/<id>-report.md` contains `ALL ITEMS DONE`. "Merged" = branch tip is in master.
+- On DONE it merges master into the task branch, rebuilds the index and runs every gate there
+  (`gates-<id>.txt`), then logs `GATES PASS` (Claude samples output, fast-forwards master, pushes) or
+  `GATES FAIL` (Claude reads the file and writes a fix brief).
+- Stall = no log write AND no file change in the worktree for 10 min (long silent scrapes are not killed).
 
 ## Adding a task
 1. Create the worktree (Bash):
@@ -63,3 +67,18 @@ work in git worktrees. A Node supervisor runs the queue unattended. The owner do
 - A task merged into another branch's base looks "merged" by commit message — the supervisor checks
   branch ancestry + the report marker instead.
 - Runs that finish early or skip parts — prevented by the `ALL ITEMS DONE` contract.
+
+## Batch cycle (standard)
+Every batch of fix tasks ends with a READ-ONLY full audit task (copy `docs/tasks/_BATCH-AUDIT.md`,
+new id, deps = all tasks of the batch). Its FIX LIST, already split into file-disjoint groups, becomes
+the next batch's briefs. Repeat until the audit finds nothing material.
+
+## Known limitations (be honest about them)
+- Nothing merges while no Claude chat is open: DONE tasks wait (with gates already run) for Claude.
+  Tasks whose deps are unmerged wait too.
+- A PC reboot stops the supervisor; a new chat must start it (see "Start").
+- `ALL ITEMS DONE` is self-reported — agents have checked off only part of a brief (Task 163 twice).
+  Claude must compare the checklist against the brief, and briefs should include a test that fails
+  unless the work exists (e.g. "≥ 5,000 rows").
+- No spend cap: DeepSeek credit can run out mid-run; the supervisor pauses and Claude tells the owner.
+- Popup detection (`watch.sh`) only runs while a Claude chat is open.
