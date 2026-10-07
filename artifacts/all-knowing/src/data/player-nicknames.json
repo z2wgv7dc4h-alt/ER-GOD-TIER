@@ -1,10 +1,12 @@
 {
  "calid": "region:caelid",
+ "darkmoon": "item:dark-moon-greatsword",
  "godric": "boss:godrick",
  "goldfrey": "boss:godfrey",
  "granssax": "item:bolt-of-gransax",
  "liurna": "region:liurnia",
  "lyndell": "region:leyndell",
+ "margott": "boss:morgott",
  "melania": "boss:malenia",
  "mesmer": "boss:messmer",
  "nagakibas": "item:nagakiba",
