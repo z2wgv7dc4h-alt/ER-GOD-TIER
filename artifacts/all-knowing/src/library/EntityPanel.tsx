@@ -19,6 +19,9 @@ const BossPrepCard = lazy(() => import('../combat/BossPrepCard').then((m) => ({ 
 // Task 144 §1 — the kind-specific body (location/grace/NPC/boss) is its own
 // chunk so the eager panel keeps the shared shell only.
 const EntityKinds = lazy(() => import('./EntityKinds'))
+// Task 165 §10 — the "Guides for this boss" cross-link, kept in its own chunk
+// alongside the other lazy panel bodies.
+const GuidesFor = lazy(() => import('../PackData').then((m) => ({ default: m.GuidesFor })))
 import { kindStatus, trackActionLabel } from './pageModel'
 import type { EntityRecord } from '../lib/entityIndex'
 import { attributeStats, isOwned, meetsRequirements, type AttributeKey, type CategoryId, type LibraryEntity } from './model'
@@ -261,6 +264,14 @@ export function EntityPanel({
             {isBoss && (
               <Suspense fallback={null}>
                 <BossPrepCard bossId={statusFactId} character={character} />
+              </Suspense>
+            )}
+
+            {/* Task 165 §10 — a boss page links out to the scraped guide excerpts
+                for this fight and to the Guides corpus with the same query. */}
+            {isBoss && (
+              <Suspense fallback={null}>
+                <GuidesFor query={entity.name} heading="Guides for this boss" />
               </Suspense>
             )}
 

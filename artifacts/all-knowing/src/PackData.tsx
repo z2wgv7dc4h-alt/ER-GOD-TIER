@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { WikiText } from './WikiText'
 import { PAGE_SIZE, ShowMore } from './ShowMore'
+import { useWorkspaceOptional } from './state'
 import {
   erclItems,
   loadErcl,
@@ -232,11 +233,65 @@ export function GuidesSection({ query, preloaded, browse = false }: { query: str
           <article className="card" key={g.page + ':' + g.heading + ':' + i}>
             <div className="kicker">{g.page} · {g.heading}</div>
             <p className="note"><WikiText text={g.text.slice(0, 600)} /></p>
+            {g.url && (
+              <p className="note">
+                <a className="ext" href={g.url} target="_blank" rel="noreferrer noopener">
+                  Open full guide
+                </a>
+              </p>
+            )}
           </article>
         ))}
       </div>
       {browse && <ShowMore total={data.length} shown={limit} onMore={() => setLimit((n) => n + PAGE_SIZE)} />}
     </>
+  )
+}
+
+/**
+ * Task 165 §10 — "Guides for this …" cross-links. A boss, area or map pin names
+ * a query; the matching Fextralife excerpts open in a new tab (the stored `url`)
+ * and a chip jumps to Library › Guides with the same query. Nothing is invented:
+ * only excerpts already in the scraped corpus are listed.
+ */
+export function GuidesFor({ query, heading, limit = 3 }: { query?: string; heading: string; limit?: number }) {
+  const w = useWorkspaceOptional()
+  const [rows, setRows] = useState<GuideExcerpt[] | null>(null)
+  useEffect(() => {
+    let cancelled = false
+    void loadGuides()
+      .then((d) => { if (!cancelled) setRows(guideExcerpts(d)) })
+      .catch(() => { /* dataset absent: block stays hidden */ })
+    return () => { cancelled = true }
+  }, [])
+  const q = (query ?? '').trim()
+  const hits = useMemo(() => (rows && q.length >= 3 ? matchGuides(q, rows, limit) : []), [rows, q, limit])
+  if (!rows || !q) return null
+  return (
+    <div className="lib-panel-block">
+      <div className="kicker">{heading}</div>
+      {hits.length === 0 ? (
+        <p className="note">No matching guide excerpt on file.</p>
+      ) : (
+        <ul className="area-list">
+          {hits.map((g, i) => (
+            <li key={`${g.page}:${g.heading}:${i}`}>
+              <a href={g.url} target="_blank" rel="noreferrer noopener">{g.heading}</a>
+              {g.page ? <span className="note"> · {g.page}</span> : null}
+            </li>
+          ))}
+        </ul>
+      )}
+      {w && (
+        <button
+          type="button"
+          className="chip"
+          onClick={() => { w.setQuery(q); w.go('library', 'guides') }}
+        >
+          Open Guides
+        </button>
+      )}
+    </div>
   )
 }
 

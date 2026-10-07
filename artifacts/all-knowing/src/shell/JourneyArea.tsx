@@ -21,6 +21,7 @@ import { gatheringNodeMaterial, useGatheringNodes } from '../lib/gatheringNodes'
 import { loadRegionLevels, type RegionLevel } from '../lib/regionLevels'
 import { loadSecrets, type WallSecret } from '../lib/secrets'
 import { useWorkspace } from '../state'
+import { GuidesFor } from '../PackData'
 import { AreaPrompt } from './AreaPrompt'
 import { AreaPickerSheet } from './AreaChip'
 
@@ -163,6 +164,10 @@ export function JourneyArea() {
           </ul>
         </section>
       )}
+
+      <section className="panel">
+        <GuidesFor query={area} heading="Guides for this area" />
+      </section>
 
       <section className="panel">
         <div className="kicker">Bosses</div>
