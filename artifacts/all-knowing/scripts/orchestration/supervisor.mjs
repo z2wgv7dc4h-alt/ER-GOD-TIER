@@ -55,7 +55,12 @@ function runGates(id) {
   gated.add(id)
   const dir = path.join(WT, `task-${id}`, 'artifacts', 'all-knowing')
   const out = path.join(WT, `gates-${id}.txt`)
-  const script = `git merge --no-edit master >/dev/null 2>&1 || { git merge --abort; echo MERGE-CONFLICT; exit 1; }
+  const script = `if ! git merge --no-edit master >/dev/null 2>&1; then
+  bad=$(git diff --name-only --diff-filter=U | grep -vE 'public/sourced/(entity-index|aliases)\.json|src/data/aliases\.json|docs/(PAGE-AUDIT|LINKS-AUDIT|ENTITY-COVERAGE|PROGRESS-AUDIT|INFERENCE-RULES|DATA-CATALOG|GIDEON-EVAL)\.md|offline-manifest\.json')
+  if [ -n "$bad" ]; then git merge --abort; echo "MERGE-CONFLICT: $bad"; exit 1; fi
+  git diff --name-only --diff-filter=U | xargs -r git checkout --theirs -- ; git add -A; git commit -qm "Task ${id}: merge master (generated files taken from master, regenerated below)"
+  node scripts/gen-aliases.mjs >/dev/null 2>&1; npm run audit:pages >/dev/null 2>&1; npm run audit:links >/dev/null 2>&1
+fi
 npm run index:entities >/dev/null 2>&1; git add -A public/sourced docs >/dev/null 2>&1; git commit -qm "Task ${id}: rebuild index after merging master" >/dev/null 2>&1
 npx tsc -b >/dev/null 2>&1 || { echo TSC-FAIL; exit 1; }
 npx vitest run 2>&1 | grep -E "Tests |FAIL" | head -5
@@ -72,6 +77,7 @@ echo ALL-GATES-PASS`
 const kill = (child) => spawnSync('taskkill', ['/T', '/F', '/PID', String(child.pid)], { windowsHide: true })
 
 function launch(id, prompt) {
+  gated.delete(id)
   const dir = path.join(WT, `task-${id}`, 'artifacts', 'all-knowing')
   const n = fs.readdirSync(WT).filter((f) => f.startsWith(`task-${id}`) && f.endsWith('.log')).length
   const log = path.join(WT, `task-${id}-${n}.log`)
