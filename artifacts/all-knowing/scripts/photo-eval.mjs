@@ -48,13 +48,6 @@ function eqNum(field, expected, got) {
   return { field, expected, got: present ? got : undefined, status: !present ? 'missed' : correct ? 'correct' : 'wrong' }
 }
 
-function eqPrefix(field, expectedPrefix, got) {
-  const present = typeof got === 'string' && got.trim() !== ''
-  const norm = (s) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
-  const correct = present && norm(got).startsWith(norm(expectedPrefix))
-  return { field, expected: `${expectedPrefix}…`, got: present ? got : undefined, status: !present ? 'missed' : correct ? 'correct' : 'wrong' }
-}
-
 function missing(field, expected) {
   return { field, expected, got: undefined, status: 'missed' }
 }
@@ -299,7 +292,7 @@ try {
 
 // ---- web robustness set -----------------------------------------------------
 async function runWeb(deps) {
-  const { node, scanner, image, mapNode, mapFeatures, mapReg, mapGraces, refs, graceIndex, catalogue } = deps
+  const { node, scanner, image, mapNode, mapFeatures, mapReg, refs, catalogue } = deps
   const indexPath = path.join(WEB_DIR, 'index.json')
   if (!fs.existsSync(indexPath)) {
     console.log('[eval] no web set at', WEB_DIR, '— run `node scripts/collect-web-photos.mjs` first')
@@ -345,9 +338,11 @@ async function runWeb(deps) {
     const screen = classify(text)
     const checks = []
     const names = []
+    let statusRaw
     try {
       if (screen === 'status') {
         const r = await node.statusFromPhoto(w, file)
+        statusRaw = { level: r.level, displayed: r.displayedStats, base: r.baseStats, runesHeld: r.runesHeld, runesNeeded: r.runesNeeded, notes: r.notes }
         const stats = Object.values(r.displayedStats ?? {})
         const base = r.baseStats && Object.keys(r.baseStats).length === 8 ? Object.values(r.baseStats) : undefined
         // The game's Status panel shows stats WITH equipment bonuses, so the raw
@@ -385,7 +380,7 @@ async function runWeb(deps) {
       checks.push({ field: 'name resolves', expected: n, got: resolved ? resolved.name : undefined, status: resolved ? 'correct' : 'wrong' })
     }
     checks.unshift({ field: 'screenType', expected: meta.guess, got: screen, status: screen !== 'unknown' ? 'correct' : 'missed' })
-    return { file: meta.file, url: meta.url, screen, guess: meta.guess, w: gray.width, h: gray.height, textChars: text.trim().length, ms: Date.now() - t, checks, detail: { names } }
+    return { file: meta.file, url: meta.url, screen, guess: meta.guess, w: gray.width, h: gray.height, textChars: text.trim().length, ms: Date.now() - t, checks, detail: { names, status: statusRaw } }
   }
   async function workerLoop(w) {
     while (true) {
