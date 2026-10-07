@@ -236,7 +236,11 @@ try {
     checks.push({ field: 'graceSnapRate', expected: '≥0.70', got: snapRate.toFixed(2), status: snapRate >= 0.7 ? 'correct' : snapRate > 0 ? 'wrong' : 'missed' })
     checks.push({ field: 'gracePurity', expected: '≥0.95', got: purity.toFixed(2), status: purity >= 0.95 ? 'correct' : mapped.length ? 'wrong' : 'missed' })
     const fragments = mapFragments.classifyFragments(photo.gray, photo.color, reg.Hinv, refs[f.world], f.world)
-    const revealedFrags = fragments.filter((x) => x.revealed).map((x) => FRAGMENT_REGION[x.region] ?? x.region)
+    // Overworld fragment ownership comes from the painted terrain; the underground
+    // layer is read from its graces (owned fragments there are not modelled).
+    const revealedFrags = f.world === 'overworld'
+      ? fragments.filter((x) => x.revealed).map((x) => FRAGMENT_REGION[x.region] ?? x.region)
+      : [...new Set(mapped.filter((r) => expected.has(r)))]
     for (const r of f.revealed) checks.push({ field: `revealed.${r}`, expected: true, got: revealedFrags.includes(r), status: revealedFrags.includes(r) ? 'correct' : 'missed' })
     for (const r of f.unrevealed) checks.push({ field: `unrevealed.${r}`, expected: false, got: revealedFrags.includes(r), status: revealedFrags.includes(r) ? 'wrong' : 'correct' })
     return { file: f.file, screen: 'world-map', ms, checks, detail: { detected: blobs.length, snapped: graces.length, purity, snapRate, graceMs, regions: reg.regions } }

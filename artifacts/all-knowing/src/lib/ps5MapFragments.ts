@@ -32,7 +32,12 @@ export const REGION_ANCHORS: RegionAnchor[] = [
   { region: 'Dragonbarrow', xPercent: 54.0, yPercent: 50.5 },
   { region: 'Altus Plateau', xPercent: 25.41, yPercent: 32.44 },
   { region: 'Leyndell, Royal Capital', xPercent: 37.18, yPercent: 28.83 },
-  { region: 'Mt. Gelmir', xPercent: 16.35, yPercent: 26.0 },
+  // Mt. Gelmir has no entry in the curated `warpGraces` list, so this anchor is
+  // derived from the game's own EldenRingMap V1.2 Mt. Gelmir map pins (two Golden
+  // Seeds, collectibles.ts), averaged, converted from the 10496 engine frame and
+  // calibrated to the plate like the grace index. It lands on the dark volcanic
+  // terrain (sat ~0.18, detail ~18), which previously sat on fog at (16.35, 26.0).
+  { region: 'Mt. Gelmir', xPercent: 22.4, yPercent: 28.0 },
   { region: 'Mountaintops of the Giants, West', xPercent: 48.14, yPercent: 33.31 },
   { region: 'Mountaintops of the Giants, East', xPercent: 59.09, yPercent: 28.59 },
   { region: 'Consecrated Snowfield', xPercent: 52.0, yPercent: 20.0 },
