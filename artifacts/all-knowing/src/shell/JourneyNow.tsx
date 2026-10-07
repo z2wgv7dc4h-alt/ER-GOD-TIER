@@ -12,6 +12,7 @@ import { leftovers as missedLoot } from '../lib/leftovers'
 import { regionLeftovers } from '../lib/regionLeftovers'
 import { confirmLikelyInference, likelyInferences, rejectLikelyInference } from '../lib/likelyInferences'
 import { lockoutWarningsFor, type LockWarning } from '../lib/lockWarnings'
+import { inferenceReasons, removeInferredFact } from '../lib/setupWizard'
 import { suggestedNextArea } from '../lib/worldState'
 import { BeforeYouGoCard } from '../BeforeYouGoCard'
 import { LockoutPrompt } from '../LockoutPrompt'
@@ -80,6 +81,9 @@ export function JourneyNow() {
   }, [outstanding, w.character])
   const leftovers = useRowReveal(missed.length)
   const likely = useMemo(() => likelyInferences(w.character, 3), [w.character])
+  // Task 166 §13 — a standing "what the app thinks you've done, and why" view,
+  // reusing the same reason chain Setup › Review shows, with per-row remove.
+  const inferred = useMemo(() => inferenceReasons(w.character), [w.character])
   const [lockPending, setLockPending] = useState<{ ids: string[]; warnings: LockWarning[] } | null>(null)
   const unset = hasUnsetStats(w.character)
   const suggested = useMemo(() => suggestedNextArea(w.character), [w.character])
@@ -266,6 +270,24 @@ export function JourneyNow() {
                       No
                     </Button>
                   </span>
+                }
+              />
+            ))}
+          </section>
+        )}
+
+        {inferred.length > 0 && (
+          <section className="panel inferred-card">
+            <div className="kicker">What we inferred</div>
+            {inferred.map((r) => (
+              <ListRow
+                key={r.fact}
+                title={byId.get(r.fact)?.name ?? r.fact.replace(/^[a-z]+:/, '').replace(/-/g, ' ')}
+                subtitle={r.why}
+                trailing={
+                  <Button variant="ghost" small onClick={() => w.setCharacter(removeInferredFact(w.character, r.fact))}>
+                    remove
+                  </Button>
                 }
               />
             ))}
