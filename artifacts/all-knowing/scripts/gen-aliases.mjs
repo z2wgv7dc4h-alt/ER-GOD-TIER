@@ -40,10 +40,16 @@ try {
   indexRecords = {}
 }
 const indexGraceByName = new Map()
+// Task 160 #15 — a warp the index classified as a region/dungeon (e.g. the
+// "Prince of Death's Throne" grace the region plane also carries) must still map
+// onto a real page, not a ghost `grace:{name}` stub.
+const indexPlaceByName = new Map()
 for (const [id, record] of Object.entries(indexRecords)) {
-  if (record.kind !== 'grace' || !record.name) continue
+  if (!record.name) continue
   const key = String(record.name).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
-  if (key && !indexGraceByName.has(key)) indexGraceByName.set(key, id)
+  if (!key) continue
+  if (record.kind === 'grace' && !indexGraceByName.has(key)) indexGraceByName.set(key, id)
+  if ((record.kind === 'region' || record.kind === 'dungeon') && !indexPlaceByName.has(key)) indexPlaceByName.set(key, id)
 }
 
 /**
@@ -213,7 +219,8 @@ for (const g of checklistsGraces) {
   // of minting a ghost slug the app has no page for.
   const indexed =
     (indexRecords[`grace:${g.warpId}`] && `grace:${g.warpId}`) ||
-    indexGraceByName.get(g.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim())
+    indexGraceByName.get(g.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()) ||
+    indexPlaceByName.get(g.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim())
   if (indexed) {
     emit(`grace:${g.warpId}`, indexed, g.name, rowAliases(g.name, [], g.name), 'entity-index')
     continue

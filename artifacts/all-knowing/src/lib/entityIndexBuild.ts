@@ -2779,7 +2779,10 @@ function cleanupFmgDuplicates(): void {
     if (keeper && keeper.id !== id) {
       addName(record.name, keeper.id)
       records.delete(id)
-    } else if (record.kind === 'region') {
+    } else if (record.kind === 'region' || !record.catalogue) {
+      // Task 160 #14 — an empty FMG name row with no real counterpart and no
+      // catalogue anchor renders a page whose every section is empty; keep it
+      // out of the index rather than ship a no-data page.
       records.delete(id)
     }
   }

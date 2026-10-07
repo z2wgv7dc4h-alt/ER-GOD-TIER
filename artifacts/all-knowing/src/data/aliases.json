@@ -37228,16 +37228,6 @@
   "source": "entity-index"
  },
  {
-  "engineId": "grace:120300",
-  "slug": "grace:prince-of-death-s-throne",
-  "kind": "grace",
-  "fmgName": "Prince of Death's Throne",
-  "aliases": [
-   "prince of death throne"
-  ],
-  "source": "grace-stub"
- },
- {
   "engineId": "grace:120301",
   "slug": "grace:120301",
   "kind": "grace",
@@ -37590,17 +37580,6 @@
    "haligtree canopy"
   ],
   "source": "entity-index"
- },
- {
-  "engineId": "grace:150007",
-  "slug": "grace:haligtree-town",
-  "kind": "grace",
-  "fmgName": "Haligtree Town",
-  "aliases": [
-   "haligtree town",
-   "haligtree town plaza"
-  ],
-  "source": "hosted-graces"
  },
  {
   "engineId": "grace:150008",
@@ -61296,6 +61275,26 @@
    "yura met at the second church of marika"
   ],
   "source": "authored"
+ },
+ {
+  "engineId": "grace:120300",
+  "slug": "region:prince-of-death-s-throne",
+  "kind": "region",
+  "fmgName": "Prince of Death's Throne",
+  "aliases": [
+   "prince of death throne"
+  ],
+  "source": "entity-index"
+ },
+ {
+  "engineId": "grace:150007",
+  "slug": "region:haligtree-town",
+  "kind": "region",
+  "fmgName": "Haligtree Town",
+  "aliases": [
+   "haligtree town"
+  ],
+  "source": "entity-index"
  },
  {
   "engineId": "region:academy-of-raya-lucaria",

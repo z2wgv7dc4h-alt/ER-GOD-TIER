@@ -32,11 +32,12 @@ describe('Task 160 warp ids resolve to real grace records', () => {
     })
   }
 
-  it('leaves exactly one ghost stub, the hosted Prince of Death’s Throne grace', () => {
+  it('mints no synthetic grace stub', () => {
+    // Task 160 tracked the 354 ghost warps down to the hosted Prince of Death’s
+    // Throne (`hosted-graces.id grace:120300`), which now maps onto the existing
+    // region record instead of a `grace:{name-slug}` stub.
     const stubs = generatedAliases.filter((r) => r.source === 'grace-stub')
-    // Task 160 tracked the 354 ghost warps down to this single hosted grace that
-    // has no enrichment record yet (`hosted-graces.id grace:120300`).
-    expect(stubs.map((r) => r.engineId)).toEqual(['grace:120300'])
+    expect(stubs.map((r) => r.engineId)).toEqual([])
     for (const row of stubs) {
       expect(row.kind).toBe('grace')
       expect(row.engineId).not.toBe(row.slug)
