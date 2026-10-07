@@ -270,7 +270,7 @@ try {
       console.log(`[eval] ${f.file} (world-map) ${row.ms}ms ${JSON.stringify(summarize(row.checks))} ${JSON.stringify(row.detail)}`)
     }
   } else {
-    await runWeb()
+    await runWeb({ node, scanner, image, mapNode, mapFeatures, mapReg, mapGraces, refs, graceIndex, catalogue })
   }
 
   await worker.terminate()
@@ -282,12 +282,146 @@ try {
 }
 
 // ---- web robustness set -----------------------------------------------------
-async function runWeb() {
-  console.log('[eval] web mode is wired in scripts/photo-eval-web (see PHOTO-EVAL.md)')
+async function runWeb(deps) {
+  const { node, scanner, image, mapNode, mapFeatures, mapReg, mapGraces, refs, graceIndex, catalogue } = deps
+  const indexPath = path.join(WEB_DIR, 'index.json')
+  if (!fs.existsSync(indexPath)) {
+    console.log('[eval] no web set at', WEB_DIR, '— run `node scripts/collect-web-photos.mjs` first')
+    return
+  }
+  const manifest = JSON.parse(fs.readFileSync(indexPath, 'utf8'))
+  const limit = Number(process.env.WEB_LIMIT || 0)
+  const photos = (manifest.photos ?? []).slice(0, limit || undefined)
+  console.log(`[eval] web mode: ${photos.length} photos (no ground truth; self-consistency checks)`)
+
+  // Cheap screen classifier from one OCR pass per photo.
+  const STATUS_RE = /character status|runes held|runes needed/i
+  const STAT_WORDS = /\b(vigor|mind|endurance|strength|dexterity|intelligence|faith|arcane)\b/i
+  const MAP_RE = /sites of grace|show underground|map menu|show above ground/i
+  const EQUIP_RE = /right hand armament|left hand armament|hand armament|equip(ment)?|talisman|arrows|bolts|flask|ashes of war/i
+  function classify(text) {
+    const stats = (text.match(STAT_WORDS) ?? []).length
+    if (MAP_RE.test(text)) return 'world-map'
+    if (STATUS_RE.test(text) || stats >= 4) return 'status'
+    if (/all items/i.test(text)) return 'item-crafting'
+    if (/inventory|bolstering|sorcer|cookbook|key items|materials|receptacle/i.test(text)) return 'inventory'
+    if (EQUIP_RE.test(text)) return 'equipment'
+    return 'unknown'
+  }
+
+  const rows = []
+  const results2 = { generatedAt: results.generatedAt, mode: 'web', photos: rows }
+  // Small worker pool so the OCR of ~150 photos finishes in minutes, not hours.
+  const POOL = Number(process.env.WEB_POOL || 3)
+  const workers = await Promise.all(Array.from({ length: POOL }, () => node.createNodeWorker()))
+  let next = 0
+  async function runOne(w, meta) {
+    const t = Date.now()
+    const file = path.join(WEB_DIR, meta.file)
+    const gray = await node.grayViaTesseract(w, file)
+    let text = ''
+    try {
+      const variants = image.preprocessVariants(gray).map((v) => v.image)
+      for (const v of variants.slice(0, 2)) {
+        text += ' ' + (await node.readWords(w, v, '6')).map((x) => x.text).join(' ')
+        text += ' ' + (await node.readWords(w, v, '11')).map((x) => x.text).join(' ')
+      }
+    } catch { /* classification degrades to unknown */ }
+    const screen = classify(text)
+    const checks = []
+    const names = []
+    try {
+      if (screen === 'status') {
+        const r = await node.statusFromPhoto(w, file)
+        const stats = Object.values(r.displayedStats ?? {})
+        const sum = stats.reduce((a, b) => a + b, 0)
+        const lvlOk = typeof r.level === 'number' && stats.length >= 6 && r.level === sum - 79
+        checks.push({ field: 'level=sum(stats)-79', expected: true, got: lvlOk, status: lvlOk ? 'correct' : r.level !== undefined ? 'wrong' : 'missed' })
+        const rangeOk = stats.length >= 6 && stats.every((v) => v >= 1 && v <= 99)
+        checks.push({ field: 'stats 1..99', expected: true, got: rangeOk, status: rangeOk ? 'correct' : 'wrong' })
+        const runesOk = typeof r.runesHeld === 'number' && r.runesHeld >= 0 && typeof r.runesNeeded === 'number' && r.runesNeeded >= r.runesHeld
+        checks.push({ field: 'runes plausible', expected: true, got: runesOk, status: runesOk ? 'correct' : 'wrong' })
+        if (r.name) names.push(r.name)
+      } else if (screen === 'inventory' || screen === 'item-crafting') {
+        const r = await node.inventoryFromPhoto(w, file)
+        if (r.header?.selected) names.push(r.header.selected)
+      } else if (screen === 'equipment') {
+        const r = await node.equipmentFromPhoto(w, file, catalogue)
+        if (r.header?.item?.base) names.push(r.header.item.base)
+        const slotOk = Boolean(r.header?.slot)
+        checks.push({ field: 'slot recognised', expected: true, got: slotOk, status: slotOk ? 'correct' : 'missed' })
+      } else if (screen === 'world-map') {
+        const grayOk = await registrationOk(w, file, mapFeatures, mapReg, mapNode, refs)
+        checks.push({ field: 'registration ok', expected: true, got: grayOk, status: grayOk ? 'correct' : 'missed' })
+      }
+    } catch (e) {
+      checks.push({ field: 'pipeline', expected: 'no throw', got: e.message, status: 'wrong' })
+    }
+    // Every read name must resolve to a real game name (alias plane / entity index).
+    for (const n of names) {
+      const resolved = scanner.defaultItemResolver(n)
+      checks.push({ field: 'name resolves', expected: n, got: resolved ? resolved.name : undefined, status: resolved ? 'correct' : 'wrong' })
+    }
+    checks.unshift({ field: 'screenType', expected: meta.guess, got: screen, status: screen !== 'unknown' ? 'correct' : 'missed' })
+    return { file: meta.file, screen, guess: meta.guess, ms: Date.now() - t, checks, detail: { names } }
+  }
+  async function workerLoop(w) {
+    while (true) {
+      const i = next++
+      if (i >= photos.length) return
+      const meta = photos[i]
+      try {
+        const row = await runOne(w, meta)
+        rows.push(row)
+        if (i % 10 === 0) console.log(`[web] ${i + 1}/${photos.length} ${meta.file} -> ${row.screen}`)
+      } catch (e) {
+        console.log(`[web] ${meta.file} failed: ${e.message}`)
+      }
+    }
+  }
+  await Promise.all(workers.map((w) => workerLoop(w)))
+  await Promise.all(workers.map((w) => w.terminate()))
+  results.web = summarizeWeb(rows)
+}
+
+async function registrationOk(worker, file, mapFeatures, mapReg, mapNode, refs) {
+  const photo = await mapNode.mapPhotoFromFile(worker, file)
+  const features = mapFeatures.detectFeatures(photo.gray)
+  for (const world of ['overworld', 'underground']) {
+    const reg = mapReg.registerToWorld(features, refs[world])
+    if (reg && reg.inliers >= 12) return true
+  }
+  return false
+}
+
+function summarizeWeb(rows) {
+  const perScreen = new Map()
+  const perField = new Map()
+  let total = { correct: 0, wrong: 0, missed: 0 }
+  for (const r of rows) {
+    const s = summarize(r.checks)
+    const t = perScreen.get(r.guess) ?? { correct: 0, wrong: 0, missed: 0, photos: 0 }
+    t.correct += s.correct; t.wrong += s.wrong; t.missed += s.missed; t.photos++
+    perScreen.set(r.guess, t)
+    for (const c of r.checks) {
+      const f = perField.get(c.field) ?? { correct: 0, wrong: 0, missed: 0 }
+      f[c.status]++
+      perField.set(c.field, f)
+    }
+    total.correct += s.correct; total.wrong += s.wrong; total.missed += s.missed
+  }
+  return {
+    photos: rows.length,
+    total,
+    accuracy: total.correct / (total.correct + total.wrong + total.missed || 1),
+    perScreen: [...perScreen].map(([screen, t]) => ({ screen, ...t, accuracy: t.correct / (t.correct + t.wrong + t.missed || 1) })),
+    perField: [...perField].map(([field, t]) => ({ field, ...t, passRate: t.correct / (t.correct + t.wrong + t.missed || 1) })),
+  }
 }
 
 // ---- reporting --------------------------------------------------------------
 function report() {
+  if (results.mode === 'web') return webReport()
   const byScreen = new Map()
   let total = { correct: 0, wrong: 0, missed: 0 }
   for (const p of results.photos) {
@@ -324,9 +458,42 @@ function report() {
   return lines.join('\n')
 }
 
+function webReport() {
+  const w = results.web ?? summarizeWeb([])
+  const lines = []
+  lines.push('# PHOTO-EVAL — PS5 photo reader (web robustness set)')
+  lines.push('')
+  lines.push(`Generated ${results.generatedAt} by \`npm run eval:photos -- --web\`.`)
+  lines.push('')
+  lines.push(`No ground truth: each photo is scored with SELF-CONSISTENCY checks (screen type detected;`)
+  lines.push('status level = sum of the 8 stats − 79, stats 1–99, runes/level plausible; every read item')
+  lines.push('name resolves on the alias plane; equipment slot recognised; map registration succeeds).')
+  lines.push('')
+  lines.push(`Overall: **${(w.accuracy * 100).toFixed(0)}%** of checks passed over ${w.photos} photos.`)
+  lines.push('')
+  lines.push('## Pass rate per check')
+  lines.push('')
+  lines.push('| check | correct | wrong | missed | pass rate |')
+  lines.push('| --- | ---: | ---: | ---: | ---: |')
+  for (const f of w.perField.sort((a, b) => b.passRate - a.passRate)) {
+    lines.push(`| ${f.field} | ${f.correct} | ${f.wrong} | ${f.missed} | ${(f.passRate * 100).toFixed(0)}% |`)
+  }
+  lines.push('')
+  lines.push('## Pass rate per guessed screen type')
+  lines.push('')
+  lines.push('| guess | photos | correct | wrong | missed | pass rate |')
+  lines.push('| --- | ---: | ---: | ---: | ---: | ---: |')
+  for (const s of w.perScreen.sort((a, b) => b.photos - a.photos)) {
+    lines.push(`| ${s.screen} | ${s.photos} | ${s.correct} | ${s.wrong} | ${s.missed} | ${(s.accuracy * 100).toFixed(0)}% |`)
+  }
+  lines.push('')
+  return lines.join('\n')
+}
+
 fs.writeFileSync(path.join(OUT_DIR, 'photo-eval.json'), JSON.stringify(results, null, 2))
 console.log('\n' + report())
 if (writeDoc) {
-  fs.writeFileSync(path.join(root, 'docs/PHOTO-EVAL.md'), report() + '\n')
-  console.log(`[eval] wrote docs/PHOTO-EVAL.md`)
+  const doc = web ? 'docs/PHOTO-EVAL-WEB.md' : 'docs/PHOTO-EVAL.md'
+  fs.writeFileSync(path.join(root, doc), report() + '\n')
+  console.log(`[eval] wrote ${doc}`)
 }
