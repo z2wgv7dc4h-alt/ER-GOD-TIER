@@ -421,6 +421,57 @@ function appNorm(s) {
   console.log(`game-name aliases: ${attached} attached, ${minted} rows minted (${Object.keys(gameNameAliases).length} names)`)
 }
 
+// Task 163 — player nicknames/slang mined from the question corpus. Each entry
+// maps a term players actually type ("melania", "stormveil", "pcr") to exactly
+// one entity id, hand-verified as unambiguous in `src/data/player-nicknames.json`.
+// The alias is stored in the app's own normal form so `canonicalFactId` resolves
+// it. A target with no alias row yet (a dungeon) gets a name-only row minted,
+// exactly like the game-name pass above.
+const playerNicknames = (() => {
+  try {
+    return read('src/data/player-nicknames.json')
+  } catch {
+    return {}
+  }
+})()
+// A nickname may name a record that no earlier pass has emitted yet (a dungeon,
+// a note item). Minting the row is fine, but the nickname itself must never
+// become the display name (`fmgName` feeds the omnibox label, `matchGeneratedAliases`),
+// so use the entity index's canonical name and keep the nickname as an alias.
+const nicknameNames = (() => {
+  try {
+    const index = read('public/sourced/entity-index.json')
+    return new Map(Object.entries(index.records ?? {}).map(([id, rec]) => [id, rec.name]))
+  } catch {
+    return new Map()
+  }
+})()
+{
+  const rowBySlug = new Map(rows.map((r) => [r.slug, r]))
+  let attached = 0
+  let minted = 0
+  for (const [nickname, id] of Object.entries(playerNicknames)) {
+    const alias = appNorm(nickname)
+    if (!alias) continue
+    // This nickname names exactly one record; strip it from any other row so
+    // `canonicalFactId` can never see it as ambiguous.
+    for (const r of rows) if (r.slug !== id && r.aliases.includes(alias)) r.aliases = r.aliases.filter((a) => a !== alias)
+    let row = rowBySlug.get(id)
+    if (!row) {
+      row = { engineId: id, slug: id, kind: kindOf(id), fmgName: nicknameNames.get(id) ?? nickname, aliases: [], source: 'player-nickname' }
+      rows.push(row)
+      rowBySlug.set(id, row)
+      minted++
+    }
+    if (!row.aliases.includes(alias)) {
+      row.aliases.push(alias)
+      row.aliases.sort()
+    }
+    attached++
+  }
+  console.log(`player nickname aliases: ${attached} attached, ${minted} rows minted (${Object.keys(playerNicknames).length} names)`)
+}
+
 // Task 148 §1 — one page per enemy. The entity index is built first
 // (`npm run index:entities`); every surviving `enemy:<slug>` record is the merge
 // of all NpcParam rows that share its exact display name. Each old
