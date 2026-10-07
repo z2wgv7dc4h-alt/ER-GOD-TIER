@@ -174,18 +174,20 @@ function resolveSubjects(question: string): Surface[] {
   if (!qn) return []
   const padded = ` ${qn} `
   const qTokens = qn.split(' ')
-  const matches: { s: Surface; score: number }[] = []
+  const exact: { s: Surface; score: number }[] = []
+  const fuzzy: { s: Surface; score: number }[] = []
   for (const s of list) {
     if (padded.includes(` ${s.norm} `)) {
       // Prefer the subject raised first in the sentence: a question that names
       // two entities is usually about the one it opens with.
       const start = padded.indexOf(` ${s.norm}`)
-      matches.push({ s, score: s.norm.length * 2 + s.tokens * 2 + s.weight * 3 - Math.min(start, 100) * 0.5 })
+      exact.push({ s, score: s.norm.length * 2 + s.tokens * 2 + s.weight * 3 - Math.min(start, 100) * 0.5 })
       continue
     }
     if (s.norm.length < 6) continue
     // Token-aligned fuzzy: all surface tokens found, in order, within an edit
-    // distance of 1 each, so a typo ("placidusax") still resolves.
+    // distance of 2 each (Task 168 §2, names ≥ 6 chars), so "placidusax" or a
+    // "melania"/"malenia" typo still resolves.
     const st = s.norm.split(' ')
     let qi = 0
     let ok = true
@@ -198,7 +200,7 @@ function resolveSubjects(question: string): Surface[] {
           found = i
           break
         }
-        if (tok.length >= 6 && qt.length >= 5 && editDistance(tok, qt) <= 1) {
+        if (tok.length >= 6 && qt.length >= 5 && editDistance(tok, qt) <= 2) {
           diffs++
           found = i
           break
@@ -210,8 +212,12 @@ function resolveSubjects(question: string): Surface[] {
       }
       qi = found + 1
     }
-    if (ok && diffs <= 2) matches.push({ s, score: s.norm.length * 2 + s.tokens * 2 + s.weight * 3 - 4 })
+    if (ok && diffs <= 2) fuzzy.push({ s, score: s.norm.length * 2 + s.tokens * 2 + s.weight * 3 - 4 })
   }
+  // Exact names win outright; typo-tolerant matches are only consulted when the
+  // question names no known subject exactly, so a fuzzy hit never shadows a real
+  // one.
+  const matches = exact.length ? exact : fuzzy
   matches.sort((a, b) => b.score - a.score)
   const best = new Map<string, Surface>()
   for (const m of matches) if (!best.has(m.s.id)) best.set(m.s.id, m.s)
