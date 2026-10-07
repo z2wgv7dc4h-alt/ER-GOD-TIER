@@ -102,3 +102,25 @@ describe('EntityPanel status wording (Task 144 §1)', () => {
     expect(html).not.toContain('Ahead of you')
   })
 })
+
+describe('EntityPanel boss page order (Task 165 §2)', () => {
+  const boss = entity({ id: 'bosses:margit', factId: 'boss:margit', name: 'Margit, the Fell Omen', category: 'bosses', subtype: 'Great Enemy' })
+
+  it('reduces a boss page to the Lore and Wiki tabs (Where/Related inline)', () => {
+    const html = renderToStaticMarkup(<EntityPanel entity={boss} factId="boss:margit" character={emptyCharacter} />)
+    expect(html).toContain('>Lore<')
+    expect(html).toContain('>Wiki<')
+    expect(html).not.toContain('>Stats<')
+    expect(html).not.toContain('>Where<')
+    expect(html).not.toContain('>Related<')
+  })
+
+  it('keeps all five tabs for a non-boss entity', () => {
+    const html = renderToStaticMarkup(
+      <EntityPanel entity={entity({ id: 'weapons:uchigatana', factId: 'item:uchigatana', name: 'Uchigatana', category: 'weapons', subtype: 'Katana' })} character={emptyCharacter} />,
+    )
+    expect(html).toContain('>Stats<')
+    expect(html).toContain('>Where<')
+    expect(html).toContain('>Related<')
+  })
+})

@@ -19,6 +19,7 @@ import {
 } from './lib/mapEngine'
 import { EntityLink } from './EntityLink'
 import { Thread } from './Thread'
+import { GuidesFor } from './PackData'
 import { factState, useWorkspace, type FactState } from './state'
 import { useCoords } from './lib/coords'
 import { placeLabelsForWorld, usePlaceNames } from './lib/placeNames'
@@ -810,8 +811,8 @@ export function AtlasWorkspace() {
             role="status"
             title={
               embedFailed
-                ? 'Live map embed failed — restart the map engine (npm start) and reload.'
-                : 'Map engine offline (:8099) — start it with npm start.'
+                ? 'Live map embed failed — reload to try again.'
+                : 'The engine files are not in this build — showing the saved map plate.'
             }
           >
             {embedFailed
@@ -1060,6 +1061,9 @@ export function AtlasWorkspace() {
           </p>
         )}
         {selected?.note && <p className="note">{selected.note}</p>}
+
+        {/* Task 165 §10 — the pin's region links out to that area's guide excerpts. */}
+        {selected?.region && <GuidesFor query={selected.region} heading="Guides for this area" />}
 
         {isNoteSelected ? (
           <div className="opts">

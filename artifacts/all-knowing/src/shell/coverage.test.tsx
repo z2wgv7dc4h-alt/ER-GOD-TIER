@@ -14,20 +14,21 @@ vi.mock('../state', async (importOriginal) => {
   return { ...actual, useWorkspace: () => ws.current }
 })
 
-// MeUpdate lazy-loads Reckon; the screenshot/receipts UI is not under test here.
+// MeSetup imports the Setup wizard; its camera/OCR handlers never run under SSR.
 vi.mock('../Reckon', () => ({ ReckonWorkspace: () => null }))
 
 import { demoCharacter, emptyCharacter } from '../data/seed'
 import { applyFacts } from '../lib/infer'
+import { withSetupStep } from '../lib/setupWizard'
 import type { Character, ModuleId, Section, Sub } from '../types'
-import { BuildWorkspace, BuildKits, PvpWorkspace } from '../Build'
+import { BuildWorkspace, BuildKits, BuildCalculator, PvpWorkspace } from '../Build'
 import { Guides } from '../library/Guides'
 import { Gideon } from '../Gideon'
 import { QuestWorkspace } from '../Quests'
 import { JourneyNow } from './JourneyNow'
 import { MeOverview } from './MeOverview'
 import { MeProfiles } from './MeProfiles'
-import { MeUpdate } from './MeUpdate'
+import { MeSetup } from './MeSetup'
 
 function workspace(overrides: {
   character?: Character
@@ -133,6 +134,16 @@ describe('Task 92 coverage: every feature has a home', () => {
     }
   })
 
+  it('row 4b — progression tracking meters live on Tarnished › Overview, not Guides', () => {
+    const overview = render(<MeOverview />, { section: 'me', sub: 'overview' })
+    for (const title of ['Blessing meters', 'Achievement sets', 'Dungeon checklist', 'Fragments &amp; flasks']) {
+      expect(overview, title).toContain(title)
+    }
+    const guides = render(<Guides />, { section: 'library', sub: 'guides' })
+    expect(guides).not.toContain('Blessing meters')
+    expect(guides).not.toContain('Achievement sets')
+  })
+
   it('row 5 — respec, upgrade advice and build hunt are visible panels in Library › Builds', () => {
     const html = render(<BuildWorkspace />, { section: 'library', sub: 'builds' })
     expect(html).toContain('Respec advisor')
@@ -140,11 +151,13 @@ describe('Task 92 coverage: every feature has a home', () => {
     expect(html).toContain('Build hunt')
   })
 
-  it('row 6 — Builds owns the planner, OP kits, damage calc and compare; PvP owns builds and tech', () => {
+  it('row 6 — Kits/Compare owns the kits and compare; Calculator owns the damage calc; PvP owns builds and tech', () => {
     const builds = render(<BuildKits />, { section: 'library', sub: 'builds' })
-    for (const group of ['OP kits', 'Damage calculator', 'Weapon compare']) {
+    for (const group of ['OP kits', 'Weapon compare']) {
       expect(builds, group).toContain(group)
     }
+    const calc = render(<BuildCalculator />, { section: 'library', sub: 'builds' })
+    expect(calc).toContain('Damage calculator')
     const pvp = render(<PvpWorkspace />, { section: 'library', sub: 'pvp' })
     for (const group of ['PvP builds', 'PvP matchups', 'Tech &amp; cheese']) {
       expect(pvp, group).toContain(group)
@@ -160,19 +173,23 @@ describe('Task 92 coverage: every feature has a home', () => {
   })
 
   it('row 8 — Weak to / resists in the Builds matchup', () => {
-    const kit = render(<BuildKits />, { section: 'library', sub: 'builds' })
-    expect(kit).toContain('Weak to / resists')
+    const calc = render(<BuildCalculator />, { section: 'library', sub: 'builds' })
+    expect(calc).toContain('Weak to / resists')
   })
 
-  it('row 9 — every screenshot shot type is listed on Tarnished › Update', () => {
-    const html = render(<MeUpdate />, { section: 'me', sub: 'update' })
+  it('row 9 — every screenshot shot type is listed on Tarnished › Setup', () => {
+    const html = render(<MeSetup />, { section: 'me', sub: 'setup' })
     for (const shot of ['Warp / grace list', 'World map', 'Inventory / Great Runes', 'Equipment screen', 'Item pickup banner', 'Boss remembrance / arena']) {
       expect(html, shot).toContain(shot)
     }
   })
 
-  it('row 10 — goods paste, packets/QR and build codes each have a card on Tarnished › Update', () => {
-    const html = render(<MeUpdate />, { section: 'me', sub: 'update' })
+  it('row 10 — goods paste, packets/QR and build codes each have a card on Tarnished › Setup', () => {
+    const html = render(<MeSetup />, {
+      section: 'me',
+      sub: 'setup',
+      character: withSetupStep(demoCharacter, 'inventory'),
+    })
     expect(html).toContain('Paste item list')
     expect(html).toContain('Share / import')
     expect(html).toContain('Build codes')

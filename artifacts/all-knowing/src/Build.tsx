@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { markers } from './data/seed'
 import { opBuilds } from './knowledge/builds'
 import { pvpBuilds, pvpMatchups } from './knowledge/pvp'
 import { techTips } from './knowledge/tech'
 import { pvpTech } from './knowledge/pvpTech'
 import { OpKitPanel, PvpBuildPanel, PvpMatchupPanel, PvpTechPanel } from './build/KitLibraryPanels'
+import { LevelUpCalculator, LoadoutPresets, SmithingTracker, StatPlanner } from './build/BuildPowerTools'
 import { isCollected, useWorkspace } from './state'
 import { CombatWeakness } from './CombatWeakness'
 import { DamageCalc } from './combat/DamageCalc'
@@ -12,6 +13,7 @@ import { RespecAdvisor } from './RespecAdvisor'
 import { UpgradeAdvisor } from './UpgradeAdvisor'
 import { applyFacts } from './lib/infer'
 import { buildHunt } from './lib/buildHunt'
+import { loadMetaBuilds, metaPageViews, type MetaBuilds } from './lib/metaBuilds'
 import { useCoords } from './lib/coords'
 import { toggleWatch, watchlistOf } from './lib/leftovers'
 import { attackRatingForSlot, loadWeapons } from './lib/ar'
@@ -64,8 +66,61 @@ export function BuildKits() {
   return <BuildRoom view="kits" />
 }
 
+export function BuildCalculator() {
+  return <BuildRoom view="calc" />
+}
+
 export function PvpWorkspace() {
   return <BuildRoom view="pvp" />
+}
+
+/**
+ * Task 164 §9 — the Builds page split into four tabs so the stat editor,
+ * planning advisor, kit/compare library and the numeric calculators no longer
+ * stack into one ~12-screen page. The planner stays lazy so it remains its own
+ * chunk; the other views are already in this module.
+ */
+type BuildsTab = 'your' | 'planning' | 'kits' | 'calc'
+
+const BUILDS_TABS: { id: BuildsTab; label: string; purpose: string }[] = [
+  { id: 'your', label: 'Your build', purpose: 'Your stats, attack rating and the pieces you are still missing.' },
+  { id: 'planning', label: 'Planning', purpose: 'Your detected build, stronger gear and respec plans.' },
+  { id: 'kits', label: 'Kits/Compare', purpose: 'The OP PvE kits and the weapon compare.' },
+  { id: 'calc', label: 'Calculator', purpose: 'Damage, attack rating, stat, level and smithing calculators.' },
+]
+
+const BuildPlannerLazy = lazy(() => import('./library/BuildPlanner').then((m) => ({ default: m.BuildPlanner })))
+
+export function BuildsPage() {
+  const [tab, setTab] = useState<BuildsTab>('your')
+  const current = BUILDS_TABS.find((t) => t.id === tab)
+  return (
+    <div className="builds-page">
+      <div className="subtabs builds-tabs" role="tablist" aria-label="Builds views">
+        {BUILDS_TABS.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            role="tab"
+            aria-selected={tab === t.id}
+            className={tab === t.id ? 'active' : ''}
+            onClick={() => setTab(t.id)}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+      {current && <p className="note builds-tabs-purpose">{current.purpose}</p>}
+      {tab === 'your' && <BuildWorkspace />}
+      {tab === 'planning' && (
+        <Suspense fallback={<p className="note">Loading planner…</p>}>
+          <BuildPlannerLazy />
+        </Suspense>
+      )}
+      {tab === 'kits' && <BuildKits />}
+      {tab === 'calc' && <BuildCalculator />}
+    </div>
+  )
 }
 
 /**
@@ -106,7 +161,49 @@ function KitGroup({
   )
 }
 
-function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
+/**
+ * Task 164 §8 — the scraped Fextralife build/status pages, which were loaded by
+ * `metaBuilds.ts` but rendered nowhere. We show the page title, its link and its
+ * headings; the body stays on Fextralife rather than being copied in.
+ */
+function MetaBuildsCard() {
+  const [doc, setDoc] = useState<MetaBuilds | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  useEffect(() => {
+    let cancelled = false
+    void loadMetaBuilds()
+      .then((d) => { if (!cancelled) setDoc(d) })
+      .catch((err: unknown) => { if (!cancelled) setError(err instanceof Error ? err.message : String(err)) })
+    return () => { cancelled = true }
+  }, [])
+  if (error) {
+    return <p className="note" style={{ marginTop: 8 }}>Fextralife meta unavailable ({error}). Nothing shown rather than guessed.</p>
+  }
+  if (!doc) return <p className="note" style={{ marginTop: 8 }}>Loading Fextralife meta builds…</p>
+  const views = metaPageViews(doc)
+  return (
+    <>
+      <p className="note" style={{ marginTop: 8 }}>
+        Fextralife build and status pages. Headings only; follow the link to read the page.
+      </p>
+      <ul className="list" style={{ marginTop: 8 }}>
+        {views.map((p) => (
+          <li key={p.slug} style={{ display: 'block', cursor: 'default' }}>
+            <a href={p.url} target="_blank" rel="noreferrer">{p.title}</a>
+            {p.headings.length > 0 && (
+              <p className="note" style={{ margin: '4px 0 0' }}>
+                {p.headings.slice(0, 6).join(' · ')}
+                {p.headings.length > 6 ? ` · +${p.headings.length - 6} more` : ''}
+              </p>
+            )}
+          </li>
+        ))}
+      </ul>
+    </>
+  )
+}
+
+function BuildRoom({ view }: { view: 'builds' | 'kits' | 'calc' | 'pvp' }) {
   const { character, setCharacter, focusOnMap, showLeftovers, toggleLeftovers, go } = useWorkspace()
   const coords = useCoords()
   const preview = estimateDefense(character)
@@ -171,42 +268,19 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
     setCharacter({ ...character, stats, level: levelFromStats(stats) })
   }
 
-  if (view === 'kits' || view === 'pvp') {
-    const pvpView = view === 'pvp'
+  if (view === 'pvp') {
     return (
       <div className="split">
         <section className="panel">
-          <div className="kicker">{pvpView ? 'PvP · patch 1.17' : 'PvE kit library'}</div>
+          <div className="kicker">PvP · patch 1.17</div>
           <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>
-            {pvpView
-              ? 'Invade & duel builds · Matchups · Tech'
-              : 'OP kits · Weapon compare · Damage calculator'}
+            Invade &amp; duel builds · Matchups · Tech
           </h3>
-          <p className="note">
-            {pvpView
-              ? 'Invasion and duel builds, matchup counters and PvP tech.'
-              : 'Plan your character, find stronger gear, and browse OP PvE kits.'}
-          </p>
+          <p className="note">Invasion and duel builds, matchup counters and PvP tech.</p>
 
-          {!pvpView && (
-          <KitGroup title="OP kits" count={opBuilds.length}>
-            <OpKitPanel
-              character={character}
-              setCharacter={setCharacter}
-              coords={coords}
-              onShowOnMap={showOnMap}
-            />
-            <p className="note" style={{ marginTop: 8 }}>
-              Kits set stats and a shopping list; each level plan projects the kit to Lv 40/60/100/150.
-            </p>
-          </KitGroup>
-          )}
-
-          {pvpView && (
-          <>
           <KitGroup title="PvP builds · patch 1.17" count={pvpBuilds.length} defaultOpen>
             <p className="note">
-              Invade and duel builds for RL30–150.
+              Invade and duel builds for RL30–150, filterable by mode and level (default: your level).
             </p>
             <details className="kit-sources">
               <summary>Sources</summary>
@@ -233,7 +307,12 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
                 </li>
               </ul>
             </details>
-            <PvpBuildPanel character={character} setCharacter={setCharacter} />
+            <PvpBuildPanel
+              character={character}
+              setCharacter={setCharacter}
+              coords={coords}
+              onShowOnMap={showOnMap}
+            />
           </KitGroup>
 
           <KitGroup title="PvP matchups" count={pvpMatchups.length}>
@@ -258,16 +337,44 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
               ))}
             </ul>
           </KitGroup>
-          </>
-          )}
 
-          {!pvpView && (
+          <KitGroup title="Meta (Fextralife)">
+            <MetaBuildsCard />
+          </KitGroup>
+        </section>
+      </div>
+    )
+  }
+
+  if (view === 'kits' || view === 'calc') {
+    const calcView = view === 'calc'
+    return (
+      <div className="split">
+        <section className="panel">
+          <div className="kicker">{calcView ? 'Build calculator · patch 1.17' : 'PvE kit library'}</div>
+          <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>
+            {calcView
+              ? 'Damage · Attack rating · Stat & smithing calculators'
+              : 'OP kits · Weapon compare'}
+          </h3>
+          <p className="note">
+            {calcView
+              ? 'Run real numbers: per-type damage against an NpcParam target, attack rating from the vendored 1.17 data, and the stat/level/smithing planners.'
+              : 'Plan your character, find stronger gear, and browse OP PvE kits.'}
+          </p>
+
+          {!calcView && (
           <>
-          <KitGroup title="Damage calculator">
-            {/* Task 107 §10: the Task 105 engine — pick a weapon, upgrade and
-                affinity, then a boss or field enemy, and read the per-type
-                damage and the status-proc table. */}
-            <DamageCalc />
+          <KitGroup title="OP kits" count={opBuilds.length}>
+            <OpKitPanel
+              character={character}
+              setCharacter={setCharacter}
+              coords={coords}
+              onShowOnMap={showOnMap}
+            />
+            <p className="note" style={{ marginTop: 8 }}>
+              Kits set stats and a shopping list; each level plan projects the kit to Lv 40/60/100/150.
+            </p>
           </KitGroup>
 
           <KitGroup title="Owned gear" count={character.loadout.length}>
@@ -285,6 +392,30 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
 
           <KitGroup title="Build code">
             <BuildCodeCard />
+          </KitGroup>
+
+          <KitGroup title="Weapon compare">
+            {weapons ? (
+              <WeaponCompare
+                weapons={weapons}
+                stats={character.stats}
+                target={target}
+                targetName={target?.name}
+              />
+            ) : (
+              <p className="note" style={{ marginTop: 8 }}>Loading weapon data…</p>
+            )}
+          </KitGroup>
+          </>
+          )}
+
+          {calcView && (
+          <>
+          <KitGroup title="Damage calculator">
+            {/* Task 107 §10: the Task 105 engine — pick a weapon, upgrade and
+                affinity, then a boss or field enemy, and read the per-type
+                damage and the status-proc table. */}
+            <DamageCalc />
           </KitGroup>
 
           <KitGroup title="Attack rating detail" count={ratings.length}>
@@ -408,17 +539,20 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'pvp' }) {
             </button>
           </KitGroup>
 
-          <KitGroup title="Weapon compare">
-            {weapons ? (
-              <WeaponCompare
-                weapons={weapons}
-                stats={character.stats}
-                target={target}
-                targetName={target?.name}
-              />
-            ) : (
-              <p className="note" style={{ marginTop: 8 }}>Loading weapon data…</p>
-            )}
+          <KitGroup title="Stat planner">
+            <StatPlanner />
+          </KitGroup>
+
+          <KitGroup title="Level-up calculator">
+            <LevelUpCalculator />
+          </KitGroup>
+
+          <KitGroup title="Smithing tracker">
+            <SmithingTracker />
+          </KitGroup>
+
+          <KitGroup title="Loadout presets">
+            <LoadoutPresets />
           </KitGroup>
           </>
           )}

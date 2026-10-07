@@ -17,8 +17,11 @@ import {
   type CombatStats,
 } from '../lib/enemy'
 import { loadBossDrops, type FextBoss } from '../lib/bosses'
+import { resolveEntityId } from '../lib/entityGraph'
 import { useEnrichment } from '../lib/entityEnrich'
-import { bandFor, loadRegionLevels, type RegionLevel } from '../lib/regionLevels'
+import { EntityLink } from '../EntityLink'
+import { GuidesFor } from '../PackData'
+import { WikiText } from '../WikiText'
 import type { Character } from '../types'
 
 /**
@@ -50,22 +53,35 @@ type BestWeapon = {
   damageType: string
 }
 
+/**
+ * Task 165 §3 — one glance line for a boss: what it is weak to and what the
+ * character's best armament actually does after negation. Returns null when the
+ * data holds neither, so an empty fight never prints a template sentence.
+ */
+export function bossGlance(weakLabels: string[], best: { name: string; effective: number } | null): string | null {
+  const parts: string[] = []
+  if (weakLabels.length) parts.push(`Weak to ${weakLabels.join(' / ')}`)
+  if (best) parts.push(`${best.name} does ${best.effective}`)
+  return parts.length ? parts.join(' · ') : null
+}
+
 export function BossFacts({
   factId,
   name,
   region,
   character,
+  onShowOnMap,
 }: {
   factId: string
   name: string
   region?: string
   character: Character
+  onShowOnMap?: () => void
 }) {
   const { targets } = useCombatTargets()
   const { bosses: armoryBosses } = useArmory()
   const record = useEnrichment(factId)
   const [fext, setFext] = useState<FextBoss | null>(null)
-  const [areas, setAreas] = useState<RegionLevel[]>([])
   const [weapons, setWeapons] = useState<Weapon[]>([])
 
   useEffect(() => {
@@ -76,9 +92,6 @@ export function BossFacts({
         const wanted = norm(name)
         setFext(doc.bosses.find((b) => norm(b.name) === wanted) ?? null)
       })
-      .catch(() => { /* optional */ })
-    void loadRegionLevels()
-      .then((doc) => { if (!cancelled) setAreas(doc.areas) })
       .catch(() => { /* optional */ })
     void loadWeapons()
       .then((rows) => { if (!cancelled) setWeapons(rows) })
@@ -98,7 +111,6 @@ export function BossFacts({
   }, [armoryBosses, name])
 
   const resolvedRegion = region || byId.get(canonical)?.region || armory?.region || fext?.locations?.[0]
-  const band = useMemo(() => bandFor(areas, resolvedRegion), [areas, resolvedRegion])
 
   const strategy = useMemo(() => {
     const sections = fext?.sections ?? []
@@ -138,6 +150,9 @@ export function BossFacts({
     [combat],
   )
 
+  const weakLabels = useMemo(() => weak.map((t) => damageTypeLabels[t]), [weak])
+  const glance = bossGlance(weakLabels, best)
+
   if (!combat && !fext && !armory && !record) return null
   const enrichedHp = !combat && record?.stats?.HP
   const enrichedNegation = !combat && record?.stats?.Negation
@@ -151,25 +166,55 @@ export function BossFacts({
 
   return (
     <>
-      {enrichedHp && (
-        <div className="lib-panel-block">
-          <div className="kicker">Combat profile · enriched</div>
-          <div className="lib-attack">
-            <span className="lib-attack-chip">{BASE_HP_LABEL} <strong>{enrichedHp}</strong></span>
-            {enrichedPoise && <span className="lib-attack-chip">Poise <strong>{enrichedPoise}</strong></span>}
-          </div>
-          <p className="note">{BASE_HP_NOTE}</p>
+      {/* Task 165 §3 — the mid-fight glance line, directly under the status
+          strip: weakness and what the equipped armament actually deals. */}
+      {glance && (
+        <div className="lib-panel-block boss-glance">
+          <p className="note boss-glance-line">{glance}</p>
         </div>
       )}
 
-      {enrichedNegation && (
+      {/* §2 block 1 — where / how to reach, inlined from the old Where tab. */}
+      {(resolvedRegion || record?.location || record?.map || armory || fext?.locations?.length || enrichedLocation) && (
         <div className="lib-panel-block">
-          <div className="kicker">Damage negation</div>
-          <p className="note">{enrichedNegation}</p>
+          <div className="kicker">Where to reach it</div>
+          {resolvedRegion && (
+            <p className="note">
+              <strong>Region:</strong> {resolvedRegion}
+            </p>
+          )}
+          {record?.location && <WikiText className="note" text={record.location} />}
+          {fext?.locations?.length ? (
+            <p className="note"><strong>Arena:</strong> {fext.locations.join(' · ')}</p>
+          ) : enrichedLocation ? (
+            <p className="note"><strong>Arena:</strong> {enrichedLocation}</p>
+          ) : null}
+          {record?.map && (
+            <p className="note">
+              <strong>Coords:</strong> {record.map.x}, {record.map.y}
+              {record.map.map ? ` · ${record.map.map}` : ''}
+            </p>
+          )}
+          {armory && (
+            <p className="note">
+              {armory.type ? `${armory.type} · ` : ''}
+              {armory.parryable ? 'Parryable' : armory.parryable === false ? 'Not parryable' : ''}
+              {armory.notes ? `${armory.parryable != null ? ' · ' : ''}${armory.notes}` : ''}
+            </p>
+          )}
+          {onShowOnMap && (
+            <div className="opts">
+              <button type="button" className="chip" onClick={onShowOnMap}>
+                Show arena on map
+              </button>
+            </div>
+          )}
         </div>
       )}
 
-      {combat && (
+      {/* §2 block 2 — one combat profile. NpcParam when there is a real row, else
+          the enriched record; never both (Task 165 §3 dedupe). */}
+      {combat ? (
         <div className="lib-panel-block">
           <div className="kicker">Combat profile · NpcParam</div>
           <div className="lib-attack">
@@ -185,7 +230,17 @@ export function BossFacts({
           </div>
           <p className="note">{BASE_HP_NOTE}</p>
         </div>
-      )}
+      ) : enrichedHp || enrichedNegation || enrichedPoise ? (
+        <div className="lib-panel-block">
+          <div className="kicker">Combat profile · enriched</div>
+          <div className="lib-attack">
+            {enrichedHp && <span className="lib-attack-chip">{BASE_HP_LABEL} <strong>{enrichedHp}</strong></span>}
+            {enrichedPoise && <span className="lib-attack-chip">Poise <strong>{enrichedPoise}</strong></span>}
+          </div>
+          {enrichedNegation && <p className="note">{enrichedNegation}</p>}
+          <p className="note">{BASE_HP_NOTE}</p>
+        </div>
+      ) : null}
 
       {combat && (
         <div className="lib-panel-block">
@@ -223,55 +278,6 @@ export function BossFacts({
         </div>
       )}
 
-      {(band || resolvedRegion) && (
-        <div className="lib-panel-block">
-          <div className="kicker">Recommended level</div>
-          {band ? (
-            <p className="note">
-              <strong>{band.area}</strong> — Lv {band.levelMin}-{band.levelMax}
-              {band.upgradeMin != null ? ` · upgrade +${band.upgradeMin} to +${band.upgradeMax}` : ''}
-            </p>
-          ) : (
-            <p className="note">{resolvedRegion} — no level band in the progress-route data.</p>
-          )}
-        </div>
-      )}
-
-      {(strategy || enrichedStrategy) && (
-        <div className="lib-panel-block">
-          <div className="kicker">Strategy · {strategy?.heading ?? 'Guide'}</div>
-          <p className="note">{strategy?.text ?? enrichedStrategy}</p>
-          {fext?.url && (
-            <p className="note">
-              <a className="ext" href={fext.url} target="_blank" rel="noreferrer">Full fight guide</a>
-            </p>
-          )}
-        </div>
-      )}
-
-      {((!isEncounter && fext?.drops?.length) || enrichedDrops.length > 0) && (
-        <div className="lib-panel-block">
-          <div className="kicker">Drops</div>
-          <div className="lib-scaling">
-            {(isEncounter ? enrichedDrops : fext?.drops ?? enrichedDrops).map((d) => (
-              <span key={d} className="lib-scaling-chip">{d}</span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {(armory || fext?.locations?.length || enrichedLocation) && (
-        <div className="lib-panel-block">
-          <div className="kicker">Arena</div>
-          <p className="note">
-            {armory?.type ? `${armory.type} · ` : ''}
-            {armory?.parryable ? 'Parryable' : armory?.parryable === false ? 'Not parryable' : ''}
-            {armory?.notes ? `${armory.parryable != null ? ' · ' : ''}${armory.notes}` : ''}
-          </p>
-          {fext?.locations?.length ? <p className="note">{fext.locations.join(' · ')}</p> : enrichedLocation ? <p className="note">{enrichedLocation}</p> : null}
-        </div>
-      )}
-
       <div className="lib-panel-block">
         <div className="kicker">Your best weapon vs this boss</div>
         {best ? (
@@ -287,6 +293,38 @@ export function BossFacts({
           <p className="note">No combat profile yet, so no matchup can be computed.</p>
         )}
       </div>
+
+      {/* §2 block 3 — strategy, then the cross-link into the Guides corpus. */}
+      {(strategy || enrichedStrategy) && (
+        <div className="lib-panel-block">
+          <div className="kicker">Strategy · {strategy?.heading ?? 'Guide'}</div>
+          <p className="note">{strategy?.text ?? enrichedStrategy}</p>
+          {fext?.url && (
+            <p className="note">
+              <a className="ext" href={fext.url} target="_blank" rel="noreferrer">Full fight guide</a>
+            </p>
+          )}
+        </div>
+      )}
+
+      <GuidesFor query={name} heading="Guides for this boss" />
+
+      {/* §2 block 5 — drops, each linked to its item page where one resolves. */}
+      {((!isEncounter && fext?.drops?.length) || enrichedDrops.length > 0) && (
+        <div className="lib-panel-block">
+          <div className="kicker">Drops</div>
+          <div className="lib-scaling">
+            {(isEncounter ? enrichedDrops : fext?.drops ?? enrichedDrops).map((d) => {
+              const id = resolveEntityId(d)
+              return id ? (
+                <EntityLink key={d} id={id} className="lib-scaling-chip">{d}</EntityLink>
+              ) : (
+                <span key={d} className="lib-scaling-chip">{d}</span>
+              )
+            })}
+          </div>
+        </div>
+      )}
     </>
   )
 }

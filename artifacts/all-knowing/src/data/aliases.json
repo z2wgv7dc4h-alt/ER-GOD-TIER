@@ -3041,8 +3041,11 @@
   "kind": "boss",
   "fmgName": "Rennala, Queen of the Full Moon",
   "aliases": [
+   "renala",
+   "renalla",
    "rennala",
-   "rennala queen of the full moon"
+   "rennala queen of the full moon",
+   "rennalla"
   ],
   "source": "paramdex-npc"
  },
@@ -3123,7 +3126,9 @@
   "fmgName": "Malenia, Blade of Miquella",
   "aliases": [
    "malenia",
-   "malenia blade of miquella"
+   "malenia blade of miquella",
+   "melania",
+   "waterfowl"
   ],
   "source": "paramdex-npc"
  },
@@ -3157,6 +3162,7 @@
   "kind": "boss",
   "fmgName": "Morgott",
   "aliases": [
+   "margott",
    "morgott",
    "morgott the omen king",
    "omen king"
@@ -4172,6 +4178,7 @@
    "godfrey",
    "godfrey first elden lord",
    "godfrey first elden lord hoarah loux",
+   "goldfrey",
    "hoarah loux",
    "hoarah loux warrior"
   ],
@@ -4197,6 +4204,7 @@
   "aliases": [
    "general radahn",
    "radahn",
+   "radhan",
    "starscourge radahn"
   ],
   "source": "paramdex-npc"
@@ -4218,6 +4226,7 @@
   "kind": "boss",
   "fmgName": "Godrick the Grafted (Stormveil Castle)",
   "aliases": [
+   "godric",
    "godrick",
    "godrick the grafted"
   ],
@@ -4559,6 +4568,7 @@
   "kind": "boss",
   "fmgName": "Messmer the Impaler",
   "aliases": [
+   "mesmer",
    "messmer",
    "messmer the impaler",
    "messmer the impaler boss"
@@ -4619,6 +4629,7 @@
   "fmgName": "Promised Consort Radahn",
   "aliases": [
    "consort radahn",
+   "pcr",
    "promised consort",
    "promised consort radahn",
    "promised consort radahn radahn consort of miquella",
@@ -4848,6 +4859,16 @@
    "erdtree gazing evergaol"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "dungeon:stormveil",
+  "slug": "dungeon:stormveil",
+  "kind": "dungeon",
+  "fmgName": "Stormveil Castle",
+  "aliases": [
+   "stormveil"
+  ],
+  "source": "player-nickname"
  },
  {
   "engineId": "dungeon:subterranean-shunning-grounds",
@@ -49972,6 +49993,16 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:dark-moon-greatsword",
+  "slug": "item:dark-moon-greatsword",
+  "kind": "item",
+  "fmgName": "Dark Moon Greatsword",
+  "aliases": [
+   "darkmoon"
+  ],
+  "source": "player-nickname"
+ },
+ {
   "engineId": "item:death-ritual-spear",
   "slug": "item:death-ritual-spear",
   "kind": "item",
@@ -51488,11 +51519,12 @@
   "engineId": "item:flask-of-wondrous-physick",
   "slug": "item:flask-of-wondrous-physick",
   "kind": "item",
-  "fmgName": "Physick",
+  "fmgName": "Flask of Wondrous Physick",
   "aliases": [
+   "physic",
    "physick"
   ],
-  "source": "game-name-table"
+  "source": "player-nickname"
  },
  {
   "engineId": "item:fleeting-microcosm",
@@ -59248,7 +59280,8 @@
   "aliases": [
    "bog bolt of gransax",
    "bolt of gransax",
-   "gransax"
+   "gransax",
+   "granssax"
   ],
   "source": "names"
  },
@@ -59326,7 +59359,9 @@
   "kind": "item",
   "fmgName": "Nagakiba",
   "aliases": [
-   "nagakiba"
+   "nagakiba",
+   "nagakibas",
+   "nagikiba"
   ],
   "source": "names"
  },
@@ -61965,6 +62000,7 @@
   "fmgName": "Caelid",
   "aliases": [
    "caelid",
+   "calid",
    "redmane",
    "scarlet rot"
   ],
@@ -62305,6 +62341,7 @@
   "aliases": [
    "leyndell",
    "leyndell royal capital",
+   "lyndell",
    "royal capital"
   ],
   "source": "authored"
@@ -62350,6 +62387,7 @@
   "fmgName": "Liurnia of the Lakes",
   "aliases": [
    "lakes",
+   "liurna",
    "liurnia",
    "liurnia lake",
    "liurnia of the lakes",

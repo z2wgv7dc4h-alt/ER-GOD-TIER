@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { matchMeta, metaExcerpts, type MetaBuilds } from './metaBuilds'
+import { matchMeta, metaExcerpts, metaPageViews, type MetaBuilds } from './metaBuilds'
 
 const doc = JSON.parse(
   fs.readFileSync(new URL('../../public/sourced/open/builds-fextralife.json', import.meta.url), 'utf8'),
@@ -17,5 +17,12 @@ describe('fextralife meta builds/status', () => {
   it('matches a status term', () => {
     expect(matchMeta('bl', metaExcerpts(doc))).toEqual([])
     expect(matchMeta('hemorrhage', metaExcerpts(doc)).length).toBeGreaterThan(0)
+  })
+
+  it('builds one display view per page for the Meta card (Task 164 §8)', () => {
+    const views = metaPageViews(doc)
+    expect(views.length).toBe(doc.pages.length)
+    expect(views.every((v) => v.slug && v.title && v.url)).toBe(true)
+    expect(views.some((v) => v.headings.length > 0)).toBe(true)
   })
 })

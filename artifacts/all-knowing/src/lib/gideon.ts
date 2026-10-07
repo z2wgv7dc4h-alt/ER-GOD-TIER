@@ -39,6 +39,7 @@ import { gideonProvider } from './gideonProvider'
 import { askGideonAgent } from './gideonAgent'
 import { buildGrounding, gideonMessages, validateGideonAct } from './gideonLlm'
 import { askGideonWiki } from './gideonWiki'
+import { askGrounded, askGroundedLimits, loadGroundedIndex } from './gideonGrounded'
 import { buildHunt } from './buildHunt'
 import { isDialogueAsk, quoteFor } from './dialogueQuote'
 import { loadDialogueOwners, type DialogueOwners } from './dialogueOwners'
@@ -103,6 +104,12 @@ export type GideonAct = {
    * mutates via `toggleWatch`; the router itself stays pure.
    */
   watch?: string[]
+  /**
+   * Task 168 §2/§3 — set by the offline grounded resolver when the answer was
+   * read straight off the resolved entity's record. A grounded answer is
+   * authoritative: the front end returns it without consulting the wiki.
+   */
+  grounded?: boolean
 }
 
 export type GideonMemory = {
@@ -711,6 +718,19 @@ export function askGideonRouter(
     }
   }
 
+  // Task 168 §2/§3 — offline grounded facet answer. Resolve the entity the
+  // question is actually about from the enriched index + full alias plane, then
+  // lead with the record field the question asks for. Gated to the no-key path
+  // so the online model path and the existing router branches are untouched.
+  if (!hasGideonKey()) {
+    // Out-of-scope first: a co-op/trade request that happens to name a boss
+    // must not be answered as a data lookup.
+    const limit = askGroundedLimits(question)
+    if (limit) return limit
+    const grounded = askGrounded(question, { regionLevels: regionLevelList })
+    if (grounded) return grounded
+  }
+
   // Respec / "use a different weapon" advice: where the points should go.
   if (weapons && /\b(respec|rebirth|larval tear|where should (my )?points|stat allocation|redistribute|different weapon|switch weapons?|change weapon)\b/.test(q)) {
     const adv = respecAdvice(weapons, question, character.stats)
@@ -1091,7 +1111,9 @@ export function askGideonRouter(
   // Build hunt (Task 64): "how do I build X" / "show the X kit" turns the kit into a
   // checklist of missing pieces. The show branch reuses the leftover pin layer by
   // adding the placeable loot ids to the watchlist; nothing is marked collected.
-  if (/\b(kit|how (do|can|should) i (build|make|get)|what do i need|missing (pieces|gear))\b/.test(q)) {
+  // Task 168 §4 — build questions only. This used to include a bare "get", so
+  // every "how do I get <item>" was answered as a build hunt.
+  if (/\b(kit|how (do|can|should) i (build|make)|what do i need (for|to build|to make)|missing (pieces|gear))\b/.test(q)) {
     const pick =
       allBuilds.find((b) => q.includes(b.name.toLowerCase())) ||
       buildFromText(q) ||
@@ -1561,7 +1583,11 @@ export async function askGideon(
     wantsLevels ? loadRegionLevels().then((d) => d.areas).catch(() => undefined) : Promise.resolve(undefined),
   ])
   const regionLevelList = regionLevels
+  // Task 168 §2 — the offline grounded resolver reads the enriched entity index.
+  // Only loaded with no key, so the online model path is byte-for-byte unchanged.
+  if (!hasGideonKey()) await loadGroundedIndex()
   const router = askGideonRouter(question, character, memory, combat, dialogue, placements, medusaSteps, guides, weapons, regionLevelList, area)
+  if (router.grounded) return router
   if (isFastLookup(question, memory, combat ?? cachedBossCombat(), placements, medusaSteps, guides, weapons, regionLevelList)) return router
 
   // Task 133 §4 — the deterministic fallback: answer an open question from the

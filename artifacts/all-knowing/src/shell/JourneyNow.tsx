@@ -218,6 +218,12 @@ export function JourneyNow() {
           </Button>
         </section>
 
+        {/* Task 165 §21 — the tail of "last resort" cards sat below the fold on a
+            phone. They now live behind one "More" disclosure so the goal and its
+            next step own the first paint. */}
+        <details className="now-tail">
+          <summary className="kicker">More — recommendations, misses and the 100% route</summary>
+
         {unset ? (
           <section className="panel">
             <ListRow
@@ -296,6 +302,7 @@ export function JourneyNow() {
         <WatchlistCard />
 
         <MedusaRoute compact collapsedByDefault />
+        </details>
       </div>
 
       {lockPending && (

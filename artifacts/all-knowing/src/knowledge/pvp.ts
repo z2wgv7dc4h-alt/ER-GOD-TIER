@@ -26,8 +26,36 @@ import type { OpBuild } from './builds'
 
 export type PvpMode = 'invade' | 'duel' | 'both'
 
+/** The mode filter on the PvP page: any mode, or one of the three. */
+export type PvpModeFilter = PvpMode | 'all'
+
+/**
+ * Task 164 §4 — an "invade" or "duel" filter also shows builds tagged "both"
+ * (they are played that way); "both" is the strict subset of dual-purpose builds.
+ */
+export function modeMatches(mode: PvpMode, filter: PvpModeFilter): boolean {
+  if (filter === 'all') return true
+  if (filter === 'both') return mode === 'both'
+  return mode === filter || mode === 'both'
+}
+
 /** The four brackets Task 116 §1 groups PvP builds into. */
 export type PvpBracket = 'RL30-50' | 'RL60-90' | 'RL125' | 'RL150'
+
+/** The four brackets in order, for filter chips. */
+export const PVP_BRACKETS: PvpBracket[] = ['RL30-50', 'RL60-90', 'RL125', 'RL150']
+
+/**
+ * Task 164 §4 — the bracket a character level falls into, so the PvP page can
+ * default its filter to "my level". The top band is open-ended (anything above
+ * RL125 is the RL150 arena), and below RL30 clamps to the lowest bracket.
+ */
+export function bracketForLevel(level: number): PvpBracket {
+  if (level <= 50) return 'RL30-50'
+  if (level <= 90) return 'RL60-90'
+  if (level <= 125) return 'RL125'
+  return 'RL150'
+}
 
 /** The full loadout a build wants, as human-readable pieces (not fact ids). */
 export type PvpLoadout = {
@@ -59,7 +87,13 @@ export type PvpBuild = OpBuild & {
   beats: string
   /** The honest weakness. */
   losesTo: string
-  /** Full loadout, beyond the resolvable `kit` ids. */
+  /**
+   * Human-readable reference loadout (weapons, off-hand, armour, spells and
+   * consumables as prose). This is *not* what "Use this build" applies: the
+   * inherited `kit` (`LoadoutSlot[]`) is the resolvable gear the character is
+   * given, and the UI shows it separately so the displayed and applied gear
+   * can never disagree (Task 164 §6).
+   */
   loadout: PvpLoadout
   /** Buff/consume order, first to last. */
   buffOrder: string[]
@@ -1088,3 +1122,26 @@ export const pvpMatchups: PvpMatchup[] = [
     note: 'Jar Cannon arcs and reload from the Fextralife Jar Cannon page.',
   },
 ]
+
+/**
+ * Task 164 §7 — rank the matchup corpus for a build by keyword overlap. A
+ * matchup scores once per alias that matches one of the build's `keywords`
+ * (either direction, so `int` matches `intelligence`); zero-score matchups are
+ * dropped. The ranking is deterministic and stable for equal scores.
+ */
+export function matchupsForBuild(
+  build: PvpBuild,
+  matchups: PvpMatchup[] = pvpMatchups,
+): { matchup: PvpMatchup; score: number }[] {
+  const keywords = build.keywords.map((k) => k.toLowerCase().trim()).filter(Boolean)
+  const scored = matchups.map((matchup) => {
+    let score = 0
+    for (const alias of matchup.aliases) {
+      const a = alias.toLowerCase().trim()
+      if (!a) continue
+      if (keywords.some((k) => k === a || a.includes(k) || k.includes(a))) score += 1
+    }
+    return { matchup, score }
+  })
+  return scored.filter((row) => row.score > 0).sort((a, b) => b.score - a.score)
+}

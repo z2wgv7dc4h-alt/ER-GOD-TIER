@@ -34,6 +34,29 @@ export function metaExcerpts(doc: MetaBuilds): MetaExcerpt[] {
   return out
 }
 
+/** One display row per Fextralife page: its title, link and section headings. */
+export type MetaPageView = {
+  slug: string
+  title: string
+  url: string
+  headings: string[]
+  linkCount: number
+}
+
+/**
+ * Task 164 §8 — the shape the "Meta (Fextralife)" card renders. Pure, so the
+ * card never has to know the scrape's page/section nesting.
+ */
+export function metaPageViews(doc: MetaBuilds): MetaPageView[] {
+  return doc.pages.map((p) => ({
+    slug: p.slug,
+    title: p.title,
+    url: p.url,
+    headings: p.sections.map((s) => s.heading).filter(Boolean),
+    linkCount: p.links.length,
+  }))
+}
+
 export function matchMeta(query: string, rows: MetaExcerpt[], limit = 4): MetaExcerpt[] {
   const q = query.trim().toLowerCase()
   if (q.length < 3) return []

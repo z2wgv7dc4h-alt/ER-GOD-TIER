@@ -4,7 +4,8 @@ import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import viteConfig from '../../vite.config'
 import {
-  ENGINE_URL_PATTERN,
+  ENGINE_EVENTS_PATTERN,
+  ENGINE_STATIC_PATTERN,
   PRECACHE_DATA,
   SOURCED_OFFLINE_CACHE,
   pwaOptions,
@@ -161,13 +162,33 @@ describe('service worker cache strategy', () => {
     expect(new Set(files).size).toBe(6)
   })
 
-  it('never caches the live map engine (offline detection must see real failures)', () => {
-    expect(ENGINE_URL_PATTERN.test('http://127.0.0.1:8099/api/state')).toBe(true)
-    expect(ENGINE_URL_PATTERN.test('http://localhost:5174/engine/api/state')).toBe(true)
-    expect(ENGINE_URL_PATTERN.test('http://localhost:5173/er-map/api/events')).toBe(true)
-    expect(ruleFor('http://127.0.0.1:8099/api/state')?.handler).toBe('NetworkOnly')
+  it('never caches the live SSE stream (real failures must stay visible)', () => {
+    expect(ENGINE_EVENTS_PATTERN.test('http://localhost:5174/engine/api/events')).toBe(true)
+    expect(ENGINE_EVENTS_PATTERN.test('http://localhost:5173/er-map/api/events')).toBe(true)
+    expect(ENGINE_EVENTS_PATTERN.test('http://127.0.0.1:8099/api/events')).toBe(true)
     expect(ruleFor('http://localhost:5174/engine/api/events')?.handler).toBe('NetworkOnly')
     expect(ruleFor('http://localhost:5173/er-map/api/events')?.handler).toBe('NetworkOnly')
+    expect(ruleFor('http://127.0.0.1:8099/api/events')?.handler).toBe('NetworkOnly')
+  })
+
+  it('caches the shipped engine files for offline use (Task 159)', () => {
+    for (const url of [
+      'https://all-knowing.test/engine/js/app.js',
+      'https://all-knowing.test/engine/tiles/M00/6/1/1.webp',
+      'https://all-knowing.test/engine/api/markers',
+      'https://all-knowing.test/engine/tiles/manifest.json',
+    ]) {
+      expect(ENGINE_STATIC_PATTERN.test(url), url).toBe(true)
+      const rule = ruleFor(url)
+      expect(rule?.handler, url).toBe('StaleWhileRevalidate')
+      expect(rule?.options?.cacheName, url).toBe(SOURCED_OFFLINE_CACHE)
+    }
+    // The SSE rule wins over the static catch-all, so the stream is never cached.
+    expect(ruleFor('https://all-knowing.test/engine/api/events')?.handler).toBe('NetworkOnly')
+  })
+
+  it('never sweeps the engine tiles into the install precache', () => {
+    expect(pwaOptions.workbox?.globIgnores).toContain('**/engine/**')
   })
 })
 

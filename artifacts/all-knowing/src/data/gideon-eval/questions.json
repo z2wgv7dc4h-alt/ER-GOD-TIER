@@ -1,0 +1,4111 @@
+[
+  {
+    "id": "q001",
+    "type": "where-is",
+    "q": "- Need help at West Capital Rampart - Mini Boss - Location at Grace",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "grace:110005"
+      ],
+      "mustInclude": [
+        "Leyndell, Royal Capital"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q002",
+    "type": "out-of-scope",
+    "q": "looking for coop help with the watchdog in Stormfoot Catacombs .. I just want my runes back and figure out where I can spend them.",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q003",
+    "type": "where-is",
+    "q": ". Where is dragonlord placidusax?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:placidusax"
+      ],
+      "mustInclude": [
+        "Crumbling Farum Azula"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q004",
+    "type": "out-of-scope",
+    "q": "I can’t find anyone with the stakes can someone help me? Password will be “mohg” all lowercase",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q005",
+    "type": "where-is",
+    "q": "Im on my first play through of the game, at Rennala. Does anyone know where to get, or have that cool blood katana I've seen people use?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:rennala"
+      ],
+      "mustInclude": [
+        "Academy of Raya Lucaria"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q006",
+    "type": "where-is",
+    "q": "Heyyyy! I was wondering if I could find some people to help with the Godskin duo boss fight? I’m really struggling and I’d love some?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:godskin-duo"
+      ],
+      "mustInclude": [
+        "Crumbling Farum Azula"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q007",
+    "type": "out-of-scope",
+    "q": "Help me rebuild my original Tarnished on 2... 🙌 Multiplayer Password: Humding Location: Church Of Elleh, Red Summon Sign",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q008",
+    "type": "where-is",
+    "q": "Im at outer wall in Altus and just finished Ranni’s questline. Where should I focus my points from now on for a mix of magic and melee? I?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "grace:outer-wall"
+      ],
+      "mustInclude": [
+        "Capital Outskirts"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q009",
+    "type": "where-is",
+    "q": "I’m planning a rl 11 character (or max 21) and I need bot Marika and Radagon soreseal. How much is the amount of pain I will find with?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "npc:queen-marika-the-eternal"
+      ],
+      "mustInclude": [
+        "Stone Platform"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q010",
+    "type": "where-is",
+    "q": "Mine is the golden hippopotamus, they have a giant rhino looking thing that grows giant porcupine spikes. WHERE THE FUCK IS THE?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "hunt:golden-hippopotamus"
+      ],
+      "mustInclude": [
+        "Scadu Altus"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q011",
+    "type": "where-is",
+    "q": "Where is patches",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "hunt:patches"
+      ],
+      "mustInclude": [
+        "Limgrave"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q012",
+    "type": "where-is",
+    "q": "Can someone help me with varrè's quest? I have to invade 3 player and I cant find any, it's because I play on isn't it?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "invader:varre"
+      ],
+      "mustInclude": [
+        "Mohgwyn"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q013",
+    "type": "boss-location",
+    "q": "Where is the normal Runebear in Rauh Base that people claim is insanely overpowered?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:runebear"
+      ],
+      "mustInclude": [
+        "Weeping Peninsula"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q014",
+    "type": "boss-location",
+    "q": "Where is the logical next location after defeating Midra?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "boss:midra"
+      ],
+      "mustInclude": [
+        "Abyssal Woods"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q015",
+    "type": "boss-location",
+    "q": "I'm trying to do sellens questline but I can't find jerren. I had spoken to him after the radahn fight at the castle a while before doing?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:radahn"
+      ],
+      "mustInclude": [
+        "Caelid"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q016",
+    "type": "boss-location",
+    "q": "Did you find maliketh harder or easier than Mohg?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:maliketh"
+      ],
+      "mustInclude": [
+        "Crumbling Farum Azula"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q017",
+    "type": "boss-location",
+    "q": "Where do you go after Promised Consort? Lost and lots of questions",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:consort"
+      ],
+      "mustInclude": [
+        "Enir-Ilim"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q018",
+    "type": "boss-location",
+    "q": "where is Glintstone Dragon Adula located",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:adula"
+      ],
+      "mustInclude": [
+        "Liurnia"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q019",
+    "type": "boss-location",
+    "q": "where do i find Glintstone Dragon Adula (Liurnia of the Lakes)",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:adula--liurnia-of-the-lakes"
+      ],
+      "mustInclude": [
+        "Liurnia of the Lakes"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q020",
+    "type": "boss-location",
+    "q": "where is the Glintstone Dragon Adula (Moonlight Altar) boss",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:adula--moonlight-altar"
+      ],
+      "mustInclude": [
+        "Moonlight Altar"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q021",
+    "type": "boss-location",
+    "q": "where is Flying Dragon Agheel located",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:agheel"
+      ],
+      "mustInclude": [
+        "Limgrave"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q022",
+    "type": "boss-location",
+    "q": "where do i find Alabaster Lord",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:alabaster-lord"
+      ],
+      "mustInclude": [
+        "Liurnia of the Lakes"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q023",
+    "type": "boss-location",
+    "q": "where is the Ancestor Spirit boss",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:ancestor-spirit"
+      ],
+      "mustInclude": [
+        "Siofra River"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q024",
+    "type": "boss-location",
+    "q": "where is Ancient Hero of Zamor located",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:ancient-hero-zamor"
+      ],
+      "mustInclude": [
+        "Mountaintops"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q025",
+    "type": "item-location",
+    "q": "cannot find this Scadutree Fragment??",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "item:shadow-realm-blessing"
+      ],
+      "mustInclude": [
+        "Gravesite Plain"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q026",
+    "type": "item-location",
+    "q": "What is the best DEX Spear (Not Great Speat) I can find before I get to Bolt of Gransax? 1. No, I am not rushing to Bolt of Gransax 2. No,?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "item:bolt-of-gransax"
+      ],
+      "mustInclude": [
+        "Leyndell"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q027",
+    "type": "item-location",
+    "q": "Where to put surplus levels for my Darkmoon Greatsword PVE build?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "item:greatsword"
+      ],
+      "mustInclude": [
+        "Caelid"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q028",
+    "type": "item-location",
+    "q": "I want to use moonveil sword in elden ring tell me how and where can i get it easily",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "item:moonveil"
+      ],
+      "mustInclude": [
+        "Gael Tunnel",
+        "Magma Wyrm"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q029",
+    "type": "item-location",
+    "q": "cannot find this mob on wiki, do these boys drop anything outside Human Bone Shard?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "item:human-bone-shard"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q030",
+    "type": "item-location",
+    "q": "Could anyone help me find a good strenght/faith weapon i can use black flame blade incantation on in Elden Ring?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "item:black-flame-blade"
+      ],
+      "mustInclude": [
+        "Mountaintops of the Giants",
+        "Leyndell, Royal Capital"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q031",
+    "type": "item-location",
+    "q": "Does anyone else find it easier to parry with a dagger than a shield?",
+    "origin": "real:reddit:EldenRingPVP",
+    "expected": {
+      "ids": [
+        "item:dagger"
+      ],
+      "mustInclude": [
+        "Twin Maiden Husks",
+        "Roundtable Hold"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q032",
+    "type": "item-location",
+    "q": "Where’s my Slicer Parry? 😭",
+    "origin": "real:reddit:EldenRingPVP",
+    "expected": {
+      "ids": [
+        "item:parry"
+      ],
+      "mustInclude": [
+        "Bernahl's Bell Bearing",
+        "Smithing Master Hewg"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q033",
+    "type": "item-location",
+    "q": "Taunter’s tongue what is the perfect level to play at where I’m being constantly invaded as I play throughout the game through new game?",
+    "origin": "real:reddit:EldenRingPVP",
+    "expected": {
+      "ids": [
+        "item:taunter-s-tongue"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q034",
+    "type": "item-location",
+    "q": "where do i find Abandoned Merchant's Bell Bearing",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:abandoned-merchant-s-bell-bearing"
+      ],
+      "mustInclude": [
+        "Merchant - Siofra River",
+        "Abandoned Merchant"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q035",
+    "type": "item-location",
+    "q": "where is About Adding Affinities",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:about-adding-affinities"
+      ],
+      "mustInclude": [
+        "Whetstone Knife",
+        "Gatefront Ruins"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q036",
+    "type": "item-location",
+    "q": "location of About Adding Skills",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:about-adding-skills"
+      ],
+      "mustInclude": [
+        "Whetstone Knife",
+        "Gatefront Ruins"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q037",
+    "type": "npc-location",
+    "q": "What is this dragon doing here, and where is Alexander?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "npc:alexander-warrior-jar"
+      ],
+      "mustInclude": [
+        "Crumbling Farum Azula"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q038",
+    "type": "npc-location",
+    "q": "Please help a Tarnished find Ranni, Blaidd and Iji",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "npc:blaidd"
+      ],
+      "mustInclude": [
+        "Limgrave"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q039",
+    "type": "npc-location",
+    "q": "Is there any where I can get a good goldmask model for unity",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "npc:goldmask"
+      ],
+      "mustInclude": [
+        "Altus Plateau"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q040",
+    "type": "out-of-scope",
+    "q": "Does anyone else find it frustrating that close matches seem to be decided by whose death animation is longest?",
+    "origin": "real:reddit:EldenRingPVP",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q041",
+    "type": "npc-location",
+    "q": "where is Abandoned Merchant",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "npc:abandoned-merchant"
+      ],
+      "mustInclude": [
+        "Siofra River"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q042",
+    "type": "npc-location",
+    "q": "where can i find Alexander, Warrior Jar",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "npc:alexander-warrior-jar"
+      ],
+      "mustInclude": [
+        "Crumbling Farum Azula"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q043",
+    "type": "npc-location",
+    "q": "where do i meet Anastasia, Tarnished-Eater",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "npc:anastasia-tarnished-eater"
+      ],
+      "mustInclude": [
+        "Consecrated Snowfield"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q044",
+    "type": "npc-location",
+    "q": "where is Ancient Dragon Gransax",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "npc:ancient-dragon-gransax"
+      ],
+      "mustInclude": [
+        "Leyndell, Royal Capital"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q045",
+    "type": "npc-location",
+    "q": "where can i find Ancient Dragon Knight",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "npc:ancient-dragon-knight"
+      ],
+      "mustInclude": [
+        "Shadow of the Erdtree"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q046",
+    "type": "npc-location",
+    "q": "where do i meet Arbor Sentinel",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "npc:arbor-sentinel"
+      ],
+      "mustInclude": [
+        "Liurnia of the Lakes"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q047",
+    "type": "npc-location",
+    "q": "where is Asimi, Silver Tear",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "npc:asimi-silver-tear"
+      ],
+      "mustInclude": [
+        "Limgrave"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q048",
+    "type": "npc-location",
+    "q": "where can i find Birac",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "npc:birac"
+      ],
+      "mustInclude": [
+        "Mountaintops of the Giants"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q049",
+    "type": "how-to-get",
+    "q": "How to get maximum damage output from the Claymore?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "item:claymore"
+      ],
+      "mustInclude": [
+        "Weeping Peninsula",
+        "Castle Morne"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q050",
+    "type": "how-to-get",
+    "q": "How do I get somber smithing stone 7?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "item:somber-smithing-stone-7"
+      ],
+      "mustInclude": [
+        "Twin Maiden Husks"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q051",
+    "type": "how-to-get",
+    "q": "How to get Bandit's curved sword ?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "item:bandit-s-curved-sword"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q052",
+    "type": "how-to-get",
+    "q": "How to obtain the blood-stained knife (not Reduvia) ?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "item:reduvia"
+      ],
+      "mustInclude": [
+        "Bloody Finger Nerijus",
+        "Bloody Finger"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q053",
+    "type": "how-to-get",
+    "q": "are you able to obtain the overhead stance ash of war within the base game map with the tarnished edition upgrade?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "item:overhead-stance"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q054",
+    "type": "how-to-get",
+    "q": "Rune Arc how to get more co-op opportunities?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "item:rune-arc"
+      ],
+      "mustInclude": [
+        "Host of Fingers",
+        "Rune Arc"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q055",
+    "type": "how-to-get",
+    "q": "how do i get Abandoned Merchant's Bell Bearing",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:abandoned-merchant-s-bell-bearing"
+      ],
+      "mustInclude": [
+        "Merchant - Siofra River",
+        "Abandoned Merchant"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q056",
+    "type": "how-to-get",
+    "q": "how can i get About Adding Affinities",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:about-adding-affinities"
+      ],
+      "mustInclude": [
+        "Whetstone Knife",
+        "Gatefront Ruins"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q057",
+    "type": "how-to-get",
+    "q": "where do i get About Adding Skills",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:about-adding-skills"
+      ],
+      "mustInclude": [
+        "Whetstone Knife",
+        "Gatefront Ruins"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q058",
+    "type": "how-to-get",
+    "q": "how do i get About Birdseye Telescopes",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:about-birdseye-telescopes"
+      ],
+      "mustInclude": [
+        "Telescope"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q059",
+    "type": "how-to-get",
+    "q": "how can i get About Bows",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:about-bows"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q060",
+    "type": "how-to-get",
+    "q": "where do i get About Combat with Spirit Ashes",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:about-combat-with-spirit-ashes"
+      ],
+      "mustInclude": [
+        "Caelid Colosseum",
+        "Spirit Ashes"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q061",
+    "type": "navigation",
+    "q": "how do I get to this part of the Land of Shadow?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "region:shadow"
+      ],
+      "mustInclude": [
+        "Gravesite Plain"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q062",
+    "type": "navigation",
+    "q": "HELP, how do I get the the upper-upper side of Siofra River?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "region:siofra-river"
+      ],
+      "mustInclude": [
+        "Mistwood",
+        "Caelid"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q063",
+    "type": "navigation",
+    "q": "How to get to these two items in volcano manor?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "dungeon:volcano-manor"
+      ],
+      "mustInclude": [
+        "Volcano Manor"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q064",
+    "type": "navigation",
+    "q": "Is it possible for Rya to take you to Volcano Manor if you get to Altus through the Abductor Virgin?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "dungeon:volcano-manor"
+      ],
+      "mustInclude": [
+        "Volcano Manor"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q065",
+    "type": "navigation",
+    "q": "Is that a crucible knight? How do I get there?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "hunt:crucible-knight"
+      ],
+      "mustInclude": [
+        "Limgrave"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q066",
+    "type": "navigation",
+    "q": "How do I get that item on the cliff in Deeproot Depths?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "dungeon:deeproot-depths"
+      ],
+      "mustInclude": [
+        "Deeproot Depths"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q067",
+    "type": "navigation",
+    "q": "I despise having to open the pouch to get to torrent…any or successful map that makes it one button? Using Nintendo 2 Pro Controller and?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q068",
+    "type": "navigation",
+    "q": "Fastest way to get summoned for Malenia?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:malenia"
+      ],
+      "mustInclude": [
+        "Miquella's Haligtree"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q069",
+    "type": "navigation",
+    "q": "i need some help with mohg to get to the dlc",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:mohg"
+      ],
+      "mustInclude": [
+        "Mohgwyn Dynasty Mausoleum"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q070",
+    "type": "navigation",
+    "q": "Help tryna get to malenia",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:malenia"
+      ],
+      "mustInclude": [
+        "Miquella's Haligtree"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q071",
+    "type": "navigation",
+    "q": "How Can I Get the Items Inside The Tents Beneath Forsaken Depths",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "grace:350002"
+      ],
+      "mustInclude": [
+        "Subterranean Shunning-Grounds"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q072",
+    "type": "out-of-scope",
+    "q": "Can someone help me reach leda before I crash out",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q073",
+    "type": "how-to-beat",
+    "q": ": Does anyone know any tips to beat Devonia in NG+5?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:crucible-knight-devonia"
+      ],
+      "mustInclude": [
+        "Ancient Ruins of Rauh"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q074",
+    "type": "how-to-beat",
+    "q": "Any tips on defeating golden shade Godfrey ?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:godfrey"
+      ],
+      "mustInclude": [
+        "Leyndell, Ashen Capital"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q075",
+    "type": "how-to-beat",
+    "q": "Promised consort Radhan : How do I beat this guy (phase 2) ?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "boss:consort"
+      ],
+      "mustInclude": [
+        "Enir-Ilim"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q076",
+    "type": "how-to-beat",
+    "q": "Stuck on Rellana, any advice?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "boss:rennala-sote"
+      ],
+      "mustInclude": [
+        "Gravesite Plain"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q077",
+    "type": "how-to-beat",
+    "q": "Tips for Messmer?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:messmer"
+      ],
+      "mustInclude": [
+        "Scadu Altus"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q078",
+    "type": "how-to-beat",
+    "q": "Hey guys any recommendations for my build? I’m stuck on Soldier of Godrick help plz",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "hunt:soldier-of-godrick"
+      ],
+      "mustInclude": [
+        "Limgrave"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q079",
+    "type": "how-to-beat",
+    "q": "Tips For Rellana?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:rennala-sote"
+      ],
+      "mustInclude": [
+        "Gravesite Plain"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q080",
+    "type": "out-of-scope",
+    "q": "Any tips on making custom fan covers for my bfs surprise Malenia pc build?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q081",
+    "type": "how-to-beat",
+    "q": "How do i beat leda and her allies at rl1 + 0 blessing?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:needle-knight-leda"
+      ],
+      "mustInclude": [
+        "Shadow of the Erdtree"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q082",
+    "type": "how-to-beat",
+    "q": "Tips for mastering consort radahn?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:consort"
+      ],
+      "mustInclude": [
+        "Enir-Ilim"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q083",
+    "type": "how-to-beat",
+    "q": "Tips to fight fire Giant?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:fire-giant"
+      ],
+      "mustInclude": [
+        "Mountaintops of the Giants"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q084",
+    "type": "how-to-beat",
+    "q": "I think I can't beat Maliketh ever again, except for with luck. Am I missing something?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:maliketh"
+      ],
+      "mustInclude": [
+        "Crumbling Farum Azula"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q085",
+    "type": "out-of-scope",
+    "q": "Psx can i have a rune drop? Will be a mule or give karma",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q086",
+    "type": "drops",
+    "q": "Coded sword drop? I didn’t grab it before beating maliketh",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:maliketh"
+      ],
+      "mustInclude": [
+        "Remembrance of the Black Blade",
+        "N/A"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q087",
+    "type": "out-of-scope",
+    "q": "Is anyone able to drop the divine beast armor set for me please 🙏. On",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q088",
+    "type": "drops",
+    "q": "what does Glintstone Dragon Adula drop",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:adula"
+      ],
+      "mustInclude": [
+        "Adula's Moonblade",
+        "3x Dragon Heart"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q089",
+    "type": "drops",
+    "q": "what do i get from Glintstone Dragon Adula (Liurnia of the Lakes)",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:adula--liurnia-of-the-lakes"
+      ],
+      "mustInclude": [
+        "Adula's Moonblade",
+        "Dragon Heart"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q090",
+    "type": "drops",
+    "q": "what are Glintstone Dragon Adula (Moonlight Altar) drops",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:adula--moonlight-altar"
+      ],
+      "mustInclude": [
+        "Adula's Moonblade",
+        "Dragon Heart"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q091",
+    "type": "drops",
+    "q": "what does Flying Dragon Agheel drop",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:agheel"
+      ],
+      "mustInclude": [
+        "Dragon Heart",
+        "Unlocks Agheel's Flame"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q092",
+    "type": "drops",
+    "q": "what do i get from Alabaster Lord",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:alabaster-lord"
+      ],
+      "mustInclude": [
+        "Meteorite"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q093",
+    "type": "drops",
+    "q": "what are Ancestor Spirit drops",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:ancestor-spirit"
+      ],
+      "mustInclude": [
+        "Ancestral Follower Ashes"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q094",
+    "type": "drops",
+    "q": "what does Ancient Hero of Zamor drop",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:ancient-hero-zamor"
+      ],
+      "mustInclude": [
+        "Radagon's Scarseal",
+        "Zamor Curved Sword"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q095",
+    "type": "drops",
+    "q": "what do i get from Ancient Hero of Zamor (Giant-Conquering Hero's Grave)",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:ancient-hero-zamor--giant-conquering-hero-s-grave"
+      ],
+      "mustInclude": [
+        "Zamor Curved Sword",
+        "Zamor Set"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q096",
+    "type": "drops",
+    "q": "what are Ancient Hero of Zamor (Sainted Hero's Grave) drops",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:ancient-hero-zamor--sainted-hero-s-grave"
+      ],
+      "mustInclude": [
+        "Ancient Dragon Knight Kristoff"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q097",
+    "type": "level",
+    "q": "( )Am I ready for Raya Lucaria?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "region:academy-of-raya-lucaria"
+      ],
+      "mustInclude": [
+        "Academy of Raya Lucaria"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q098",
+    "type": "level",
+    "q": "what level for Abandoned Ailing Village",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "region:abandoned-ailing-village"
+      ],
+      "mustInclude": [
+        "Abandoned Ailing Village"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q099",
+    "type": "level",
+    "q": "recommended level for Abandoned Cave",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "region:abandoned-cave"
+      ],
+      "mustInclude": [
+        "Abandoned Cave"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q100",
+    "type": "level",
+    "q": "what level should i be for Abandoned Church",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "region:abandoned-church"
+      ],
+      "mustInclude": [
+        "Abandoned Church"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q101",
+    "type": "level",
+    "q": "what level for Abandoned Coffin",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "region:abandoned-coffin"
+      ],
+      "mustInclude": [
+        "Abandoned Coffin"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q102",
+    "type": "level",
+    "q": "recommended level for Abyssal Woods",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "region:abyssal-woods"
+      ],
+      "mustInclude": [
+        "Abyssal Woods"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q103",
+    "type": "level",
+    "q": "what level should i be for Academy Crystal Cave",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "region:academy-crystal-cave"
+      ],
+      "mustInclude": [
+        "Academy Crystal Cave"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q104",
+    "type": "level",
+    "q": "what level for Academy Gate Town",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "region:academy-gate-town"
+      ],
+      "mustInclude": [
+        "Academy Gate Town"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q105",
+    "type": "level",
+    "q": "recommended level for Academy of Raya Lucaria",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "region:academy-of-raya-lucaria"
+      ],
+      "mustInclude": [
+        "Academy of Raya Lucaria"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q106",
+    "type": "level",
+    "q": "what level should i be for Agheel Lake",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "region:agheel-lake"
+      ],
+      "mustInclude": [
+        "Agheel Lake"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q107",
+    "type": "level",
+    "q": "what level for Ailing Village",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "region:ailing-village"
+      ],
+      "mustInclude": [
+        "Ailing Village"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q108",
+    "type": "level",
+    "q": "recommended level for Ainsel River",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "region:ainsel-river"
+      ],
+      "mustInclude": [
+        "Ainsel River",
+        "50",
+        "60"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q109",
+    "type": "what-next",
+    "q": "Greatsword for breaking poise, misericorde for riposting. What should I do next?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "item:greatsword"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q110",
+    "type": "what-next",
+    "q": "Romina, Messmer, Divine Beast and Rellana down. What now?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:divine-beast--belurat-tower-settlement"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q111",
+    "type": "what-next",
+    "q": "After I beat the hippo in the Main Gate Plaza, I go summon cooperators but can’t go anywhere. What am I doing wrong. Why am I allowed to?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "grace:shadow-keep"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q112",
+    "type": "what-next",
+    "q": "what should i do after Glintstone Dragon Adula",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:adula"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q113",
+    "type": "what-next",
+    "q": "whats next after Glintstone Dragon Adula (Liurnia of the Lakes)",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:adula--liurnia-of-the-lakes"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q114",
+    "type": "what-next",
+    "q": "what should i do once i beat Glintstone Dragon Adula (Moonlight Altar)",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:adula--moonlight-altar"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q115",
+    "type": "what-next",
+    "q": "what should i do after Flying Dragon Agheel",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:agheel"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q116",
+    "type": "what-next",
+    "q": "whats next after Alabaster Lord",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:alabaster-lord"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q117",
+    "type": "what-next",
+    "q": "what should i do once i beat Ancestor Spirit",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:ancestor-spirit"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q118",
+    "type": "what-next",
+    "q": "what should i do after Ancient Hero of Zamor",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:ancient-hero-zamor"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q119",
+    "type": "what-next",
+    "q": "whats next after Ancient Hero of Zamor (Giant-Conquering Hero's Grave)",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:ancient-hero-zamor--giant-conquering-hero-s-grave"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q120",
+    "type": "what-next",
+    "q": "what should i do once i beat Ancient Hero of Zamor (Sainted Hero's Grave)",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "boss:ancient-hero-zamor--sainted-hero-s-grave"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q121",
+    "type": "npc-quest",
+    "q": "millicent quest line glitched??",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "line:millicent"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q122",
+    "type": "npc-quest",
+    "q": "why isn't patches giving me the letter to continue the quest?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "line:patches"
+      ],
+      "mustInclude": [
+        "Liurnia of the Lakes"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q123",
+    "type": "npc-quest",
+    "q": "I need help with progressing Millicent's Questline. Am in the Halitree area and I have to beat the tree in that pool of scarlet rot",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "line:millicent"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q124",
+    "type": "npc-quest",
+    "q": "what is the next step of the Iron Fist Alexander quest",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "line:alexander"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q125",
+    "type": "npc-quest",
+    "q": "how do i finish Sir Ansbach",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "line:ansbach"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q126",
+    "type": "npc-quest",
+    "q": "where do i continue Fastest route: Elden Lord",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "line:blitz-lord"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q127",
+    "type": "npc-quest",
+    "q": "what is the next step of the Fastest route: Age of Stars quest",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "line:blitz-stars"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q128",
+    "type": "npc-quest",
+    "q": "how do i finish Boc the Seamster",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "line:boc"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q129",
+    "type": "npc-quest",
+    "q": "where do i continue Brother Corhyn & Goldmask",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "line:corhyn"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q130",
+    "type": "npc-quest",
+    "q": "what is the next step of the D, Hunter of the Dead quest",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "line:d-hunter"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q131",
+    "type": "npc-quest",
+    "q": "how do i finish Knight Diallos",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "line:diallos"
+      ],
+      "mustInclude": [
+        "Liurnia of the Lakes"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q132",
+    "type": "npc-quest",
+    "q": "where do i continue Dung Eater",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "line:dung-eater"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q133",
+    "type": "build-advice",
+    "q": "Nagakiba vs Rivers of Blood build, which one is the best in terms of these stats?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:rivers"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q134",
+    "type": "build-advice",
+    "q": "Melee / Dragon Communion build and stats?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:dragon-communion"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q135",
+    "type": "build-advice",
+    "q": "Wing of Astel build feedback?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:wing-of-astel"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q136",
+    "type": "build-advice",
+    "q": "Mainhand weapon for Dragon Communion build?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:dragon-communion"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q137",
+    "type": "build-advice",
+    "q": "Is it possible to have an euporia and wing of astel build ?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:wing-of-astel"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q138",
+    "type": "build-advice",
+    "q": "Rl1 dragon communion build ?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:dragon-communion"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q139",
+    "type": "build-advice",
+    "q": "How do i improve my blasphemous blade build?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:blasphemous"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q140",
+    "type": "build-advice",
+    "q": "What would be the best dragon communion build?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:dragon-communion"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q141",
+    "type": "build-advice",
+    "q": "Which greatsword has good frostbite build up to dual wield with a blasphemous blade?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:blasphemous"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q142",
+    "type": "build-advice",
+    "q": "Best dark moon greatsword build?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:dark-moon"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q143",
+    "type": "build-advice",
+    "q": "Trying to make a rivers of blood bleed build, have I overlooked anything?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:rivers"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q144",
+    "type": "build-advice",
+    "q": "Which one-handed weapon thematically fits best for a dragon communion build?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "build:dragon-communion"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q145",
+    "type": "class-build",
+    "q": "Can anyone help me to build a character to use relanna twin blade and sword of night and flame",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:sword-night-flame"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q146",
+    "type": "class-build",
+    "q": "Wanted to make a build cantered around sword of night and flame and rellana’s twin blades want good damage on spells, incants, aow and?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:sword-night-flame"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q147",
+    "type": "class-build",
+    "q": "Need stats for Blasphemous blade Build for (Level 200)",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:blasphemous"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q148",
+    "type": "class-build",
+    "q": "RL 150 Eleonora Build Help",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:eleonora"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q149",
+    "type": "class-build",
+    "q": "Best spells for Dragon Communion build? (aka Fire or Lightning?)",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:dragon-communion"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q150",
+    "type": "class-build",
+    "q": "Coop full game + DLC hybrid caster melee build - Faith/arc or sword of night and flame?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:sword-night-flame"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q151",
+    "type": "class-build",
+    "q": "Blasphemous blade build help",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:blasphemous"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q152",
+    "type": "class-build",
+    "q": "I want help with my blasphemous blade build",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:blasphemous"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q153",
+    "type": "class-build",
+    "q": "What should I change in my dark moon greatsword build",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:dark-moon"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q154",
+    "type": "class-build",
+    "q": "Rate my post morgott build (dont ask me why i have the dragon communion seal without any dragon communion spells)",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "build:dragon-communion"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q155",
+    "type": "class-build",
+    "q": "I made Elden Ring too easy with Blasphemous Blade , Looking for a build that makes me earn my boss kills going into Shadow of the Erdtree",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "build:blasphemous"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q156",
+    "type": "class-build",
+    "q": "How is this for my Blasphemous Blade build?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "build:blasphemous"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q157",
+    "type": "recommend",
+    "q": "whats the best Talisman setup for the Blasphemous blade?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:blasphemous"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q158",
+    "type": "recommend",
+    "q": "Anyone know of a good build for blasphemous blade?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "build:blasphemous"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q159",
+    "type": "recommend",
+    "q": "What is some of the best armour combos for the blasphemous blade.",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "build:blasphemous"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q160",
+    "type": "recommend",
+    "q": "what weapon do you recommend for Comet Azur glass",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "build:azur"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q161",
+    "type": "recommend",
+    "q": "what should i use for a Black Flame Godslayer build",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "build:blackflame"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q162",
+    "type": "recommend",
+    "q": "recommend weapons for Blasphemous Blade",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "build:blasphemous"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q163",
+    "type": "recommend",
+    "q": "what weapon do you recommend for Bloodfiend's Arm",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "build:bloodfiends-arm"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q164",
+    "type": "recommend",
+    "q": "what should i use for a Bolt of Gransax sniper build",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "build:bolt-gransax"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q165",
+    "type": "recommend",
+    "q": "recommend weapons for Dark Moon Greatsword",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "build:dark-moon"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q166",
+    "type": "recommend",
+    "q": "what weapon do you recommend for Death's Poker frost",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "build:deaths-poker"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q167",
+    "type": "recommend",
+    "q": "what should i use for a Dragon Communion build",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "build:dragon-communion"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q168",
+    "type": "recommend",
+    "q": "recommend weapons for Eleonora's Poleblade",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "build:eleonora"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q169",
+    "type": "compare",
+    "q": "What’s better, black blade with destined death or godslayer’s with queens black flame?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "item:black-blade"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q170",
+    "type": "compare",
+    "q": "Which is better backhand blades keen with bloodflame blade or bleed affinity?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "item:backhand-blade"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q171",
+    "type": "compare",
+    "q": "Which holy bonk is better?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "damage:holy"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q172",
+    "type": "compare",
+    "q": "Notice how mohg’s self confidence makes him better than morgott in every way possible?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:mohg"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q173",
+    "type": "compare",
+    "q": "Crumbling Farum Azula vs Fire Giant and Forge - which do you prefer to do first (1st Playthrough)?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:fire-giant"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q174",
+    "type": "compare",
+    "q": "Prime Godfrey vs Prime Radagon, who wins?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "boss:godfrey"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q175",
+    "type": "compare",
+    "q": "Is the watchdog greatsword better that the guts greatsword?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "item:greatsword"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q176",
+    "type": "mechanics",
+    "q": "Better ways to fight poise monsters that can 2-3 shot you, and already having 60 vigor/boiled crab?",
+    "origin": "real:reddit:EldenRingPVP",
+    "expected": {
+      "ids": [
+        "mechanic:poise"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q177",
+    "type": "compare",
+    "q": "roar of regulia vs greyoll roar?",
+    "origin": "real:reddit:EldenRingPVP",
+    "expected": {
+      "ids": [
+        "boss:elder-dragon-greyoll"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q178",
+    "type": "compare",
+    "q": "Tips vs Spinning Weapon?",
+    "origin": "real:reddit:EldenRingPVP",
+    "expected": {
+      "ids": [
+        "item:spinning-weapon"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q179",
+    "type": "compare",
+    "q": "Bolt of Granax VS Dragon CragBlade?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "item:ash-of-war-cragblade"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q180",
+    "type": "compare",
+    "q": "Stuck vs Malenia in randomizer",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "boss:malenia"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q181",
+    "type": "lore",
+    "q": "If you were to do a lore accurate Perfumer run, what would you use? (No DLC)",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "enemy:perfumer"
+      ],
+      "mustInclude": [
+        "Perfumer's Grotto · Scadu Altus · Gravesite Plain"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q182",
+    "type": "lore",
+    "q": "Smithscript Daggers - why does From hate these things so much? (RL200, no scadutree blessings)",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "item:smithscript-dagger"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q183",
+    "type": "lore",
+    "q": "Who is stronger canonically, young Radahn or old Radahn?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:radahn"
+      ],
+      "mustInclude": [
+        "Caelid"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q184",
+    "type": "lore",
+    "q": "Is elden beast the strongest character according to lore excluding the outer gods ?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:radagon"
+      ],
+      "mustInclude": [
+        "Leyndell, Ashen Capital"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q185",
+    "type": "lore",
+    "q": "As a Miquella's Light Enjoyer, WTF FROMSOFT!? WHY DOES THIS EXIST!!! DELETE THIS SHIT RIGHT NOW!!!",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "npc:miquella-of-the-haligtree"
+      ],
+      "mustInclude": [
+        "Cocoon of the Empyrean",
+        "Gate of Divinity"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q186",
+    "type": "lore",
+    "q": "elden ring is fire grease against the golden order in lore and there buy a sin?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "item:fire-grease"
+      ],
+      "mustInclude": [
+        "Smoldering Butterfly",
+        "Root Resin"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q187",
+    "type": "lore",
+    "q": "Was it ever explained why this guy in Midra's Manse is so fat? What's the lore for him?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "region:midra-s-manse"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q188",
+    "type": "lore",
+    "q": "Who is harder, Golden Hippo in Shadow Keep or Valiant Gargoyles?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:valiant-gargoyle"
+      ],
+      "mustInclude": [
+        "Siofra River"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q189",
+    "type": "lore",
+    "q": "Lore Question: Why is Marika portrayed as crucified before the shattering?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "npc:queen-marika-the-eternal"
+      ],
+      "mustInclude": [
+        "Stone Platform"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q190",
+    "type": "lore",
+    "q": "Is there a lore reason mimic tear refuses to fight putrescent knight?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:mimic-tear"
+      ],
+      "mustInclude": [
+        "Siofra River"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q191",
+    "type": "lore",
+    "q": "Why is Miquella judged so harshly?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "npc:miquella-of-the-haligtree"
+      ],
+      "mustInclude": [
+        "Cocoon of the Empyrean",
+        "Gate of Divinity"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q192",
+    "type": "lore",
+    "q": "Why did Miquella need Mohg?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "boss:mohg"
+      ],
+      "mustInclude": [
+        "Mohgwyn Dynasty Mausoleum"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q193",
+    "type": "mechanics",
+    "q": "How exactly does hyperarmor interact with stance damage?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "mechanic:hyperarmor"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q194",
+    "type": "mechanics",
+    "q": "Poise and status effect buildup meters?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "mechanic:poise"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q195",
+    "type": "mechanics",
+    "q": "Do Ash of War infusions that add a damage type scale with their respective stats?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "mechanic:ashes-of-war"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q196",
+    "type": "mechanics",
+    "q": "What do I do with no poise?",
+    "origin": "real:reddit:EldenRingPVP",
+    "expected": {
+      "ids": [
+        "mechanic:poise"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q197",
+    "type": "mechanics",
+    "q": "Is this the only thing in the game that have frame 1 hyper armor?",
+    "origin": "real:reddit:EldenRingPVP",
+    "expected": {
+      "ids": [
+        "mechanic:poise"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q198",
+    "type": "mechanics",
+    "q": "Hyper armor, you dont have?",
+    "origin": "real:reddit:EldenRingPVP",
+    "expected": {
+      "ids": [
+        "mechanic:poise"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q199",
+    "type": "mechanics",
+    "q": "What is going on with poise/stagger this fight?",
+    "origin": "real:reddit:EldenRingPVP",
+    "expected": {
+      "ids": [
+        "mechanic:poise"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q200",
+    "type": "mechanics",
+    "q": "How do i deal with poise monsters with colossal weapons?",
+    "origin": "real:reddit:EldenRingPVP",
+    "expected": {
+      "ids": [
+        "mechanic:poise"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q201",
+    "type": "mechanics",
+    "q": "Is R1 into Stormcaller and true combo or did I get lucky on Hyper Armor?",
+    "origin": "real:reddit:EldenRingPVP",
+    "expected": {
+      "ids": [
+        "mechanic:poise"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q202",
+    "type": "mechanics",
+    "q": "What do you guys think is stronger between decent poise vs light roll?",
+    "origin": "real:reddit:EldenRingPVP",
+    "expected": {
+      "ids": [
+        "mechanic:poise"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q203",
+    "type": "mechanics",
+    "q": "What Poise breakpoints are desirable for great hammers?",
+    "origin": "real:reddit:EldenRingPVP",
+    "expected": {
+      "ids": [
+        "mechanic:poise"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q204",
+    "type": "mechanics",
+    "q": "How much poise do I need to hyper armor through most attacks if I am using a colosal sword?",
+    "origin": "real:reddit:EldenRingPVP",
+    "expected": {
+      "ids": [
+        "mechanic:poise"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q205",
+    "type": "ending",
+    "q": "Can someone explain the Lord of Frenzied Flame ending?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "line:frenzy"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q206",
+    "type": "ending",
+    "q": "Why do people keep saying Ranni's age of stars keeps out the outer gods' influence despite there is zero evidence for this?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "line:stars"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q207",
+    "type": "ending",
+    "q": "help with elden lord ?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "line:lord"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q208",
+    "type": "ending",
+    "q": "Need help with godfrey the first elden lord ng+",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "line:lord"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q209",
+    "type": "ending",
+    "q": "Looking for help with first Elden lord pc",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "line:lord"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q210",
+    "type": "ending",
+    "q": "Guys, is this a face worthy of the title of Elden Lord?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "line:lord"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q211",
+    "type": "ending",
+    "q": "Confused Elden Lord.",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "line:lord"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q212",
+    "type": "ending",
+    "q": "Is there even a point to become Elden Lord ?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "line:lord"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q213",
+    "type": "ending",
+    "q": "How To Assert Dominance Over Your Elden Lord",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "line:lord"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q214",
+    "type": "ending",
+    "q": "Some help me Elden ring ! I’m at the Elden lord first stage please I need to become the Elden lord",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "line:lord"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q215",
+    "type": "out-of-scope",
+    "q": "Anyone can help with elden lord?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q216",
+    "type": "ending",
+    "q": "What are your Tarnished's actions as Elden Lord?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "line:lord"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q217",
+    "type": "requirements",
+    "q": "I got this Rapier for my Halloween costume but my strength isn’t high enough so I have to use 2 hands to wield it properly, know any quick?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "item:rapier"
+      ],
+      "mustInclude": [
+        "Str 7",
+        "Dex 12"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q218",
+    "type": "requirements",
+    "q": "I got this Rapier for anger management (to swing cuz it’s heavy) but my strength isn’t high enough so I have to use 2 hands to wield it?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "item:rapier"
+      ],
+      "mustInclude": [
+        "Str 7",
+        "Dex 12"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q219",
+    "type": "requirements",
+    "q": "What stats should I do for a duel wild ancient meteorite ore greatsword? ( currently lv 284 )",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "item:greatsword"
+      ],
+      "mustInclude": [
+        "Str 31",
+        "Dex 12"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q220",
+    "type": "requirements",
+    "q": "what stats do i need for Academy Glintstone Staff",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:academy-glintstone-staff"
+      ],
+      "mustInclude": [
+        "Str 6",
+        "Int 28"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q221",
+    "type": "requirements",
+    "q": "what are the requirements for Alabaster Lord's Sword",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:alabaster-lord-s-sword"
+      ],
+      "mustInclude": [
+        "Str 16",
+        "Dex 12"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q222",
+    "type": "requirements",
+    "q": "what do i need to wield Albinauric Bow",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:albinauric-bow"
+      ],
+      "mustInclude": [
+        "Str 7",
+        "Dex 18"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q223",
+    "type": "requirements",
+    "q": "what stats do i need for Albinauric Staff",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:albinauric-staff"
+      ],
+      "mustInclude": [
+        "Str 6",
+        "Int 10"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q224",
+    "type": "requirements",
+    "q": "what are the requirements for Ancient Meteoric Ore Greatsword",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:ancient-meteoric-ore-greatsword"
+      ],
+      "mustInclude": [
+        "Str 35",
+        "Dex 10"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q225",
+    "type": "requirements",
+    "q": "what do i need to wield Ansbach's Longbow",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:ansbach-s-longbow"
+      ],
+      "mustInclude": [
+        "Str 9",
+        "Dex 43"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q226",
+    "type": "requirements",
+    "q": "what stats do i need for Antspur Rapier",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:antspur-rapier"
+      ],
+      "mustInclude": [
+        "Str 10",
+        "Dex 20"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q227",
+    "type": "requirements",
+    "q": "what are the requirements for Anvil Hammer",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:anvil-hammer"
+      ],
+      "mustInclude": [
+        "Str 39",
+        "Dex 10"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q228",
+    "type": "requirements",
+    "q": "what do i need to wield Arbalest",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:arbalest"
+      ],
+      "mustInclude": [
+        "Str 18",
+        "Dex 12"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q229",
+    "type": "how-to-use",
+    "q": "How do a make the Sword of St Trina work without another st Trina sword or the velvet sword",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "item:sword-of-st-trina"
+      ],
+      "mustInclude": [
+        "Mists of Slumber"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q230",
+    "type": "how-to-use",
+    "q": "Golden Order Flail how to use.",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "item:golden-order-flail"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q231",
+    "type": "how-to-use",
+    "q": "how do i use Academy Glintstone Staff",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:academy-glintstone-staff"
+      ],
+      "mustInclude": [
+        "No Skill"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q232",
+    "type": "how-to-use",
+    "q": "how does Alabaster Lord's Sword work",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:alabaster-lord-s-sword"
+      ],
+      "mustInclude": [
+        "Alabaster Lords' Pull"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q233",
+    "type": "how-to-use",
+    "q": "how do i activate Albinauric Bow",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:albinauric-bow"
+      ],
+      "mustInclude": [
+        "Ashes of War"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q234",
+    "type": "how-to-use",
+    "q": "how do i use Albinauric Staff",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:albinauric-staff"
+      ],
+      "mustInclude": [
+        "No Skill"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q235",
+    "type": "how-to-use",
+    "q": "how does Ancient Meteoric Ore Greatsword work",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:ancient-meteoric-ore-greatsword"
+      ],
+      "mustInclude": [
+        "White Light Charge"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q236",
+    "type": "how-to-use",
+    "q": "how do i activate Ansbach's Longbow",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:ansbach-s-longbow"
+      ],
+      "mustInclude": [
+        "Fan Shot"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q237",
+    "type": "how-to-use",
+    "q": "how do i use Antspur Rapier",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:antspur-rapier"
+      ],
+      "mustInclude": [
+        "Ashes of War"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q238",
+    "type": "how-to-use",
+    "q": "how does Anvil Hammer work",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:anvil-hammer"
+      ],
+      "mustInclude": [
+        "Smithing Art Spears"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q239",
+    "type": "how-to-use",
+    "q": "how do i activate Arbalest",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:arbalest"
+      ],
+      "mustInclude": [
+        "Kick"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q240",
+    "type": "how-to-use",
+    "q": "how do i use Astrologer's Staff",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [
+        "item:astrologer-s-staff"
+      ],
+      "mustInclude": [
+        "No Skill"
+      ],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q241",
+    "type": "multi-part",
+    "q": "Help with godrick?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:godrick"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q242",
+    "type": "out-of-scope",
+    "q": "Would anyone be willing to help me mule Red Bear Claws and Pelt of Ralva to a new character?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q243",
+    "type": "multi-part",
+    "q": "Help with fire giant?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:fire-giant"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q244",
+    "type": "multi-part",
+    "q": "Scadu Tree Avatar??",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "item:shadow-realm-blessing"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q245",
+    "type": "out-of-scope",
+    "q": "Fellow tarnished, is anyone available for promised consort?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q246",
+    "type": "multi-part",
+    "q": "\" \" Can Flame Spear be put on the Cleanrot Knight's Sword?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "item:cleanrot-knight-s-sword"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q247",
+    "type": "out-of-scope",
+    "q": "PC can anyone drop a flame knights greatsword and/or Malikeths helm?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q248",
+    "type": "multi-part",
+    "q": "Who's down to help with Godfrey??? Phase 2 is complete madness",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:godfrey"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q249",
+    "type": "multi-part",
+    "q": "Castle sol anyone? Pc",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "dungeon:castle-sol"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q250",
+    "type": "multi-part",
+    "q": "Volunteer help with our favorite promised consort?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:consort"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q251",
+    "type": "out-of-scope",
+    "q": "Does anyone have a spare partisan spear?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q252",
+    "type": "out-of-scope",
+    "q": "anyone have a spare milady +0 with wing stance i can have?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q253",
+    "type": "out-of-scope",
+    "q": "Anyone willing to drop me Rivers of Blood + some runes?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q254",
+    "type": "out-of-scope",
+    "q": "( ) Anyone able to help me beat Commander Niall in the snowy area?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q255",
+    "type": "out-of-scope",
+    "q": "Can someone drop me the Divine Beast Helm? I'll trade anything you want",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q256",
+    "type": "out-of-scope",
+    "q": "Anyone wanna run Darklight Catacombs with me?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q257",
+    "type": "out-of-scope",
+    "q": ", someone able to help me with the rot knights at the end of the abandoned cave in Caelid?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q258",
+    "type": "out-of-scope",
+    "q": "Can someone please drop me Shard Of Alexander on ?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q259",
+    "type": "out-of-scope",
+    "q": "Can someone plz help me with Godfrey?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q260",
+    "type": "out-of-scope",
+    "q": "Need help with Dragonlord Placidusax, who can join right now?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q261",
+    "type": "out-of-scope",
+    "q": "Could someone help me beat rennala, queen of the full moon?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q262",
+    "type": "out-of-scope",
+    "q": "I’m currently trying to fight Astel, for Ranni’s quest. Can someone please come help me?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q263",
+    "type": "out-of-scope",
+    "q": "- can anyone drop me a reduvia?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q264",
+    "type": "out-of-scope",
+    "q": "Can someone help me on with radagon?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q265",
+    "type": "out-of-scope",
+    "q": "PC - anyone feel like invading me at Divine Bridge so I can have my elevator?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q266",
+    "type": "pvp",
+    "q": "Is bleed still viable/end game in pvp?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "mechanic:status-bleed"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q267",
+    "type": "pvp",
+    "q": "Can a build with suboptimal poise work in pvp?",
+    "origin": "real:reddit:EldenRingBuilds",
+    "expected": {
+      "ids": [
+        "mechanic:poise"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q268",
+    "type": "pvp",
+    "q": "Invasion farming in Gelmir Hero's Grave?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "dungeon:gelmir-hero-s-grave"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q269",
+    "type": "pvp",
+    "q": "Why do players say invasions are ‘non-consentual’?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "mechanic:invasions"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q270",
+    "type": "pvp",
+    "q": "Is it cheating to resummon coop partners during invasions after they die?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "mechanic:invasions"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q271",
+    "type": "pvp",
+    "q": "WHY TF IS SO MANY BANISHED KNIGHTS ON THE WAY TO GODSKIN DUO ARENA?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "boss:godskin-duo"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q272",
+    "type": "pvp",
+    "q": "Fun items to farm to drop during invasions?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [
+        "mechanic:invasions"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q273",
+    "type": "pvp",
+    "q": "Does Bayle have the best arena in the game?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "boss:bayle"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q274",
+    "type": "pvp",
+    "q": "Is level 150 still the meta level for invasions/luring?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "mechanic:invasions"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q275",
+    "type": "pvp",
+    "q": "Thoughts on the claymore for PvP?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "item:claymore"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q276",
+    "type": "pvp",
+    "q": "Do you interact with the invasions mechanic?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [
+        "mechanic:invasions"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q277",
+    "type": "bug-glitch",
+    "q": "Summoning bug for Needle Knight Leda’s boss fight?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q278",
+    "type": "bug-glitch",
+    "q": "Are the divine bird feathers good when you play the game at 30 fps?",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q279",
+    "type": "bug-glitch",
+    "q": "Base Serpent Messmer / Leonine arena glitch??",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q280",
+    "type": "bug-glitch",
+    "q": "Was Pre-nerf Malenia a harder boss than Pre-nerf Promised Consort Radahn ? - YouTube",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q281",
+    "type": "bug-glitch",
+    "q": "Anybody experiences FPS drops in Gravesite Plain (DLC)?",
+    "origin": "real:steam",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q282",
+    "type": "bug-glitch",
+    "q": "Seemless Co-op Grand lift rold shut down bug?",
+    "origin": "real:steam",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q283",
+    "type": "bug-glitch",
+    "q": "Does anyone know if the Melania glitch using agheels flame to climb a branch and then use heal/golden vow still work?",
+    "origin": "real:reddit:eldenringdiscussion",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q284",
+    "type": "bug-glitch",
+    "q": "Was starting new game with Idus knight and got this🫪🤣anyone else noticed this face swap glitch",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q285",
+    "type": "out-of-scope",
+    "q": "Rate my performance in the Rellana fight (ng+, scadu 20)",
+    "origin": "real:reddit:Eldenring",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q286",
+    "type": "bug-glitch",
+    "q": "Need to be summoned to the Royal Capital for a wrong warp glitch",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q287",
+    "type": "bug-glitch",
+    "q": "seamless coop mod help. Melina roundtable invite bug.",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q288",
+    "type": "bug-glitch",
+    "q": "is Glintstone Dragon Adula bugged",
+    "origin": "synthetic:entity-index",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q289",
+    "type": "other",
+    "q": "- Advice for consort radahn?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:consort"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q290",
+    "type": "other",
+    "q": "Help with red wolf of ragadon?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:red-wolf"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q291",
+    "type": "other",
+    "q": "Extra Death Knight armor set? ( )",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "item:death-knight-armor"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q292",
+    "type": "other",
+    "q": "Extra moon veil katana?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "npc:moon"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q293",
+    "type": "out-of-scope",
+    "q": "Aide Elden ring Godskin Duo ?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q294",
+    "type": "other",
+    "q": "Anyone else free to help me fight Astel at the end of Nokstella?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:astel"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q295",
+    "type": "other",
+    "q": "Help messmer?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:messmer"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q296",
+    "type": "out-of-scope",
+    "q": "Can someone mule a weapon for me?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q297",
+    "type": "out-of-scope",
+    "q": "upgrade misericorde to +25 for me?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  },
+  {
+    "id": "q298",
+    "type": "other",
+    "q": "Help with Omen Mohg?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:mohg-omen"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q299",
+    "type": "other",
+    "q": "rykard help?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [
+        "boss:rykard"
+      ],
+      "mustInclude": [],
+      "answerable": true
+    }
+  },
+  {
+    "id": "q300",
+    "type": "out-of-scope",
+    "q": "Hello anyone can help me to get the ring of miquella gesture?",
+    "origin": "real:reddit:EldenRingHelp",
+    "expected": {
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
+    }
+  }
+]
