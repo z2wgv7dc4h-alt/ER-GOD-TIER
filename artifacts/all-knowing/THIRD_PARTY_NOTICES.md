@@ -2,7 +2,7 @@
 
 This project integrates or ports code and data from the following open-source projects. Each entry
 lists the source, license, what was taken, and what was changed, per the project licensing policy
-(`PROJECT_BRIEF.md`).
+(`CLAUDE.md`).
 
 ---
 
@@ -55,7 +55,7 @@ lists the source, license, what was taken, and what was changed, per the project
   - Attack power totals and display rounding (`Math.floor(value + 1e-9)`) from the upstream UI.
 - **Numeric regulation data (vendored verbatim):** `public/sourced/regulation-vanilla-v1.17.json` is
   upstream `public/regulation-vanilla-v1.17.js` (valid JSON) renamed to `.json`. It is the vanilla
-  1.17 / Tarnished Pack patch line that `docs/REVIEW.md` names as this project's AR source of truth.
+  1.17 / Tarnished Pack patch line that `docs/history/REVIEW-2026-09.md` names as this project's AR source of truth.
   It contains `calcCorrectGraphs`, `attackElementCorrects`, `reinforceTypes`, `statusSpEffectParams`,
   `scalingTiers`, and the weapon rows (base damage, scaling, requirements, upgrade rates).
 
@@ -287,7 +287,7 @@ SOFTWARE.
 
 ## Data pass — local packs, Fextralife, and the absorbed engine
 
-Taken under the permissive sources policy (`HANDOFF-CLAUDE.md` §4). Nothing here ships game art or
+Taken under the permissive sources policy (`CLAUDE.md`). Nothing here ships game art or
 article HTML; only structured fields/text, each row keeping its source.
 
 - **EldenRingMap Nexus V1.2** (egormagurin) — the same project as the vendored engine, so its markers

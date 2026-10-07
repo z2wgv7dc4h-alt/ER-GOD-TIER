@@ -1,7 +1,9 @@
 # All-Knowing architecture (kernel)
 
-> Current, full-app architecture is `docs/ARCHITECTURE.md` (Task 137). This file is
-> kept as the kernel-only note.
+> Current, full-app architecture is `docs/ARCHITECTURE.md`. This file is kept as the
+> kernel-only note: the invariant core code must not drift from. For the shell,
+> AI/provider wiring, the data plane, the atlas and tooling, see `docs/ARCHITECTURE.md`
+> and `docs/MAP-ENGINE.md`.
 
 ## Kernel
 
@@ -24,101 +26,6 @@ alias plane (`scripts/gen-aliases.mjs` → `aliases.json`; see `docs/ALIAS-PLANE
 `BonfireWarpParam` warp resolves through it: an authored slug where one exists, otherwise a
 name-derived `grace:{slug}` stub with no catalog fact, no pin and no implications (Task 73).
 
-## Shell
-
-Desktop: `280px Gideon strip | stage` — Gideon on the left, the current room on the right, no identity
-rail on the first screen. Phone (<700px): exactly three tabs **Map / Gideon / Kit** (Gideon is the full stage). At every width the identity rail is the off-canvas **Tarnished sheet** (opened from
-the name button): profiles, packet, save drop, recents, the full character card, and the five room
-links. Reckon / Quests / Codex are links in that sheet, not tabs (Task 83). The Codex opens only from
-the sheet link or a `/` search hit (Task 86).
-
-Hotkeys in `QoL.tsx` (`/` search, `1–5` rooms, `⌘Z` undo, `⌘S` packet). The command palette navigates
-with ↑/↓ (wrapping), Enter selects, Esc clears (`src/lib/palette.ts`). The sheet's "Recently viewed"
-panel (`src/lib/recent.ts`) jumps back to the last 12 facts.
-
-## AI
-
-Deterministic router `src/lib/gideon.ts` → `GideonAct`.
-UI `src/Gideon.tsx` executes the act.
-
-Intents already wired: ending/line plan, blitz, still-available, wear build, loot, warp, hunt, stuck, 100% spine, affirm (“show it”).
-
-Replace the router later; do not replace the act.
-
-Optional model: **Meta Muse Spark 1.3 Contributor** via `src/lib/muse.ts` (`VITE_GIDEON_API_KEY`,
-defaults `https://api.meta.ai/v1` + `muse-spark-1.3-contributor`), router-first and
-grounding-validated in `src/lib/gideonLlm.ts`; dev proxies `/gideon-llm` → `api.meta.ai` to dodge
-CORS. Build hunts: `src/lib/buildHunt.ts` turns a kit into `{ have, missing, pins, unresolved }`
-and reuses the Task 33 leftover pin layer.
-
-Idle proactive chips (`src/lib/suggestions.ts` → `idleSuggestions`) reuse `stillAvailable` /
-`nextMoves` / `leftovers` / `approachingGates` and run through the same `run()` path; the command
-palette debounces `searchSync`. Before any step is ticked (Quests.tsx or Gideon markDone / “I'm
-done”), `src/lib/lockWarnings.ts` confirms via `LockoutPrompt` when `planRoute` would foreclose a
-line the character started — no second DAG walker.
-
-`QuestWorkspace` renders `allLines()` — the same graph as Gideon and `planRoute` — and ticks a beat
-by writing its `factId` (`applyFacts` / `clearFact`). There is no second quest list.
-
-Under 700px the Atlas renders its own `.atlas-jobs` chip bar — Missing only / leftovers / locks
-always visible, the seven pin kinds behind one `layers` overflow (`#atlas-layers`). The topbar
-toggles are the desktop surface; the engine iframe's own `?embed=1` controls are untouched, and no
-third pin system is introduced (Task 69).
-
-`estimateDefense()` in `Build.tsx` reports no poise or equip load: the in-repo regulation extract
-only powers the Clark attack rating, so the Build preview is a labelled estimate, never a second
-formula (Task 71).
-
-A pure `gideonHeader(character)` (`src/lib/gideonHeader.ts`) feeds the Gideon strip / sticky goal · beat ·
-gate bar, reusing `planRoute` / `idleSuggestions` / `approachingGates` — the router and the act are
-unchanged (Task 72). The Gideon strip itself is the compact Task 84 panel: current beat, one gate,
-**Show** only when `src/lib/beatPins.ts` resolves an existing pin, **Done** through the lockout
-confirm, and an "N open · M locked" line into the Quests archive.
-
-`knowledge/storylines.ts` carries the seeded lines plus the Task 74 companion pass; Quests, Gideon and
-`planRoute` share the one graph. `src/lib/regionLeftovers.ts` answers "what did I miss here" (Task 75)
-from leftovers / stillAvailable / approachingGates only. Gideon's `WEAR_KIT` branch applies a named
-kit through the same `buildId` the chips use (Task 76). `src/knowledge/npcLocations.ts` locates eight
-companions at existing graces (Task 79). Co-op (`answers.coop`, `src/lib/coop.ts`) drops Mimic /
-Torrent advice (Task 81). `src/knowledge/dungeons.ts` is the Stormveil checklist (`Dungeon.tsx`,
-Task 80). The Kit room's first paint is stats + one AR + the active hunt; the library (OP/PvP chips,
-AR detail, matchup, `akb1.` codes, compare) sits behind one closed `Kits…` disclosure (Task 85).
-`OpBuild.route` + `buildHunt`'s `pinTarget` order a kit's missing pieces and pick the first pinnable
-one for **Show on map** (Task 90), and `src/lib/goods.ts` turns a pasted name list into facts
-(`ingestGoodsList`; exactly one confident catalog/loot hit per line, else unknown) through the
-`GoodsPaste` textarea in the sheet (Task 89).
-
-The Atlas fails closed (Task 82): the live `?embed=1` iframe only draws while the engine is up and
-the embed has loaded — a down engine and a failed embed show the static plate with two distinct
-banners, never a blank iframe. `docs/MAP-ENGINE.md` has the "If the map is blank" checklist.
-
-The engine iframe and the static plate are one projection, never two (Task 09 Part C). They are
-mutually exclusive render paths, and the shared detail panel (name, Found/Unknown/Not-there, Thread)
-resolves to exactly one entity in the **active** view via `src/lib/atlasSelection.ts`: an explicit id
-resolves in whichever pin set owns it; with no id the default is the engine's first marker when live,
-else the first shown plate pin. So the mark chips can never silently target a pin that is not on
-screen. World-XYZ LOTs stay off the plate (`src/lib/coords.ts`), but grounded points that already have
-a frame are drawn: the engine's own markers (`src/lib/engineMarkers.ts`, `px/10496*100`) and the
-projected NPC placements (`sourced/npc-placements.json`).
-
-## Data plane (local packs, game text, dialogue, placements)
-
-- **Game text** — `open/text/` (36 FMG tables) from the install's message bundles; `src/lib/gameText.ts`
-  lazy-loads a table. Verbatim dialogue search (`src/Dialogue.tsx`) and speaker labels.
-- **Dialogue owners** — `open/dialogue-owners.json`: ESD `TalkID` -> MSB PARTS `TalkID` ->
-  `NPCParamID` -> `NpcName`, i.e. the game's own resolve, no invented speaker (`src/lib/dialogueOwners.ts`,
-  quoting in `src/lib/dialogueQuote.ts`).
-- **Local packs** — `open/ercl-items.json`, `open/medusa-route.json` (Nexus packs;
-  `src/lib/packs.ts`, `src/lib/medusaRoute.ts`, Codex in `src/PackData.tsx`). The engine's own
-  markers/items are exported to `open/engine-markers.json` (`src/lib/engineMarkers.ts`) — the Nexus
-  "EldenRingMap" pack is the same project and is not ingested separately.
-- **NPC placements** — `sourced/npc-placements.json`, projected to the engine pixel frame with the
-  engine affine + `legacy-conv.json` (`scripts/extract-npc-placements.py`, `src/lib/npcPlacements.ts`).
-- **Interactive engine** — absorbed as a plain runtime dependency. `erlib` lives in `scripts/erlib/`
-  (`scripts/extract-*.py` use it; the engine tools shim the path); `npm run map:merge`
-  (`scripts/merge-engine-markers.py`) folds our markers into the engine's generated `data/markers.json`
-  under dedicated categories (we added `npc`/`merchant`/`dungeon` to `CATS`, `npc` off by default).
-
 ## Persistence
 
 `all-knowing.vault.v1` — profiles + UI (room, missingOnly, selected pin).
@@ -127,21 +34,6 @@ and a scannable QR: the full JSON when ≤ 2953 bytes, else a filename + SHA-256
 (`src/lib/packetQr.ts`, `uqr`).
 Build codes (`src/lib/buildCode.ts`, `akb1.…`) are a separate, smaller concern — stats + level +
 loadout only, for pasting into chat. They are not the packet and carry no run progress.
-
-## Hosted data
-
-See `src/lib/hosted.ts`. Cached under `public/sourced/checklists/`.
-Maps under `public/sourced/maps/`. Refresh with raw GitHub / fanapi, or scrape any other source you like. Full sources policy in `HANDOFF-CLAUDE.md` §4.
-
-Reference data under `public/sourced/open/fanapi/` (Task 67/68): structured FanAPI fields — armor
-poise/negation, talisman effects, spell cost/requirements, Ash of War skill, boss HP/drops, item
-effects, class stats — refreshed by `node scripts/ingest-fanapi.mjs`, loaded by
-`src/lib/fanapiData.ts` and surfaced in the Codex. Structured fields only; AR numbers stay on the
-in-repo regulation source.
-
-Fonts (Cinzel + Source Sans 3, both OFL) are self-hosted under `public/fonts/` and declared with
-`@font-face` in `src/index.css`; the service-worker precache includes them, so the interface works
-offline with no cross-origin font request. Dev startup is `npm start` (map engine + Vite together).
 
 ## Refused
 
