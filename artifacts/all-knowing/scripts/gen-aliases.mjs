@@ -658,6 +658,12 @@ let legacyExceptions = []
         const idBase = id.replace(/\+\d+$/, '').replace(/-\d+$/, '')
         if (idBase !== id && currentIds.has(idBase)) target = idBase
       }
+      // Task 160 §7 — a `region:` sub-location page the dungeon index now owns
+      // kept its slug but changed kind, so map it to the `dungeon:` record.
+      if (!target && id.startsWith('region:')) {
+        const asDungeon = `dungeon:${id.slice('region:'.length)}`
+        if (currentIds.has(asDungeon)) target = asDungeon
+      }
       if (target && currentIds.has(target)) {
         emit(id, target, leg.name || target, [], 'legacy-id')
         attached++

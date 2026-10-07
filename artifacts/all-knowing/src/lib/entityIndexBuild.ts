@@ -1966,6 +1966,22 @@ function mergeWikiDb(): void {
       if (!record.region && region) record.region = region
       continue
     }
+    // Task 160 #14 — the wiki files a page under "boss" by category, so an NPC
+    // or a generic overview ("Count Ymir", "Dragon") lands here. When the title
+    // already names a real page of another kind, enrich that page instead of
+    // minting a second, pictureless boss page for the same thing.
+    if (!id) {
+      const existing = resolveName(title, 'wiki')
+      if (existing && records.has(existing)) {
+        const record = records.get(existing)!
+        enrichFromWiki(record, rec)
+        setStat(record, 'HP', rec.stats.HP)
+        setStat(record, 'Runes', rec.stats.Runes)
+        addDrops(record, rec.drops)
+        if (!record.region && region) record.region = region
+        continue
+      }
+    }
     const newId = id ?? `boss:${slug(title)}`
     const record = records.get(newId) ?? ensure(newId, 'boss', title)
     enrichFromWiki(record, rec)

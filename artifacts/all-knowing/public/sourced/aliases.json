@@ -50,18 +50,6 @@
   "source": "boss-roster"
  },
  {
-  "engineId": "boss:count-ymir",
-  "slug": "boss:count-ymir",
-  "kind": "boss",
-  "fmgName": "Count ymir",
-  "aliases": [
-   "count ymir",
-   "ymir",
-   "ymir mother of fingers"
-  ],
-  "source": "game-name-table"
- },
- {
   "engineId": "boss:crucible-knight-devonia",
   "slug": "boss:crucible-knight-devonia",
   "kind": "boss",
@@ -79,18 +67,6 @@
   "fmgName": "Crystalians",
   "aliases": [],
   "source": "legacy-id"
- },
- {
-  "engineId": "boss:dragon",
-  "slug": "boss:dragon",
-  "kind": "boss",
-  "fmgName": "Drake",
-  "aliases": [
-   "dragons",
-   "drake",
-   "lesser elder dragon"
-  ],
-  "source": "game-name-table"
  },
  {
   "engineId": "boss:elder-dragon-greyoll",
@@ -4844,6 +4820,26 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "dungeon:caria-manor",
+  "slug": "dungeon:caria-manor",
+  "kind": "dungeon",
+  "fmgName": "Carian Manor",
+  "aliases": [
+   "carian manor"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "dungeon:castle-sol",
+  "slug": "dungeon:castle-sol",
+  "kind": "dungeon",
+  "fmgName": "Sol",
+  "aliases": [
+   "sol"
+  ],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "dungeon:forlorn-hound-evergaol",
   "slug": "dungeon:forlorn-hound-evergaol",
   "kind": "dungeon",
@@ -4872,6 +4868,501 @@
    "shaded castle"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "dungeon:uhl-palace-ruins",
+  "slug": "dungeon:uhl-palace-ruins",
+  "kind": "dungeon",
+  "fmgName": "Uhl Palace Ruins (North)",
+  "aliases": [
+   "uhl palace ruins north",
+   "uhl palace ruins south"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "dungeon:waypoint-ruins",
+  "slug": "dungeon:waypoint-ruins",
+  "kind": "dungeon",
+  "fmgName": "Post Town Remains",
+  "aliases": [
+   "post town remains"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "dungeon:writheblood-ruins",
+  "slug": "dungeon:writheblood-ruins",
+  "kind": "dungeon",
+  "fmgName": "Whiteblood Ruins",
+  "aliases": [
+   "whiteblood ruins"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "region:abandoned-cave",
+  "slug": "dungeon:abandoned-cave",
+  "kind": "dungeon",
+  "fmgName": "Abandoned Cave",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:academy-crystal-cave",
+  "slug": "dungeon:academy-crystal-cave",
+  "kind": "dungeon",
+  "fmgName": "Academy Crystal Cave",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:altus-tunnel",
+  "slug": "dungeon:altus-tunnel",
+  "kind": "dungeon",
+  "fmgName": "Altus Tunnel",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:belurat-gaol",
+  "slug": "dungeon:belurat-gaol",
+  "kind": "dungeon",
+  "fmgName": "Belurat Gaol",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:belurat-tower-settlement",
+  "slug": "dungeon:belurat-tower-settlement",
+  "kind": "dungeon",
+  "fmgName": "Belurat, Tower Settlement",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:bonny-gaol",
+  "slug": "dungeon:bonny-gaol",
+  "kind": "dungeon",
+  "fmgName": "Bonny Gaol",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:caelem-ruins",
+  "slug": "dungeon:caelem-ruins",
+  "kind": "dungeon",
+  "fmgName": "Caelem Ruins",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:caria-manor",
+  "slug": "dungeon:caria-manor",
+  "kind": "dungeon",
+  "fmgName": "Caria Manor",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:castle-ensis",
+  "slug": "dungeon:castle-ensis",
+  "kind": "dungeon",
+  "fmgName": "Castle Ensis",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:castle-morne",
+  "slug": "dungeon:castle-morne",
+  "kind": "dungeon",
+  "fmgName": "Castle Morne",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:castle-sol",
+  "slug": "dungeon:castle-sol",
+  "kind": "dungeon",
+  "fmgName": "Castle Sol",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:chapel-of-anticipation",
+  "slug": "dungeon:chapel-of-anticipation",
+  "kind": "dungeon",
+  "fmgName": "Chapel of Anticipation",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:cliffbottom-catacombs",
+  "slug": "dungeon:cliffbottom-catacombs",
+  "kind": "dungeon",
+  "fmgName": "Cliffbottom Catacombs",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:darklight-catacombs",
+  "slug": "dungeon:darklight-catacombs",
+  "kind": "dungeon",
+  "fmgName": "Darklight Catacombs",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:deeproot-depths",
+  "slug": "dungeon:deeproot-depths",
+  "kind": "dungeon",
+  "fmgName": "Deeproot Depths",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:divine-tower-of-caelid",
+  "slug": "dungeon:divine-tower-of-caelid",
+  "kind": "dungeon",
+  "fmgName": "Divine Tower of Caelid",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:divine-tower-of-east-altus",
+  "slug": "dungeon:divine-tower-of-east-altus",
+  "kind": "dungeon",
+  "fmgName": "Divine Tower of East Altus",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:divine-tower-of-limgrave",
+  "slug": "dungeon:divine-tower-of-limgrave",
+  "kind": "dungeon",
+  "fmgName": "Divine Tower of Limgrave",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:divine-tower-of-liurnia",
+  "slug": "dungeon:divine-tower-of-liurnia",
+  "kind": "dungeon",
+  "fmgName": "Divine Tower of Liurnia",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:divine-tower-of-west-altus",
+  "slug": "dungeon:divine-tower-of-west-altus",
+  "kind": "dungeon",
+  "fmgName": "Divine Tower of West Altus",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:dragon-s-pit",
+  "slug": "dungeon:dragon-s-pit",
+  "kind": "dungeon",
+  "fmgName": "Dragon's Pit",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:enir-ilim",
+  "slug": "dungeon:enir-ilim",
+  "kind": "dungeon",
+  "fmgName": "Enir-Ilim",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:fog-rift-catacombs",
+  "slug": "dungeon:fog-rift-catacombs",
+  "kind": "dungeon",
+  "fmgName": "Fog Rift Catacombs",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:fringefolk-hero-s-grave",
+  "slug": "dungeon:fringefolk-hero-s-grave",
+  "kind": "dungeon",
+  "fmgName": "Fringefolk Hero's Grave",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:gael-tunnel",
+  "slug": "dungeon:gael-tunnel",
+  "kind": "dungeon",
+  "fmgName": "Gael Tunnel",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:giants-mountaintop-catacombs",
+  "slug": "dungeon:giants-mountaintop-catacombs",
+  "kind": "dungeon",
+  "fmgName": "Giants' Mountaintop Catacombs",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:grand-cloister",
+  "slug": "dungeon:grand-cloister",
+  "kind": "dungeon",
+  "fmgName": "Grand Cloister",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:groveside-cave",
+  "slug": "dungeon:groveside-cave",
+  "kind": "dungeon",
+  "fmgName": "Groveside Cave",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:isolated-divine-tower",
+  "slug": "dungeon:isolated-divine-tower",
+  "kind": "dungeon",
+  "fmgName": "Isolated Divine Tower",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:kingsrealm-ruins",
+  "slug": "dungeon:kingsrealm-ruins",
+  "kind": "dungeon",
+  "fmgName": "Kingsrealm Ruins",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:lake-of-rot",
+  "slug": "dungeon:lake-of-rot",
+  "kind": "dungeon",
+  "fmgName": "Lake of Rot",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:lamenter-s-gaol",
+  "slug": "dungeon:lamenter-s-gaol",
+  "kind": "dungeon",
+  "fmgName": "Lamenter's Gaol",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:leyndell-catacombs",
+  "slug": "dungeon:leyndell-catacombs",
+  "kind": "dungeon",
+  "fmgName": "Leyndell Catacombs",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:limgrave-tunnels",
+  "slug": "dungeon:limgrave-tunnels",
+  "kind": "dungeon",
+  "fmgName": "Limgrave Tunnels",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:lux-ruins",
+  "slug": "dungeon:lux-ruins",
+  "kind": "dungeon",
+  "fmgName": "Lux Ruins",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:midra-s-manse",
+  "slug": "dungeon:midra-s-manse",
+  "kind": "dungeon",
+  "fmgName": "Midra's Manse",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:mohgwyn-dynasty-mausoleum",
+  "slug": "dungeon:mohgwyn-dynasty-mausoleum",
+  "kind": "dungeon",
+  "fmgName": "Mohgwyn Dynasty Mausoleum",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:moonlight-altar",
+  "slug": "dungeon:moonlight-altar",
+  "kind": "dungeon",
+  "fmgName": "Moonlight Altar",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:moorth-ruins",
+  "slug": "dungeon:moorth-ruins",
+  "kind": "dungeon",
+  "fmgName": "Moorth Ruins",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:morne-tunnel",
+  "slug": "dungeon:morne-tunnel",
+  "kind": "dungeon",
+  "fmgName": "Morne Tunnel",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:night-s-sacred-ground",
+  "slug": "dungeon:night-s-sacred-ground",
+  "kind": "dungeon",
+  "fmgName": "Night's Sacred Ground",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:nokron-eternal-city",
+  "slug": "dungeon:nokron-eternal-city",
+  "kind": "dungeon",
+  "fmgName": "Nokron, Eternal City",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:nokstella-eternal-city",
+  "slug": "dungeon:nokstella-eternal-city",
+  "kind": "dungeon",
+  "fmgName": "Nokstella, Eternal City",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:ordina-liturgical-town",
+  "slug": "dungeon:ordina-liturgical-town",
+  "kind": "dungeon",
+  "fmgName": "Ordina, Liturgical Town",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:rivermouth-cave",
+  "slug": "dungeon:rivermouth-cave",
+  "kind": "dungeon",
+  "fmgName": "Rivermouth Cave",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:ruined-forge-lava-intake",
+  "slug": "dungeon:ruined-forge-lava-intake",
+  "kind": "dungeon",
+  "fmgName": "Ruined Forge Lava Intake",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:ruined-forge-of-starfall-past",
+  "slug": "dungeon:ruined-forge-of-starfall-past",
+  "kind": "dungeon",
+  "fmgName": "Ruined Forge of Starfall Past",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:scorpion-river-catacombs",
+  "slug": "dungeon:scorpion-river-catacombs",
+  "kind": "dungeon",
+  "fmgName": "Scorpion River Catacombs",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:shadow-keep",
+  "slug": "dungeon:shadow-keep",
+  "kind": "dungeon",
+  "fmgName": "Shadow Keep",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:siofra-aqueduct",
+  "slug": "dungeon:siofra-aqueduct",
+  "kind": "dungeon",
+  "fmgName": "Siofra Aqueduct",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:stone-coffin-fissure",
+  "slug": "dungeon:stone-coffin-fissure",
+  "kind": "dungeon",
+  "fmgName": "Stone Coffin Fissure",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:stranded-graveyard",
+  "slug": "dungeon:stranded-graveyard",
+  "kind": "dungeon",
+  "fmgName": "Stranded Graveyard",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:taylew-s-ruined-forge",
+  "slug": "dungeon:taylew-s-ruined-forge",
+  "kind": "dungeon",
+  "fmgName": "Taylew's Ruined Forge",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:uhl-palace-ruins",
+  "slug": "dungeon:uhl-palace-ruins",
+  "kind": "dungeon",
+  "fmgName": "Uhl Palace Ruins",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:war-dead-catacombs",
+  "slug": "dungeon:war-dead-catacombs",
+  "kind": "dungeon",
+  "fmgName": "War-Dead Catacombs",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:waypoint-ruins",
+  "slug": "dungeon:waypoint-ruins",
+  "kind": "dungeon",
+  "fmgName": "Waypoint Ruins",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:writheblood-ruins",
+  "slug": "dungeon:writheblood-ruins",
+  "kind": "dungeon",
+  "fmgName": "Writheblood Ruins",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "region:wyndham-ruins",
+  "slug": "dungeon:wyndham-ruins",
+  "kind": "dungeon",
+  "fmgName": "Wyndham Ruins",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "boss:baleful-shadow",

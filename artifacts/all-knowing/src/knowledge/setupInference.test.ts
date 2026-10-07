@@ -20,7 +20,8 @@ function known(c: Character, id: string): boolean {
   )
 }
 
-const bellBearingChains = inferChains.filter((c) => c.whenFact.startsWith('bell-bearing-'))
+// Task 160 §4 fixed the ids to the real `item:<name>-bell-bearing` records.
+const bellBearingChains = inferChains.filter((c) => c.whenFact.includes('bell-bearing'))
 const dectusChains = inferChains.filter((c) => c.whenFact.startsWith('item:dectus-medallion-'))
 
 describe('Setup wizard inference rules', () => {
