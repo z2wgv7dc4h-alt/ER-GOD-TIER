@@ -431,6 +431,65 @@ for (const [type, kindKey] of TYPES) {
   if (real.length < PER_TYPE) entries.push(...synthesize(type, kindKey, PER_TYPE - real.length))
 }
 
+// Task 168 §1 — posts that are not questions for a data companion: co-op and
+// summon requests, trades and drops, session passwords, and a few off-topic
+// posts (performance ratings, craft projects, netcode complaints). They are
+// re-typed `out-of-scope` and made unanswerable, so Gideon says what he can do
+// instead of answering from an unrelated record. Detection is on the question
+// text only — never on how the router happened to score it.
+const OUT_OF_SCOPE_PATTERNS = [
+  /\bdrop me\b/i,
+  /\bdrop a \w/i,
+  /\bdrop the\b/i,
+  /\bdrop some\b/i,
+  /\bdrop it\b/i,
+  /\bwilling to (drop|trade)\b/i,
+  /\banyone have a spare\b/i,
+  /\bhave a spare\b/i,
+  /\bmule\b/i,
+  /\btrade\b/i,
+  /\bwho can join\b/i,
+  /\bjoin right now\b/i,
+  /\bsummon me\b/i,
+  /\blooking for coop\b/i,
+  /\bcoop help\b/i,
+  /\binvading me\b/i,
+  /\bmultiplayer password\b/i,
+  /\bpassword will be\b/i,
+  /\bpassword:/i,
+  /\baide\b/i,
+  /\brate my (performance|fight|gameplay|run)\b/i,
+  /\bclose matches\b/i,
+  /\bcustom fan covers?\b/i,
+  /\bfor me\b/i,
+  /\b(anyone|someone) (able|willing|free|down|up|wanna|want|available|around|about) to\b/i,
+  /\b(anyone|someone) (available|around|about)\b/i,
+  /\b(anyone|someone) can help\b/i,
+  /(can|could|would) (someone|anyone) (please |plz |pls )?(come|join|drop|give|trade|mule|carry)\b/i,
+  // "can someone help" is a request, but not when it asks for a lookup/explanation
+  // ("help me find a weapon", "help me build X").
+  /(can|could|would) (someone|anyone) (please |plz |pls )?help(?!.*\b(explain|find a|find the|build|to build))\b/i,
+]
+const isOutOfScope = (q) => OUT_OF_SCOPE_PATTERNS.some((r) => r.test(q))
+
+/** Task 168 §1 — labels the generator got wrong, corrected from the on-disk records. */
+const LABEL_FIXES = [
+  { match: /smithscript daggers/i, type: 'lore', ids: ['item:smithscript-dagger'], mustInclude: [] },
+  { match: /better ways to fight poise monsters/i, type: 'mechanics', ids: ['mechanic:poise'], mustInclude: [] },
+]
+
+for (const e of entries) {
+  const fix = LABEL_FIXES.find((f) => f.match.test(e.q))
+  if (fix && e.expected.answerable && records[fix.ids[0]]) {
+    e.type = fix.type
+    e.expected = { ids: fix.ids, mustInclude: fix.mustInclude, answerable: true }
+  }
+  if (e.expected.answerable && isOutOfScope(e.q)) {
+    e.type = 'out-of-scope'
+    e.expected = { ids: [], mustInclude: [], answerable: false }
+  }
+}
+
 // Guarantee the unanswerable quota: prefer corpus rows the data cannot answer.
 let unans = entries.filter((e) => !e.expected.answerable)
 if (unans.length < TARGET_UNANSWERABLE) {
