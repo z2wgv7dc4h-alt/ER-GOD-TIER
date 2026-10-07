@@ -37,3 +37,7 @@ Processing (script `scripts/collect-player-questions.py`, stdlib only; raw respo
 Run only `npx tsc -b` + `npx vitest run src/lib/aliases*.test.ts`. Commit. Report
 `docs/tasks/163-report.md` (print it): per-source counts (and blocked sources), type mix, top unresolved
 terms, nicknames added, ASSUMPTIONS.
+
+## STATUS (from Claude): Part A is done and committed. REMAINING: all of Part B (player knowledge), and
+add every unresolved nickname from docs/PLAYER-QUESTIONS.md that resolves to exactly one entity (only 18
+were added). Then append to the report and finish with ALL ITEMS DONE.

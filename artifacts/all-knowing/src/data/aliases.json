@@ -3162,6 +3162,7 @@
   "kind": "boss",
   "fmgName": "Morgott",
   "aliases": [
+   "margott",
    "morgott",
    "morgott the omen king",
    "omen king"
@@ -49403,6 +49404,16 @@
    "dane hat"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:dark-moon-greatsword",
+  "slug": "item:dark-moon-greatsword",
+  "kind": "item",
+  "fmgName": "Dark Moon Greatsword",
+  "aliases": [
+   "darkmoon"
+  ],
+  "source": "player-nickname"
  },
  {
   "engineId": "item:death-ritual-spear",

@@ -46,3 +46,10 @@ Your task brief is in `docs/tasks/<N>-*.md`. Do exactly what it says; nothing ex
 - Write the report the brief asks for, with: what changed (before/after numbers and examples),
   final check results, **ASSUMPTIONS** (every decision the brief didn't state), and anything not done
   and why.
+
+## Completion contract (checked by a supervisor script)
+- Your brief's items are a checklist. Do EVERY item. Do not stop after some of them.
+- The report must end with a checklist: one line per brief item, `[x]` done or `[ ] not done — <reason>`.
+- Only when every item is `[x]` (or genuinely impossible, with the reason), write the final line
+  `ALL ITEMS DONE`. Without that line the run is treated as unfinished and resumed.
+- Commit often (after each item) so a crash or restart loses nothing.
