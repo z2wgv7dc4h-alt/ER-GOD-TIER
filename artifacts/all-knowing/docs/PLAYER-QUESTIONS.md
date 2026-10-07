@@ -55,12 +55,12 @@ Corpus of how real players ask Elden Ring questions, collected by `scripts/colle
 | ---: | --- | ---: |
 | 1 | mechanic:status-bleed | 258 |
 | 2 | item:strength | 212 |
-| 3 | boss:malenia | 163 |
+| 3 | boss:malenia | 182 |
 | 4 | boss:mohg | 139 |
-| 5 | boss:radagon | 131 |
-| 6 | damage:magic | 127 |
-| 7 | npc:the-tarnished-protagonist | 126 |
-| 8 | boss:radahn | 107 |
+| 5 | boss:radahn | 137 |
+| 6 | boss:radagon | 131 |
+| 7 | damage:magic | 127 |
+| 8 | npc:the-tarnished-protagonist | 126 |
 | 9 | grace:starscourge-radahn | 107 |
 | 10 | item:greatsword | 102 |
 | 11 | mechanic:invasions | 100 |
@@ -73,32 +73,32 @@ Corpus of how real players ask Elden Ring questions, collected by `scripts/colle
 | 18 | grace:65535200 | 79 |
 | 19 | grace:fire-giant | 79 |
 | 20 | enemy:maliketh-farum-azula | 73 |
-| 21 | boss:consort | 69 |
-| 22 | damage:fire | 67 |
-| 23 | item:parry | 67 |
-| 24 | boss:godfrey | 66 |
-| 25 | mechanic:weapon-scaling | 66 |
-| 26 | item:milady | 65 |
-| 27 | region:shadow | 64 |
-| 28 | mechanic:sorcery | 56 |
-| 29 | boss:messmer | 53 |
-| 30 | item:nagakiba | 51 |
-| 31 | boss:astel | 51 |
-| 32 | region:caelid | 50 |
-| 33 | boss:rennala | 50 |
-| 34 | boss:godrick | 48 |
+| 21 | boss:rennala | 72 |
+| 22 | boss:consort | 69 |
+| 23 | boss:godfrey | 69 |
+| 24 | boss:messmer | 68 |
+| 25 | damage:fire | 67 |
+| 26 | item:parry | 67 |
+| 27 | mechanic:weapon-scaling | 66 |
+| 28 | item:milady | 65 |
+| 29 | region:shadow | 64 |
+| 30 | item:nagakiba | 57 |
+| 31 | mechanic:sorcery | 56 |
+| 32 | boss:godrick | 53 |
+| 33 | region:caelid | 53 |
+| 34 | boss:astel | 51 |
 | 35 | grace:godrick-grace | 48 |
-| 36 | boss:rennala-sote | 44 |
-| 37 | boss:morgott | 44 |
-| 38 | boss:rykard | 43 |
-| 39 | grace:rykard-lord-of-blasphemy | 43 |
-| 40 | damage:lightning | 43 |
-| 41 | grace:margit-the-fell-omen | 42 |
-| 42 | boss:margit | 41 |
-| 43 | item:spear | 40 |
-| 44 | item:bloodhound-s-fang | 40 |
-| 45 | npc:death-outer-god | 39 |
-| 46 | region:leyndell | 38 |
+| 36 | boss:morgott | 47 |
+| 37 | boss:rennala-sote | 44 |
+| 38 | region:leyndell | 43 |
+| 39 | boss:rykard | 43 |
+| 40 | grace:rykard-lord-of-blasphemy | 43 |
+| 41 | damage:lightning | 43 |
+| 42 | grace:margit-the-fell-omen | 42 |
+| 43 | boss:margit | 41 |
+| 44 | item:spear | 40 |
+| 45 | item:bloodhound-s-fang | 40 |
+| 46 | npc:death-outer-god | 39 |
 | 47 | boss:mimic-tear | 38 |
 | 48 | grace:120201 | 38 |
 | 49 | grace:mimic-tear | 38 |
@@ -109,50 +109,50 @@ Corpus of how real players ask Elden Ring questions, collected by `scripts/colle
 | 54 | build:blasphemous | 36 |
 | 55 | item:blasphemous-blade | 36 |
 | 56 | region:haligtree | 35 |
-| 57 | region:lands-between | 35 |
-| 58 | damage:holy | 34 |
-| 59 | mechanic:status-frostbite | 34 |
-| 60 | boss:placidusax | 33 |
-| 61 | grace:dragonlord-placidusax | 33 |
-| 62 | region:liurnia | 33 |
-| 63 | boss:godskin-duo | 32 |
-| 64 | item:wait | 31 |
-| 65 | region:limgrave | 31 |
-| 66 | merchant:incantation | 30 |
-| 67 | merchant:sorcery | 30 |
-| 68 | dungeon:volcano-manor | 29 |
-| 69 | grace:160002 | 29 |
-| 70 | grace:volcano-manor | 29 |
-| 71 | npc:queen-marika-the-eternal | 29 |
-| 72 | enemy:mule | 28 |
-| 73 | region:farum | 28 |
-| 74 | item:claymore | 28 |
-| 75 | item:uchigatana | 27 |
-| 76 | mechanic:status-poison | 27 |
-| 77 | damage:physical | 26 |
-| 78 | item:golden-vow | 26 |
-| 79 | item:golden-vow-consumable | 26 |
-| 80 | item:golden-vow-spell | 26 |
-| 81 | npc:melina | 25 |
-| 82 | item:dagger | 25 |
-| 83 | grace:altus-plateau | 25 |
-| 84 | region:altus | 25 |
-| 85 | item:bloodflame-blade | 25 |
-| 86 | boss:bayle | 24 |
-| 87 | hunt:commander-gaius | 24 |
-| 88 | item:shard-of-alexander | 24 |
-| 89 | npc:miquella-of-the-haligtree | 24 |
-| 90 | item:white-mask | 23 |
-| 91 | item:rest | 23 |
-| 92 | build:dragon-communion | 23 |
-| 93 | merchant:dragon-communion | 23 |
-| 94 | hunt:patches | 23 |
-| 95 | line:patches | 23 |
-| 96 | merchant:patches | 23 |
-| 97 | npc:patches | 23 |
-| 98 | boss:needle-knight-leda | 22 |
-| 99 | build:dark-moon | 21 |
-| 100 | item:dark-moon-greatsword | 21 |
+| 57 | item:dark-moon-greatsword | 35 |
+| 58 | region:lands-between | 35 |
+| 59 | damage:holy | 34 |
+| 60 | mechanic:status-frostbite | 34 |
+| 61 | boss:placidusax | 33 |
+| 62 | grace:dragonlord-placidusax | 33 |
+| 63 | region:liurnia | 33 |
+| 64 | boss:godskin-duo | 32 |
+| 65 | item:wait | 31 |
+| 66 | region:limgrave | 31 |
+| 67 | merchant:incantation | 30 |
+| 68 | merchant:sorcery | 30 |
+| 69 | dungeon:volcano-manor | 29 |
+| 70 | grace:160002 | 29 |
+| 71 | grace:volcano-manor | 29 |
+| 72 | npc:queen-marika-the-eternal | 29 |
+| 73 | enemy:mule | 28 |
+| 74 | region:farum | 28 |
+| 75 | item:claymore | 28 |
+| 76 | item:uchigatana | 27 |
+| 77 | mechanic:status-poison | 27 |
+| 78 | dungeon:stormveil | 26 |
+| 79 | damage:physical | 26 |
+| 80 | item:golden-vow | 26 |
+| 81 | item:golden-vow-consumable | 26 |
+| 82 | item:golden-vow-spell | 26 |
+| 83 | npc:melina | 25 |
+| 84 | item:dagger | 25 |
+| 85 | grace:altus-plateau | 25 |
+| 86 | region:altus | 25 |
+| 87 | item:bloodflame-blade | 25 |
+| 88 | boss:bayle | 24 |
+| 89 | hunt:commander-gaius | 24 |
+| 90 | item:shard-of-alexander | 24 |
+| 91 | npc:miquella-of-the-haligtree | 24 |
+| 92 | item:white-mask | 23 |
+| 93 | item:rest | 23 |
+| 94 | build:dragon-communion | 23 |
+| 95 | merchant:dragon-communion | 23 |
+| 96 | hunt:patches | 23 |
+| 97 | line:patches | 23 |
+| 98 | merchant:patches | 23 |
+| 99 | npc:patches | 23 |
+| 100 | boss:needle-knight-leda | 22 |
 
 ## 200 most common unresolved terms
 
@@ -161,205 +161,205 @@ Nicknames, slang and misspellings the alias plane does not know.
 | # | term | count |
 | ---: | --- | ---: |
 | 1 | ng+7 | 37 |
-| 2 | Radhan | 27 |
-| 3 | ranni | 23 |
-| 4 | Darkmoon | 14 |
-| 5 | dark souls | 14 |
-| 6 | Shadow | 13 |
-| 7 | mesmer | 13 |
-| 8 | melania | 13 |
-| 9 | erdtree | 13 |
-| 10 | ng+2 | 12 |
-| 11 | ng+3 | 11 |
-| 12 | Greatshield | 11 |
-| 13 | stormveil | 11 |
-| 14 | WANNA KILL PCR | 11 |
-| 15 | STR FTH | 10 |
-| 16 | Yura | 9 |
-| 17 | AoWs | 8 |
-| 18 | str arc | 8 |
-| 19 | carian | 8 |
-| 20 | sellen | 8 |
-| 21 | Dark | 7 |
-| 22 | str faith | 7 |
-| 23 | Str Fai | 7 |
-| 24 | Dark Souls 3 | 7 |
-| 25 | str dex | 7 |
-| 26 | RL 150 | 7 |
-| 27 | ng+4 | 7 |
-| 28 | Nagakibas | 6 |
-| 29 | NG+5 | 6 |
-| 30 | ranni questline | 6 |
-| 31 | NG+1 | 6 |
-| 32 | dark souls 1 | 6 |
-| 33 | RL150 | 6 |
-| 34 | STR INT | 6 |
-| 35 | Dark Souls games | 6 |
-| 36 | Magik | 5 |
-| 37 | RL 200 | 5 |
-| 38 | godric | 5 |
-| 39 | Loretta | 5 |
-| 40 | Convergence | 5 |
-| 41 | lands | 5 |
-| 42 | PVE PVP | 5 |
-| 43 | Rogier | 5 |
-| 44 | cult | 5 |
-| 45 | movie | 5 |
-| 46 | pvp removed | 5 |
-| 47 | Goldfrey | 4 |
-| 48 | Ranni’s quest | 4 |
-| 49 | RL200 | 4 |
-| 50 | TLDR | 4 |
-| 51 | Margott | 4 |
-| 52 | Ng+8 | 4 |
-| 53 | ng+ before | 4 |
-| 54 | Carian Knight | 4 |
-| 55 | arms | 4 |
-| 56 | Nagikiba | 4 |
-| 57 | lyndell | 4 |
-| 58 | rl1 run | 4 |
-| 59 | danes footwork | 4 |
-| 60 | rings | 4 |
-| 61 | Badlands | 4 |
-| 62 | Fundamentals | 4 |
-| 63 | Liurna | 4 |
-| 64 | Raya | 3 |
-| 65 | drake knight | 3 |
-| 66 | ng 6 | 3 |
-| 67 | Lady | 3 |
-| 68 | Dryleaf | 3 |
-| 69 | tunnel | 3 |
-| 70 | Arteria Leaves | 3 |
-| 71 | Balancers | 3 |
-| 72 | Wings | 3 |
-| 73 | ranni's ending | 3 |
-| 74 | Christmas | 3 |
-| 75 | renala | 3 |
-| 76 | Anchor | 3 |
-| 77 | godslayer’s | 3 |
-| 78 | Fextralife | 3 |
-| 79 | Zelda | 3 |
-| 80 | RL 125 | 3 |
-| 81 | Ring's | 3 |
-| 82 | rennalla | 3 |
-| 83 | Ritual sword | 3 |
-| 84 | RL125 | 3 |
-| 85 | boggart | 3 |
-| 86 | Odin | 3 |
-| 87 | Jesus | 3 |
-| 88 | Greaves | 3 |
-| 89 | NG+ run | 3 |
-| 90 | Loki | 3 |
-| 91 | NG cycle | 3 |
-| 92 | arc dex | 3 |
-| 93 | str weapons | 3 |
-| 94 | Physic | 3 |
-| 95 | vaati | 3 |
-| 96 | Dark Souls 2 | 3 |
-| 97 | NG+ because | 3 |
-| 98 | Mausoleums | 3 |
-| 99 | fextralife wiki | 3 |
-| 100 | PvP builds | 3 |
-| 101 | Radhan removed | 2 |
-| 102 | Faram azula | 2 |
-| 103 | Pro Controller | 2 |
-| 104 | UXM Selective Unpacker | 2 |
-| 105 | Soldier | 2 |
-| 106 | Passwort | 2 |
-| 107 | roundtable | 2 |
-| 108 | discord | 2 |
-| 109 | convergence mod | 2 |
-| 110 | crumbling | 2 |
-| 111 | calid | 2 |
-| 112 | Jesus Christ | 2 |
-| 113 | Commander Nial | 2 |
-| 114 | Verdigris Set | 2 |
-| 115 | Rykkard | 2 |
-| 116 | December | 2 |
-| 117 | RL 50 | 2 |
-| 118 | Nobel | 2 |
-| 119 | mausoleum | 2 |
-| 120 | scepter | 2 |
-| 121 | Dueo | 2 |
-| 122 | Florisax | 2 |
-| 123 | Germany | 2 |
-| 124 | Plshelp | 2 |
-| 125 | PW gandalf | 2 |
-| 126 | fth str | 2 |
-| 127 | Ellah | 2 |
-| 128 | impaler | 2 |
-| 129 | solitary | 2 |
-| 130 | sellen quest | 2 |
-| 131 | Dek ooooooo | 2 |
-| 132 | Libra | 2 |
-| 133 | Husks | 2 |
-| 134 | Blooms | 2 |
-| 135 | grand | 2 |
-| 136 | NG+9 | 2 |
-| 137 | NG Lv 125 | 2 |
-| 138 | RL 10 | 2 |
-| 139 | Clerky | 2 |
-| 140 | Rotten | 2 |
-| 141 | Arc Fth | 2 |
-| 142 | ER again | 2 |
-| 143 | Bloo | 2 |
-| 144 | Blind Swordsman | 2 |
-| 145 | NG+ Hi | 2 |
-| 146 | AOW removed | 2 |
-| 147 | Humding Location | 2 |
-| 148 | iron balls | 2 |
-| 149 | I-Frames | 2 |
-| 150 | Leontiels | 2 |
-| 151 | LFG posts | 2 |
-| 152 | Meytr | 2 |
-| 153 | ng 7 | 2 |
-| 154 | PvE playthrough | 2 |
-| 155 | NG+ cycles | 2 |
-| 156 | PvP only PvE | 2 |
-| 157 | Solitude Greaves | 2 |
-| 158 | Greenburst Tear | 2 |
-| 159 | GodSlayer Blackflame | 2 |
-| 160 | pvp though | 2 |
-| 161 | Lv 125 Dex Fth | 2 |
-| 162 | Rl 713 | 2 |
-| 163 | crest great shield | 2 |
-| 164 | Julius Belmont | 2 |
-| 165 | nox sword | 2 |
-| 166 | Sparta | 2 |
-| 167 | Xemnas | 2 |
-| 168 | Pothead | 2 |
-| 169 | arc faith | 2 |
-| 170 | L2 attack | 2 |
-| 171 | Midori | 2 |
-| 172 | DS1 2 | 2 |
-| 173 | solitude set | 2 |
-| 174 | Slender Swords I’m dual | 2 |
-| 175 | PvP weapon | 2 |
-| 176 | DEX FAI | 2 |
-| 177 | AOE option | 2 |
-| 178 | PCR such | 2 |
-| 179 | Ritual | 2 |
-| 180 | Maleficent | 2 |
-| 181 | ng cycles | 2 |
-| 182 | Barbarian | 2 |
-| 183 | Shadow Tree | 2 |
-| 184 | Eleonoras Poleblade | 2 |
-| 185 | dance | 2 |
-| 186 | dancer | 2 |
-| 187 | Jack | 2 |
-| 188 | MIQUELIN KNIGHT SWORD | 2 |
-| 189 | RADAGONS RING | 2 |
-| 190 | assassins | 2 |
-| 191 | Minecraft | 2 |
-| 192 | Arenas | 2 |
-| 193 | village | 2 |
-| 194 | Texas region | 2 |
-| 195 | greathammer | 2 |
-| 196 | NG+6 | 2 |
-| 197 | Repost | 2 |
-| 198 | azula | 2 |
-| 199 | DS1 DS3 | 2 |
-| 200 | Radah | 2 |
+| 2 | ranni | 23 |
+| 3 | dark souls | 14 |
+| 4 | Shadow | 13 |
+| 5 | erdtree | 13 |
+| 6 | ng+2 | 12 |
+| 7 | ng+3 | 11 |
+| 8 | Greatshield | 11 |
+| 9 | WANNA KILL PCR | 11 |
+| 10 | STR FTH | 10 |
+| 11 | Yura | 9 |
+| 12 | AoWs | 8 |
+| 13 | str arc | 8 |
+| 14 | carian | 8 |
+| 15 | sellen | 8 |
+| 16 | Dark | 7 |
+| 17 | str faith | 7 |
+| 18 | Str Fai | 7 |
+| 19 | Dark Souls 3 | 7 |
+| 20 | str dex | 7 |
+| 21 | RL 150 | 7 |
+| 22 | ng+4 | 7 |
+| 23 | NG+5 | 6 |
+| 24 | ranni questline | 6 |
+| 25 | NG+1 | 6 |
+| 26 | dark souls 1 | 6 |
+| 27 | RL150 | 6 |
+| 28 | STR INT | 6 |
+| 29 | Dark Souls games | 6 |
+| 30 | Magik | 5 |
+| 31 | RL 200 | 5 |
+| 32 | Loretta | 5 |
+| 33 | Convergence | 5 |
+| 34 | lands | 5 |
+| 35 | PVE PVP | 5 |
+| 36 | Rogier | 5 |
+| 37 | cult | 5 |
+| 38 | movie | 5 |
+| 39 | pvp removed | 5 |
+| 40 | Ranni’s quest | 4 |
+| 41 | RL200 | 4 |
+| 42 | TLDR | 4 |
+| 43 | Ng+8 | 4 |
+| 44 | ng+ before | 4 |
+| 45 | Wings | 4 |
+| 46 | Carian Knight | 4 |
+| 47 | arms | 4 |
+| 48 | rl1 run | 4 |
+| 49 | boggart | 4 |
+| 50 | danes footwork | 4 |
+| 51 | rings | 4 |
+| 52 | Badlands | 4 |
+| 53 | Fundamentals | 4 |
+| 54 | Raya | 3 |
+| 55 | drake knight | 3 |
+| 56 | ng 6 | 3 |
+| 57 | Soldier | 3 |
+| 58 | Lady | 3 |
+| 59 | Dryleaf | 3 |
+| 60 | tunnel | 3 |
+| 61 | Arteria Leaves | 3 |
+| 62 | Balancers | 3 |
+| 63 | ranni's ending | 3 |
+| 64 | Christmas | 3 |
+| 65 | Anchor | 3 |
+| 66 | godslayer’s | 3 |
+| 67 | Fextralife | 3 |
+| 68 | Zelda | 3 |
+| 69 | RL 125 | 3 |
+| 70 | Ring's | 3 |
+| 71 | Ritual sword | 3 |
+| 72 | RL125 | 3 |
+| 73 | Odin | 3 |
+| 74 | Jesus | 3 |
+| 75 | Greaves | 3 |
+| 76 | NG+ run | 3 |
+| 77 | Loki | 3 |
+| 78 | NG cycle | 3 |
+| 79 | arc dex | 3 |
+| 80 | str weapons | 3 |
+| 81 | vaati | 3 |
+| 82 | Dark Souls 2 | 3 |
+| 83 | NG+ because | 3 |
+| 84 | Mausoleums | 3 |
+| 85 | fextralife wiki | 3 |
+| 86 | PvP builds | 3 |
+| 87 | Faram azula | 2 |
+| 88 | Pro Controller | 2 |
+| 89 | UXM Selective Unpacker | 2 |
+| 90 | Passwort | 2 |
+| 91 | roundtable | 2 |
+| 92 | discord | 2 |
+| 93 | convergence mod | 2 |
+| 94 | crumbling | 2 |
+| 95 | Jesus Christ | 2 |
+| 96 | Commander Nial | 2 |
+| 97 | Verdigris Set | 2 |
+| 98 | Rykkard | 2 |
+| 99 | December | 2 |
+| 100 | RL 50 | 2 |
+| 101 | Nobel | 2 |
+| 102 | mausoleum | 2 |
+| 103 | scepter | 2 |
+| 104 | Dueo | 2 |
+| 105 | Florisax | 2 |
+| 106 | Germany | 2 |
+| 107 | Plshelp | 2 |
+| 108 | PW gandalf | 2 |
+| 109 | fth str | 2 |
+| 110 | Ellah | 2 |
+| 111 | impaler | 2 |
+| 112 | solitary | 2 |
+| 113 | sellen quest | 2 |
+| 114 | Dek ooooooo | 2 |
+| 115 | Libra | 2 |
+| 116 | Husks | 2 |
+| 117 | Blooms | 2 |
+| 118 | grand | 2 |
+| 119 | NG+9 | 2 |
+| 120 | NG Lv 125 | 2 |
+| 121 | RL 10 | 2 |
+| 122 | Clerky | 2 |
+| 123 | Rotten | 2 |
+| 124 | Arc Fth | 2 |
+| 125 | ER again | 2 |
+| 126 | Bloo | 2 |
+| 127 | Blind Swordsman | 2 |
+| 128 | NG+ Hi | 2 |
+| 129 | AOW removed | 2 |
+| 130 | Humding Location | 2 |
+| 131 | iron balls | 2 |
+| 132 | I-Frames | 2 |
+| 133 | Leontiels | 2 |
+| 134 | LFG posts | 2 |
+| 135 | Meytr | 2 |
+| 136 | ng 7 | 2 |
+| 137 | PvE playthrough | 2 |
+| 138 | NG+ cycles | 2 |
+| 139 | PvP only PvE | 2 |
+| 140 | Solitude Greaves | 2 |
+| 141 | Greenburst Tear | 2 |
+| 142 | GodSlayer Blackflame | 2 |
+| 143 | pvp though | 2 |
+| 144 | Lv 125 Dex Fth | 2 |
+| 145 | Rl 713 | 2 |
+| 146 | crest great shield | 2 |
+| 147 | Julius Belmont | 2 |
+| 148 | nox sword | 2 |
+| 149 | Sparta | 2 |
+| 150 | Xemnas | 2 |
+| 151 | Pothead | 2 |
+| 152 | arc faith | 2 |
+| 153 | L2 attack | 2 |
+| 154 | Midori | 2 |
+| 155 | DS1 2 | 2 |
+| 156 | solitude set | 2 |
+| 157 | Slender Swords I’m dual | 2 |
+| 158 | PvP weapon | 2 |
+| 159 | DEX FAI | 2 |
+| 160 | AOE option | 2 |
+| 161 | PCR such | 2 |
+| 162 | Ritual | 2 |
+| 163 | Maleficent | 2 |
+| 164 | ng cycles | 2 |
+| 165 | Barbarian | 2 |
+| 166 | Shadow Tree | 2 |
+| 167 | Eleonoras Poleblade | 2 |
+| 168 | dance | 2 |
+| 169 | dancer | 2 |
+| 170 | Jack | 2 |
+| 171 | MIQUELIN KNIGHT SWORD | 2 |
+| 172 | RADAGONS RING | 2 |
+| 173 | assassins | 2 |
+| 174 | Minecraft | 2 |
+| 175 | Arenas | 2 |
+| 176 | village | 2 |
+| 177 | Texas region | 2 |
+| 178 | greathammer | 2 |
+| 179 | NG+6 | 2 |
+| 180 | wondrous | 2 |
+| 181 | Repost | 2 |
+| 182 | azula | 2 |
+| 183 | DS1 DS3 | 2 |
+| 184 | Radah | 2 |
+| 185 | Recusant | 2 |
+| 186 | ER experience | 2 |
+| 187 | Mario | 2 |
+| 188 | WEEEE | 2 |
+| 189 | TikTok | 2 |
+| 190 | NG+8 level 240 guy | 2 |
+| 191 | Caria | 2 |
+| 192 | Sunday | 2 |
+| 193 | PVP experience | 2 |
+| 194 | Jedi Fallen Order Worth | 2 |
+| 195 | Ranni’s fate | 2 |
+| 196 | BMing | 2 |
+| 197 | Ring's story | 2 |
+| 198 | NightFarers | 2 |
+| 199 | eldenringpvp | 2 |
+| 200 | RL1 SB0 Hitless | 2 |
 
 ## Phrasing patterns per type
 
@@ -619,11 +619,13 @@ Hand-verified nicknames written to `src/data/player-nicknames.json` and consumed
 | nickname | entity id |
 | --- | --- |
 | calid | region:caelid |
+| darkmoon | item:dark-moon-greatsword |
 | godric | boss:godrick |
 | goldfrey | boss:godfrey |
 | granssax | item:bolt-of-gransax |
 | liurna | region:liurnia |
 | lyndell | region:leyndell |
+| margott | boss:morgott |
 | melania | boss:malenia |
 | mesmer | boss:messmer |
 | nagakibas | item:nagakiba |
@@ -641,15 +643,7 @@ Hand-verified nicknames written to `src/data/player-nicknames.json` and consumed
 
 | candidate | entity id |
 | --- | --- |
-| Darkmoon | npc:dark-moon |
-| Goldfrey | boss:godfrey |
-| Granssax | item:bolt-of-gransax |
 | Leontiels | boss:leontiel |
-| Liurna | region:liurnia |
-| Margott | enemy:demi-human-queen |
-| Nagakibas | item:nagakiba |
-| Nagikiba | item:nagakiba |
-| Physic | item:flask-of-wondrous-physick |
 | Soldier | item:soldier-s-crossbow |
 | assassins | item:prayerbook-assassins |
 | rings | item:rings-of-spectral-light |
@@ -662,10 +656,8 @@ Hand-verified nicknames written to `src/data/player-nicknames.json` and consumed
 - `Shadow` (13) → dungeon:shadow-keep / enemy:shadow-militia / enemy:shadow-tree-spirit / enemy:shadow-undead / enemy:shadow-undead-manservant / grace:shadow-keep / grace:shadow-keep-back-gate / grace:shadow-keep-main-gate / item:shadow-bait / item:shadow-militiaman-armor / item:shadow-militiaman-gauntlets / item:shadow-militiaman-greaves / item:shadow-militiaman-helm / item:shadow-realm-rune-1 / item:shadow-realm-rune-2 / item:shadow-realm-rune-3 / item:shadow-realm-rune-4 / item:shadow-realm-rune-5 / item:shadow-realm-rune-6 / item:shadow-realm-rune-7 / item:shadow-sunflower / item:shadow-sunflower-blossom / region:shadow / region:shadow-keep / region:shadow-keep-church-district
 - `erdtree` (13) → boss:erdtree-avatar / boss:erdtree-avatar--converted-tower / boss:erdtree-avatar--mausoleum-compound / boss:erdtree-avatar--minor-erdtree / boss:erdtree-avatar--mountaintops-of-the-giants / boss:erdtree-burial-watchdog / boss:erdtree-burial-watchdog--cliffbottom-catacombs / boss:erdtree-burial-watchdog--impaler-s-catacombs / boss:erdtree-burial-watchdog--minor-erdtree-catacombs / boss:erdtree-burial-watchdog--stormfoot-catacombs / boss:erdtree-burial-watchdog--wyndham-catacombs / dungeon:forlorn-hound-evergaol / enemy:erdtree-avatar-deeproot-depths / enemy:erdtree-avatar-giants-mountaintops / enemy:erdtree-avatar-leyndell / enemy:erdtree-avatar-north-liurnia / enemy:erdtree-avatar-south-liurnia / enemy:erdtree-burial-watchdog-limgrave-catacombs / grace:erdtree-sanctuary / grace:ergtree-grazing / item:erdtree-bow / item:erdtree-codex / item:erdtree-greatbow / item:erdtree-greatshield / item:erdtree-heal / item:erdtree-prayerbook / item:erdtree-s-favor / item:erdtree-s-favor-1 / item:erdtree-s-favor-2 / item:erdtree-seal / item:erdtree-surcoat / item:golden-seed / quest:erdtree-burned / region:erdtree-sanctuary
 - `Greatshield` (11) → item:greatshield-soldier-ashes / item:greatshield-talisman
-- `stormveil` (11) → dungeon:stormveil / grace:castleward / grace:stormveil-cliffside / grace:stormveil-main-gate
 - `carian` (8) → enemy:carian-knight-bols-boss / item:carian-filigreed-crest / item:carian-glintblade-staff / item:carian-glintstone-staff / item:carian-grandeur / item:carian-greatsword / item:carian-inverted / item:carian-knight-armor / item:carian-knight-armor-altered / item:carian-knight-gauntlets / item:carian-knight-greaves / item:carian-knight-helm / item:carian-knight-s-shield / item:carian-knight-s-sword / item:carian-phalanx / item:carian-piercer / item:carian-regal-scepter / item:carian-retaliation / item:carian-slicer / item:carian-sorcery-sword / item:carian-sovereignty / item:carian-thrusting-shield / item:carian-troll-greatsword / region:carian-study-hall
 - `sellen` (8) → item:primal-glintstone / item:sellen-s-bell-bearing / quest:sellen:azur / quest:sellen:freed / quest:sellen:jerren / quest:sellen:jerren-side / quest:sellen:lusat / quest:sellen:primal-glintstone / quest:sellen:primers / quest:sellen:side / quest:sellen:witchbane
-- `godric` (5) → boss:godrick / grace:godrick-grace
 - `Loretta` (5) → boss:loretta-haligtree / boss:royal-knight-loretta / item:loretta-s-greatbow / item:loretta-s-mastery / item:loretta-s-slash / item:loretta-s-war-sickle
 - `lands` (5) → item:lands-between-rune / region:lands-between
 - `Rogier` (5) → item:rogier-s-bell-bearing / item:rogier-s-letter / item:rogier-s-rapier / quest:rogier:knifeprint

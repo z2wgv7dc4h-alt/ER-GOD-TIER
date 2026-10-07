@@ -106,8 +106,11 @@ export const facts: Fact[] = [
   { id: 'item:dark-moon-ring', kind: 'item', name: 'Dark Moon Ring', aliases: ['moon ring'], region: 'Cathedral of Manus Celes', campaign: 'base', implies: ['boss:astel'], usedIn: ['quest:ranni:ring'] },
   { id: 'item:fingerslayer', kind: 'item', name: 'Fingerslayer Blade', aliases: ['fingerslayer'], region: 'Nokron', campaign: 'base', implies: ['boss:radahn'], usedIn: ['quest:ranni:nokron'] },
   { id: 'item:carian-inverted', kind: 'item', name: 'Carian Inverted Statue', aliases: ['inverted statue'], region: 'Liurnia', campaign: 'base', implies: ['quest:ranni:service'], usedIn: ['quest:ranni:statue'] },
-  { id: 'item:sewing-needle', kind: 'item', name: 'Gold Sewing Needle', aliases: ['sewing needle', 'golden sewing needle'], region: 'Church of Vows', campaign: 'base', implies: [], usedIn: ['quest:boc:needle'] },
-  { id: 'item:haligtree-secret-medallion', kind: 'item', name: 'Haligtree Secret Medallion', aliases: ['secret medallion', 'haligtree medallion'], region: 'Consecrated Snowfield', campaign: 'base', implies: ['region:haligtree'] },
+  // Task 160 §5 — this is the plain Sewing Needle; the Gold Sewing Needle (goods
+  // 8162) is a distinct item (`item:gold-sewing-needle`). The old shared name made
+  // the two pages indistinguishable in the graph.
+  { id: 'item:sewing-needle', kind: 'item', name: 'Sewing Needle', aliases: ['sewing needle'], region: 'Church of Vows', campaign: 'base', implies: [], usedIn: ['quest:boc:needle'] },
+  { id: 'item:haligtree-secret-medallion', kind: 'item', name: 'Haligtree Secret Medallion', aliases: ['secret medallion', 'haligtree medallion'], region: 'Consecrated Snowfield', campaign: 'base', implies: [] },
   { id: 'item:dusk-medallion', kind: 'item', name: 'Dectus Medallion', aliases: ['dectus', 'grand lift of dectus'], region: 'Altus', campaign: 'base', implies: ['region:altus'] },
   { id: 'item:rotted-wing', kind: 'item', name: 'Unalloyed Gold Needle', aliases: ['unalloyed needle', 'millicent needle'], region: 'Caelid', campaign: 'base', implies: ['quest:millicent:needle'] },
   { id: 'item:serpent-amnion', kind: 'item', name: "Serpent's Amnion", aliases: ['amnion'], region: 'Volcano Manor', campaign: 'base', implies: ['quest:rya:amnion'] },
@@ -128,7 +131,7 @@ export const facts: Fact[] = [
   { id: 'quest:ranni:nokron', kind: 'quest', name: 'Ranni — Fingerslayer Blade recovered', aliases: [], region: 'Nokron', campaign: 'base', implies: ['quest:ranni:festival'] },
   { id: 'quest:ranni:statue', kind: 'quest', name: 'Ranni — Carian Study Hall inverted', aliases: [], region: 'Liurnia', campaign: 'base', implies: ['quest:ranni:service'] },
   { id: 'quest:ranni:ring', kind: 'quest', name: 'Ranni — Dark Moon Ring placed', aliases: ['age of stars'], region: 'Moonlight Altar', campaign: 'base', implies: ['item:dark-moon-ring'] },
-  { id: 'quest:boc:needle', kind: 'quest', name: 'Boc — gold sewing needle given', aliases: ['boc'], region: 'Altus', campaign: 'base', implies: [] },
+  { id: 'quest:boc:needle', kind: 'quest', name: 'Boc — gold sewing needle given', aliases: ['boc'], region: 'Altus', campaign: 'base', implies: ['item:sewing-needle'] },
   { id: 'quest:millicent:needle', kind: 'quest', name: 'Millicent — unalloyed needle', aliases: ['millicent'], region: 'Caelid', campaign: 'base', implies: ['region:caelid'] },
   { id: 'quest:rya:amnion', kind: 'quest', name: 'Rya — Serpent’s Amnion', aliases: ['rya'], region: 'Volcano Manor', campaign: 'base', implies: [] },
 
@@ -342,7 +345,7 @@ export const facts: Fact[] = [
   { id: 'quest:fia:met', kind: 'quest', name: 'Fia — held at the Roundtable', aliases: [], region: 'Roundtable', campaign: 'base', implies: [] },
   { id: 'quest:fia:dagger', kind: 'quest', name: 'Fia — Weathered Dagger decided', aliases: [], region: 'Roundtable', campaign: 'base', implies: [] },
   { id: 'quest:fia:cursemark', kind: 'quest', name: 'Fia — Cursemark of Death given', aliases: [], region: 'Deeproot Depths', campaign: 'base', implies: [] },
-  { id: 'quest:fia:concluded', kind: 'quest', name: 'Fia — Death-Prince line concluded', aliases: [], region: 'Deeproot Depths', campaign: 'base', implies: [] },
+  { id: 'quest:fia:concluded', kind: 'quest', name: 'Fia — Death-Prince line concluded', aliases: [], region: 'Deeproot Depths', campaign: 'base', implies: ['boss:fortissax'] },
   { id: 'quest:d:brother', kind: 'quest', name: "D's brother met in Deeproot", aliases: [], region: 'Deeproot Depths', campaign: 'base', implies: [] },
 
   // Dung Eater — seedbeds, potion fork, blessing / curse.
@@ -510,6 +513,8 @@ const REGION_FACT: [RegExp, string][] = [
   [/farum azula/i, 'region:farum'],
   [/haligtree|elphael/i, 'region:haligtree'],
   [/gravesite|scadu|cerulean|jagged peak|rauh|belurat|charo|abyssal|enir-ilim|shadow keep|hinterland|finger ruins|stone coffin/i, 'region:shadow'],
+  [/siofra/i, 'region:siofra-river'],
+  [/ainsel/i, 'region:ainsel-river'],
 ]
 
 export function regionFactFor(region: string): string | undefined {

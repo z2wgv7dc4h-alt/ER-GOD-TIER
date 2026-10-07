@@ -1,4 +1,5 @@
 import type { GideonAct } from './gideon'
+import { fold, resolveQuestionSubjects } from './gideonGrounded'
 import { searchWiki } from './wikiSearch'
 
 /**
@@ -24,10 +25,31 @@ export function wikiExcerpt(markdown: string, max = 240): string {
 }
 
 export async function askGideonWiki(question: string, limit = 3): Promise<GideonAct | null> {
-  const hits = await searchWiki(question, limit).catch(() => [])
+  // Fetch a wider candidate set than we quote, so a passage that mentions the
+  // subject can win over a higher-scoring but unrelated one.
+  const hits = await searchWiki(question, Math.max(limit * 4, 12)).catch(() => [])
   if (!hits.length) return null
-  const top = hits[0]
-  const excerpts = hits.slice(0, 2).map((hit) => {
+  // Task 168 §5 — never answer from a passage that does not mention the subject
+  // the question is about. When the entity index is loaded (offline path) and the
+  // question names a subject, keep only passages that mention that subject or are
+  // its own page; if none do, decline rather than quote an unrelated article.
+  const subjects = resolveQuestionSubjects(question)
+  let candidates = hits
+  if (subjects.length) {
+    const mentions = (hit: (typeof hits)[number]) => {
+      for (const s of subjects) {
+        if (hit.entityId === s.id) return true
+        const hay = fold(`${hit.title} ${hit.heading} ${hit.markdown}`)
+        if (s.names.some((n) => hay.includes(n))) return true
+      }
+      return false
+    }
+    const related = hits.filter(mentions)
+    if (!related.length) return null
+    candidates = related
+  }
+  const top = candidates[0]
+  const excerpts = candidates.slice(0, 2).map((hit) => {
     const cite = hit.entityId.startsWith('wiki:') ? `[[${hit.entityId}|${hit.title}]]` : hit.title
     return `“${wikiExcerpt(hit.markdown)}” — ${cite}${hit.heading ? ` · ${hit.heading}` : ''}`
   })

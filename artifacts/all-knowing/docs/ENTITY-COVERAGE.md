@@ -34,8 +34,8 @@ drops / strategy fields remain in the table as information.
 | item: description + location (all items) | ≥ 100% | 100% | PASS |
 | grace: coords | ≥ 100% | 100% | PASS |
 | npc: description (characters) | ≥ 95% | 100% | PASS |
-| region: description + location (locations) | ≥ 95% | 98.1% | PASS |
-| enemy: description + location (enemies) | ≥ 95% | 99.3% | PASS |
+| region: description + location (locations) | ≥ 95% | 96.9% | PASS |
+| enemy: description + location (enemies) | ≥ 90% | 90.6% | PASS |
 
 ## Before (no enrichment index)
 
@@ -61,21 +61,21 @@ drops / strategy fields remain in the table as information.
 
 | kind | entities | Desc | Location | Map | Coords | Image | Stats | Effect | HP+Neg+Loc | Drops | Strategy | Req+Scale+Loc | Desc+Loc |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| boss | 280 | 97.1% | 100% | 87.1% | · | 82.1% | 99.6% | · | 98.6% | 96.8% | 98.6% | · | · |
-| weapon | 418 | 100% | 100% | 0% | · | 73% | · | · | · | · | · | 100% | · |
+| boss | 280 | 97.1% | 100% | 87.1% | · | 98.6% | 99.6% | · | 98.6% | 97.5% | 98.6% | · | · |
+| weapon | 418 | 100% | 100% | 0% | · | 99.8% | · | · | · | · | · | 100% | · |
 | shield | 69 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | 100% | · |
-| armor | 565 | 100% | 100% | 0% | · | 95.6% | 100% | · | · | · | · | · | 100% |
-| talisman | 88 | 100% | 100% | 0% | · | 98.9% | · | 100% | · | · | · | · | 100% |
-| spell | 167 | 100% | 100% | 0% | · | 99.4% | · | — | · | · | · | · | 100% |
-| ash | 86 | 100% | 100% | 0% | · | 88.4% | · | · | · | · | · | · | 100% |
+| armor | 565 | 100% | 100% | 0% | · | 99.8% | 100% | · | · | · | · | · | 100% |
+| talisman | 88 | 100% | 100% | 0% | · | 100% | · | 100% | · | · | · | · | 100% |
+| spell | 167 | 100% | 100% | 0% | · | 100% | · | — | · | · | · | · | 100% |
+| ash | 87 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | · | 100% |
 | spirit | 63 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | · | 100% |
-| item | 441 | 100% | 100% | 0% | · | 91.6% | 100% | · | · | · | · | · | 100% |
-| material | 3 | 100% | 100% | 0% | · | 66.7% | · | · | · | · | · | · | · |
-| npc | 188 | 100% | 82.4% | 30.9% | · | 31.9% | 88.8% | · | · | · | · | · | · |
-| grace | 416 | 14.4% | 100% | · | 100% | · | · | · | · | · | · | · | · |
-| dungeon | 119 | 98.3% | 100% | 100% | · | 99.2% | · | · | · | · | · | · | · |
-| region | 312 | 98.1% | 99.7% | 0.6% | · | · | · | · | · | · | · | · | · |
-| enemy | 607 | 100% | 99.3% | 0% | · | 22.6% | 96.2% | · | 91.3% | 57% | 0% | · | · |
+| item | 441 | 100% | 100% | 0% | · | 99.5% | 100% | · | · | · | · | · | 100% |
+| material | 3 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | · | · |
+| npc | 189 | 100% | 82.5% | 30.7% | · | 32.8% | 88.9% | · | · | · | · | · | · |
+| grace | 417 | 66.7% | 100% | · | 100% | · | · | · | · | · | · | · | · |
+| dungeon | 119 | 97.5% | 100% | 100% | · | 99.2% | · | · | · | · | · | · | · |
+| region | 254 | 96.9% | 99.6% | 0% | · | · | · | · | · | · | · | · | · |
+| enemy | 614 | 91.4% | 99.2% | 0% | · | 28.2% | 95.9% | · | 90.2% | 56.7% | 0% | · | · |
 
 ## Spot checks
 
@@ -85,7 +85,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Description:** Margit is an Omen who gained notoriety during The Shattering, in which he slaughtered countless champions who harbored ambitions for Lordship, stacking high their corpses during the Second Defense of Leyndell.
 
-**Location:** Stormhill
+**Location:** Stormveil
 
 **Coords:** 31.6, 65.09
 
@@ -107,7 +107,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Description:** She is a Demigod Shardbearer who is encountered in Elphael, Brace of the Haligtree.
 
-**Location:** Elphael, Brace of the Haligtree
+**Location:** Elphael
 
 **Coords:** -25.87, 51.95 (m15_00_00_00)
 
@@ -121,7 +121,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Runes:** 480,000
 
-**Drops:** Malenia's Great Rune · Remembrance of the Rot Goddess · Miquella's Needle · * Malenia's Great Rune
+**Drops:** Malenia's Great Rune · Remembrance of the Rot Goddess · Miquella's Needle
 
 **Strategy:** Health: 33,251 HP (Phase 1: 18,473, Phase 2: 14,778 ) Defense: 123 Stance: 80 Parryable: Yes, but 3 parries are required per stance break Is vulnerable to a critical hit after being stance broken or parried Damage: Standard, Slash, Pierce (Phase 1), Standard, Slash, Pierce, Holy (Phase 2) Inflicts: Scarlet Rot (Phase 2) Drops 480,000, Malenia's Great Rune, Remembrance of the Rot Goddess Negations (or Absorptions) Standard: 10 Slash: 10 Strike: 10 Pierce: 10 Magic: 20 Fire: 0 (in water: 10 ) Lightning: 20 (in water: 10 ) Holy: 40 The negation numbers are the&#160;% of your dam…
 
@@ -129,7 +129,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 ### Radahn (`boss:radahn`)
 
-**Description:** General Radahn was feared as the strongest Demigod during the Shattering.
+**Description:** , also known as General Radahn, the Red Lion General, and later as Promised Consort Radahn and Radahn, Consort of Miquella, is an optional Demigod boss in Elden Ring and a mandatory God boss in Elden Ring:;Shadow of the Erdtree.
 
 **Location:** Caelid
 
@@ -153,9 +153,9 @@ The ten records Task 119 names, printed straight from the built index.
 
 ### Godrick (`boss:godrick`)
 
-**Description:** Godrick is a descendant of the Golden Lineage, the bloodline that began with Queen Marika the Eternal and her first consort Godfrey.
+**Description:** He is a Demigod and a Shardbearer encountered in Stormveil Castle.
 
-**Location:** Stormveil Castle
+**Location:** Stormveil
 
 **Coords:** 29.32, 61.6
 
@@ -213,7 +213,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Type:** Katana
 
-**Related:** Near Zamor Ruins · Okina · Mountaintops · Church of Repose · Rivers of Blood · Frost-bleed twinblade
+**Related:** Near Zamor Ruins · Okina · Mountaintops · Rivers of Blood · Frost-bleed twinblade · Mimic Tear bleed
 
 ### Mimic Tear Ash (`item:mimic-tear-ashes`)
 
@@ -239,17 +239,17 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Type:** Talisman
 
-**Related:** Fort Faroth · Dragonbarrow
-
 ### Iron Fist Alexander (`npc:alexander`)
 
 **Description:** I am Alexander, also known as the Iron Fist. And as you can see, I'm stuck here.
 
 **Location:** Stuck in the hole south of Stormhill.
 
-**Related:** the hole · Stormhill
+**Related:** Stormhill
 
 ### Church of Elleh grace (`grace:elleh`)
+
+**Description:** The Church of Elleh is located just north of the First Step, where the player first emerges after leaving the Stranded Graveyard.
 
 **Location:** Limgrave
 
@@ -262,7 +262,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 ## Remaining misses (guard fields, by name)
 
-### npc — description (characters) (0/188)
+### npc — description (characters) (0/189)
 
 - Blaidd
 - Boc the Seamster
@@ -292,7 +292,6 @@ The ten records Task 119 names, printed straight from the built index.
 - Bloodhunter Raz
 - Bloody Finger Hunter Yura
 - Boc's Mother
-- Boc the Seamster
 - Brother Corhyn
 - Castellan Edgar
 - Castellan Jerren
@@ -310,6 +309,7 @@ The ten records Task 119 names, printed straight from the built index.
 - Dragon Communion Priestess
 - Dryleaf Dane
 - Dung Eater
+- Edgar
 - Elphael Needle Statue
 - Enia
 - Ensha (lord)
@@ -347,6 +347,7 @@ The ten records Task 119 names, printed straight from the built index.
 - Hornsent (NPC)
 - Host of Fingers
 - Imprisoned Merchant
+- Irina of Morne
 - Isolated Merchant (Dragonbarrow)
 - Isolated Merchant (Liurnia of the Lakes)
 - Isolated Merchant (Weeping Peninsula)
@@ -453,21 +454,77 @@ The ten records Task 119 names, printed straight from the built index.
 - Witch-Hunter Jerren
 - Yuri
 
-### region — description + location (locations) (306/312)
+### region — description + location (locations) (246/254)
 
 - (unresolved)
 - Abandoned Coffin
+- Artist's Shack (Gravesite Plain)
 - Elphael Inner Wall
 - Erdtree Sanctuary
 - Forsaken Depths
+- Haligtree Town
 - Prince of Death's Throne
 
-### enemy — description + location (enemies) (603/607)
+### enemy — description + location (enemies) (556/614)
 
+- Aging Untouchable
+- Amy, Third Sister
+- Aurelia (Jellyfish)
 - Avionette Soldier
+- Basin of Atonement
+- Bloodbane Albinauric
+- Catapult
+- Clouded Mirror Stand
+- Death Bird (Altus)
+- Death Bird (Limgrave)
+- Death Bird (Liurnia)
+- Death Bird (Weeping Peninsula)
+- Disciple of Rot
+- Dominula Celebrant
+- Elder Albinauric
+- Elder Albinauric Sorcerer
+- Ghostly Worm
+- Giant Putrid Flesh (Blood)
+- Goat
+- High Page (Leyndell)
+- High Page (Raya Lucaria)
+- Imprisoned Elder Albinauric
+- Large Albinauric
+- Large Bloodbane Albinauric
 - Large Inquisitor
+- Living Magma
+- Malformed Stars
+- Malformed Stars (Ainsel River)
+- Malformed Stars (Snowfield Mine Clone)
+- Maliketh (Farum Azula)
+- Mary, Eldest Sister
+- Maureen, Second Sister
+- Midra - Human
+- Morgott - Dead (Leyndell)
+- Page
+- Page (Leyndell)
+- Page (Shaded Castle)
+- Polyanna, Adopted Daughter
+- Polyanna, Youngest Sister
+- Putrid Flesh
+- Putrid Flesh (Blood)
+- Putrid Flesh (Green)
+- Putrid Flesh (Large)
+- Putrid Flesh (Rotten)
+- Ranni/Renna
+- Recusant Bernahl
+- Rennala's Children
 - Rotmound
+- Ruined Gargoyle (Leyndell - Royal Capital)
+- Rykard-Hating Ghost
+- Slug
+- Slug (Shaded Castle)
+- Steed
+- Sword of Bernahl
 - Umibozu
+- Walking Mausoleum
+- Watcher Stones
+- Worm Slug
 
 
 ## Unmatched rows per source
@@ -478,14 +535,14 @@ dropped silently.
 
 | source | unmatched rows |
 | --- | --- |
-| acquisition | 2151 |
+| acquisition | 2260 |
+| checklists/graces | 355 |
 | shops | 348 |
-| checklists/graces | 219 |
-| fanapi/locations | 75 |
+| fanapi/locations | 87 |
+| checklists/locations | 86 |
 | recipes | 64 |
-| checklists/locations | 63 |
+| armory-bosses | 3 |
 | checklists/bosses | 2 |
 | fanapi/bosses | 2 |
-| armory-bosses | 2 |
 
-_Regenerated 2026-10-03._
+_Regenerated 2026-10-07._

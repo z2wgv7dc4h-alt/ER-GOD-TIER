@@ -18,18 +18,27 @@ and every entity-graph id the app can link to.
 
 | kind | entities | flagged | empty | raw ids | bad casing | generic status | wrong actions | wiki nav | junk rows | boss filed as NPC |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| item | 1187 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| item | 1183 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | armor | 751 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+<<<<<<< HEAD
 | enemy | 607 | 607 | 0 | 0 | 0 | 607 | 0 | 0 | 0 | 0 |
 | quest | 468 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | weapon | 441 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | grace | 416 | 416 | 0 | 0 | 0 | 387 | 416 | 0 | 0 | 0 |
 | region | 355 | 355 | 0 | 0 | 0 | 347 | 355 | 0 | 0 | 0 |
 | boss | 280 | 106 | 0 | 0 | 0 | 106 | 0 | 0 | 0 | 0 |
+=======
+| enemy | 614 | 614 | 0 | 0 | 0 | 614 | 0 | 0 | 0 | 0 |
+| quest | 471 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| weapon | 439 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| grace | 417 | 417 | 0 | 0 | 0 | 388 | 417 | 0 | 0 | 0 |
+| region | 297 | 297 | 0 | 0 | 0 | 288 | 297 | 0 | 0 | 0 |
+| boss | 280 | 103 | 0 | 0 | 0 | 103 | 0 | 0 | 0 | 0 |
+>>>>>>> master
 | spell | 218 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| npc | 195 | 195 | 1 | 0 | 0 | 195 | 195 | 0 | 0 | 0 |
+| npc | 188 | 188 | 0 | 0 | 0 | 188 | 188 | 0 | 0 | 0 |
 | talisman | 158 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| ash | 124 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| ash | 125 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | dungeon | 119 | 119 | 0 | 0 | 0 | 119 | 119 | 0 | 0 | 0 |
 | merchant | 106 | 106 | 0 | 0 | 0 | 0 | 106 | 0 | 0 | 0 |
 | spirit | 80 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -39,24 +48,28 @@ and every entity-graph id the app can link to.
 | gate | 10 | 10 | 0 | 0 | 0 | 10 | 0 | 0 | 0 | 0 |
 | ending | 5 | 5 | 0 | 0 | 0 | 5 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+<<<<<<< HEAD
 | **total** | **5685** | **1920** | 2 | 0 | 0 | 1776 | 1191 | 0 | 0 | 0 |
+=======
+| **total** | **5626** | **1859** | 0 | 0 | 0 | 1715 | 1127 | 0 | 0 | 0 |
+>>>>>>> master
 
 ## After
 
 | kind | entities | flagged | empty | raw ids | bad casing | generic status | wrong actions | wiki nav | junk rows | boss filed as NPC |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| item | 1188 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| item | 1186 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | armor | 751 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| enemy | 607 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| quest | 468 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| weapon | 441 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| grace | 416 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| region | 356 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| enemy | 614 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| quest | 471 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| weapon | 439 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| grace | 417 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| region | 298 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | boss | 280 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | spell | 218 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| npc | 195 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| npc | 188 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | talisman | 158 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| ash | 124 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| ash | 125 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | dungeon | 119 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | merchant | 106 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | spirit | 80 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -66,9 +79,13 @@ and every entity-graph id the app can link to.
 | gate | 10 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | ending | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **total** | **5687** | **2** | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **total** | **5630** | **0** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
+<<<<<<< HEAD
 Task 144 removed **1918** flagged pages
+=======
+Task 144 removed **1859** flagged pages
+>>>>>>> master
 (empty, raw ids, bad casing, generic status, wrong actions, wiki nav, junk rows, boss filed as NPC).
 
 ## Remaining empty pages, by name
@@ -77,20 +94,10 @@ These entries have no description, location, stats, drops, sections or image in
 the built entity index. Check the wiki corpus and its set pages before calling
 one a real data gap.
 
-### item (1)
-
-- Fetal Position
-
-### npc (1)
-
-- The Noble Broken Mask
-
+_None._
 
 ## Every flagged page (after)
 
-| id | kind | issues |
-| --- | --- | --- |
-| `item:fetal-position` | item | empty |
-| `npcs:147100` | npc | empty |
+_None._
 
 _Regenerated 2026-10-07._

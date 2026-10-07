@@ -6,7 +6,7 @@ API key** — the deterministic router and the wiki fallback — for an empty
 character and the mid-game scenario character, then scores the answer against the
 question's data-grounded `expected` block.
 
-- **Question set:** 300 questions, 209 from the Task 163 player corpus, 280 answerable, 20 marked unanswerable.
+- **Question set:** 300 questions, 209 from the Task 163 player corpus, 256 answerable, 44 marked unanswerable.
 - **Runs:** 600 (300 × 2 characters).
 - **Scoring:** `correct` = every expected id mentioned/linked **and** every mustInclude fact present; `partial` = some matched; `wrong` = confident but no expected fact; `noAnswer` = Gideon declines. Unanswerable questions are scored `honest` (declines/hedges) or `madeUp` (answers anyway).
 
@@ -14,89 +14,112 @@ question's data-grounded `expected` block.
 
 | metric | value |
 | --- | ---: |
-| answerable questions — correct | **226/560 (40.4%)** |
-| answerable questions — partial | 114 (20.4%) |
-| answerable questions — wrong | 190 (33.9%) |
-| answerable questions — no answer | 30 (5.4%) |
-| unanswerable — honest | 0/40 (0.0%) |
-| unanswerable — made up | 40 (100.0%) |
-| latency — median | 3 ms |
-| latency — p95 | 30 ms |
+| answerable questions — correct | **432/512 (84.4%)** |
+| answerable questions — partial | 30 (5.9%) |
+| answerable questions — wrong | 40 (7.8%) |
+| answerable questions — no answer | 10 (2.0%) |
+| unanswerable — honest | 88/88 (100.0%) |
+| unanswerable — made up | 0 (0.0%) |
+| latency — median | 13 ms |
+| latency — p95 | 62 ms |
 
 ## By intent
 
 | intent | runs | correct | partial | wrong | noAnswer | honest | madeUp |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| where-is | 24 | 8 | 6 | 10 | 0 | 0 | 0 |
-| boss-location | 24 | 2 | 18 | 4 | 0 | 0 | 0 |
-| item-location | 24 | 10 | 7 | 7 | 0 | 0 | 0 |
-| npc-location | 24 | 2 | 15 | 7 | 0 | 0 | 0 |
-| how-to-get | 24 | 4 | 4 | 16 | 0 | 0 | 0 |
-| navigation | 24 | 4 | 6 | 10 | 0 | 0 | 4 |
-| how-to-beat | 24 | 2 | 6 | 2 | 14 | 0 | 0 |
-| drops | 24 | 2 | 14 | 6 | 2 | 0 | 0 |
-| level | 24 | 2 | 6 | 16 | 0 | 0 | 0 |
-| what-next | 24 | 9 | 0 | 15 | 0 | 0 | 0 |
+| out-of-scope | 64 | 0 | 0 | 0 | 0 | 64 | 0 |
+| mechanics | 26 | 24 | 0 | 2 | 0 | 0 | 0 |
+| boss-location | 24 | 18 | 6 | 0 | 0 | 0 | 0 |
+| item-location | 24 | 12 | 7 | 3 | 2 | 0 | 0 |
+| how-to-get | 24 | 24 | 0 | 0 | 0 | 0 | 0 |
+| level | 24 | 24 | 0 | 0 | 0 | 0 | 0 |
+| what-next | 24 | 24 | 0 | 0 | 0 | 0 | 0 |
 | npc-quest | 24 | 16 | 4 | 4 | 0 | 0 | 0 |
 | build-advice | 24 | 22 | 0 | 2 | 0 | 0 | 0 |
 | class-build | 24 | 20 | 0 | 4 | 0 | 0 | 0 |
 | recommend | 24 | 22 | 0 | 0 | 2 | 0 | 0 |
-| compare | 24 | 20 | 0 | 2 | 2 | 0 | 0 |
-| lore | 24 | 2 | 16 | 6 | 0 | 0 | 0 |
-| mechanics | 24 | 4 | 0 | 20 | 0 | 0 | 0 |
-| ending | 24 | 24 | 0 | 0 | 0 | 0 | 0 |
-| requirements | 24 | 0 | 6 | 14 | 4 | 0 | 0 |
-| how-to-use | 24 | 0 | 6 | 18 | 0 | 0 | 0 |
-| multi-part | 24 | 14 | 0 | 10 | 0 | 0 | 0 |
-| co-op | 24 | 7 | 0 | 3 | 0 | 0 | 14 |
-| pvp | 24 | 14 | 0 | 4 | 6 | 0 | 0 |
-| bug-glitch | 24 | 0 | 0 | 2 | 0 | 0 | 22 |
-| other | 24 | 16 | 0 | 8 | 0 | 0 | 0 |
+| lore | 24 | 20 | 0 | 2 | 2 | 0 | 0 |
+| requirements | 24 | 22 | 0 | 2 | 0 | 0 | 0 |
+| how-to-use | 24 | 24 | 0 | 0 | 0 | 0 | 0 |
+| npc-location | 22 | 16 | 5 | 1 | 0 | 0 | 0 |
+| navigation | 22 | 16 | 4 | 0 | 0 | 2 | 0 |
+| how-to-beat | 22 | 22 | 0 | 0 | 0 | 0 | 0 |
+| compare | 22 | 16 | 0 | 4 | 2 | 0 | 0 |
+| ending | 22 | 22 | 0 | 0 | 0 | 0 | 0 |
+| pvp | 22 | 18 | 0 | 4 | 0 | 0 | 0 |
+| bug-glitch | 22 | 0 | 0 | 0 | 0 | 22 | 0 |
+| drops | 20 | 18 | 0 | 0 | 2 | 0 | 0 |
+| where-is | 18 | 8 | 4 | 6 | 0 | 0 | 0 |
+| other | 16 | 12 | 0 | 4 | 0 | 0 | 0 |
+| multi-part | 14 | 12 | 0 | 2 | 0 | 0 | 0 |
 
 ## By character
 
 | character | runs | correct | partial | wrong | noAnswer | honest | madeUp | median ms |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| empty | 300 | 113 | 57 | 95 | 15 | 0 | 20 | 3 |
-| mid | 300 | 113 | 57 | 95 | 15 | 0 | 20 | 2 |
+| empty | 300 | 216 | 15 | 20 | 5 | 44 | 0 | 13 |
+| mid | 300 | 216 | 15 | 20 | 5 | 44 | 0 | 12 |
 
 ## Failure causes
 
 "Misses" are every run that was not `correct` (answerable) or `honest`
-(unanswerable), i.e. 374 of 600 runs.
+(unanswerable), i.e. 80 of 600 runs.
 
 | failure cause | count | share of misses | example |
 | --- | ---: | ---: | --- |
-| entity-not-recognised | 136 | 36.4% | . Where is dragonlord placidusax? |
-| answer-buried | 112 | 29.9% | looking for coop help with the watchdog in Stormfoot Catacom… |
-| wiki-snippet-irrelevant | 56 | 15.0% | Im on my first play through of the game, at Rennala. Does an… |
-| overconfident | 40 | 10.7% | I despise having to open the pouch to get to torrent…any or … |
-| data-missing | 30 | 8.0% | : Does anyone know any tips to beat Devonia in NG+5? |
+| entity-not-recognised | 30 | 37.5% | I’m planning a rl 11 character (or max 21) and I need bot Ma… |
+| answer-buried | 30 | 37.5% | Mine is the golden hippopotamus, they have a giant rhino loo… |
+| wiki-snippet-irrelevant | 10 | 12.5% | Im at outer wall in Altus and just finished Ranni’s questlin… |
+| data-missing | 10 | 12.5% | Does anyone else find it easier to parry with a dagger than … |
 
 ## Unanswerable questions — what Gideon actually said
 
 | intent | question | Gideon said |
 | --- | --- | --- |
-| navigation | I despise having to open the pouch to get to torrent…any or successful… | “Besides allowing a player to get around relatively quickly, Torrent also doesn't appear to take fall damage from certain heights. This allo… |
-| navigation | Can someone help me reach leda before I crash out | “Leda's Rune can be dropped by the following enemies:** - Leda (if killed before reaching Enir-Ilim)” — Leda's Rune · Acquisition “- Can be … |
-| co-op | Anyone willing to drop me Rivers of Blood + some runes? | Rivers of Blood — Still deletes most of the Lands Between. Weak to high bleed resist (Malenia is the joke). I can put those stats on this sh… |
-| co-op | ( ) Anyone able to help me beat Commander Niall in the snowy area? | Commander Niall — boss in Mountaintops. |
-| co-op | Can someone drop me the Divine Beast Helm? I'll trade anything you wan… | Divine Beast Dancing Lion (Belurat, Tower Settlement) — boss · Gravesite Plain. |
-| co-op | Anyone wanna run Darklight Catacombs with me? | Darklight Catacombs · Scadu Altus · shadow. |
-| co-op | , someone able to help me with the rot knights at the end of the aband… | Abandoned Cave · Caelid · overworld. |
-| co-op | Can someone please drop me Shard Of Alexander on ? | Iron Fist Alexander (story) is still open (0/6). Next: Free Alexander from the Limgrave hole. South of Stormhill. Hit the ground. Missable i… |
-| co-op | Can someone plz help me with Godfrey? | Godfrey, First Elden Lord / Hoarah Loux — boss in Ashen Capital. |
-| bug-glitch | Summoning bug for Needle Knight Leda’s boss fight? | Needle Knight Leda looks locked on this character. You have not entered the Realm of Shadow yet. Need Mohg + the withered arm. We can still … |
-| bug-glitch | Are the divine bird feathers good when you play the game at 30 fps? | “Divine Bird Feathers** is an Incantation Spell in Shadow of the Erdtree. It is one the Divine Beast incantations.” — Divine Bird Feathers ·… |
-| bug-glitch | Base Serpent Messmer / Leonine arena glitch?? | Messmer the Impaler — boss in Shadow Keep. |
-| bug-glitch | Was Pre-nerf Malenia a harder boss than Pre-nerf Promised Consort Rada… | Starscourge Radahn — boss in Caelid. |
-| bug-glitch | Anybody experiences FPS drops in Gravesite Plain (DLC)? | Gravesite Plain · Gravesite Plain · shadow. |
-| bug-glitch | Seemless Co-op Grand lift rold shut down bug? | Rivers of Blood — Still deletes most of the Lands Between. Weak to high bleed resist (Malenia is the joke). I can put those stats on this sh… |
-| bug-glitch | Does anyone know if the Melania glitch using agheels flame to climb a … | “Golden Vow casts an Erdtree incantation that applies an Aura Buff to self and nearby allies. - Golden Vow uses 30 FP to increase Attack Pow… |
-| bug-glitch | Was starting new game with Idus knight and got this🫪🤣anyone else not… | “The **Idus Knight** is one of the starting origins .” — [[wiki:idus-knight|Idus Knight]] · Summary “Armaments** - Idus Sword - Silver Groov… |
-| bug-glitch | Need to be summoned to the Royal Capital for a wrong warp glitch | Leyndell, Royal Capital — region in Leyndell. |
-| bug-glitch | seamless coop mod help. Melina roundtable invite bug. | Kindling Maiden — npc. |
-| bug-glitch | is Glintstone Dragon Adula bugged | Adula's Moonblade — Drop from Glintstone Dragon Adula at the Cathedral of Manus Celes. Ranni’s late line. Want that grace on the atlas? |
+| out-of-scope | looking for coop help with the watchdog in Stormfoot Catacombs .. I ju… | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | I can’t find anyone with the stakes can someone help me? Password will… | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Help me rebuild my original Tarnished on 2... 🙌 Multiplayer Password:… | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Does anyone else find it frustrating that close matches seem to be dec… | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| navigation | I despise having to open the pouch to get to torrent…any or successful… | I can't speak to bugs, patches, performance, or hardware — I only carry the game's data and I don't invent changes. I can still answer where… |
+| out-of-scope | Can someone help me reach leda before I crash out | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Any tips on making custom fan covers for my bfs surprise Malenia pc bu… | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Psx can i have a rune drop? Will be a mule or give karma | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Is anyone able to drop the divine beast armor set for me please 🙏. On | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Anyone can help with elden lord? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Would anyone be willing to help me mule Red Bear Claws and Pelt of Ral… | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Fellow tarnished, is anyone available for promised consort? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | PC can anyone drop a flame knights greatsword and/or Malikeths helm? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Does anyone have a spare partisan spear? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | anyone have a spare milady +0 with wing stance i can have? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Anyone willing to drop me Rivers of Blood + some runes? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | ( ) Anyone able to help me beat Commander Niall in the snowy area? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Can someone drop me the Divine Beast Helm? I'll trade anything you wan… | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Anyone wanna run Darklight Catacombs with me? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | , someone able to help me with the rot knights at the end of the aband… | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Can someone please drop me Shard Of Alexander on ? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Can someone plz help me with Godfrey? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Need help with Dragonlord Placidusax, who can join right now? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Could someone help me beat rennala, queen of the full moon? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | I’m currently trying to fight Astel, for Ranni’s quest. Can someone pl… | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | - can anyone drop me a reduvia? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Can someone help me on with radagon? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | PC - anyone feel like invading me at Divine Bridge so I can have my el… | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| bug-glitch | Summoning bug for Needle Knight Leda’s boss fight? | I can't speak to bugs, patches, performance, or hardware — I only carry the game's data and I don't invent changes. I can still answer where… |
+| bug-glitch | Are the divine bird feathers good when you play the game at 30 fps? | I can't speak to bugs, patches, performance, or hardware — I only carry the game's data and I don't invent changes. I can still answer where… |
+| bug-glitch | Base Serpent Messmer / Leonine arena glitch?? | I can't speak to bugs, patches, performance, or hardware — I only carry the game's data and I don't invent changes. I can still answer where… |
+| bug-glitch | Was Pre-nerf Malenia a harder boss than Pre-nerf Promised Consort Rada… | I can't speak to bugs, patches, performance, or hardware — I only carry the game's data and I don't invent changes. I can still answer where… |
+| bug-glitch | Anybody experiences FPS drops in Gravesite Plain (DLC)? | I can't speak to bugs, patches, performance, or hardware — I only carry the game's data and I don't invent changes. I can still answer where… |
+| bug-glitch | Seemless Co-op Grand lift rold shut down bug? | I can't speak to bugs, patches, performance, or hardware — I only carry the game's data and I don't invent changes. I can still answer where… |
+| bug-glitch | Does anyone know if the Melania glitch using agheels flame to climb a … | I can't speak to bugs, patches, performance, or hardware — I only carry the game's data and I don't invent changes. I can still answer where… |
+| bug-glitch | Was starting new game with Idus knight and got this🫪🤣anyone else not… | I can't speak to bugs, patches, performance, or hardware — I only carry the game's data and I don't invent changes. I can still answer where… |
+| out-of-scope | Rate my performance in the Rellana fight (ng+, scadu 20) | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| bug-glitch | Need to be summoned to the Royal Capital for a wrong warp glitch | I can't speak to bugs, patches, performance, or hardware — I only carry the game's data and I don't invent changes. I can still answer where… |
+| bug-glitch | seamless coop mod help. Melina roundtable invite bug. | I can't speak to bugs, patches, performance, or hardware — I only carry the game's data and I don't invent changes. I can still answer where… |
+| bug-glitch | is Glintstone Dragon Adula bugged | I can't speak to bugs, patches, performance, or hardware — I only carry the game's data and I don't invent changes. I can still answer where… |
+| out-of-scope | Aide Elden ring Godskin Duo ? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Can someone mule a weapon for me? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | upgrade misericorde to +25 for me? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Hello anyone can help me to get the ring of miquella gesture? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
 
 ## 30 worst misses
 
@@ -106,35 +129,35 @@ project data; `Gideon said` is the first part of the real answer.
 
 | # | character | intent | question | expected | Gideon said |
 | ---: | --- | --- | --- | --- | --- |
-| 1 | empty | where-is | . Where is dragonlord placidusax? | ids ["boss:placidusax"]; must ["Crumbling Farum Azula"] | Elden Lord (default) (ending) is still open (0/4). Next: Two Great Runes and the capital. Godrick plus one other is enough to open Leyndell. After that: Morgott… |
-| 2 | empty | where-is | Im on my first play through of the game, at Rennala. Does anyone know … | ids ["boss:rennala"]; must ["Academy of Raya Lucaria"] | “- Fixed a bug where the cutscene that plays when entering the Shadow Keep Church District would play again when re-entering the area. - Fixed a bug where some … |
-| 3 | empty | where-is | Im at outer wall in Altus and just finished Ranni’s questline. Where s… | ids ["grace:outer-wall"]; must ["Capital Outskirts"] | “Found after finishing Ranni's questline inside Seluvis's Rise located in Liurnia of the Lakes.” — Preceptor's Long Gown · Acquisition “- Obtained from Precepto… |
-| 4 | empty | where-is | I’m planning a rl 11 character (or max 21) and I need bot Marika and R… | ids ["npc:queen-marika-the-eternal"]; must ["Stone Platform"] | Radagon's Soreseal — Chest inside Fort Faroth in Dragonbarrow. Want that grace on the atlas? |
-| 5 | empty | where-is | Can someone help me with varrè's quest? I have to invade 3 player and … | ids ["invader:varre"]; must ["Mohgwyn"] | Poison/Bleed Wretch (RL30) (invade, RL30-50) — Low-level invasion build. Status buildup outpaces the tiny health pools hosts have at RL30, and the Reduvia bleed… |
-| 6 | empty | boss-location | where do i find Glintstone Dragon Adula (Liurnia of the Lakes) | ids ["boss:adula--liurnia-of-the-lakes"]; must ["Liurnia of the Lakes"… | Glintstone Dragon Adula is on the overworld plate (16.82, 55.28). |
-| 7 | empty | boss-location | where do i find Alabaster Lord | ids ["boss:alabaster-lord"]; must ["Liurnia of the Lakes"] | Elden Lord (default) (ending) is still open (0/4). Next: Two Great Runes and the capital. Godrick plus one other is enough to open Leyndell. After that: Morgott… |
-| 8 | empty | item-location | Where to put surplus levels for my Darkmoon Greatsword PVE build? | ids ["item:greatsword"]; must ["Caelid"] | Next for this character: 1. [[boss:agheel|Flying Dragon Agheel — still up in Limgra…]] — Flying Dragon Agheel is still up in Limgrave 2. [[boss:cemetery-shade|C… |
-| 9 | empty | item-location | Could anyone help me find a good strenght/faith weapon i can use black… | ids ["item:black-flame-blade"]; must ["Mountaintops of the Giants","Le… | Black Flame Godslayer — Black Flame burns a percentage of max HP on hit, so it keeps pace with boss health pools where flat-AR incantations fall off. The real f… |
-| 10 | empty | item-location | Where’s my Slicer Parry? 😭 | ids ["item:parry"]; must ["Bernahl's Bell Bearing","Smithing Master He… | Carian Slicer — Sold by Sellen, or her corpse if her line is finished. Want that grace on the atlas? |
-| 11 | empty | item-location | where do i find Abandoned Merchant's Bell Bearing | ids ["item:abandoned-merchant-s-bell-bearing"]; must ["Merchant - Siof… | Bell Bearing Hunter · Limgrave · open-world hunt. 9974 ticks this after the kill. |
-| 12 | empty | npc-location | Does anyone else find it frustrating that close matches seem to be dec… | ids ["npc:death-outer-god"]; must [] | Rat — enemy. |
-| 13 | empty | npc-location | where is Ancient Dragon Gransax | ids ["npc:ancient-dragon-gransax"]; must ["Leyndell, Royal Capital"] | Bolt of Gransax — Spear lodged in the capital spear monument. Missable after the city turns to ash. Missable. Want that grace on the atlas? |
-| 14 | empty | npc-location | where is Asimi, Silver Tear | ids ["npc:asimi-silver-tear"]; must ["Limgrave"] | Asimi is placed in 3 maps: m12_01_00_00, m12_02_00_00, m12_07_00_00. |
-| 15 | empty | how-to-get | How to get maximum damage output from the Claymore? | ids ["item:claymore"]; must ["Weeping Peninsula","Castle Morne"] | Somber Smithing Stones — How to get an early max level unique weapon in Elden Ring. [Note: As of patch 1.04, the volcano manor jump skip for Somber Smithing Sto… |
-| 16 | empty | how-to-get | How do I get somber smithing stone 7? | ids ["item:somber-smithing-stone-7"]; must ["Twin Maiden Husks"] | Rivers of Blood — still missing 6: Rivers of Blood, Uchigatana, Lord of Blood's Exultation, Winged Sword Insignia, White Mask, Starscourge Radahn. Want the atla… |
-| 17 | empty | how-to-get | are you able to obtain the overhead stance ash of war within the base … | ids ["item:overhead-stance"]; must [] | At your stats (any), best weapons you can wield: Hand Axe 128 · Broadsword 127 · Lordsworn's Straight Sword 124 · Short Spear 122 · Longsword 120 · Club 114. Na… |
-| 18 | empty | how-to-get | Rune Arc how to get more co-op opportunities? | ids ["item:rune-arc"]; must ["Host of Fingers","Rune Arc"] | Rivers of Blood — Still deletes most of the Lands Between. Weak to high bleed resist (Malenia is the joke). I can put those stats on this sheet. |
-| 19 | empty | how-to-get | how do i get Abandoned Merchant's Bell Bearing | ids ["item:abandoned-merchant-s-bell-bearing"]; must ["Merchant - Siof… | Rivers of Blood — still missing 6: Rivers of Blood, Uchigatana, Lord of Blood's Exultation, Winged Sword Insignia, White Mask, Starscourge Radahn. Want the atla… |
-| 20 | empty | how-to-get | how can i get About Adding Affinities | ids ["item:about-adding-affinities"]; must ["Whetstone Knife","Gatefro… | Rivers of Blood — still missing 6: Rivers of Blood, Uchigatana, Lord of Blood's Exultation, Winged Sword Insignia, White Mask, Starscourge Radahn. Want the atla… |
-| 21 | empty | how-to-get | how do i get About Birdseye Telescopes | ids ["item:about-birdseye-telescopes"]; must ["Telescope"] | Rivers of Blood — still missing 6: Rivers of Blood, Uchigatana, Lord of Blood's Exultation, Winged Sword Insignia, White Mask, Starscourge Radahn. Want the atla… |
-| 22 | empty | how-to-get | how can i get About Bows | ids ["item:about-bows"]; must [] | Rivers of Blood — still missing 6: Rivers of Blood, Uchigatana, Lord of Blood's Exultation, Winged Sword Insignia, White Mask, Starscourge Radahn. Want the atla… |
-| 23 | empty | navigation | how do I get to this part of the Land of Shadow? | ids ["region:shadow"]; must ["Gravesite Plain"] | Rivers of Blood — still missing 6: Rivers of Blood, Uchigatana, Lord of Blood's Exultation, Winged Sword Insignia, White Mask, Starscourge Radahn. Want the atla… |
-| 24 | empty | navigation | HELP, how do I get the the upper-upper side of Siofra River? | ids ["region:siofra-river"]; must ["Mistwood","Caelid"] | Rivers of Blood — still missing 6: Rivers of Blood, Uchigatana, Lord of Blood's Exultation, Winged Sword Insignia, White Mask, Starscourge Radahn. Want the atla… |
-| 25 | empty | navigation | Is that a crucible knight? How do I get there? | ids ["hunt:crucible-knight"]; must ["Limgrave"] | Rivers of Blood — still missing 6: Rivers of Blood, Uchigatana, Lord of Blood's Exultation, Winged Sword Insignia, White Mask, Starscourge Radahn. Want the atla… |
-| 26 | empty | navigation | How do I get that item on the cliff in Deeproot Depths? | ids ["dungeon:deeproot-depths"]; must ["Deeproot Depths"] | Rivers of Blood — still missing 6: Rivers of Blood, Uchigatana, Lord of Blood's Exultation, Winged Sword Insignia, White Mask, Starscourge Radahn. Want the atla… |
-| 27 | empty | navigation | How Can I Get the Items Inside The Tents Beneath Forsaken Depths | ids ["grace:350002"]; must ["Subterranean Shunning-Grounds"] | Rivers of Blood — still missing 6: Rivers of Blood, Uchigatana, Lord of Blood's Exultation, Winged Sword Insignia, White Mask, Starscourge Radahn. Want the atla… |
-| 28 | empty | how-to-beat | Hey guys any recommendations for my build? I’m stuck on Soldier of God… | ids ["hunt:soldier-of-godrick"]; must ["Limgrave"] | Rivers of Blood — Still deletes most of the Lands Between. Weak to high bleed resist (Malenia is the joke). I can put those stats on this sheet. |
-| 29 | empty | drops | what do i get from Alabaster Lord | ids ["boss:alabaster-lord"]; must ["Meteorite"] | Elden Lord (default) (ending) is still open (0/4). Next: Two Great Runes and the capital. Godrick plus one other is enough to open Leyndell. After that: Morgott… |
-| 30 | empty | drops | what do i get from Ancient Hero of Zamor (Giant-Conquering Hero's Grav… | ids ["boss:ancient-hero-zamor--giant-conquering-hero-s-grave"]; must [… | Giant,Conquering Hero's Grave · Flame Peak · overworld. |
+| 1 | empty | where-is | Im at outer wall in Altus and just finished Ranni’s questline. Where s… | ids ["grace:outer-wall"]; must ["Capital Outskirts"] | “Pidia's questline becomes locked after giving Ranni the Fingerslayer Blade, regardless of any steps already completed. 1. Follow Ranni the Witch's questline an… |
+| 2 | empty | where-is | I’m planning a rl 11 character (or max 21) and I need bot Marika and R… | ids ["npc:queen-marika-the-eternal"]; must ["Stone Platform"] | Radagon's Soreseal — Chest inside Fort Faroth in Dragonbarrow. Want that grace on the atlas? |
+| 3 | empty | where-is | Can someone help me with varrè's quest? I have to invade 3 player and … | ids ["invader:varre"]; must ["Mohgwyn"] | Poison/Bleed Wretch (RL30) (invade, RL30-50) — Low-level invasion build. Status buildup outpaces the tiny health pools hosts have at RL30, and the Reduvia bleed… |
+| 4 | empty | item-location | Where to put surplus levels for my Darkmoon Greatsword PVE build? | ids ["item:greatsword"]; must ["Caelid"] | Next for this character: 1. [[boss:agheel|Flying Dragon Agheel — still up in Limgra…]] — Flying Dragon Agheel is still up in Limgrave 2. [[boss:cemetery-shade|C… |
+| 5 | empty | item-location | Could anyone help me find a good strenght/faith weapon i can use black… | ids ["item:black-flame-blade"]; must ["Mountaintops of the Giants","Le… | Black Flame Godslayer — Black Flame burns a percentage of max HP on hit, so it keeps pace with boss health pools where flat-AR incantations fall off. The real f… |
+| 6 | empty | npc-quest | where do i continue Fastest route: Elden Lord | ids ["line:blitz-lord"]; must [] | Elden Lord (default) (ending) is still open (0/4). Next: Two Great Runes and the capital. Godrick plus one other is enough to open Leyndell. After that: Morgott… |
+| 7 | empty | npc-quest | what is the next step of the Fastest route: Age of Stars quest | ids ["line:blitz-stars"]; must [] | Age of Stars (ending) is still open (0/8). Next: Enter Ranni’s service at Ranni’s Rise. Three Sisters, after Caria Manor. Speak to Blaidd, Iji, and Seluvis in t… |
+| 8 | empty | build-advice | Nagakiba vs Rivers of Blood build, which one is the best in terms of t… | ids ["build:rivers"]; must [] | Bloody Finger Hunter Yura (story) is still open (0/4). Next: Help Yura against Bloody Finger Nerijus. Agheel Lake, Limgrave. He is summonable for the invasion a… |
+| 9 | empty | class-build | Wanted to make a build cantered around sword of night and flame and re… | ids ["build:sword-night-flame"]; must [] | “- Carian Sorcery Sword - Carian Thrusting Shield - Rellana's Armor - Rellana's Cameo - Rellana's Helm - Rellana's Twin Moons” — Rellana's Twin Blades · See Als… |
+| 10 | empty | class-build | RL 150 Eleonora Build Help | ids ["build:eleonora"]; must [] | Rivers of Blood — Still deletes most of the Lands Between. Weak to high bleed resist (Malenia is the joke). I can put those stats on this sheet. |
+| 11 | empty | compare | Which is better backhand blades keen with bloodflame blade or bleed af… | ids ["item:backhand-blade"]; must [] | “Bloodflame Blade** is an incantation spell in Elden Ring. It is one of the Blood Oath Incantations.” — Bloodflame Blade · Summary From the wiki page “Bloodflam… |
+| 12 | empty | compare | Notice how mohg’s self confidence makes him better than morgott in eve… | ids ["boss:mohg"]; must [] | Morgott, the Omen King — boss in Leyndell. |
+| 13 | empty | lore | Why did Miquella need Mohg? | ids ["boss:mohg"]; must ["Mohgwyn Dynasty Mausoleum"] | Miquella of the Haligtree — Cocoon of the Empyrean (husk) · Gate of Divinity. Miquella the Kind, also known as Miquella of the Haligtree, Empyrean Miquella, and… |
+| 14 | empty | mechanics | Is R1 into Stormcaller and true combo or did I get lucky on Hyper Armo… | ids ["mechanic:poise"]; must [] | “Skill: Stormcaller** is a Skill in Elden Ring.” — [[wiki:skill-stormcaller|Skill: Stormcaller]] · Summary “Stormcaller Church** is a location in Elden Ring.” —… |
+| 15 | empty | requirements | What stats should I do for a duel wild ancient meteorite ore greatswor… | ids ["item:greatsword"]; must ["Str 31","Dex 12"] | Sorcerer Duelist (RL90) (duel, RL60-90) — Azur's Staff plus Radagon Icon reaches the cast-speed cap, Carian Slicer staggers anyone under ~30 poise, and two Magi… |
+| 16 | empty | multi-part | " " Can Flame Spear be put on the Cleanrot Knight's Sword? | ids ["item:cleanrot-knight-s-sword"]; must [] | Cleanrot Knight — boss in Caelid. |
+| 17 | empty | pvp | Invasion farming in Gelmir Hero's Grave? | ids ["dungeon:gelmir-hero-s-grave"]; must [] | Poison/Bleed Wretch (RL30) (invade, RL30-50) — Low-level invasion build. Status buildup outpaces the tiny health pools hosts have at RL30, and the Reduvia bleed… |
+| 18 | empty | pvp | Thoughts on the claymore for PvP? | ids ["item:claymore"]; must [] | Fingerprint Acolyte (RL50) (both, RL30-50) — Themed after Vyke: block behind a greatshield and answer with a thrusting poke and Frenzied Flame incantations, so … |
+| 19 | empty | other | Extra Death Knight armor set? ( ) | ids ["item:death-knight-armor"]; must [] | Death Knight — hunt. |
+| 20 | empty | other | Help with Omen Mohg? | ids ["boss:mohg-omen"]; must [] | Mohg, Lord of Blood. Level 1. Real NpcParam absorb: resists Fire 80%, Magic 40%, Lightning 40%; bleed soft (112). Want a bleed sheet instead? |
+| 21 | mid | where-is | Im at outer wall in Altus and just finished Ranni’s questline. Where s… | ids ["grace:outer-wall"]; must ["Capital Outskirts"] | “Pidia's questline becomes locked after giving Ranni the Fingerslayer Blade, regardless of any steps already completed. 1. Follow Ranni the Witch's questline an… |
+| 22 | mid | where-is | I’m planning a rl 11 character (or max 21) and I need bot Marika and R… | ids ["npc:queen-marika-the-eternal"]; must ["Stone Platform"] | Radagon's Soreseal — Chest inside Fort Faroth in Dragonbarrow. Want that grace on the atlas? |
+| 23 | mid | where-is | Can someone help me with varrè's quest? I have to invade 3 player and … | ids ["invader:varre"]; must ["Mohgwyn"] | Poison/Bleed Wretch (RL30) (invade, RL30-50) — Low-level invasion build. Status buildup outpaces the tiny health pools hosts have at RL30, and the Reduvia bleed… |
+| 24 | mid | item-location | Could anyone help me find a good strenght/faith weapon i can use black… | ids ["item:black-flame-blade"]; must ["Mountaintops of the Giants","Le… | Black Flame Godslayer — Black Flame burns a percentage of max HP on hit, so it keeps pace with boss health pools where flat-AR incantations fall off. The real f… |
+| 25 | mid | npc-location | Please help a Tarnished find Ranni, Blaidd and Iji | ids ["npc:blaidd"]; must ["Limgrave"] | This beat is a point of no return (Ranni given the Fingerslayer Blade) — continuing locks Preceptor Seluvis — potion and puppet stock, Magic Scorpion Charm, Fin… |
+| 26 | mid | npc-quest | where do i continue Fastest route: Elden Lord | ids ["line:blitz-lord"]; must [] | Elden Lord (default) (ending) is still open (1/4). Next: Morgott, then the Forge of the Giants. Melina must still be with you. You are level 70. This beat is ki… |
+| 27 | mid | npc-quest | what is the next step of the Fastest route: Age of Stars quest | ids ["line:blitz-stars"]; must [] | This beat is a point of no return (Ranni given the Fingerslayer Blade) — continuing locks Preceptor Seluvis — potion and puppet stock, Magic Scorpion Charm, Fin… |
+| 28 | mid | build-advice | Nagakiba vs Rivers of Blood build, which one is the best in terms of t… | ids ["build:rivers"]; must [] | Bloody Finger Hunter Yura (story) is still open (0/4). Next: Help Yura against Bloody Finger Nerijus. Agheel Lake, Limgrave. He is summonable for the invasion a… |
+| 29 | mid | class-build | Wanted to make a build cantered around sword of night and flame and re… | ids ["build:sword-night-flame"]; must [] | “- Carian Sorcery Sword - Carian Thrusting Shield - Rellana's Armor - Rellana's Cameo - Rellana's Helm - Rellana's Twin Moons” — Rellana's Twin Blades · See Als… |
+| 30 | mid | class-build | RL 150 Eleonora Build Help | ids ["build:eleonora"]; must [] | Rivers of Blood — Still deletes most of the Lands Between. Weak to high bleed resist (Malenia is the joke). I can put those stats on this sheet. |
 
 _Regenerated 2026-10-07._

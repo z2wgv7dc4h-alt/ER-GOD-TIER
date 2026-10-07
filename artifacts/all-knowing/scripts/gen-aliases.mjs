@@ -30,6 +30,36 @@ const here = dirname(fileURLToPath(import.meta.url))
 const root = join(here, '..')
 const read = (rel) => JSON.parse(readFileSync(join(root, rel), 'utf8'))
 
+// Task 160 — the enrichment index is the authority for a grace's real record id.
+// A warp with no authored slug must map to the `grace:<warpId>` record the index
+// already holds, never to a synthetic `grace:<name-slug>` stub the app cannot open.
+let indexRecords = {}
+try {
+  indexRecords = read('public/sourced/entity-index.json').records ?? {}
+} catch {
+  indexRecords = {}
+}
+const indexGraceByName = new Map()
+// Task 160 #15 — a warp the index classified as a region/dungeon (e.g. the
+// "Prince of Death's Throne" grace the region plane also carries) must still map
+// onto a real page, not a ghost `grace:{name}` stub.
+const indexPlaceByName = new Map()
+for (const [id, record] of Object.entries(indexRecords)) {
+  if (!record.name) continue
+  const key = String(record.name).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+  if (!key) continue
+  if (record.kind === 'grace' && !indexGraceByName.has(key)) indexGraceByName.set(key, id)
+  if ((record.kind === 'region' || record.kind === 'dungeon') && !indexPlaceByName.has(key)) indexPlaceByName.set(key, id)
+}
+// Task 160 §5 — a hunt checklist row the index folded onto a same-named boss.
+// The `hunt:` engine id must still resolve, so map it to the boss record.
+const indexBossByName = new Map()
+for (const [id, record] of Object.entries(indexRecords)) {
+  if (record.kind !== 'boss' || id.startsWith('hunt:')) continue
+  const key = rawNorm(record.name)
+  if (key && !indexBossByName.has(key)) indexBossByName.set(key, id)
+}
+
 /**
  * Loose normal form: lowercase, drop possessives/parentheticals/punctuation.
  * Used for the alias strings and the fallback name match.
@@ -192,6 +222,17 @@ for (const g of checklistsGraces) {
   // engine warp id still canonicalises and search finds it. These carry no
   // implication edges and no pin; a pin exists only where `graces.ts`/`coords`
   // already names the grace.
+  // Task 160: when the enrichment index already carries a real record for this
+  // warp (its `grace:<warpId>` id), map the engine id onto that record instead
+  // of minting a ghost slug the app has no page for.
+  const indexed =
+    (indexRecords[`grace:${g.warpId}`] && `grace:${g.warpId}`) ||
+    indexGraceByName.get(g.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()) ||
+    indexPlaceByName.get(g.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim())
+  if (indexed) {
+    emit(`grace:${g.warpId}`, indexed, g.name, rowAliases(g.name, [], g.name), 'entity-index')
+    continue
+  }
   const slug = slugify(g.name)
   if (!slug) {
     unmatchedGraces.push(g)
@@ -291,8 +332,11 @@ for (const h of hunts) {
   // The roster already says which fight this hunt id is (its aka).
   if (rosterAkaIds.has(h.id)) continue
   const seed = findSeed(h.name, catalogBosses) || findSeed(h.name, catalogInvaders)
-  const slug = seed ? seed.id : h.id
-  const factName = seed ? seed.name : h.name
+  // Task 160 §5 — no authored boss row, but the index has a same-named boss the
+  // hunt row was folded onto: point the hunt id at that page.
+  const indexBoss = seed ? undefined : indexBossByName.get(rawNorm(h.name))
+  const slug = seed ? seed.id : indexBoss ?? h.id
+  const factName = seed ? seed.name : indexBoss ? indexRecords[indexBoss].name : h.name
   const factAliases = seed ? seed.aliases : []
   emit(h.id, slug, h.name, rowAliases(factName, factAliases, h.name), 'hunts')
 }
@@ -419,6 +463,57 @@ function appNorm(s) {
     }
   }
   console.log(`game-name aliases: ${attached} attached, ${minted} rows minted (${Object.keys(gameNameAliases).length} names)`)
+}
+
+// Task 163 — player nicknames/slang mined from the question corpus. Each entry
+// maps a term players actually type ("melania", "stormveil", "pcr") to exactly
+// one entity id, hand-verified as unambiguous in `src/data/player-nicknames.json`.
+// The alias is stored in the app's own normal form so `canonicalFactId` resolves
+// it. A target with no alias row yet (a dungeon) gets a name-only row minted,
+// exactly like the game-name pass above.
+const playerNicknames = (() => {
+  try {
+    return read('src/data/player-nicknames.json')
+  } catch {
+    return {}
+  }
+})()
+// A nickname may name a record that no earlier pass has emitted yet (a dungeon,
+// a note item). Minting the row is fine, but the nickname itself must never
+// become the display name (`fmgName` feeds the omnibox label, `matchGeneratedAliases`),
+// so use the entity index's canonical name and keep the nickname as an alias.
+const nicknameNames = (() => {
+  try {
+    const index = read('public/sourced/entity-index.json')
+    return new Map(Object.entries(index.records ?? {}).map(([id, rec]) => [id, rec.name]))
+  } catch {
+    return new Map()
+  }
+})()
+{
+  const rowBySlug = new Map(rows.map((r) => [r.slug, r]))
+  let attached = 0
+  let minted = 0
+  for (const [nickname, id] of Object.entries(playerNicknames)) {
+    const alias = appNorm(nickname)
+    if (!alias) continue
+    // This nickname names exactly one record; strip it from any other row so
+    // `canonicalFactId` can never see it as ambiguous.
+    for (const r of rows) if (r.slug !== id && r.aliases.includes(alias)) r.aliases = r.aliases.filter((a) => a !== alias)
+    let row = rowBySlug.get(id)
+    if (!row) {
+      row = { engineId: id, slug: id, kind: kindOf(id), fmgName: nicknameNames.get(id) ?? nickname, aliases: [], source: 'player-nickname' }
+      rows.push(row)
+      rowBySlug.set(id, row)
+      minted++
+    }
+    if (!row.aliases.includes(alias)) {
+      row.aliases.push(alias)
+      row.aliases.sort()
+    }
+    attached++
+  }
+  console.log(`player nickname aliases: ${attached} attached, ${minted} rows minted (${Object.keys(playerNicknames).length} names)`)
 }
 
 // Task 148 §1 — one page per enemy. The entity index is built first
@@ -602,6 +697,14 @@ let legacyExceptions = []
       return set && set.size === 1 ? [...set][0] : undefined
     }
     const stripUpgrade = (name) => String(name ?? '').replace(/\s*\+\s*\d+\s*$/, '').trim()
+    // Task 160 FIX 13 — reference pages a later build folded onto a renamed NPC
+    // or an authored quest beat. Their old ids must still resolve to the record
+    // that absorbed the content (never a bare exception).
+    const legacyRedirects = new Map([
+      ['npc:edgar', 'npc:castellan-edgar'],
+      ['quest:irina-of-morne-step-2', 'quest:edgar:letter'],
+      ['quest:irina-of-morne-step-3', 'quest:irina:met'],
+    ])
     const unresolved = []
     let attached = 0
     for (const leg of legacy) {
@@ -614,6 +717,13 @@ let legacyExceptions = []
         const idBase = id.replace(/\+\d+$/, '').replace(/-\d+$/, '')
         if (idBase !== id && currentIds.has(idBase)) target = idBase
       }
+      // Task 160 §7 — a `region:` sub-location page the dungeon index now owns
+      // kept its slug but changed kind, so map it to the `dungeon:` record.
+      if (!target && id.startsWith('region:')) {
+        const asDungeon = `dungeon:${id.slice('region:'.length)}`
+        if (currentIds.has(asDungeon)) target = asDungeon
+      }
+      if (!target) target = legacyRedirects.get(id)
       if (target && currentIds.has(target)) {
         emit(id, target, leg.name || target, [], 'legacy-id')
         attached++

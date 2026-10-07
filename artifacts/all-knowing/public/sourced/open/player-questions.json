@@ -10,7 +10,7 @@
   "steam": 152
  },
  "collected": 6581,
- "generatedAt": "2026-10-06T13:07:12Z",
+ "generatedAt": "2026-10-07T13:19:39Z",
  "rows": [
   {
    "q": "(ps5) need help w placidusax\nneed help beating placidusax if someone can help",
@@ -25,10 +25,10 @@
   {
    "q": "PS5 Need help with Consort Radhan\n[removed]",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "Radhan removed"
+   "entities": [
+    "boss:radahn"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -176,10 +176,10 @@
   {
    "q": "[pc] where to level up after stormveil\nI’m a first time player and really loving the game. But after beating the dragon armed guy and exiting the castle I’m having a hard time finding anywhere to go and not get absolutely spanked. I can handle the basic enemies in the lake but anything a step up is taking me out in one or two shots. I’m",
    "type": "level",
-   "entities": [],
-   "unresolved": [
-    "stormveil I’m"
+   "entities": [
+    "dungeon:stormveil"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -704,10 +704,10 @@
   {
    "q": "Which Has More Potential? [xbox]\nI was originally going toward Occult Nagakibas, but, after throughly reading all status affinities, now I am considering Cold/Occult Nagakibas. What do you think? (You may be as detailed as you like.)",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "Nagakibas"
+   "entities": [
+    "item:nagakiba"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -792,10 +792,10 @@
   {
    "q": "Can someone help me with mesmer? [PC]\nMy sorcerer build is getting steam rolled right now",
    "type": "build-advice",
-   "entities": [],
-   "unresolved": [
-    "mesmer"
+   "entities": [
+    "boss:messmer"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -1358,9 +1358,7 @@
     "boss:godfrey",
     "boss:godfrey-golden"
    ],
-   "unresolved": [
-    "Goldfrey"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -2395,6 +2393,7 @@
    "q": "[ps5] DLC need help with renalla of the twin moons\nShe been giving me a lot of trouble 😵‍💫",
    "type": "other",
    "entities": [
+    "boss:rennala",
     "item:rellana-s-twin-moons"
    ],
    "unresolved": [],
@@ -2893,11 +2892,10 @@
    "type": "ending",
    "entities": [
     "boss:radagon",
-    "line:lord"
+    "line:lord",
+    "region:caelid"
    ],
-   "unresolved": [
-    "Calid aswell"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -2915,7 +2913,9 @@
   {
    "q": "Ps5 help pls\nNeed help beating renalla pls help :)",
    "type": "other",
-   "entities": [],
+   "entities": [
+    "boss:rennala"
+   ],
    "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
@@ -3000,7 +3000,9 @@
   {
    "q": "Help with renalla ps5\nAnyone for renalla ps?",
    "type": "other",
-   "entities": [],
+   "entities": [
+    "boss:rennala"
+   ],
    "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
@@ -3124,10 +3126,10 @@
   {
    "q": "Can sb help me with Mesmer ? ps5\nI need help because I cant beat him",
    "type": "bug-glitch",
-   "entities": [],
-   "unresolved": [
-    "Mesmer"
+   "entities": [
+    "boss:messmer"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -3544,10 +3546,10 @@
   {
    "q": "[PC] Looking for someone to do a full save with\nI'm not completely new to the game, but I can only reach godric when playing solo, and I'm looking for someone to reach the end of the game with from start to finish (no dlc at least not yet",
    "type": "navigation",
-   "entities": [],
-   "unresolved": [
-    "godric"
+   "entities": [
+    "boss:godrick"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -3646,10 +3648,10 @@
   {
    "q": "elden ring ps5 need help with malinia and consort radhan\n[removed]",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "radhan removed"
+   "entities": [
+    "boss:radahn"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -4276,11 +4278,10 @@
    "q": "PS5, Radhan consort of miquella DLC PLEASE HELP\nI just can't handle the second phase Password: bruhhhh",
    "type": "ending",
    "entities": [
+    "boss:radahn",
     "npc:miquella-of-the-haligtree"
    ],
-   "unresolved": [
-    "Radhan consort"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -4472,6 +4473,7 @@
    "q": "[ps5] need someone who can just erase renalla\nTrying to run low level Vyke build to help others, but she is just kicking my ass in her second stage",
    "type": "level",
    "entities": [
+    "boss:rennala",
     "invader:vyke",
     "npc:vyke"
    ],
@@ -4611,6 +4613,7 @@
    "type": "level",
    "entities": [
     "boss:red-wolf",
+    "boss:rennala",
     "invader:vyke",
     "npc:vyke",
     "region:leyndell"
@@ -4845,12 +4848,13 @@
    "q": "LF: Fire Knights greatsword [PS5]\nJust started ng+ and forgot to pick it up first, I have many weapons to trade such as Mesmer soldier spear, remembrance weapons, etc.. Let me know!",
    "type": "other",
    "entities": [
+    "boss:messmer",
     "enemy:fire-knight",
     "item:greatsword",
     "item:spear"
    ],
    "unresolved": [
-    "Mesmer soldier"
+    "soldier"
    ],
    "src": "reddit:EldenRingHelp"
   },
@@ -5190,10 +5194,10 @@
   {
    "q": "ps5 need help with radhan,beat the game like 20 times im just low leveled\n[removed]",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "radhan beat"
+   "entities": [
+    "boss:radahn"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -5324,10 +5328,10 @@
   {
    "q": "PS4 can someone help with the dual boss at calid in the castle?please\n[removed]",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "calid"
+   "entities": [
+    "region:caelid"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -5795,11 +5799,10 @@
    "q": "PC Need help fighting Margott (the real one)\nAt queens bedchamber",
    "type": "other",
    "entities": [
+    "boss:morgott",
     "grace:queen-bedchamber"
    ],
-   "unresolved": [
-    "Margott"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -6364,10 +6367,10 @@
   {
    "q": "[ps5]Help with melania\nMe and my buddy are trying to beat her any help would be much appreciated!",
    "type": "how-to-beat",
-   "entities": [],
-   "unresolved": [
-    "melania"
+   "entities": [
+    "boss:malenia"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -6377,9 +6380,7 @@
     "boss:morgott",
     "mechanic:summoning-pools"
    ],
-   "unresolved": [
-    "Margott"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -6510,10 +6511,11 @@
   {
    "q": "[Ps5] Need help with Radhan Dlc\nI’ve been trying to beat him for days by enhancing everything, and I got stuck - PW rinho",
    "type": "bug-glitch",
-   "entities": [],
+   "entities": [
+    "boss:radahn"
+   ],
    "unresolved": [
-    "PW rinho",
-    "Radhan"
+    "PW rinho"
    ],
    "src": "reddit:EldenRingHelp"
   },
@@ -6617,11 +6619,10 @@
   {
    "q": "[PS5] Need help with Mesmer\nReally struggling with mesmer and would like help :c",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "Mesmer",
-    "mesmer"
+   "entities": [
+    "boss:messmer"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -6722,7 +6723,9 @@
   {
    "q": "[Xbox] looking for a free rune drop\nHonestly im lvl 247 but not too keen on wasting anymore larval tears im looking for enough runes to atleast soft cap all my stats so switching builds isnt so much of a hassle dont get me wrong i love seeing renalla but back an forth wared me down a little",
    "type": "drops",
-   "entities": [],
+   "entities": [
+    "boss:rennala"
+   ],
    "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
@@ -6948,20 +6951,19 @@
   {
    "q": "MELANIA help on Ps5\nNeed help beating melania on ps5 password will be 14 thanks again",
    "type": "co-op",
-   "entities": [],
-   "unresolved": [
-    "MELANIA",
-    "melania"
+   "entities": [
+    "boss:malenia"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
    "q": "Melania help plz xbox\n.",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "Melania"
+   "entities": [
+    "boss:malenia"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -7101,7 +7103,9 @@
   {
    "q": "Need help with Renalla [PS5]\nIm stuck on Renalla I’ve been trying for 8 Hours yesterday i just want my suffering to end if anybody could give me some help id be very thankful",
    "type": "bug-glitch",
-   "entities": [],
+   "entities": [
+    "boss:rennala"
+   ],
    "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
@@ -7387,10 +7391,11 @@
   {
    "q": "Help w Consort Radhan [PC]\nHelp me to whipe him from this game, PLEASE (password 44EQ)",
    "type": "co-op",
-   "entities": [],
+   "entities": [
+    "boss:radahn"
+   ],
    "unresolved": [
-    "44EQ",
-    "Radhan"
+    "44EQ"
    ],
    "src": "reddit:EldenRingHelp"
   },
@@ -8833,10 +8838,11 @@
   {
    "q": "[xbox] PLEASE HELP ME WITH MESMER\ni’ve gotten him down to like 300 hp 10 times now and have attempted 150+ times. i’m lowk really bad at souls games but my boyfriend said if i beat mesmer he’d buy me a new tattoo.",
    "type": "other",
-   "entities": [],
+   "entities": [
+    "boss:messmer"
+   ],
    "unresolved": [
-    "WITH MESMER i’ve gotten",
-    "mesmer he’d buy"
+    "WITH"
    ],
    "src": "reddit:EldenRingHelp"
   },
@@ -10224,10 +10230,10 @@
   {
    "q": "[ps5] help with radhan\nPlease help",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "radhan"
+   "entities": [
+    "boss:radahn"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -10413,14 +10419,12 @@
    "q": "PS5 - What order to tackle these challenges?\nSomewhere along the way I got confused on how to go about taking care of Rykard. I thought I had to (or maybe it was just recommended) do the 3 assassination missions from Tanith, the third of which requires you to also kill Margott. Do I not actually need to fell Margott before Rykard? I have done",
    "type": "other",
    "entities": [
+    "boss:morgott",
     "boss:rykard",
     "grace:rykard-lord-of-blasphemy",
     "npc:tanith"
    ],
-   "unresolved": [
-    "Margott",
-    "Margott before"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -10483,10 +10487,10 @@
   {
    "q": "Need help with melania Xbox\nXbox, please help!",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "melania"
+   "entities": [
+    "boss:malenia"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -11151,11 +11155,11 @@
   {
    "q": "Xbox: help with Melania, Blade of Miquela, who has never been defeated.\nAforementioned, I need help with Melania. Xbox, Gt: Deek707 Password: Dubbz Sidenote\\ if anybody has a magical scorpion charm they dont need and can drop it for me, that would be nice too!",
    "type": "drops",
-   "entities": [],
+   "entities": [
+    "boss:malenia"
+   ],
    "unresolved": [
-    "Deek707 Password Dubbz Sidenote",
-    "Melania",
-    "Melania Blade"
+    "Deek707 Password Dubbz Sidenote"
    ],
    "src": "reddit:EldenRingHelp"
   },
@@ -11272,10 +11276,10 @@
   {
    "q": "Anyone down to help with mesmer? Ps5\nI just need him dead cuz hes the second to last boss I have left for the dlc",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "mesmer"
+   "entities": [
+    "boss:messmer"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -11460,10 +11464,10 @@
   {
    "q": "Anyone able to help with Goldfrey in leyendell? [Ps5]\nStruggling and would appreciate a hand",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "Goldfrey"
+   "entities": [
+    "boss:godfrey"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -11543,6 +11547,7 @@
    "q": "PS5 need help with Renalla(DLC)…\nPassword: perc80 Rise up Tarnished!",
    "type": "co-op",
    "entities": [
+    "boss:rennala",
     "npc:the-tarnished-protagonist"
    ],
    "unresolved": [],
@@ -11552,11 +11557,10 @@
    "q": "Xbox - help needed with Promised consort Radhan\nPass 1111",
    "type": "other",
    "entities": [
-    "boss:consort"
+    "boss:consort",
+    "boss:radahn"
    ],
-   "unresolved": [
-    "Radhan Pass 1111"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -11619,10 +11623,7 @@
     "grace:100006",
     "grace:liftside-chamber"
    ],
-   "unresolved": [
-    "Stormveil Castl",
-    "Stormveil tree spirit"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -11936,6 +11937,7 @@
    "q": "Can somebody help me beat renalla? [xbox]\nGenuinely can’t beat this mf bum ahh using magic pmo",
    "type": "other",
    "entities": [
+    "boss:rennala",
     "damage:magic"
    ],
    "unresolved": [],
@@ -12335,15 +12337,14 @@
    "q": "{PS5}Where should i go to get scadutree fragments after defeating golden hippo\nMy Scadutree level is now 9 and i just got 1 more fragment from fissure cross site of grace. Way too underlevelled for mesmer, or even the scarlet rot woman so for those who know the game inside out where should i be going? Walkthroughs aren't completely helpful as i don't recognise the area names",
    "type": "what-next",
    "entities": [
+    "boss:messmer",
     "grace:220002",
     "grace:fissure-cross",
     "item:shadow-realm-blessing",
     "mechanic:status-scarlet-rot",
     "region:caelid"
    ],
-   "unresolved": [
-    "mesmer"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -12901,10 +12902,10 @@
   {
    "q": "Help with Godric on PS5?\n[removed]",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "Godric"
+   "entities": [
+    "boss:godrick"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -13026,10 +13027,10 @@
   {
    "q": "Help for Godric, PS5?",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "Godric"
+   "entities": [
+    "boss:godrick"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -13063,10 +13064,10 @@
   {
    "q": "[ps4] Anyone can help me at radhan dlc pls\n:) pls",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "radhan"
+   "entities": [
+    "boss:radahn"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -13784,10 +13785,10 @@
   {
    "q": "[ps5] can someone help me get to melania?\nI need help trying to get to the boss and possibly trying to beat her",
    "type": "navigation",
-   "entities": [],
-   "unresolved": [
-    "melania"
+   "entities": [
+    "boss:malenia"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -13840,18 +13841,16 @@
     "item:nagakiba",
     "mechanic:status-bleed"
    ],
-   "unresolved": [
-    "nagakibas lol"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
    "q": "Im on ps5 and need help with elden ring boss\nHello, I am stuck on margott been on him for very long and I am looking for a nice person too load into my world and help me take him down I will be very appreciative if someone could help me thank you in advance",
    "type": "bug-glitch",
-   "entities": [],
-   "unresolved": [
-    "margott"
+   "entities": [
+    "boss:morgott"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -13867,11 +13866,10 @@
    "q": "Does Radhan/Miquella have three items to get from the rememberance? PS5\nare there two separate swords and a spell to be traded in? is it possible to get all three wtihout going into NG+? I have not used any of the DLC maloseums.",
    "type": "ending",
    "entities": [
+    "boss:radahn",
     "npc:miquella-of-the-haligtree"
    ],
-   "unresolved": [
-    "Radhan"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -14466,12 +14464,11 @@
    "type": "other",
    "entities": [
     "boss:consort",
+    "boss:radahn",
     "grace:200106",
     "grace:divine-gate-front-staircase"
    ],
-   "unresolved": [
-    "radhan"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -15038,9 +15035,11 @@
   {
    "q": "Could use some help with Starscourge Radhan Ps5\nI’m trash",
    "type": "other",
-   "entities": [],
+   "entities": [
+    "boss:radahn"
+   ],
    "unresolved": [
-    "Starscourge Radhan"
+    "Starscourge"
    ],
    "src": "reddit:EldenRingHelp"
   },
@@ -15113,6 +15112,7 @@
    "entities": [
     "boss:godrick",
     "boss:margit",
+    "boss:rennala",
     "enemy:margit-capital-outskirts",
     "grace:godrick-grace",
     "grace:margit-the-fell-omen"
@@ -15290,10 +15290,10 @@
   {
    "q": "ps5 need some help with mesmer\ni can get him to second stage pretty easily he just 2 shots me 😭🙏🏻",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "mesmer"
+   "entities": [
+    "boss:messmer"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -15346,19 +15346,19 @@
   {
    "q": "Need help for dlc radhan ps5\nCAN someone help me kill it ?",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "radhan"
+   "entities": [
+    "boss:radahn"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
    "q": "Help radhan dlc ps5\nAnyone available to beat radhan for me so i can get his weapon and restart the game Please ???",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "radhan"
+   "entities": [
+    "boss:radahn"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -15579,10 +15579,10 @@
   {
    "q": "Help with renala ps5\nHello people, As the titles suggests, anyone can please help me? I cant with this boss anymore. Thanks!",
    "type": "bug-glitch",
-   "entities": [],
-   "unresolved": [
-    "renala"
+   "entities": [
+    "boss:rennala"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -15736,11 +15736,13 @@
   {
    "q": "[PS5] Anyone have spare runes?\nMy kid got a Ps5 for Christmas. Up to this point he was playing on my account and every time he would start a new build we would drop some runes for him to get him started on little higer level. He would always try to get Hand of Melania sword ASAP. Anyone has some runes they could drop? Please DM f",
    "type": "drops",
-   "entities": [],
+   "entities": [
+    "boss:malenia"
+   ],
    "unresolved": [
+    "ASAP",
     "Christmas",
-    "DM f",
-    "Melania sword ASAP"
+    "DM f"
    ],
    "src": "reddit:EldenRingHelp"
   },
@@ -16525,11 +16527,10 @@
    "q": "Final DLC boss help [ps5]\nHi I'm having so much trouble with Radhan. Im sc 187, scadutree 17/8. I just need some help to get this last last boss over the end game. I'm uk based if that affects anything. Let me know if you can give me a hand :)",
    "type": "other",
    "entities": [
+    "boss:radahn",
     "item:shadow-realm-blessing"
    ],
-   "unresolved": [
-    "Radhan"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -16936,10 +16937,10 @@
   {
    "q": "Radhan help ps5 base game\nNeed help killing Radhan for the first time. Thank you.",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "Radhan"
+   "entities": [
+    "boss:radahn"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -17039,10 +17040,10 @@
   {
    "q": "Radhan help ps5 plz\nI’m looking for help gold sign plz.",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "Radhan"
+   "entities": [
+    "boss:radahn"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -17062,10 +17063,10 @@
   {
    "q": "Help with radhan on ps5 please\nI’m at the telly just drop a gold sign please.",
    "type": "drops",
-   "entities": [],
-   "unresolved": [
-    "radhan"
+   "entities": [
+    "boss:radahn"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -17089,10 +17090,10 @@
   {
    "q": "Need help killing Radhan at teleport ps5\nHelp please I’m terrible! O",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "Radhan"
+   "entities": [
+    "boss:radahn"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingHelp"
   },
   {
@@ -17132,6 +17133,7 @@
    "q": "Help I’m at chamber outside the plaza at radhan’s castle ps5\nI can’t kill the mini bosses, can someone please help me?!?!?",
    "type": "how-to-beat",
    "entities": [
+    "boss:radahn",
     "grace:redmane"
    ],
    "unresolved": [],
@@ -17908,10 +17910,10 @@
   {
    "q": "Thoughts for this build to get me through the dlc I’m at Mesmer right now",
    "type": "build-advice",
-   "entities": [],
-   "unresolved": [
-    "Mesmer right now"
+   "entities": [
+    "boss:messmer"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -18092,6 +18094,7 @@
    "q": "Why isn’t my STR/FTH build doing any damage?\nI recently beat the game, and changed my bonk build to a STR/FTH build to try out the Sacred relic sword and some dlc swords (renalla’s twin blades), but I am getting 1/4-1/3 the damage that I got earlier. Is there a way to optimize this build, or should I just go back to the good ol’ gutts-sword? L",
    "type": "build-advice",
    "entities": [
+    "boss:rennala",
     "item:sacred-relic-sword"
    ],
    "unresolved": [
@@ -18871,11 +18874,10 @@
    "type": "how-to-beat",
    "entities": [
     "boss:consort",
+    "boss:radahn",
     "mechanic:stance-break"
    ],
-   "unresolved": [
-    "Radhan"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -19226,13 +19228,12 @@
    "entities": [
     "damage:magic",
     "item:carian-greatsword",
+    "item:dark-moon-greatsword",
     "item:glintblade-phalanx",
     "item:greatsword",
     "mechanic:ashes-of-war"
    ],
-   "unresolved": [
-    "Darkmoon"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -19490,11 +19491,10 @@
   {
    "q": "DLC specific - Darkmoon enjoyers, what weapon did you use for the DLC? (other than darkmoon)\nBeen struggling to find something that ticks all my boxes so thought I'd see what other people swapped to. Assuming you swapped that is. Doesn't necessarily have to be an int weapon.",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "Darkmoon enjoyers",
-    "darkmoon"
+   "entities": [
+    "item:dark-moon-greatsword"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -19593,6 +19593,7 @@
    "q": "am i ass or is it my build\nshould i respec i am lvl 74 my stats are Vig 18, mind 16, end 17, strength 20, dex 27, faith 35, arcane 31 and 10 int im using a godskin peeler +15 with bleed and stormcaller aow using a +5 dragon communion seal i beat goldfrey and asking if i should be a better build",
    "type": "level",
    "entities": [
+    "boss:godfrey",
     "item:dragon-communion-seal",
     "item:godskin-peeler",
     "item:stormcaller",
@@ -19600,8 +19601,7 @@
     "mechanic:status-bleed"
    ],
    "unresolved": [
-    "Vig 18 mind 16",
-    "goldfrey"
+    "Vig 18 mind 16"
    ],
    "src": "reddit:EldenRingBuilds"
   },
@@ -19865,13 +19865,13 @@
    "q": "Where Should my Characters Live?\nI'm setting up PVP characters based on each of the starting classes and want to leave each of them in a \"homebase\" that fits their character. For example, the vagabond character is set up as an rl20 invader and lives at rampart tower grace in stormveil and the astronomer lives at the Raya Lucaria ma",
    "type": "level",
    "entities": [
+    "dungeon:stormveil",
     "grace:rampart-tower",
     "region:academy-of-raya-lucaria"
    ],
    "unresolved": [
     "PVP characters based",
-    "homebase",
-    "stormveil"
+    "homebase"
    ],
    "src": "reddit:EldenRingBuilds"
   },
@@ -20013,10 +20013,10 @@
    "type": "build-advice",
    "entities": [
     "item:idus-sword",
+    "region:caelid",
     "region:liurnia"
    ],
    "unresolved": [
-    "Calid",
     "carian knight style"
    ],
    "src": "reddit:EldenRingBuilds"
@@ -20543,12 +20543,10 @@
    "q": "As a returning player who wants to do a blood fang Nagikiba build I am looking for guidance\nHey people with much more knowledge than me! I am a retuning player and would like to do a nagikiba build, I always enjoyed bleed builds/weapons like the morning stars. I remember in my time of playing the game, I always wanted to do a Nagikiba build but was never sure where to start, right now I am",
    "type": "build-advice",
    "entities": [
+    "item:nagakiba",
     "mechanic:status-bleed"
    ],
-   "unresolved": [
-    "Nagikiba",
-    "nagikiba"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -20828,6 +20826,7 @@
    "type": "level",
    "entities": [
     "damage:lightning",
+    "dungeon:stormveil",
     "item:greatsword",
     "item:radagon-s-soreseal",
     "mechanic:two-handing",
@@ -20835,9 +20834,9 @@
    ],
    "unresolved": [
     "Low-level",
+    "PvE focus",
     "RL 20 20 Vig",
-    "STR 11 Dex 7",
-    "Stormveil PvE focus"
+    "STR 11 Dex 7"
    ],
    "src": "reddit:EldenRingBuilds"
   },
@@ -21225,11 +21224,10 @@
    "q": "Can anyone help me killing ashen lyndell godfrey\nHelp",
    "type": "other",
    "entities": [
-    "boss:godfrey"
+    "boss:godfrey",
+    "region:leyndell"
    ],
-   "unresolved": [
-    "lyndell"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -21373,12 +21371,11 @@
    "q": "What's the viability of a dragon build with the darkmoon greatsword?\nI really love the dragon incantations, but I also really love using the darkmoon greatsword! So, is it a good idea to sorta mix the two? Having enough faith/arc for the dragon incants, while having just 40 int for the sword?",
    "type": "build-advice",
    "entities": [
+    "item:dark-moon-greatsword",
     "item:greatsword",
     "mechanic:incantation"
    ],
-   "unresolved": [
-    "darkmoon"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -21929,11 +21926,11 @@
    "q": "Help Salvage This Build\nI added a lot of points to str dex and faith thinking it'll help with damage, but the lack of vigor leads me to getting two shot on every boss/npc. Any suggestions to improve this build so that I can defeat rennalla so I can respec. I'm running radagon soreseal/ green turtle talisman and a +4 lordsw",
    "type": "level",
    "entities": [
+    "boss:rennala",
     "item:green-turtle-talisman",
     "item:radagon-s-soreseal"
    ],
    "unresolved": [
-    "rennalla",
     "str dex"
    ],
    "src": "reddit:EldenRingBuilds"
@@ -22910,9 +22907,10 @@
   {
    "q": "Would like some advice for my current build\nThis is my first playthrough of eden ring, and I've mainly been doing it blind so I haven't looked up anything. But I'm stuck on Melania rn and was just wondering if there's anything I can do to improve my \"build\" stat or like talisman wise?",
    "type": "build-advice",
-   "entities": [],
+   "entities": [
+    "boss:malenia"
+   ],
    "unresolved": [
-    "Melania rn",
     "build"
    ],
    "src": "reddit:EldenRingBuilds"
@@ -23089,11 +23087,10 @@
    "q": "Not sure what build I want\nDoing another playthrough and wasn't really sure what build I should use. I've made it to stormveil and have only leveled up vigor, strength, and dex. What are some builds I should try?",
    "type": "level",
    "entities": [
+    "dungeon:stormveil",
     "item:strength"
    ],
-   "unresolved": [
-    "stormveil"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -23693,11 +23690,10 @@
    "q": "Looking for a unique weapon build\nIve got my plat on an old account but due to life i had to buy another ps4 and another copy of the game. Im too poor to own the dlc just yet so I need weapon suggestions for base game Weapons I've beaten the game with: • Deathrite Poker • God Slayer Greatsword • Darkmoon Greatsword • Blasphemous Bla",
    "type": "build-advice",
    "entities": [
+    "item:dark-moon-greatsword",
     "item:greatsword"
    ],
-   "unresolved": [
-    "Darkmoon"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -24466,12 +24462,11 @@
    "type": "build-advice",
    "entities": [
     "boss:margit",
+    "dungeon:stormveil",
     "enemy:margit-capital-outskirts",
     "grace:margit-the-fell-omen"
    ],
-   "unresolved": [
-    "stormveil"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -24825,11 +24820,11 @@
     "item:dragonscale-blade",
     "item:eleonora-s-poleblade",
     "item:falx",
+    "item:nagakiba",
     "item:serpent-bow"
    ],
    "unresolved": [
     "Arc Hello I’m needing",
-    "Nagikiba",
     "arc I’m"
    ],
    "src": "reddit:EldenRingBuilds"
@@ -25140,11 +25135,10 @@
   {
    "q": "Help to beat consort radhan\nAnyone need a hand to beat consorte Radhan?",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "Radhan",
-    "radhan"
+   "entities": [
+    "boss:radahn"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -25905,9 +25899,7 @@
     "item:sword-dance",
     "mechanic:status-frostbite"
    ],
-   "unresolved": [
-    "Nagakibas"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -26051,11 +26043,10 @@
    "type": "multi-part",
    "entities": [
     "damage:magic",
+    "item:dark-moon-greatsword",
     "item:greatsword"
    ],
-   "unresolved": [
-    "darkmoon"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -27278,11 +27269,11 @@
    "q": "Just hit level 306 on my NG+3 Tarnished. Want to visit Rennalla and shift some stuff points around. What interesting builds should try?",
    "type": "multi-part",
    "entities": [
+    "boss:rennala",
     "npc:the-tarnished-protagonist"
    ],
    "unresolved": [
-    "NG+3",
-    "Rennalla"
+    "NG+3"
    ],
    "src": "reddit:EldenRingBuilds"
   },
@@ -28224,11 +28215,10 @@
    "type": "drops",
    "entities": [
     "item:carian-regal-scepter",
+    "item:dark-moon-greatsword",
     "mechanic:status-frostbite"
    ],
-   "unresolved": [
-    "darkmoon great sword"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -28755,15 +28745,15 @@
    "type": "build-advice",
    "entities": [
     "boss:astel",
+    "item:dark-moon-greatsword",
     "item:greatsword",
     "mechanic:poise"
    ],
    "unresolved": [
     "arc Started off",
-    "darkmoon",
-    "darkmoon greatswords 2 wings",
     "str 57 dex 80",
-    "vig 40mind 41 end"
+    "vig 40mind 41 end",
+    "wings"
    ],
    "src": "reddit:EldenRingBuilds"
   },
@@ -29410,11 +29400,11 @@
    "q": "Where to put surplus levels for my Darkmoon Greatsword PVE build?\nStarting class: Vagabond Current level: RL200 My current stats are: 59 Vigor 38 Mind 30 Endurance 16 Strength 13 Dexterity 80 Intelligence So I already have more or less everything important for my build, but I still have 27 spare levels and I’m not sure where to put them. The options I’m considerin",
    "type": "level",
    "entities": [
+    "item:dark-moon-greatsword",
     "item:greatsword",
     "item:strength"
    ],
    "unresolved": [
-    "Darkmoon",
     "RL200"
    ],
    "src": "reddit:EldenRingBuilds"
@@ -30758,14 +30748,13 @@
    "q": "Good health regen build?\nHey guys, I’m working on a build built around regaining health. For this I’m planning on using spinning gravity thrust on the great katana with malenias great rune. But until I get to the dlc I can’t get the weapon or ash of war. I also haven’t gotten to melania on my current playthrough. So I need",
    "type": "build-advice",
    "entities": [
+    "boss:malenia",
     "item:great-katana",
     "item:spinning-gravity-thrust",
     "mechanic:ashes-of-war",
     "mechanic:great-runes"
    ],
-   "unresolved": [
-    "melania"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -30822,6 +30811,7 @@
     "item:carian-regal-scepter",
     "item:claymore",
     "item:cleanrot-knight-s-sword",
+    "item:dark-moon-greatsword",
     "item:glintstone-kris",
     "item:greatsword",
     "item:hand-axe",
@@ -30832,7 +30822,6 @@
    ],
    "unresolved": [
     "ARMOR",
-    "darkmoon",
     "pvp colosseum"
    ],
    "src": "reddit:EldenRingBuilds"
@@ -31601,10 +31590,10 @@
   {
    "q": "Why is my damage so low?\nI did rebirth to try out the nagikiba katana, but I can’t seem to get any good damage with it. Am I doing something wrong ?",
    "type": "lore",
-   "entities": [],
-   "unresolved": [
-    "nagikiba katana"
+   "entities": [
+    "item:nagakiba"
    ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -31955,13 +31944,12 @@
    "type": "build-advice",
    "entities": [
     "damage:magic",
+    "item:flask-of-wondrous-physick",
     "item:golden-vow",
     "item:golden-vow-consumable",
     "item:golden-vow-spell"
    ],
-   "unresolved": [
-    "Physic"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -32148,14 +32136,13 @@
    "q": "Build ideas for DLC NG+?\nI need some help! Im a very high level... and my setup is not working well. I may need a different approach. A different weapon, using more spells, a different spirit summon? My mimic tear is garbage against mesmer, and I imagine the other bosses as well. Im using the black steel twinblade, quality",
    "type": "level",
    "entities": [
+    "boss:messmer",
     "boss:mimic-tear",
     "grace:120201",
     "grace:mimic-tear",
     "item:black-steel-twinblade"
    ],
-   "unresolved": [
-    "mesmer"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingBuilds"
   },
   {
@@ -32939,11 +32926,11 @@
    "type": "build-advice",
    "entities": [
     "boss:radagon",
+    "item:dark-moon-greatsword",
     "item:radiant-gold-mask",
     "mechanic:incantation"
    ],
    "unresolved": [
-    "Darkmoon",
     "Ranni"
    ],
    "src": "reddit:EldenRingBuilds"
@@ -32996,12 +32983,11 @@
    "q": "Any tips on Mesmer?\nI only ever played ds2 and ds3 just finished er and wanted to try the dlc is Mesmer parryable because I tried dodging him and he’s so aggressive that if I get hit ones it’s a constant cycle of trying to dodge and not getting put in a situation where I try to heal and get killed because it feels like",
    "type": "other",
    "entities": [
+    "boss:messmer",
     "item:heal",
     "mechanic:parry"
    ],
-   "unresolved": [
-    "Mesmer"
-   ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -33131,12 +33117,13 @@
    "q": "What everyone’s opinion on staff of rot\nI was struggling on Mesmer and kept switching weapons at about attempt 25 I switched to rotten staff+10 and it took two attempts more before I obliterated him. why does everyone say it’s bad I was using anvil hammer, renalla twin blades, great sword, dragon hunter katana, and rivers of blood before",
    "type": "lore",
    "entities": [
+    "boss:messmer",
+    "boss:rennala",
     "build:rivers",
     "item:anvil-hammer",
     "item:rivers-of-blood"
    ],
    "unresolved": [
-    "Mesmer",
     "rotten staff+10"
    ],
    "src": "reddit:Eldenring"
@@ -33298,11 +33285,11 @@
    "type": "compare",
    "entities": [
     "boss:godrick",
+    "dungeon:stormveil",
     "grace:godrick-grace"
    ],
    "unresolved": [
-    "Dark Souls 3",
-    "Stormveil"
+    "Dark Souls 3"
    ],
    "src": "reddit:Eldenring"
   },
@@ -34782,11 +34769,10 @@
    "q": "How many of you actually beat Melania without summons or mimic tears\nI’m just curious",
    "type": "other",
    "entities": [
+    "boss:malenia",
     "enemy:silver-tear"
    ],
-   "unresolved": [
-    "Melania without summons"
-   ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -34856,11 +34842,10 @@
    "q": "Does anyone else felt a slight disappointment at the DLC final boss ?\nIm not saying it was a bad boss, far from it, its a great boss. But I still wish we would’ve got something more original than Radhan. Also the fact we didn’t actually « fight » Miquella bc he acted more as a support. I mean I get it, he’s a kid looks pretty weak physically etc but I’m sure they coul",
    "type": "ending",
    "entities": [
+    "boss:radahn",
     "npc:miquella-of-the-haligtree"
    ],
-   "unresolved": [
-    "Radhan"
-   ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -36215,10 +36200,11 @@
   {
    "q": "Best wondrous physic for samurai Build ??\nAm confused with these physic.. am using green spill crystal tear but hardly use it …",
    "type": "multi-part",
-   "entities": [],
+   "entities": [
+    "item:flask-of-wondrous-physick"
+   ],
    "unresolved": [
-    "physic",
-    "wondrous physic"
+    "wondrous"
    ],
    "src": "reddit:Eldenring"
   },
@@ -36693,7 +36679,9 @@
   {
    "q": "Thoughts on v1.00 Waterfowl Dance? Fascinating to me HOW different this move originally was",
    "type": "other",
-   "entities": [],
+   "entities": [
+    "boss:malenia"
+   ],
    "unresolved": [
     "Dance Fascinating",
     "HOW different"
@@ -37477,11 +37465,11 @@
    "type": "build-advice",
    "entities": [
     "damage:fire",
-    "item:strength"
+    "item:strength",
+    "region:leyndell"
    ],
    "unresolved": [
-    "Erdtree",
-    "Lyndell"
+    "Erdtree"
    ],
    "src": "reddit:Eldenring"
   },
@@ -38699,6 +38687,7 @@
    "q": "Could the Runes of Vyke belong to Melina and Mesmer?\nIn the game, we see that each member of Marika/Radagon's lineage possesses a piece of the Elden Ring. (+ Rennala, which he received as a gift from Radagon, and Malakith, who keeps the Death with him) So it seems that when it broke, the Elden Ring shattered into pieces equivalent to Marika/Radagon's",
    "type": "other",
    "entities": [
+    "boss:messmer",
     "boss:radagon",
     "boss:rennala",
     "invader:vyke",
@@ -38707,9 +38696,7 @@
     "npc:queen-marika-the-eternal",
     "npc:vyke"
    ],
-   "unresolved": [
-    "Mesmer"
-   ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -39021,6 +39008,7 @@
    "type": "other",
    "entities": [
     "boss:godrick",
+    "boss:rennala",
     "grace:godrick-grace"
    ],
    "unresolved": [],
@@ -39714,22 +39702,20 @@
    "q": "Blind First playthrough. How can I improve or make my build more fun. (No major story spoilers please)\nI have reached and explored some of Lyndell the capital. I am an EXTREMELY thorough player and hate missing content. This is a mostly blind playthrough with no youtube tutorials, only help I've gotten is comments from my previous posts and googling what the different attributes do and their scaling.",
    "type": "build-advice",
    "entities": [
-    "mechanic:weapon-scaling"
+    "mechanic:weapon-scaling",
+    "region:leyndell"
    ],
-   "unresolved": [
-    "Lyndell"
-   ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
    "q": "90 Hours in blind playthrough. How can i improve or make my build more fun. (no major story spoilers please)\nI have reached and explored some of Lyndell the capital. I am an EXTREMELY thorough player and hate missing content. This is a mostly blind playthrough with no youtube tutorials, only help I've gotten is comments from my previous posts and googling what the different attributes do and their scaling.",
    "type": "build-advice",
    "entities": [
-    "mechanic:weapon-scaling"
+    "mechanic:weapon-scaling",
+    "region:leyndell"
    ],
-   "unresolved": [
-    "Lyndell"
-   ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -39962,10 +39948,10 @@
   {
    "q": "How far does someone have to progress before they can form a valid opinion in your mind?\nHad my opinion discounted by a guy the other day because I told him I beat every major boss besides Melania and apparently that wasn't good enough. Got me thinking about how far you should expect someone to get into the game before they can form a fair opinion about it. I would say anyone who has be",
    "type": "how-to-beat",
-   "entities": [],
-   "unresolved": [
-    "Melania"
+   "entities": [
+    "boss:malenia"
    ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -40325,11 +40311,10 @@
     "build:dragon-communion",
     "mechanic:incantation",
     "merchant:dragon-communion",
-    "merchant:incantation"
+    "merchant:incantation",
+    "region:leyndell"
    ],
-   "unresolved": [
-    "Lyndell skip"
-   ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -40462,6 +40447,7 @@
    "q": "Ashes of War/Attacks For Boundary Breaking?\nI've discovered that by standing atop one of the candlestands in Messmer's throne room, you can jump and get above the effect that prevents you from attacking. At first I had hoped I could use Waterfowl Dance from there to then get atop the throne, but you can't trigger the ash mid-air. Does anyone",
    "type": "bug-glitch",
    "entities": [
+    "boss:malenia",
     "boss:messmer",
     "mechanic:ashes-of-war"
    ],
@@ -41084,10 +41070,10 @@
   {
    "q": "Come help your boy fight Renala ?\nPlease? Switch 2 I can never get a buddy :(",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "Renala"
+   "entities": [
+    "boss:rennala"
    ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -41824,6 +41810,7 @@
    "entities": [
     "boss:godrick",
     "boss:margit",
+    "boss:rennala",
     "enemy:margit-capital-outskirts",
     "grace:63385002",
     "grace:altus-plateau",
@@ -42051,10 +42038,10 @@
   {
    "q": "I hopped back on to help new players and I've noticed a huge uptick of people invading stormveil with max flasks and DLC equipment\nHonestly it's kinda pathetic. I'm fine with invaders, keeps the game spicy. But are you fr feeling superior cause you are using endgame gear against a 1st time noob? I've dispatched a few and lost to a few others. Such is the way of the game but it feels extra desperate. Idk might just be me",
    "type": "multi-part",
-   "entities": [],
-   "unresolved": [
-    "stormveil"
+   "entities": [
+    "dungeon:stormveil"
    ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -42147,9 +42134,11 @@
   {
    "q": "What do you guys put in your Wondrous Physic Flask?\nFor almost my entire playthrough, I did put the same thing : the one who regens half of your hp, and the one who highly reduces the next damage, and I didn't really try anything else. So I'm curious, what do you guys put in your flask ?",
    "type": "other",
-   "entities": [],
+   "entities": [
+    "item:flask-of-wondrous-physick"
+   ],
    "unresolved": [
-    "Wondrous Physic Flask"
+    "Wondrous"
    ],
    "src": "reddit:Eldenring"
   },
@@ -42291,10 +42280,10 @@
    "type": "drops",
    "entities": [
     "boss:mohg",
+    "dungeon:stormveil",
     "region:limgrave"
    ],
    "unresolved": [
-    "Stormveil levels",
     "git gud"
    ],
    "src": "reddit:Eldenring"
@@ -42497,6 +42486,7 @@
    "type": "build-advice",
    "entities": [
     "boss:fire-giant",
+    "boss:radahn",
     "dungeon:volcano-manor",
     "grace:160002",
     "grace:65535200",
@@ -42504,9 +42494,7 @@
     "grace:volcano-manor",
     "item:bloodhound-s-fang"
    ],
-   "unresolved": [
-    "Radhan"
-   ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -43031,10 +43019,10 @@
   {
    "q": "How do I know if I'm doing it right?\nFirst time player (switch 2) and I think I'm lost. I defeated Godric and kind of wandered in Lurinia, ended up in some mine that kept going up and was infested with the Opera Bats, had to fight some Lava Lizard, took an elevator to a Metal Carriage junk yard infested with Diabetic Trolls, and met a",
    "type": "how-to-beat",
-   "entities": [],
-   "unresolved": [
-    "Godric"
+   "entities": [
+    "boss:godrick"
    ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -43566,11 +43554,12 @@
    "q": "If the cast of ER had access to YTShorts and similar brainrot material, what would they watch?\nNepheli would binge on some wuxia and think half the stuff is legit martial art. Maybe some interior decorating for Stormveil. Boggart: some fishing, cooking, and wildlife camping. Zoryas: footage of deformed/injured animals being taken care of. Boc: cosplay tutorials as a guilty pleasure, because b",
    "type": "multi-part",
    "entities": [
+    "dungeon:stormveil",
     "enemy:guilty",
     "npc:nepheli-loux-warrior"
    ],
    "unresolved": [
-    "Stormveil Boggart"
+    "Boggart"
    ],
    "src": "reddit:Eldenring"
   },
@@ -43616,7 +43605,9 @@
   {
    "q": "Why wasn’t I completely wrecked here?\nWhy the first flurry from waterfowl didn’t track well here? I was sure I was going to be completely obliterated in that corner.",
    "type": "other",
-   "entities": [],
+   "entities": [
+    "boss:malenia"
+   ],
    "unresolved": [],
    "src": "reddit:Eldenring"
   },
@@ -43810,12 +43801,11 @@
    "entities": [
     "damage:holy",
     "item:blue-dancer-charm",
+    "item:flask-of-wondrous-physick",
     "item:warrior-jar-shard",
     "item:winged-scythe"
    ],
    "unresolved": [
-    "Physic",
-    "Physic setup",
     "Ritual Sword"
    ],
    "src": "reddit:Eldenring"
@@ -43877,11 +43867,10 @@
    "q": "Looking for a very fast build\nSo I’m almost done with my first play through of Elden ring (I think). I am about to fight Melania after work and I think I just have 2 story bosses left to do. I did this play through as a bleed samurai build using naga and uchi with dex/arcane. My only con about this build is it’s slow to swing. F",
    "type": "build-advice",
    "entities": [
+    "boss:malenia",
     "mechanic:status-bleed"
    ],
-   "unresolved": [
-    "Melania after work"
-   ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -44180,6 +44169,7 @@
    "type": "npc-quest",
    "entities": [
     "boss:divine-beast",
+    "boss:messmer",
     "boss:needle-knight-leda",
     "boss:rennala-sote",
     "hunt:commander-gaius",
@@ -44187,7 +44177,6 @@
     "item:shadow-realm-blessing"
    ],
    "unresolved": [
-    "Mesmer putrescence knight",
     "PCR without locking",
     "Ymir"
    ],
@@ -44232,13 +44221,12 @@
    "q": "Are Consort Radhans Swords Still Broken?\nComing Back to the game after the tarnished pack dropped after not playing since I beat the DLC when that dropped and decided to do a Leontiels Only run as its a cool af weapon. Got to consort Radhan and Im getting hit after the AOW Heavy which I read has 20 iframes. Since I cheesed Consort Radhan f",
    "type": "bug-glitch",
    "entities": [
+    "boss:radahn",
     "npc:the-tarnished-protagonist"
    ],
    "unresolved": [
     "AOW Heavy",
-    "Leontiels Only run",
-    "Radhan",
-    "Radhan f"
+    "Leontiels Only run"
    ],
    "src": "reddit:Eldenring"
   },
@@ -44281,6 +44269,7 @@
    "type": "npc-quest",
    "entities": [
     "boss:godrick",
+    "boss:radahn",
     "boss:rennala",
     "grace:altus-plateau",
     "grace:godrick-grace",
@@ -44289,7 +44278,6 @@
     "region:leyndell"
    ],
    "unresolved": [
-    "Radhan",
     "Ranni's quest require Leynd",
     "intended"
    ],
@@ -44730,13 +44718,12 @@
    "q": "Can you help me become a turtle knight?\nSo I've spent my time running around the lands between I just killed godric and so far I've only been able to find two turtle things I've taken on a ton of bosses in caelid,the peninsula and spent forever killing dragons and looking around but I've only been able to find two turtle related things. I",
    "type": "other",
    "entities": [
+    "boss:godrick",
     "enemy:turtle",
     "region:caelid",
     "region:lands-between"
    ],
-   "unresolved": [
-    "godric"
-   ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -44751,12 +44738,11 @@
    "type": "other",
    "entities": [
     "dungeon:shadow-keep",
+    "dungeon:stormveil",
     "region:farum",
     "region:shadow-keep"
    ],
-   "unresolved": [
-    "stormveil"
-   ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -45370,11 +45356,10 @@
    "q": "I need help with radam 😔\nI'm playing elden ring on switch 2 and I'm really tired of radhan promised consort Can someone help me?",
    "type": "other",
    "entities": [
-    "boss:consort"
+    "boss:consort",
+    "boss:radahn"
    ],
-   "unresolved": [
-    "radhan"
-   ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -45961,11 +45946,10 @@
    "q": "What build should I go with for New Game +? First run was a Darkmoon Greatsword spell blade.",
    "type": "build-advice",
    "entities": [
+    "item:dark-moon-greatsword",
     "item:greatsword"
    ],
-   "unresolved": [
-    "Darkmoon"
-   ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -46438,12 +46422,11 @@
    "q": "No way to get Crimson Hood after endgame?\nI’m going back and trying to get the crimson hood because I never snagged it. I went back and grabbed the quest item on the corpse pile in Stormveil and now I’m not seeing the hood where it should be and there’s no dialogue options for Roderika. Am I unable to get it? Did I progress too far?",
    "type": "npc-quest",
    "entities": [
+    "dungeon:stormveil",
     "item:crimson-hood",
     "npc:roderika"
    ],
-   "unresolved": [
-    "Stormveil"
-   ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -46918,11 +46901,10 @@
   {
    "q": "Is there any good start of game farms for runes other than the dragon?\nI've already done the dragon but I find myself fairly stuck running through stormveil so I'm looking for somewhere else I can actually farm efficiently. My current best is the path up from stormveil cliff to the first big axe guy but it doesn't feel, well, actually any good </3 tysm in advance",
    "type": "drops",
-   "entities": [],
-   "unresolved": [
-    "stormveil",
-    "stormveil cliff"
+   "entities": [
+    "dungeon:stormveil"
    ],
+   "unresolved": [],
    "src": "reddit:Eldenring"
   },
   {
@@ -47480,11 +47462,10 @@
     "boss:bayle",
     "boss:elder-dragon-greyoll",
     "boss:placidusax",
-    "grace:dragonlord-placidusax"
+    "grace:dragonlord-placidusax",
+    "item:bolt-of-gransax"
    ],
-   "unresolved": [
-    "Granssax"
-   ],
+   "unresolved": [],
    "src": "reddit:eldenringdiscussion"
   },
   {
@@ -47865,10 +47846,10 @@
    "q": "Guys I need help :c\nFellas I need your help My friend’s birthday is in a couple of days, and I want to get him the Darkmoon Greatsword from Elden Ring (the one you get from Ranni), bc he calls me his bluemoon. Since I don't play the game, I'm a bit confused by all the different replica names online. Could anyone confir",
    "type": "other",
    "entities": [
+    "item:dark-moon-greatsword",
     "item:greatsword"
    ],
    "unresolved": [
-    "Darkmoon",
     "Ranni bc"
    ],
    "src": "reddit:eldenringdiscussion"
@@ -48123,12 +48104,12 @@
    "type": "other",
    "entities": [
     "boss:radahn",
+    "boss:rennala",
     "grace:starscourge-radahn",
     "region:gaols"
    ],
    "unresolved": [
     "East Rampart grace after",
-    "Renala",
     "erdtree guardians ball bearing"
    ],
    "src": "reddit:eldenringdiscussion"
@@ -48211,6 +48192,7 @@
    "entities": [
     "boss:godrick",
     "boss:radahn",
+    "boss:rennala",
     "boss:rykard",
     "damage:magic",
     "grace:godrick-grace",
@@ -48298,19 +48280,19 @@
   {
    "q": "Is beating Melania on try number 6 good?\nI honestly hear awful horror stories about Melania. about how fast she is and her incredibly long attack patterns. Now to be fair I did use a mimic as a summons so it might be a little cheesed maybe? The auto moderators won’t let me post my setup. This is my first souls game and this is where I got",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "Melania"
+   "entities": [
+    "boss:malenia"
    ],
+   "unresolved": [],
    "src": "reddit:eldenringdiscussion"
   },
   {
    "q": "Is beating Melania on attempt number 6 good?\n[removed]",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "Melania"
+   "entities": [
+    "boss:malenia"
    ],
+   "unresolved": [],
    "src": "reddit:eldenringdiscussion"
   },
   {
@@ -48490,14 +48472,13 @@
    "q": "Does anyone know if the Melania glitch using agheels flame to climb a branch and then use heal/golden vow still work?",
    "type": "multi-part",
    "entities": [
+    "boss:malenia",
     "item:golden-vow",
     "item:golden-vow-consumable",
     "item:golden-vow-spell",
     "item:heal"
    ],
-   "unresolved": [
-    "Melania glitch"
-   ],
+   "unresolved": [],
    "src": "reddit:eldenringdiscussion"
   },
   {
@@ -48848,13 +48829,12 @@
    "type": "multi-part",
    "entities": [
     "dungeon:fringefolk-hero-s-grave",
+    "dungeon:stormveil",
     "item:banished-knight-engvall",
     "item:halberd",
     "region:fringefolk-hero-s-grave"
    ],
-   "unresolved": [
-    "Stormveil"
-   ],
+   "unresolved": [],
    "src": "reddit:eldenringdiscussion"
   },
   {
@@ -49070,13 +49050,12 @@
    "q": "Bosses per Region and scaling spreadsheet?\nI’m planning on doing a deathless, region lock, all bosses run, following the scaling level of the regions to not go to a place like Weeping after Dragonbarrow. I’ve been searching for a complete spreadsheet with the bosses, regions and scaling but can’t find it. Most that I found has Stormveil and",
    "type": "level",
    "entities": [
+    "dungeon:stormveil",
     "mechanic:weapon-scaling",
     "region:greyoll-s-dragonbarrow",
     "region:weeping"
    ],
-   "unresolved": [
-    "Stormveil"
-   ],
+   "unresolved": [],
    "src": "reddit:eldenringdiscussion"
   },
   {
@@ -49857,11 +49836,10 @@
    "q": "im struggling against Promised consort Radhan is there any advice ?",
    "type": "other",
    "entities": [
-    "boss:consort"
+    "boss:consort",
+    "boss:radahn"
    ],
-   "unresolved": [
-    "Radhan"
-   ],
+   "unresolved": [],
    "src": "reddit:eldenringdiscussion"
   },
   {
@@ -50046,11 +50024,10 @@
    "q": "How many Runes should I ask for, for a Darkmoon Greatsword?\nHey, I got myself a second Darkmoon Greatsword, but don't have a use for it. I know that it's a pretty good and popular sword. But since I don't need it, I'm planning on selling it for runes in a trading sub. How many should I ask for it in return?",
    "type": "other",
    "entities": [
+    "item:dark-moon-greatsword",
     "item:greatsword"
    ],
-   "unresolved": [
-    "Darkmoon"
-   ],
+   "unresolved": [],
    "src": "reddit:eldenringdiscussion"
   },
   {
@@ -50143,11 +50120,10 @@
    "q": "Who is your favorite boss\nI dont mean the boss your best at or the one that you find easiest just the fight you always look forward to whenever you play For me its messmer, before DLC it was Melania",
    "type": "compare",
    "entities": [
+    "boss:malenia",
     "boss:messmer"
    ],
-   "unresolved": [
-    "Melania"
-   ],
+   "unresolved": [],
    "src": "reddit:eldenringdiscussion"
   },
   {
@@ -50841,11 +50817,10 @@
   {
    "q": "Aiuto per consorte radhan ps5 Help for consort Radhan ps5",
    "type": "other",
-   "entities": [],
-   "unresolved": [
-    "Radhan",
-    "radhan"
+   "entities": [
+    "boss:radahn"
    ],
+   "unresolved": [],
    "src": "reddit:eldenringdiscussion"
   },
   {
@@ -53109,9 +53084,7 @@
     "mechanic:status-scarlet-rot",
     "region:caelid"
    ],
-   "unresolved": [
-    "Radhan"
-   ],
+   "unresolved": [],
    "src": "reddit:eldenringdiscussion"
   },
   {
@@ -53612,10 +53585,10 @@
   {
    "q": "Can I still do Alexanders Quest If I did Radhan Festival Skip?",
    "type": "npc-quest",
-   "entities": [],
-   "unresolved": [
-    "Radhan Festival Skip"
+   "entities": [
+    "boss:radahn"
    ],
+   "unresolved": [],
    "src": "reddit:eldenringdiscussion"
   },
   {
@@ -53873,11 +53846,10 @@
    "entities": [
     "boss:godfrey",
     "boss:radagon",
+    "boss:rennala",
     "npc:queen-marika-the-eternal"
    ],
-   "unresolved": [
-    "Rennalla"
-   ],
+   "unresolved": [],
    "src": "reddit:eldenringdiscussion"
   },
   {
@@ -53978,7 +53950,9 @@
   {
    "q": "Looking for a free rune drop sorry if it sounds forward or rude\nHonestly im lvl 247 but not too keen on wasting anymore larval tears im looking for enough runes to atleast soft cap all my stats so switching builds isnt so much of a hassle dont get me wrong i love seeing renalla but back an forth wared me down a little",
    "type": "drops",
-   "entities": [],
+   "entities": [
+    "boss:rennala"
+   ],
    "unresolved": [],
    "src": "reddit:eldenringdiscussion"
   },
@@ -54627,10 +54601,11 @@
   {
    "q": "Hey I’m new on the game and move dual BLADE builds… did heard about the build with 2 nagakibas, is it a strong late game build? Can someone drop me one? 😅",
    "type": "multi-part",
-   "entities": [],
+   "entities": [
+    "item:nagakiba"
+   ],
    "unresolved": [
-    "BLADE builds",
-    "nagakibas"
+    "BLADE builds"
    ],
    "src": "reddit:eldenringdiscussion"
   },
@@ -55100,10 +55075,10 @@
    "type": "other",
    "entities": [
     "build:blasphemous",
-    "item:blasphemous-blade"
+    "item:blasphemous-blade",
+    "item:dark-moon-greatsword"
    ],
    "unresolved": [
-    "Darkmoon gs",
     "ng plus 40"
    ],
    "src": "reddit:eldenringdiscussion"
@@ -55737,11 +55712,11 @@
    "q": "Shadow of the Erdtree boss tips?\nI’m currently on Mesmer the Impaler and I’m curious if you found any strats that helped you with this fight?",
    "type": "other",
    "entities": [
+    "boss:messmer",
     "region:shadow"
    ],
    "unresolved": [
-    "Impaler",
-    "Mesmer"
+    "Impaler"
    ],
    "src": "reddit:eldenringdiscussion"
   },
@@ -55983,14 +55958,13 @@
    "q": "Why does bleed not work on Goldfrey but does work on Margit?\nThey're both mental projections or something along those lines, right?",
    "type": "lore",
    "entities": [
+    "boss:godfrey",
     "boss:margit",
     "enemy:margit-capital-outskirts",
     "grace:margit-the-fell-omen",
     "mechanic:status-bleed"
    ],
-   "unresolved": [
-    "Goldfrey"
-   ],
+   "unresolved": [],
    "src": "reddit:eldenringdiscussion"
   },
   {
@@ -62275,11 +62249,10 @@
    "q": "when they think it is over\nthis person annihilates me every time with dual nagakibas, but I got a cheap clutch parry in the last fight 10/10 motivational video, hesitation is defeat, or something",
    "type": "other",
    "entities": [
+    "item:nagakiba",
     "item:parry"
    ],
-   "unresolved": [
-    "nagakibas"
-   ],
+   "unresolved": [],
    "src": "reddit:EldenRingPVP"
   },
   {

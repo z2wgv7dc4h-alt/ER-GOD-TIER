@@ -421,14 +421,66 @@ function fuzzyEntity(name: string): string | undefined {
   return best
 }
 
-/** Resolve a source name to a canonical graph id, or null when nothing matches. */
+const OWNED_RESOLVE_KINDS = new Set<EntityKind>([
+  'item', 'weapon', 'shield', 'armor', 'talisman', 'spell', 'ash', 'spirit', 'material',
+])
+const PLACE_RESOLVE_KINDS = new Set<EntityKind>(['region', 'grace', 'dungeon'])
+
+/**
+ * Task 160 — a name shared by several kinds must resolve only within the kind
+ * the caller asked for. `resolveName('Patches', 'boss')` used to fall through to
+ * whichever entity the name index happened to hold first (the `line:patches`
+ * quest page), so a boss/wiki row merged its data — including shop stock — onto
+ * the quest line. The prefix now gates the name index, the canonical candidate
+ * and the fuzzy fallback.
+ */
+function kindMatchesResolvePrefix(kind: EntityKind, prefix: string): boolean {
+  switch (prefix) {
+    case 'boss':
+    case 'invader':
+    case 'hunt':
+    case 'area':
+    case 'bossflag':
+      return kind === 'boss' || kind === 'enemy'
+    case 'enemy':
+      return kind === 'enemy' || kind === 'boss'
+    case 'npc':
+      return kind === 'npc'
+    case 'merchant':
+      return kind === 'merchant'
+    case 'grace':
+    case 'point':
+      return kind === 'grace'
+    case 'region':
+    case 'location':
+      return PLACE_RESOLVE_KINDS.has(kind)
+    case 'dungeon':
+      return kind === 'dungeon'
+    case 'quest':
+    case 'line':
+      return kind === 'quest' || kind === 'ending'
+    case 'gate':
+      return kind === 'gate'
+    case 'build':
+      return kind === 'build'
+    case 'mechanic':
+    case 'damage':
+      return kind === 'mechanic'
+    case 'item':
+    case 'loot':
+      return OWNED_RESOLVE_KINDS.has(kind)
+    default:
+      return true
+  }
+}
+
 function resolveName(name: string, prefix: string): string | undefined {
   const direct = mapKeys(name).map((key) => nameIndex.get(key)).find(Boolean)
-  if (direct && hasEntity(direct)) return direct
+  if (direct && hasEntity(direct) && kindMatchesResolvePrefix(getEntity(direct).kind, prefix)) return direct
   const candidate = canonicalEntityId(`${prefix}:${slug(name)}`, name)
-  if (hasEntity(candidate)) return candidate
+  if (hasEntity(candidate) && kindMatchesResolvePrefix(getEntity(candidate).kind, prefix)) return candidate
   const fuzzy = fuzzyEntity(name)
-  if (fuzzy && hasEntity(fuzzy)) return fuzzy
+  if (fuzzy && hasEntity(fuzzy) && kindMatchesResolvePrefix(getEntity(fuzzy).kind, prefix)) return fuzzy
   return undefined
 }
 
@@ -502,11 +554,44 @@ function setStat(record: EntityRecord, label: string, value: unknown): void {
   if (!record.stats[label]) record.stats[label] = text
 }
 
+/**
+ * Task 160 §8 — drop strings arrive from the wiki and the rosters with counts,
+ * notes and place prefixes that stop the graph resolving them to the real item
+ * ("3x Dragon Heart", "Ash of War: Holy Ground", "Cathedral of Manus Celes:
+ * Adula's Moonblade", "Smithing Stone (7) x 5"). Clean the ones that name a
+ * real item and drop the strings that name no item at all (rune totals, wiki
+ * placeholders, section headers).
+ */
+function cleanDropText(raw: unknown): string | null {
+  let text = String(raw ?? '').replace(/\s+/g, ' ').trim()
+  if (!text) return null
+  if (/^other drops$/i.test(text)) return null
+  // Wiki/template noise and section headers, not loot.
+  if (/\{\{|icon|\}\}/i.test(text)) return null
+  if (/^(n\/?a|various|#drops|useful loot|see |sometimes:|include all|specifying |no runes|xx runes|\?+)$/i.test(text)) return null
+  // A rune total ("40~67 Runes", "70k Runes", wiki "583 runes-currency…") is a
+  // number, not an item; "Golden Runes" / "Rune Arc" do not start with digits.
+  if (/^\s*[\d~≈?kx.,\-\s]*runes?\b/i.test(text)) return null
+  if (/^[\d~≈]+$/.test(text)) return null
+  text = text.replace(/^[*•\s]+/, '')
+  text = text.replace(/^\d+\s*x\s+/i, '')
+  text = text.replace(/\s*(?:x\s*\d+|\d+\s*x|\*\s*\d+)$/i, '')
+  text = text.replace(/^unlocks\s+/i, '')
+  text = text.replace(/^ash of war:\s*/i, '')
+  if (/:\s+/.test(text) && !/^ash of war/i.test(text)) text = text.split(/:\s+/).pop() ?? text
+  text = text.replace(/\((\d+)\)/g, '[$1]')
+  // A trailing "(ash)"/"(ashes)" is a wiki qualifier, not part of the name.
+  text = text.replace(/\s*\((?:ash|ashes)\)\s*$/i, '')
+  text = text.replace(/^[*•\s]+/, '').trim()
+  if (!text) return null
+  return text
+}
+
 function addDrops(record: EntityRecord, drops: unknown): void {
   if (!Array.isArray(drops)) return
   for (const drop of drops) {
-    const text = String(drop ?? '').trim()
-    if (!text || /^other drops$/i.test(text)) continue
+    const text = cleanDropText(drop)
+    if (!text) continue
     record.drops = record.drops ?? []
     if (!record.drops.includes(text)) record.drops.push(text)
   }
@@ -1881,6 +1966,22 @@ function mergeWikiDb(): void {
       if (!record.region && region) record.region = region
       continue
     }
+    // Task 160 #14 — the wiki files a page under "boss" by category, so an NPC
+    // or a generic overview ("Count Ymir", "Dragon") lands here. When the title
+    // already names a real page of another kind, enrich that page instead of
+    // minting a second, pictureless boss page for the same thing.
+    if (!id) {
+      const existing = resolveName(title, 'wiki')
+      if (existing && records.has(existing)) {
+        const record = records.get(existing)!
+        enrichFromWiki(record, rec)
+        setStat(record, 'HP', rec.stats.HP)
+        setStat(record, 'Runes', rec.stats.Runes)
+        addDrops(record, rec.drops)
+        if (!record.region && region) record.region = region
+        continue
+      }
+    }
     const newId = id ?? `boss:${slug(title)}`
     const record = records.get(newId) ?? ensure(newId, 'boss', title)
     enrichFromWiki(record, rec)
@@ -2347,6 +2448,11 @@ function mergeNpcQuestSteps(): void {
       if (key && !lineByName.has(key)) lineByName.set(key, line)
     }
   }
+  // Task 160 §5 — two wiki steps of one NPC often happen at the same place and
+  // would build two reference pages with an identical name. Track the display
+  // names already used so the later step gets a distinguishing `(step N)`.
+  const usedDisplayNames = new Set<string>()
+  for (const record of records.values()) usedDisplayNames.add(record.name)
   for (const quest of quests) {
     if (!quest.npc) continue
     const npcId = questNpcId(quest.npc)
@@ -2397,7 +2503,11 @@ function mergeNpcQuestSteps(): void {
     quest.steps.forEach((step, i) => {
       if (used.has(i)) return
       const id = `quest:${slug(quest.npc)}-step-${step.order}`
-      const record = ensure(id, 'quest', `${npcName} — ${step.location || `step ${step.order}`}`)
+      const base = `${npcName} — ${step.location || `step ${step.order}`}`
+      // Two steps at one location are distinct events: qualify the later page.
+      const display = usedDisplayNames.has(base) ? `${base} (step ${step.order})` : base
+      usedDisplayNames.add(display)
+      const record = ensure(id, 'quest', display)
       record.catalogue = false
       setText(record, 'description', step.action)
       setText(record, 'location', step.location)
@@ -2686,10 +2796,15 @@ function foldFmgNpcRows(): void {
       records.delete(id)
       continue
     }
-    if (!/^npcs:\d+$/.test(id) || record.description || record.location || record.questSteps?.length) continue
+    if (!/^npcs:\d+$/.test(id)) continue
     const target = targetFor(record.name)
     if (!target || target === id) continue
-    addName(record.name, target)
+    // Task 160 §5 — a `npcs:<id>` row that carries real content (a description,
+    // a location, quest steps) is the same character as the same-named primary
+    // record, not a second page: fold its fields in before dropping the stub.
+    const keeper = records.get(target)
+    if (keeper) mergeRecords(keeper, record)
+    else addName(record.name, target)
     records.delete(id)
   }
 }
@@ -2727,7 +2842,10 @@ function cleanupFmgDuplicates(): void {
     if (keeper && keeper.id !== id) {
       addName(record.name, keeper.id)
       records.delete(id)
-    } else if (record.kind === 'region') {
+    } else if (record.kind === 'region' || !record.catalogue) {
+      // Task 160 #14 — an empty FMG name row with no real counterpart and no
+      // catalogue anchor renders a page whose every section is empty; keep it
+      // out of the index rather than ship a no-data page.
       records.delete(id)
     }
   }
@@ -3138,6 +3256,102 @@ const FILLABLE_DESC_KINDS = new Set<string>([
 /** Place-like kinds whose lead may be a wiki category definition (Task 151 §1). */
 const PLACE_DESC_KINDS = new Set<string>(['region', 'dungeon', 'grace'])
 
+/**
+ * Task 160 §5 — the same ownable item can arrive under two ids (a catalogue row
+ * and an FMG/checklist row). When the two records share an exact name and only
+ * one is catalogue-anchored, fold the unanchored one onto the anchor so the
+ * graph shows one page, and alias the dropped name. Boss/grace/region records are
+ * excluded: two same-named places can be genuinely different.
+ */
+function foldUnanchoredDuplicates(): void {
+  const anchor = new Map<string, string>()
+  for (const [id, record] of records) {
+    if (record.catalogue === false || !OWNED_RESOLVE_KINDS.has(record.kind as EntityKind)) continue
+    const key = `${record.kind}|${simpleNorm(record.name)}`
+    if (!anchor.has(key)) anchor.set(key, id)
+  }
+  for (const [id, record] of [...records]) {
+    if (record.catalogue !== false || !OWNED_RESOLVE_KINDS.has(record.kind as EntityKind)) continue
+    const target = anchor.get(`${record.kind}|${simpleNorm(record.name)}`)
+    if (!target || target === id) continue
+    const keeper = records.get(target)
+    if (keeper) mergeRecords(keeper, record)
+    records.delete(id)
+  }
+}
+
+/**
+ * Task 160 §5 — a hunt checklist row with the same name as a real boss page is
+ * the same fight, not a second page. Fold the hunt record onto the boss so the
+ * two pages become one (the alias plane re-points the `hunt:` id).
+ */
+function foldHuntDuplicates(): void {
+  const bossByName = new Map<string, string>()
+  for (const [id, record] of records) {
+    if (id.startsWith('hunt:') || (record.kind !== 'boss' && record.kind !== 'enemy')) continue
+    const key = simpleNorm(record.name)
+    if (key && !bossByName.has(key)) bossByName.set(key, id)
+  }
+  for (const [id, record] of [...records]) {
+    if (!id.startsWith('hunt:')) continue
+    const target = bossByName.get(simpleNorm(record.name))
+    if (!target || target === id) continue
+    const keeper = records.get(target)
+    if (keeper) mergeRecords(keeper, record)
+    records.delete(id)
+  }
+}
+
+/**
+ * Task 160 §7 — a wiki sub-location page (a cave, catacomb or tunnel the
+ * location plane also lists) arrives as a bare `region:` record with no region
+ * of its own; the dungeon index already has the real page. Fold the region
+ * record onto the dungeon so the same place is not two pages, and the dungeon's
+ * contents are not split. A macro region (it carries its own `region`) is left
+ * alone even when a dungeon happens to share its name.
+ */
+function mergeSubLocationDuplicates(): void {
+  const dungeonByName = new Map<string, string>()
+  for (const [id, record] of records) {
+    if (record.kind !== 'dungeon') continue
+    const key = simpleNorm(record.name)
+    if (key && !dungeonByName.has(key)) dungeonByName.set(key, id)
+  }
+  for (const [id, record] of [...records]) {
+    if (record.kind !== 'region' || record.region) continue
+    const target = dungeonByName.get(simpleNorm(record.name))
+    if (!target || target === id) continue
+    const keeper = records.get(target)
+    if (keeper) mergeRecords(keeper, record)
+    records.delete(id)
+  }
+}
+
+/**
+ * Task 160 §5 — two graces of the same name are different warp points (the
+ * Leyndell Royal vs Ashen Capital, two Artist's Shacks). Keep them separate but
+ * qualify the display name with the region so the two pages are distinguishable.
+ */
+function qualifyDuplicateGraceNames(): void {
+  const byName = new Map<string, EntityRecord[]>()
+  for (const record of records.values()) {
+    if (record.kind !== 'grace') continue
+    const key = simpleNorm(record.name)
+    if (!key) continue
+    const list = byName.get(key) ?? []
+    list.push(record)
+    byName.set(key, list)
+  }
+  for (const list of byName.values()) {
+    if (list.length < 2) continue
+    for (const record of list) {
+      const qualifier = record.region || record.location
+      if (!qualifier || simpleNorm(qualifier) === simpleNorm(record.name)) continue
+      record.name = `${record.name} (${qualifier})`
+    }
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Assemble
 // ---------------------------------------------------------------------------
@@ -3437,6 +3651,13 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   dedupePrimary()
   // Task 148 §1 — then one enemy page per exact display name.
   mergeEnemyVariants()
+  // Task 160 §5 — collapse true same-name duplicates (an unanchored FMG row onto
+  // its catalogue anchor, a hunt checklist row onto its boss) and qualify the
+  // same-name graces that must stay separate.
+  foldUnanchoredDuplicates()
+  foldHuntDuplicates()
+  mergeSubLocationDuplicates()
+  qualifyDuplicateGraceNames()
 
   // Task 146 §2/§3 — the missing items, the real merchant quotes and the quest
   // pictures, restored from the committed sources after every merge has landed.
@@ -3469,7 +3690,10 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     // Drops are per encounter (its wiki tab). Name-based merges above pooled every
     // copy's drops onto it; a known roster row is the authority. When the roster
     // has none the pooled source drops stay, filling the gap instead of blanking it.
-    if (row.drops.length) record.drops = [...row.drops]
+    if (row.drops.length) {
+      record.drops = []
+      addDrops(record, row.drops)
+    }
     setText(record, 'strategy', shared.strategy)
     if (!record.image && shared.image) record.image = shared.image
     if (!record.stats?.Runes && shared.stats?.Runes) setStat(record, 'Runes', shared.stats.Runes)

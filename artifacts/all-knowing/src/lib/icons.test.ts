@@ -63,7 +63,6 @@ const EXCEPTIONS: Record<string, string[]> = {
     'Deathsbane White Jerky',
     'Dream Mist',
     'Dreambrew',
-    'Fetal Position',
     'Fetid Flesh',
     'Flower Dragonbolt',
     "Fringefolk's Rune",

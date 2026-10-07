@@ -9,9 +9,15 @@ PS5 capture rules — plus what the real-player scenario fixture actually proves
 
 | metric | before Task 138 | after Task 138 |
 | --- | --- | --- |
+<<<<<<< HEAD
 | rules enumerated | 557 | 577 |
 | certain rules | 555 | 575 |
 | likely rules | 2 | 2 |
+=======
+| rules enumerated | 542 | 562 |
+| certain rules | 542 | 562 |
+| likely rules | 0 | 0 |
+>>>>>>> master
 | scenario inferred facts | 9 | 17 |
 
 Task 138 added **20** chain rules.
@@ -77,7 +83,11 @@ candidates to demote into the confirmation layer.
 
 ## Every rule
 
+<<<<<<< HEAD
 ### Catalog `implies` (284)
+=======
+### Catalog `implies` (289)
+>>>>>>> master
 
 | id | trigger | conclusions | class | conf | why | added |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -143,8 +153,12 @@ candidates to demote into the confirmation layer.
 | `catalog:item:dark-moon-ring` | `item:dark-moon-ring` | `boss:astel` | certain | 0.9 | Holding/reaching Dark Moon Ring requires the listed facts first. | — |
 | `catalog:item:fingerslayer` | `item:fingerslayer` | `boss:radahn` | certain | 0.9 | Holding/reaching Fingerslayer Blade requires the listed facts first. | — |
 | `catalog:item:carian-inverted` | `item:carian-inverted` | `quest:ranni:service` | certain | 0.9 | Holding/reaching Carian Inverted Statue requires the listed facts first. | — |
+<<<<<<< HEAD
 | `catalog:item:haligtree-secret-medallion` | `item:haligtree-secret-medallion` | `region:haligtree` | **likely** | 0.6 | The secret medallion opens the Consecrated Snowfield, not the Haligtree itself. Holding it does not prove Elphael was reached. Likely, not certain. | — |
 | `catalog:item:dusk-medallion` | `item:dusk-medallion` | `region:altus` | **likely** | 0.6 | Both halves can be collected without riding the Lift of Dectus (Altus is also reachable via the Ruin-Strewn Precipice). Likely, not certain. | — |
+=======
+| `catalog:item:dusk-medallion` | `item:dusk-medallion` | `region:altus` | certain | 0.9 | Holding/reaching Dectus Medallion requires the listed facts first. | — |
+>>>>>>> master
 | `catalog:item:rotted-wing` | `item:rotted-wing` | `quest:millicent:needle` | certain | 0.9 | Holding/reaching Unalloyed Gold Needle requires the listed facts first. | — |
 | `catalog:item:serpent-amnion` | `item:serpent-amnion` | `quest:rya:amnion` | certain | 0.9 | Holding/reaching Serpent's Amnion requires the listed facts first. | — |
 | `catalog:item:blade-of-calling` | `item:blade-of-calling` | `region:mountaintops` | certain | 0.9 | Holding/reaching Blade of Calling requires the listed facts first. | — |
@@ -158,6 +172,7 @@ candidates to demote into the confirmation layer.
 | `catalog:quest:ranni:nokron` | `quest:ranni:nokron` | `quest:ranni:festival` | certain | 0.9 | Holding/reaching Ranni — Fingerslayer Blade recovered requires the listed facts first. | — |
 | `catalog:quest:ranni:statue` | `quest:ranni:statue` | `quest:ranni:service` | certain | 0.9 | Holding/reaching Ranni — Carian Study Hall inverted requires the listed facts first. | — |
 | `catalog:quest:ranni:ring` | `quest:ranni:ring` | `item:dark-moon-ring` | certain | 0.9 | Holding/reaching Ranni — Dark Moon Ring placed requires the listed facts first. | — |
+| `catalog:quest:boc:needle` | `quest:boc:needle` | `item:sewing-needle` | certain | 0.9 | Holding/reaching Boc — gold sewing needle given requires the listed facts first. | — |
 | `catalog:quest:millicent:needle` | `quest:millicent:needle` | `region:caelid` | certain | 0.9 | Holding/reaching Millicent — unalloyed needle requires the listed facts first. | — |
 | `catalog:boss:placidusax` | `boss:placidusax` | `grace:farum-balcony` | certain | 0.9 | Holding/reaching Dragonlord Placidusax requires the listed facts first. | — |
 | `catalog:boss:fortissax` | `boss:fortissax` | `grace:deeproot` | certain | 0.9 | Holding/reaching Lichdragon Fortissax requires the listed facts first. | — |
@@ -271,6 +286,8 @@ candidates to demote into the confirmation layer.
 | `catalog:item:blessed-dew-talisman` | `item:blessed-dew-talisman` | `region:leyndell` | certain | 0.9 | Holding/reaching Blessed Dew Talisman requires the listed facts first. | — |
 | `catalog:item:rotten-winged-sword-insignia` | `item:rotten-winged-sword-insignia` | `grace:drainage` | certain | 0.9 | Holding/reaching Rotten Winged Sword Insignia requires the listed facts first. | — |
 | `catalog:item:millicent-prosthesis` | `item:millicent-prosthesis` | `grace:drainage` | certain | 0.9 | Holding/reaching Millicent's Prosthesis requires the listed facts first. | — |
+| `catalog:quest:fia:concluded` | `quest:fia:concluded` | `boss:fortissax` | certain | 0.9 | Holding/reaching Fia — Death-Prince line concluded requires the listed facts first. | — |
+| `catalog:boss:dragonkin-soldier--ainsel-river` | `boss:dragonkin-soldier--ainsel-river` | `region:ainsel-river` | certain | 0.9 | Holding/reaching Dragonkin Soldier (Ainsel River) requires the listed facts first. | — |
 | `catalog:boss:lansseax--rampartside-path` | `boss:lansseax--rampartside-path` | `region:altus` | certain | 0.9 | Holding/reaching Ancient Dragon Lansseax (Rampartside Path) requires the listed facts first. | — |
 | `catalog:boss:crystalian-duo--altus-tunnel` | `boss:crystalian-duo--altus-tunnel` | `region:altus` | certain | 0.9 | Holding/reaching Crystalian (Spear) & Crystalian (Ringblade) (Altus Tunnel) requires the listed facts first. | — |
 | `catalog:boss:stonedigger-troll--old-altus-tunnel` | `boss:stonedigger-troll--old-altus-tunnel` | `region:altus` | certain | 0.9 | Holding/reaching Stonedigger Troll (Old Altus Tunnel) requires the listed facts first. | — |
@@ -346,6 +363,7 @@ candidates to demote into the confirmation layer.
 | `catalog:boss:ulcerated-tree-spirit--giants-mountaintop-catacombs` | `boss:ulcerated-tree-spirit--giants-mountaintop-catacombs` | `region:mountaintops` | certain | 0.9 | Holding/reaching Ulcerated Tree Spirit (Giants' Mountaintop Catacombs) requires the listed facts first. | — |
 | `catalog:boss:magma-wyrm--fort-laiedd` | `boss:magma-wyrm--fort-laiedd` | `region:altus` | certain | 0.9 | Holding/reaching Magma Wyrm (Fort Laiedd) requires the listed facts first. | — |
 | `catalog:boss:ulcerated-tree-spirit--minor-erdtree` | `boss:ulcerated-tree-spirit--minor-erdtree` | `region:altus` | certain | 0.9 | Holding/reaching Ulcerated Tree Spirit (Minor Erdtree) requires the listed facts first. | — |
+| `catalog:boss:dragonkin-soldier--siofra-river-bank` | `boss:dragonkin-soldier--siofra-river-bank` | `region:siofra-river` | certain | 0.9 | Holding/reaching Dragonkin Soldier (Siofra River Bank) requires the listed facts first. | — |
 | `catalog:boss:ancient-hero-zamor--weeping-evergaol` | `boss:ancient-hero-zamor--weeping-evergaol` | `region:weeping` | certain | 0.9 | Holding/reaching Ancient Hero of Zamor (Weeping Evergaol) requires the listed facts first. | — |
 | `catalog:boss:cemetery-shade--tombsward-catacombs` | `boss:cemetery-shade--tombsward-catacombs` | `region:weeping` | certain | 0.9 | Holding/reaching Cemetery Shade (Tombsward Catacombs) requires the listed facts first. | — |
 | `catalog:boss:deathbird--weeping-peninsula` | `boss:deathbird--weeping-peninsula` | `region:weeping` | certain | 0.9 | Holding/reaching Deathbird (Weeping Peninsula) requires the listed facts first. | — |
@@ -366,7 +384,11 @@ candidates to demote into the confirmation layer.
 | `catalog:boss:tree-sentinel--hinterland` | `boss:tree-sentinel--hinterland` | `region:shadow` | certain | 0.9 | Holding/reaching Tree Sentinel (Hinterland) requires the listed facts first. | — |
 | `catalog:boss:tree-sentinel--hinterland-bridge` | `boss:tree-sentinel--hinterland-bridge` | `region:shadow` | certain | 0.9 | Holding/reaching Tree Sentinel (Hinterland Bridge) requires the listed facts first. | — |
 
+<<<<<<< HEAD
 ### Authored chains (`inferChains.ts`) (71)
+=======
+### Authored chains (`inferChains.ts`) (52)
+>>>>>>> master
 
 | id | trigger | conclusions | class | conf | why | added |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -382,6 +404,7 @@ candidates to demote into the confirmation layer.
 | `chain:item:twinned-armor:9` | `item:twinned-armor` | `quest:fia:dagger` | certain | 0.75 | The Twinned set comes from D's brother in Deeproot, which only happens once the dagger decision has cost D his life, so Fia's line is advanced. It does not imply Fortissax or her ending. | — |
 | `chain:item:haligtree-medallion-right:10` | `item:haligtree-medallion-right` | `item:haligtree-secret-medallion` | certain | 0.9 | Both halves of the Haligtree Secret Medallion are held, so the secret path to the Consecrated Snowfield is open. | — |
 | `chain:item:haligtree-medallion-left:11` | `item:haligtree-medallion-left` | `item:haligtree-secret-medallion` | certain | 0.9 | Both halves of the Haligtree Secret Medallion are held, so the secret path to the Consecrated Snowfield is open. | — |
+<<<<<<< HEAD
 | `chain:item:dectus-medallion-left:12` | `item:dectus-medallion-left` | `item:dusk-medallion` | certain | 0.9 | Both halves of the Dectus Medallion are held, so the Grand Lift of Dectus opens the way to Altus. | — |
 | `chain:item:dectus-medallion-right:13` | `item:dectus-medallion-right` | `item:dusk-medallion` | certain | 0.9 | Both halves of the Dectus Medallion are held, so the Grand Lift of Dectus opens the way to Altus. | — |
 | `chain:bell-bearing-kale-s-bell-bearing:14` | `bell-bearing-kale-s-bell-bearing` | `region:limgrave` | certain | 0.85 | Merchant Kalé only drops their Bell Bearing once they are gone, so Merchant Kalé's area was reached. | — |
@@ -441,6 +464,48 @@ candidates to demote into the confirmation layer.
 | `chain:item:remembrance-lord-of-frenzied-flame:68` | `item:remembrance-lord-of-frenzied-flame` | `boss:midra` | certain | 0.9 | A Remembrance of the Lord of Frenzied Flame only exists once Midra, Lord of Frenzied Flame is dead, so that fight is done. | 166 |
 | `chain:item:remembrance-impaler:69` | `item:remembrance-impaler` | `boss:messmer` | certain | 0.9 | A Remembrance of the Impaler only exists once Messmer the Impaler is dead, so that fight is done. | 166 |
 | `chain:item:remembrance-a-god-and-a-lord:70` | `item:remembrance-a-god-and-a-lord` | `boss:consort` | certain | 0.9 | A Remembrance of a God and a Lord only exists once Promised Consort Radahn / Radahn, Consort of Miquella is dead, so that fight is done. | 166 |
+=======
+| `chain:item:haligtree-secret-medallion:12` | `item:haligtree-secret-medallion` | `region:haligtree` | certain | 0.8 | The Haligtree Secret Medallion is held, so the lift to the Consecrated Snowfield and Miquella’s Haligtree is open. | — |
+| `chain:item:dectus-medallion-left:13` | `item:dectus-medallion-left` | `item:dusk-medallion` | certain | 0.9 | Both halves of the Dectus Medallion are held, so the Grand Lift of Dectus opens the way to Altus. | — |
+| `chain:item:dectus-medallion-right:14` | `item:dectus-medallion-right` | `item:dusk-medallion` | certain | 0.9 | Both halves of the Dectus Medallion are held, so the Grand Lift of Dectus opens the way to Altus. | — |
+| `chain:item:kal-s-bell-bearing:15` | `item:kal-s-bell-bearing` | `region:limgrave` | certain | 0.85 | Merchant Kalé only drops their Bell Bearing once they are gone, so Merchant Kalé's area was reached. | — |
+| `chain:item:rogier-s-bell-bearing:16` | `item:rogier-s-bell-bearing` | `region:limgrave` | certain | 0.85 | Sorcerer Rogier only drops their Bell Bearing once they are gone, so Sorcerer Rogier's area was reached. | — |
+| `chain:item:d-s-bell-bearing:17` | `item:d-s-bell-bearing` | `region:limgrave` | certain | 0.85 | D, Hunter of the Dead only drops their Bell Bearing once they are gone, so D, Hunter of the Dead's area was reached. | — |
+| `chain:item:corhyn-s-bell-bearing:18` | `item:corhyn-s-bell-bearing` | `region:limgrave` | certain | 0.85 | Brother Corhyn only drops their Bell Bearing once they are gone, so Brother Corhyn's area was reached. | — |
+| `chain:item:patches-bell-bearing:19` | `item:patches-bell-bearing` | `region:limgrave` | certain | 0.85 | Patches only drops their Bell Bearing once they are gone, so Patches's area was reached. | — |
+| `chain:item:gostoc-s-bell-bearing:20` | `item:gostoc-s-bell-bearing` | `region:limgrave` | certain | 0.85 | Gatekeeper Gostoc only drops their Bell Bearing once they are gone, so Gatekeeper Gostoc's area was reached. | — |
+| `chain:item:sellen-s-bell-bearing:21` | `item:sellen-s-bell-bearing` | `region:liurnia` | certain | 0.85 | Sorceress Sellen only drops their Bell Bearing once they are gone, so Sorceress Sellen's area was reached. | — |
+| `chain:item:miriel-s-bell-bearing:22` | `item:miriel-s-bell-bearing` | `region:liurnia` | certain | 0.85 | Miriel only drops their Bell Bearing once they are gone, so Miriel's area was reached. | — |
+| `chain:item:iji-s-bell-bearing:23` | `item:iji-s-bell-bearing` | `region:liurnia` | certain | 0.85 | Iji only drops their Bell Bearing once they are gone, so Iji's area was reached. | — |
+| `chain:item:blackguard-s-bell-bearing:24` | `item:blackguard-s-bell-bearing` | `region:liurnia` | certain | 0.85 | Blackguard Big Boggart only drops their Bell Bearing once they are gone, so Blackguard Big Boggart's area was reached. | — |
+| `chain:item:thops-s-bell-bearing:25` | `item:thops-s-bell-bearing` | `region:liurnia` | certain | 0.85 | Thops only drops their Bell Bearing once they are gone, so Thops's area was reached. | — |
+| `chain:item:seluvis-s-bell-bearing:26` | `item:seluvis-s-bell-bearing` | `region:liurnia` | certain | 0.85 | Preceptor Seluvis only drops their Bell Bearing once they are gone, so Preceptor Seluvis's area was reached. | — |
+| `chain:item:gowry-s-bell-bearing:27` | `item:gowry-s-bell-bearing` | `region:caelid` | certain | 0.85 | Gowry only drops their Bell Bearing once they are gone, so Gowry's area was reached. | — |
+| `chain:item:abandoned-merchant-s-bell-bearing:28` | `item:abandoned-merchant-s-bell-bearing` | `region:leyndell` | certain | 0.85 | the Abandoned Merchant only drops their Bell Bearing once they are gone, so the Abandoned Merchant's area was reached. | — |
+| `chain:item:ymir-s-bell-bearing:29` | `item:ymir-s-bell-bearing` | `region:shadow` | certain | 0.85 | Count Ymir only drops their Bell Bearing once they are gone, so Count Ymir's area was reached. | — |
+| `chain:item:igon-s-bell-bearing:30` | `item:igon-s-bell-bearing` | `region:shadow` | certain | 0.85 | Igon only drops their Bell Bearing once they are gone, so Igon's area was reached. | — |
+| `chain:item:moore-s-bell-bearing:31` | `item:moore-s-bell-bearing` | `region:shadow` | certain | 0.85 | Moore only drops their Bell Bearing once they are gone, so Moore's area was reached. | — |
+| `chain:region:mountaintops:32` | `region:mountaintops` | `item:rold-medallion` | certain | 0.9 | The Grand Lift of Rold is the only way up to the Mountaintops, so the Rold Medallion was already used. | 138 |
+| `chain:grace:forge-giants:33` | `grace:forge-giants` | `item:rold-medallion` | certain | 0.9 | The Forge of the Giants lies past the Grand Lift of Rold, so the Rold Medallion was already used. | 138 |
+| `chain:grace:siofra:34` | `grace:siofra` | `region:siofra-river` | certain | 0.9 | A Siofra grace can only be found underground, so the Siofra River Well was used. | 138 |
+| `chain:grace:ainsel:35` | `grace:ainsel` | `region:ainsel-river` | certain | 0.9 | An Ainsel grace can only be found underground, so the Ainsel River Well was reached. | 138 |
+| `chain:item:radagon-s-soreseal:36` | `item:radagon-s-soreseal` | `region:caelid` | certain | 0.9 | Radagon's Soreseal is a fixed chest inside Fort Faroth in Dragonbarrow, so Caelid was reached. | 138 |
+| `chain:item:green-turtle-talisman:37` | `item:green-turtle-talisman` | `region:limgrave` | certain | 0.9 | The Green Turtle Talisman is a fixed pickup at Summonwater Village, so Limgrave was reached. | 138 |
+| `chain:mapfrag:limgrave-w:38` | `mapfrag:limgrave-w` | `region:limgrave` | certain | 0.9 | A painted limgrave map fragment can only be picked up in that region, so that region was reached. | 138 |
+| `chain:mapfrag:limgrave-e:39` | `mapfrag:limgrave-e` | `region:limgrave` | certain | 0.9 | A painted limgrave map fragment can only be picked up in that region, so that region was reached. | 138 |
+| `chain:mapfrag:weeping:40` | `mapfrag:weeping` | `region:weeping` | certain | 0.9 | A painted weeping map fragment can only be picked up in that region, so that region was reached. | 138 |
+| `chain:mapfrag:liurnia-e:41` | `mapfrag:liurnia-e` | `region:liurnia` | certain | 0.9 | A painted liurnia map fragment can only be picked up in that region, so that region was reached. | 138 |
+| `chain:mapfrag:liurnia-n:42` | `mapfrag:liurnia-n` | `region:liurnia` | certain | 0.9 | A painted liurnia map fragment can only be picked up in that region, so that region was reached. | 138 |
+| `chain:mapfrag:liurnia-w:43` | `mapfrag:liurnia-w` | `region:liurnia` | certain | 0.9 | A painted liurnia map fragment can only be picked up in that region, so that region was reached. | 138 |
+| `chain:mapfrag:caelid:44` | `mapfrag:caelid` | `region:caelid` | certain | 0.9 | A painted caelid map fragment can only be picked up in that region, so that region was reached. | 138 |
+| `chain:mapfrag:dragonbarrow:45` | `mapfrag:dragonbarrow` | `region:caelid` | certain | 0.9 | A painted caelid map fragment can only be picked up in that region, so that region was reached. | 138 |
+| `chain:mapfrag:altus:46` | `mapfrag:altus` | `region:altus` | certain | 0.9 | A painted altus map fragment can only be picked up in that region, so that region was reached. | 138 |
+| `chain:mapfrag:leyndell:47` | `mapfrag:leyndell` | `region:leyndell` | certain | 0.9 | A painted leyndell map fragment can only be picked up in that region, so that region was reached. | 138 |
+| `chain:mapfrag:gelmir:48` | `mapfrag:gelmir` | `region:altus` | certain | 0.9 | A painted altus map fragment can only be picked up in that region, so that region was reached. | 138 |
+| `chain:mapfrag:mountaintops-w:49` | `mapfrag:mountaintops-w` | `region:mountaintops` | certain | 0.9 | A painted mountaintops map fragment can only be picked up in that region, so that region was reached. | 138 |
+| `chain:mapfrag:mountaintops-e:50` | `mapfrag:mountaintops-e` | `region:mountaintops` | certain | 0.9 | A painted mountaintops map fragment can only be picked up in that region, so that region was reached. | 138 |
+| `chain:mapfrag:consecrated:51` | `mapfrag:consecrated` | `region:mountaintops` | certain | 0.9 | A painted mountaintops map fragment can only be picked up in that region, so that region was reached. | 138 |
+>>>>>>> master
 
 ### Gates (`gates.ts`) (10)
 

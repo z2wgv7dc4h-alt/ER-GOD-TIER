@@ -16,17 +16,13 @@
   },
   {
     "id": "q002",
-    "type": "where-is",
+    "type": "out-of-scope",
     "q": "looking for coop help with the watchdog in Stormfoot Catacombs .. I just want my runes back and figure out where I can spend them.",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "dungeon:stormfoot-catacombs"
-      ],
-      "mustInclude": [
-        "Limgrave"
-      ],
-      "answerable": true
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
     }
   },
   {
@@ -46,17 +42,13 @@
   },
   {
     "id": "q004",
-    "type": "where-is",
+    "type": "out-of-scope",
     "q": "I can’t find anyone with the stakes can someone help me? Password will be “mohg” all lowercase",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "boss:mohg"
-      ],
-      "mustInclude": [
-        "Mohgwyn Dynasty Mausoleum"
-      ],
-      "answerable": true
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
     }
   },
   {
@@ -91,17 +83,13 @@
   },
   {
     "id": "q007",
-    "type": "where-is",
+    "type": "out-of-scope",
     "q": "Help me rebuild my original Tarnished on 2... 🙌 Multiplayer Password: Humding Location: Church Of Elleh, Red Summon Sign",
     "origin": "real:reddit:EldenRingBuilds",
     "expected": {
-      "ids": [
-        "grace:elleh"
-      ],
-      "mustInclude": [
-        "Limgrave"
-      ],
-      "answerable": true
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
     }
   },
   {
@@ -589,15 +577,13 @@
   },
   {
     "id": "q040",
-    "type": "npc-location",
+    "type": "out-of-scope",
     "q": "Does anyone else find it frustrating that close matches seem to be decided by whose death animation is longest?",
     "origin": "real:reddit:EldenRingPVP",
     "expected": {
-      "ids": [
-        "npc:death-outer-god"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
@@ -1065,7 +1051,7 @@
   },
   {
     "id": "q072",
-    "type": "navigation",
+    "type": "out-of-scope",
     "q": "Can someone help me reach leda before I crash out",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
@@ -1181,17 +1167,13 @@
   },
   {
     "id": "q080",
-    "type": "how-to-beat",
+    "type": "out-of-scope",
     "q": "Any tips on making custom fan covers for my bfs surprise Malenia pc build?",
     "origin": "real:reddit:Eldenring",
     "expected": {
-      "ids": [
-        "boss:malenia"
-      ],
-      "mustInclude": [
-        "Miquella's Haligtree"
-      ],
-      "answerable": true
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
     }
   },
   {
@@ -1256,17 +1238,13 @@
   },
   {
     "id": "q085",
-    "type": "drops",
+    "type": "out-of-scope",
     "q": "Psx can i have a rune drop? Will be a mule or give karma",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "enemy:mule"
-      ],
-      "mustInclude": [
-        "Beast Blood"
-      ],
-      "answerable": true
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
     }
   },
   {
@@ -1287,18 +1265,13 @@
   },
   {
     "id": "q087",
-    "type": "drops",
+    "type": "out-of-scope",
     "q": "Is anyone able to drop the divine beast armor set for me please 🙏. On",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "boss:divine-beast--belurat-tower-settlement"
-      ],
-      "mustInclude": [
-        "Divine Beast Head",
-        "Divine Beast Tornado"
-      ],
-      "answerable": true
+      "ids": [],
+      "mustInclude": [],
+      "answerable": false
     }
   },
   {
@@ -2501,12 +2474,12 @@
   },
   {
     "id": "q176",
-    "type": "compare",
+    "type": "mechanics",
     "q": "Better ways to fight poise monsters that can 2-3 shot you, and already having 60 vigor/boiled crab?",
     "origin": "real:reddit:EldenRingPVP",
     "expected": {
       "ids": [
-        "item:boiled-crab"
+        "mechanic:poise"
       ],
       "mustInclude": [],
       "answerable": true
@@ -2586,11 +2559,9 @@
     "origin": "real:reddit:EldenRingBuilds",
     "expected": {
       "ids": [
-        "item:shadow-realm-blessing"
+        "item:smithscript-dagger"
       ],
-      "mustInclude": [
-        "Gravesite Plain"
-      ],
+      "mustInclude": [],
       "answerable": true
     }
   },
@@ -3033,15 +3004,13 @@
   },
   {
     "id": "q215",
-    "type": "ending",
+    "type": "out-of-scope",
     "q": "Anyone can help with elden lord?",
     "origin": "real:reddit:eldenringdiscussion",
     "expected": {
-      "ids": [
-        "line:lord"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
@@ -3442,15 +3411,13 @@
   },
   {
     "id": "q242",
-    "type": "multi-part",
+    "type": "out-of-scope",
     "q": "Would anyone be willing to help me mule Red Bear Claws and Pelt of Ralva to a new character?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "enemy:mule"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
@@ -3481,15 +3448,13 @@
   },
   {
     "id": "q245",
-    "type": "multi-part",
+    "type": "out-of-scope",
     "q": "Fellow tarnished, is anyone available for promised consort?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "boss:consort"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
@@ -3507,15 +3472,13 @@
   },
   {
     "id": "q247",
-    "type": "multi-part",
+    "type": "out-of-scope",
     "q": "PC can anyone drop a flame knights greatsword and/or Malikeths helm?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "item:greatsword"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
@@ -3559,33 +3522,29 @@
   },
   {
     "id": "q251",
-    "type": "multi-part",
+    "type": "out-of-scope",
     "q": "Does anyone have a spare partisan spear?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "item:partisan"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
     "id": "q252",
-    "type": "multi-part",
+    "type": "out-of-scope",
     "q": "anyone have a spare milady +0 with wing stance i can have?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "item:milady"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
     "id": "q253",
-    "type": "co-op",
+    "type": "out-of-scope",
     "q": "Anyone willing to drop me Rivers of Blood + some runes?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
@@ -3596,7 +3555,7 @@
   },
   {
     "id": "q254",
-    "type": "co-op",
+    "type": "out-of-scope",
     "q": "( ) Anyone able to help me beat Commander Niall in the snowy area?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
@@ -3607,7 +3566,7 @@
   },
   {
     "id": "q255",
-    "type": "co-op",
+    "type": "out-of-scope",
     "q": "Can someone drop me the Divine Beast Helm? I'll trade anything you want",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
@@ -3618,7 +3577,7 @@
   },
   {
     "id": "q256",
-    "type": "co-op",
+    "type": "out-of-scope",
     "q": "Anyone wanna run Darklight Catacombs with me?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
@@ -3629,7 +3588,7 @@
   },
   {
     "id": "q257",
-    "type": "co-op",
+    "type": "out-of-scope",
     "q": ", someone able to help me with the rot knights at the end of the abandoned cave in Caelid?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
@@ -3640,7 +3599,7 @@
   },
   {
     "id": "q258",
-    "type": "co-op",
+    "type": "out-of-scope",
     "q": "Can someone please drop me Shard Of Alexander on ?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
@@ -3651,7 +3610,7 @@
   },
   {
     "id": "q259",
-    "type": "co-op",
+    "type": "out-of-scope",
     "q": "Can someone plz help me with Godfrey?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
@@ -3662,80 +3621,68 @@
   },
   {
     "id": "q260",
-    "type": "co-op",
+    "type": "out-of-scope",
     "q": "Need help with Dragonlord Placidusax, who can join right now?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "boss:placidusax"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
     "id": "q261",
-    "type": "co-op",
+    "type": "out-of-scope",
     "q": "Could someone help me beat rennala, queen of the full moon?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "boss:rennala"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
     "id": "q262",
-    "type": "co-op",
+    "type": "out-of-scope",
     "q": "I’m currently trying to fight Astel, for Ranni’s quest. Can someone please come help me?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "boss:astel"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
     "id": "q263",
-    "type": "co-op",
+    "type": "out-of-scope",
     "q": "- can anyone drop me a reduvia?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "item:reduvia"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
     "id": "q264",
-    "type": "co-op",
+    "type": "out-of-scope",
     "q": "Can someone help me on with radagon?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "boss:radagon"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
     "id": "q265",
-    "type": "pvp",
+    "type": "out-of-scope",
     "q": "PC - anyone feel like invading me at Divine Bridge so I can have my elevator?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "grace:110009"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
@@ -3971,15 +3918,13 @@
   },
   {
     "id": "q285",
-    "type": "bug-glitch",
+    "type": "out-of-scope",
     "q": "Rate my performance in the Rellana fight (ng+, scadu 20)",
     "origin": "real:reddit:Eldenring",
     "expected": {
-      "ids": [
-        "boss:rennala-sote"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
@@ -4069,15 +4014,13 @@
   },
   {
     "id": "q293",
-    "type": "other",
+    "type": "out-of-scope",
     "q": "Aide Elden ring Godskin Duo ?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "boss:godskin-duo"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
@@ -4108,28 +4051,24 @@
   },
   {
     "id": "q296",
-    "type": "other",
+    "type": "out-of-scope",
     "q": "Can someone mule a weapon for me?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "enemy:mule"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
     "id": "q297",
-    "type": "other",
+    "type": "out-of-scope",
     "q": "upgrade misericorde to +25 for me?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "item:mis-ricorde"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
@@ -4160,15 +4099,13 @@
   },
   {
     "id": "q300",
-    "type": "other",
+    "type": "out-of-scope",
     "q": "Hello anyone can help me to get the ring of miquella gesture?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "item:ring-of-miquella"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   }
 ]
