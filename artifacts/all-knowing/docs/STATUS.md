@@ -10,6 +10,7 @@ Briefs live in each task's worktree (`ER-MASTER-TOOL-wt/task-<id>/artifacts/all-
 | 170 | `170-player-knowledge.md` — Reddit/forum player knowledge (strategies, cheese, bugs, missables, PvP; patch-flagged) — split out because Task 163 skipped it twice | queued |
 | 167 | `167-photo-reader.md` — score + tune PS5 photo reader on owner's 13 photos, map-photo grace recall (old Task 141), ~150 web photos self-consistency set | running |
 | 168 | `168-gideon-offline.md` — offline Gideon from 40% → ≥75% correct on `npm run eval:gideon` | running |
+| 171 | `171-batch-audit.md` — post-batch full read-only audit → next batch's fix list | queued, waits for 160,166,167,168,170 merged |
 | 166 | `166-brief.md` — inference fixes + new PS5 inferences (proposal items 11, 13–20) | queued, waits for 160 merged |
 
 ## Merged recently (master)

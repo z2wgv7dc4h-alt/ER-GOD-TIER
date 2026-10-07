@@ -68,6 +68,11 @@ work in git worktrees. A Node supervisor runs the queue unattended. The owner do
   branch ancestry + the report marker instead.
 - Runs that finish early or skip parts — prevented by the `ALL ITEMS DONE` contract.
 
+## Batch cycle (standard)
+Every batch of fix tasks ends with a READ-ONLY full audit task (copy `docs/tasks/_BATCH-AUDIT.md`,
+new id, deps = all tasks of the batch). Its FIX LIST, already split into file-disjoint groups, becomes
+the next batch's briefs. Repeat until the audit finds nothing material.
+
 ## Known limitations (be honest about them)
 - Nothing merges while no Claude chat is open: DONE tasks wait (with gates already run) for Claude.
   Tasks whose deps are unmerged wait too.
