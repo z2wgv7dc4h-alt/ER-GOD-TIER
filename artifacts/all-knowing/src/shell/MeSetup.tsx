@@ -36,7 +36,8 @@ import {
 import { bossRoster, isRosterMajor, TIER_LABEL, type BossEncounter } from '../lib/bossRoster'
 import { factState, useWorkspace } from '../state'
 import type { LoadoutSlot, StartingClass } from '../types'
-import { SaveDrop } from './MeUpdate'
+import { shotKinds } from '../lib/shotKinds'
+import { SaveDrop } from './SaveDrop'
 import { InventoryScanOverlay } from './ScanInventory'
 
 const STAT_KEYS = [
@@ -746,6 +747,15 @@ export function MeSetup() {
         <summary>Other update sources</summary>
         <div className="kicker" style={{ marginTop: 8 }}>PC save file</div>
         <SaveDrop />
+        <div className="kicker" style={{ marginTop: 12 }}>What each shot reads</div>
+        <ul className="list shot-reads">
+          {shotKinds.map((s) => (
+            <li key={s.id} style={{ cursor: 'default' }}>
+              <span>{s.label}</span>
+              <span className="note">{s.ask}</span>
+            </li>
+          ))}
+        </ul>
         <div className="kicker" style={{ marginTop: 12 }}>Share / import</div>
         <PacketBar />
         <div className="kicker" style={{ marginTop: 12 }}>Build codes</div>

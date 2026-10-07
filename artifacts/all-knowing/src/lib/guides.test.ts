@@ -17,4 +17,10 @@ describe('fextralife guides', () => {
     expect(matchGuides('up', guideExcerpts(doc))).toEqual([])
     expect(matchGuides('smithing stone', guideExcerpts(doc)).length).toBeGreaterThan(0)
   })
+
+  it('keeps a real url on every excerpt so a card can open it (Task 165 §10)', () => {
+    const rows = guideExcerpts(doc)
+    expect(rows.length).toBeGreaterThan(200)
+    expect(rows.every((g) => /^https?:\/\//.test(g.url))).toBe(true)
+  })
 })

@@ -122,8 +122,8 @@ the marker bridge are same-origin.
   static `web/` tree (plus `web/tiles/**` when extracted) into `dist/engine/` and
   writes static `/api/{markers,saves,place-names,state}` shims. The installed PWA
   and any static host serve the live map with no PC running; offline, the service
-  worker serves `/engine/**` cache-first, and Settings → "Download everything for
-  offline" warms it.
+  worker serves `/engine/**` cache-first, and **Data & offline** (Tarnished → Profiles →
+  "Download everything for offline") warms it.
 
 `src/lib/mapEngine.ts` decides the status by probing `tiles/manifest.json`: if the
 engine's files load, the map is **live** whether or not a save reader is up. Only

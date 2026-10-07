@@ -4,22 +4,23 @@ import { canonicalFactId, generatedAliases } from './aliases'
 import { searchSync } from './search'
 
 /**
- * Task 73: every `checklists/graces.json` warp gets a `grace:{slug}` stub from
- * its English name when no authored slug exists. These five were unmatched
- * before the pass; all exist verbatim in `open/names.json`.
+ * Task 160: an engine warp must canonicalise onto the `grace:<warpId>` record
+ * the enrichment index already holds, not a synthetic `grace:{name-slug}` stub
+ * the app has no page for (that left "Related" chips and search rows dead).
+ * These five were the representative ghost slugs from the Task 157 audit.
  */
-const CASES: [name: string, warpId: number, slug: string][] = [
-  ['Gateside Chamber', 100003, 'grace:gateside-chamber'],
-  ['Liftside Chamber', 100006, 'grace:liftside-chamber'],
-  ['Ainsel River Main', 120104, 'grace:ainsel-river-main'],
-  ['Grand Cloister', 120108, 'grace:grand-cloister'],
-  ['West Capital Rampart', 110005, 'grace:west-capital-rampart'],
+const CASES: [name: string, warpId: string][] = [
+  ['Gateside Chamber', 'grace:100003'],
+  ['Liftside Chamber', 'grace:100006'],
+  ['Ainsel River Main', 'grace:120104'],
+  ['Grand Cloister', 'grace:120108'],
+  ['West Capital Rampart', 'grace:110005'],
 ]
 
-describe('Task 73 warp slug stubs', () => {
-  for (const [name, warpId, slug] of CASES) {
+describe('Task 160 warp ids resolve to real grace records', () => {
+  for (const [name, slug] of CASES) {
     it(`canonicalises the ${name} warp to ${slug}`, () => {
-      expect(canonicalFactId(`grace:${warpId}`)).toBe(slug)
+      expect(canonicalFactId(slug)).toBe(slug)
     })
 
     it(`finds ${name} in searchSync as ${slug}`, () => {
@@ -31,9 +32,12 @@ describe('Task 73 warp slug stubs', () => {
     })
   }
 
-  it('keeps the stubs name-only: no catalog fact, so nothing chains off them', () => {
+  it('mints no synthetic grace stub', () => {
+    // Task 160 tracked the 354 ghost warps down to the hosted Prince of Death’s
+    // Throne (`hosted-graces.id grace:120300`), which now maps onto the existing
+    // region record instead of a `grace:{name-slug}` stub.
     const stubs = generatedAliases.filter((r) => r.source === 'grace-stub')
-    expect(stubs.length).toBeGreaterThan(300)
+    expect(stubs.map((r) => r.engineId)).toEqual([])
     for (const row of stubs) {
       expect(row.kind).toBe('grace')
       expect(row.engineId).not.toBe(row.slug)

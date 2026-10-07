@@ -38,14 +38,14 @@ describe('Task 79 npcLocate', () => {
   it('locates Blaidd at Mistwood by default, advancing with the Ranni line', () => {
     expect(npcLocate(emptyCharacter, 'blaidd')?.graceId).toBe('grace:mistwood')
     expect(npcLocate(withFacts('quest:ranni:service'), 'blaidd')?.graceId).toBe(
-      'grace:siofra-river-well-depths',
+      'grace:120700',
     )
     expect(npcLocate(withFacts('quest:ranni:service', 'boss:radahn'), 'blaidd')?.graceId).toBe(
       'grace:nokron',
     )
     expect(
       npcLocate(withFacts('quest:ranni:service', 'boss:radahn', 'quest:ranni:ring'), 'blaidd')?.graceId,
-    ).toBe('grace:ranni-s-rise')
+    ).toBe('grace:62345000')
   })
 
   it('resolves no pin rather than a stale one when the latest stage has no grace', () => {

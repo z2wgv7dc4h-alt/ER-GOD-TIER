@@ -1,6 +1,6 @@
 # The generated alias plane
 
-`SCOPE.md` item 2: *"One generated `aliases.json` after extract. Every other plane keys off
+`docs/history/SCOPE-2026-09.md` item 2: *"One generated `aliases.json` after extract. Every other plane keys off
 the slug."* This is that file and the pass that produces it (Task 23).
 
 ## What it is
@@ -78,16 +78,18 @@ containment turned `Dagger` into `Weathered Dagger`. Precision matters because
 
 ## Coverage
 
-Catalog totals: grace 25, boss 88, invader 24, item 91, quest 109, region 10 (347 facts).
+Catalog totals: grace 25, boss 88, invader 24, item 94, quest 114, region 10 (355 facts).
 "Before" is the state with no generated plane (only the hand-curated grace/boss links existed).
+The per-category numbers below date from the Task 55 pass; the catalog totals grow as tasks add
+facts, so the generator's printed counts are authoritative.
 
 | Category | Facts | Engine-backed rows after | Zero generated aliases before → after |
 |---|---|---|---|
 | grace | 25 | 25 | 25 → 0 |
-| boss | 88 | 87 | 88 → 0 |
+| boss | 88 | 86 | 88 → 0 |
 | invader | 24 | 22 | 24 → 0 |
-| item | 91 | 89 | 91 → 0 |
-| quest | 109 | 0 (authored) | 109 → 0 |
+| item | 94 | 93 | 94 → 0 |
+| quest | 114 | 0 (authored) | 114 → 0 |
 | region | 10 | 0 (authored) | 10 → 0 |
 
 Every fact has at least one generated row (engine-backed where the game tables name it,
@@ -108,11 +110,11 @@ preserving name match, so `goods:8175` / `goods:8176` resolve to
 `item:haligtree-medallion-left` / `-right` rather than the bare both-halves fact.
 The row sort is a plain code-unit comparison, so a second run is byte-identical.
 
-Current output: **1273 rows** (274 KB), sources `grace-stub` 359,
-`hosted-bosses` 271, `hunts` 154, `authored` 124, `paramdex-npc` 116,
-`names` 107, `npc-combat` 83, `hosted-graces` 59. Engine-backed by catalog
-prefix: grace 25/25, boss 87/88, item 89/91, invader 22/24,
-quest 0/109 (authored), region 0/10 (authored).
+Current output: **7,120 rows** (~1.4 MB). The source mix grows with the name planes, led by
+`enemy-name` 3,926, `game-name-table` 991, `legacy-id` 895, `grace-stub` 359, `boss-roster` 261,
+`authored` 128, `paramdex-npc` 115, `names` 109, `npc-combat` 79, `hunts` 74, `game-name-aliases` 65,
+`hosted-bosses` 59, `hosted-graces` 59. Engine-backed by catalog prefix: grace 25/25, boss 86/88,
+item 93/94, invader 22/24, quest 0/114 (authored), region 0/10 (authored).
 
 ### Task 73 warp slug stubs
 

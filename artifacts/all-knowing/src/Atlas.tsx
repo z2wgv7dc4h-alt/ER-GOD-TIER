@@ -19,6 +19,7 @@ import {
 } from './lib/mapEngine'
 import { EntityLink } from './EntityLink'
 import { Thread } from './Thread'
+import { GuidesFor } from './PackData'
 import { factState, useWorkspace, type FactState } from './state'
 import { useCoords } from './lib/coords'
 import { placeLabelsForWorld, usePlaceNames } from './lib/placeNames'
@@ -1060,6 +1061,9 @@ export function AtlasWorkspace() {
           </p>
         )}
         {selected?.note && <p className="note">{selected.note}</p>}
+
+        {/* Task 165 §10 — the pin's region links out to that area's guide excerpts. */}
+        {selected?.region && <GuidesFor query={selected.region} heading="Guides for this area" />}
 
         {isNoteSelected ? (
           <div className="opts">

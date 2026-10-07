@@ -38,36 +38,37 @@ const GRACE_IDS = new Set<string>([
 const CANDIDATES: Candidate[] = [
   // Blaidd — Mistwood howl, then Siofra, Nokron, and the Rise.
   { npc: 'blaidd', name: 'Blaidd', aliases: ['blaidd', 'half-wolf', 'wolf knight'], graceId: 'grace:mistwood', whenFacts: [], note: 'Howling at Mistwood Ruins — use the Finger Snap.' },
-  { npc: 'blaidd', name: 'Blaidd', aliases: [], graceId: 'grace:siofra-river-well-depths', whenFacts: ['quest:ranni:service'] },
+  // Task 160 §10 — the real index record id, not the old name-slug stub.
+  { npc: 'blaidd', name: 'Blaidd', aliases: [], graceId: 'grace:120700', whenFacts: ['quest:ranni:service'] },
   { npc: 'blaidd', name: 'Blaidd', aliases: [], graceId: 'grace:nokron', whenFacts: ['quest:ranni:service', 'boss:radahn'] },
-  { npc: 'blaidd', name: 'Blaidd', aliases: [], graceId: 'grace:ranni-s-rise', whenFacts: ['quest:ranni:service', 'boss:radahn', 'quest:ranni:ring'] },
+  { npc: 'blaidd', name: 'Blaidd', aliases: [], graceId: 'grace:62345000', whenFacts: ['quest:ranni:service', 'boss:radahn', 'quest:ranni:ring'] },
 
   // Alexander.
   { npc: 'alexander', name: 'Iron Fist Alexander', aliases: ['alexander', 'warrior jar', 'jar uncle'], graceId: 'grace:stormhill-shack', whenFacts: [], note: 'Stuck in the hole south of Stormhill.' },
-  { npc: 'alexander', name: 'Iron Fist Alexander', aliases: [], graceId: 'grace:redmane-castle-plaza', whenFacts: ['quest:alexander:festival'] },
-  { npc: 'alexander', name: 'Iron Fist Alexander', aliases: [], graceId: 'grace:dragon-temple-lift', whenFacts: ['quest:alexander:festival', 'quest:alexander:complete'] },
+  { npc: 'alexander', name: 'Iron Fist Alexander', aliases: [], graceId: 'grace:64513600', whenFacts: ['quest:alexander:festival'] },
+  { npc: 'alexander', name: 'Iron Fist Alexander', aliases: [], graceId: 'grace:130008', whenFacts: ['quest:alexander:festival', 'quest:alexander:complete'] },
 
   // Millicent.
-  { npc: 'millicent', name: 'Millicent', aliases: ['millicent', 'rot girl'], graceId: 'grace:church-of-the-plague', whenFacts: [] },
+  { npc: 'millicent', name: 'Millicent', aliases: ['millicent', 'rot girl'], graceId: 'grace:64503800', whenFacts: [] },
   { npc: 'millicent', name: 'Millicent', aliases: [], graceId: 'grace:ergtree-grazing', whenFacts: ['quest:millicent:altus'] },
-  { npc: 'millicent', name: 'Millicent', aliases: [], graceId: 'grace:windmill-village', whenFacts: ['quest:millicent:altus', 'quest:millicent:godskin'] },
+  { npc: 'millicent', name: 'Millicent', aliases: [], graceId: 'grace:63415400', whenFacts: ['quest:millicent:altus', 'quest:millicent:godskin'] },
 
   // Boc.
   { npc: 'boc', name: 'Boc the Seamster', aliases: ['boc', 'seamster'], graceId: 'grace:agheel-north', whenFacts: [], note: 'Disguised as a tree south of Agheel Lake North.' },
-  { npc: 'boc', name: 'Boc the Seamster', aliases: [], graceId: 'grace:coastal-cave', whenFacts: ['quest:boc:needle'] },
+  { npc: 'boc', name: 'Boc the Seamster', aliases: [], graceId: 'grace:311500', whenFacts: ['quest:boc:needle'] },
 
   // Hyetta.
-  { npc: 'hyetta', name: 'Hyetta', aliases: ['hyetta'], graceId: 'grace:lake-facing-cliffs', whenFacts: [] },
-  { npc: 'hyetta', name: 'Hyetta', aliases: [], graceId: 'grace:bellum-church', whenFacts: ['quest:hyetta:bellum'] },
-  { npc: 'hyetta', name: 'Hyetta', aliases: [], graceId: 'grace:frenzied-flame-proscription', whenFacts: ['quest:hyetta:bellum', 'quest:hyetta:maiden'] },
+  { npc: 'hyetta', name: 'Hyetta', aliases: ['hyetta'], graceId: 'grace:62394000', whenFacts: [] },
+  { npc: 'hyetta', name: 'Hyetta', aliases: [], graceId: 'grace:62364900', whenFacts: ['quest:hyetta:bellum'] },
+  { npc: 'hyetta', name: 'Hyetta', aliases: [], graceId: 'grace:350004', whenFacts: ['quest:hyetta:bellum', 'quest:hyetta:maiden'] },
 
   // Irina / Edgar.
-  { npc: 'irina', name: 'Irina', aliases: ['irina', 'edgar'], graceId: 'grace:bridge-of-sacrifice', whenFacts: [] },
-  { npc: 'irina', name: 'Edgar the Revenger', aliases: [], graceId: 'grace:revenger-s-shack', whenFacts: ['quest:edgar:revenger'] },
+  { npc: 'irina', name: 'Irina', aliases: ['irina', 'edgar'], graceId: 'grace:61443400', whenFacts: [] },
+  { npc: 'irina', name: 'Edgar the Revenger', aliases: [], graceId: 'grace:62334400', whenFacts: ['quest:edgar:revenger'] },
 
   // Igon.
   { npc: 'igon', name: 'Igon', aliases: ['igon', 'dragon hunter igon'], graceId: 'grace:jagged', whenFacts: [] },
-  { npc: 'igon', name: 'Igon', aliases: [], graceId: 'grace:jagged-peak-summit', whenFacts: ['quest:igon:summon'] },
+  { npc: 'igon', name: 'Igon', aliases: [], graceId: 'grace:68543900', whenFacts: ['quest:igon:summon'] },
 
   // Roderika — the shack stage has a grace; her Roundtable stage does not, so it
   // is refused and she resolves to no pin after the memento.

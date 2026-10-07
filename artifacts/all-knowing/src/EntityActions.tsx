@@ -1,7 +1,8 @@
 import { useEnrichment } from './lib/entityEnrich'
-import { edges } from './lib/entityGraph'
+import { canonicalEntityId, edges, getEntity } from './lib/entityGraph'
 import { applyFacts } from './lib/infer'
 import { labelOf } from './lib/links'
+import { trackActionLabel } from './library/pageModel'
 import { factState, useWorkspace } from './state'
 import { WatchButton } from './watch/WatchButton'
 
@@ -24,6 +25,11 @@ export function EntityActions({ id, name }: { id: string; name?: string }) {
   const known = factState(character, id) === 'true'
   const record = useEnrichment(id)
   const hasSource = Boolean(record?.location || record?.map || edges(id).some((e) => SOURCE_RELS.has(e.rel)))
+  // Task 160 — only offer a tracking action for a kind the page model actually
+  // tracks; a region, mechanic, build or shared multi-location boss page refused
+  // tracking, so "Mark done" wrote a meaningless fact.
+  const entity = getEntity(id)
+  const trackLabel = trackActionLabel(entity.kind, known, canonicalEntityId(id))
 
   return (
     <div className="opts entity-actions" role="group" aria-label={`Actions for ${label}`}>
@@ -34,14 +40,16 @@ export function EntityActions({ id, name }: { id: string; name?: string }) {
       ) : (
         <span className="note">{record?.location || 'No location in the data yet.'}</span>
       )}
-      <button
-        type="button"
-        className={known ? 'chip on' : 'chip'}
-        aria-pressed={known}
-        onClick={() => { if (!known) setCharacter(applyFacts(character, [id], 'answer', 'entity action')) }}
-      >
-        Mark done
-      </button>
+      {trackLabel && (
+        <button
+          type="button"
+          className={known ? 'chip on' : 'chip'}
+          aria-pressed={known}
+          onClick={() => { if (!known) setCharacter(applyFacts(character, [id], 'answer', 'entity action')) }}
+        >
+          {trackLabel}
+        </button>
+      )}
       <button
         type="button"
         className="chip"

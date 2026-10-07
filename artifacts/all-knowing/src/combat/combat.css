@@ -161,3 +161,10 @@
   border-top: 1px solid var(--line);
   border-bottom: none;
 }
+
+/* Task 165 §3 — the one-line boss glance under the status strip. */
+.boss-glance-line {
+  font-weight: 600;
+  color: var(--fg, #e8e0cf);
+  letter-spacing: 0.01em;
+}

@@ -306,6 +306,14 @@ let cachedIndex: Index | null = null
 let cachedVersion = -1
 let cachedEnrichVersion = -1
 
+/** Kinds a `drops` / `sells` edge may honestly point at (Task 160). */
+const OWNED_EDGE_KINDS = new Set<EntityKind>([
+  'item', 'weapon', 'shield', 'armor', 'talisman', 'spell', 'ash', 'spirit', 'material',
+])
+
+/** Kinds a `foundIn` place edge may honestly point at (Task 160). */
+const PLACE_EDGE_KINDS = new Set<EntityKind>(['region', 'grace', 'dungeon'])
+
 function ensureIndex(): Index {
   // Task 122 §C: the enrichment index is a second source of entities, so the
   // cache keys on both the supplement version and the index version.
@@ -338,9 +346,30 @@ function buildIndex(): Index {
   const idAlias = new Map<string, string>()
 
   // Task 132 §2 — when two kinds share a display name, the character kinds win
-  // in the order npc > boss > quest > enemy, so e.g. "Patches" opens the NPC
-  // (with combat stats merged in) rather than a bare invader row.
-  const NAME_PRIORITY: Record<string, number> = { npc: 0, boss: 1, quest: 2, enemy: 3 }
+  // in the order npc > boss > region/grace/dungeon > quest > enemy, so e.g.
+  // "Patches" opens the NPC (with combat stats merged in) rather than a bare
+  // invader row.
+  // Task 160 — a place name is owned by the place, not by a quest line whose
+  // alias happens to be that place ("Weeping Peninsula" -> line:irina), and an
+  // ownable item outranks the same-named mechanics glossary card ("Rune Arc").
+  const NAME_PRIORITY: Record<string, number> = {
+    npc: 0,
+    boss: 1,
+    region: 1.5,
+    grace: 1.5,
+    dungeon: 1.5,
+    quest: 2,
+    enemy: 3,
+    item: 4,
+    weapon: 4,
+    shield: 4,
+    armor: 4,
+    talisman: 4,
+    spell: 4,
+    ash: 4,
+    spirit: 4,
+    material: 4,
+  }
   const namePriority = (kind: EntityKind): number => NAME_PRIORITY[kind] ?? 5
 
   const addEntity = (entity: EntitySummary, aliases: string[] = [], registerName = true) => {
@@ -556,9 +585,55 @@ function buildIndex(): Index {
     ensure(id, row.factId?.startsWith('enemy:') ? 'enemy' : 'boss', row.name, 'Combat profile')
   }
 
+  // Task 160 — a `hunt:` checklist row that names the same fight as an authored
+  // boss is not a second page: keep the boss, alias the engine id to it. The
+  // dungeon index can register such a row directly, bypassing the enrichment
+  // merge, so fold it here too.
+  {
+    const bossByName = new Map<string, string>()
+    for (const [id, e] of entities) {
+      if (e.kind !== 'boss') continue
+      const n = normalize(e.name)
+      const cur = bossByName.get(n)
+      if (!cur || (cur.startsWith('hunt:') && !id.startsWith('hunt:'))) bossByName.set(n, id)
+    }
+    for (const [id, e] of [...entities]) {
+      if (!id.startsWith('hunt:') || e.kind !== 'boss') continue
+      const target = bossByName.get(normalize(e.name))
+      if (!target || target === id) continue
+      idAlias.set(id, target)
+      entities.delete(id)
+      for (const [n, owner] of byName) if (owner === id) byName.set(n, target)
+    }
+  }
+
   // -------------------------------------------------------------------------
   // Edges
   // -------------------------------------------------------------------------
+
+  // Task 160 — a drop / merchant stock string names an *item*, not whatever
+  // same-named reference card (a mechanic, a quest line) won the name index.
+  // Resolve such strings only against ownable entities, then fall back to the
+  // item id the string would canonicalise to.
+  const ownedByName = new Map<string, string>()
+  for (const [id, entity] of entities) {
+    if (!OWNED_EDGE_KINDS.has(entity.kind)) continue
+    const n = normalize(entity.name)
+    if (n && !ownedByName.has(n)) ownedByName.set(n, id)
+  }
+  const resolveOwned = (name: string): string | undefined => {
+    const direct = ownedByName.get(normalize(name))
+    if (direct) return direct
+    const candidate = canonicalFactId(`item:${slug(name)}`, name)
+    const entity = entities.get(candidate)
+    if (entity && OWNED_EDGE_KINDS.has(entity.kind)) return candidate
+    return undefined
+  }
+  const resolvePlace = (name: string): string | undefined => {
+    const id = byName.get(normalize(name))
+    const entity = id ? entities.get(id) : undefined
+    return entity && PLACE_EDGE_KINDS.has(entity.kind) ? id : undefined
+  }
 
   const forward = new Map<string, Edge[]>()
   const push = (from: string, edge: Edge) => {
@@ -593,7 +668,7 @@ function buildIndex(): Index {
   for (const f of facts) {
     for (const x of f.implies) push(f.id, { rel: 'requires', to: canon(x), label: nameOf(x), source: 'catalog' })
     for (const x of f.drops ?? []) push(f.id, { rel: 'drops', to: canon(x), label: nameOf(x), source: 'catalog' })
-    const region = f.region ? byName.get(normalize(f.region)) : undefined
+    const region = f.region ? resolvePlace(f.region) : undefined
     if (region && region !== f.id) push(f.id, { rel: 'foundIn', to: region, label: f.region, source: 'catalog' })
   }
 
@@ -623,8 +698,13 @@ function buildIndex(): Index {
       }
       if (best) push(from, { rel: 'foundIn', to: canon(best.id), label: best.name, source: 'entity-index' })
     }
+    // Task 160 #6 — only a boss or enemy drops loot. A quest line or spell page
+    // can carry a scraped `drops` array too (a merchant's shop stock, a wiki
+    // "drops from" note); a `drops` edge from it would claim an item was
+    // dropped by a quest line.
+    if (record.kind !== 'boss' && record.kind !== 'enemy') continue
     for (const drop of record.drops ?? []) {
-      const to = byName.get(normalize(drop))
+      const to = resolveOwned(drop)
       if (to && to !== from) push(from, { rel: 'drops', to: canon(to), label: drop, source: 'entity-index' })
     }
   }
@@ -632,7 +712,7 @@ function buildIndex(): Index {
   // loot: where it is found
   for (const l of loot) {
     const itemId = idAlias.get(l.id) ?? canon(l.id)
-    const region = byName.get(normalize(l.region))
+    const region = resolvePlace(l.region)
     if (region && region !== itemId) push(itemId, { rel: 'foundIn', to: region, label: l.region, source: 'loot' })
     if (l.grace) push(itemId, { rel: 'foundIn', to: canon(l.grace), label: `Near ${nameOf(l.grace)}`, source: 'loot' })
   }
@@ -641,12 +721,12 @@ function buildIndex(): Index {
   for (const m of merchants) {
     const merchantId = `merchant:${slug(m.vendor)}`
     for (const stock of m.stock) {
-      const itemId = byName.get(normalize(stock))
+      const itemId = resolveOwned(stock)
       if (itemId) push(itemId, { rel: 'soldBy', to: merchantId, label: m.vendor, source: 'merchants' })
     }
   }
   for (const s of supplement.shops ?? []) {
-    const itemId = byName.get(normalize(s.item))
+    const itemId = resolveOwned(s.item)
     if (itemId) push(itemId, { rel: 'soldBy', to: `merchant:${slug(s.vendor)}`, label: s.vendor, source: 'shops' })
   }
 
@@ -656,7 +736,17 @@ function buildIndex(): Index {
       push(canon(r.bossFactId), { rel: 'drops', to: canon(r.id), label: r.name, source: 'remembrances' })
     }
     for (const reward of r.rewards) {
-      const to = reward.factId ? canon(reward.factId) : resolve(reward.name)
+      let to = reward.factId ? canon(reward.factId) : resolveOwned(reward.name)
+      // A reward name the shipped index has not registered yet is still an item
+      // Enia trades for, so register it rather than dropping the edge.
+      if (!to) {
+        to = canonicalFactId(`item:${slug(reward.name)}`, reward.name)
+        ensure(to, 'item', reward.name, 'Remembrance reward')
+      }
+      // Task 160 — a reward string that matches no ownable entity ("Land of
+      // Shadow" resolves to a region) is a label, not a trade; do not emit a
+      // `tradedFor` edge to the wrong kind.
+      if (!OWNED_EDGE_KINDS.has(entities.get(to)?.kind ?? 'region')) continue
       push(r.id, { rel: 'tradedFor', to, label: reward.name, source: 'remembrances' })
     }
   }
@@ -692,12 +782,20 @@ function buildIndex(): Index {
   }
   for (const b of opBuilds) {
     for (const slot of b.kit) {
-      const to = resolve(slot.name)
+      // Task 160 — a kit slot names an ownable piece; resolve it only against
+      // owned kinds so a same-named quest line ("Nagakiba") cannot claim it.
+      const to = resolveOwned(slot.name) ?? canonicalFactId(`item:${slug(slot.name)}`, slot.name)
       ensure(to, SLOT_KIND[slot.kind] ?? 'item', slot.name, 'Build item')
-      push(b.id, { rel: 'goodForBuild', to, label: slot.name, source: 'builds' })
+      push(b.id, { rel: 'goodForBuild', to: canon(to), label: slot.name, source: 'builds' })
     }
     for (const need of b.need) {
-      push(b.id, { rel: 'goodForBuild', to: canon(need), label: nameOf(need), source: 'builds' })
+      const to = canon(need)
+      const entity = entities.get(to)
+      // A build need that is the boss guarding the piece (or a quest step) is a
+      // requirement, not loot: keep the honest relationship instead of calling a
+      // boss "good for" the build.
+      const rel: EdgeRel = entity && OWNED_EDGE_KINDS.has(entity.kind) ? 'goodForBuild' : 'requires'
+      push(b.id, { rel, to, label: nameOf(need), source: 'builds' })
     }
   }
 
@@ -737,6 +835,9 @@ function buildIndex(): Index {
 
   // upgrade material
   for (const [id, entity] of entities) {
+    // Task 160 — only an ownable entity is an upgrade material; the name test
+    // alone matched the "Smithing Stone Scarab" enemies and the Whetblades card.
+    if (!OWNED_EDGE_KINDS.has(entity.kind)) continue
     if (isUpgradeMaterial(entity.name)) {
       push('mechanic:upgrades', { rel: 'upgradeMaterial', to: id, label: entity.name, source: 'loot' })
     }
@@ -760,6 +861,9 @@ function buildIndex(): Index {
       if (!span.id) continue
       const to = canon(span.id)
       if (to === entity.id) continue
+      // A prose match must land on a real entity; the alias plane can carry a
+      // slug the graph has no record for (a ghost grace stub).
+      if (!entities.has(to)) continue
       push(entity.id, { rel: 'relatedLore', to, label: span.text, source: 'interlink' })
     }
   }

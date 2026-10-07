@@ -174,6 +174,16 @@ export const inferChains: InferChain[] = [
     confidence: 0.9,
     why: 'Both halves of the Haligtree Secret Medallion are held, so the secret path to the Consecrated Snowfield is open.',
   },
+  // Task 160 — keep the "holding the medallion proves the Haligtree lift is
+  // open" conclusion, but as a one-way chain: the catalog row no longer implies
+  // the region, so the catalog implication graph has no
+  // region:haligtree ⇄ item:haligtree-secret-medallion cycle.
+  {
+    whenFact: 'item:haligtree-secret-medallion',
+    implies: ['region:haligtree'],
+    confidence: 0.8,
+    why: 'The Haligtree Secret Medallion is held, so the lift to the Consecrated Snowfield and Miquella’s Haligtree is open.',
+  },
   // Task 94 — Setup wizard rules. Great Rune → shardbearer and remembrance →
   // boss already live on their catalog rows (see `catalog.ts`); these are the
   // rules that were missing. Dectus follows the same compound rule as Haligtree.
@@ -191,24 +201,25 @@ export const inferChains: InferChain[] = [
     confidence: 0.9,
     why: 'Both halves of the Dectus Medallion are held, so the Grand Lift of Dectus opens the way to Altus.',
   },
-  // Bell bearing → NPC/region state (item ids are real `guide/catalog.json` rows).
-  bellBearingRule('bell-bearing-kale-s-bell-bearing', 'region:limgrave', 'Merchant Kalé'),
-  bellBearingRule('bell-bearing-rogier-s-bell-bearing', 'region:limgrave', 'Sorcerer Rogier'),
-  bellBearingRule('bell-bearing-d-s-bell-bearing', 'region:limgrave', 'D, Hunter of the Dead'),
-  bellBearingRule('bell-bearing-corhyn-s-bell-bearing', 'region:limgrave', 'Brother Corhyn'),
-  bellBearingRule('bell-bearing-patches-bell-bearing', 'region:limgrave', 'Patches'),
-  bellBearingRule('bell-bearing-gostoc-s-bell-bearing', 'region:limgrave', 'Gatekeeper Gostoc'),
-  bellBearingRule('bell-bearing-sellen-s-bell-bearing', 'region:liurnia', 'Sorceress Sellen'),
-  bellBearingRule('bell-bearing-miriel-s-bell-bearing', 'region:liurnia', 'Miriel'),
-  bellBearingRule('bell-bearing-iji-s-bell-bearing', 'region:liurnia', 'Iji'),
-  bellBearingRule('bell-bearing-blackguard-s-bell-bearing', 'region:liurnia', 'Blackguard Big Boggart'),
-  bellBearingRule('bell-bearing-thops-s-bell-bearing', 'region:liurnia', 'Thops'),
-  bellBearingRule('bell-bearing-seluvis-s-bell-bearing', 'region:liurnia', 'Preceptor Seluvis'),
-  bellBearingRule('bell-bearing-gowry-s-bell-bearing', 'region:caelid', 'Gowry'),
-  bellBearingRule('bell-bearing-abandoned-merchant-s-bell-bearing', 'region:leyndell', 'the Abandoned Merchant'),
-  bellBearingRule('bell-bearing-ymir-s-bell-bearing', 'region:shadow', 'Count Ymir'),
-  bellBearingRule('bell-bearing-igon-s-bell-bearing', 'region:shadow', 'Igon'),
-  bellBearingRule('bell-bearing-moore-s-bell-bearing', 'region:shadow', 'Moore'),
+  // Bell bearing → NPC/region state (Task 160: the real `item:<name>` ids from
+  // `public/sourced/entity-index.json`, not the prefixed-but-wrong stub slug).
+  bellBearingRule('item:kal-s-bell-bearing', 'region:limgrave', 'Merchant Kalé'),
+  bellBearingRule('item:rogier-s-bell-bearing', 'region:limgrave', 'Sorcerer Rogier'),
+  bellBearingRule('item:d-s-bell-bearing', 'region:limgrave', 'D, Hunter of the Dead'),
+  bellBearingRule('item:corhyn-s-bell-bearing', 'region:limgrave', 'Brother Corhyn'),
+  bellBearingRule('item:patches-bell-bearing', 'region:limgrave', 'Patches'),
+  bellBearingRule('item:gostoc-s-bell-bearing', 'region:limgrave', 'Gatekeeper Gostoc'),
+  bellBearingRule('item:sellen-s-bell-bearing', 'region:liurnia', 'Sorceress Sellen'),
+  bellBearingRule('item:miriel-s-bell-bearing', 'region:liurnia', 'Miriel'),
+  bellBearingRule('item:iji-s-bell-bearing', 'region:liurnia', 'Iji'),
+  bellBearingRule('item:blackguard-s-bell-bearing', 'region:liurnia', 'Blackguard Big Boggart'),
+  bellBearingRule('item:thops-s-bell-bearing', 'region:liurnia', 'Thops'),
+  bellBearingRule('item:seluvis-s-bell-bearing', 'region:liurnia', 'Preceptor Seluvis'),
+  bellBearingRule('item:gowry-s-bell-bearing', 'region:caelid', 'Gowry'),
+  bellBearingRule('item:abandoned-merchant-s-bell-bearing', 'region:leyndell', 'the Abandoned Merchant'),
+  bellBearingRule('item:ymir-s-bell-bearing', 'region:shadow', 'Count Ymir'),
+  bellBearingRule('item:igon-s-bell-bearing', 'region:shadow', 'Igon'),
+  bellBearingRule('item:moore-s-bell-bearing', 'region:shadow', 'Moore'),
 
   // ---------------------------------------------------------------------------
   // Task 138 §2 — conclusions a knowledgeable player draws that the app did not.
