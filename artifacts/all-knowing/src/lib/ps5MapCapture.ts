@@ -85,7 +85,10 @@ export function analyzeMapPhoto(photo: MapPhoto, refs: MapReference[], index: Gr
   if (registration) {
     const ref = refs.find((r) => r.world === registration.world) ?? refs[0]
     blobs = detectGraceBlobs(photo.color)
-    graces = snapGraces(blobs, registration.H, ref, registration.world, { index })
+    // 1.4 % matches the eval (`scripts/photo-eval.mjs`) and is calibrated to the
+    // committed plates: registration residual is ~2–3 px, so a tighter tolerance
+    // dropped true graces while a looser one let gold terrain snap. See PHOTO-EVAL.
+    graces = snapGraces(blobs, registration.H, ref, registration.world, { index, tolerancePercent: 1.4 })
     fragments = classifyFragments(photo.gray, photo.color, registration.Hinv, ref, registration.world)
   }
   return { width: photo.gray.width, height: photo.gray.height, registration, blobs, graces, fragments, features, ms: Date.now() - started }

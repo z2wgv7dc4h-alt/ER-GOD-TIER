@@ -45,6 +45,15 @@ export type DetectGraceOptions = {
   minFill?: number
   /** Mean goldness below which a blob is dull terrain gold, not the icon's metal. */
   minStrength?: number
+  /**
+   * Fraction of a blob's neighbourhood that may be near-black before the blob is
+   * treated as an artefact of the TV bezel / letterbox rather than a map icon.
+   * Phone photos frame the screen with a black border; gold pixels appear where
+   * that border meets the bright map, and those false blobs sit within a few
+   * icon-radii of pure black. Genuine graces on dark terrain are surrounded by
+   * grey/dark paint, not the ~0-luma bezel.
+   */
+  maxDarkFraction?: number
 }
 
 const GOLD_DEFAULTS: Required<DetectGraceOptions> = {
@@ -53,6 +62,7 @@ const GOLD_DEFAULTS: Required<DetectGraceOptions> = {
   maxBlobs: 400,
   minFill: 0.45,
   minStrength: 0.21,
+  maxDarkFraction: 0.3,
 }
 
 /** Warm gold: high red, green well above blue, not the red-brown or parchment terrain. */
@@ -66,6 +76,28 @@ export function isGoldPixel(r: number, g: number, b: number): boolean {
   const max = Math.max(r, g, b)
   const min = Math.min(r, g, b)
   return max - min >= 38
+}
+
+/**
+ * Fraction of a square window (half-side `3*radius`) around a candidate that is
+ * near-black (luma < 40). High values mark the TV bezel/letterbox, not map art.
+ */
+function darkFraction(rgba: Uint8ClampedArray, w: number, h: number, cx: number, cy: number, radius: number): number {
+  const r = Math.max(6, Math.round(radius * 3))
+  let dark = 0
+  let n = 0
+  const x0 = Math.max(0, Math.round(cx - r))
+  const x1 = Math.min(w - 1, Math.round(cx + r))
+  const y0 = Math.max(0, Math.round(cy - r))
+  const y1 = Math.min(h - 1, Math.round(cy + r))
+  for (let y = y0; y <= y1; y++) {
+    for (let x = x0; x <= x1; x++) {
+      const p = (y * w + x) * 4
+      if (0.299 * rgba[p] + 0.587 * rgba[p + 1] + 0.114 * rgba[p + 2] < 40) dark++
+      n++
+    }
+  }
+  return n ? dark / n : 0
 }
 
 export function detectGraceBlobs(img: ColorImage, opts: DetectGraceOptions = {}): GraceBlob[] {
@@ -175,6 +207,7 @@ export function detectGraceBlobs(img: ColorImage, opts: DetectGraceOptions = {})
     for (const v of binR) if (v >= 0) varR += (v - meanR) * (v - meanR)
     const cv = filled > 1 && meanR > 0 ? Math.sqrt(varR / filled) / meanR : 1
     const circularity = Math.max(0, Math.min(1, 1 - cv))
+    if (o.maxDarkFraction < 1 && darkFraction(rgba, w, h, cx, cy, radius) > o.maxDarkFraction) continue
     blobs.push({
       x: cx,
       y: cy,
