@@ -3,6 +3,7 @@
 Last updated: 2026-10-07.
 
 ## In flight (supervisor running; see docs/ORCHESTRATION.md)
+Briefs live in each task's worktree (`ER-MASTER-TOOL-wt/task-<id>/artifacts/all-knowing/docs/tasks/`) until merged.
 | Task | Brief | State |
 |---|---|---|
 | 160 | `160-link-fixes.md` — fix Task 157 audit findings (dead/wrong-kind links, dead search results, unfireable infer chains, Mark-done on untrackable pages, duplicates) | 10+ commits, finishing |
@@ -10,14 +11,13 @@ Last updated: 2026-10-07.
 | 167 | `167-photo-reader.md` — score + tune PS5 photo reader on owner's 13 photos, map-photo grace recall (old Task 141), ~150 web photos self-consistency set | running |
 | 168 | `168-gideon-offline.md` — offline Gideon from 40% → ≥75% correct on `npm run eval:gideon` | running |
 | 166 | `166-brief.md` — inference fixes + new PS5 inferences (proposal items 11, 13–20) | queued, waits for 160 merged |
-| 169 | `169-docs.md` — docs accuracy pass | queued |
 
 ## Merged recently (master)
 148–152 data cleanup (one page per enemy, real descriptions, lost names restored) · 153 Gideon token
 diet (−76% request size, usage counter in Settings) · 154 game icons for all items/bosses · 155/156/158
 Show on map (zoom, vendor/drop/boss sources, live engine) · 159 live map on phone/offline · 162 Gideon
 offline eval harness (baseline 40.4% correct) · 163 player question corpus (6,581 questions, 20 nicknames) · 164 PvP/Builds layout · 165 bosses/guides/Now layout ·
-`AGENTS.md` completion contract · orchestration tooling.
+169 docs accuracy pass (~25 claims fixed, 4 stale docs archived, README doc index) · `AGENTS.md` completion contract · orchestration tooling.
 
 ## Next (proposed to the owner, not yet approved unless noted)
 1. After 168: offline Gideon meaning search (in-browser embeddings) + pre-generated DeepSeek answers,
