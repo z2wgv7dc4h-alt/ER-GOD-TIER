@@ -2,9 +2,10 @@ import { lazy, Suspense, useMemo, useState } from 'react'
 import type { Remembrance } from '../knowledge/remembrances'
 import { edges, getEntity, status, type EntityKind } from '../lib/entityGraph'
 import { useEnrichment, useEntityIndex } from '../lib/entityEnrich'
+import { encountersOf } from '../lib/bossRoster'
 import type { RemembranceOption } from '../lib/remembranceChoice'
 import type { Verdict } from '../lib/verdict'
-import { Related } from '../Related'
+import { Related, RelatedCollapsible } from '../Related'
 import { Spoiler, SpoilerGate } from '../settings/Spoiler'
 import { WikiText } from '../WikiText'
 import { Term } from '../peek/Term'
@@ -19,9 +20,6 @@ const BossPrepCard = lazy(() => import('../combat/BossPrepCard').then((m) => ({ 
 // Task 144 §1 — the kind-specific body (location/grace/NPC/boss) is its own
 // chunk so the eager panel keeps the shared shell only.
 const EntityKinds = lazy(() => import('./EntityKinds'))
-// Task 165 §10 — the "Guides for this boss" cross-link, kept in its own chunk
-// alongside the other lazy panel bodies.
-const GuidesFor = lazy(() => import('../PackData').then((m) => ({ default: m.GuidesFor })))
 import { kindStatus, trackActionLabel } from './pageModel'
 import type { EntityRecord } from '../lib/entityIndex'
 import { attributeStats, isOwned, meetsRequirements, type AttributeKey, type CategoryId, type LibraryEntity } from './model'
@@ -183,6 +181,11 @@ export function EntityPanel({
   }, [record, statusFactId, indexVersion])
   const panelKindValue = panelKind(entity, statusFactId, kind)
   const isBoss = panelKindValue === 'boss' || panelKindValue === 'enemy'
+  // Task 165 §2 — a boss fought in several places lists them first (block 1).
+  const isGroupBoss = isBoss && encountersOf(entity.factId).length > 0
+  // Task 165 §2 — a boss page inlines Stats/Where/Related, so its tab strip
+  // reduces to the two reference tabs that have nowhere else to go.
+  const tabs: Tab[] = isBoss ? ['lore', 'wiki'] : ['stats', 'where', 'lore', 'related', 'wiki']
   const isNpc = panelKindValue === 'npc' || panelKindValue === 'merchant'
   const isGrace = panelKindValue === 'grace'
   // Task 144 §1 — a region/dungeon is not ownable; it gets its own actions.
@@ -231,7 +234,7 @@ export function EntityPanel({
       )}
 
       <div className="lib-panel-tabs" role="tablist">
-        {(['stats', 'where', 'lore', 'related', 'wiki'] as Tab[]).map((t) => (
+        {tabs.map((t) => (
           <button
             key={t}
             type="button"
@@ -246,35 +249,62 @@ export function EntityPanel({
       </div>
 
       <div className="lib-panel-body">
-        {tab === 'stats' && (
+        {/* Task 165 §2 — a boss page is one ordered body: where → weaknesses &
+            resistances → strategy (+ guide links) → drops → spirit/co-op →
+            recommended level → related. Only Lore and Wiki remain as tabs. */}
+        {isBoss && (
           <div className="lib-panel-stats">
-            {isBoss && (
+            {isGroupBoss && (
               <Suspense fallback={null}>
-                <BossFacts
-                  factId={statusFactId}
-                  name={entity.name}
-                  region={entity.region}
+                <EntityKinds
+                  kind={panelKindValue}
+                  entity={entity}
+                  record={record}
                   character={character}
+                  onShowWiki={() => setTab('wiki')}
                 />
               </Suspense>
             )}
 
-            {/* Task 107 §10: the Task 105 combat toolkit — best weapon, status
-                procs, spirit ashes, buffs and the recommended-level verdict. */}
-            {isBoss && (
+            <Suspense fallback={null}>
+              <BossFacts
+                factId={statusFactId}
+                name={entity.name}
+                region={entity.region}
+                character={character}
+                onShowOnMap={onShowOnMap}
+              />
+            </Suspense>
+
+            {/* Task 107 §10: status procs, spirit ashes, buffs/co-op and the one
+                recommended-level verdict. The duplicated weaknesses/weapons/
+                level blocks are gated off so BossFacts stays the only copy. */}
+            <Suspense fallback={null}>
+              <BossPrepCard
+                bossId={statusFactId}
+                character={character}
+                sections={['status', 'spirits', 'helpers', 'summon', 'level']}
+              />
+            </Suspense>
+
+            {!isGroupBoss && (
               <Suspense fallback={null}>
-                <BossPrepCard bossId={statusFactId} character={character} />
+                <EntityKinds
+                  kind={panelKindValue}
+                  entity={entity}
+                  record={record}
+                  character={character}
+                  onShowWiki={() => setTab('wiki')}
+                />
               </Suspense>
             )}
 
-            {/* Task 165 §10 — a boss page links out to the scraped guide excerpts
-                for this fight and to the Guides corpus with the same query. */}
-            {isBoss && (
-              <Suspense fallback={null}>
-                <GuidesFor query={entity.name} heading="Guides for this boss" />
-              </Suspense>
-            )}
+            <RelatedCollapsible id={entity.factId} />
+          </div>
+        )}
 
+        {!isBoss && tab === 'stats' && (
+          <div className="lib-panel-stats">
             {/* Task 144 §1 — the body that fits the kind. NPC quest steps come
                 before the numeric/combat rows, so combat stats stay last. */}
             <Suspense fallback={null}>
@@ -287,7 +317,7 @@ export function EntityPanel({
               />
             </Suspense>
 
-            {!isBoss && (requirementEntries.length > 0 || metValue !== null) && (
+            {(requirementEntries.length > 0 || metValue !== null) && (
               <div className="lib-panel-block">
                 <div className="kicker"><Term id="mechanic:stat-requirements">Requirements</Term></div>
                 {requirementEntries.length ? (
@@ -376,7 +406,7 @@ export function EntityPanel({
               </div>
             )}
 
-            {!isBoss && entity.stats && entity.stats.length > 0 && (
+            {entity.stats && entity.stats.length > 0 && (
               <div className="lib-panel-block">
                 <div className="kicker">Stats</div>
                 <dl className="lib-stat-grid">
@@ -404,7 +434,7 @@ export function EntityPanel({
               </div>
             )}
 
-            {!isBoss && !isLocation && !isGrace && !isNpc && requirementEntries.length === 0 && !entity.attack?.length && !entity.stats?.length && !ar && entity.weight === undefined && enrichedStats.length === 0 && (
+            {!isLocation && !isGrace && !isNpc && requirementEntries.length === 0 && !entity.attack?.length && !entity.stats?.length && !ar && entity.weight === undefined && enrichedStats.length === 0 && (
               indexReady ? (
                 <p className="note">No structured stats in the data for this entry.</p>
               ) : (
@@ -414,7 +444,7 @@ export function EntityPanel({
           </div>
         )}
 
-        {tab === 'where' && (
+        {!isBoss && tab === 'where' && (
           <div className="lib-panel-where">
             {(entity.where || record?.location) && <WikiText className="note" text={(entity.where || record!.location)!} />}
             {entity.region && (
@@ -471,7 +501,7 @@ export function EntityPanel({
           </div>
         )}
 
-        {tab === 'related' && (
+        {!isBoss && tab === 'related' && (
           <div className="lib-panel-related">
             <Related id={entity.factId} />
           </div>

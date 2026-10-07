@@ -8,7 +8,7 @@ import { describe, expect, it } from 'vitest'
  * wiring at the source level rather than the rendered tree.
  */
 const pack = readFileSync(new URL('./PackData.tsx', import.meta.url), 'utf8')
-const panel = readFileSync(new URL('./library/EntityPanel.tsx', import.meta.url), 'utf8')
+const bossFacts = readFileSync(new URL('./library/BossFacts.tsx', import.meta.url), 'utf8')
 const area = readFileSync(new URL('./shell/JourneyArea.tsx', import.meta.url), 'utf8')
 const atlas = readFileSync(new URL('./Atlas.tsx', import.meta.url), 'utf8')
 
@@ -18,7 +18,7 @@ describe('Guide cross-links (Task 165 §10)', () => {
   })
 
   it('a boss page links to guides for that boss', () => {
-    expect(panel).toMatch(/heading="Guides for this boss"/)
+    expect(bossFacts).toMatch(/heading="Guides for this boss"/)
   })
 
   it('an area page links to guides for that area', () => {
