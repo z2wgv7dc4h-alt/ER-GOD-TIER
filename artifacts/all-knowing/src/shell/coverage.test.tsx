@@ -134,6 +134,16 @@ describe('Task 92 coverage: every feature has a home', () => {
     }
   })
 
+  it('row 4b — progression tracking meters live on Tarnished › Overview, not Guides', () => {
+    const overview = render(<MeOverview />, { section: 'me', sub: 'overview' })
+    for (const title of ['Blessing meters', 'Achievement sets', 'Dungeon checklist', 'Fragments &amp; flasks']) {
+      expect(overview, title).toContain(title)
+    }
+    const guides = render(<Guides />, { section: 'library', sub: 'guides' })
+    expect(guides).not.toContain('Blessing meters')
+    expect(guides).not.toContain('Achievement sets')
+  })
+
   it('row 5 — respec, upgrade advice and build hunt are visible panels in Library › Builds', () => {
     const html = render(<BuildWorkspace />, { section: 'library', sub: 'builds' })
     expect(html).toContain('Respec advisor')
