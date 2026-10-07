@@ -59,6 +59,19 @@ function missing(field, expected) {
   return { field, expected, got: undefined, status: 'missed' }
 }
 
+// Item names are matched the way the app matches them: case/punctuation folded
+// (`Grave Glovewort [1]` === `Grave Glovewort (1)`). Scoring raw strings would
+// mark a correct pipeline read as wrong just because the photo prints differently.
+function normName(s) {
+  return String(s).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+}
+
+function cmpName(field, expected, got) {
+  const present = typeof got === 'string' && got.trim() !== ''
+  const correct = present && normName(got) === normName(expected)
+  return { field, expected, got: present ? got : undefined, status: !present ? 'missed' : correct ? 'correct' : 'wrong' }
+}
+
 function summarize(checks) {
   const c = { correct: 0, wrong: 0, missed: 0 }
   for (const x of checks) c[x.status]++
@@ -120,7 +133,7 @@ try {
     const selName = typeof sel === 'string' ? sel : sel?.name
     const checks = [
       cmp('slot', truth.selectedSlot, r.header.slot),
-      cmp('item', selName, r.header.item?.base),
+      cmpName('item', selName, r.header.item?.base),
     ]
     if (typeof sel === 'object' && sel) {
       checks.push(cmp('affinity', sel.affinity, r.header.item?.affinity))
@@ -157,7 +170,7 @@ try {
     const found = names.find((i) => scanner.normalizeItemName(i.name) === scanner.normalizeItemName(truth.selectedItem))
     const checks = [
       cmp('tab', truth.tab, scan.tab),
-      cmp('selected', truth.selectedItem, found?.name),
+      cmpName('selected', truth.selectedItem, found?.name),
     ]
     if (truth.category) checks.push(cmp('category', truth.category, scan.category))
     if (truth.selectedHeld !== undefined) checks.push(eqNum('held', truth.selectedHeld, found?.held))
@@ -184,7 +197,7 @@ try {
     const found = names.find((i) => scanner.normalizeItemName(i.name) === scanner.normalizeItemName(selName))
     const checks = []
     if (truth.tab) checks.push(cmp('tab', truth.tab, scan.tab))
-    if (selName) checks.push(cmp('selected', selName, found?.name))
+    if (selName) checks.push(cmpName('selected', selName, found?.name))
     if (truth.iconCellCount !== undefined) checks.push(eqNum('iconCells', truth.iconCellCount, inv.occupied.filter(Boolean).length))
     if (truth.equippedBadgeCells) checks.push(missing('equippedBadges', truth.equippedBadgeCells.join(',')))
     return { file, screen: truth.screen, ms, checks, detail: { tab: scan.tab, names: names.map((n) => n.name), occupied: inv.occupied.filter(Boolean).length } }
