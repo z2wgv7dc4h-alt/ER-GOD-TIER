@@ -93,4 +93,4 @@ one a real data gap.
 | `item:fetal-position` | item | empty |
 | `npcs:147100` | npc | empty |
 
-_Regenerated 2026-10-06._
+_Regenerated 2026-10-07._

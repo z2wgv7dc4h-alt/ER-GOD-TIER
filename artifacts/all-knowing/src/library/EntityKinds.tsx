@@ -283,6 +283,7 @@ function EncounterList({ groupId, character }: { groupId: string; character: Cha
   const known = useMemo(() => resolvedFactIds(character), [character])
   return (
     <Block title={`Locations (${rows.filter((r) => known.has(r.id)).length}/${rows.length})`}>
+      <p className="note">Progress is tracked per location — each row opens its own encounter page.</p>
       <Rows>
         {rows.map((r) => (
           <li key={r.id}>

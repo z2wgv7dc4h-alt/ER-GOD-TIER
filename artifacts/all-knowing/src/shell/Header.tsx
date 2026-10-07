@@ -44,12 +44,9 @@ export function Header({
 
   return (
     <header className="shell-header">
-      <button
-        type="button"
-        className="brand-mark"
-        aria-label="All-Knowing — Tarnished overview"
-        onClick={() => w.go('me', 'overview')}
-      />
+      {/* Task 165 §22 — the brand is a mark, not a second link to the overview.
+          The character chip below is the one path there. */}
+      <span className="brand-mark" role="img" aria-label="All-Knowing" />
       <SectionTabs />
       <input
         id="command-search"

@@ -4,15 +4,8 @@ import { awesomeResources, type AwesomeResource } from '../knowledge/awesome'
 import { GuidesSection } from '../PackData'
 import { RecipesSection, SecretsSection, WikiTextSection } from '../CodexData'
 import { DialogueHits, DialogueBySpeaker } from '../Dialogue'
-import { DungeonChecklist } from '../Dungeon'
 import { EntityLink } from '../EntityLink'
 import { ShowMore } from '../ShowMore'
-import { achievementProgress } from '../lib/achievements'
-import { blessingLine, blessingProgress } from '../lib/blessings'
-import { conditionalUnlocks, stockForVendor } from '../knowledge/merchantConditions'
-import { flaskUpgrades, mapFragments, scadutreeFragments } from '../knowledge/collectibles'
-import { applyFacts } from '../lib/infer'
-import { useGuide } from '../lib/guide'
 import { sectionMeta } from '../lib/sections'
 import { listWikiPages, type WikiPageRow } from '../lib/wikiSearch'
 import { useWorkspace } from '../state'
@@ -151,179 +144,6 @@ function Collapsed({ title, count, defaultOpen = false, children }: { title: str
       </summary>
       {children}
     </details>
-  )
-}
-
-/**
- * The progression tools that used to live only in `LegacyCodex` — blessing
- * meters, achievement sets, the dungeon checklist, merchant conditionals and the
- * DLC fragment mark cards. They are folded in here so deleting the old file does
- * not remove a feature.
- */
-function ProgressionSection({ query }: { query: string }) {
-  const { character, setCharacter } = useWorkspace()
-  const guide = useGuide()
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({})
-  const q = query.trim().toLowerCase()
-  const blessings = useMemo(
-    () => blessingProgress(guide.items, character.collectedItems),
-    [guide.items, character.collectedItems],
-  )
-  const achievements = useMemo(
-    () => achievementProgress(guide.items, character.collectedItems),
-    [guide.items, character.collectedItems],
-  )
-  const conditionals = useMemo(
-    () => conditionalUnlocks.map((u) => ({ ...u, items: stockForVendor(u.vendor) })),
-    [],
-  )
-  const frags = [...scadutreeFragments, ...mapFragments, ...flaskUpgrades]
-    .filter((e) => !q || `${e.name} ${e.region} ${e.note}`.toLowerCase().includes(q))
-    .slice(0, 6)
-
-  return (
-    <>
-      <Collapsed title="Blessing meters" count={blessings.length}>
-        {blessings.map((p) => {
-          const left = p.remaining.filter((r) => !q || `${r.name} ${r.how}`.toLowerCase().includes(q))
-          if (q && left.length === 0) return null
-          const open = expanded[p.id]
-          const shown = open ? left : left.slice(0, 6)
-          const pct = p.total ? Math.round((p.done / p.total) * 100) : 0
-          return (
-            <div key={p.id}>
-              <div className="meter" style={{ padding: '0 20px', maxWidth: 460 }}>
-                <label>
-                  <span>{blessingLine(p)}</span>
-                  <span>{pct}%</span>
-                </label>
-                <div className="bar"><span style={{ width: `${pct}%` }} /></div>
-                <p className="note" style={{ marginTop: 6 }}>
-                  {p.note}{' '}
-                  {p.incomplete ? `List incomplete in-repo (${p.listCount}/${p.total} rows). ` : ''}
-                  Reference: {p.source}
-                </p>
-              </div>
-              <div className="codex-grid">
-                {shown.map((r) => (
-                  <article className="card" key={r.id}>
-                    <div className="kicker">{p.name}{r.dlc ? ' · DLC' : ''}</div>
-                    <h3>{r.name}</h3>
-                    <p className="note">{r.how}</p>
-                    <button
-                      type="button"
-                      className="chip"
-                      onClick={() => setCharacter(applyFacts(character, [r.id], 'answer', `${p.name} meter`))}
-                    >
-                      Mark
-                    </button>
-                  </article>
-                ))}
-              </div>
-              {left.length > 6 && (
-                <button
-                  type="button"
-                  className="chip"
-                  style={{ margin: '0 20px' }}
-                  onClick={() => setExpanded((cur) => ({ ...cur, [p.id]: !open }))}
-                >
-                  {open ? 'Show fewer' : `Show all ${left.length} left`}
-                </button>
-              )}
-            </div>
-          )
-        })}
-      </Collapsed>
-
-      <Collapsed title="Achievement sets" count={achievements.length}>
-        {achievements.map((set) => {
-          const left = set.remaining.filter((r) => !q || `${r.name} ${r.how}`.toLowerCase().includes(q))
-          if (q && left.length === 0) return null
-          const open = expanded[set.id]
-          const shown = open ? left : left.slice(0, 6)
-          return (
-            <div key={set.id}>
-              <div className="kicker" style={{ padding: '0 20px' }}>
-                {set.name} · {set.done}/{set.total} · {set.remaining.length} left — {set.note}
-              </div>
-              <div className="codex-grid">
-                {shown.map((r) => (
-                  <article className="card" key={r.id}>
-                    <div className="kicker">
-                      {set.name}{r.dlc ? ' · DLC' : ''}{r.missable ? ` · missable: ${r.missable}` : ''}
-                    </div>
-                    <h3>{r.name}</h3>
-                    <p className="note">{r.how}</p>
-                    <button
-                      type="button"
-                      className="chip"
-                      onClick={() => setCharacter(applyFacts(character, [r.id], 'answer', `${set.name} set`))}
-                    >
-                      Mark
-                    </button>
-                  </article>
-                ))}
-              </div>
-              {left.length > 6 && (
-                <button
-                  type="button"
-                  className="chip"
-                  style={{ margin: '0 20px' }}
-                  onClick={() => setExpanded((cur) => ({ ...cur, [set.id]: !open }))}
-                >
-                  {open ? 'Show fewer' : `Show all ${left.length} left`}
-                </button>
-              )}
-            </div>
-          )
-        })}
-      </Collapsed>
-
-      <Collapsed title="Dungeon checklist">
-        <DungeonChecklist />
-      </Collapsed>
-
-      <Collapsed title="Merchant conditionals" count={conditionals.length}>
-        <div className="codex-grid">
-          {conditionals.slice(0, 6).map((u) => (
-            <article className="card" key={u.vendor}>
-              <div className="kicker">{u.soldBy} · conditional</div>
-              <h3>{u.trigger}</h3>
-              <p className="note">{u.items.join(', ') || 'Stock row missing.'}</p>
-              <p className="note">{u.note}</p>
-              {u.triggerId && (
-                <button
-                  type="button"
-                  className="chip"
-                  onClick={() => setCharacter(applyFacts(character, [u.triggerId as string], 'answer', 'merchant condition'))}
-                >
-                  Log trigger
-                </button>
-              )}
-            </article>
-          ))}
-        </div>
-      </Collapsed>
-
-      <Collapsed title="Fragments &amp; flasks" count={frags.length}>
-        <div className="codex-grid">
-          {frags.map((e) => (
-            <article className="card" key={e.id}>
-              <div className="kicker">{e.campaign} · {e.region}</div>
-              <h3>{e.name}</h3>
-              <p className="note">{e.note}</p>
-              <button
-                type="button"
-                className="chip"
-                onClick={() => setCharacter(applyFacts(character, [e.id], 'answer', 'collectible'))}
-              >
-                Mark
-              </button>
-            </article>
-          ))}
-        </div>
-      </Collapsed>
-    </>
   )
 }
 
@@ -470,8 +290,6 @@ export function Guides() {
       ) : corpus === 'resources' ? (
         <ResourcesSection query="" />
       ) : null}
-
-      <ProgressionSection query={searching ? query : ''} />
     </div>
   )
 }
