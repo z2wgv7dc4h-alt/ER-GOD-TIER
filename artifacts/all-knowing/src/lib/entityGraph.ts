@@ -273,6 +273,15 @@ function prefixKind(id: string): EntityKind {
       return 'mechanic'
     case 'dungeon':
       return 'dungeon'
+    // Task 166 §11 — prose surfaces are reference material, not ownable things.
+    // Without this a Fextralife guide (`guide:`), a wall secret (`secret:`) or a
+    // wiki-only page (`wiki:`) fell through to `item` and showed "Owned" +
+    // "Mark owned".
+    case 'guide':
+    case 'secret':
+    case 'recipe':
+    case 'wiki':
+      return 'mechanic'
     case 'loot':
       return 'item'
     default:

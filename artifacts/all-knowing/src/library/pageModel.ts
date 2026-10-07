@@ -1,9 +1,10 @@
 import { areaFromFactId } from '../lib/areaContext'
+import { canonicalFactId } from '../lib/aliases'
 import { displayName } from '../lib/canonicalNames'
 import { getEntity, type EntityKind, type EntityState } from '../lib/entityGraph'
 import { getRecord, type EntityRecord } from '../lib/entityIndex'
 import { knownFactIds, resolvedFactIds } from '../lib/infer'
-import { encountersByGroup } from '../knowledge/catalog'
+import { byId, encountersByGroup, regionFactFor } from '../knowledge/catalog'
 import type { Character } from '../types'
 import type { CategoryId, LibraryEntity } from './model'
 
@@ -63,6 +64,30 @@ const REFERENCE = new Set<EntityKind>(['mechanic', 'build'])
 const OWNABLE = new Set<EntityKind>(['item', 'weapon', 'shield', 'armor', 'talisman', 'spell', 'ash', 'spirit', 'material'])
 
 /**
+ * Task 166 §20 — the canonical region fact a region/dungeon page belongs to.
+ * Region labels are resolved through `regionFactFor` (the same map the boss
+ * roster uses) so a fact tagged "Stormveil" or "Dragonbarrow" still counts as
+ * Limgrave / Caelid. This replaces the old free-text substring guess, which
+ * matched any fact whose *name* merely contained the area (e.g. a Tree Sentinel
+ * encounter named "(Limgrave)" marked Limgrave visited even from Altus).
+ */
+function regionKeyForEntity(entity: LibraryEntity, record: EntityRecord | undefined): string | undefined {
+  const fid = canonicalFactId(entity.factId)
+  const fact = byId.get(fid)
+  if (fact?.kind === 'region') return fid
+  const region = entity.region ?? fact?.region ?? record?.region
+  return region ? regionFactFor(region) : undefined
+}
+
+function regionKeyForFact(id: string): string | undefined {
+  const fid = canonicalFactId(id)
+  const fact = byId.get(fid)
+  if (fact?.kind === 'region') return fid
+  const region = fact?.region ?? areaFromFactId(fid)?.region
+  return region ? regionFactFor(region) : undefined
+}
+
+/**
  * Task 144 §1 — the status line fits the kind. A region is not "Owned", a grace
  * is "Discovered", a boss is "Defeated / Not yet / Can't reach yet", an item
  * says where to get it, and an NPC shows the current quest step.
@@ -112,13 +137,11 @@ export function kindStatus(
   }
   if (kind === 'region' || kind === 'dungeon') {
     if (done) return { label: 'Visited', why: inRegion || info.why }
-    // A grace, boss or item known inside the area proves it was visited.
-    const area = entity.name.toLowerCase()
-    const inside = area.length >= 4
-      ? [...knownFactIds(character)].find((id) => {
-          const at = areaFromFactId(id)
-          return [at?.region, at?.place].some((n) => n && (n.toLowerCase().includes(area) || (n.length >= 4 && area.includes(n.toLowerCase()))))
-        })
+    // A grace, boss or item known in the same structured region proves it was
+    // visited (Task 166 §20).
+    const target = regionKeyForEntity(entity, record)
+    const inside = target
+      ? [...knownFactIds(character)].find((id) => regionKeyForFact(id) === target)
       : undefined
     if (inside) return { label: 'Visited', why: `Inferred — you reached ${getEntity(inside).name}.` }
     if (blocked) return { label: "Can't reach yet", why: info.why }

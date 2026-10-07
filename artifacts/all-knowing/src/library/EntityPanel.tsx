@@ -101,6 +101,11 @@ const CATEGORY_KIND: Partial<Record<CategoryId, EntityKind>> = {
   spirits: 'spirit',
   bosses: 'boss',
   npcs: 'npc',
+  // Task 166 §11 — guide/secret/recipe are reference pages, so the category
+  // fallback must not type them as an ownable `item`.
+  guides: 'mechanic',
+  secrets: 'mechanic',
+  recipes: 'mechanic',
 }
 
 const EQUIPPABLE = new Set<EntityKind>(['weapon', 'shield', 'armor', 'talisman'])
