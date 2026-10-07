@@ -155,6 +155,20 @@ dead Related edges, wrong-kind edges, dead search rows, unfireable infer chains,
 - The 9 low engine-marker pickup names (affinity-prefixed weapons such as
   "Fire Longsword") remain; see exceptions.
 
+### FIX 13 (post-merge, added by Claude) — legacy ids of merged/renamed records
+- Merging `master` changed the index so three legacy ids no longer resolved; they
+  were the sole reason `src/lib/auditFixes.test.ts` failed (dead 204 > exceptions 201).
+- `scripts/gen-aliases.mjs` now carries a small `legacyRedirects` map in the Task 150
+  legacy pass, so each removed id points at the record that absorbed it — never an
+  exception: `npc:edgar → npc:castellan-edgar` (same NPC, renamed),
+  `quest:irina-of-morne-step-2 → quest:edgar:letter` and
+  `quest:irina-of-morne-step-3 → quest:irina:met` (wiki step pages the builder folded
+  onto the authored beats that now carry their text).
+- Regenerated `public/sourced/aliases.json` / `src/data/aliases.json`: 3 new
+  `legacy-id` rows; exceptions unchanged at **201**. The test now passes
+  (dead 201 ≤ 201, unmapped 0). Regeneration also caught up one unrelated
+  game-name-table alias (`edgar` on `npc:castellan-edgar`) the merge had added.
+
 ## New guard
 
 `src/lib/linkIntegrity.test.ts` (6 tests) recomputes over the committed index:
@@ -167,7 +181,7 @@ chains, "Mark done" on a refused kind, and within-kind duplicate names. Each mus
 | command | result |
 | --- | --- |
 | `npm run index:entities` | 5630 records |
-| `npx vitest run` | 205 files, 1463 passed, 11 skipped |
+| `npx vitest run` | 213 files, 1499 passed, 11 skipped (re-run after FIX 13) |
 | `npm run lint` | 0 errors |
 | `npm run build` | ok (PWA precache 139 entries) |
 | `npm run test:bundle` | 7 passed |
@@ -213,6 +227,10 @@ chains, "Mark done" on a refused kind, and within-kind duplicate names. Each mus
   not rendered as links, so this is data quality only.
 - `aliasMultiSlug` / `rosterDisagree` / `bossRegionGap` after-numbers use a stricter
   method than Task 157, so the before/after is indicative, not byte-identical.
+- FIX 13 target choices: `npc:edgar` is the same person as `npc:castellan-edgar`
+  (renamed); `quest:irina-of-morne-step-2`/`-step-3` pointed at the authored beats
+  (`quest:edgar:letter`, `quest:irina:met`) whose text the builder now carries, rather
+  than at the NPC/line page, because those beats absorbed the wiki step content.
 
 ## Not done / why
 
@@ -243,5 +261,6 @@ chains, "Mark done" on a refused kind, and within-kind duplicate names. Each mus
 - [x] Added `src/lib/linkIntegrity.test.ts` with the six recomputed guards
 - [x] Ran the full gates once: index:entities, vitest, lint, build, test:bundle, audit:links, audit:inference, audit:pages, audit:progress, coverage:entities
 - [x] Wrote `docs/tasks/160-report.md` (this file) with before/after, examples, exceptions and ASSUMPTIONS
+- [x] FIX 13 (post-merge, added by Claude) — legacy ids of merged/renamed records aliased via `scripts/gen-aliases.mjs`; `auditFixes.test.ts` 12/12, full `npx vitest run` 213 files / 1499 passed, exceptions stay 201
 
-(pending FIX 13)
+ALL ITEMS DONE
