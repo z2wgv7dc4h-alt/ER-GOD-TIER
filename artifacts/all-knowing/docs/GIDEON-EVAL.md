@@ -6,7 +6,7 @@ API key** — the deterministic router and the wiki fallback — for an empty
 character and the mid-game scenario character, then scores the answer against the
 question's data-grounded `expected` block.
 
-- **Question set:** 300 questions, 209 from the Task 163 player corpus, 257 answerable, 43 marked unanswerable.
+- **Question set:** 300 questions, 209 from the Task 163 player corpus, 256 answerable, 44 marked unanswerable.
 - **Runs:** 600 (300 × 2 characters).
 - **Scoring:** `correct` = every expected id mentioned/linked **and** every mustInclude fact present; `partial` = some matched; `wrong` = confident but no expected fact; `noAnswer` = Gideon declines. Unanswerable questions are scored `honest` (declines/hedges) or `madeUp` (answers anyway).
 
@@ -14,25 +14,24 @@ question's data-grounded `expected` block.
 
 | metric | value |
 | --- | ---: |
-| answerable questions — correct | **436/514 (84.8%)** |
-| answerable questions — partial | 32 (6.2%) |
+| answerable questions — correct | **434/512 (84.8%)** |
+| answerable questions — partial | 32 (6.3%) |
 | answerable questions — wrong | 38 (7.4%) |
 | answerable questions — no answer | 8 (1.6%) |
-| unanswerable — honest | 86/86 (100.0%) |
+| unanswerable — honest | 88/88 (100.0%) |
 | unanswerable — made up | 0 (0.0%) |
-| latency — median | 12 ms |
-| latency — p95 | 46 ms |
+| latency — median | 11 ms |
+| latency — p95 | 45 ms |
 
 ## By intent
 
 | intent | runs | correct | partial | wrong | noAnswer | honest | madeUp |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| out-of-scope | 60 | 0 | 0 | 0 | 0 | 60 | 0 |
+| out-of-scope | 64 | 0 | 0 | 0 | 0 | 64 | 0 |
 | mechanics | 26 | 24 | 0 | 2 | 0 | 0 | 0 |
 | boss-location | 24 | 18 | 6 | 0 | 0 | 0 | 0 |
 | item-location | 24 | 12 | 7 | 3 | 2 | 0 | 0 |
 | how-to-get | 24 | 24 | 0 | 0 | 0 | 0 | 0 |
-| navigation | 24 | 16 | 4 | 0 | 0 | 4 | 0 |
 | level | 24 | 24 | 0 | 0 | 0 | 0 | 0 |
 | what-next | 24 | 24 | 0 | 0 | 0 | 0 | 0 |
 | npc-quest | 24 | 16 | 4 | 4 | 0 | 0 | 0 |
@@ -43,6 +42,7 @@ question's data-grounded `expected` block.
 | requirements | 24 | 22 | 0 | 2 | 0 | 0 | 0 |
 | how-to-use | 24 | 24 | 0 | 0 | 0 | 0 | 0 |
 | npc-location | 22 | 16 | 5 | 1 | 0 | 0 | 0 |
+| navigation | 22 | 16 | 4 | 0 | 0 | 2 | 0 |
 | how-to-beat | 22 | 20 | 2 | 0 | 0 | 0 | 0 |
 | compare | 22 | 18 | 0 | 2 | 2 | 0 | 0 |
 | ending | 22 | 22 | 0 | 0 | 0 | 0 | 0 |
@@ -52,14 +52,13 @@ question's data-grounded `expected` block.
 | where-is | 18 | 8 | 4 | 6 | 0 | 0 | 0 |
 | other | 16 | 12 | 0 | 4 | 0 | 0 | 0 |
 | multi-part | 14 | 12 | 0 | 2 | 0 | 0 | 0 |
-| co-op | 2 | 2 | 0 | 0 | 0 | 0 | 0 |
 
 ## By character
 
 | character | runs | correct | partial | wrong | noAnswer | honest | madeUp | median ms |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| empty | 300 | 218 | 16 | 19 | 4 | 43 | 0 | 13 |
-| mid | 300 | 218 | 16 | 19 | 4 | 43 | 0 | 10 |
+| empty | 300 | 217 | 16 | 19 | 4 | 44 | 0 | 10 |
+| mid | 300 | 217 | 16 | 19 | 4 | 44 | 0 | 11 |
 
 ## Failure causes
 
@@ -82,7 +81,7 @@ question's data-grounded `expected` block.
 | out-of-scope | Help me rebuild my original Tarnished on 2... 🙌 Multiplayer Password:… | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
 | out-of-scope | Does anyone else find it frustrating that close matches seem to be dec… | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
 | navigation | I despise having to open the pouch to get to torrent…any or successful… | I can't speak to bugs, patches, performance, or hardware — I only carry the game's data and I don't invent changes. I can still answer where… |
-| navigation | Can someone help me reach leda before I crash out | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Can someone help me reach leda before I crash out | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
 | out-of-scope | Any tips on making custom fan covers for my bfs surprise Malenia pc bu… | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
 | out-of-scope | Psx can i have a rune drop? Will be a mule or give karma | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
 | out-of-scope | Is anyone able to drop the divine beast armor set for me please 🙏. On | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
@@ -95,6 +94,7 @@ question's data-grounded `expected` block.
 | out-of-scope | Anyone willing to drop me Rivers of Blood + some runes? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
 | out-of-scope | ( ) Anyone able to help me beat Commander Niall in the snowy area? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
 | out-of-scope | Can someone drop me the Divine Beast Helm? I'll trade anything you wan… | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
+| out-of-scope | Anyone wanna run Darklight Catacombs with me? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
 | out-of-scope | , someone able to help me with the rot knights at the end of the aband… | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
 | out-of-scope | Can someone please drop me Shard Of Alexander on ? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |
 | out-of-scope | Can someone plz help me with Godfrey? | I can't join your session, trade, or drop items — I'm an offline companion reading the game's data, not another player. What I can do: open … |

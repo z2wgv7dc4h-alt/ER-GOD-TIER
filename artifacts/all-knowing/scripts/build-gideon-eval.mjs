@@ -464,7 +464,7 @@ const OUT_OF_SCOPE_PATTERNS = [
   /\bfor me\b/i,
   /\b(anyone|someone) (able|willing|free|down|up|wanna|want|available|around|about) to\b/i,
   /\b(anyone|someone) (available|around|about)\b/i,
-  /\b(anyone|someone) can help\b/i,
+  /\b(anyone|someone) (can help|wanna)\b/i,
   /(can|could|would) (someone|anyone) (please |plz |pls )?(come|join|drop|give|trade|mule|carry)\b/i,
   // "can someone help" is a request, but not when it asks for a lookup/explanation
   // ("help me find a weapon", "help me build X").
@@ -484,7 +484,7 @@ for (const e of entries) {
     e.type = fix.type
     e.expected = { ids: fix.ids, mustInclude: fix.mustInclude, answerable: true }
   }
-  if (e.expected.answerable && isOutOfScope(e.q)) {
+  if (isOutOfScope(e.q)) {
     e.type = 'out-of-scope'
     e.expected = { ids: [], mustInclude: [], answerable: false }
   }

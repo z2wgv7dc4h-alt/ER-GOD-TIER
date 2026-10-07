@@ -285,7 +285,7 @@ const OUT_OF_SCOPE_PATTERNS: RegExp[] = [
   /\bfor me\b/i,
   /\b(anyone|someone) (able|willing|free|down|up|wanna|want|available|around|about) to\b/i,
   /\b(anyone|someone) (available|around|about)\b/i,
-  /\b(anyone|someone) can help\b/i,
+  /\b(anyone|someone) (can help|wanna)\b/i,
   /(can|could|would) (someone|anyone) (please |plz |pls )?(come|join|drop|give|trade|mule|carry)\b/i,
   /(can|could|would) (someone|anyone) (please |plz |pls )?help(?!.*\b(explain|find a|find the|build|to build))\b/i,
 ]

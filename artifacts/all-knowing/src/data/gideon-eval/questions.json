@@ -1051,7 +1051,7 @@
   },
   {
     "id": "q072",
-    "type": "navigation",
+    "type": "out-of-scope",
     "q": "Can someone help me reach leda before I crash out",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
@@ -3577,15 +3577,13 @@
   },
   {
     "id": "q256",
-    "type": "co-op",
+    "type": "out-of-scope",
     "q": "Anyone wanna run Darklight Catacombs with me?",
     "origin": "real:reddit:EldenRingHelp",
     "expected": {
-      "ids": [
-        "dungeon:darklight-catacombs"
-      ],
+      "ids": [],
       "mustInclude": [],
-      "answerable": true
+      "answerable": false
     }
   },
   {
