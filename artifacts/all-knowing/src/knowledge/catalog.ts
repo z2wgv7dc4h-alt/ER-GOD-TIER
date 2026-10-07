@@ -106,7 +106,10 @@ export const facts: Fact[] = [
   { id: 'item:dark-moon-ring', kind: 'item', name: 'Dark Moon Ring', aliases: ['moon ring'], region: 'Cathedral of Manus Celes', campaign: 'base', implies: ['boss:astel'], usedIn: ['quest:ranni:ring'] },
   { id: 'item:fingerslayer', kind: 'item', name: 'Fingerslayer Blade', aliases: ['fingerslayer'], region: 'Nokron', campaign: 'base', implies: ['boss:radahn'], usedIn: ['quest:ranni:nokron'] },
   { id: 'item:carian-inverted', kind: 'item', name: 'Carian Inverted Statue', aliases: ['inverted statue'], region: 'Liurnia', campaign: 'base', implies: ['quest:ranni:service'], usedIn: ['quest:ranni:statue'] },
-  { id: 'item:sewing-needle', kind: 'item', name: 'Gold Sewing Needle', aliases: ['sewing needle', 'golden sewing needle'], region: 'Church of Vows', campaign: 'base', implies: [], usedIn: ['quest:boc:needle'] },
+  // Task 160 §5 — this is the plain Sewing Needle; the Gold Sewing Needle (goods
+  // 8162) is a distinct item (`item:gold-sewing-needle`). The old shared name made
+  // the two pages indistinguishable in the graph.
+  { id: 'item:sewing-needle', kind: 'item', name: 'Sewing Needle', aliases: ['sewing needle'], region: 'Church of Vows', campaign: 'base', implies: [], usedIn: ['quest:boc:needle'] },
   { id: 'item:haligtree-secret-medallion', kind: 'item', name: 'Haligtree Secret Medallion', aliases: ['secret medallion', 'haligtree medallion'], region: 'Consecrated Snowfield', campaign: 'base', implies: [] },
   { id: 'item:dusk-medallion', kind: 'item', name: 'Dectus Medallion', aliases: ['dectus', 'grand lift of dectus'], region: 'Altus', campaign: 'base', implies: ['region:altus'] },
   { id: 'item:rotted-wing', kind: 'item', name: 'Unalloyed Gold Needle', aliases: ['unalloyed needle', 'millicent needle'], region: 'Caelid', campaign: 'base', implies: ['quest:millicent:needle'] },

@@ -51,6 +51,14 @@ for (const [id, record] of Object.entries(indexRecords)) {
   if (record.kind === 'grace' && !indexGraceByName.has(key)) indexGraceByName.set(key, id)
   if ((record.kind === 'region' || record.kind === 'dungeon') && !indexPlaceByName.has(key)) indexPlaceByName.set(key, id)
 }
+// Task 160 §5 — a hunt checklist row the index folded onto a same-named boss.
+// The `hunt:` engine id must still resolve, so map it to the boss record.
+const indexBossByName = new Map()
+for (const [id, record] of Object.entries(indexRecords)) {
+  if (record.kind !== 'boss' || id.startsWith('hunt:')) continue
+  const key = rawNorm(record.name)
+  if (key && !indexBossByName.has(key)) indexBossByName.set(key, id)
+}
 
 /**
  * Loose normal form: lowercase, drop possessives/parentheticals/punctuation.
@@ -324,8 +332,11 @@ for (const h of hunts) {
   // The roster already says which fight this hunt id is (its aka).
   if (rosterAkaIds.has(h.id)) continue
   const seed = findSeed(h.name, catalogBosses) || findSeed(h.name, catalogInvaders)
-  const slug = seed ? seed.id : h.id
-  const factName = seed ? seed.name : h.name
+  // Task 160 §5 — no authored boss row, but the index has a same-named boss the
+  // hunt row was folded onto: point the hunt id at that page.
+  const indexBoss = seed ? undefined : indexBossByName.get(rawNorm(h.name))
+  const slug = seed ? seed.id : indexBoss ?? h.id
+  const factName = seed ? seed.name : indexBoss ? indexRecords[indexBoss].name : h.name
   const factAliases = seed ? seed.aliases : []
   emit(h.id, slug, h.name, rowAliases(factName, factAliases, h.name), 'hunts')
 }

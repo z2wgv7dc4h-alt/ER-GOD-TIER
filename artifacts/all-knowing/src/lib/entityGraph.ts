@@ -709,7 +709,17 @@ function buildIndex(): Index {
       push(canon(r.bossFactId), { rel: 'drops', to: canon(r.id), label: r.name, source: 'remembrances' })
     }
     for (const reward of r.rewards) {
-      const to = reward.factId ? canon(reward.factId) : resolve(reward.name)
+      let to = reward.factId ? canon(reward.factId) : resolveOwned(reward.name)
+      // A reward name the shipped index has not registered yet is still an item
+      // Enia trades for, so register it rather than dropping the edge.
+      if (!to) {
+        to = canonicalFactId(`item:${slug(reward.name)}`, reward.name)
+        ensure(to, 'item', reward.name, 'Remembrance reward')
+      }
+      // Task 160 — a reward string that matches no ownable entity ("Land of
+      // Shadow" resolves to a region) is a label, not a trade; do not emit a
+      // `tradedFor` edge to the wrong kind.
+      if (!OWNED_EDGE_KINDS.has(entities.get(to)?.kind ?? 'region')) continue
       push(r.id, { rel: 'tradedFor', to, label: reward.name, source: 'remembrances' })
     }
   }
@@ -745,12 +755,20 @@ function buildIndex(): Index {
   }
   for (const b of opBuilds) {
     for (const slot of b.kit) {
-      const to = resolve(slot.name)
+      // Task 160 — a kit slot names an ownable piece; resolve it only against
+      // owned kinds so a same-named quest line ("Nagakiba") cannot claim it.
+      const to = resolveOwned(slot.name) ?? canonicalFactId(`item:${slug(slot.name)}`, slot.name)
       ensure(to, SLOT_KIND[slot.kind] ?? 'item', slot.name, 'Build item')
-      push(b.id, { rel: 'goodForBuild', to, label: slot.name, source: 'builds' })
+      push(b.id, { rel: 'goodForBuild', to: canon(to), label: slot.name, source: 'builds' })
     }
     for (const need of b.need) {
-      push(b.id, { rel: 'goodForBuild', to: canon(need), label: nameOf(need), source: 'builds' })
+      const to = canon(need)
+      const entity = entities.get(to)
+      // A build need that is the boss guarding the piece (or a quest step) is a
+      // requirement, not loot: keep the honest relationship instead of calling a
+      // boss "good for" the build.
+      const rel: EdgeRel = entity && OWNED_EDGE_KINDS.has(entity.kind) ? 'goodForBuild' : 'requires'
+      push(b.id, { rel, to, label: nameOf(need), source: 'builds' })
     }
   }
 
@@ -790,6 +808,9 @@ function buildIndex(): Index {
 
   // upgrade material
   for (const [id, entity] of entities) {
+    // Task 160 — only an ownable entity is an upgrade material; the name test
+    // alone matched the "Smithing Stone Scarab" enemies and the Whetblades card.
+    if (!OWNED_EDGE_KINDS.has(entity.kind)) continue
     if (isUpgradeMaterial(entity.name)) {
       push('mechanic:upgrades', { rel: 'upgradeMaterial', to: id, label: entity.name, source: 'loot' })
     }

@@ -50,6 +50,18 @@
   "source": "boss-roster"
  },
  {
+  "engineId": "boss:count-ymir",
+  "slug": "boss:count-ymir",
+  "kind": "boss",
+  "fmgName": "Count ymir",
+  "aliases": [
+   "count ymir",
+   "ymir",
+   "ymir mother of fingers"
+  ],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "boss:crucible-knight-devonia",
   "slug": "boss:crucible-knight-devonia",
   "kind": "boss",
@@ -67,6 +79,18 @@
   "fmgName": "Crystalians",
   "aliases": [],
   "source": "legacy-id"
+ },
+ {
+  "engineId": "boss:dragon",
+  "slug": "boss:dragon",
+  "kind": "boss",
+  "fmgName": "Drake",
+  "aliases": [
+   "dragons",
+   "drake",
+   "lesser elder dragon"
+  ],
+  "source": "game-name-table"
  },
  {
   "engineId": "boss:elder-dragon-greyoll",
@@ -36518,6 +36542,29 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "enemy:fire-knight-salza",
+  "slug": "enemy:fire-knight-salza",
+  "kind": "enemy",
+  "fmgName": "Salza",
+  "aliases": [
+   "sage salza",
+   "salza"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "enemy:fire-knight-wego",
+  "slug": "enemy:fire-knight-wego",
+  "kind": "enemy",
+  "fmgName": "Elder Wego",
+  "aliases": [
+   "elder wego",
+   "wego",
+   "wego fire knight elder"
+  ],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "enemy:first-generation-albinauric",
   "slug": "enemy:first-generation-albinauric",
   "kind": "enemy",
@@ -36559,6 +36606,18 @@
   "fmgName": "Man-Serpents",
   "aliases": [
    "man serpents"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "enemy:graven-mass",
+  "slug": "enemy:graven-mass",
+  "kind": "enemy",
+  "fmgName": "Orb of Many Faces",
+  "aliases": [
+   "orb of many faces",
+   "school of graven mages",
+   "seeds of stars"
   ],
   "source": "game-name-table"
  },
@@ -36712,6 +36771,16 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "enemy:sage-of-enir-ilim",
+  "slug": "enemy:sage-of-enir-ilim",
+  "kind": "enemy",
+  "fmgName": "Hornsent Shaman",
+  "aliases": [
+   "hornsent shaman"
+  ],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "enemy:second-generation-albinauric",
   "slug": "enemy:second-generation-albinauric",
   "kind": "enemy",
@@ -36771,6 +36840,32 @@
    "spirit eel aggravated",
    "spirit eel buried",
    "spirit eel explosive"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "enemy:steed",
+  "slug": "enemy:steed",
+  "kind": "enemy",
+  "fmgName": "Cuckoo Knight's Steed",
+  "aliases": [
+   "cuckoo knight steed",
+   "godrick knight steed",
+   "kaiden steed",
+   "leyndell knight steed",
+   "mausoleum knight steed",
+   "night cavalry steed",
+   "redmane knight steed"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "enemy:stormhawk",
+  "slug": "enemy:stormhawk",
+  "kind": "enemy",
+  "fmgName": "Hawk",
+  "aliases": [
+   "hawk"
   ],
   "source": "game-name-table"
  },
@@ -37578,6 +37673,16 @@
   "fmgName": "Haligtree Canopy",
   "aliases": [
    "haligtree canopy"
+  ],
+  "source": "entity-index"
+ },
+ {
+  "engineId": "grace:150007",
+  "slug": "grace:150007",
+  "kind": "grace",
+  "fmgName": "Haligtree Town",
+  "aliases": [
+   "haligtree town"
   ],
   "source": "entity-index"
  },
@@ -43609,6 +43714,14 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "gems:60700",
+  "slug": "item:ash-of-war-cragblade",
+  "kind": "item",
+  "fmgName": "Ash of War: Cragblade",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "gems:65000",
   "slug": "item:ash-of-war-barbaric-roar",
   "kind": "item",
@@ -44554,20 +44667,6 @@
   "kind": "item",
   "fmgName": "Sewing Needle",
   "aliases": [
-   "gold sewing needle",
-   "golden sewing needle",
-   "sewing needle"
-  ],
-  "source": "names"
- },
- {
-  "engineId": "goods:8162",
-  "slug": "item:sewing-needle",
-  "kind": "item",
-  "fmgName": "Gold Sewing Needle",
-  "aliases": [
-   "gold sewing needle",
-   "golden sewing needle",
    "sewing needle"
   ],
   "source": "names"
@@ -46510,6 +46609,16 @@
   "fmgName": "Ash of War: Chilling Mist",
   "aliases": [
    "ash of war chilling mist"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "item:ash-of-war-cragblade",
+  "slug": "item:ash-of-war-cragblade",
+  "kind": "item",
+  "fmgName": "Ash of War: Cragblade",
+  "aliases": [
+   "ash of war cragblade"
   ],
   "source": "game-name-table"
  },
@@ -51577,6 +51686,16 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:gold-sewing-needle",
+  "slug": "item:gold-sewing-needle",
+  "kind": "item",
+  "fmgName": "Golden Sewing Needle",
+  "aliases": [
+   "golden sewing needle"
+  ],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "item:golden-epitaph",
   "slug": "item:golden-epitaph",
   "kind": "item",
@@ -51822,6 +51941,14 @@
    "omenkiller cleaver"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "item:great-p-e",
+  "slug": "item:great-epee",
+  "kind": "item",
+  "fmgName": "Great Epee",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "item:great-rune-of-the-unborn",
@@ -58064,6 +58191,14 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:varr-s-bouquet",
+  "slug": "item:varre-s-bouquet",
+  "kind": "item",
+  "fmgName": "Varre's Bouquet",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "item:velvet-sword-of-st-trina",
   "slug": "item:velvet-sword-of-st-trina",
   "kind": "item",
@@ -59003,10 +59138,9 @@
   "engineId": "npc:castellan-edgar",
   "slug": "npc:castellan-edgar",
   "kind": "npc",
-  "fmgName": "Edgar",
+  "fmgName": "Castellan Edgar",
   "aliases": [
-   "castellan edgar",
-   "edgar"
+   "castellan edgar"
   ],
   "source": "game-name-table"
  },
@@ -59072,14 +59206,6 @@
    "dolores the sleeping arrow"
   ],
   "source": "game-name-table"
- },
- {
-  "engineId": "npc:edgar",
-  "slug": "npc:castellan-edgar",
-  "kind": "npc",
-  "fmgName": "Edgar",
-  "aliases": [],
-  "source": "legacy-id"
  },
  {
   "engineId": "npc:fell-god",
@@ -60080,6 +60206,14 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "npcs:141500",
+  "slug": "npc:moore",
+  "kind": "npc",
+  "fmgName": "Moore",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "npcs:141503",
   "slug": "npc:forager-brood",
   "kind": "npc",
@@ -60088,28 +60222,18 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "npcs:141900",
+  "slug": "npc:thiollier",
+  "kind": "npc",
+  "fmgName": "Thiollier",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "npcs:180000",
   "slug": "npc:merchant-kal",
   "kind": "npc",
   "fmgName": "Merchant Kalé",
-  "aliases": [],
-  "source": "game-name-table"
- },
- {
-  "engineId": "npcs:147100",
-  "slug": "npcs:147100",
-  "kind": "npcs",
-  "fmgName": "The Noble Broken Mask",
-  "aliases": [
-   "the noble broken mask"
-  ],
-  "source": "game-name-table"
- },
- {
-  "engineId": "npcs:147100",
-  "slug": "npcs:147100",
-  "kind": "npcs",
-  "fmgName": "The Noble Broken Mask",
   "aliases": [],
   "source": "game-name-table"
  },
@@ -61211,22 +61335,6 @@
   "source": "authored"
  },
  {
-  "engineId": "quest:volcano-manor-apparition-step-1",
-  "slug": "quest:tanith-volcano-manor-proprietress-step-1",
-  "kind": "quest",
-  "fmgName": "Volcano Manor — step 1",
-  "aliases": [],
-  "source": "legacy-id"
- },
- {
-  "engineId": "quest:volcano-manor-apparition-step-3",
-  "slug": "quest:tanith-volcano-manor-proprietress-step-3",
-  "kind": "quest",
-  "fmgName": "Volcano Manor — step 3",
-  "aliases": [],
-  "source": "legacy-id"
- },
- {
   "engineId": "quest:ymir:concluded",
   "slug": "quest:ymir:concluded",
   "kind": "quest",
@@ -61283,16 +61391,6 @@
   "fmgName": "Prince of Death's Throne",
   "aliases": [
    "prince of death throne"
-  ],
-  "source": "entity-index"
- },
- {
-  "engineId": "grace:150007",
-  "slug": "region:haligtree-town",
-  "kind": "region",
-  "fmgName": "Haligtree Town",
-  "aliases": [
-   "haligtree town"
   ],
   "source": "entity-index"
  },

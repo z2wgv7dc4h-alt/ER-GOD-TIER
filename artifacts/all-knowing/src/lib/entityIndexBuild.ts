@@ -2399,6 +2399,11 @@ function mergeNpcQuestSteps(): void {
       if (key && !lineByName.has(key)) lineByName.set(key, line)
     }
   }
+  // Task 160 §5 — two wiki steps of one NPC often happen at the same place and
+  // would build two reference pages with an identical name. Track the display
+  // names already used so the later step gets a distinguishing `(step N)`.
+  const usedDisplayNames = new Set<string>()
+  for (const record of records.values()) usedDisplayNames.add(record.name)
   for (const quest of quests) {
     if (!quest.npc) continue
     const npcId = questNpcId(quest.npc)
@@ -2449,7 +2454,11 @@ function mergeNpcQuestSteps(): void {
     quest.steps.forEach((step, i) => {
       if (used.has(i)) return
       const id = `quest:${slug(quest.npc)}-step-${step.order}`
-      const record = ensure(id, 'quest', `${npcName} — ${step.location || `step ${step.order}`}`)
+      const base = `${npcName} — ${step.location || `step ${step.order}`}`
+      // Two steps at one location are distinct events: qualify the later page.
+      const display = usedDisplayNames.has(base) ? `${base} (step ${step.order})` : base
+      usedDisplayNames.add(display)
+      const record = ensure(id, 'quest', display)
       record.catalogue = false
       setText(record, 'description', step.action)
       setText(record, 'location', step.location)
@@ -2738,10 +2747,15 @@ function foldFmgNpcRows(): void {
       records.delete(id)
       continue
     }
-    if (!/^npcs:\d+$/.test(id) || record.description || record.location || record.questSteps?.length) continue
+    if (!/^npcs:\d+$/.test(id)) continue
     const target = targetFor(record.name)
     if (!target || target === id) continue
-    addName(record.name, target)
+    // Task 160 §5 — a `npcs:<id>` row that carries real content (a description,
+    // a location, quest steps) is the same character as the same-named primary
+    // record, not a second page: fold its fields in before dropping the stub.
+    const keeper = records.get(target)
+    if (keeper) mergeRecords(keeper, record)
+    else addName(record.name, target)
     records.delete(id)
   }
 }
@@ -3193,6 +3207,77 @@ const FILLABLE_DESC_KINDS = new Set<string>([
 /** Place-like kinds whose lead may be a wiki category definition (Task 151 §1). */
 const PLACE_DESC_KINDS = new Set<string>(['region', 'dungeon', 'grace'])
 
+/**
+ * Task 160 §5 — the same ownable item can arrive under two ids (a catalogue row
+ * and an FMG/checklist row). When the two records share an exact name and only
+ * one is catalogue-anchored, fold the unanchored one onto the anchor so the
+ * graph shows one page, and alias the dropped name. Boss/grace/region records are
+ * excluded: two same-named places can be genuinely different.
+ */
+function foldUnanchoredDuplicates(): void {
+  const anchor = new Map<string, string>()
+  for (const [id, record] of records) {
+    if (record.catalogue === false || !OWNED_RESOLVE_KINDS.has(record.kind as EntityKind)) continue
+    const key = `${record.kind}|${simpleNorm(record.name)}`
+    if (!anchor.has(key)) anchor.set(key, id)
+  }
+  for (const [id, record] of [...records]) {
+    if (record.catalogue !== false || !OWNED_RESOLVE_KINDS.has(record.kind as EntityKind)) continue
+    const target = anchor.get(`${record.kind}|${simpleNorm(record.name)}`)
+    if (!target || target === id) continue
+    const keeper = records.get(target)
+    if (keeper) mergeRecords(keeper, record)
+    records.delete(id)
+  }
+}
+
+/**
+ * Task 160 §5 — a hunt checklist row with the same name as a real boss page is
+ * the same fight, not a second page. Fold the hunt record onto the boss so the
+ * two pages become one (the alias plane re-points the `hunt:` id).
+ */
+function foldHuntDuplicates(): void {
+  const bossByName = new Map<string, string>()
+  for (const [id, record] of records) {
+    if (id.startsWith('hunt:') || (record.kind !== 'boss' && record.kind !== 'enemy')) continue
+    const key = simpleNorm(record.name)
+    if (key && !bossByName.has(key)) bossByName.set(key, id)
+  }
+  for (const [id, record] of [...records]) {
+    if (!id.startsWith('hunt:')) continue
+    const target = bossByName.get(simpleNorm(record.name))
+    if (!target || target === id) continue
+    const keeper = records.get(target)
+    if (keeper) mergeRecords(keeper, record)
+    records.delete(id)
+  }
+}
+
+/**
+ * Task 160 §5 — two graces of the same name are different warp points (the
+ * Leyndell Royal vs Ashen Capital, two Artist's Shacks). Keep them separate but
+ * qualify the display name with the region so the two pages are distinguishable.
+ */
+function qualifyDuplicateGraceNames(): void {
+  const byName = new Map<string, EntityRecord[]>()
+  for (const record of records.values()) {
+    if (record.kind !== 'grace') continue
+    const key = simpleNorm(record.name)
+    if (!key) continue
+    const list = byName.get(key) ?? []
+    list.push(record)
+    byName.set(key, list)
+  }
+  for (const list of byName.values()) {
+    if (list.length < 2) continue
+    for (const record of list) {
+      const qualifier = record.region || record.location
+      if (!qualifier || simpleNorm(qualifier) === simpleNorm(record.name)) continue
+      record.name = `${record.name} (${qualifier})`
+    }
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Assemble
 // ---------------------------------------------------------------------------
@@ -3492,6 +3577,12 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   dedupePrimary()
   // Task 148 §1 — then one enemy page per exact display name.
   mergeEnemyVariants()
+  // Task 160 §5 — collapse true same-name duplicates (an unanchored FMG row onto
+  // its catalogue anchor, a hunt checklist row onto its boss) and qualify the
+  // same-name graces that must stay separate.
+  foldUnanchoredDuplicates()
+  foldHuntDuplicates()
+  qualifyDuplicateGraceNames()
 
   // Task 146 §2/§3 — the missing items, the real merchant quotes and the quest
   // pictures, restored from the committed sources after every merge has landed.
