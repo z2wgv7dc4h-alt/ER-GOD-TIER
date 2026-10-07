@@ -554,11 +554,44 @@ function setStat(record: EntityRecord, label: string, value: unknown): void {
   if (!record.stats[label]) record.stats[label] = text
 }
 
+/**
+ * Task 160 §8 — drop strings arrive from the wiki and the rosters with counts,
+ * notes and place prefixes that stop the graph resolving them to the real item
+ * ("3x Dragon Heart", "Ash of War: Holy Ground", "Cathedral of Manus Celes:
+ * Adula's Moonblade", "Smithing Stone (7) x 5"). Clean the ones that name a
+ * real item and drop the strings that name no item at all (rune totals, wiki
+ * placeholders, section headers).
+ */
+function cleanDropText(raw: unknown): string | null {
+  let text = String(raw ?? '').replace(/\s+/g, ' ').trim()
+  if (!text) return null
+  if (/^other drops$/i.test(text)) return null
+  // Wiki/template noise and section headers, not loot.
+  if (/\{\{|icon|\}\}/i.test(text)) return null
+  if (/^(n\/?a|various|#drops|useful loot|see |sometimes:|include all|specifying |no runes|xx runes|\?+)$/i.test(text)) return null
+  // A rune total ("40~67 Runes", "70k Runes", wiki "583 runes-currency…") is a
+  // number, not an item; "Golden Runes" / "Rune Arc" do not start with digits.
+  if (/^\s*[\d~≈?kx.,\-\s]*runes?\b/i.test(text)) return null
+  if (/^[\d~≈]+$/.test(text)) return null
+  text = text.replace(/^[*•\s]+/, '')
+  text = text.replace(/^\d+\s*x\s+/i, '')
+  text = text.replace(/\s*(?:x\s*\d+|\d+\s*x|\*\s*\d+)$/i, '')
+  text = text.replace(/^unlocks\s+/i, '')
+  text = text.replace(/^ash of war:\s*/i, '')
+  if (/:\s+/.test(text) && !/^ash of war/i.test(text)) text = text.split(/:\s+/).pop() ?? text
+  text = text.replace(/\((\d+)\)/g, '[$1]')
+  // A trailing "(ash)"/"(ashes)" is a wiki qualifier, not part of the name.
+  text = text.replace(/\s*\((?:ash|ashes)\)\s*$/i, '')
+  text = text.replace(/^[*•\s]+/, '').trim()
+  if (!text) return null
+  return text
+}
+
 function addDrops(record: EntityRecord, drops: unknown): void {
   if (!Array.isArray(drops)) return
   for (const drop of drops) {
-    const text = String(drop ?? '').trim()
-    if (!text || /^other drops$/i.test(text)) continue
+    const text = cleanDropText(drop)
+    if (!text) continue
     record.drops = record.drops ?? []
     if (!record.drops.includes(text)) record.drops.push(text)
   }
@@ -3615,7 +3648,10 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     // Drops are per encounter (its wiki tab). Name-based merges above pooled every
     // copy's drops onto it; a known roster row is the authority. When the roster
     // has none the pooled source drops stay, filling the gap instead of blanking it.
-    if (row.drops.length) record.drops = [...row.drops]
+    if (row.drops.length) {
+      record.drops = []
+      addDrops(record, row.drops)
+    }
     setText(record, 'strategy', shared.strategy)
     if (!record.image && shared.image) record.image = shared.image
     if (!record.stats?.Runes && shared.stats?.Runes) setStat(record, 'Runes', shared.stats.Runes)

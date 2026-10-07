@@ -585,6 +585,28 @@ function buildIndex(): Index {
     ensure(id, row.factId?.startsWith('enemy:') ? 'enemy' : 'boss', row.name, 'Combat profile')
   }
 
+  // Task 160 — a `hunt:` checklist row that names the same fight as an authored
+  // boss is not a second page: keep the boss, alias the engine id to it. The
+  // dungeon index can register such a row directly, bypassing the enrichment
+  // merge, so fold it here too.
+  {
+    const bossByName = new Map<string, string>()
+    for (const [id, e] of entities) {
+      if (e.kind !== 'boss') continue
+      const n = normalize(e.name)
+      const cur = bossByName.get(n)
+      if (!cur || (cur.startsWith('hunt:') && !id.startsWith('hunt:'))) bossByName.set(n, id)
+    }
+    for (const [id, e] of [...entities]) {
+      if (!id.startsWith('hunt:') || e.kind !== 'boss') continue
+      const target = bossByName.get(normalize(e.name))
+      if (!target || target === id) continue
+      idAlias.set(id, target)
+      entities.delete(id)
+      for (const [n, owner] of byName) if (owner === id) byName.set(n, target)
+    }
+  }
+
   // -------------------------------------------------------------------------
   // Edges
   // -------------------------------------------------------------------------
