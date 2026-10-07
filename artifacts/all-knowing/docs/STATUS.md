@@ -16,13 +16,13 @@ Last updated: 2026-10-07.
 148–152 data cleanup (one page per enemy, real descriptions, lost names restored) · 153 Gideon token
 diet (−76% request size, usage counter in Settings) · 154 game icons for all items/bosses · 155/156/158
 Show on map (zoom, vendor/drop/boss sources, live engine) · 159 live map on phone/offline · 162 Gideon
-offline eval harness · 163 player question corpus (6,581 questions, 20 nicknames) (baseline 40.4% correct) · 164 PvP/Builds layout · 165 bosses/guides/Now layout ·
+offline eval harness (baseline 40.4% correct) · 163 player question corpus (6,581 questions, 20 nicknames) · 164 PvP/Builds layout · 165 bosses/guides/Now layout ·
 `AGENTS.md` completion contract · orchestration tooling.
 
 ## Next (proposed to the owner, not yet approved unless noted)
 1. After 168: offline Gideon meaning search (in-browser embeddings) + pre-generated DeepSeek answers,
    re-scored with `npm run eval:gideon` (owner approved the plan in principle).
-2. After 163: surface current-patch Reddit tips on boss/item/quest pages (needs owner OK).
+2. After 170: surface current-patch Reddit tips on boss/item/quest pages (needs owner OK).
 3. Data gaps: ~320 empty descriptions, NPC map positions (~33%), Omen variant pages.
 4. Real phone test session by the owner once 160–168 land.
 5. Housekeeping: remove merged worktrees/branches (`task-148`…`task-165`, `task-141` after 167).
