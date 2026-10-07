@@ -1,20 +1,20 @@
 # PHOTO-EVAL — PS5 photo reader (fixture set)
 
-Generated 2026-10-07T16:04:59.489Z by `npm run eval:photos`.
+Generated 2026-10-07T16:52:10.772Z by `npm run eval:photos`.
 
 | screen | photos | correct | wrong | missed | field accuracy | total ms |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| status | 1 | 21 | 0 | 0 | 100% | 4961 |
-| equipment | 1 | 7 | 0 | 7 | 50% | 27159 |
-| inventory | 6 | 22 | 6 | 1 | 76% | 170849 |
-| equipment-picker | 1 | 1 | 1 | 1 | 33% | 30661 |
-| item-crafting | 1 | 3 | 0 | 0 | 100% | 24944 |
-| world-map | 3 | 27 | 4 | 0 | 87% | 40051 |
-| **all** | 13 | 81 | 11 | 9 | **80%** | 298625 |
+| status | 1 | 21 | 0 | 0 | 100% | 5110 |
+| equipment | 1 | 7 | 0 | 7 | 50% | 24969 |
+| inventory | 6 | 22 | 6 | 1 | 76% | 180234 |
+| equipment-picker | 1 | 1 | 1 | 1 | 33% | 32424 |
+| item-crafting | 1 | 3 | 0 | 0 | 100% | 26465 |
+| world-map | 3 | 31 | 0 | 0 | 100% | 39816 |
+| **all** | 13 | 85 | 7 | 9 | **84%** | 309018 |
 
 ## Per photo / per field
 
-### status-photo-01.jpg — status (4961 ms)
+### status-photo-01.jpg — status (5110 ms)
 
 detail: `{"level":87,"stats":{"vigor":64,"mind":14,"endurance":27,"strength":21,"dexterity":23,"intelligence":9,"faith":15,"arcane":13},"base":{"vigor":59,"mind":14,"endurance":22,"strength":16,"dexterity":18,"intelligence":9,"faith":15,"arcane":13}}`
 
@@ -40,7 +40,7 @@ detail: `{"level":87,"stats":{"vigor":64,"mind":14,"endurance":27,"strength":21,
 - **base.arcane**: correct — expected 13, got 13
 - **talisman**: correct — expected "Radagon's Soreseal", got "Radagon's Soreseal"
 
-### equipment-photo-01.jpg — equipment (27159 ms)
+### equipment-photo-01.jpg — equipment (24969 ms)
 
 detail: `{"slot":"Right Hand Armament 1","item":"Reed Great Katana","counts":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,2,null,null,null,10,null,null,774,null,null,null,null,null,null]}`
 
@@ -59,7 +59,7 @@ detail: `{"slot":"Right Hand Armament 1","item":"Reed Great Katana","counts":[nu
 - **count.slot23Count**: missed — expected 1, got undefined
 - **count.pots**: missed — expected 13, got undefined
 
-### inventory-spirit-ashes-01.jpg — inventory (27210 ms)
+### inventory-spirit-ashes-01.jpg — inventory (28598 ms)
 
 detail: `{"tab":"Ashes","names":["Putrid Corpse Ashes","Ashes Coil I ow A"],"occupied":19,"counts":[1,null,4,null,null,null,null,null,null,4,null,1,null,2,null,null,null,null,null,null,null,8,null,null,null]}`
 
@@ -68,7 +68,7 @@ detail: `{"tab":"Ashes","names":["Putrid Corpse Ashes","Ashes Coil I ow A"],"occ
 - **category**: correct — expected "spirit", got "spirit"
 - **iconCells**: wrong — expected 14, got 19
 
-### inventory-bolstering-01.jpg — inventory (29692 ms)
+### inventory-bolstering-01.jpg — inventory (31645 ms)
 
 detail: `{"tab":"Bolstering Materials","names":["Grave Glovewort (1)","lstering Material"],"occupied":23,"counts":[null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,2,null,null,null,null,null,null,null,null]}`
 
@@ -80,7 +80,7 @@ detail: `{"tab":"Bolstering Materials","names":["Grave Glovewort (1)","lstering 
 - **iconCells**: wrong — expected 19, got 23
 - **counts**: wrong — expected "3,27,12,7,5,4,1,2,1,8,7,3,5,10,7,7,5,1,1", got "1,2"
 
-### inventory-key-items-01.jpg — inventory (31950 ms)
+### inventory-key-items-01.jpg — inventory (31476 ms)
 
 detail: `{"tab":"Key Items","names":["Holy-Shrouding Cracked Tear"],"occupied":20,"counts":[null,null,null,null,null,null,null,null,null,null,null,null,null,8,null,null,null,null,null,null,3,null,4,null,null]}`
 
@@ -90,7 +90,7 @@ detail: `{"tab":"Key Items","names":["Holy-Shrouding Cracked Tear"],"occupied":2
 - **iconCells**: correct — expected 20, got 20
 - **counts**: wrong — expected "14,5,3,2,3,11,2", got "8,3,4"
 
-### inventory-sorceries-01.jpg — inventory (28946 ms)
+### inventory-sorceries-01.jpg — inventory (30097 ms)
 
 detail: `{"tab":"Sorceries","names":["Ambush Shard"],"occupied":14,"counts":[null,null,null,5,null,null,4,null,null,null,5,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}`
 
@@ -99,7 +99,7 @@ detail: `{"tab":"Sorceries","names":["Ambush Shard"],"occupied":14,"counts":[nul
 - **category**: correct — expected "sorcery", got "sorcery"
 - **iconCells**: wrong — expected 15, got 14
 
-### inventory-ashes-of-war-01.jpg — inventory (29916 ms)
+### inventory-ashes-of-war-01.jpg — inventory (33432 ms)
 
 detail: `{"tab":"Ashes of War","names":["Ash of War: Spinning Slash"],"occupied":17,"counts":[5,null,null,null,null,4,null,null,null,null,null,null,null,45,7,null,null,null,41,1,null,null,null,null,null]}`
 
@@ -108,7 +108,7 @@ detail: `{"tab":"Ashes of War","names":["Ash of War: Spinning Slash"],"occupied"
 - **category**: correct — expected "ash-of-war", got "ash-of-war"
 - **iconCells**: correct — expected 17, got 17
 
-### inventory-tools-01.jpg — inventory (23135 ms)
+### inventory-tools-01.jpg — inventory (24986 ms)
 
 detail: `{"tab":"Tools","names":["Blue Cipher Ring","Blue £3 Cipher 1 Ring a fre"],"occupied":21,"counts":[null,null,null,null,null,null,null,null,null,null,null,23,2,4,3,1,null,null,null,null,null,null,null,null,null]}`
 
@@ -118,7 +118,7 @@ detail: `{"tab":"Tools","names":["Blue Cipher Ring","Blue £3 Cipher 1 Ring a fr
 - **iconCells**: correct — expected 21, got 21
 - **counts**: wrong — expected "1,1,3,1,4,1,1,1,1,1,1,1,110,8", got "23,2,4,3,1"
 
-### equipment-talisman-list-01.jpg — equipment-picker (30661 ms)
+### equipment-talisman-list-01.jpg — equipment-picker (32424 ms)
 
 detail: `{"names":["Green Turtle Talisman","Green >A Turtle REO Talisman EOE"],"occupied":20}`
 
@@ -126,7 +126,7 @@ detail: `{"names":["Green Turtle Talisman","Green >A Turtle REO Talisman EOE"],"
 - **iconCells**: wrong — expected 19, got 20
 - **equippedBadges**: missed — expected "3,5,13", got undefined
 
-### crafting-all-items-01.jpg — item-crafting (24944 ms)
+### crafting-all-items-01.jpg — item-crafting (26465 ms)
 
 detail: `{"tab":"All Items","names":["Preserving Boluses"],"occupied":25}`
 
@@ -134,12 +134,12 @@ detail: `{"tab":"All Items","names":["Preserving Boluses"],"occupied":25}`
 - **selected**: correct — expected "Preserving Boluses", got "Preserving Boluses"
 - **iconCells**: correct — expected 25, got 25
 
-### map-overworld-01.jpg — world-map (12287 ms)
+### map-overworld-01.jpg — world-map (12285 ms)
 
-detail: `{"detected":42,"snapped":37,"purity":1,"snapRate":0.8809523809523809,"graceMs":97,"regions":["Limgrave","Liurnia","Stormveil","Stormhill","Weeping Peninsula","Caelid","Raya Lucaria","Redmane Castle"]}`
+detail: `{"detected":40,"snapped":35,"purity":1,"snapRate":0.875,"graceMs":101,"regions":["Limgrave","Liurnia","Stormveil","Stormhill","Weeping Peninsula","Caelid","Raya Lucaria","Redmane Castle"]}`
 
 - **registration**: correct — expected "inliers≥12 err<6", got "inliers=67 err=2.74"
-- **detected**: wrong — expected 58, got 42
+- **detected**: correct — expected "≥29", got 40
 - **graceSnapRate**: correct — expected "≥0.70", got "0.88"
 - **gracePurity**: correct — expected "≥0.95", got "1.00"
 - **revealed.Limgrave**: correct — expected true, got true
@@ -152,12 +152,12 @@ detail: `{"detected":42,"snapped":37,"purity":1,"snapRate":0.8809523809523809,"g
 - **unrevealed.Mt. Gelmir**: correct — expected false, got false
 - **unrevealed.Mountaintops**: correct — expected false, got false
 
-### map-overworld-north-01.jpg — world-map (12635 ms)
+### map-overworld-north-01.jpg — world-map (12772 ms)
 
-detail: `{"detected":54,"snapped":45,"purity":1,"snapRate":0.8333333333333334,"graceMs":77,"regions":["Limgrave","Liurnia","Stormveil","Leyndell","Stormhill","Caelid","Mountaintops","Raya Lucaria","Altus","Forbidden Lands"]}`
+detail: `{"detected":54,"snapped":45,"purity":1,"snapRate":0.8333333333333334,"graceMs":76,"regions":["Limgrave","Liurnia","Stormveil","Leyndell","Stormhill","Caelid","Mountaintops","Raya Lucaria","Altus","Forbidden Lands"]}`
 
 - **registration**: correct — expected "inliers≥12 err<6", got "inliers=82 err=2.66"
-- **detected**: wrong — expected 93, got 54
+- **detected**: correct — expected "≥46", got 54
 - **graceSnapRate**: correct — expected "≥0.70", got "0.83"
 - **gracePurity**: correct — expected "≥0.95", got "1.00"
 - **revealed.Liurnia**: correct — expected true, got true
@@ -169,14 +169,14 @@ detail: `{"detected":54,"snapped":45,"purity":1,"snapRate":0.8333333333333334,"g
 - **revealed.Limgrave**: correct — expected true, got true
 - **unrevealed.Consecrated Snowfield**: correct — expected false, got false
 
-### map-underground-01.jpg — world-map (15129 ms)
+### map-underground-01.jpg — world-map (14759 ms)
 
-detail: `{"detected":17,"snapped":13,"purity":0.9230769230769231,"snapRate":0.7647058823529411,"graceMs":63,"regions":["Ainsel"]}`
+detail: `{"detected":16,"snapped":12,"purity":1,"snapRate":0.75,"graceMs":67,"regions":["Ainsel"]}`
 
 - **registration**: correct — expected "inliers≥12 err<6", got "inliers=26 err=2.30"
-- **detected**: wrong — expected 24, got 17
-- **graceSnapRate**: correct — expected "≥0.70", got "0.76"
-- **gracePurity**: wrong — expected "≥0.95", got "0.92"
+- **detected**: correct — expected "≥12", got 16
+- **graceSnapRate**: correct — expected "≥0.70", got "0.75"
+- **gracePurity**: correct — expected "≥0.95", got "1.00"
 - **revealed.Ainsel River**: correct — expected true, got true
 - **revealed.Siofra River**: correct — expected true, got true
 
