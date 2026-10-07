@@ -354,7 +354,8 @@ async function runWeb(deps) {
         checks.push({ field: 'stats 1..99', expected: true, got: rangeOk, status: rangeOk ? 'correct' : 'wrong' })
         const runesOk = typeof r.runesHeld === 'number' && r.runesHeld >= 0 && typeof r.runesNeeded === 'number' && r.runesNeeded >= r.runesHeld
         checks.push({ field: 'runes plausible', expected: true, got: runesOk, status: runesOk ? 'correct' : 'wrong' })
-        if (r.name) names.push(r.name)
+        // The parsed name here is the player's *character* name, not a game item,
+        // so it is deliberately not fed to the alias-plane self-consistency check.
       } else if (screen === 'inventory' || screen === 'item-crafting') {
         const r = await node.inventoryFromPhoto(w, file)
         if (r.header?.selected) names.push(r.header.selected)
