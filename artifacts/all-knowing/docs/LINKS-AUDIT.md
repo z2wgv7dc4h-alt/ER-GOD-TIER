@@ -55,7 +55,7 @@ table. The table below is the current traversal; the guards snapshot it.
 | talisman.source | ≥ 90% | 93.7% | PASS |
 | weapon.source | ≥ 85% | 91.6% | PASS |
 | spell.source | ≥ 90% | 98.6% | PASS |
-| npc.location | ≥ 65% | 82.6% | PASS |
+| npc.location | ≥ 65% | 82.4% | PASS |
 
 All guard minimums met.
 
@@ -69,8 +69,8 @@ All guard minimums met.
 | item | 1186 | 76.3% | · | · | · | · | · | · | · |
 | material | 3 | 100% | · | · | · | · | · | · | · |
 | merchant | 106 | · | · | · | · | · | 100% | · | · |
-| npc | 190 | · | · | 82.6% | · | · | · | · | · |
-| quest | 473 | · | · | 71.7% | · | · | · | · | · |
+| npc | 188 | · | · | 82.4% | · | · | · | · | · |
+| quest | 471 | · | · | 71.5% | · | · | · | · | · |
 | region | 298 | · | · | · | 36.9% | · | · | · | · |
 | remembrance | 25 | · | · | · | · | · | · | 100% | 100% |
 | shield | 67 | 95.5% | · | · | · | · | · | · | · |
@@ -88,9 +88,9 @@ the links a plain renderer still owes.
 | surface | linkable | unlinked before | unlinked after |
 | --- | --- | --- | --- |
 | entity descriptions | 771 | 0 | 0 |
-| wiki sections | 1680 | 0 | 0 |
-| acquisition text | 1578 | 0 | 0 |
-| quest step actions | 646 | 577 | 0 |
+| wiki sections | 1681 | 0 | 0 |
+| acquisition text | 1579 | 0 | 0 |
+| quest step actions | 650 | 577 | 0 |
 | mechanics bodies | 189 | 0 | 0 |
 
 _Regenerated 2026-10-07._

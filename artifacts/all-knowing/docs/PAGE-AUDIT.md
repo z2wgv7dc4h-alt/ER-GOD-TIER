@@ -20,21 +20,12 @@ and every entity-graph id the app can link to.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | item | 1183 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | armor | 751 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-<<<<<<< HEAD
-| enemy | 607 | 607 | 0 | 0 | 0 | 607 | 0 | 0 | 0 | 0 |
-| quest | 468 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| weapon | 441 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| grace | 416 | 416 | 0 | 0 | 0 | 387 | 416 | 0 | 0 | 0 |
-| region | 355 | 355 | 0 | 0 | 0 | 347 | 355 | 0 | 0 | 0 |
-| boss | 280 | 106 | 0 | 0 | 0 | 106 | 0 | 0 | 0 | 0 |
-=======
 | enemy | 614 | 614 | 0 | 0 | 0 | 614 | 0 | 0 | 0 | 0 |
 | quest | 471 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | weapon | 439 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | grace | 417 | 417 | 0 | 0 | 0 | 388 | 417 | 0 | 0 | 0 |
-| region | 297 | 297 | 0 | 0 | 0 | 288 | 297 | 0 | 0 | 0 |
-| boss | 280 | 103 | 0 | 0 | 0 | 103 | 0 | 0 | 0 | 0 |
->>>>>>> master
+| region | 297 | 297 | 0 | 0 | 0 | 289 | 297 | 0 | 0 | 0 |
+| boss | 280 | 104 | 0 | 0 | 0 | 104 | 0 | 0 | 0 | 0 |
 | spell | 218 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | npc | 188 | 188 | 0 | 0 | 0 | 188 | 188 | 0 | 0 | 0 |
 | talisman | 158 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -48,11 +39,7 @@ and every entity-graph id the app can link to.
 | gate | 10 | 10 | 0 | 0 | 0 | 10 | 0 | 0 | 0 | 0 |
 | ending | 5 | 5 | 0 | 0 | 0 | 5 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-<<<<<<< HEAD
-| **total** | **5685** | **1920** | 2 | 0 | 0 | 1776 | 1191 | 0 | 0 | 0 |
-=======
-| **total** | **5626** | **1859** | 0 | 0 | 0 | 1715 | 1127 | 0 | 0 | 0 |
->>>>>>> master
+| **total** | **5626** | **1860** | 0 | 0 | 0 | 1717 | 1127 | 0 | 0 | 0 |
 
 ## After
 
@@ -81,11 +68,7 @@ and every entity-graph id the app can link to.
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | **total** | **5630** | **0** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
-<<<<<<< HEAD
-Task 144 removed **1918** flagged pages
-=======
-Task 144 removed **1859** flagged pages
->>>>>>> master
+Task 144 removed **1860** flagged pages
 (empty, raw ids, bad casing, generic status, wrong actions, wiki nav, junk rows, boss filed as NPC).
 
 ## Remaining empty pages, by name
