@@ -679,4 +679,129 @@ Hand-verified nicknames written to `src/data/player-nicknames.json` and consumed
 - `Recusant` (2) → enemy:recusant-bernahl / invader:knight-bernahl / invader:recusant-henricus / item:recusant-finger
 - `Caria` (2) → dungeon:caria-manor / enemy:caria-manor-silent-spirit / region:caria-manor
 - `Tibia` (2) → boss:tibia-mariner / boss:tibia-mariner--liurnia-of-the-lakes / boss:tibia-mariner--summonwater-village / boss:tibia-mariner--wyndham-ruins / enemy:tibia-mariner-charo-s-hidden-grave / item:tibia-s-cookbook / item:tibia-s-summons
+<!-- task-170:start -->
 
+## Player knowledge (Task 170)
+
+Community strategies, cheese, bugs, missables and PvP from seven Elden Ring subreddits (posts and their top-voted comments). Collected by `scripts/collect-player-knowledge.py`; text only, no usernames.
+
+- **Rows:** 5384 (3544 posts, 1840 comments)
+- **Possibly outdated:** 808 (15%)
+- **Current patch (not outdated):** 2158 rows
+
+### Counts per topic
+
+| topic | rows |
+| --- | ---: |
+| other | 2792 |
+| build | 807 |
+| pvp | 441 |
+| bug | 256 |
+| dlc | 253 |
+| synergy | 179 |
+| strategy | 161 |
+| mechanic | 157 |
+| farm | 134 |
+| route | 95 |
+| lore | 89 |
+| missable | 20 |
+
+### Top 50 entities
+
+| # | entity id | rows |
+| ---: | --- | ---: |
+| 1 | mechanic:status-bleed | 251 |
+| 2 | item:strength | 182 |
+| 3 | boss:malenia | 175 |
+| 4 | damage:magic | 150 |
+| 5 | mechanic:poise | 144 |
+| 6 | npc:the-tarnished-protagonist | 140 |
+| 7 | boss:radagon | 132 |
+| 8 | mechanic:ashes-of-war | 118 |
+| 9 | boss:radahn | 116 |
+| 10 | item:parry | 106 |
+| 11 | grace:starscourge-radahn | 101 |
+| 12 | mechanic:incantation | 101 |
+| 13 | boss:mohg | 88 |
+| 14 | mechanic:invasions | 88 |
+| 15 | npc:death-outer-god | 79 |
+| 16 | item:greatsword | 78 |
+| 17 | boss:messmer | 77 |
+| 18 | boss:godfrey | 73 |
+| 19 | region:caelid | 69 |
+| 20 | boss:maliketh | 69 |
+| 21 | damage:fire | 67 |
+| 22 | grace:maliketh-the-black-blade | 65 |
+| 23 | mechanic:weapon-scaling | 64 |
+| 24 | boss:morgott | 61 |
+| 25 | enemy:maliketh-farum-azula | 60 |
+| 26 | npc:queen-marika-the-eternal | 59 |
+| 27 | item:rest | 59 |
+| 28 | region:shadow | 58 |
+| 29 | boss:rennala | 57 |
+| 30 | boss:fire-giant | 57 |
+| 31 | grace:65535200 | 57 |
+| 32 | grace:fire-giant | 57 |
+| 33 | mechanic:sorcery | 55 |
+| 34 | damage:lightning | 55 |
+| 35 | boss:consort | 53 |
+| 36 | damage:holy | 52 |
+| 37 | region:liurnia | 52 |
+| 38 | mechanic:status-frostbite | 52 |
+| 39 | item:flask-of-wondrous-physick | 51 |
+| 40 | item:spear | 51 |
+| 41 | region:leyndell | 50 |
+| 42 | npc:night | 49 |
+| 43 | region:lands-between | 48 |
+| 44 | item:wait | 48 |
+| 45 | region:limgrave | 48 |
+| 46 | mechanic:torrent | 45 |
+| 47 | npc:torrent | 45 |
+| 48 | grace:margit-the-fell-omen | 45 |
+| 49 | mechanic:stamina | 45 |
+| 50 | boss:margit | 44 |
+
+### 20 example tips (current patch, not outdated)
+
+- **[bug]** Friend got into ER after DS My bud finally started ER after playing the DS trilogy with us, since he is getting started now, I figured I could be sending them those pictures of random places with the Elden Ring places named after them, it's just that IDK how to search for those in the sub and cou...  
+  `1.17` · score 13173 · - · https://www.reddit.com/r/Eldenring/comments/1wt937y/
+- **[lore]** Marika and Radagon being the same person confuses me, need a lore expert in the comments (oc)  
+  `1.17` · score 8890 · boss:radagon, npc:queen-marika-the-eternal · https://www.reddit.com/r/Eldenring/comments/1wv1560/
+- **[route]** How do I get there How do I get there If I can get there  
+  `1.17` · score 7699 · - · https://www.reddit.com/r/Eldenring/comments/1wo91qb/
+- **[route]** The right way to play the Elden ring  
+  `1.17` · score 6909 · - · https://www.reddit.com/r/Eldenring/comments/1wmoffk/
+- **[build]** Malenia, Build of Miquella (LEGO) She has never known defeat. Except those couple of times I dropped her.  
+  `1.17` · score 6358 · boss:malenia, npc:miquella-of-the-haligtree · https://www.reddit.com/r/Eldenring/comments/1wshejz/
+- **[synergy]** RL1 Death Knight one-shot (no buffs/broadsword only) Finally managed to pull this setup off! Took a lot of trial and error and favourable RNG.  
+  `1.17` · score 5961 · enemy:death-knight-fog-rift-catacombs-boss, enemy:death-knight-scorpion-river-catacombs-boss, hunt:death-knight, hunt:death-knight--fog-rift-catacombs · https://www.reddit.com/r/Eldenring/comments/1wqxazp/
+- **[lore]** Godefroy the Grafted is probably the single stupidest thing in all of Elden Ring lore. You remember Godrick? The first major boss you're likely to come across? Well, get this. He has a relative. Who looks exactly like him. Including each of his grafted limbs. And his clothes. And his crown. And h...  
+  `1.17` · score 4707 · boss:godefroy, boss:godrick, grace:godrick-grace · https://www.reddit.com/r/Eldenring/comments/1wtt62u/
+- **[lore]** What if we had a customization system? Elden Ring introduced the ability to partially alter the appearance of armor, and it got me thinking: what if we had one or two merchants who could change the metal and fabric of our armor? The metals could be lore-friendly, like the reddish gold of the Cruc...  
+  `1.17` · score 4153 · merchant:alteration, merchant:miriel · https://www.reddit.com/r/Eldenring/comments/1wp4aq0/
+- **[build]** I'm at vigor level 40. So no mean comments or I'll tell mom.  
+  `1.17` · score 3796 · - · https://www.reddit.com/r/Eldenring/comments/1ww6jhj/
+- **[dlc]** Will we ever get a game as big and great as Elden Ring ever again? Played Elden Ring around 2 years ago, as my second souls game after bloodborne and wasn't even really familiar with the scope of this game at all. Ended up finishing it in around 90-100 hours, forgetting a bit about it after some ...  
+  `1.17` · score 3469 · - · https://www.reddit.com/r/Eldenring/comments/1wwcm0y/
+- **[dlc]** First impressions of the final map segment I just unlocked in SOTE To be fair you can use Torrent on most of the SOTE map.  
+  `1.17` · score 3240 · mechanic:torrent, npc:torrent, region:shadow · https://www.reddit.com/r/Eldenring/comments/1wooweg/
+- **[lore]** Can anyone tell me the lore behind why Melina looks so different after the Frenzie Flame ending. I’ve always wonderd this & could never figure it out, is it because she didn’t burn the tree herself or is it the aftermath of Frenzie ending? Her eye even looks like the Gloam Eyed Queen with the cou...  
+  `1.17` · score 3075 · npc:gloam-eyed-queen, npc:melina · https://www.reddit.com/r/Eldenring/comments/1wu28qb/
+- **[build]** Happy Birthday to Hidetaka Miyazaki! Born September 19th, 1974 Without you we wouldn’t have the greatest game ever made! What build would he craft?  
+  `1.17` · score 3039 · - · https://www.reddit.com/r/Eldenring/comments/1wjtt7t/
+- **[dlc]** Is Farum Azula considered as a legacy dungeon, or is it just another area in the game? I am new to the game, I have seen a lot of players arguing about the best legacy dungeon in the game ! Before reaching Farum Azula, I was pretty confident that stormveil is so well designed that next legacy dun...  
+  `1.17` · score 2927 · boss:maliketh, dungeon:shadow-keep, dungeon:stormveil, enemy:maliketh-farum-azula · https://www.reddit.com/r/Eldenring/comments/1wlj2iq/
+- **[bug]** After 4 or so years, did anyone figure out why the Crucible Knight behind one of the Belfry portals doesn't drop runes or anything all? Is this a never to be fixed bug? Is there a game-design reason behind this? It's just very odd. Not every Crucible Knight drops their associated gear or spells, ...  
+  `1.16.1` · score 2719 · enemy:crucible-knight-farum-azula, enemy:crucible-knight-four-belfries, enemy:crucible-knight-leyndell, enemy:crucible-knight-limgrave-evergaol-boss · https://www.reddit.com/r/eldenringdiscussion/comments/1tcspdv/
+- **[build]** Are faith and magic builds the same thing but called different ? Strength main boys well say you are all the same  
+  `1.17` · score 2640 · damage:magic, item:strength · https://www.reddit.com/r/Eldenring/comments/1wow356/
+- **[dlc]** You could buy the DLC and if you were trying to play blind you could just never figure out how to fucking get there  
+  `1.17` · score 2610 · - · https://www.reddit.com/r/Eldenring/comments/1wp8jz9/i_like_how_you_can_technically_go_the_entire_game/pbt86sc/
+- **[strategy]** Do I have to fight “Mr. I don’t miss a parry” help! He is not missing a parry on me. I’m in academy right now. Do I have to defeat him to face the boss? Any tips on how to defeat him? Oh man.  
+  `1.17` · score 2394 · item:parry · https://www.reddit.com/r/Eldenring/comments/1wj6b9z/
+- **[mechanic]** OK so apparently there's a shield with 100 holy damage negation.  
+  `1.17` · score 2379 · damage:holy · https://www.reddit.com/r/Eldenring/comments/1wt1c38/
+- **[strategy]** Finally bought my first Souls game! After thinking about it for so long, I finally made up my mind and bought Elden Ring! 😂 This is officially my first Souls game, so I’m going in completely as a newbie. I’ve heard this game is hard, so veteran players, drop your best tips for a first-time player...  
+  `1.17` · score 2361 · item:wait · https://www.reddit.com/r/Eldenring/comments/1wsd491/
+
+<!-- task-170:end -->

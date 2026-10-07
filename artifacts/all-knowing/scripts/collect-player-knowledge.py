@@ -59,7 +59,7 @@ MD_END = "<!-- task-170:end -->"
 UA = "all-knowing-player-knowledge/1.0 (Elden Ring companion research; personal project)"
 MIN_INTERVAL = 2.0  # seconds between live requests (<= 1 request / 2 s)
 ARCHIVE = "https://arctic-shift.photon-reddit.com"
-POST_FIELDS = "id,title,selftext,score,created_utc,subreddit,num_comments,permalink,link_flair_text"
+POST_FIELDS = "id,title,selftext,score,created_utc,subreddit,num_comments,link_flair_text"
 MIN_COMMENT_SCORE = 20
 TOP_COMMENTS_PER_POST = 5
 MAX_TEXT = 1500
@@ -473,9 +473,13 @@ def fetch_comment_tree(post_id: str) -> list[dict]:
 # ---------------------------------------------------------------------------
 # Build corpus
 # ---------------------------------------------------------------------------
-def contains_term(post: dict, terms: list[str]) -> bool:
-    hay = f"{post.get('title') or ''} {post.get('selftext') or ''}".lower()
-    return any(t.lower() in hay for t in terms)
+SEARCH_RES = [re.compile(r"(?<![A-Za-z0-9])" + re.escape(t.lower()) + r"(?![A-Za-z0-9])", re.I)
+              for t in SEARCH_TERMS]
+
+
+def contains_term(post: dict, terms: list[str] | None = None) -> bool:
+    hay = f"{post.get('title') or ''} {post.get('selftext') or ''}"
+    return any(rx.search(hay) for rx in SEARCH_RES)
 
 
 def post_row(p: dict, lookup, change_map, later_nerf: bool = False) -> dict | None:
@@ -667,7 +671,6 @@ def main() -> int:
     parser.add_argument("--posts-only", action="store_true", help="fetch posts, skip comments")
     parser.add_argument("--max-comment-posts", type=int, default=0,
                         help="max new comment trees to fetch this run (0 = all)")
-    parser.add_argument("--search", action="store_true", help="also run keyword searches")
     args = parser.parse_args()
 
     RAW.mkdir(parents=True, exist_ok=True)
@@ -685,11 +688,12 @@ def main() -> int:
         search_ids.update(cached_search)
         print(f"cached search posts: {len(cached_search)}")
 
-    if not args.no_fetch and args.search:
-        for term in SEARCH_TERMS:
-            for p in fetch_search_posts(term):
-                pool[p["id"]] = p
-                search_ids.add(p["id"])
+    # The archive's full-text search times out from this network (HTTP 422
+    # "Timeout"), so the requested keyword searches are performed locally over
+    # the collected post pool instead (title + selftext, word-boundary match).
+    for pid, p in pool.items():
+        if contains_term(p):
+            search_ids.add(pid)
 
     corpus = choose_corpus(pool, search_ids)
     # local search tagging for cached posts
