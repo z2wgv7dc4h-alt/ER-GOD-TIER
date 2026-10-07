@@ -52,10 +52,10 @@ describe('snapGraces', () => {
   const ref: MapReference = { world: 'overworld', width: 4096, height: 3880, features: [] }
 
   it('snaps a blob to the nearest known grace and dedupes per grace', () => {
-    // The First Step is 35.05%, 70.05% -> (1435.6, 2717.9).
+    // The First Step is 35.05%, 70.05% of plate width -> (1435.6, 2869.2).
     const blobs = [
-      { x: 1436, y: 2718, radius: 12, area: 450, fill: 0.9, strength: 0.9 },
-      { x: 1438, y: 2720, radius: 12, area: 450, fill: 0.85, strength: 0.8 },
+      { x: 1436, y: 2869, radius: 12, area: 450, fill: 0.9, strength: 0.9 },
+      { x: 1438, y: 2871, radius: 12, area: 450, fill: 0.85, strength: 0.8 },
     ]
     const identity = [1, 0, 0, 0, 1, 0, 0, 0, 1]
     const snaps = snapGraces(blobs, identity, ref, 'overworld', { tolerancePercent: 1 })

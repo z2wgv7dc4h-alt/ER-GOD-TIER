@@ -142,7 +142,7 @@ export function classifyFragments(
     const anchor = anchorFor(collectible)
     if (!anchor) continue
     const mapX = (anchor.xPercent / 100) * ref.width
-    const mapY = (anchor.yPercent / 100) * ref.height
+    const mapY = (anchor.yPercent / 100) * ref.width
     const [photoX, photoY] = applyH(Hinv, mapX, mapY)
     const radius = (o.patchPercent / 100) * ref.width
     const visible =
