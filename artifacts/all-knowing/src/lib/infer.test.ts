@@ -1,6 +1,17 @@
 import { describe, expect, it } from 'vitest'
 import { emptyCharacter } from '../data/seed'
+import { byId } from '../knowledge/catalog'
+import type { Character } from '../types'
 import { applyAnswers, applyFacts, closeWorld, prefixKind } from './infer'
+
+function known(c: Character, id: string): boolean {
+  return (
+    c.defeatedBosses.includes(id) ||
+    c.discoveredGraces.includes(id) ||
+    c.collectedItems.includes(id) ||
+    c.completedQuestSteps.includes(id)
+  )
+}
 
 describe('prefixKind', () => {
   it('maps grace dialects to grace', () => {
@@ -112,5 +123,65 @@ describe('applyAnswers — DLC / Tarnished Pack starts', () => {
     expect(direct?.source).toBe('answer')
     expect(direct?.detail).toBe('interview')
     expect(c.evidence.some((e) => e.fact === 'boss:radahn' && e.source === 'answer')).toBe(true)
+  })
+
+  // Task 166 §15 — the "Reached Altus or Leyndell" answer is split.
+  it('seeds Altus without claiming Leyndell', () => {
+    const c = applyAnswers({ ...emptyCharacter, answers: { dlc: 'altus' } })
+    expect(c.collectedItems).toContain('region:altus')
+    expect(c.collectedItems).not.toContain('region:leyndell')
+  })
+
+  it('entering Leyndell seeds the capital and, through it, Altus', () => {
+    const c = applyAnswers({ ...emptyCharacter, answers: { dlc: 'leyndell' } })
+    expect(c.collectedItems).toContain('region:leyndell')
+    expect(c.collectedItems).toContain('region:altus')
+  })
+})
+
+// Task 166 §14 — a changed interview answer retracts the seeds the old one wrote.
+describe('applyAnswers — retracting changed seeds', () => {
+  it('drops the previous region when the progress answer changes', () => {
+    const altus = applyAnswers({ ...emptyCharacter, answers: { dlc: 'altus' } })
+    expect(altus.collectedItems).toContain('region:altus')
+    const limgrave = applyAnswers({ ...altus, answers: { ...altus.answers, dlc: 'limgrave' } })
+    expect(limgrave.collectedItems).toContain('region:limgrave')
+    expect(limgrave.collectedItems).not.toContain('region:altus')
+    expect(limgrave.collectedItems).not.toContain('region:leyndell')
+  })
+
+  it('keeps a fact that other evidence still supports', () => {
+    const seeded = applyAnswers({ ...emptyCharacter, answers: { dlc: 'liurnia' } })
+    const shot = applyFacts(seeded, ['grace:lake-shore'], 'screenshot', 'warp list')
+    const changed = applyAnswers({ ...shot, answers: { ...shot.answers, dlc: 'limgrave' } })
+    // The Liurnia answer is gone, but the photographed grace still proves it.
+    expect(changed.collectedItems).toContain('region:liurnia')
+  })
+
+  it('retracts a removed shardbearer answer', () => {
+    const seeded = applyAnswers({ ...emptyCharacter, answers: { shardbearers: ['boss:godrick', 'boss:rennala'] } })
+    expect(seeded.defeatedBosses).toContain('boss:godrick')
+    const changed = applyAnswers({ ...seeded, answers: { ...seeded.answers, shardbearers: ['boss:rennala'] } })
+    expect(changed.defeatedBosses).not.toContain('boss:godrick')
+    expect(changed.defeatedBosses).toContain('boss:rennala')
+  })
+})
+
+// Task 166 §15/§16 — the risky/over-claim catalog edges are gone.
+describe('over-claim edges removed', () => {
+  it('the Mountaintops no longer directly imply Morgott', () => {
+    expect(byId.get('region:mountaintops')?.implies).not.toContain('boss:morgott')
+  })
+
+  it('Niall and the Stray Mimic Tear no longer hand over the full medallion', () => {
+    expect(byId.get('boss:commander-niall')?.implies).not.toContain('item:haligtree-secret-medallion')
+    expect(byId.get('boss:stray-mimic-tear')?.implies).not.toContain('item:haligtree-secret-medallion')
+    expect(byId.get('boss:commander-niall')?.implies).toContain('item:haligtree-medallion-left')
+  })
+
+  it('a lone medallion half from Niall does not open the Haligtree', () => {
+    const c = applyFacts(emptyCharacter, ['boss:commander-niall'], 'answer', 'test')
+    expect(known(c, 'region:haligtree')).toBe(false)
+    expect(known(c, 'item:haligtree-secret-medallion')).toBe(false)
   })
 })

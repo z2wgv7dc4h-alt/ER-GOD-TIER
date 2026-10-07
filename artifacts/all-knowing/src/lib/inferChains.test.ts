@@ -3,6 +3,7 @@ import { emptyCharacter } from '../data/seed'
 import { byId } from '../knowledge/catalog'
 import { planRoute } from '../knowledge/endings'
 import { chainsFor, explainInference, inferChains } from '../knowledge/inferChains'
+import { remembrances } from '../knowledge/remembrances'
 import { allLines } from '../knowledge/storylines'
 import type { Character } from '../types'
 import { applyFacts, closeWorld, denyFacts } from './infer'
@@ -119,6 +120,26 @@ describe('Great Rune chains', () => {
       const after = applyFacts(emptyCharacter, [item], 'screenshot', 'rune page')
       expect(after.defeatedBosses).toContain(boss)
     }
+  })
+})
+
+// Task 166 §18 — remembrance ⇒ boss, generalised from `remembrances.ts`.
+describe('remembrance chains', () => {
+  it('covers every mapped remembrance', () => {
+    const mapped = remembrances.filter((r) => r.bossFactId)
+    expect(mapped.length).toBeGreaterThan(15)
+    for (const r of mapped) {
+      const chain = inferChains.find((c) => c.whenFact === r.id)
+      expect(chain?.implies, r.id).toContain(r.bossFactId)
+      expect(chain?.certainty, r.id).toBe('certain')
+    }
+  })
+
+  it('derives a SotE remembrance the catalog never mapped', () => {
+    const c = applyFacts(emptyCharacter, ['item:remembrance-impaler'], 'screenshot', 'tools page')
+    expect(c.defeatedBosses).toContain('boss:messmer')
+    const a = applyFacts(emptyCharacter, ['item:remembrance-a-god-and-a-lord'], 'screenshot', 'tools page')
+    expect(a.defeatedBosses).toContain('boss:consort')
   })
 })
 

@@ -34,7 +34,7 @@ export const facts: Fact[] = [
   { id: 'region:caelid', kind: 'region', name: 'Caelid', aliases: ['scarlet rot', 'redmane'], region: 'Caelid', campaign: 'base', implies: ['region:limgrave'] },
   { id: 'region:altus', kind: 'region', name: 'Altus Plateau', aliases: ['altus', 'ergtree grazing'], region: 'Altus', campaign: 'base', implies: ['region:liurnia'] },
   { id: 'region:leyndell', kind: 'region', name: 'Leyndell, Royal Capital', aliases: ['leyndell', 'royal capital'], region: 'Leyndell', campaign: 'base', implies: ['region:altus'] },
-  { id: 'region:mountaintops', kind: 'region', name: 'Mountaintops of the Giants', aliases: ['mountaintops', 'forge of the giants'], region: 'Mountaintops', campaign: 'base', implies: ['boss:morgott'] },
+  { id: 'region:mountaintops', kind: 'region', name: 'Mountaintops of the Giants', aliases: ['mountaintops', 'forge of the giants'], region: 'Mountaintops', campaign: 'base', implies: [] }, // Task 166 §15: the Mountaintops can be entered without felling Morgott, so reaching them no longer proves him. (The Rold Medallion edge, which really is only granted after Morgott, still derives him when held.)
   { id: 'region:farum', kind: 'region', name: 'Crumbling Farum Azula', aliases: ['farum azula', 'farum'], region: 'Farum Azula', campaign: 'base', implies: ['grace:forge-giants'] },
   { id: 'region:haligtree', kind: 'region', name: 'Miquella’s Haligtree', aliases: ['haligtree', 'elphael'], region: 'Haligtree', campaign: 'base', implies: ['item:haligtree-secret-medallion'] },
   { id: 'region:shadow', kind: 'region', name: 'Realm of Shadow', aliases: ['sote', 'shadow of the erdtree', 'land of shadow', 'gravesite'], region: 'Gravesite Plain', campaign: 'sote', implies: ['boss:mohg', 'boss:radahn'] }, // entering the DLC requires both
@@ -145,7 +145,10 @@ export const facts: Fact[] = [
   { id: 'boss:leonine-misbegotten', kind: 'boss', name: 'Leonine Misbegotten', aliases: ['leonine'], region: 'Weeping Peninsula', campaign: 'base', implies: ['region:weeping'] },
   { id: 'boss:elemer', kind: 'boss', name: 'Elemer of the Briar', aliases: ['elemer', 'briar'], region: 'Altus', campaign: 'base', implies: ['region:altus'] },
   { id: 'boss:magma-wyrm-makar', kind: 'boss', name: 'Magma Wyrm Makar', aliases: ['makar'], region: 'Liurnia', campaign: 'base', implies: ['region:liurnia'] },
-  { id: 'boss:commander-niall', kind: 'boss', name: 'Commander Niall', aliases: ['niall'], region: 'Mountaintops', campaign: 'base', implies: ['item:haligtree-secret-medallion'] },
+  // Task 166 §16: Niall guards Castle Sol, where the *left* half of the Haligtree
+  // medallion sits. A lone half implies no gate (the compound rule in
+  // inferChains.ts needs both), so this no longer marks the Haligtree reached.
+  { id: 'boss:commander-niall', kind: 'boss', name: 'Commander Niall', aliases: ['niall'], region: 'Mountaintops', campaign: 'base', implies: ['item:haligtree-medallion-left'] },
   { id: 'boss:loretta-haligtree', kind: 'boss', name: 'Loretta, Knight of the Haligtree', aliases: ['loretta haligtree'], region: 'Haligtree', campaign: 'base', implies: ['grace:haligtree-town'] },
   { id: 'boss:adula', kind: 'boss', name: 'Glintstone Dragon Adula', aliases: ['adula'], region: 'Liurnia', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:mimic-tear', kind: 'boss', name: 'Mimic Tear', aliases: ['mimic tear'], region: 'Nokron', campaign: 'base', implies: ['boss:radahn'] },
@@ -163,7 +166,9 @@ export const facts: Fact[] = [
   { id: 'boss:dragonkin-soldier', kind: 'boss', name: 'Dragonkin Soldier', aliases: ['dragonkin'], region: 'Siofra River', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:dragonkin-nokstella', kind: 'boss', name: 'Dragonkin Soldier of Nokstella', aliases: ['dragonkin nokstella'], region: 'Nokstella', campaign: 'base', implies: ['boss:radahn'] },
   { id: 'boss:cemetery-shade', kind: 'boss', name: 'Cemetery Shade', aliases: ['cemetary shade'], region: 'Limgrave', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
-  { id: 'boss:stray-mimic-tear', kind: 'boss', name: 'Stray Mimic Tear', aliases: ['stray mimic'], region: 'Mountaintops', campaign: 'base', implies: ['item:haligtree-secret-medallion'] },
+  // Task 166 §16: like Niall, this encounter used to imply the *full* medallion
+  // and so closed the Haligtree on its own. It drops no half, so the edge is dropped.
+  { id: 'boss:stray-mimic-tear', kind: 'boss', name: 'Stray Mimic Tear', aliases: ['stray mimic'], region: 'Mountaintops', campaign: 'base', implies: [] },
   { id: 'boss:magma-wyrm', kind: 'boss', name: 'Magma Wyrm', aliases: ['magma wyrm'], region: 'Altus', campaign: 'base', implies: [] }, // fought in several places: each encounter id carries its own region (src/data/bosses.json)
   { id: 'boss:godskin-apostle-noble', kind: 'boss', name: 'Godskin Apostle & Godskin Noble', aliases: ['apostle and noble', 'spiritcaller godskins'], region: 'Mountaintops', campaign: 'base', implies: ['region:mountaintops'] },
   { id: 'boss:royal-knight-loretta', kind: 'boss', name: 'Royal Knight Loretta', aliases: ['royal loretta', 'loretta caria'], region: 'Liurnia', campaign: 'base', implies: ['region:liurnia'] },
@@ -627,7 +632,11 @@ export const interview = [
     options: [
       { value: 'limgrave', label: 'Still in Limgrave / Weeping' },
       { value: 'liurnia', label: 'Reached Liurnia' },
-      { value: 'altus', label: 'Reached Altus or Leyndell' },
+      // Task 166 §15: reaching Altus is not entering the capital, so the answer
+      // is split. Altus seeds Altus only; Leyndell (which implies Altus) is its
+      // own pick.
+      { value: 'altus', label: 'Reached Altus Plateau' },
+      { value: 'leyndell', label: 'Entered Leyndell, Royal Capital' },
       { value: 'mountaintops', label: 'Mountaintops or Farum' },
       { value: 'sote', label: 'Entered the Realm of Shadow' },
       { value: 'finished', label: 'Elden Lord / a final ending' },

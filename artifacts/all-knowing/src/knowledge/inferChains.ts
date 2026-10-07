@@ -1,6 +1,7 @@
 import { canonicalFactId } from '../lib/aliases'
 import { byId } from './catalog'
 import { mapFragments } from './collectibles'
+import { remembrances } from './remembrances'
 
 /**
  * Named-evidence inference chains (Task 54).
@@ -94,6 +95,27 @@ function mapFragmentChains(): InferChain[] {
       certainty: 'certain' as const,
       addedBy: 138,
       why: `A painted ${region.replace(/^region:/, '').replace(/-/g, ' ')} map fragment can only be picked up in that region, so that region was reached.`,
+    }))
+}
+
+/**
+ * Task 166 §18 — the Great-Rune pattern generalised to *every* remembrance the
+ * repo maps. A remembrance is only in your inventory because its boss died, and
+ * `remembrances.ts` already names that boss (`bossFactId`). Generating the rules
+ * from that table (rather than hand-authoring one catalog row each) keeps the
+ * Souvenirs in step with the data and adds the SotE remembrances the catalog
+ * never gave an `implies` edge.
+ */
+function remembranceChains(): InferChain[] {
+  return remembrances
+    .filter((r) => r.bossFactId)
+    .map((r) => ({
+      whenFact: r.id,
+      implies: [r.bossFactId!],
+      confidence: 0.9,
+      certainty: 'certain' as const,
+      addedBy: 166,
+      why: `A ${r.name} only exists once ${r.bossName} is dead, so that fight is done.`,
     }))
 }
 
@@ -270,6 +292,9 @@ export const inferChains: InferChain[] = [
   },
 
   ...mapFragmentChains(),
+
+  // Task 166 §18 — remembrance held ⇒ its boss is dead, for every mapped one.
+  ...remembranceChains(),
 ]
 
 const byWhen = new Map<string, InferChain[]>()

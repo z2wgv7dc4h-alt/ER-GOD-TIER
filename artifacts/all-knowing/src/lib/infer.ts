@@ -205,19 +205,62 @@ export function denyFacts(
 }
 
 export function clearFact(character: Character, id: string): Character {
+  const target = canonicalFactId(id)
+  const match = (x: string) => canonicalFactId(x) === target
+  const drop = (xs: string[]) => xs.filter((x) => !match(x))
   return {
     ...character,
-    deniedFacts: (character.deniedFacts || []).filter((x) => x !== id),
-    defeatedBosses: character.defeatedBosses.filter((x) => x !== id),
-    discoveredGraces: character.discoveredGraces.filter((x) => x !== id),
-    collectedItems: character.collectedItems.filter((x) => x !== id),
-    completedQuestSteps: character.completedQuestSteps.filter((x) => x !== id),
+    // Task 166 §17 — a removal must drop its receipt too, or inferenceReasons()
+    // keeps listing the fact and the next closure silently re-adds it.
+    evidence: character.evidence.filter((e) => !match(e.fact)),
+    deniedFacts: drop(character.deniedFacts || []),
+    defeatedBosses: drop(character.defeatedBosses),
+    discoveredGraces: drop(character.discoveredGraces),
+    collectedItems: drop(character.collectedItems),
+    completedQuestSteps: drop(character.completedQuestSteps),
   }
+}
+
+/**
+ * Task 166 §14 — the interview pass is recomputed, never merged. Drop the
+ * evidence a previous `applyAnswers` wrote (direct seeds tagged `interview` and
+ * their inferred closure tagged `implied by interview`), then drop any affected
+ * fact that no longer has a winning true/false source. Changing an answer
+ * therefore retracts the region/boss facts the old answer seeded.
+ */
+function retractInterviewSeeds(character: Character): Character {
+  const isInterviewEvidence = (e: Evidence) =>
+    (e.source === 'answer' && e.detail === 'interview') ||
+    (e.source === 'inference' && e.detail === 'implied by interview')
+  const interviewEvidence = character.evidence.filter(isInterviewEvidence)
+  if (!interviewEvidence.length) return character
+  const affected = [...new Set(interviewEvidence.map((e) => e.fact))]
+  const evidence = character.evidence.filter((e) => !isInterviewEvidence(e))
+
+  // A fact that a *different* read still proves must survive: re-close the
+  // world from every known fact that is not interview-only. A photographed grace
+  // keeps its region even when the player later changes the progress answer.
+  const affectedCanon = new Set(affected.map((id) => canonicalFactId(id)))
+  const supportedOutsideInterview = (id: string) =>
+    evidence.some((e) => canonicalFactId(e.fact) === canonicalFactId(id) && (e.claim ?? 'true') === 'true')
+  const base = [...knownFactIds(character)].filter(
+    (id) => !affectedCanon.has(canonicalFactId(id)) || supportedOutsideInterview(id),
+  )
+  const stillKnown = new Set(closeWorld(base, base))
+
+  let next: Character = { ...character, evidence }
+  for (const id of affected) {
+    const cid = canonicalFactId(id)
+    const { state } = resolveClaim(next.evidence, cid)
+    next = state === 'unknown' && !stillKnown.has(cid) ? clearFact(next, id) : reconcileFacts(next, [cid])
+  }
+  return next
 }
 
 export function applyAnswers(character: Character): Character {
   const a = character.answers
-  let next: Character = { ...character, source: character.source === 'save' ? character.source : 'reckon' }
+  let next: Character = retractInterviewSeeds(character)
+  next = { ...next, source: next.source === 'save' ? next.source : 'reckon' }
   if (a.platform === 'ps5' || a.platform === 'pc' || a.platform === 'both') {
     next.platform = a.platform
   }
@@ -226,7 +269,10 @@ export function applyAnswers(character: Character): Character {
   const dlc = a.dlc
   if (dlc === 'limgrave') seeds.push('region:limgrave')
   if (dlc === 'liurnia') seeds.push('region:liurnia')
-  if (dlc === 'altus') seeds.push('region:altus', 'region:leyndell')
+  // Task 166 §15 — reaching Altus is not entering the capital: Altus seeds Altus
+  // only; the separate Leyndell answer seeds the capital (which implies Altus).
+  if (dlc === 'altus') seeds.push('region:altus')
+  if (dlc === 'leyndell') seeds.push('region:leyndell')
   if (dlc === 'mountaintops') seeds.push('region:mountaintops')
   // SotE access is gated behind Radahn + Mohg (the withered arm in Mohgwyn). A run that
   // is already in the Realm of Shadow — whether via the progress question or the explicit
