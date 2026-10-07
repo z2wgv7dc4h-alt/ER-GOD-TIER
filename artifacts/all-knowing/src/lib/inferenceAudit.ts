@@ -35,22 +35,23 @@ export type InferenceRule = {
  * flags rather than relies on. Kept here (not silently applied) so the doc can
  * explain each one.
  */
+// Task 166 §19 — these keys are checked against the live catalog by
+// `inferenceAudit.test.ts`, so they cannot silently go stale again (the previous
+// three referenced edges the catalog had already dropped).
 export const LIKELY_CATALOG_EDGES = new Set([
-  // The hidden cliffside path reaches Liurnia without ever fighting Godrick.
-  'region:liurnia->boss:godrick',
-  // Entering the Realm of Shadow does not require holding a Scadutree Fragment.
-  'region:shadow->item:shadow-realm-blessing',
-  // Deeproot Depths is reachable through the Leyndell sewers, without Radahn.
-  'grace:deeproot->boss:radahn',
+  // Holding the Dectus Medallion does not prove the lift was ever used: Altus is
+  // also reachable up the Ruin-Strewn Precipice.
+  'item:dusk-medallion->region:altus',
+  // Holding the Haligtree Secret Medallion does not prove the Haligtree was
+  // entered — the lift only reaches the Consecrated Snowfield.
+  'item:haligtree-secret-medallion->region:haligtree',
 ])
 
 export const LIKELY_CATALOG_NOTES: Record<string, string> = {
-  'region:liurnia->boss:godrick':
-    'Liurnia can be reached along the cliffside path around Stormveil, so Godrick need not be dead. Likely, not certain.',
-  'region:shadow->item:shadow-realm-blessing':
-    'Entering the Realm of Shadow does not require picking up a Scadutree Fragment. Likely, not certain.',
-  'grace:deeproot->boss:radahn':
-    'Deeproot Depths is reachable through the Leyndell sewers without the Radahn festival. Likely, not certain.',
+  'item:dusk-medallion->region:altus':
+    'Both halves can be collected without riding the Lift of Dectus (Altus is also reachable via the Ruin-Strewn Precipice). Likely, not certain.',
+  'item:haligtree-secret-medallion->region:haligtree':
+    'The secret medallion opens the Consecrated Snowfield, not the Haligtree itself. Holding it does not prove Elphael was reached. Likely, not certain.',
 }
 
 function catalogRules(): InferenceRule[] {
@@ -138,7 +139,8 @@ function setupRules(): InferenceRule[] {
   return [
     seed('setup:dlc:limgrave', 'answer dlc=limgrave', ['region:limgrave'], 'The player said the run is still in Limgrave/Weeping.'),
     seed('setup:dlc:liurnia', 'answer dlc=liurnia', ['region:liurnia'], 'The player said the run reached Liurnia.'),
-    seed('setup:dlc:altus', 'answer dlc=altus', ['region:altus', 'region:leyndell'], 'Reaching Altus or Leyndell seeds both region facts.'),
+    seed('setup:dlc:altus', 'answer dlc=altus', ['region:altus'], 'The player said the run reached the Altus Plateau.'), // Task 166 §15: no longer also seeds Leyndell
+    seed('setup:dlc:leyndell', 'answer dlc=leyndell', ['region:leyndell'], 'The player said the run entered Leyndell, which implies Altus.'),
     seed('setup:dlc:mountaintops', 'answer dlc=mountaintops', ['region:mountaintops'], 'The player said the run reached the Mountaintops/Farum.'),
     seed('setup:dlc:sote', 'answer dlc=sote or soteStart=yes', ['region:shadow', 'boss:radahn', 'boss:mohg'], 'The Realm of Shadow is gated behind Radahn and Mohg, so a run already inside it has both down.'),
     seed('setup:dlc:finished', 'answer dlc=finished', ['boss:radagon'], 'An Elden Lord ending means the final boss is down.'),

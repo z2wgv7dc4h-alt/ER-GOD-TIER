@@ -4,7 +4,7 @@ import { inferChains } from '../knowledge/inferChains'
 import { defeatedEncounterCount, bossFactCount, rosterGroups, type BossCampaign, type BossEncounter } from './bossRoster'
 import type { Character } from '../types'
 import { canonicalFactId } from './aliases'
-import { clearFact, knownFactIds } from './infer'
+import { denyFacts, knownFactIds } from './infer'
 import { GEAR_SLOT_COUNT } from './gearSheet'
 import { labelOf } from './links'
 
@@ -101,10 +101,14 @@ export type InferredFact = {
  */
 export function inferenceReasons(character: Character): InferredFact[] {
   const known = knownFactIds(character)
+  // Task 166 §17 — a fact the player removed/denied is no longer an inference
+  // to review, even though its inference receipt is still on the character.
+  const denied = new Set((character.deniedFacts || []).map((id) => canonicalFactId(id)))
   const inferred = [...new Set(character.evidence.filter((e) => e.source === 'inference').map((e) => e.fact))]
   const out: InferredFact[] = []
   for (const to of inferred) {
     const target = canonicalFactId(to)
+    if (denied.has(target)) continue
     let hit: InferredFact | undefined
     for (const chain of inferChains) {
       if (!chain.implies.some((x) => canonicalFactId(x) === target)) continue
@@ -132,9 +136,13 @@ export function inferenceReasons(character: Character): InferredFact[] {
   return out.sort((a, b) => labelOf(a.fact).localeCompare(labelOf(b.fact)))
 }
 
-/** Drop an inferred fact (and its evidence) without touching a direct read of the same id. */
+/**
+ * Task 166 §17 — drop an inferred fact *stickily*. A plain clear leaves the
+ * inference receipt behind, so the next closure re-adds the fact; recording an
+ * explicit `deny` (answer authority) keeps it off and the reason list quiet.
+ */
 export function removeInferredFact(character: Character, fact: string): Character {
-  return clearFact(character, fact)
+  return denyFacts(character, [fact], 'removed by you')
 }
 
 export type CompletenessCategory = {

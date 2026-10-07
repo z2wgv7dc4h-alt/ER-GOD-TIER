@@ -85,6 +85,18 @@ describe('inference review', () => {
     const removed = removeInferredFact(read, 'boss:godrick')
     expect(known(removed, 'boss:godrick')).toBe(false)
   })
+
+  // Task 166 §17 — remove / "not sure" must be sticky, not re-derived next read.
+  it('keeps a removed inference gone after a later read', () => {
+    const read = applyFacts(emptyCharacter, ['item:godrick-great-rune'], 'screenshot', 'setup:inventory')
+    expect(inferenceReasons(read).some((r) => r.fact === 'boss:godrick')).toBe(true)
+    const removed = removeInferredFact(read, 'boss:godrick')
+    // The reason list no longer advertises it, even though the receipt remains.
+    expect(inferenceReasons(removed).some((r) => r.fact === 'boss:godrick')).toBe(false)
+    // Re-reading the same rune does not resurrect it.
+    const later = applyFacts(removed, ['item:godrick-great-rune'], 'screenshot', 'setup:inventory again')
+    expect(known(later, 'boss:godrick')).toBe(false)
+  })
 })
 
 describe('completeness', () => {
