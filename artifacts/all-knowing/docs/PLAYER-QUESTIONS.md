@@ -685,81 +685,81 @@ Hand-verified nicknames written to `src/data/player-nicknames.json` and consumed
 
 Community strategies, cheese, bugs, missables and PvP from seven Elden Ring subreddits (posts and their top-voted comments). Collected by `scripts/collect-player-knowledge.py`; text only, no usernames.
 
-- **Rows:** 5384 (3544 posts, 1840 comments)
-- **Possibly outdated:** 808 (15%)
-- **Current patch (not outdated):** 2158 rows
+- **Rows:** 5687 (3544 posts, 2143 comments)
+- **Possibly outdated:** 839 (14%)
+- **Current patch (not outdated):** 1017 rows
 
 ### Counts per topic
 
 | topic | rows |
 | --- | ---: |
-| other | 2792 |
-| build | 807 |
-| pvp | 441 |
-| bug | 256 |
-| dlc | 253 |
-| synergy | 179 |
-| strategy | 161 |
-| mechanic | 157 |
-| farm | 134 |
-| route | 95 |
-| lore | 89 |
+| other | 3023 |
+| build | 826 |
+| pvp | 455 |
+| bug | 259 |
+| dlc | 259 |
+| synergy | 181 |
+| strategy | 166 |
+| mechanic | 165 |
+| farm | 136 |
+| route | 101 |
+| lore | 96 |
 | missable | 20 |
 
 ### Top 50 entities
 
 | # | entity id | rows |
 | ---: | --- | ---: |
-| 1 | mechanic:status-bleed | 251 |
-| 2 | item:strength | 182 |
-| 3 | boss:malenia | 175 |
-| 4 | damage:magic | 150 |
-| 5 | mechanic:poise | 144 |
-| 6 | npc:the-tarnished-protagonist | 140 |
-| 7 | boss:radagon | 132 |
-| 8 | mechanic:ashes-of-war | 118 |
-| 9 | boss:radahn | 116 |
-| 10 | item:parry | 106 |
-| 11 | grace:starscourge-radahn | 101 |
-| 12 | mechanic:incantation | 101 |
-| 13 | boss:mohg | 88 |
-| 14 | mechanic:invasions | 88 |
-| 15 | npc:death-outer-god | 79 |
-| 16 | item:greatsword | 78 |
+| 1 | mechanic:status-bleed | 259 |
+| 2 | item:strength | 190 |
+| 3 | boss:malenia | 177 |
+| 4 | damage:magic | 151 |
+| 5 | mechanic:poise | 149 |
+| 6 | npc:the-tarnished-protagonist | 141 |
+| 7 | boss:radagon | 135 |
+| 8 | mechanic:ashes-of-war | 121 |
+| 9 | boss:radahn | 119 |
+| 10 | item:parry | 110 |
+| 11 | grace:starscourge-radahn | 104 |
+| 12 | mechanic:incantation | 102 |
+| 13 | boss:mohg | 89 |
+| 14 | mechanic:invasions | 89 |
+| 15 | npc:death-outer-god | 85 |
+| 16 | item:greatsword | 79 |
 | 17 | boss:messmer | 77 |
-| 18 | boss:godfrey | 73 |
-| 19 | region:caelid | 69 |
-| 20 | boss:maliketh | 69 |
-| 21 | damage:fire | 67 |
-| 22 | grace:maliketh-the-black-blade | 65 |
-| 23 | mechanic:weapon-scaling | 64 |
-| 24 | boss:morgott | 61 |
-| 25 | enemy:maliketh-farum-azula | 60 |
-| 26 | npc:queen-marika-the-eternal | 59 |
-| 27 | item:rest | 59 |
-| 28 | region:shadow | 58 |
-| 29 | boss:rennala | 57 |
-| 30 | boss:fire-giant | 57 |
-| 31 | grace:65535200 | 57 |
-| 32 | grace:fire-giant | 57 |
-| 33 | mechanic:sorcery | 55 |
-| 34 | damage:lightning | 55 |
-| 35 | boss:consort | 53 |
-| 36 | damage:holy | 52 |
-| 37 | region:liurnia | 52 |
+| 18 | boss:godfrey | 75 |
+| 19 | boss:maliketh | 73 |
+| 20 | region:caelid | 72 |
+| 21 | damage:fire | 72 |
+| 22 | grace:maliketh-the-black-blade | 69 |
+| 23 | mechanic:weapon-scaling | 65 |
+| 24 | boss:morgott | 64 |
+| 25 | enemy:maliketh-farum-azula | 63 |
+| 26 | npc:queen-marika-the-eternal | 61 |
+| 27 | region:shadow | 59 |
+| 28 | item:rest | 59 |
+| 29 | grace:fire-giant | 59 |
+| 30 | boss:rennala | 58 |
+| 31 | boss:fire-giant | 58 |
+| 32 | grace:65535200 | 58 |
+| 33 | boss:consort | 56 |
+| 34 | damage:lightning | 56 |
+| 35 | damage:holy | 55 |
+| 36 | region:liurnia | 55 |
+| 37 | mechanic:sorcery | 55 |
 | 38 | mechanic:status-frostbite | 52 |
-| 39 | item:flask-of-wondrous-physick | 51 |
-| 40 | item:spear | 51 |
-| 41 | region:leyndell | 50 |
-| 42 | npc:night | 49 |
-| 43 | region:lands-between | 48 |
-| 44 | item:wait | 48 |
+| 39 | region:leyndell | 51 |
+| 40 | item:flask-of-wondrous-physick | 51 |
+| 41 | item:spear | 51 |
+| 42 | item:wait | 50 |
+| 43 | region:lands-between | 49 |
+| 44 | npc:night | 49 |
 | 45 | region:limgrave | 48 |
-| 46 | mechanic:torrent | 45 |
-| 47 | npc:torrent | 45 |
-| 48 | grace:margit-the-fell-omen | 45 |
-| 49 | mechanic:stamina | 45 |
-| 50 | boss:margit | 44 |
+| 46 | mechanic:stamina | 48 |
+| 47 | mechanic:torrent | 46 |
+| 48 | npc:torrent | 46 |
+| 49 | item:milady | 46 |
+| 50 | mechanic:parry | 45 |
 
 ### 20 example tips (current patch, not outdated)
 
@@ -791,8 +791,6 @@ Community strategies, cheese, bugs, missables and PvP from seven Elden Ring subr
   `1.17` · score 3039 · - · https://www.reddit.com/r/Eldenring/comments/1wjtt7t/
 - **[dlc]** Is Farum Azula considered as a legacy dungeon, or is it just another area in the game? I am new to the game, I have seen a lot of players arguing about the best legacy dungeon in the game ! Before reaching Farum Azula, I was pretty confident that stormveil is so well designed that next legacy dun...  
   `1.17` · score 2927 · boss:maliketh, dungeon:shadow-keep, dungeon:stormveil, enemy:maliketh-farum-azula · https://www.reddit.com/r/Eldenring/comments/1wlj2iq/
-- **[bug]** After 4 or so years, did anyone figure out why the Crucible Knight behind one of the Belfry portals doesn't drop runes or anything all? Is this a never to be fixed bug? Is there a game-design reason behind this? It's just very odd. Not every Crucible Knight drops their associated gear or spells, ...  
-  `1.16.1` · score 2719 · enemy:crucible-knight-farum-azula, enemy:crucible-knight-four-belfries, enemy:crucible-knight-leyndell, enemy:crucible-knight-limgrave-evergaol-boss · https://www.reddit.com/r/eldenringdiscussion/comments/1tcspdv/
 - **[build]** Are faith and magic builds the same thing but called different ? Strength main boys well say you are all the same  
   `1.17` · score 2640 · damage:magic, item:strength · https://www.reddit.com/r/Eldenring/comments/1wow356/
 - **[dlc]** You could buy the DLC and if you were trying to play blind you could just never figure out how to fucking get there  
@@ -803,5 +801,7 @@ Community strategies, cheese, bugs, missables and PvP from seven Elden Ring subr
   `1.17` · score 2379 · damage:holy · https://www.reddit.com/r/Eldenring/comments/1wt1c38/
 - **[strategy]** Finally bought my first Souls game! After thinking about it for so long, I finally made up my mind and bought Elden Ring! 😂 This is officially my first Souls game, so I’m going in completely as a newbie. I’ve heard this game is hard, so veteran players, drop your best tips for a first-time player...  
   `1.17` · score 2361 · item:wait · https://www.reddit.com/r/Eldenring/comments/1wsd491/
+- **[lore]** I think Melina is the gloam-eyed queen. She was an Empyrean, and all Empyreans we've seen so far (Ranni, Miquella, Malenia) are children of Marika/Radagon. The former 2 Empyreans are even full siblings of Melina, as per the naming convention of the demigods. The gloam-eyed queen used a dark fire ...  
+  `1.17` · score 2208 · boss:malenia, boss:maliketh, boss:radagon, damage:fire · https://www.reddit.com/r/Eldenring/comments/1wu28qb/can_anyone_tell_me_the_lore_behind_why_melina/pczhpat/
 
 <!-- task-170:end -->

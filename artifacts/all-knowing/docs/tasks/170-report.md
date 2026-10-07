@@ -11,7 +11,7 @@
   `src/lib/canonicalNames.ts`), assigns `patch` (App/Regulation version live on the
   row's date) and flags `possiblyOutdated`.
 - New committed corpus `public/sourced/open/player-knowledge.json`
-  (**5,384** rows: 3,544 posts + 1,840 comments, **2.87 MB**) plus a new
+  (**5,687** rows: 3,544 posts + 2,143 comments, **2.98 MB**) plus a new
   `<!-- task-170 -->` section in `docs/PLAYER-QUESTIONS.md` (counts per topic, top 50
   entities, 20 example current-patch tips).
 - New `src/lib/playerKnowledge.test.ts` (Task 170 §4 guards).
@@ -24,15 +24,15 @@ Rows are attributed to a subreddit via their permalink:
 
 | subreddit | rows | subreddit | rows |
 | --- | ---: | --- | ---: |
-| r/Eldenring | 1951 | r/EldenRingHelp | 584 |
-| r/eldenringdiscussion | 998 | r/EldenRingLore | 6 |
-| r/EldenRingPVP | 931 | **total** | **5384** |
-| r/EldenRingBuilds | 914 | | |
+| r/Eldenring | 2085 | r/EldenRingHelp | 586 |
+| r/eldenringdiscussion | 1053 | r/EldenRingLore | 6 |
+| r/EldenRingPVP | 1011 | **total** | **5687** |
+| r/EldenRingBuilds | 946 | | |
 
-- `r/Shadowoftheerdtree` returned no cached pages (empty via the archive), and
-  `r/eldenringlore` only a handful, so those two contribute almost nothing.
+- `r/Shadowoftheerdtree` returned a single cached page and no surviving English rows;
+  `r/eldenringlore` only contributed a handful, so those two are nearly unrepresented.
 - Post pages cached by Task 163 under `.scratch/163/raw/` were reused; new responses
-  (600 comment trees + the patch-notes page) are cached under `.scratch/170/raw/`.
+  (815 comment trees + the patch-notes page) are cached under `.scratch/170/raw/`.
 - Politeness: ≤ 1 request / 2 s, descriptive User-Agent, back off on 422/429/5xx,
   no logins.
 
@@ -40,19 +40,19 @@ Rows are attributed to a subreddit via their permalink:
 
 | topic | rows | possibly outdated |
 | --- | ---: | ---: |
-| other | 2792 | 374 |
-| build | 807 | 132 |
-| pvp | 441 | 58 |
-| bug | 256 | 33 |
-| dlc | 253 | 51 |
-| synergy | 179 | 41 |
-| strategy | 161 | 16 |
-| mechanic | 157 | 55 |
-| farm | 134 | 18 |
-| route | 95 | 14 |
-| lore | 89 | 14 |
+| other | 3023 | 389 |
+| build | 826 | 135 |
+| pvp | 455 | 60 |
+| bug | 259 | 33 |
+| dlc | 259 | 53 |
+| synergy | 181 | 41 |
+| strategy | 166 | 19 |
+| mechanic | 165 | 58 |
+| farm | 136 | 18 |
+| route | 101 | 17 |
+| lore | 96 | 14 |
 | missable | 20 | 2 |
-| **total** | **5384** | **808 (15.0%)** |
+| **total** | **5687** | **839 (14.8%)** |
 
 `other` dominates because "top of all time" is mostly memes, screenshots, lore
 musing and "look at my build" posts; the classifier deliberately requires a keyword
@@ -83,32 +83,32 @@ mirror, cached at `.scratch/170/raw/patch-notes.html`). The `1.17` row is the li
 version in this environment (2026); micro-versions whose section carried no date use
 the FromSoftware announcement dates. Rows before 2022-02-25 get `pre-release`.
 
-Patch distribution across the corpus: `1.16.1` 2711, `1.17` 2667, `1.09.1` 5,
+Patch distribution across the corpus: `1.16.1` 2854, `1.17` 2827, `1.09.1` 5,
 `pre-release` 1 — the collected sample skews recent, so most rows are near-current.
 
 ## `possiblyOutdated`
 
-`808` of `5384` rows (**15.0%**) are flagged, never dropped. A row is flagged when a
+`839` of `5687` rows (**14.8%**) are flagged, never dropped. A row is flagged when a
 **later patch** changed one of its mentioned entities (754 entity→version change
 signals parsed from the official patch notes) **or** a later comment in the same
-thread says something was patched/nerfed/reverted. Split: 466/3544 posts, 342/1840
+thread says something was patched/nerfed/reverted. Split: 475/3544 posts, 364/2143
 comments.
 
 ## Data quality
 
-- 5,384 rows (≥ 5,000 target); every row has `text/topic/date/patch`; no empty text;
+- 5,687 rows (≥ 5,000 target); every row has `text/topic/date/patch`; no empty text;
   none over 1,500 chars.
-- `entities`: 3,162 rows (**58.7%**, ≥ 50% target) carry at least one alias-plane id.
+- `entities`: 3,295 rows (**57.9%**, ≥ 50% target) carry at least one alias-plane id.
 - Usernames: 0 rows contain a `u/…` **username** mention; the only literal `u/` in
   the corpus is the substring in `"Beru/Ant-king"` (a build description), which no
   word-boundary username match sees.
-- Output **2.87 MB**, well under the 25 MB cap and inside the 5,000–20,000 row target.
+- Output **2.98 MB**, well under the 25 MB cap and inside the 5,000–20,000 row target.
 
 ## Checks (run once)
 
 - `npx vitest run src/lib/playerKnowledge.test.ts` — **1 file, 5 tests passed**.
 - `npx tsc -b` — clean.
-- `python scripts/collect-player-knowledge.py --no-fetch` — reproduced the 5,384-row
+- `python scripts/collect-player-knowledge.py --no-fetch` — reproduced the 5,687-row
   corpus from cache (no network) and rewrote the JSON + `docs/PLAYER-QUESTIONS.md`.
 
 ## ASSUMPTIONS
@@ -127,7 +127,9 @@ comments.
 - `patch` is the version live on the row's date per the official patch history; it
   says nothing about whether the row's advice is still valid (that is
   `possiblyOutdated`).
-- `possiblyOutdated` = a later patch notes section mentions a mentioned entity, or a
+- The 20 example tips in `docs/PLAYER-QUESTIONS.md` are restricted to the latest
+  patch (`1.17`) and a non-`other` topic; "current-patch only" is read literally.
+- `possiblyOutdated` = a later patch-notes section mentions a mentioned entity, or a
   later comment in the thread uses patched/nerfed/reverted language. Both are
   heuristics; false positives (e.g. a later cosmetic change to a named boss) are
   possible, which is why rows are flagged rather than dropped.
@@ -142,14 +144,14 @@ comments.
 - Only the brief's test plus `tsc -b` were run (per AGENTS.md while-working rule); the
   full gate suite was not run because this task adds data + a generator + one test and
   nothing is wired into the app.
-- `r/Shadowoftheerdtree` contributed no cached pages in the reused Task 163 cache, so
-  the DLC subreddit is represented only through `r/Eldenring`/`r/EldenRingBuilds`.
+- `r/Shadowoftheerdtree` contributed no usable cached rows, so the DLC subreddit is
+  represented only through `r/Eldenring`/`r/EldenRingBuilds`.
 
 ## Checklist
 
 - [x] `scripts/collect-player-knowledge.py` collects posts **and** top-voted comments from the seven subreddits (top-of-all-time sample + the 19 keyword searches, applied locally because the archive's search endpoint times out from this network).
 - [x] Every row carries `text, score, date, permalink, kind (post|comment), topic (strategy/farm/build/synergy/mechanic/bug/missable/pvp/route/dlc/lore/other), entities (alias plane), patch (date→version table above), possiblyOutdated`.
-- [x] Output `public/sourced/open/player-knowledge.json` (5,384 rows, higher score first, 2.87 MB < 25 MB) and a `docs/PLAYER-QUESTIONS.md` section with counts per topic, top 50 entities and 20 current-patch example tips.
+- [x] Output `public/sourced/open/player-knowledge.json` (5,687 rows, higher score first, 2.98 MB < 25 MB) and a `docs/PLAYER-QUESTIONS.md` section with counts per topic, top 50 entities and 20 current-patch example tips.
 - [x] `src/lib/playerKnowledge.test.ts`: file exists, ≥ 5,000 rows, every row has text/topic/date/patch, no `u/` usernames, ≥ 50% of rows have ≥ 1 entity.
 - [x] `docs/tasks/170-report.md` with per-source and per-topic counts, outdated share, patch table, size, checklist.
 - [x] Never read `.env` / `.env.local`.

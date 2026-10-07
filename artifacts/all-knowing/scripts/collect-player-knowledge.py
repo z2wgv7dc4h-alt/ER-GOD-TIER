@@ -630,7 +630,8 @@ def write_markdown(rows: list[dict], latest_patch: str) -> None:
     kind_counts = Counter(r["kind"] for r in rows)
     ent_counts = Counter(e for r in rows for e in r["entities"])
     outdated = sum(1 for r in rows if r["possiblyOutdated"])
-    current = [r for r in rows if not r["possiblyOutdated"] and r["topic"] != "other"]
+    current = [r for r in rows
+               if not r["possiblyOutdated"] and r["topic"] != "other" and r["patch"] == latest_patch]
     current.sort(key=lambda r: r["score"], reverse=True)
     examples = current[:20]
 
