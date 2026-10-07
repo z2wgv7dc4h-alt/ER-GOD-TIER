@@ -18,7 +18,7 @@ and every entity-graph id the app can link to.
 
 | kind | entities | flagged | empty | raw ids | bad casing | generic status | wrong actions | wiki nav | junk rows | boss filed as NPC |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| item | 1187 | 3 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| item | 1187 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | armor | 751 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | enemy | 607 | 607 | 0 | 0 | 0 | 607 | 0 | 0 | 0 | 0 |
 | quest | 468 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -39,13 +39,13 @@ and every entity-graph id the app can link to.
 | gate | 10 | 10 | 0 | 0 | 0 | 10 | 0 | 0 | 0 | 0 |
 | ending | 5 | 5 | 0 | 0 | 0 | 5 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **total** | **5685** | **1921** | 4 | 0 | 0 | 1774 | 1191 | 0 | 0 | 0 |
+| **total** | **5685** | **1919** | 2 | 0 | 0 | 1774 | 1191 | 0 | 0 | 0 |
 
 ## After
 
 | kind | entities | flagged | empty | raw ids | bad casing | generic status | wrong actions | wiki nav | junk rows | boss filed as NPC |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| item | 1188 | 3 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| item | 1188 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | armor | 751 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | enemy | 607 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | quest | 468 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -66,7 +66,7 @@ and every entity-graph id the app can link to.
 | gate | 10 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | ending | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **total** | **5687** | **4** | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **total** | **5687** | **2** | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
 Task 144 removed **1917** flagged pages
 (empty, raw ids, bad casing, generic status, wrong actions, wiki nav, junk rows, boss filed as NPC).
@@ -77,11 +77,9 @@ These entries have no description, location, stats, drops, sections or image in
 the built entity index. Check the wiki corpus and its set pages before calling
 one a real data gap.
 
-### item (3)
+### item (1)
 
 - Fetal Position
-- Let Us Go Together
-- May the Best Win
 
 ### npc (1)
 
@@ -93,8 +91,6 @@ one a real data gap.
 | id | kind | issues |
 | --- | --- | --- |
 | `item:fetal-position` | item | empty |
-| `item:let-us-go-together` | item | empty |
-| `item:may-the-best-win` | item | empty |
 | `npcs:147100` | npc | empty |
 
-_Regenerated 2026-10-06._
+_Regenerated 2026-10-07._
