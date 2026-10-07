@@ -244,4 +244,4 @@ chains, "Mark done" on a refused kind, and within-kind duplicate names. Each mus
 - [x] Ran the full gates once: index:entities, vitest, lint, build, test:bundle, audit:links, audit:inference, audit:pages, audit:progress, coverage:entities
 - [x] Wrote `docs/tasks/160-report.md` (this file) with before/after, examples, exceptions and ASSUMPTIONS
 
-ALL ITEMS DONE
+(pending FIX 13)
