@@ -10,7 +10,7 @@ All under `public/sourced/` unless noted.
   assembled source found); pins there stay on the stand-in's own frame
 - Static-plate pins (`open/coords.json`, `open/boss-pins.json`) use the engine
   mosaic frame (`percent = px / 10496`). `open/world-lots.json` is **not**
-  plotted on the static plate — XYZ only, 10k rows, would clutter and add a
+  plotted on the static plate — XYZ only, 3,458 rows, would clutter and add a
   third projection. See `src/lib/coords.ts`.
 
 ## Attack rating (Build lab)
@@ -98,7 +98,7 @@ rows are already covered by the guide catalog; the gap-fill merge added the miss
 `gesture` category (50) and the three duplicate base-game crystal tears ERCL tracks
 separately, and aligned the catalog's `dlc` flag on 19 rows. Only that JSON file was read;
 none of the pack's overlay binaries are used or referenced anywhere in this repo.
-See `docs/REVIEW.md`.
+See `docs/history/REVIEW-2026-09.md`.
 
 ## Open / vanilla install / Paramdex
 
@@ -124,10 +124,10 @@ See `docs/REVIEW.md`.
 | `open/region-levels.json` | Per-area level bands + checklists from the Fextralife **Game Progress Route** (`scripts/build-region-levels.mjs`): `{area, levelMin, levelMax, upgradeMin, upgradeMax, steps}` — powers the level-aware "before you go / am I over-levelled" advisor (`src/lib/regionLevels.ts`, `src/lib/beforeYouGo.ts`). |
 | `open/guides-fextralife.json` | Fextralife guide/mechanics pages (`scripts/scrape-fextralife-guides.mjs`): 26 pages / ~250 sections — Upgrades, Smithing Stones, Bell Bearings, Progress Route, Stats, Damage Types, Buffs, Classes, category pages. Headings + body text; each keeps its URL. `src/lib/guides.ts`; Codex *Guides* section + Gideon how-to answers. |
 | `open/builds-fextralife.json` | Fextralife build/status pages (`scripts/scrape-fextralife-builds.mjs`): 23 pages / 218 sections — Builds hub, PvE/PvP/beginner/per-stat/SotE/community builds, New Player Help, Progress Route, Status Effects + Hemorrhage/Poison/Scarlet Rot/Frostbite/Madness/Sleep/Death Blight, Buffs, Runes. Headings + text + build links. `src/lib/metaBuilds.ts`; Codex *Builds & strats* section. |
-| `sourced/npc-placements.json` | Where each **talking** NPC stands, from the map MSBs (`scripts/extract-npc-placements.py`): 1,370 placements across the 95 dialogue NPCs, projected to the engine pixel frame (1,356 rows carry `px`/`py`/`world` via the engine affine + `legacy-conv.json`; percent = `px/10496*100`). Enemy spawns are excluded. `src/lib/npcPlacements.ts`; Gideon "where is X" falls back to it; `npm run map:merge` folds it into the interactive engine's marker feed. |
+| `sourced/npc-placements.json` | Where each **talking** NPC stands, from the map MSBs (`scripts/extract-npc-placements.py`): 1,331 placements across 111 talking NPCs, projected to the engine pixel frame (1,330 rows carry `px`/`py`/`world` via the engine affine + `legacy-conv.json`; percent = `px/10496*100`). Enemy spawns are excluded. `src/lib/npcPlacements.ts`; Gideon "where is X" falls back to it; `npm run map:merge` folds it into the interactive engine's marker feed. |
 | `open/medusa-route.json` | Elden Medusa (Nexus 10286) 100% walkthrough, text only (`data/en/act*/`): 9 acts, 32 chapters, 322 locations, 367 steps with directions + goal each. Ingested by `scripts/ingest-packs.py`; loaded by `src/lib/medusaRoute.ts`, surfaced in the Codex. |
 | `open/text/` | **Full game text** (36 tables, 34,053 strings) dumped from the install's `menu`/`item` (+ `*_dlc02`) message bundles by `scripts/extract-game-text.py` — one JSON per table + `manifest.json`. Includes the verbatim NPC dialogue `TalkMsg` (9,818 lines, base + DLC merged), the talk-condition tables `EventTextForTalk`/`GR_Dialogues`, and every weapon/goods/armor/talisman/NPC/place name + lore caption. Loaded lazily by `src/lib/gameText.ts`; the Codex surfaces a verbatim dialogue search (`src/Dialogue.tsx`). Junk tables (ToS legal text, `BloodMsg` death spam, network/embedded-image names, placeholder magic) are excluded at extraction. |
-| `open/dialogue-owners.json` | Speaker attribution for NPC talk. `scripts/extract-dialogue-owners.py` matches each ESD's `t<talkId>.esd` to the MSB PARTS entry carrying that **TalkID** (`+0x2b0`), reads its **NPCParamID** (`+0x2a8`), and names it from `NpcParam.txt` + the combat JSONs — the way the game itself resolves a talker. **Ceiling is inherent:** the ESD talk scripts reference only 2,129 of the 9,818 `TalkMsg` lines; 1,952 are named (95 speakers) and 177 sit in ESDs whose talker has no NpcParam row. The other 7,689 lines are not referenced by any talk script (menu/cutscene/UI), so they cannot be attributed this way — and nothing is guessed. `src/lib/dialogueOwners.ts` (`speakerLabel`). |
+| `open/dialogue-owners.json` | Speaker attribution for NPC talk. `scripts/extract-dialogue-owners.py` matches each ESD's `t<talkId>.esd` to the MSB PARTS entry carrying that **TalkID** (`+0x2b0`), reads its **NPCParamID** (`+0x2ac`; `+0x2a8` is ThinkParamID), and names it from `NpcParam.txt` + the combat JSONs — the way the game itself resolves a talker. **Ceiling is inherent:** the ESD talk scripts attribute only **2,083 of the 9,818 `TalkMsg` lines** (146 named speakers over 260 `NpcParam` rows). The other 7,735 lines are not referenced by any talk script (menu/cutscene/UI), so they cannot be attributed this way — and nothing is guessed. `src/lib/dialogueOwners.ts` (`speakerLabel`). |
 | `open/shops.json` | 1261 shop rows |
 | `open/world-lots.json` | Every treasure pickup from the install: MSB treasure events joined to ItemLotParam_map (multi-item pickups chain consecutive lots sharing one flag); `src/lib/chestFacts.ts` groups them into one chest/pickup fact per flag (3,364) |
 | `open/boss-list.json` / `boss-xyz.json` / `boss-pins.json` | The game's 209 boss fights (GameAreaParam): kill flag = the row id (unless a partner row), names from the hunt table / engine event scripts, pins from the engine markers |
@@ -174,7 +174,7 @@ classes); refresh with `node scripts/ingest-fanapi.mjs` (deterministic, name-sor
 `src/data/hunts.json` is the single canonical field-hunt dataset (BuLEEto):
 Codex fetches it, `src/knowledge/completion.ts` derives `fieldHunts` from it, and
 `src/lib/sl2/facts.ts` reads its flags directly. There is no separate `hunt-flags.json` copy
-(deleted in Task 37 — it could drift). See `docs/research/hunt-data-cleanup.md`.
+(deleted in Task 37 — it could drift).
 
 ## Boss roster (Task 130, generated)
 
@@ -233,7 +233,7 @@ Google; the service worker precaches the woff2 via `globPatterns`. Attribution i
   "ER NPC Levels" Google Sheet. **Display flavor only**, generated by
   `scripts/ingest-npc-display.mjs`. Not enemy absorb/resistance; the combat source is
   `public/sourced/npc-combat.json` + `src/lib/enemy.ts` (extracted `NpcParam`, above).
-See `docs/REVIEW.md`.
+See `docs/history/REVIEW-2026-09.md`.
 
 ## Gates + wiki-grade lines (Tasks 52–53)
 
@@ -293,7 +293,7 @@ See `docs/REVIEW.md`.
   rows `merchants.ts` already carried as `"<vendor> - <condition>"` (Corhyn/Miriel prayerbooks and
   scrolls, Sellen, Seluvis, Enia remembrances, and 15 bell bearings handed to the Twin Maiden
   Husks). Stock stays in `merchants.ts`; this only adds the trigger, surfaced through `findSellers`
-  and the Gideon router. See `docs/REVIEW.md`.
+  and the Gideon router. See `docs/history/REVIEW-2026-09.md`.
 
 
 Medusa: chapter titles only. Do not paste walkthrough prose.

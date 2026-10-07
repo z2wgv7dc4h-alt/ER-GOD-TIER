@@ -98,6 +98,8 @@ NICKNAME_MAP = {
     "physic": "item:flask-of-wondrous-physick",
     "waterfowl": "boss:malenia",
     "pcr": "boss:consort",
+    "margott": "boss:morgott",
+    "darkmoon": "item:dark-moon-greatsword",
 }
 
 
@@ -1058,8 +1060,8 @@ def write_markdown(result: dict) -> None:
     lines.append("## Other automatic nickname candidates (not added)")
     lines.append("")
     candidates = result.get("nickname_candidates") or {}
-    added = set(nicknames)
-    extra = {k: v for k, v in candidates.items() if k not in added}
+    added = {normalize_name(k) for k in nicknames}
+    extra = {k: v for k, v in candidates.items() if normalize_name(k) not in added}
     if extra:
         lines.append("| candidate | entity id |")
         lines.append("| --- | --- |")
