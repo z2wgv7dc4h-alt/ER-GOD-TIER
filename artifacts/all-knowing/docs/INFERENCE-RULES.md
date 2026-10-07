@@ -9,9 +9,9 @@ PS5 capture rules — plus what the real-player scenario fixture actually proves
 
 | metric | before Task 138 | after Task 138 |
 | --- | --- | --- |
-| rules enumerated | 538 | 558 |
-| certain rules | 538 | 558 |
-| likely rules | 0 | 0 |
+| rules enumerated | 557 | 577 |
+| certain rules | 555 | 575 |
+| likely rules | 2 | 2 |
 | scenario inferred facts | 9 | 17 |
 
 Task 138 added **20** chain rules.
@@ -29,8 +29,8 @@ Scenario: `urmummytoilet` — 19 certain reads, nothing uncertain applied.
 | fact | from | class | reason |
 | --- | --- | --- | --- |
 | `boss:godfrey-golden` | `boss:morgott` | certain | Morgott, the Omen King requires boss:godfrey-golden. |
-| `boss:morgott` | `region:mountaintops` | certain | Mountaintops of the Giants requires boss:morgott. |
-| `boss:radahn` | `item:remembrance-starscourge` | certain | Remembrance of the Starscourge requires boss:radahn. |
+| `boss:morgott` | `item:rold-medallion` | certain | Rold Medallion requires boss:morgott. |
+| `boss:radahn` | `item:remembrance-starscourge` | certain | A Remembrance of the Starscourge only exists once Starscourge Radahn is dead, so that fight is done. |
 | `grace:first-step` | `region:limgrave` | certain | Limgrave requires grace:first-step. |
 | `grace:lake-shore` | `quest:ranni:service` | certain | Ranni — entered her service requires grace:lake-shore. |
 | `item:rold-medallion` | `region:mountaintops` | certain | The Grand Lift of Rold is the only way up to the Mountaintops, so the Rold Medallion was already used. |
@@ -70,11 +70,14 @@ action only the player can log.
 These are live today. The audit flags them rather than trusting them; they are
 candidates to demote into the confirmation layer.
 
-_None._
+| id | trigger | conclusions | class | conf | why | added |
+| --- | --- | --- | --- | --- | --- | --- |
+| `catalog:item:haligtree-secret-medallion` | `item:haligtree-secret-medallion` | `region:haligtree` | **likely** | 0.6 | The secret medallion opens the Consecrated Snowfield, not the Haligtree itself. Holding it does not prove Elphael was reached. Likely, not certain. | — |
+| `catalog:item:dusk-medallion` | `item:dusk-medallion` | `region:altus` | **likely** | 0.6 | Both halves can be collected without riding the Lift of Dectus (Altus is also reachable via the Ruin-Strewn Precipice). Likely, not certain. | — |
 
 ## Every rule
 
-### Catalog `implies` (286)
+### Catalog `implies` (284)
 
 | id | trigger | conclusions | class | conf | why | added |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -84,7 +87,6 @@ _None._
 | `catalog:region:caelid` | `region:caelid` | `region:limgrave` | certain | 0.9 | Holding/reaching Caelid requires the listed facts first. | — |
 | `catalog:region:altus` | `region:altus` | `region:liurnia` | certain | 0.9 | Holding/reaching Altus Plateau requires the listed facts first. | — |
 | `catalog:region:leyndell` | `region:leyndell` | `region:altus` | certain | 0.9 | Holding/reaching Leyndell, Royal Capital requires the listed facts first. | — |
-| `catalog:region:mountaintops` | `region:mountaintops` | `boss:morgott` | certain | 0.9 | Holding/reaching Mountaintops of the Giants requires the listed facts first. | — |
 | `catalog:region:farum` | `region:farum` | `grace:forge-giants` | certain | 0.9 | Holding/reaching Crumbling Farum Azula requires the listed facts first. | — |
 | `catalog:region:haligtree` | `region:haligtree` | `item:haligtree-secret-medallion` | certain | 0.9 | Holding/reaching Miquella’s Haligtree requires the listed facts first. | — |
 | `catalog:region:shadow` | `region:shadow` | `boss:mohg`, `boss:radahn` | certain | 0.9 | Holding/reaching Realm of Shadow requires the listed facts first. | — |
@@ -141,8 +143,8 @@ _None._
 | `catalog:item:dark-moon-ring` | `item:dark-moon-ring` | `boss:astel` | certain | 0.9 | Holding/reaching Dark Moon Ring requires the listed facts first. | — |
 | `catalog:item:fingerslayer` | `item:fingerslayer` | `boss:radahn` | certain | 0.9 | Holding/reaching Fingerslayer Blade requires the listed facts first. | — |
 | `catalog:item:carian-inverted` | `item:carian-inverted` | `quest:ranni:service` | certain | 0.9 | Holding/reaching Carian Inverted Statue requires the listed facts first. | — |
-| `catalog:item:haligtree-secret-medallion` | `item:haligtree-secret-medallion` | `region:haligtree` | certain | 0.9 | Holding/reaching Haligtree Secret Medallion requires the listed facts first. | — |
-| `catalog:item:dusk-medallion` | `item:dusk-medallion` | `region:altus` | certain | 0.9 | Holding/reaching Dectus Medallion requires the listed facts first. | — |
+| `catalog:item:haligtree-secret-medallion` | `item:haligtree-secret-medallion` | `region:haligtree` | **likely** | 0.6 | The secret medallion opens the Consecrated Snowfield, not the Haligtree itself. Holding it does not prove Elphael was reached. Likely, not certain. | — |
+| `catalog:item:dusk-medallion` | `item:dusk-medallion` | `region:altus` | **likely** | 0.6 | Both halves can be collected without riding the Lift of Dectus (Altus is also reachable via the Ruin-Strewn Precipice). Likely, not certain. | — |
 | `catalog:item:rotted-wing` | `item:rotted-wing` | `quest:millicent:needle` | certain | 0.9 | Holding/reaching Unalloyed Gold Needle requires the listed facts first. | — |
 | `catalog:item:serpent-amnion` | `item:serpent-amnion` | `quest:rya:amnion` | certain | 0.9 | Holding/reaching Serpent's Amnion requires the listed facts first. | — |
 | `catalog:item:blade-of-calling` | `item:blade-of-calling` | `region:mountaintops` | certain | 0.9 | Holding/reaching Blade of Calling requires the listed facts first. | — |
@@ -164,7 +166,7 @@ _None._
 | `catalog:boss:leonine-misbegotten` | `boss:leonine-misbegotten` | `region:weeping` | certain | 0.9 | Holding/reaching Leonine Misbegotten requires the listed facts first. | — |
 | `catalog:boss:elemer` | `boss:elemer` | `region:altus` | certain | 0.9 | Holding/reaching Elemer of the Briar requires the listed facts first. | — |
 | `catalog:boss:magma-wyrm-makar` | `boss:magma-wyrm-makar` | `region:liurnia` | certain | 0.9 | Holding/reaching Magma Wyrm Makar requires the listed facts first. | — |
-| `catalog:boss:commander-niall` | `boss:commander-niall` | `item:haligtree-secret-medallion` | certain | 0.9 | Holding/reaching Commander Niall requires the listed facts first. | — |
+| `catalog:boss:commander-niall` | `boss:commander-niall` | `item:haligtree-medallion-left` | certain | 0.9 | Holding/reaching Commander Niall requires the listed facts first. | — |
 | `catalog:boss:loretta-haligtree` | `boss:loretta-haligtree` | `grace:haligtree-town` | certain | 0.9 | Holding/reaching Loretta, Knight of the Haligtree requires the listed facts first. | — |
 | `catalog:boss:mimic-tear` | `boss:mimic-tear` | `boss:radahn` | certain | 0.9 | Holding/reaching Mimic Tear requires the listed facts first. | — |
 | `catalog:boss:valiant-gargoyle` | `boss:valiant-gargoyle` | `boss:radahn` | certain | 0.9 | Holding/reaching Valiant Gargoyle requires the listed facts first. | — |
@@ -178,7 +180,6 @@ _None._
 | `catalog:boss:fia-champions` | `boss:fia-champions` | `grace:deeproot` | certain | 0.9 | Holding/reaching Fia's Champions requires the listed facts first. | — |
 | `catalog:boss:ancestor-spirit` | `boss:ancestor-spirit` | `region:limgrave` | certain | 0.9 | Holding/reaching Ancestor Spirit requires the listed facts first. | — |
 | `catalog:boss:dragonkin-nokstella` | `boss:dragonkin-nokstella` | `boss:radahn` | certain | 0.9 | Holding/reaching Dragonkin Soldier of Nokstella requires the listed facts first. | — |
-| `catalog:boss:stray-mimic-tear` | `boss:stray-mimic-tear` | `item:haligtree-secret-medallion` | certain | 0.9 | Holding/reaching Stray Mimic Tear requires the listed facts first. | — |
 | `catalog:boss:godskin-apostle-noble` | `boss:godskin-apostle-noble` | `region:mountaintops` | certain | 0.9 | Holding/reaching Godskin Apostle & Godskin Noble requires the listed facts first. | — |
 | `catalog:boss:royal-knight-loretta` | `boss:royal-knight-loretta` | `region:liurnia` | certain | 0.9 | Holding/reaching Royal Knight Loretta requires the listed facts first. | — |
 | `catalog:boss:full-grown-fallingstar` | `boss:full-grown-fallingstar` | `region:mountaintops` | certain | 0.9 | Holding/reaching Full-Grown Fallingstar Beast requires the listed facts first. | — |
@@ -365,7 +366,7 @@ _None._
 | `catalog:boss:tree-sentinel--hinterland` | `boss:tree-sentinel--hinterland` | `region:shadow` | certain | 0.9 | Holding/reaching Tree Sentinel (Hinterland) requires the listed facts first. | — |
 | `catalog:boss:tree-sentinel--hinterland-bridge` | `boss:tree-sentinel--hinterland-bridge` | `region:shadow` | certain | 0.9 | Holding/reaching Tree Sentinel (Hinterland Bridge) requires the listed facts first. | — |
 
-### Authored chains (`inferChains.ts`) (51)
+### Authored chains (`inferChains.ts`) (71)
 
 | id | trigger | conclusions | class | conf | why | added |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -420,6 +421,26 @@ _None._
 | `chain:mapfrag:mountaintops-w:48` | `mapfrag:mountaintops-w` | `region:mountaintops` | certain | 0.9 | A painted mountaintops map fragment can only be picked up in that region, so that region was reached. | 138 |
 | `chain:mapfrag:mountaintops-e:49` | `mapfrag:mountaintops-e` | `region:mountaintops` | certain | 0.9 | A painted mountaintops map fragment can only be picked up in that region, so that region was reached. | 138 |
 | `chain:mapfrag:consecrated:50` | `mapfrag:consecrated` | `region:mountaintops` | certain | 0.9 | A painted mountaintops map fragment can only be picked up in that region, so that region was reached. | 138 |
+| `chain:item:remembrance-grafted:51` | `item:remembrance-grafted` | `boss:godrick` | certain | 0.9 | A Remembrance of the Grafted only exists once Godrick the Grafted is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-full-moon-queen:52` | `item:remembrance-full-moon-queen` | `boss:rennala` | certain | 0.9 | A Remembrance of the Full Moon Queen only exists once Rennala, Queen of the Full Moon is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-starscourge:53` | `item:remembrance-starscourge` | `boss:radahn` | certain | 0.9 | A Remembrance of the Starscourge only exists once Starscourge Radahn is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-regal-ancestor:54` | `item:remembrance-regal-ancestor` | `boss:regal-ancestor` | certain | 0.9 | A Remembrance of the Regal Ancestor only exists once Regal Ancestor Spirit is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-naturalborn:55` | `item:remembrance-naturalborn` | `boss:astel` | certain | 0.9 | A Remembrance of the Naturalborn only exists once Astel, Naturalborn of the Void is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-blasphemous:56` | `item:remembrance-blasphemous` | `boss:rykard` | certain | 0.9 | A Remembrance of the Blasphemous only exists once Rykard, Lord of Blasphemy is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-omen-king:57` | `item:remembrance-omen-king` | `boss:morgott` | certain | 0.9 | A Remembrance of the Omen King only exists once Morgott, the Omen King is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-rot-goddess:58` | `item:remembrance-rot-goddess` | `boss:malenia` | certain | 0.9 | A Remembrance of the Rot Goddess only exists once Malenia, Blade of Miquella is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-blood-lord:59` | `item:remembrance-blood-lord` | `boss:mohg` | certain | 0.9 | A Remembrance of the Blood Lord only exists once Mohg, Lord of Blood is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-lichdragon:60` | `item:remembrance-lichdragon` | `boss:fortissax` | certain | 0.9 | A Remembrance of the Lichdragon only exists once Lichdragon Fortissax is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-fire-giant:61` | `item:remembrance-fire-giant` | `boss:fire-giant` | certain | 0.9 | A Remembrance of the Fire Giant only exists once Fire Giant is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-dragonlord:62` | `item:remembrance-dragonlord` | `boss:placidusax` | certain | 0.9 | A Remembrance of the Dragonlord only exists once Dragonlord Placidusax is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-black-blade:63` | `item:remembrance-black-blade` | `boss:maliketh` | certain | 0.9 | A Remembrance of the Black Blade only exists once Maliketh, the Black Blade is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-hoarah-loux:64` | `item:remembrance-hoarah-loux` | `boss:godfrey` | certain | 0.9 | A Remembrance of Hoarah Loux only exists once Godfrey, First Elden Lord / Hoarah Loux is dead, so that fight is done. | 166 |
+| `chain:item:elden-remembrance:65` | `item:elden-remembrance` | `boss:radagon` | certain | 0.9 | A Elden Remembrance only exists once Radagon of the Golden Order / Elden Beast is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-dancing-lion:66` | `item:remembrance-dancing-lion` | `boss:divine-beast` | certain | 0.9 | A Remembrance of the Dancing Lion only exists once Divine Beast Dancing Lion is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-twin-moon-knight:67` | `item:remembrance-twin-moon-knight` | `boss:rennala-sote` | certain | 0.9 | A Remembrance of the Twin Moon Knight only exists once Rellana, Twin Moon Knight is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-lord-of-frenzied-flame:68` | `item:remembrance-lord-of-frenzied-flame` | `boss:midra` | certain | 0.9 | A Remembrance of the Lord of Frenzied Flame only exists once Midra, Lord of Frenzied Flame is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-impaler:69` | `item:remembrance-impaler` | `boss:messmer` | certain | 0.9 | A Remembrance of the Impaler only exists once Messmer the Impaler is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-a-god-and-a-lord:70` | `item:remembrance-a-god-and-a-lord` | `boss:consort` | certain | 0.9 | A Remembrance of a God and a Lord only exists once Promised Consort Radahn / Radahn, Consort of Miquella is dead, so that fight is done. | 166 |
 
 ### Gates (`gates.ts`) (10)
 
@@ -639,13 +660,14 @@ _None._
 | `storyline:blitz-stars:bs3` | `quest:ranni:ring` | `quest:ranni:ring` | certain | 0.85 | Completing Fastest route: Age of Stars — “Blade → statue → Astel → ring” grants its listed facts. | — |
 | `storyline:blitz-stars:bs4` | `boss:radagon` | `boss:radagon` | certain | 0.85 | Completing Fastest route: Age of Stars — “Take the fastest Lord route and summon Ranni” grants its listed facts. | — |
 
-### Setup wizard (`applyAnswers`) (9)
+### Setup wizard (`applyAnswers`) (10)
 
 | id | trigger | conclusions | class | conf | why | added |
 | --- | --- | --- | --- | --- | --- | --- |
 | `setup:dlc:limgrave` | `answer dlc=limgrave` | `region:limgrave` | certain | 0.9 | The player said the run is still in Limgrave/Weeping. | — |
 | `setup:dlc:liurnia` | `answer dlc=liurnia` | `region:liurnia` | certain | 0.9 | The player said the run reached Liurnia. | — |
-| `setup:dlc:altus` | `answer dlc=altus` | `region:altus`, `region:leyndell` | certain | 0.9 | Reaching Altus or Leyndell seeds both region facts. | — |
+| `setup:dlc:altus` | `answer dlc=altus` | `region:altus` | certain | 0.9 | The player said the run reached the Altus Plateau. | — |
+| `setup:dlc:leyndell` | `answer dlc=leyndell` | `region:leyndell` | certain | 0.9 | The player said the run entered Leyndell, which implies Altus. | — |
 | `setup:dlc:mountaintops` | `answer dlc=mountaintops` | `region:mountaintops` | certain | 0.9 | The player said the run reached the Mountaintops/Farum. | — |
 | `setup:dlc:sote` | `answer dlc=sote or soteStart=yes` | `region:shadow`, `boss:radahn`, `boss:mohg` | certain | 0.9 | The Realm of Shadow is gated behind Radahn and Mohg, so a run already inside it has both down. | — |
 | `setup:dlc:finished` | `answer dlc=finished` | `boss:radagon` | certain | 0.9 | An Elden Lord ending means the final boss is down. | — |
@@ -662,4 +684,4 @@ _None._
 | `capture:crafting:cookbook` | `craftable item visible on the Item Crafting page` | `<cookbook that unlocks it>` | certain | 0.85 | `inferCookbooks` maps a read recipe to the cookbook(s) that taught it (`ps5Crafting.ts`). | — |
 | `capture:map:region` | `painted map fragment / discovered underground grace` | `<the region reached>` | certain | 0.9 | Task 138: `mapfrag:* -> region` and underground `grace -> region` chains in `inferChains.ts`. | — |
 
-_Regenerated 2026-10-03._
+_Regenerated 2026-10-07._
