@@ -23,9 +23,12 @@ const OWNED = new Set<EntityKind>(['item', 'weapon', 'shield', 'armor', 'talisma
 const PLACE = new Set<EntityKind>(['region', 'grace', 'dungeon'])
 
 /** Authored edge -> the kinds its target may honestly be. */
+const DROPPERS = new Set<EntityKind>(['boss', 'enemy'])
 const EXPECTED_TO_KINDS: Record<string, Set<EntityKind>> = {
   drops: OWNED,
+  droppedBy: DROPPERS,
   soldBy: new Set<EntityKind>(['merchant']),
+  sells: OWNED,
   tradedFor: OWNED,
   goodForBuild: OWNED,
   craftedFrom: OWNED,

@@ -698,6 +698,11 @@ function buildIndex(): Index {
       }
       if (best) push(from, { rel: 'foundIn', to: canon(best.id), label: best.name, source: 'entity-index' })
     }
+    // Task 160 #6 — only a boss or enemy drops loot. A quest line or spell page
+    // can carry a scraped `drops` array too (a merchant's shop stock, a wiki
+    // "drops from" note); a `drops` edge from it would claim an item was
+    // dropped by a quest line.
+    if (record.kind !== 'boss' && record.kind !== 'enemy') continue
     for (const drop of record.drops ?? []) {
       const to = resolveOwned(drop)
       if (to && to !== from) push(from, { rel: 'drops', to: canon(to), label: drop, source: 'entity-index' })
