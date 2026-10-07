@@ -3287,6 +3287,31 @@ function foldHuntDuplicates(): void {
 }
 
 /**
+ * Task 160 §7 — a wiki sub-location page (a cave, catacomb or tunnel the
+ * location plane also lists) arrives as a bare `region:` record with no region
+ * of its own; the dungeon index already has the real page. Fold the region
+ * record onto the dungeon so the same place is not two pages, and the dungeon's
+ * contents are not split. A macro region (it carries its own `region`) is left
+ * alone even when a dungeon happens to share its name.
+ */
+function mergeSubLocationDuplicates(): void {
+  const dungeonByName = new Map<string, string>()
+  for (const [id, record] of records) {
+    if (record.kind !== 'dungeon') continue
+    const key = simpleNorm(record.name)
+    if (key && !dungeonByName.has(key)) dungeonByName.set(key, id)
+  }
+  for (const [id, record] of [...records]) {
+    if (record.kind !== 'region' || record.region) continue
+    const target = dungeonByName.get(simpleNorm(record.name))
+    if (!target || target === id) continue
+    const keeper = records.get(target)
+    if (keeper) mergeRecords(keeper, record)
+    records.delete(id)
+  }
+}
+
+/**
  * Task 160 §5 — two graces of the same name are different warp points (the
  * Leyndell Royal vs Ashen Capital, two Artist's Shacks). Keep them separate but
  * qualify the display name with the region so the two pages are distinguishable.
@@ -3615,6 +3640,7 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   // same-name graces that must stay separate.
   foldUnanchoredDuplicates()
   foldHuntDuplicates()
+  mergeSubLocationDuplicates()
   qualifyDuplicateGraceNames()
 
   // Task 146 §2/§3 — the missing items, the real merchant quotes and the quest
