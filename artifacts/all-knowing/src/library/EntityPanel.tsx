@@ -4,6 +4,8 @@ import { edges, getEntity, status, type EntityKind } from '../lib/entityGraph'
 import { useEnrichment, useEntityIndex } from '../lib/entityEnrich'
 import { encountersOf } from '../lib/bossRoster'
 import { loadNpcPlacements, placementsForName, type NpcPlacement } from '../lib/npcPlacements'
+import { loadChestData, matchChests, type ChestFact } from '../lib/chestFacts'
+import { weaponStatRows, weaponStatusFor, type WeaponStatus } from '../lib/weaponStats'
 import type { RemembranceOption } from '../lib/remembranceChoice'
 import type { Verdict } from '../lib/verdict'
 import { Related, RelatedCollapsible } from '../Related'
@@ -179,6 +181,57 @@ export function NpcPlacementsBlock({ placements }: { placements: NpcPlacement[] 
   )
 }
 
+/**
+ * Task 183 §2 — a chest that holds this item, from `world-lots.json` via
+ * `chestFacts.ts`. Rendered in the where-to-find section so an item page names
+ * the chest and region it comes from; omitted entirely when no chest matches.
+ */
+export function ChestFactsBlock({ chests }: { chests: ChestFact[] }) {
+  if (!chests.length) return null
+  return (
+    <div className="lib-panel-block">
+      <div className="kicker">Found in a chest</div>
+      <ul className="lib-req-list">
+        {chests.slice(0, 6).map((c) => (
+          <li key={c.id} className="lib-req">
+            <span>{c.region || c.map}</span>
+            <span className="note">{c.items.join(', ')}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+/**
+ * Task 183 §3 — status build-up decoded from the regulation
+ * `statusSpEffectParams` (via `weaponStats.ts`), shown next to the attack
+ * rating. Poise rides along when the entity carries one, so the two "beyond AR"
+ * numbers sit together. No status and no poise means no block.
+ */
+export function WeaponNumbersBlock({ status, poise }: { status: WeaponStatus[]; poise?: string }) {
+  if (!status.length && !poise) return null
+  return (
+    <div className="lib-panel-block">
+      <div className="kicker">Status build-up</div>
+      {status.length > 0 && (
+        <div className="lib-attack">
+          {status.map((s) => (
+            <span key={s.label} className="lib-attack-chip">
+              {s.label} <strong>{s.value}</strong>
+            </span>
+          ))}
+        </div>
+      )}
+      {poise && (
+        <p className="note">
+          <Term id="mechanic:poise">Poise</Term> {poise}
+        </p>
+      )}
+    </div>
+  )
+}
+
 export function EntityPanel({
   entity,
   character,
@@ -203,8 +256,13 @@ export function EntityPanel({
 }: EntityPanelProps) {
   const [tab, setTab] = useState<Tab>('stats')
   // Task 183 §1 — the NPC's own MSB placements, loaded only for NPC pages and
-  // only once the where-to-find tab is actually opened.
-  const [placements, setPlacements] = useState<NpcPlacement[] | null>(null)
+  // only once the where-to-find tab is actually opened. Each async block carries
+  // the entity name it was fetched for, so switching pages cannot show stale data.
+  const [placements, setPlacements] = useState<{ name: string; rows: NpcPlacement[] } | null>(null)
+  // Task 183 §2/§3 — chest matches and the regulation status build-up, both
+  // loaded only when their tab/kind actually needs them.
+  const [chestHits, setChestHits] = useState<{ name: string; rows: ChestFact[] } | null>(null)
+  const [weaponStatus, setWeaponStatus] = useState<{ name: string; rows: WeaponStatus[] } | null>(null)
   const statusFactId = factId ?? entity.factId
   // Task 119 §3: read the enriched record first; skeleton (not "No data") while
   // the one index fetch is still in flight.
@@ -237,17 +295,44 @@ export function EntityPanel({
   // Task 183 §1 — fetch the placement file for an NPC only, and only once the
   // where tab is open, so a weapon page never pays for the 180 KB file.
   useEffect(() => {
-    if (!isNpc || tab !== 'where' || placements) return
+    if (!isNpc || tab !== 'where' || placements?.name === entity.name) return
     let cancelled = false
     void loadNpcPlacements()
       .then((d) => {
-        if (!cancelled) setPlacements(placementsForName(entity.name, d.placements))
+        if (!cancelled) setPlacements({ name: entity.name, rows: placementsForName(entity.name, d.placements) })
       })
       .catch(() => { /* no placement file: the block simply does not render */ })
     return () => {
       cancelled = true
     }
   }, [isNpc, tab, placements, entity.name])
+  // Task 183 §2 — which chests hold this item, from the same world-lots dump the
+  // atlas layer uses, shown in the where-to-find section.
+  useEffect(() => {
+    if (tab !== 'where' || isNpc || isBoss || isGrace || isLocation || chestHits?.name === entity.name) return
+    let cancelled = false
+    void loadChestData()
+      .then((d) => {
+        if (!cancelled) setChestHits({ name: entity.name, rows: matchChests(entity.name, d.facts) })
+      })
+      .catch(() => { /* no chest data: the block simply does not render */ })
+    return () => {
+      cancelled = true
+    }
+  }, [tab, isNpc, isBoss, isGrace, isLocation, chestHits, entity.name])
+  // Task 183 §3 — status build-up for the weapon on screen (regulation decode).
+  useEffect(() => {
+    if (tab !== 'stats' || !entity.weaponName || weaponStatus?.name === entity.name) return
+    let cancelled = false
+    void weaponStatRows()
+      .then((rows) => {
+        if (!cancelled) setWeaponStatus({ name: entity.name, rows: weaponStatusFor(entity.weaponName!, rows) })
+      })
+      .catch(() => { /* no regulation data: the block simply does not render */ })
+    return () => {
+      cancelled = true
+    }
+  }, [tab, entity.weaponName, entity.name, weaponStatus])
   const recordSections = record?.sections ?? []
   const isOwnedValue = owned ?? isOwned(entity, character)
   const metValue = requirementsMet === undefined ? meetsRequirements(entity, character) : requirementsMet
@@ -452,6 +537,14 @@ export function EntityPanel({
               </div>
             )}
 
+            {/* Task 183 §3 — status build-up from the regulation params, beside AR. */}
+            {weaponStatus?.name === entity.name && weaponStatus.rows.length > 0 && (
+              <WeaponNumbersBlock
+                status={weaponStatus.rows}
+                poise={entity.stats?.find((s) => s.label.toLowerCase() === 'poise')?.value}
+              />
+            )}
+
             {entity.weight !== undefined && (
               <div className="lib-panel-block">
                 <div className="kicker">Weight</div>
@@ -511,8 +604,9 @@ export function EntityPanel({
                 {record.map.map ? ` · ${record.map.map}` : ''}
               </p>
             )}
-            {isNpc && placements && placements.length > 0 && <NpcPlacementsBlock placements={placements} />}
-            {!entity.where && !record?.location && !entity.region && !record?.map && !(isNpc && placements && placements.length > 0) && (
+            {isNpc && placements && placements.rows.length > 0 && <NpcPlacementsBlock placements={placements.rows} />}
+            {!isNpc && chestHits && chestHits.rows.length > 0 && <ChestFactsBlock chests={chestHits.rows} />}
+            {!entity.where && !record?.location && !entity.region && !record?.map && !(isNpc && placements && placements.rows.length > 0) && !(chestHits && chestHits.rows.length > 0) && (
               indexReady ? (
                 <p className="note">No acquisition text in the data for this entry.</p>
               ) : (

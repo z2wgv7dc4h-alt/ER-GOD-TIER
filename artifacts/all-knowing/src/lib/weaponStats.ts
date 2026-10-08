@@ -28,12 +28,17 @@ const STATUS_LABELS: Record<number, string> = {
   11: 'Death Blight',
 }
 
+export type WeaponStatus = { label: string; value: number }
+
 export type WeaponStatRow = {
   name: string
   weaponName: string
   requirements: { attr: string; value: number }[]
   scaling: { attr: string; letter: string }[]
+  /** Base damage (Physical/Magic/Fire/Lightning/Holy) only. */
   attack: { label: string; value: number }[]
+  /** Status build-up (Bleed/Poison/…) decoded from `statusSpEffectParams`. */
+  status: WeaponStatus[]
 }
 
 /** Highest tier whose threshold the value meets. `tiers` is descending (S first). */
@@ -54,6 +59,19 @@ function affinityRank(affinityId: number): number {
 export function toWeaponStatRow(weapon: Weapon): WeaponStatRow {
   const scaling = weapon.attributeScaling[0] ?? {}
   const attack = weapon.attack[0] ?? {}
+  const attackRows: { label: string; value: number }[] = []
+  const statusRows: WeaponStatus[] = []
+  for (const key of Object.keys(attack) as unknown as number[]) {
+    const value = attack[key as AttackPowerType] ?? 0
+    if (value <= 0) continue
+    // Attack power type 0..4 is base damage; 5..11 is a status build-up. The AR
+    // engine merges `statusSpEffectParams` into the same object (ar.ts), so the
+    // split is by type id, not by a second decode.
+    const label = damageTypeLabels[key] ?? STATUS_LABELS[key]
+    if (!label) continue
+    if (key <= 4) attackRows.push({ label, value })
+    else statusRows.push({ label, value })
+  }
   return {
     name: weapon.name,
     weaponName: weapon.weaponName,
@@ -66,12 +84,8 @@ export function toWeaponStatRow(weapon: Weapon): WeaponStatRow {
         attr: ATTR_LABELS[attr] ?? attr,
         letter: scalingLetter(weapon.scalingTiers, value as number),
       })),
-    attack: (Object.keys(attack) as unknown as number[])
-      .filter((k) => (attack[k as AttackPowerType] ?? 0) > 0)
-      .map((k) => ({
-        label: damageTypeLabels[k] ?? STATUS_LABELS[k] ?? String(k),
-        value: attack[k as AttackPowerType] as number,
-      })),
+    attack: attackRows,
+    status: statusRows,
   }
 }
 
@@ -97,4 +111,22 @@ export function matchWeaponStats(query: string, rows: WeaponStatRow[], limit = 1
   const q = query.trim().toLowerCase()
   if (q.length < 3) return []
   return rows.filter((r) => r.name.toLowerCase().includes(q)).slice(0, limit)
+}
+
+/**
+ * The status build-up for one weapon page. Exact base/full name first, then a
+ * conservative partial (≥5 chars both sides) so a page using a display name still
+ * resolves. Returns [] when the weapon has no status effect or is not in the table.
+ */
+export function weaponStatusFor(name: string, rows: WeaponStatRow[]): WeaponStatus[] {
+  const n = name.trim().toLowerCase()
+  if (!n) return []
+  const exact = rows.find((r) => r.weaponName.toLowerCase() === n || r.name.toLowerCase() === n)
+  if (exact) return exact.status
+  if (n.length < 5) return []
+  const partial = rows.find((r) => {
+    const w = r.weaponName.toLowerCase()
+    return Math.min(n.length, w.length) >= 5 && (w.includes(n) || n.includes(w))
+  })
+  return partial?.status ?? []
 }

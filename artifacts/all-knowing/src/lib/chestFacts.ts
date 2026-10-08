@@ -15,6 +15,7 @@
 import { useEffect, useState } from 'react'
 import { facts } from '../knowledge/catalog'
 import type { WorldLot } from './openData'
+import type { NpcPlacement } from './npcPlacements'
 
 export type ChestFact = {
   /** `lot:<eventFlag>` — matches the id `openData.matchOpen` already emits. */
@@ -158,6 +159,143 @@ export function matchChests(text: string, chests: ChestFact[], limit = 12): Ches
     }
   }
   return hits
+}
+
+// ---------------------------------------------------------------------------
+// Task 183 §2 — chest pins on the static plate
+// ---------------------------------------------------------------------------
+
+export type ChestWorld = 'overworld' | 'underground' | 'shadow'
+
+export type ChestPin = {
+  id: string
+  /** The chest's headline item (or its region when it holds only materials). */
+  name: string
+  flag: number
+  map: string
+  region: string
+  world: ChestWorld
+  /** Plate percent (0..100), the same frame `coords.ts` / `boss-pins.json` use. */
+  x: number
+  y: number
+}
+
+const MOSAIC = 10496
+const TILE_WORLD = 256
+const OFFSET_X = -7168
+const OFFSET_Y = 16640
+
+type Anchor = { offX: number; offY: number; world: ChestWorld }
+
+const asWorld = (value: string | undefined): ChestWorld =>
+  value === 'underground' || value === 'shadow' ? value : 'overworld'
+
+const pct = (v: number) => (v / MOSAIC) * 100
+
+function parseMapId(id: string): { area: number; block: number; mapno: number } | null {
+  const m = /^m(\d+)_(\d+)_(\d+)_/.exec(id)
+  if (!m) return null
+  return { area: Number(m[1]), block: Number(m[2]), mapno: Number(m[3]) }
+}
+
+/**
+ * A per-map translation from the already-projected NPC placements: local x/z ->
+ * plate px/py. This is the exact anchor `map/itemSources.ts` derives for enemy
+ * spawns, so chests land in the same frame as every other pin. Legacy dungeons
+ * (`m10`, `m30`, …) have no runtime world->plate affine of their own, so an NPC
+ * or boss anchor on the same map is the only honest way to place them.
+ */
+export function chestAnchors(placements: NpcPlacement[]): Map<string, Anchor> {
+  const byMap = new Map<string, Anchor>()
+  for (const p of placements) {
+    if (typeof p.px !== 'number' || typeof p.py !== 'number') continue
+    if (byMap.has(p.map)) continue
+    byMap.set(p.map, { offX: p.px - p.x, offY: p.py + p.z, world: asWorld(p.world) })
+  }
+  return byMap
+}
+
+/** Project one chest into plate percent, or null when its map cannot be grounded. */
+export function projectChest(chest: ChestFact, anchors: Map<string, Anchor>): ChestPin | null {
+  const name = chest.items[0] ?? chest.region ?? ''
+  const anchor = anchors.get(chest.map)
+  if (anchor) {
+    return {
+      id: chest.id,
+      name,
+      flag: chest.flag,
+      map: chest.map,
+      region: chest.region,
+      world: anchor.world,
+      x: pct(chest.x + anchor.offX),
+      y: pct(-chest.z + anchor.offY),
+    }
+  }
+  const tile = parseMapId(chest.map)
+  // The overworld (m60) and Shadow (m61) tiles have a fixed affine. A `_02`
+  // map is an interior/underground variant of the same tile that is NOT on the
+  // surface plate; a legacy dungeon without an anchor is skipped rather than guessed.
+  if (!tile || (tile.area !== 60 && tile.area !== 61) || !/_00$/.test(chest.map)) return null
+  const px = tile.block * TILE_WORLD + TILE_WORLD / 2 + chest.x + OFFSET_X
+  const py = OFFSET_Y - (tile.mapno * TILE_WORLD + TILE_WORLD / 2 + chest.z)
+  return {
+    id: chest.id,
+    name,
+    flag: chest.flag,
+    map: chest.map,
+    region: chest.region,
+    world: tile.area === 61 ? 'shadow' : 'overworld',
+    x: pct(px),
+    y: pct(py),
+  }
+}
+
+export function chestPins(chests: ChestFact[], placements: NpcPlacement[]): ChestPin[] {
+  const anchors = chestAnchors(placements)
+  const out: ChestPin[] = []
+  for (const c of chests) {
+    const pin = projectChest(c, anchors)
+    if (pin) out.push(pin)
+  }
+  return out
+}
+
+export type ChestData = { facts: ChestFact[]; pins: ChestPin[] }
+
+let chestDataCache: ChestData | null = null
+
+/** Fetch world lots + region labels + NPC anchors once, then build facts and pins. */
+export async function loadChestData(): Promise<ChestData> {
+  if (chestDataCache) return chestDataCache
+  const [lots, regions, placements] = await Promise.all([
+    fetch('/sourced/open/world-lots.json').then((r) => r.json() as Promise<WorldLot[]>),
+    loadGraceRegions(),
+    fetch('/sourced/npc-placements.json')
+      .then((r) => r.json() as Promise<{ placements?: NpcPlacement[] }>)
+      .catch(() => ({}) as { placements?: NpcPlacement[] }),
+  ])
+  const facts = buildChestFacts(lots, regions)
+  chestDataCache = { facts, pins: chestPins(facts, placements.placements ?? []) }
+  return chestDataCache
+}
+
+export function useChestData(enabled: boolean): ChestData {
+  const [data, setData] = useState<ChestData>(chestDataCache ?? { facts: [], pins: [] })
+  useEffect(() => {
+    if (!enabled || chestDataCache) return
+    let cancelled = false
+    void loadChestData()
+      .then((d) => {
+        if (!cancelled) setData(d)
+      })
+      .catch(() => {
+        /* no chest data: the layer simply stays empty */
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [enabled])
+  return data
 }
 
 let regionsCache: GraceRegion[] | null = null
