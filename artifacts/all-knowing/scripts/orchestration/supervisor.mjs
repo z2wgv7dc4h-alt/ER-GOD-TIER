@@ -56,9 +56,9 @@ function runGates(id) {
   const dir = path.join(WT, `task-${id}`, 'artifacts', 'all-knowing')
   const out = path.join(WT, `gates-${id}.txt`)
   const script = `if ! git merge --no-edit master >/dev/null 2>&1; then
-  bad=$(git diff --name-only --diff-filter=U | grep -vE 'public/sourced/(entity-index|aliases)\.json|src/data/aliases\.json|docs/(PAGE-AUDIT|LINKS-AUDIT|ENTITY-COVERAGE|PROGRESS-AUDIT|INFERENCE-RULES|DATA-CATALOG|GIDEON-EVAL)\.md|offline-manifest\.json')
+  bad=$(git diff --name-only --relative --diff-filter=U | grep -vE 'public/sourced/(entity-index|aliases)\.json|src/data/aliases\.json|docs/(PAGE-AUDIT|LINKS-AUDIT|ENTITY-COVERAGE|PROGRESS-AUDIT|INFERENCE-RULES|DATA-CATALOG|GIDEON-EVAL)\.md|offline-manifest\.json')
   if [ -n "$bad" ]; then git merge --abort; echo "MERGE-CONFLICT: $bad"; exit 1; fi
-  git diff --name-only --diff-filter=U | xargs -r git checkout --theirs -- ; git add -A; git commit -qm "Task ${id}: merge master (generated files taken from master, regenerated below)"
+  git diff --name-only --relative --diff-filter=U | xargs -r git checkout --theirs -- ; git add -A; git commit -qm "Task ${id}: merge master (generated files taken from master, regenerated below)"
   node scripts/gen-aliases.mjs >/dev/null 2>&1; npm run audit:pages >/dev/null 2>&1; npm run audit:links >/dev/null 2>&1
 fi
 node scripts/gen-aliases.mjs >/dev/null 2>&1; npm run index:entities >/dev/null 2>&1; node scripts/gen-aliases.mjs >/dev/null 2>&1; git add -A public/sourced src/data docs >/dev/null 2>&1; git commit -qm "Task ${id}: rebuild index after merging master" >/dev/null 2>&1
