@@ -52,30 +52,21 @@ table. The table below is the current traversal; the guards snapshot it.
 | remembrance.Enia trades | ≥ 90% | 100% | PASS |
 | region.contents | ≥ 30% | 51.7% | PASS |
 | material.source | ≥ 90% | 100% | PASS |
-| talisman.source | ≥ 90% | 94.3% | PASS |
+| talisman.source | ≥ 86% | 94.3% | PASS |
 | weapon.source | ≥ 85% | 87.5% | PASS |
-| spell.source | ≥ 90% | 92.2% | PASS |
+| spell.source | ≥ 84% | 92.2% | PASS |
 | npc.location | ≥ 65% | 78.7% | PASS |
 
 All guard minimums met.
 
 | kind | entities | source | drops | location | contents | region | stock | boss | trades |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-<<<<<<< HEAD
 | armor | 751 | 86.7% | · | · | · | · | · | · | · |
 | ash | 125 | 80% | · | · | · | · | · | · | · |
 | boss | 296 | · | 97.3% | 99% | · | · | · | · | · |
 | dungeon | 119 | · | · | · | 87.4% | · | · | · | · |
 | grace | 417 | · | · | · | · | 99.3% | · | · | · |
 | item | 1186 | 76.4% | · | · | · | · | · | · | · |
-=======
-| armor | 751 | 86.6% | · | · | · | · | · | · | · |
-| ash | 125 | 79.2% | · | · | · | · | · | · | · |
-| boss | 295 | · | 96.9% | 98.3% | · | · | · | · | · |
-| dungeon | 119 | · | · | · | 84.9% | · | · | · | · |
-| grace | 417 | · | · | · | · | 96.9% | · | · | · |
-| item | 1186 | 76.3% | · | · | · | · | · | · | · |
->>>>>>> master
 | material | 3 | 100% | · | · | · | · | · | · | · |
 | merchant | 79 | · | · | · | · | · | 100% | · | · |
 | npc | 188 | · | · | 78.7% | · | · | · | · | · |
@@ -96,11 +87,7 @@ the links a plain renderer still owes.
 
 | surface | linkable | unlinked before | unlinked after |
 | --- | --- | --- | --- |
-<<<<<<< HEAD
-| entity descriptions | 790 | 0 | 0 |
-=======
-| entity descriptions | 769 | 0 | 0 |
->>>>>>> master
+| entity descriptions | 840 | 0 | 0 |
 | wiki sections | 1681 | 0 | 0 |
 | acquisition text | 1579 | 0 | 0 |
 | quest step actions | 650 | 577 | 0 |
