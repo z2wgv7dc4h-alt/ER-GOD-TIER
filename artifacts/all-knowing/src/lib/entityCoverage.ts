@@ -60,22 +60,28 @@ const CATALOGUE_KIND_SET = new Set<EntityKind>(CATALOGUE_KINDS)
 
 /**
  * The guard combos the task names, per kind. Task 124 §4 raises every one of
- * these to 100% — the gate that keeps the coverage work from regressing.
+ * these to 100% — the gate that keeps the coverage work from regressing. Task 177
+ * lowers the item-like location floors because a wiki-paragraph `location` is no
+ * longer counted as coverage.
  */
 export const GUARD_MINIMUMS: { kind: EntityKind; field: string; min: number; label: string }[] = [
   // Task 130 §2 raises the roster to every encounter; the boss guard is now the
   // task's own requirement — every boss has a location and a region. The richer
   // HP / negation / drops / strategy fields stay in the report as information.
   { kind: 'boss', field: 'locationRegion', min: 100, label: 'location + region (all bosses)' },
-  { kind: 'weapon', field: 'requirementsScalingLocation', min: 100, label: 'requirements + scaling + location (all weapons)' },
-  { kind: 'shield', field: 'requirementsScalingLocation', min: 100, label: 'requirements + scaling + location (all shields)' },
-  { kind: 'armor', field: 'negationWeightLocation', min: 100, label: 'negation + weight + location (all armor)' },
-  { kind: 'armor', field: 'descriptionLocation', min: 100, label: 'description + location' },
-  { kind: 'talisman', field: 'descriptionLocation', min: 100, label: 'description + location' },
-  { kind: 'spell', field: 'descriptionLocation', min: 100, label: 'description + location' },
-  { kind: 'ash', field: 'descriptionLocation', min: 100, label: 'description + location' },
-  { kind: 'spirit', field: 'descriptionLocation', min: 100, label: 'description + location' },
-  { kind: 'item', field: 'descriptionLocation', min: 100, label: 'description + location (all items)' },
+  // Task 177 — an acquisition `location` no longer stores a wiki paragraph or a
+  // bare place type ("Site of Grace", "Location:"). A record whose only locator
+  // was such a blob is now honestly empty, so the item-like floors sit just under
+  // the measured coverage instead of a 100% that counted the prose.
+  { kind: 'weapon', field: 'requirementsScalingLocation', min: 98, label: 'requirements + scaling + location (all weapons)' },
+  { kind: 'shield', field: 'requirementsScalingLocation', min: 95, label: 'requirements + scaling + location (all shields)' },
+  { kind: 'armor', field: 'negationWeightLocation', min: 97, label: 'negation + weight + location (all armor)' },
+  { kind: 'armor', field: 'descriptionLocation', min: 97, label: 'description + location' },
+  { kind: 'talisman', field: 'descriptionLocation', min: 97, label: 'description + location' },
+  { kind: 'spell', field: 'descriptionLocation', min: 93, label: 'description + location' },
+  { kind: 'ash', field: 'descriptionLocation', min: 97, label: 'description + location' },
+  { kind: 'spirit', field: 'descriptionLocation', min: 98, label: 'description + location' },
+  { kind: 'item', field: 'descriptionLocation', min: 99, label: 'description + location (all items)' },
   { kind: 'grace', field: 'map', min: 100, label: 'coords' },
   // Task 132 §5 — the kinds the wiki DB added (NPC characters, locations,
   // enemies) must carry a description and a location for ≥95% of the primary

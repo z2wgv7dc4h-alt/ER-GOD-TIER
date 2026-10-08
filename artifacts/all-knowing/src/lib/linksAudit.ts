@@ -226,10 +226,13 @@ export const GUARD_MINIMUMS: CoverageGuard[] = [
   // Many of the 312 region records are sub-areas with no tracked entity inside.
   { kind: 'region', field: 'contents', label: 'contents', min: 30 },
   { kind: 'material', field: 'source', label: 'source', min: 90 },
-  { kind: 'talisman', field: 'source', label: 'source', min: 90 },
+  // Task 177 — a `location` no longer holds an acquisition paragraph, so a
+  // talisman/spell whose only `foundIn` edge came from a region named inside that
+  // prose no longer links. The floor is the source-derived edges that remain.
+  { kind: 'talisman', field: 'source', label: 'source', min: 86 },
   // 96% of weapons carry location text; only the ones naming a tracked place match.
   { kind: 'weapon', field: 'source', label: 'source', min: 85 },
-  { kind: 'spell', field: 'source', label: 'source', min: 90 },
+  { kind: 'spell', field: 'source', label: 'source', min: 84 },
   // 70% of NPC records carry a location and only some name a tracked region/grace.
   { kind: 'npc', field: 'location', label: 'location', min: 65 },
 ]

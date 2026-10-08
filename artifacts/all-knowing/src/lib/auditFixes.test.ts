@@ -292,3 +292,85 @@ describe('Task 176 §2 — a description comes only from the record’s own page
   })
 })
 
+/** A bare place type is a kind word, never a location ("Church", "Subregion"). */
+const BARE_PLACE_TYPE = /^(?:church|shack|village|tower|rise|fort|subregion|grace|site of grace|sites of grace|ruins?|cave|tunnel|catacombs?|mausoleum|evergaol|capital|manor|castle|town|city|bridge|gate|mine|gaol|keep|palace|academy|dungeon|well|square|grounds|region|location|area)$/i
+
+describe('Task 177 §6 — region/location is never a bare place type', () => {
+  it('has no bare type word in a region or location field', () => {
+    const offenders = list
+      .filter((record) => [record.location, record.region].some((value) => typeof value === 'string' && BARE_PLACE_TYPE.test(value.trim())))
+      .map((record) => `${record.id}: ${record.location ?? record.region}`)
+    expect(offenders, offenders.slice(0, 20).join('\n')).toEqual([])
+  })
+
+  it('keeps the real parent region for a location whose wiki row only carried a type', () => {
+    expect(records['region:ailing-village']?.location).toBe('Weeping Peninsula')
+    expect(records['region:church-of-benediction']?.location).toBe('Gravesite Plain')
+  })
+})
+
+describe('Task 177 §7 — location holds a place, never an acquisition paragraph', () => {
+  it('has no multi-line paragraph or "Location:"/"Loot:" label in location', () => {
+    const offenders = list
+      .filter((record) => {
+        const location = record.location
+        if (typeof location !== 'string') return false
+        return location.includes('\n') || /^(?:loot|location|guaranteed drop|dragon communion|purchase|quest item|remembrance item|reward|drop)\s*[:：]/i.test(location.trim())
+      })
+      .map((record) => `${record.id}: ${JSON.stringify(record.location).slice(0, 80)}`)
+    expect(offenders, offenders.slice(0, 20).join('\n')).toEqual([])
+  })
+
+  it('keeps the place and drops the paragraph from a labelled blob', () => {
+    expect(records['item:about-adding-affinities']?.location).toBe('Gatefront Ruins')
+  })
+
+  it('has no merchant placeholder as a location', () => {
+    expect(list.filter((record) => (record.location ?? '').trim().toLowerCase() === 'merchant').map((record) => record.id)).toEqual([])
+  })
+})
+
+describe('Task 177 §8 — name/id/format mismatches', () => {
+  it("shows Rellana's in-game name and keeps Rennala a separate record", () => {
+    // The catalog id slug is the graph's canonical `boss:rennala-sote` (owned by
+    // catalog.ts and the generated roster/alias plane); the index must display the
+    // real boss name, not derive it from the stale slug or mix up Rennala.
+    expect(records['boss:rennala-sote']?.name).toBe('Rellana, Twin Moon Knight')
+    expect(records['boss:rennala']?.name).toBe('Rennala, Queen of the Full Moon')
+    expect(aliases.some((row) => row.engineId === 'hunt:rellana-twin-moon-knight' && row.slug === 'boss:rennala-sote')).toBe(true)
+  })
+
+  it('gives the generic medallion facts their own catalog name, not a half', () => {
+    expect(records['item:dusk-medallion']?.name).toBe('Dectus Medallion')
+    expect(records['item:haligtree-secret-medallion']?.name).toBe('Haligtree Secret Medallion')
+  })
+
+  it('has no within-kind duplicate display name (the two medallion pairs)', () => {
+    // The same normal form the page guard uses (apostrophes dropped, not the
+    // trailing "s"), so "Old Sorcerer's" and "Old Sorcerer" stay distinct.
+    const nameKey = (value: unknown): string =>
+      String(value ?? '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[\u2019'`"]/g, '')
+        .replace(/[^a-z0-9]+/g, ' ')
+        .trim()
+    const groups = new Map<string, string[]>()
+    for (const record of list) {
+      const key = `${record.kind}|${nameKey(record.name)}`
+      const ids = groups.get(key) ?? []
+      ids.push(record.id)
+      groups.set(key, ids)
+    }
+    const dups = [...groups.entries()].filter(([, ids]) => ids.length > 1).map(([key, ids]) => `${key}: ${ids.join(', ')}`)
+    expect(dups, dups.slice(0, 20).join('\n')).toEqual([])
+  })
+
+  it('fixes the comma typo and strips leaked markdown headings from locations', () => {
+    expect(records['grace:350003']?.location).toBe('Subterranean Shunning-Grounds')
+    const headings = list.filter((record) => typeof record.location === 'string' && record.location.trim().startsWith('#'))
+    expect(headings.map((record) => record.id)).toEqual([])
+  })
+})
+

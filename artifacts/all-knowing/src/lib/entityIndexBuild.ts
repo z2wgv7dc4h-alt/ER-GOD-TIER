@@ -255,6 +255,14 @@ function baseNorm(value: unknown): string {
   return simpleNorm(stripParens(String(value ?? ''))).replace(/^the /, '').replace(/\s+/g, ' ').trim()
 }
 
+/**
+ * Task 177 — the generic half of a split item and its specific half share one
+ * catalog fact id. A source row named after a half ("Dectus Medallion (right)")
+ * used to rename the generic record, leaving two same-kind records with one
+ * display name. The record keeps its catalog fact's own name instead.
+ */
+const MEDALLION_HALF_FACTS = new Set(['item:dusk-medallion', 'item:haligtree-secret-medallion'])
+
 function tokens(value: string): string[] {
   return possNorm(stripParens(value)).split(' ').filter(Boolean)
 }
@@ -672,6 +680,52 @@ for (const row of ((recipesDoc as { recipes?: RecipeRow[] }).recipes ?? [])) {
   if (key && !recipeByItem.has(key)) recipeByItem.set(key, row)
 }
 
+/** The acquisition-method labels the wiki dumps prefix a location with. */
+const ACQ_METHOD_LABEL =
+  'loot|location|obtained|guaranteed drops?|dragon communion|reward|source|drop|quest item|remembrance item|purchase|purchased|quest|defeat|trade|equipped|tailor|random loot|random drop|painting treasure|painting item|received upon|altered version is received upon'
+
+/** A leading acquisition-method label on a location; group 1 is the place text. */
+const ACQ_LABEL_RE = new RegExp(`^(?:${ACQ_METHOD_LABEL})\\s*[:：]\\s*(.*)$`, 'i')
+
+/**
+ * Task 177 — a bare place *type* ("Church", "Shack", "Subregion", "grace") is
+ * never a location; the name already carries the type and `region` carries the
+ * parent. The wiki's `stats.Type` used to be stored verbatim as `location`.
+ */
+const BARE_PLACE_TYPE =
+  /^(?:church|shack|village|tower|rise|fort|subregion|grace|site of grace|sites of grace|ruins?|cave|tunnel|catacombs?|mausoleum|evergaol|capital|manor|castle|town|city|bridge|gate|mine|gaol|keep|palace|academy|dungeon|well|square|grounds|region|location|area)$/i
+
+/** Task 177 — true when the text is only a generic place-type word. */
+function isBarePlaceType(value: unknown): boolean {
+  return BARE_PLACE_TYPE.test(String(value ?? '').trim())
+}
+
+/**
+ * Task 177 — the acquisition dump often stores the whole wiki paragraph in
+ * `location` (`"**Location**: Shadow Keep\n- The … is found in …"`). Keep only
+ * the real place: prefer the concise `near` field, else the text after a
+ * `Location:`/`Loot:`/`Guaranteed Drop:`/`Dragon Communion:` label, else the
+ * first line. A sentence or a bullet is prose, never a place.
+ */
+function cleanAcquisitionPlace(location: unknown, near: unknown): string | undefined {
+  const nearText = String(near ?? '').trim()
+  if (nearText) return nearText
+  const raw = String(location ?? '').trim()
+  if (!raw) return undefined
+  const text = raw.replace(/\*+/g, '')
+  const label = ACQ_LABEL_RE.exec(text)
+  // A single-line, unlabelled acquisition sentence is not a wiki paragraph: it
+  // is the only locator the record carries, so keep it (cleaning it would empty
+  // the field and drop every item/talisman/spirit below the coverage guard).
+  if (!label && !text.includes('\n')) return text
+  const first = (label ? label[1] : text.split(/\r?\n/)[0]).replace(/^[-*•\s]+/, '').trim()
+  if (!first) return undefined
+  if (/^merchant$/i.test(first) || isBarePlaceType(first)) return undefined
+  if (first.length > 48 || /[.!?]\s*$/.test(first)) return undefined
+  if (/^(?:the|a|an|about|acquired|found|dropped|it |this )/i.test(first)) return undefined
+  return first
+}
+
 /** A location for an item-like row, or undefined when no dataset carries one. */
 function itemLocationFallback(name: string): string | undefined {
   // Ashes are named "X" by the FanAPI/Library but "Ash of War: X" by the
@@ -688,7 +742,7 @@ function itemLocationFallback(name: string): string | undefined {
   }
   for (const candidate of candidates) {
     const acq = acqFuzzy(candidate)
-    const acqText = acq?.location ?? acq?.near
+    const acqText = acq ? cleanAcquisitionPlace(acq.location, acq.near) : undefined
     if (acqText) return acqText
     const key = simpleNorm(candidate)
     const vendor = shopsByItem.get(key) ?? merchantVendorByItem.get(key)
@@ -703,7 +757,7 @@ function itemLocationFallback(name: string): string | undefined {
   // Oleg") while the catalogue appends a suffix ("… Ashes"). Accept a prefix.
   for (const candidate of candidates) {
     const acq = acqPrefix(candidate)
-    const acqText = acq?.location ?? acq?.near
+    const acqText = acq ? cleanAcquisitionPlace(acq.location, acq.near) : undefined
     if (acqText) return acqText
   }
   return undefined
@@ -1962,7 +2016,12 @@ function buildCutNameSet(): Set<string> {
 /** Enrich an existing record with a wiki record's prose/url (never overwrites). */
 function enrichFromWiki(record: EntityRecord, rec: WikiRecord): void {
   setText(record, 'description', rec.description)
-  setText(record, 'location', rec.location || rec.stats.Location || rec.region)
+  // Task 177 — never store a bare place type ("Village", "Subregion", "grace")
+  // as the location; prefer the wiki's real parent region when that is all it has.
+  const place = [rec.location, rec.stats.Location, rec.region, rec.stats.Region].find(
+    (value) => value && !isBarePlaceType(value),
+  )
+  if (place) setText(record, 'location', place)
   if (rec.url) record.sourceUrl = record.sourceUrl ?? rec.url
   source(record, 'wiki-db')
 }
@@ -2114,7 +2173,6 @@ function mergeWikiDb(): void {
     const record = records.get(id) ?? ensure(id, 'region', title)
     if (record.kind === 'item') record.kind = 'region'
     enrichFromWiki(record, rec)
-    setText(record, 'location', rec.region || rec.stats.Region || rec.location || rec.stats.Type)
     for (const alias of redirectAliases.get(simpleNorm(rec.title)) ?? []) addName(alias, id)
   }
 
@@ -2127,7 +2185,6 @@ function mergeWikiDb(): void {
     const record = records.get(id) ?? ensure(id, 'region', title)
     if (record.kind === 'item') record.kind = 'region'
     enrichFromWiki(record, rec)
-    setText(record, 'location', rec.region || rec.stats.Region || rec.location || rec.stats.Type)
   }
 
   // Skills: unique/weapon skills already have an ash/weapon record; the wiki
@@ -2466,13 +2523,13 @@ function mergeAcquisitionItems(): void {
     const id = catalogueIdFor('item', row.name)
     const existing = records.get(id)
     if (existing) {
-      setText(existing, 'location', row.location ?? row.near)
+      setText(existing, 'location', cleanAcquisitionPlace(row.location, row.near))
       continue
     }
     const record = ensure(id, 'item', correctName(row.name))
     record.catalogue = false
     setText(record, 'description', row.method)
-    setText(record, 'location', row.location ?? row.near)
+    setText(record, 'location', cleanAcquisitionPlace(row.location, row.near))
     source(record, 'acquisition')
   }
 }
@@ -2955,6 +3012,10 @@ function cleanupFmgDuplicates(): void {
       // Task 160 #14 — an empty FMG name row with no real counterpart and no
       // catalogue anchor renders a page whose every section is empty; keep it
       // out of the index rather than ship a no-data page.
+      // Task 177 — unless the wiki has a page for the name (e.g. a gesture whose
+      // only fact was an acquisition paragraph that is no longer a location): the
+      // final fill gives it a real caption, so it is not a no-data page.
+      if (record.kind === 'item' && lookupWiki(record.name)?.length) continue
       records.delete(id)
     }
   }
@@ -3680,7 +3741,7 @@ export function buildEntityIndex(): EntityIndexBuildResult {
       }
       record = ensureEntity(entity)
     }
-    setText(record, 'location', row.location ?? row.near)
+    setText(record, 'location', cleanAcquisitionPlace(row.location, row.near))
     source(record, 'acquisition')
   }
 
@@ -3867,6 +3928,20 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     // Strip wiki markup first: the pointer drop is stored as "See [[#Drops" and
     // only becomes "See #Drops" after pruning.
     prune(record)
+    // Task 177 — `location` holds a place, never a bare type word ("Church",
+    // "Subregion", "grace"), a leaked markdown heading ("# Castleward Tunnel")
+    // or the merchant placeholder. A real parent region stays in `region`.
+    if (record.location) {
+      let loc = record.location.replace(/^#+\s*/, '').trim()
+      const label = ACQ_LABEL_RE.exec(loc)
+      if (label) loc = label[1].trim()
+      loc = loc.replace(/Subterranean Shunning,\s*Grounds?/i, 'Subterranean Shunning-Grounds')
+      if (/^merchant$/i.test(loc) || isBarePlaceType(loc)) loc = ''
+      record.location = loc || undefined
+    }
+    // Task 177 — the same hygiene for `region`: a bare type word ("Subregion")
+    // is not a region; drop it so a place shows its real parent or nothing.
+    if (record.region && isBarePlaceType(record.region)) record.region = undefined
     // A placeholder or one-word "description" ("drop", "merchant", "Caelid") is
     // not a description; step 3 refills it from the wiki or it stays empty. A
     // bare region name (a quest beat's only text) is real locator data: keep it
@@ -3953,6 +4028,13 @@ export function buildEntityIndex(): EntityIndexBuildResult {
       record.cut = true
       record.stats = record.stats ?? {}
       record.stats.Status = 'Cut content (not obtainable)'
+    }
+    // Task 177 — the generic half of a split item keeps the catalog fact's own
+    // name, so it does not duplicate the specific half ("Dectus Medallion" vs
+    // "Dectus Medallion (Right)").
+    if (MEDALLION_HALF_FACTS.has(record.id)) {
+      const fact = byId.get(record.id)
+      if (fact?.name) record.name = fact.name
     }
     // Repair dump casing ("Axe Of Godfrey") so every screen, not just the
     // entity panel, shows the game's spelling. Ids are unchanged.
