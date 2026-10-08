@@ -9,15 +9,9 @@ PS5 capture rules — plus what the real-player scenario fixture actually proves
 
 | metric | before Task 138 | after Task 138 |
 | --- | --- | --- |
-<<<<<<< HEAD
-| rules enumerated | 557 | 577 |
-| certain rules | 555 | 575 |
-| likely rules | 2 | 2 |
-=======
-| rules enumerated | 542 | 562 |
-| certain rules | 542 | 562 |
-| likely rules | 0 | 0 |
->>>>>>> master
+| rules enumerated | 561 | 581 |
+| certain rules | 560 | 580 |
+| likely rules | 1 | 1 |
 | scenario inferred facts | 9 | 17 |
 
 Task 138 added **20** chain rules.
@@ -78,16 +72,11 @@ candidates to demote into the confirmation layer.
 
 | id | trigger | conclusions | class | conf | why | added |
 | --- | --- | --- | --- | --- | --- | --- |
-| `catalog:item:haligtree-secret-medallion` | `item:haligtree-secret-medallion` | `region:haligtree` | **likely** | 0.6 | The secret medallion opens the Consecrated Snowfield, not the Haligtree itself. Holding it does not prove Elphael was reached. Likely, not certain. | — |
 | `catalog:item:dusk-medallion` | `item:dusk-medallion` | `region:altus` | **likely** | 0.6 | Both halves can be collected without riding the Lift of Dectus (Altus is also reachable via the Ruin-Strewn Precipice). Likely, not certain. | — |
 
 ## Every rule
 
-<<<<<<< HEAD
-### Catalog `implies` (284)
-=======
-### Catalog `implies` (289)
->>>>>>> master
+### Catalog `implies` (287)
 
 | id | trigger | conclusions | class | conf | why | added |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -153,12 +142,7 @@ candidates to demote into the confirmation layer.
 | `catalog:item:dark-moon-ring` | `item:dark-moon-ring` | `boss:astel` | certain | 0.9 | Holding/reaching Dark Moon Ring requires the listed facts first. | — |
 | `catalog:item:fingerslayer` | `item:fingerslayer` | `boss:radahn` | certain | 0.9 | Holding/reaching Fingerslayer Blade requires the listed facts first. | — |
 | `catalog:item:carian-inverted` | `item:carian-inverted` | `quest:ranni:service` | certain | 0.9 | Holding/reaching Carian Inverted Statue requires the listed facts first. | — |
-<<<<<<< HEAD
-| `catalog:item:haligtree-secret-medallion` | `item:haligtree-secret-medallion` | `region:haligtree` | **likely** | 0.6 | The secret medallion opens the Consecrated Snowfield, not the Haligtree itself. Holding it does not prove Elphael was reached. Likely, not certain. | — |
 | `catalog:item:dusk-medallion` | `item:dusk-medallion` | `region:altus` | **likely** | 0.6 | Both halves can be collected without riding the Lift of Dectus (Altus is also reachable via the Ruin-Strewn Precipice). Likely, not certain. | — |
-=======
-| `catalog:item:dusk-medallion` | `item:dusk-medallion` | `region:altus` | certain | 0.9 | Holding/reaching Dectus Medallion requires the listed facts first. | — |
->>>>>>> master
 | `catalog:item:rotted-wing` | `item:rotted-wing` | `quest:millicent:needle` | certain | 0.9 | Holding/reaching Unalloyed Gold Needle requires the listed facts first. | — |
 | `catalog:item:serpent-amnion` | `item:serpent-amnion` | `quest:rya:amnion` | certain | 0.9 | Holding/reaching Serpent's Amnion requires the listed facts first. | — |
 | `catalog:item:blade-of-calling` | `item:blade-of-calling` | `region:mountaintops` | certain | 0.9 | Holding/reaching Blade of Calling requires the listed facts first. | — |
@@ -384,11 +368,7 @@ candidates to demote into the confirmation layer.
 | `catalog:boss:tree-sentinel--hinterland` | `boss:tree-sentinel--hinterland` | `region:shadow` | certain | 0.9 | Holding/reaching Tree Sentinel (Hinterland) requires the listed facts first. | — |
 | `catalog:boss:tree-sentinel--hinterland-bridge` | `boss:tree-sentinel--hinterland-bridge` | `region:shadow` | certain | 0.9 | Holding/reaching Tree Sentinel (Hinterland Bridge) requires the listed facts first. | — |
 
-<<<<<<< HEAD
-### Authored chains (`inferChains.ts`) (71)
-=======
-### Authored chains (`inferChains.ts`) (52)
->>>>>>> master
+### Authored chains (`inferChains.ts`) (72)
 
 | id | trigger | conclusions | class | conf | why | added |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -404,67 +384,6 @@ candidates to demote into the confirmation layer.
 | `chain:item:twinned-armor:9` | `item:twinned-armor` | `quest:fia:dagger` | certain | 0.75 | The Twinned set comes from D's brother in Deeproot, which only happens once the dagger decision has cost D his life, so Fia's line is advanced. It does not imply Fortissax or her ending. | — |
 | `chain:item:haligtree-medallion-right:10` | `item:haligtree-medallion-right` | `item:haligtree-secret-medallion` | certain | 0.9 | Both halves of the Haligtree Secret Medallion are held, so the secret path to the Consecrated Snowfield is open. | — |
 | `chain:item:haligtree-medallion-left:11` | `item:haligtree-medallion-left` | `item:haligtree-secret-medallion` | certain | 0.9 | Both halves of the Haligtree Secret Medallion are held, so the secret path to the Consecrated Snowfield is open. | — |
-<<<<<<< HEAD
-| `chain:item:dectus-medallion-left:12` | `item:dectus-medallion-left` | `item:dusk-medallion` | certain | 0.9 | Both halves of the Dectus Medallion are held, so the Grand Lift of Dectus opens the way to Altus. | — |
-| `chain:item:dectus-medallion-right:13` | `item:dectus-medallion-right` | `item:dusk-medallion` | certain | 0.9 | Both halves of the Dectus Medallion are held, so the Grand Lift of Dectus opens the way to Altus. | — |
-| `chain:bell-bearing-kale-s-bell-bearing:14` | `bell-bearing-kale-s-bell-bearing` | `region:limgrave` | certain | 0.85 | Merchant Kalé only drops their Bell Bearing once they are gone, so Merchant Kalé's area was reached. | — |
-| `chain:bell-bearing-rogier-s-bell-bearing:15` | `bell-bearing-rogier-s-bell-bearing` | `region:limgrave` | certain | 0.85 | Sorcerer Rogier only drops their Bell Bearing once they are gone, so Sorcerer Rogier's area was reached. | — |
-| `chain:bell-bearing-d-s-bell-bearing:16` | `bell-bearing-d-s-bell-bearing` | `region:limgrave` | certain | 0.85 | D, Hunter of the Dead only drops their Bell Bearing once they are gone, so D, Hunter of the Dead's area was reached. | — |
-| `chain:bell-bearing-corhyn-s-bell-bearing:17` | `bell-bearing-corhyn-s-bell-bearing` | `region:limgrave` | certain | 0.85 | Brother Corhyn only drops their Bell Bearing once they are gone, so Brother Corhyn's area was reached. | — |
-| `chain:bell-bearing-patches-bell-bearing:18` | `bell-bearing-patches-bell-bearing` | `region:limgrave` | certain | 0.85 | Patches only drops their Bell Bearing once they are gone, so Patches's area was reached. | — |
-| `chain:bell-bearing-gostoc-s-bell-bearing:19` | `bell-bearing-gostoc-s-bell-bearing` | `region:limgrave` | certain | 0.85 | Gatekeeper Gostoc only drops their Bell Bearing once they are gone, so Gatekeeper Gostoc's area was reached. | — |
-| `chain:bell-bearing-sellen-s-bell-bearing:20` | `bell-bearing-sellen-s-bell-bearing` | `region:liurnia` | certain | 0.85 | Sorceress Sellen only drops their Bell Bearing once they are gone, so Sorceress Sellen's area was reached. | — |
-| `chain:bell-bearing-miriel-s-bell-bearing:21` | `bell-bearing-miriel-s-bell-bearing` | `region:liurnia` | certain | 0.85 | Miriel only drops their Bell Bearing once they are gone, so Miriel's area was reached. | — |
-| `chain:bell-bearing-iji-s-bell-bearing:22` | `bell-bearing-iji-s-bell-bearing` | `region:liurnia` | certain | 0.85 | Iji only drops their Bell Bearing once they are gone, so Iji's area was reached. | — |
-| `chain:bell-bearing-blackguard-s-bell-bearing:23` | `bell-bearing-blackguard-s-bell-bearing` | `region:liurnia` | certain | 0.85 | Blackguard Big Boggart only drops their Bell Bearing once they are gone, so Blackguard Big Boggart's area was reached. | — |
-| `chain:bell-bearing-thops-s-bell-bearing:24` | `bell-bearing-thops-s-bell-bearing` | `region:liurnia` | certain | 0.85 | Thops only drops their Bell Bearing once they are gone, so Thops's area was reached. | — |
-| `chain:bell-bearing-seluvis-s-bell-bearing:25` | `bell-bearing-seluvis-s-bell-bearing` | `region:liurnia` | certain | 0.85 | Preceptor Seluvis only drops their Bell Bearing once they are gone, so Preceptor Seluvis's area was reached. | — |
-| `chain:bell-bearing-gowry-s-bell-bearing:26` | `bell-bearing-gowry-s-bell-bearing` | `region:caelid` | certain | 0.85 | Gowry only drops their Bell Bearing once they are gone, so Gowry's area was reached. | — |
-| `chain:bell-bearing-abandoned-merchant-s-bell-bearing:27` | `bell-bearing-abandoned-merchant-s-bell-bearing` | `region:leyndell` | certain | 0.85 | the Abandoned Merchant only drops their Bell Bearing once they are gone, so the Abandoned Merchant's area was reached. | — |
-| `chain:bell-bearing-ymir-s-bell-bearing:28` | `bell-bearing-ymir-s-bell-bearing` | `region:shadow` | certain | 0.85 | Count Ymir only drops their Bell Bearing once they are gone, so Count Ymir's area was reached. | — |
-| `chain:bell-bearing-igon-s-bell-bearing:29` | `bell-bearing-igon-s-bell-bearing` | `region:shadow` | certain | 0.85 | Igon only drops their Bell Bearing once they are gone, so Igon's area was reached. | — |
-| `chain:bell-bearing-moore-s-bell-bearing:30` | `bell-bearing-moore-s-bell-bearing` | `region:shadow` | certain | 0.85 | Moore only drops their Bell Bearing once they are gone, so Moore's area was reached. | — |
-| `chain:region:mountaintops:31` | `region:mountaintops` | `item:rold-medallion` | certain | 0.9 | The Grand Lift of Rold is the only way up to the Mountaintops, so the Rold Medallion was already used. | 138 |
-| `chain:grace:forge-giants:32` | `grace:forge-giants` | `item:rold-medallion` | certain | 0.9 | The Forge of the Giants lies past the Grand Lift of Rold, so the Rold Medallion was already used. | 138 |
-| `chain:grace:siofra:33` | `grace:siofra` | `region:siofra-river` | certain | 0.9 | A Siofra grace can only be found underground, so the Siofra River Well was used. | 138 |
-| `chain:grace:ainsel:34` | `grace:ainsel` | `region:ainsel-river` | certain | 0.9 | An Ainsel grace can only be found underground, so the Ainsel River Well was reached. | 138 |
-| `chain:item:radagon-s-soreseal:35` | `item:radagon-s-soreseal` | `region:caelid` | certain | 0.9 | Radagon's Soreseal is a fixed chest inside Fort Faroth in Dragonbarrow, so Caelid was reached. | 138 |
-| `chain:item:green-turtle-talisman:36` | `item:green-turtle-talisman` | `region:limgrave` | certain | 0.9 | The Green Turtle Talisman is a fixed pickup at Summonwater Village, so Limgrave was reached. | 138 |
-| `chain:mapfrag:limgrave-w:37` | `mapfrag:limgrave-w` | `region:limgrave` | certain | 0.9 | A painted limgrave map fragment can only be picked up in that region, so that region was reached. | 138 |
-| `chain:mapfrag:limgrave-e:38` | `mapfrag:limgrave-e` | `region:limgrave` | certain | 0.9 | A painted limgrave map fragment can only be picked up in that region, so that region was reached. | 138 |
-| `chain:mapfrag:weeping:39` | `mapfrag:weeping` | `region:weeping` | certain | 0.9 | A painted weeping map fragment can only be picked up in that region, so that region was reached. | 138 |
-| `chain:mapfrag:liurnia-e:40` | `mapfrag:liurnia-e` | `region:liurnia` | certain | 0.9 | A painted liurnia map fragment can only be picked up in that region, so that region was reached. | 138 |
-| `chain:mapfrag:liurnia-n:41` | `mapfrag:liurnia-n` | `region:liurnia` | certain | 0.9 | A painted liurnia map fragment can only be picked up in that region, so that region was reached. | 138 |
-| `chain:mapfrag:liurnia-w:42` | `mapfrag:liurnia-w` | `region:liurnia` | certain | 0.9 | A painted liurnia map fragment can only be picked up in that region, so that region was reached. | 138 |
-| `chain:mapfrag:caelid:43` | `mapfrag:caelid` | `region:caelid` | certain | 0.9 | A painted caelid map fragment can only be picked up in that region, so that region was reached. | 138 |
-| `chain:mapfrag:dragonbarrow:44` | `mapfrag:dragonbarrow` | `region:caelid` | certain | 0.9 | A painted caelid map fragment can only be picked up in that region, so that region was reached. | 138 |
-| `chain:mapfrag:altus:45` | `mapfrag:altus` | `region:altus` | certain | 0.9 | A painted altus map fragment can only be picked up in that region, so that region was reached. | 138 |
-| `chain:mapfrag:leyndell:46` | `mapfrag:leyndell` | `region:leyndell` | certain | 0.9 | A painted leyndell map fragment can only be picked up in that region, so that region was reached. | 138 |
-| `chain:mapfrag:gelmir:47` | `mapfrag:gelmir` | `region:altus` | certain | 0.9 | A painted altus map fragment can only be picked up in that region, so that region was reached. | 138 |
-| `chain:mapfrag:mountaintops-w:48` | `mapfrag:mountaintops-w` | `region:mountaintops` | certain | 0.9 | A painted mountaintops map fragment can only be picked up in that region, so that region was reached. | 138 |
-| `chain:mapfrag:mountaintops-e:49` | `mapfrag:mountaintops-e` | `region:mountaintops` | certain | 0.9 | A painted mountaintops map fragment can only be picked up in that region, so that region was reached. | 138 |
-| `chain:mapfrag:consecrated:50` | `mapfrag:consecrated` | `region:mountaintops` | certain | 0.9 | A painted mountaintops map fragment can only be picked up in that region, so that region was reached. | 138 |
-| `chain:item:remembrance-grafted:51` | `item:remembrance-grafted` | `boss:godrick` | certain | 0.9 | A Remembrance of the Grafted only exists once Godrick the Grafted is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-full-moon-queen:52` | `item:remembrance-full-moon-queen` | `boss:rennala` | certain | 0.9 | A Remembrance of the Full Moon Queen only exists once Rennala, Queen of the Full Moon is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-starscourge:53` | `item:remembrance-starscourge` | `boss:radahn` | certain | 0.9 | A Remembrance of the Starscourge only exists once Starscourge Radahn is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-regal-ancestor:54` | `item:remembrance-regal-ancestor` | `boss:regal-ancestor` | certain | 0.9 | A Remembrance of the Regal Ancestor only exists once Regal Ancestor Spirit is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-naturalborn:55` | `item:remembrance-naturalborn` | `boss:astel` | certain | 0.9 | A Remembrance of the Naturalborn only exists once Astel, Naturalborn of the Void is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-blasphemous:56` | `item:remembrance-blasphemous` | `boss:rykard` | certain | 0.9 | A Remembrance of the Blasphemous only exists once Rykard, Lord of Blasphemy is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-omen-king:57` | `item:remembrance-omen-king` | `boss:morgott` | certain | 0.9 | A Remembrance of the Omen King only exists once Morgott, the Omen King is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-rot-goddess:58` | `item:remembrance-rot-goddess` | `boss:malenia` | certain | 0.9 | A Remembrance of the Rot Goddess only exists once Malenia, Blade of Miquella is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-blood-lord:59` | `item:remembrance-blood-lord` | `boss:mohg` | certain | 0.9 | A Remembrance of the Blood Lord only exists once Mohg, Lord of Blood is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-lichdragon:60` | `item:remembrance-lichdragon` | `boss:fortissax` | certain | 0.9 | A Remembrance of the Lichdragon only exists once Lichdragon Fortissax is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-fire-giant:61` | `item:remembrance-fire-giant` | `boss:fire-giant` | certain | 0.9 | A Remembrance of the Fire Giant only exists once Fire Giant is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-dragonlord:62` | `item:remembrance-dragonlord` | `boss:placidusax` | certain | 0.9 | A Remembrance of the Dragonlord only exists once Dragonlord Placidusax is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-black-blade:63` | `item:remembrance-black-blade` | `boss:maliketh` | certain | 0.9 | A Remembrance of the Black Blade only exists once Maliketh, the Black Blade is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-hoarah-loux:64` | `item:remembrance-hoarah-loux` | `boss:godfrey` | certain | 0.9 | A Remembrance of Hoarah Loux only exists once Godfrey, First Elden Lord / Hoarah Loux is dead, so that fight is done. | 166 |
-| `chain:item:elden-remembrance:65` | `item:elden-remembrance` | `boss:radagon` | certain | 0.9 | A Elden Remembrance only exists once Radagon of the Golden Order / Elden Beast is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-dancing-lion:66` | `item:remembrance-dancing-lion` | `boss:divine-beast` | certain | 0.9 | A Remembrance of the Dancing Lion only exists once Divine Beast Dancing Lion is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-twin-moon-knight:67` | `item:remembrance-twin-moon-knight` | `boss:rennala-sote` | certain | 0.9 | A Remembrance of the Twin Moon Knight only exists once Rellana, Twin Moon Knight is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-lord-of-frenzied-flame:68` | `item:remembrance-lord-of-frenzied-flame` | `boss:midra` | certain | 0.9 | A Remembrance of the Lord of Frenzied Flame only exists once Midra, Lord of Frenzied Flame is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-impaler:69` | `item:remembrance-impaler` | `boss:messmer` | certain | 0.9 | A Remembrance of the Impaler only exists once Messmer the Impaler is dead, so that fight is done. | 166 |
-| `chain:item:remembrance-a-god-and-a-lord:70` | `item:remembrance-a-god-and-a-lord` | `boss:consort` | certain | 0.9 | A Remembrance of a God and a Lord only exists once Promised Consort Radahn / Radahn, Consort of Miquella is dead, so that fight is done. | 166 |
-=======
 | `chain:item:haligtree-secret-medallion:12` | `item:haligtree-secret-medallion` | `region:haligtree` | certain | 0.8 | The Haligtree Secret Medallion is held, so the lift to the Consecrated Snowfield and Miquella’s Haligtree is open. | — |
 | `chain:item:dectus-medallion-left:13` | `item:dectus-medallion-left` | `item:dusk-medallion` | certain | 0.9 | Both halves of the Dectus Medallion are held, so the Grand Lift of Dectus opens the way to Altus. | — |
 | `chain:item:dectus-medallion-right:14` | `item:dectus-medallion-right` | `item:dusk-medallion` | certain | 0.9 | Both halves of the Dectus Medallion are held, so the Grand Lift of Dectus opens the way to Altus. | — |
@@ -505,7 +424,26 @@ candidates to demote into the confirmation layer.
 | `chain:mapfrag:mountaintops-w:49` | `mapfrag:mountaintops-w` | `region:mountaintops` | certain | 0.9 | A painted mountaintops map fragment can only be picked up in that region, so that region was reached. | 138 |
 | `chain:mapfrag:mountaintops-e:50` | `mapfrag:mountaintops-e` | `region:mountaintops` | certain | 0.9 | A painted mountaintops map fragment can only be picked up in that region, so that region was reached. | 138 |
 | `chain:mapfrag:consecrated:51` | `mapfrag:consecrated` | `region:mountaintops` | certain | 0.9 | A painted mountaintops map fragment can only be picked up in that region, so that region was reached. | 138 |
->>>>>>> master
+| `chain:item:remembrance-grafted:52` | `item:remembrance-grafted` | `boss:godrick` | certain | 0.9 | A Remembrance of the Grafted only exists once Godrick the Grafted is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-full-moon-queen:53` | `item:remembrance-full-moon-queen` | `boss:rennala` | certain | 0.9 | A Remembrance of the Full Moon Queen only exists once Rennala, Queen of the Full Moon is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-starscourge:54` | `item:remembrance-starscourge` | `boss:radahn` | certain | 0.9 | A Remembrance of the Starscourge only exists once Starscourge Radahn is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-regal-ancestor:55` | `item:remembrance-regal-ancestor` | `boss:regal-ancestor` | certain | 0.9 | A Remembrance of the Regal Ancestor only exists once Regal Ancestor Spirit is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-naturalborn:56` | `item:remembrance-naturalborn` | `boss:astel` | certain | 0.9 | A Remembrance of the Naturalborn only exists once Astel, Naturalborn of the Void is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-blasphemous:57` | `item:remembrance-blasphemous` | `boss:rykard` | certain | 0.9 | A Remembrance of the Blasphemous only exists once Rykard, Lord of Blasphemy is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-omen-king:58` | `item:remembrance-omen-king` | `boss:morgott` | certain | 0.9 | A Remembrance of the Omen King only exists once Morgott, the Omen King is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-rot-goddess:59` | `item:remembrance-rot-goddess` | `boss:malenia` | certain | 0.9 | A Remembrance of the Rot Goddess only exists once Malenia, Blade of Miquella is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-blood-lord:60` | `item:remembrance-blood-lord` | `boss:mohg` | certain | 0.9 | A Remembrance of the Blood Lord only exists once Mohg, Lord of Blood is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-lichdragon:61` | `item:remembrance-lichdragon` | `boss:fortissax` | certain | 0.9 | A Remembrance of the Lichdragon only exists once Lichdragon Fortissax is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-fire-giant:62` | `item:remembrance-fire-giant` | `boss:fire-giant` | certain | 0.9 | A Remembrance of the Fire Giant only exists once Fire Giant is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-dragonlord:63` | `item:remembrance-dragonlord` | `boss:placidusax` | certain | 0.9 | A Remembrance of the Dragonlord only exists once Dragonlord Placidusax is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-black-blade:64` | `item:remembrance-black-blade` | `boss:maliketh` | certain | 0.9 | A Remembrance of the Black Blade only exists once Maliketh, the Black Blade is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-hoarah-loux:65` | `item:remembrance-hoarah-loux` | `boss:godfrey` | certain | 0.9 | A Remembrance of Hoarah Loux only exists once Godfrey, First Elden Lord / Hoarah Loux is dead, so that fight is done. | 166 |
+| `chain:item:elden-remembrance:66` | `item:elden-remembrance` | `boss:radagon` | certain | 0.9 | A Elden Remembrance only exists once Radagon of the Golden Order / Elden Beast is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-dancing-lion:67` | `item:remembrance-dancing-lion` | `boss:divine-beast` | certain | 0.9 | A Remembrance of the Dancing Lion only exists once Divine Beast Dancing Lion is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-twin-moon-knight:68` | `item:remembrance-twin-moon-knight` | `boss:rennala-sote` | certain | 0.9 | A Remembrance of the Twin Moon Knight only exists once Rellana, Twin Moon Knight is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-lord-of-frenzied-flame:69` | `item:remembrance-lord-of-frenzied-flame` | `boss:midra` | certain | 0.9 | A Remembrance of the Lord of Frenzied Flame only exists once Midra, Lord of Frenzied Flame is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-impaler:70` | `item:remembrance-impaler` | `boss:messmer` | certain | 0.9 | A Remembrance of the Impaler only exists once Messmer the Impaler is dead, so that fight is done. | 166 |
+| `chain:item:remembrance-a-god-and-a-lord:71` | `item:remembrance-a-god-and-a-lord` | `boss:consort` | certain | 0.9 | A Remembrance of a God and a Lord only exists once Promised Consort Radahn / Radahn, Consort of Miquella is dead, so that fight is done. | 166 |
 
 ### Gates (`gates.ts`) (10)
 
@@ -749,4 +687,4 @@ candidates to demote into the confirmation layer.
 | `capture:crafting:cookbook` | `craftable item visible on the Item Crafting page` | `<cookbook that unlocks it>` | certain | 0.85 | `inferCookbooks` maps a read recipe to the cookbook(s) that taught it (`ps5Crafting.ts`). | — |
 | `capture:map:region` | `painted map fragment / discovered underground grace` | `<the region reached>` | certain | 0.9 | Task 138: `mapfrag:* -> region` and underground `grace -> region` chains in `inferChains.ts`. | — |
 
-_Regenerated 2026-10-07._
+_Regenerated 2026-10-08._

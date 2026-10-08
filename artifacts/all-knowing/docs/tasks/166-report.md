@@ -122,14 +122,22 @@ Gates at the end (once): full `npx vitest run`, `npm run lint`, `npm run build`,
 
 **Changed** `src/lib/inferenceAudit.ts`; new `src/lib/inferenceAudit.test.ts`.
 
-- The previous three "likely" keys referenced catalog edges that no longer existed
-  (the safety net was inert). Replaced with two edges that do exist and are genuinely
-  likely-not-certain: `item:dusk-medallion → region:altus` (the lift may never have
-  been used) and `item:haligtree-secret-medallion → region:haligtree` (the medallion
-  reaches the Snowfield, not the Haligtree). Notes updated to match.
-- A test now pins every likely key to a live `implies` edge and requires a note, so
-  it cannot go stale silently again. `docs/INFERENCE-RULES.md` was regenerated.
+- The previous "likely" keys referenced catalog edges that no longer existed (the
+  safety net was inert). The list now holds a real, genuinely likely-not-certain
+  catalog edge: `item:dusk-medallion → region:altus` (both Dectus halves can be held
+  without ever riding the lift, since Altus is also reachable up the Ruin-Strewn
+  Precipice). Note updated to match.
+- A test pins every likely key to a live `implies` edge and requires a note, so it
+  cannot go stale silently again. `docs/INFERENCE-RULES.md` was regenerated.
 - **Phone user sees:** no runtime change; the audit doc is now accurate.
+- **FIX (after merge with master).** The first pass also listed
+  `item:haligtree-secret-medallion → region:haligtree`, but the guard test proved
+  that is **not** a catalog `implies` edge: Task 160 §12 had deliberately moved the
+  conclusion to a one-way chain in `inferChains.ts` (confidence 0.8) to break the
+  region↔item cycle. The catalog row is `implies: []`, so the catalog-only set
+  cannot list it. That entry (and its note) was removed; the conclusion remains
+  documented as a chain rule. The live `dusk-medallion` edge is the one verified
+  catalog likely key.
 
 ## Task 20 — structured region equality for area "Visited"
 
@@ -196,12 +204,23 @@ shows a reason:
 
 ## Final checks
 
-- `npx vitest run` — **214 files, 1512 passed, 11 skipped**.
+All gates were run once, after merging master and applying the gate FIX (branch
+`task-166`).
+
+- `npx vitest run` — **215 files, 1518 passed, 11 skipped** (up from 214/1512/11
+  after the master merge added tests; no test was loosened or deleted).
+- `src/lib/inferenceAudit.test.ts` — 3 passed (the FIX target).
 - `npx tsc -b` — clean.
 - `npm run lint` (`oxlint`) — exit 0 (warnings only, pre-existing).
-- `npm run build` — built successfully.
+- `npm run build` — built successfully (via `npm run test:bundle`).
 - `npm run test:bundle` — 7 passed.
-- `npm run audit:pages` — written, 5687 entities, 2 flagged.
+- `npm run audit:pages` — written, 5630 entities, 0 flagged.
+- `npm run audit:inference` — regenerated `docs/INFERENCE-RULES.md`, 581 rules,
+  17 scenario facts.
+
+Note: `public/sourced/entity-index.json` was taken from master on the merge and
+regenerated with `npm run index:entities` in commit `b9dd404`; no source data or
+generator changed since, so it was not re-run here.
 
 ## Checklist
 
@@ -216,6 +235,10 @@ shows a reason:
 - [x] Task 20 — area "Visited" uses structured region equality.
 - [x] Confident §6 inferences 3, 4 and 5 implemented; 1, 2, 6, 7 skipped with reasons.
 - [x] Tests added/adjusted for every task; commits labelled `Task 166 #N`.
-- [x] Final gates run once; report written.
+- [x] Merge with master (`git merge --no-edit master`), regenerated index.
+- [x] FIX — stale `item:haligtree-secret-medallion->region:haligtree` likely key
+      removed (it is an authored chain, not a catalog edge; Task 160 §12); the test
+      passes unmodified and `docs/INFERENCE-RULES.md` was regenerated.
+- [x] Final gates run once; report written. Full `npx vitest run` passes.
 
-(pending gate fix)
+ALL ITEMS DONE

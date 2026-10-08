@@ -42,16 +42,15 @@ export const LIKELY_CATALOG_EDGES = new Set([
   // Holding the Dectus Medallion does not prove the lift was ever used: Altus is
   // also reachable up the Ruin-Strewn Precipice.
   'item:dusk-medallion->region:altus',
-  // Holding the Haligtree Secret Medallion does not prove the Haligtree was
-  // entered — the lift only reaches the Consecrated Snowfield.
-  'item:haligtree-secret-medallion->region:haligtree',
+  // NOTE (Task 166 FIX): the earlier `item:haligtree-secret-medallion->
+  // region:haligtree` entry was removed here. That edge is not a catalog `implies`
+  // edge — Task 160 §12 deliberately moved the conclusion to a one-way chain in
+  // `inferChains.ts` (confidence 0.8), so this catalog-only set cannot list it.
 ])
 
 export const LIKELY_CATALOG_NOTES: Record<string, string> = {
   'item:dusk-medallion->region:altus':
     'Both halves can be collected without riding the Lift of Dectus (Altus is also reachable via the Ruin-Strewn Precipice). Likely, not certain.',
-  'item:haligtree-secret-medallion->region:haligtree':
-    'The secret medallion opens the Consecrated Snowfield, not the Haligtree itself. Holding it does not prove Elphael was reached. Likely, not certain.',
 }
 
 function catalogRules(): InferenceRule[] {
