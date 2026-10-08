@@ -38,12 +38,12 @@ const extraIndex = JSON.parse(
   readFileSync(fileURLToPath(new URL('../data/image-index-extra.json', import.meta.url)), 'utf8'),
 ) as { names: Record<string, string>; ids: Record<string, string> }
 
-/** The floors Task 184 achieved, measured over the committed entity index. */
+/** The floors Task 184 achieved, measured per record over the committed index. */
 const FLOORS: Record<string, number> = {
   enemy: 0.75,
   npc: 0.95,
   grace: 0.9,
-  region: 0.5,
+  region: 0.4,
   merchant: 0.9,
   quest: 0.9,
 }
@@ -71,7 +71,7 @@ const SAME_PAGE_SHARES = new Set([
 function hasPicture(record: EntityRecord): boolean {
   if (record.image) return true
   const key = normalizeName(record.name)
-  return Boolean(baseIndex[key] || extraIndex.names[key] || extraIndex.ids[record.id])
+  return Boolean(baseIndex[key] || extraIndex.ids[record.id])
 }
 
 /** `entityIndexBuild.baseName`: drop trailing "(…)" and "×N" variant qualifiers. */

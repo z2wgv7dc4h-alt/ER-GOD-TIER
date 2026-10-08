@@ -133,12 +133,29 @@ def quest_candidates(record):
 
 
 def build_owner_lookup(records, base_index, emis):
-    """name-key (owner_fold) -> picture path, over every character record."""
+    """name-key (owner_fold) -> picture path, over every character record.
+
+    The base FanAPI index is surveyed only for names that are actual characters
+    (npc/merchant/boss/enemy), so an owner named "Boc" cannot be matched to an
+    unrelated item key from the item plane.
+    """
+    character_kinds = ("npc", "merchant", "boss", "enemy")
+    character_keys = {
+        owner_fold(record["name"])
+        for record in records.values()
+        if record.get("kind") in character_kinds
+    }
+    for rid in emis.get("ids", {}):
+        record = records.get(rid)
+        if record:
+            character_keys.add(owner_fold(record["name"]))
     lookup = {}
     for key, path in base_index.items():
-        lookup.setdefault(owner_fold(key), path)
+        folded = owner_fold(key)
+        if folded in character_keys:
+            lookup.setdefault(folded, path)
     for record in records.values():
-        if record.get("kind") in ("npc", "merchant", "boss", "enemy") and record.get("image"):
+        if record.get("kind") in character_kinds and record.get("image"):
             lookup.setdefault(owner_fold(record["name"]), record["image"])
     for rid, path in emis.get("ids", {}).items():
         record = records.get(rid)
