@@ -5,8 +5,11 @@ import { clearEntityIndex, setEntityIndex, type EntityRecord } from './entityInd
 import { allEntities, edges, resolveEntityId, type EntityKind } from './entityGraph'
 import { allWarpRows, canonicalFactId, generatedAliases } from './aliases'
 import { inferChains } from '../knowledge/inferChains'
+import { normaliseDropName, normaliseDrops } from '../knowledge/dropNames'
 import { mapFragments } from '../knowledge/collectibles'
 import { trackActionLabel } from '../library/pageModel'
+import { bossRoster } from './bossRoster'
+import { closeWorld } from './infer'
 
 /**
  * Task 160 — the six link/inference defects Task 157 found, recomputed over the
@@ -49,6 +52,10 @@ function loadRecords(): Record<string, EntityRecord> {
 
 function norm(s: string): string {
   return String(s).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+}
+
+function slug(name: string): string {
+  return String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
 }
 
 describe('link integrity guards (Task 160)', () => {
@@ -126,5 +133,74 @@ describe('link integrity guards (Task 160)', () => {
       .filter(([key]) => !(key in DUPLICATE_NAME_EXCEPTIONS))
       .map(([key, ids]) => `${key}: ${ids.join(', ')}`)
     expect(dups, dups.slice(0, 20).join('\n')).toEqual([])
+  })
+
+  /**
+   * Task 173 §9–§12 — the remaining link-graph gaps Task 171's audit found.
+   * Each guard pins the fix, not a magic count.
+   */
+  describe('Task 173 link-gap guards', () => {
+    it('§9 — a record region that only maps through REGION_FACT still gets a real place edge', () => {
+      // "Stormveil Castle"/"Moonlight Altar" are not region entities themselves;
+      // the catalog's authored region map must still place the record and the
+      // region must carry the reverse `contains` edge.
+      expect(edges('boss:godrick').some((e) => e.rel === 'foundIn' && e.to === 'region:limgrave')).toBe(true)
+      expect(edges('region:limgrave').some((e) => e.rel === 'contains' && e.to === 'boss:godrick')).toBe(true)
+      expect(edges('boss:adula--moonlight-altar').some((e) => e.rel === 'foundIn' && e.to === 'region:liurnia')).toBe(true)
+    })
+
+    it('§10 — one loot list: every boss/enemy drop string resolves to a real item', () => {
+      const entities = allEntities()
+      const byId = new Map(entities.map((e) => [e.id, e]))
+      const ownedByName = new Map<string, string>()
+      for (const e of entities) {
+        if (!OWNED.has(e.kind)) continue
+        const n = norm(e.name)
+        if (n && !ownedByName.has(n)) ownedByName.set(n, e.id)
+      }
+      const resolveOwned = (raw: string): string | undefined => {
+        const name = normaliseDropName(raw)
+        if (!name) return undefined
+        const direct = ownedByName.get(norm(name))
+        if (direct) return direct
+        const candidate = canonicalFactId(`item:${slug(name)}`, name)
+        const entity = byId.get(candidate)
+        if (entity && OWNED.has(entity.kind)) return candidate
+        return undefined
+      }
+      const unresolved: string[] = []
+      for (const [id, rec] of Object.entries(loadRecords())) {
+        if (rec.kind !== 'boss' && rec.kind !== 'enemy') continue
+        for (const raw of rec.drops ?? []) {
+          for (const drop of normaliseDrops(raw)) if (!resolveOwned(drop)) unresolved.push(`${id}: ${drop}`)
+        }
+      }
+      for (const row of bossRoster) {
+        for (const raw of row.drops) {
+          for (const drop of normaliseDrops(raw)) if (!resolveOwned(drop)) unresolved.push(`roster ${row.id}: ${drop}`)
+        }
+      }
+      expect(unresolved, unresolved.slice(0, 20).join('\n')).toEqual([])
+      // The same list discards a name that names no single item.
+      expect(normaliseDropName('Somber Smithing Stones')).toBeNull()
+      expect(normaliseDropName("Night's Cavalry Set")).toBeNull()
+    })
+
+    it('§11 — the Haligtree cycle is gone but the medallion still infers the region', () => {
+      const closed = closeWorld(['region:haligtree'])
+      expect(closed).not.toContain('item:haligtree-secret-medallion')
+      expect(closeWorld(['item:haligtree-secret-medallion'])).toContain('region:haligtree')
+    })
+
+    it('§12 — a folded vendor card resolves to the entity that owns the name', () => {
+      const bad = allEntities()
+        .filter((e) => e.kind === 'merchant')
+        .filter((e) => /^Remembrance of /i.test(e.name) || /^(Sorcery|Incantation|Dragon Communion|Elden Remembrance)$/i.test(e.name))
+      expect(bad.map((e) => `${e.id} = ${e.name}`), bad.slice(0, 20).join('\n')).toEqual([])
+      expect(resolveEntityId('merchant:sorcery')).toBe('mechanic:sorcery')
+      expect(resolveEntityId('merchant:incantation')).toBe('mechanic:incantation')
+      expect(resolveEntityId('merchant:dragon-communion')).toBe('region:cathedral-of-dragon-communion')
+      expect(resolveEntityId('merchant:remembrance-of-the-grafted')).toBe('item:remembrance-grafted')
+    })
   })
 })

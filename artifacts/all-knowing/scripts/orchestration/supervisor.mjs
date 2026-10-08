@@ -61,7 +61,7 @@ function runGates(id) {
   git diff --name-only --diff-filter=U | xargs -r git checkout --theirs -- ; git add -A; git commit -qm "Task ${id}: merge master (generated files taken from master, regenerated below)"
   node scripts/gen-aliases.mjs >/dev/null 2>&1; npm run audit:pages >/dev/null 2>&1; npm run audit:links >/dev/null 2>&1
 fi
-npm run index:entities >/dev/null 2>&1; git add -A public/sourced docs >/dev/null 2>&1; git commit -qm "Task ${id}: rebuild index after merging master" >/dev/null 2>&1
+node scripts/gen-aliases.mjs >/dev/null 2>&1; npm run index:entities >/dev/null 2>&1; node scripts/gen-aliases.mjs >/dev/null 2>&1; git add -A public/sourced src/data docs >/dev/null 2>&1; git commit -qm "Task ${id}: rebuild index after merging master" >/dev/null 2>&1
 npx tsc -b >/dev/null 2>&1 || { echo TSC-FAIL; exit 1; }
 npx vitest run 2>&1 | grep -E "Tests |FAIL" | head -5
 npx vitest run >/dev/null 2>&1 || { echo TESTS-FAIL; exit 1; }

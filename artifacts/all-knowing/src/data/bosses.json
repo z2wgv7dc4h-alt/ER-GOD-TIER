@@ -250,8 +250,7 @@
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
-      "Perfumer Tricia",
-      "Perfumer Tricia (ash)"
+      "Perfumer Tricia"
     ],
     "coords": {
       "x": 20.8,
@@ -259,7 +258,7 @@
       "map": "m30_12_00_00"
     },
     "hp": 184,
-    "runes": 9400,
+    "runes": null,
     "flag": 30120800,
     "aka": [
       "hunt:perfumer-tricia-misbegotten-warrior"
@@ -304,7 +303,12 @@
     "grace": "Bridge of Iniquity",
     "tier": "dungeon",
     "requiredForEnding": false,
-    "drops": [],
+    "drops": [
+      "Bloody Helice",
+      "Sanguine Noble Hood",
+      "Sanguine Noble Robe",
+      "Sanguine Noble Waistcloth"
+    ],
     "coords": {
       "x": 29.6,
       "y": 27.37,
@@ -434,7 +438,8 @@
     "drops": [
       "Golden Rune [1]",
       "Jar Cannon",
-      "Memory Stone"
+      "Memory Stone",
+      "Ritual Sword Talisman"
     ],
     "coords": {
       "x": 25.3,
@@ -647,8 +652,7 @@
     "tier": "field",
     "requiredForEnding": false,
     "drops": [
-      "Erdtree Greatshield",
-      "Hero's Rune"
+      "Erdtree Greatshield"
     ],
     "coords": {
       "x": 33.79,
@@ -677,7 +681,6 @@
     "requiredForEnding": false,
     "drops": [
       "Crimsonspill Crystal Tear",
-      "Larval Tear",
       "Speckled Hardtear"
     ],
     "coords": {
@@ -819,7 +822,7 @@
       "Iron Greatsword",
       "Multilayered Ring of Light",
       "Pearldrake Talisman +2",
-      "Perfumer Tricia (ash)",
+      "Perfumer Tricia",
       "Ruins Greatsword"
     ],
     "coords": {
@@ -1207,7 +1210,7 @@
     ],
     "coords": null,
     "hp": 840,
-    "runes": null,
+    "runes": 28000,
     "flag": 30100800,
     "aka": [
       "hunt:crucible-knight-crucible-knight-ordovis"
@@ -1253,8 +1256,7 @@
     "requiredForEnding": false,
     "drops": [
       "Dragon Greatclaw",
-      "Dragonclaw Shield",
-      "Malformed Dragon Set"
+      "Dragonclaw Shield"
     ],
     "coords": {
       "x": 42.95,
@@ -1330,8 +1332,7 @@
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
-      "Dragon Heart",
-      "Dragon Heart x3"
+      "Dragon Heart"
     ],
     "coords": {
       "x": 55.02,
@@ -1439,8 +1440,7 @@
     "tier": "field",
     "requiredForEnding": false,
     "drops": [
-      "Ancient Dragon Smithing Stone",
-      "Night's Cavalry Set"
+      "Ancient Dragon Smithing Stone"
     ],
     "coords": {
       "x": 51.03,
@@ -1547,6 +1547,7 @@
     "requiredForEnding": true,
     "drops": [
       "Ash of War: Black Flame Tornado",
+      "Black Flame Tornado",
       "Smithing-Stone Miner's Bell Bearing [4]"
     ],
     "coords": {
@@ -1593,11 +1594,11 @@
   },
   {
     "id": "boss:fia-champions",
-    "name": "Lionel the Lionhearted",
+    "name": "Fia's Champions",
     "campaign": "base",
     "region": "Deeproot Depths",
     "location": "Deeproot Depths",
-    "grace": null,
+    "grace": "Across the Roots",
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
@@ -1608,11 +1609,9 @@
     "runes": 40000,
     "flag": 12030800,
     "aka": [
-      "boss:lionel-the-lionhearted",
       "hunt:fia-s-champion-sorcerer-rogier-lionel-the-lionhearted"
     ],
     "sources": [
-      "bosses-fextralife",
       "hunts"
     ]
   },
@@ -1702,8 +1701,7 @@
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
-      "Dragon Heart x5",
-      "Unlocks Greyoll's Roar"
+      "Dragon Heart"
     ],
     "coords": null,
     "hp": 87664,
@@ -1960,12 +1958,11 @@
     "tier": "remembrance",
     "requiredForEnding": true,
     "drops": [
-      "Elden Remembrance",
-      "Elden Remembrance (after defeating Elden Beast)"
+      "Elden Remembrance"
     ],
     "coords": null,
     "hp": 1893,
-    "runes": 500000,
+    "runes": null,
     "flag": 19000800,
     "aka": [
       "hunt:radagon-of-the-golden-order-elden-beast"
@@ -2010,7 +2007,6 @@
       "All-Knowing Gauntlets",
       "All-Knowing Greaves",
       "All-Knowing Helm",
-      "All-Knowing Set",
       "Scepter of the All-Knowing"
     ],
     "coords": {
@@ -2019,7 +2015,7 @@
       "map": "m11_05_00_00"
     },
     "hp": 1551,
-    "runes": null,
+    "runes": 180000,
     "flag": 11050850,
     "aka": [
       "hunt:sir-gideon-ofnir-the-all-knowing"
@@ -2063,7 +2059,7 @@
     "campaign": "base",
     "region": "Leyndell, Royal Capital",
     "location": "Divine Tower of East Altus",
-    "grace": null,
+    "grace": "Elden Throne",
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
@@ -2162,7 +2158,7 @@
     "campaign": "base",
     "region": "Limgrave",
     "location": "Coastal Cave",
-    "grace": null,
+    "grace": "Coastal Cave",
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
@@ -2219,7 +2215,9 @@
     "grace": null,
     "tier": "major",
     "requiredForEnding": false,
-    "drops": [],
+    "drops": [
+      "Somber Smithing Stone [1]"
+    ],
     "coords": null,
     "hp": null,
     "runes": null,
@@ -2238,7 +2236,9 @@
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
-      "Ash of War: Bloody Slash"
+      "About Guard Counters",
+      "Bloody Slash",
+      "Strength!"
     ],
     "coords": {
       "x": 36.38,
@@ -2505,8 +2505,8 @@
     "tier": "field",
     "requiredForEnding": false,
     "drops": [
-      "Dragon Heart",
-      "Unlocks Agheel's Flame"
+      "Agheel's Flame",
+      "Dragon Heart"
     ],
     "coords": {
       "x": 36.9,
@@ -2591,7 +2591,8 @@
       "Bull-Goat Gauntlets",
       "Bull-Goat Helm",
       "Calm Down!",
-      "Parrying Dagger"
+      "Parrying Dagger",
+      "Spear"
     ],
     "coords": {
       "x": 36.47,
@@ -2828,7 +2829,7 @@
     "requiredForEnding": false,
     "drops": [
       "Dragon Heart",
-      "Unlocks Smarag's Glintstone Breath"
+      "Smarag's Glintstone Breath"
     ],
     "coords": {
       "x": 15.78,
@@ -2881,7 +2882,8 @@
     "requiredForEnding": false,
     "drops": [
       "Ash of War: Loretta's Slash",
-      "Loretta's Greatbow"
+      "Loretta's Greatbow",
+      "Loretta's Slash"
     ],
     "coords": {
       "x": 17.99,
@@ -2908,8 +2910,8 @@
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
-      "Ash of War: Black Flame Tornado",
       "Black Flame Ritual",
+      "Black Flame Tornado",
       "Glintstone Sorcerer Ashes",
       "Godskin Swaddling Cloth",
       "Haligdrake Talisman +1",
@@ -3272,7 +3274,6 @@
     "requiredForEnding": false,
     "drops": [
       "Golden Beast Crest Shield",
-      "Larval Tear",
       "Ornamental Straight Sword"
     ],
     "coords": null,
@@ -3377,7 +3378,9 @@
     "grace": "Road to the Manor",
     "tier": "field",
     "requiredForEnding": false,
-    "drops": [],
+    "drops": [
+      "Frozen Needle"
+    ],
     "coords": {
       "x": 16.29,
       "y": 39.51,
@@ -3589,8 +3592,8 @@
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
-      "Dragon Heart",
-      "Unlocks Borealis's Mist"
+      "Borealis's Mist",
+      "Dragon Heart"
     ],
     "coords": {
       "x": 63.44,
@@ -3693,8 +3696,7 @@
     "tier": "field",
     "requiredForEnding": false,
     "drops": [
-      "Zamor Curved Sword",
-      "Zamor Set"
+      "Zamor Curved Sword"
     ],
     "coords": {
       "x": 54.81,
@@ -3801,7 +3803,6 @@
     "tier": "field",
     "requiredForEnding": false,
     "drops": [
-      "Glovewort Picker's Bell Bearing",
       "Golden Seed"
     ],
     "coords": {
@@ -3835,7 +3836,7 @@
       "map": "m31_07_00_00"
     },
     "hp": null,
-    "runes": 10000,
+    "runes": null,
     "flag": 31070800,
     "sources": [
       "hunts"
@@ -4108,8 +4109,6 @@
     "requiredForEnding": false,
     "drops": [
       "Blackflame Monk Amon",
-      "Larval Tear",
-      "Larval Tear x2",
       "Silver Tear Mask"
     ],
     "coords": {
@@ -4255,7 +4254,6 @@
     "requiredForEnding": false,
     "drops": [
       "Black Flame Ritual",
-      "Godskin Noble Set",
       "Godskin Stitcher",
       "Godskin Swaddling Cloth",
       "Noble Presence",
@@ -4732,7 +4730,6 @@
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
-      "Dancer's Set",
       "Dancing Blade of Ranah"
     ],
     "coords": {
@@ -4782,7 +4779,7 @@
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
-      "Ash of War: Ghostflame Call"
+      "Ghostflame Call"
     ],
     "coords": {
       "x": 48.45,
@@ -4839,7 +4836,7 @@
       "map": "m20_01_00_00"
     },
     "hp": 3168,
-    "runes": 500000,
+    "runes": null,
     "flag": 20010800,
     "aka": [
       "hunt:promised-consort-radahn-radahn-consort-of-miquella"
@@ -4909,8 +4906,7 @@
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
-      "Greatsword of Solitude",
-      "Solitude Set"
+      "Greatsword of Solitude"
     ],
     "coords": {
       "x": 43.43,
@@ -5245,7 +5241,8 @@
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
-      "Ash of War: Aspects of the Crucible: Wings"
+      "Ash of War: Aspects of the Crucible: Wings",
+      "Aspects of the Crucible: Wings"
     ],
     "coords": {
       "x": 53.1,
@@ -5293,7 +5290,6 @@
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
-      "High Priest Set",
       "Maternal Staff",
       "Ymir's Bell Bearing"
     ],
@@ -5396,7 +5392,7 @@
     ],
     "coords": null,
     "hp": null,
-    "runes": 0,
+    "runes": null,
     "flag": 2049440800,
     "sources": [
       "hunts"
@@ -5461,8 +5457,7 @@
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
-      "Greatsword of Solitude",
-      "Solitude Set"
+      "Greatsword of Solitude"
     ],
     "coords": {
       "x": 43.43,
@@ -5486,9 +5481,7 @@
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
-      "Rakshasa Set",
-      "Rakshasa's Great Katana",
-      "Rakshasa's Set"
+      "Rakshasa's Great Katana"
     ],
     "coords": {
       "x": 57.37,
@@ -5536,7 +5529,6 @@
     "tier": "major",
     "requiredForEnding": false,
     "drops": [
-      "Iron Rivet Set",
       "Red Bear's Claw"
     ],
     "coords": {
@@ -5712,9 +5704,9 @@
       "Ansbach's Boots",
       "Ansbach's Longbow",
       "Ansbach's Manchettes",
-      "Ash of War: Swift Slash",
       "Freyja's Greatsword",
-      "Leda's Sword"
+      "Leda's Sword",
+      "Swift Slash"
     ],
     "coords": {
       "x": 39.36,
