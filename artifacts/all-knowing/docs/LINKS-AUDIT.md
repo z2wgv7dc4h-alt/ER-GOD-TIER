@@ -66,7 +66,7 @@ All guard minimums met.
 | boss | 295 | · | 96.9% | 98.3% | · | · | · | · | · |
 | dungeon | 119 | · | · | · | 84.9% | · | · | · | · |
 | grace | 417 | · | · | · | · | 96.9% | · | · | · |
-| item | 1185 | 76.3% | · | · | · | · | · | · | · |
+| item | 1186 | 76.3% | · | · | · | · | · | · | · |
 | material | 3 | 100% | · | · | · | · | · | · | · |
 | merchant | 106 | · | · | · | · | · | 100% | · | · |
 | npc | 188 | · | · | 82.4% | · | · | · | · | · |
@@ -87,7 +87,7 @@ the links a plain renderer still owes.
 
 | surface | linkable | unlinked before | unlinked after |
 | --- | --- | --- | --- |
-| entity descriptions | 798 | 0 | 0 |
+| entity descriptions | 769 | 0 | 0 |
 | wiki sections | 1681 | 0 | 0 |
 | acquisition text | 1579 | 0 | 0 |
 | quest step actions | 650 | 577 | 0 |

@@ -18,7 +18,7 @@ and every entity-graph id the app can link to.
 
 | kind | entities | flagged | empty | raw ids | bad casing | generic status | wrong actions | wiki nav | junk rows | boss filed as NPC |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| item | 1182 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| item | 1183 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | armor | 751 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | enemy | 613 | 613 | 0 | 0 | 0 | 613 | 0 | 0 | 0 | 0 |
 | quest | 467 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -39,13 +39,13 @@ and every entity-graph id the app can link to.
 | gate | 10 | 10 | 0 | 0 | 0 | 10 | 0 | 0 | 0 | 0 |
 | ending | 5 | 5 | 0 | 0 | 0 | 5 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **total** | **5620** | **1859** | 0 | 0 | 0 | 1716 | 1127 | 0 | 0 | 0 |
+| **total** | **5621** | **1859** | 0 | 0 | 0 | 1716 | 1127 | 0 | 0 | 0 |
 
 ## After
 
 | kind | entities | flagged | empty | raw ids | bad casing | generic status | wrong actions | wiki nav | junk rows | boss filed as NPC |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| item | 1185 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| item | 1186 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | armor | 751 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | enemy | 613 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | quest | 467 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -66,7 +66,7 @@ and every entity-graph id the app can link to.
 | gate | 10 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | ending | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **total** | **5624** | **0** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **total** | **5625** | **0** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
 Task 144 removed **1859** flagged pages
 (empty, raw ids, bad casing, generic status, wrong actions, wiki nav, junk rows, boss filed as NPC).
