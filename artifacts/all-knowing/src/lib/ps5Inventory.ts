@@ -157,13 +157,18 @@ export function cellActivity(img: GrayImage, grid: SlotGrid, row: number, col: n
 export type OccupancyResult = { occupied: boolean[]; activities: number[] }
 
 /** Which cells hold an icon (left-to-right, top-to-bottom). */
-export function cellOccupancy(img: GrayImage, grid: SlotGrid, floorRatio = 0.55): OccupancyResult {
+export function cellOccupancy(img: GrayImage, grid: SlotGrid): OccupancyResult {
   const activities: number[] = []
   for (let r = 0; r < grid.rows; r++) for (let c = 0; c < grid.cols; c++) activities.push(cellActivity(img, grid, r, c))
+  // Empty menu cells are near-uniform (local stddev under ~14 on these TV photos);
+  // icons carry relief/texture well above that. Anchoring the split to the peak
+  // activity scales with glare and screen brightness, while the floor keeps the
+  // near-flat empties and any dark off-list cells from ever counting. The old
+  // `median + 0.55*(peak-median)` rule broke once a page had many empty cells:
+  // they dragged the median down and the split landed above genuine icons.
   const sorted = [...activities].sort((a, b) => a - b)
-  const median = sorted[sorted.length >> 1] ?? 0
   const peak = sorted[sorted.length - 1] ?? 0
-  const threshold = median + (peak - median) * floorRatio
+  const threshold = Math.max(14, Math.min(peak * 0.28, 24))
   return { occupied: activities.map((a) => a >= threshold), activities }
 }
 

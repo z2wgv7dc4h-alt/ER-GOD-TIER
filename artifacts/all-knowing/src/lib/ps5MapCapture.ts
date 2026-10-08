@@ -85,7 +85,10 @@ export function analyzeMapPhoto(photo: MapPhoto, refs: MapReference[], index: Gr
   if (registration) {
     const ref = refs.find((r) => r.world === registration.world) ?? refs[0]
     blobs = detectGraceBlobs(photo.color)
-    graces = snapGraces(blobs, registration.H, ref, registration.world, { index })
+    // 1.4 % matches the eval (`scripts/photo-eval.mjs`) and is calibrated to the
+    // committed plates: registration residual is ~2–3 px, so a tighter tolerance
+    // dropped true graces while a looser one let gold terrain snap. See PHOTO-EVAL.
+    graces = snapGraces(blobs, registration.H, ref, registration.world, { index, tolerancePercent: 1.4 })
     fragments = classifyFragments(photo.gray, photo.color, registration.Hinv, ref, registration.world)
   }
   return { width: photo.gray.width, height: photo.gray.height, registration, blobs, graces, fragments, features, ms: Date.now() - started }
@@ -97,8 +100,12 @@ let graceIndexCache: GraceIndexEntry[] | null = null
 export async function loadBrowserGraceIndex(): Promise<GraceIndexEntry[]> {
   if (graceIndexCache) return graceIndexCache
   try {
-    const doc = (await fetch('/sourced/open/engine-markers.json').then((r) => r.json())) as { graces?: { name: string; px: number; py: number }[] }
-    graceIndexCache = buildGraceIndex(doc.graces ?? [])
+    const doc = (await fetch('/sourced/open/engine-markers.json').then((r) => r.json())) as {
+      graces?: { name: string; px: number; py: number }[]
+      markers?: { name: string; cat: string; master: string }[]
+    }
+    const masterOf = new Map((doc.markers ?? []).filter((m) => m.cat === 'grace').map((m) => [m.name, m.master]))
+    graceIndexCache = buildGraceIndex((doc.graces ?? []).map((g) => ({ ...g, master: masterOf.get(g.name) })))
   } catch {
     graceIndexCache = []
   }

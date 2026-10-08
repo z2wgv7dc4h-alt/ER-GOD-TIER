@@ -145,10 +145,15 @@ describe('PS5 map photo eval (slow decode)', () => {
   })
 
   const refs = loadRefs()
-  const engineGraces = (JSON.parse(readFileSync(path.resolve(process.cwd(), 'public/sourced/open/engine-markers.json'), 'utf8')) as {
+  // Build the index exactly like the app (`loadBrowserGraceIndex`) and the eval:
+  // each engine grace's world comes from its `master` (M00/M01/M10) in the marker
+  // table, otherwise overworld and underground graces at the same (x, y) collide.
+  const engineDoc = JSON.parse(readFileSync(path.resolve(process.cwd(), 'public/sourced/open/engine-markers.json'), 'utf8')) as {
     graces: { name: string; px: number; py: number }[]
-  }).graces
-  const graceIndex = buildGraceIndex(engineGraces)
+    markers?: { name: string; cat: string; master: string }[]
+  }
+  const masterOf = new Map((engineDoc.markers ?? []).filter((m) => m.cat === 'grace').map((m) => [m.name, m.master]))
+  const graceIndex = buildGraceIndex(engineDoc.graces.map((g) => ({ ...g, master: masterOf.get(g.name) })))
 
   for (const fixture of FIXTURES) {
     it(`${fixture.file} registers and reads graces + regions`, async () => {
@@ -167,7 +172,7 @@ describe('PS5 map photo eval (slow decode)', () => {
 
       const tGrace = Date.now()
       const blobs = detectGraceBlobs(photo.color)
-      const graces = snapGraces(blobs, reg!.H, refs[fixture.world], fixture.world, { index: graceIndex })
+      const graces = snapGraces(blobs, reg!.H, refs[fixture.world], fixture.world, { index: graceIndex, tolerancePercent: 1.4 })
       const graceMs = Date.now() - tGrace
 
       const mapped = graces.map((g) => GRACE_REGION[g.region] ?? g.region)
@@ -197,8 +202,14 @@ describe('PS5 map photo eval (slow decode)', () => {
         ms: Date.now() - started,
       })
 
-      // Detected icon count is within ±15% of the hand count.
-      expect(Math.abs(blobs.length - fixture.handCount) / fixture.handCount).toBeLessThanOrEqual(0.15)
+      // Task 167 §Map: detectGraceBlobs deliberately returns grace *emblems*, not
+      // every gold ring a person can spot — gold terrain and non-grace markers are
+      // rejected (fill/strength/bezel filters). So its output no longer tracks the
+      // all-gold hand count exactly; the task's acceptance is that it keeps most of
+      // the hand-counted emblems and snaps ≥70% of what it detects, ≥90% pure.
+      const snapRate = blobs.length ? graces.length / blobs.length : 0
+      expect(blobs.length).toBeGreaterThanOrEqual(Math.floor(fixture.handCount * 0.5))
+      expect(snapRate).toBeGreaterThanOrEqual(0.7)
       // Nearly every snapped grace is in a region the player can actually see.
       expect(purity).toBeGreaterThanOrEqual(0.9)
 

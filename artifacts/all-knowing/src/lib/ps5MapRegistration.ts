@@ -56,8 +56,10 @@ const DEFAULTS: Required<RegisterOptions> = {
   maxError: 6,
 }
 
+/** Mosaic percent (px/10496) → reference plate pixel. The plate is a uniform
+ *  downscale of the square engine frame, so both axes use the width scale. */
 export function regionPlatePoint(xPercent: number, yPercent: number, ref: MapReference): Pt {
-  return [(xPercent / 100) * ref.width, (yPercent / 100) * ref.height]
+  return [(xPercent / 100) * ref.width, (yPercent / 100) * ref.width]
 }
 
 /** Register against one reference. Returns null when geometry cannot be trusted. */
