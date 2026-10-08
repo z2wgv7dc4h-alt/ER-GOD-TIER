@@ -369,8 +369,7 @@ export function LibraryBrowser() {
   const filtered = useMemo(() => {
     const base = applyFilters(catEntities, { ...filter, q }, character)
     const area = w.currentArea?.region
-    if (!near || !area) return base
-    return base.filter((e) => regionMatches(e.region, area))
+    return !near || !area ? base : base.filter((e) => regionMatches(e.region, area))
   }, [catEntities, filter, q, character, near, w.currentArea])
 
   const sorted = useMemo(

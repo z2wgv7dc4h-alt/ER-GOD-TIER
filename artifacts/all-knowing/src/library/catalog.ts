@@ -208,15 +208,25 @@ function regRequirements(seed: WeaponSeed, row: ReturnType<typeof toWeaponStatRo
   return Object.keys(map).length ? map : undefined
 }
 
+/** Normalised-name -> acquisition row, so lookups stay O(1) per entity. */
+function acquisitionIndex(acquisitions: Acquisition[]): Map<string, Acquisition> {
+  const map = new Map<string, Acquisition>()
+  for (const a of acquisitions) {
+    const key = norm(a.name)
+    if (key && !map.has(key)) map.set(key, a)
+  }
+  return map
+}
+
 function weaponEntity(
   category: 'weapons' | 'shields',
   seed: WeaponSeed,
   regRow: ReturnType<typeof toWeaponStatRow> | undefined,
-  acquisitions: Acquisition[],
+  acqByName: Map<string, Acquisition>,
 ): LibraryEntity {
   const where =
     seed.where ||
-    acquisitions.find((a) => norm(a.name) === norm(seed.name))?.location ||
+    acqByName.get(norm(seed.name))?.location ||
     undefined
   const scaling: Partial<Record<AttributeKey, string>> = {}
   if (regRow) {
@@ -255,10 +265,16 @@ function buildWeapons(input: CatalogInput): { weapons: LibraryEntity[]; shields:
     weaponByName.set(norm(name), w)
     weaponByName.set(norm(w.name), w)
   }
+  const rowCache = new Map<string, ReturnType<typeof toWeaponStatRow> | undefined>()
   const rowByName = (name: string) => {
-    const w = reps.get(name) ?? weaponByName.get(norm(name))
-    return w ? toWeaponStatRow(w) : undefined
+    if (rowCache.has(name)) return rowCache.get(name)
+    const key = norm(name)
+    const w = reps.get(name) ?? weaponByName.get(key)
+    const row = w ? toWeaponStatRow(w) : undefined
+    rowCache.set(name, row)
+    return row
   }
+  const acqByName = acquisitionIndex(input.acquisitions)
 
   const seeds = new Map<string, WeaponSeed>()
   const upsert = (seed: WeaponSeed) => {
@@ -306,7 +322,7 @@ function buildWeapons(input: CatalogInput): { weapons: LibraryEntity[]; shields:
   const shields: LibraryEntity[] = []
   for (const seed of seeds.values()) {
     if (shieldNames.has(norm(seed.name))) continue
-    weapons.push(weaponEntity('weapons', seed, rowByName(seed.name), input.acquisitions))
+    weapons.push(weaponEntity('weapons', seed, rowByName(seed.name), acqByName))
   }
   for (const s of input.fan.shields) {
     const seed: WeaponSeed = {
@@ -314,7 +330,7 @@ function buildWeapons(input: CatalogInput): { weapons: LibraryEntity[]; shields:
       subtype: s.category,
       weight: s.weight,
     }
-    shields.push(weaponEntity('shields', seed, rowByName(s.name), input.acquisitions))
+    shields.push(weaponEntity('shields', seed, rowByName(s.name), acqByName))
   }
   return { weapons, shields, weaponByName }
 }
@@ -411,8 +427,9 @@ function buildSpirits(fan: FanapiData): LibraryEntity[] {
 }
 
 function buildItems(fan: FanapiData, acquisitions: Acquisition[]): LibraryEntity[] {
+  const acqByName = acquisitionIndex(acquisitions)
   return fan.items.map((i) => {
-    const acq = acquisitions.find((a) => norm(a.name) === norm(i.name))
+    const acq = acqByName.get(norm(i.name))
     return baseEntity('items', i.name, {
       subtype: i.type && i.type !== '-' ? i.type : 'Item',
       stats: [{ label: 'Type', value: i.type || 'Item' }],
@@ -720,26 +737,43 @@ function buildDialogue(dialogue: DialogueSpeaker[]): LibraryEntity[] {
 
 export function buildCatalog(input: CatalogInput): BuiltCatalog {
   const { weapons, shields, weaponByName } = buildWeapons(input)
+  const armor = buildArmor(input.fan)
+  const talismans = buildTalismans(input.fan)
+  const sorceries = buildSpells(input.fan, 'Sorcery', 'sorceries')
+  const incantations = buildSpells(input.fan, 'Incantation', 'incantations')
+  const ashes = buildAshes(input.fan)
+  const spirits = buildSpirits(input.fan)
+  const items = buildItems(input.fan, input.acquisitions)
+  const bosses = buildBosses(input)
+  const enemies = buildEnemies(input.index ?? [])
+  const npcs = buildNpcs(input.fan, input.index ?? [])
+  const locations = buildLocations(input.fan, input.index ?? [])
+  const materials = buildMaterials(input.guideItems ?? [])
+  const recipes = buildRecipes(input.recipes)
+  const secrets = buildSecrets(input.secrets)
+  const guides = buildGuides(input.guides)
+  const mechanics = buildMechanics()
+  const dialogue = buildDialogue(input.dialogue)
   const entities: LibraryEntity[] = [
     ...weapons,
     ...shields,
-    ...buildArmor(input.fan),
-    ...buildTalismans(input.fan),
-    ...buildSpells(input.fan, 'Sorcery', 'sorceries'),
-    ...buildSpells(input.fan, 'Incantation', 'incantations'),
-    ...buildAshes(input.fan),
-    ...buildSpirits(input.fan),
-    ...buildItems(input.fan, input.acquisitions),
-    ...buildBosses(input),
-    ...buildEnemies(input.index ?? []),
-    ...buildNpcs(input.fan, input.index ?? []),
-    ...buildLocations(input.fan, input.index ?? []),
-    ...buildMaterials(input.guideItems ?? []),
-    ...buildRecipes(input.recipes),
-    ...buildSecrets(input.secrets),
-    ...buildGuides(input.guides),
-    ...buildMechanics(),
-    ...buildDialogue(input.dialogue),
+    ...armor,
+    ...talismans,
+    ...sorceries,
+    ...incantations,
+    ...ashes,
+    ...spirits,
+    ...items,
+    ...bosses,
+    ...enemies,
+    ...npcs,
+    ...locations,
+    ...materials,
+    ...recipes,
+    ...secrets,
+    ...guides,
+    ...mechanics,
+    ...dialogue,
   ]
   // Task 126 §3 — the raw FanAPI/guide dumps carry duplicate rows (identical
   // names, occasionally a differing region). React keys and the compare tray use
@@ -762,6 +796,45 @@ export function buildCatalog(input: CatalogInput): BuiltCatalog {
     list.sort((a, b) => a.name.localeCompare(b.name))
   }
   return { entities: deduped, byCategory, weaponByName }
+}
+
+/**
+ * The catalogue is rebuilt only when one of its source datasets changes. The
+ * hook memoises the build, but the datasets can arrive as fresh identity-equal
+ * arrays (and a future dep can slip in), so this one-entry cache is the cheap
+ * guarantee: an interaction like a rail click re-renders without paying the
+ * multi-second catalogue cost (Task 185 §1). It keys on the exact references
+ * `useLibraryCatalog` passes, not on deep equality.
+ */
+let cachedBuildInput: CatalogInput | null = null
+let cachedBuildResult: BuiltCatalog | null = null
+
+function sameCatalogInput(a: CatalogInput, b: CatalogInput): boolean {
+  return (
+    a.fan === b.fan &&
+    a.armoryWeapons === b.armoryWeapons &&
+    a.armoryBosses === b.armoryBosses &&
+    a.weapons === b.weapons &&
+    a.recipes === b.recipes &&
+    a.secrets === b.secrets &&
+    a.acquisitions === b.acquisitions &&
+    a.guides === b.guides &&
+    a.bossCombat === b.bossCombat &&
+    a.dialogue === b.dialogue &&
+    a.index === b.index &&
+    a.guideItems === b.guideItems
+  )
+}
+
+/** `buildCatalog` with a reference-keyed cache; see the note above. */
+export function cachedBuildCatalog(input: CatalogInput): BuiltCatalog {
+  if (cachedBuildInput && cachedBuildResult && sameCatalogInput(cachedBuildInput, input)) {
+    return cachedBuildResult
+  }
+  const built = buildCatalog(input)
+  cachedBuildInput = input
+  cachedBuildResult = built
+  return built
 }
 
 const EMPTY_INPUT: CatalogInput = {
@@ -872,21 +945,29 @@ export function useLibraryCatalog(activeCategory: CategoryId, preload = false): 
     })
   }, [bossCombat, recipes, acquisitions])
 
-  const catalog = useMemo(() => {
-    const built = buildCatalog({
-      fan,
-      armoryWeapons,
-      armoryBosses,
-      weapons,
-      recipes,
-      secrets,
-      acquisitions,
-      guides,
-      bossCombat,
-      dialogue,
-      index: indexReady ? allRecords() : [],
-      guideItems,
-    })
+  // The catalogue contents only depend on the reference datasets, NOT on which
+  // category the user is browsing. Keeping `activeCategory` out of this memo
+  // means switching category (or a rail click) never re-runs the 2.5 s build.
+  const built = useMemo(
+    () =>
+      cachedBuildCatalog({
+        fan,
+        armoryWeapons,
+        armoryBosses,
+        weapons,
+        recipes,
+        secrets,
+        acquisitions,
+        guides,
+        bossCombat,
+        dialogue,
+        index: indexReady ? allRecords() : [],
+        guideItems,
+      }),
+    [fan, armoryWeapons, armoryBosses, weapons, recipes, secrets, acquisitions, guides, bossCombat, dialogue, guideItems, indexReady, indexVersion],
+  )
+
+  const { loading, pending } = useMemo(() => {
     const coreReady =
       weapons.length > 0 ||
       fan.armors.length > 0 ||
@@ -917,20 +998,22 @@ export function useLibraryCatalog(activeCategory: CategoryId, preload = false): 
     for (const id of ['bosses', 'recipes', 'secrets', 'guides', 'dialogue'] as CategoryId[]) {
       if (!settled.has(id)) pending.add(id)
     }
-    return { ...built, loading, pending }
-  }, [fan, armoryWeapons, armoryBosses, weapons, recipes, secrets, acquisitions, guides, bossCombat, dialogue, guideItems, indexReady, indexVersion, activeCategory, settled])
+    return { loading, pending }
+  }, [activeCategory, built, settled, indexReady, weapons.length, bossCombat.length, recipes.length, secrets.length, guides.length, dialogue.length, guideItems.length, fan])
+
+  const catalog = useMemo(() => ({ ...built, loading, pending }), [built, loading, pending])
 
   // Task 115: let peek cards show the same numeric rows the Library has.
   useEffect(() => {
-    registerPeekCatalog({ entities: catalog.entities, weaponByName: catalog.weaponByName, arFor: weaponAr })
-  }, [catalog])
+    registerPeekCatalog({ entities: built.entities, weaponByName: built.weaponByName, arFor: weaponAr })
+  }, [built])
 
   // Task 122 §C: register every Library catalogue entity in the shared graph so
   // a name that lives only in the browser (armor, extra weapons/talismans, …)
   // gets a peek card and an entity page like any authored fact.
   useEffect(() => {
     registerEntityGraphData({
-      entities: catalog.entities
+      entities: built.entities
         .filter((e) => CATALOG_KIND[e.category])
         .map((e) => ({
           id: e.factId || e.id,
@@ -940,7 +1023,7 @@ export function useLibraryCatalog(activeCategory: CategoryId, preload = false): 
           icon: e.icon,
         })),
     })
-  }, [catalog])
+  }, [built])
 
   return catalog
 }
