@@ -22,6 +22,7 @@ import { Thread } from './Thread'
 import { GuidesFor } from './PackData'
 import { factState, useWorkspace, type FactState } from './state'
 import { useCoords } from './lib/coords'
+import { useChestData } from './lib/chestFacts'
 import { placeLabelsForWorld, usePlaceNames } from './lib/placeNames'
 import { useEnginePins } from './lib/engineMarkers'
 import { layerOrder } from './lib/nav'
@@ -162,6 +163,10 @@ export function AtlasWorkspace() {
     return () => window.clearTimeout(t)
   }, [engineDown, embedFailed])
   const coords = useCoords()
+  // Task 183 §2 — chest/treasure pins are an opt-in layer: the 3.5k-row
+  // `world-lots.json` dump is only fetched when the player turns it on.
+  const [showChests, setShowChests] = useState(false)
+  const { pins: chestPinData } = useChestData(showChests)
   // Task 155: a "Show on map" request resolves to the layer/centre/zoom the map
   // must adopt. Shared by every entry point; see map/focusTarget.ts.
   const focusPlan = useMemo(
@@ -378,6 +383,31 @@ export function AtlasWorkspace() {
       }))
   }, [w.character, coords, world])
 
+  // Task 183 §2 — projected chest/treasure pins for the viewed plate. They live
+  // outside the seed layers (opt-in) and cluster like the other dense layers.
+  const chestWorld = useMemo(
+    () => (showChests ? chestPinData.filter((p) => p.world === world) : []),
+    [showChests, chestPinData, world],
+  )
+  const chestMarkers = useMemo<MapMarker[]>(
+    () =>
+      chestWorld.map((p) => ({
+        id: p.id,
+        name: p.name,
+        kind: 'item' as const,
+        region: p.region,
+        campaign: p.world === 'shadow' ? ('sote' as const) : ('base' as const),
+        x: p.x,
+        y: p.y,
+        note: p.map,
+      })),
+    [chestWorld],
+  )
+  const { singles: chestSingles, clusters: chestClusters } = useMemo(
+    () => clusterMarkers(chestMarkers, 100 / 45),
+    [chestMarkers],
+  )
+
   const q = w.query.trim().toLowerCase()
   const shown = allPins.filter((m) => {
     if (m.gate) {
@@ -421,7 +451,7 @@ export function AtlasWorkspace() {
     engineLive,
     // Result and note pins are not part of the filtered seed layers, but the
     // shared detail panel must be able to name one when it is clicked.
-    platePins: [...allPins, ...resultList, ...noteList, ...watchList],
+    platePins: [...allPins, ...resultList, ...noteList, ...watchList, ...chestMarkers],
     shown,
     enginePins: w.engineMarkers,
     engineList,
@@ -732,6 +762,26 @@ export function AtlasWorkspace() {
                 </g>
               )
             })}
+            {/* Task 183 §2 — the opt-in chest/treasure layer (amber squares). */}
+            {showChests && (!plate || artReady) && chestSingles.map((m) => {
+              const p = at(m)
+              return (
+                <g key={`chest:${m.id}`} className="pin chest-pin" onClick={() => w.setSelectedMarkerId(m.id)}>
+                  <rect x={p.x - 1.2 * k} y={p.y - 1.2 * k} width={2.4 * k} height={2.4 * k} rx={0.4 * k} fill="none" stroke="#c98a2a" strokeWidth={0.3 * k} />
+                </g>
+              )
+            })}
+            {showChests && (!plate || artReady) && chestClusters.map((c, i) => {
+              const p = plate ? { x: (c.x / 100) * vw, y: (c.y / 100) * vh } : { x: c.x, y: c.y }
+              return (
+                <g key={`chestcluster:${i}`} className="pin cluster chest-pin" onClick={() => w.setSelectedMarkerId(c.first.id)}>
+                  <circle cx={p.x} cy={p.y} r={2 * k} fill="#5a3f14" fillOpacity={0.85} stroke="#c98a2a" strokeWidth={0.25 * k} />
+                  <text x={p.x} y={p.y + 0.9 * k} textAnchor="middle" fill="#f0d9a8" fontSize={2 * k}>
+                    {c.count}
+                  </text>
+                </g>
+              )
+            })}
             {/* Task 155 — the Show-on-map target: a halo + label on top of every
                 layer so the marker is found even when its id is not a visible pin.
                 Task 156 — a multi-source target (an enemy drop) draws every spawn. */}
@@ -901,6 +951,14 @@ export function AtlasWorkspace() {
             >
               Watchlist{watchList.length ? ` ${watchList.length}` : ''}
             </button>
+            <button
+              type="button"
+              className={showChests ? 'chip on' : 'chip'}
+              aria-pressed={showChests}
+              onClick={() => setShowChests((v) => !v)}
+            >
+              Chests{chestPinData.length ? ` ${chestPinData.length}` : ''}
+            </button>
             {layerOrder.map((id) => (
               <button
                 key={id}
@@ -977,6 +1035,19 @@ export function AtlasWorkspace() {
                 }}
               />
               watchlist
+            </span>
+          )}
+          {showChests && (
+            <span className="note" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span
+                style={{
+                  width: 10,
+                  height: 10,
+                  border: '2px solid #c98a2a',
+                  display: 'inline-block',
+                }}
+              />
+              chests
             </span>
           )}
         </div>

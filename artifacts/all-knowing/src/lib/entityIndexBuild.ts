@@ -1,3 +1,6 @@
+import { existsSync } from 'node:fs'
+import path from 'node:path'
+import { DatabaseSync } from 'node:sqlite'
 import { allEntities, canonicalEntityId, edges, entityName, getEntity, hasEntity, type EntityKind } from './entityGraph'
 import { allLines } from '../knowledge/storylines'
 import { byId, facts } from '../knowledge/catalog'
@@ -406,18 +409,122 @@ for (const [name, path] of Object.entries(bossImagesJson as Record<string, strin
   for (const key of iconKeys(name)) if (key && !bossImageByName.has(key)) bossImageByName.set(key, path)
 }
 
+/** A generic pack glyph is a placeholder, not a picture: a real one may replace it. */
+const PLACEHOLDER_IMAGE_RE = /\/pack-icons\//
+/** The local FanAPI/Fandom image plane, keyed the same way as `image-index.json`. */
+const imageIndexByName = imageIndex as Record<string, string>
+
+/** The `images/<dir>` a cached path lives in, if any. */
+function imageDir(found: string): string | undefined {
+  return /\/images\/([^/]+)\//.exec(found)?.[1]
+}
+
+/** First cached image whose normalised name key matches, optionally in allowed dirs. */
+function imageByKeys(keys: string[], dirs?: string | readonly string[]): string | undefined {
+  const allowed = typeof dirs === 'string' ? [dirs] : dirs
+  for (const key of keys) {
+    const found = imageIndexByName[key]
+    if (!found) continue
+    if (!allowed || allowed.includes(imageDir(found) ?? '')) return found
+  }
+  return undefined
+}
+
+/**
+ * Task 182 §1 — the cached picture planes a kind may draw from, so a name that
+ * also belongs to an object (a scarab *armour*, a *location*) can never picture a
+ * creature. Bosses/invaders are filed under `bosses`, ordinary wildlife under
+ * `creatures`, people under `npcs`; a place only under `locations`.
+ */
+const BOSS_IMAGE_DIRS: readonly string[] = ['bosses', 'creatures', 'npcs']
+const ENEMY_IMAGE_DIRS: readonly string[] = ['creatures', 'bosses', 'npcs']
+const NPC_IMAGE_DIRS: readonly string[] = ['npcs', 'creatures', 'bosses', 'spirits']
+const REGION_IMAGE_DIRS: readonly string[] = ['locations']
+
+/**
+ * Task 182 §1 — replace the graph's generic placeholder glyph with a real cached
+ * portrait. The Fandom `boss-images.json` plane wins, then the local FanAPI plane
+ * (`images/bosses` and, for invader-style fights, `images/creatures` / `images/npcs`).
+ */
 function fillBossImages(): void {
   let filled = 0
   for (const record of records.values()) {
-    if (record.image || record.kind !== 'boss') continue
-    const path = iconKeys(record.name)
-      .map((key) => bossImageByName.get(key))
-      .find((value) => value != null)
+    if (record.kind !== 'boss') continue
+    if (record.image && !PLACEHOLDER_IMAGE_RE.test(record.image)) continue
+    const keys = iconKeys(record.name)
+    const path = keys.map((key) => bossImageByName.get(key)).find((value) => value != null) ?? imageByKeys(keys, BOSS_IMAGE_DIRS)
     if (!path) continue
     record.image = path
     filled++
   }
   if (filled) console.log(`boss images filled: ${filled}`)
+}
+
+/**
+ * Task 182 §1 — a region page shows its own place art (`images/locations`),
+ * never the generic marker. Restricted to the location sub-dir so a region that
+ * merely shares a boss/item name cannot pick up the wrong picture.
+ */
+function fillRegionImages(): void {
+  let filled = 0
+  for (const record of records.values()) {
+    if (record.kind !== 'region') continue
+    if (record.image && !PLACEHOLDER_IMAGE_RE.test(record.image)) continue
+    const path = imageByKeys(iconKeys(record.name), REGION_IMAGE_DIRS)
+    if (!path) continue
+    record.image = path
+    filled++
+  }
+  if (filled) console.log(`region images filled: ${filled}`)
+}
+
+/**
+ * Task 182 §3 — the wiki DB `bosses.runes` values, keyed by name/alias. The db
+ * (`er-mcp.db`) is a gitignored local drop; when it is absent the map is empty
+ * and the build leaves the field as it found it (never invents a number).
+ */
+function bossRunesFromDb(): Map<string, string> {
+  const out = new Map<string, string>()
+  const candidates = [
+    path.join(process.cwd(), '.scratch', 'er-mcp.db'),
+    path.join(process.cwd(), 'data', 'raw', 'er-mcp.db'),
+  ]
+  const file = candidates.find((candidate) => existsSync(candidate))
+  if (!file) return out
+  let db: DatabaseSync | undefined
+  try {
+    db = new DatabaseSync(file, { readOnly: true })
+    const rows = db.prepare('SELECT name, runes FROM bosses').all() as { name: string; runes: string | null }[]
+    for (const row of rows) {
+      const runes = row.runes == null ? '' : String(row.runes).trim()
+      // Only a real total ("5,400"); the dump also carries the header "Runes".
+      if (!/^[\d][\d,\s]*$/.test(runes)) continue
+      for (const key of [...mapKeys(row.name), baseNorm(row.name)]) {
+        if (key && !out.has(key)) out.set(key, runes)
+      }
+    }
+  } catch {
+    return out
+  } finally {
+    db?.close()
+  }
+  return out
+}
+
+/** Task 182 §3 — fill the rune reward on any boss the roster left without one. */
+function fillBossRunes(): void {
+  const runesByName = bossRunesFromDb()
+  if (!runesByName.size) return
+  let filled = 0
+  for (const record of records.values()) {
+    if (record.kind !== 'boss' || record.stats?.Runes) continue
+    const runes = mapKeys(record.name).map((key) => runesByName.get(key)).find(Boolean) ?? runesByName.get(baseNorm(record.name))
+    if (!runes) continue
+    setStat(record, 'Runes', runes)
+    source(record, 'er-mcp.db/bosses')
+    filled++
+  }
+  if (filled) console.log(`boss runes filled from db: ${filled}`)
 }
 
 /** Fuzzy fallback: best entity name at or above 0.92. */
@@ -2833,15 +2940,92 @@ function imageFor(name: string): string | undefined {
   return index[simpleNorm(name)] ?? index[simpleNorm(baseName(name))]
 }
 
+/**
+ * Task 182 §1 — the same lookup restricted to the picture planes a kind may use,
+ * so a creature never borrows an object's icon (and vice versa). Tries every
+ * exact/alias spelling of the name, then the base name. Falls back to the
+ * unrestricted `imageFor` for kinds with no plane of their own.
+ */
+function imageForKind(name: string, kind: EntityKind): string | undefined {
+  const dirs =
+    kind === 'boss' ? BOSS_IMAGE_DIRS : kind === 'enemy' ? ENEMY_IMAGE_DIRS : kind === 'npc' || kind === 'merchant' ? NPC_IMAGE_DIRS : undefined
+  if (!dirs) return imageFor(name)
+  const keys = iconKeys(name)
+  const base = baseName(name)
+  for (const key of [simpleNorm(base), baseNorm(base), ...keys]) {
+    const found = imageIndexByName[key]
+    if (found && dirs.includes(imageDir(found) ?? '')) return found
+  }
+  return undefined
+}
+
+/**
+ * Task 182 §2 — enemy coordinates. Every vanilla spawn is an `msb-enemies.json`
+ * row keyed by NpcParam id; `npc-placements.json` gives the engine affine that
+ * projects a map's local x,z to the 10496px mosaic, so an enemy gets one
+ * representative pin: the centroid of its busiest spawn map.
+ */
+const MOSAIC_PX = 10496
+const spawnsById = new Map<number, { map: string; x: number; z: number }[]>()
+
+/** Per-map affine (local x,z -> mosaic pixel) from a projected NPC placement. */
+const spawnAnchorByMap = new Map<string, { offX: number; offY: number; world?: string }>()
+for (const p of (npcPlacementsDoc as { placements?: { name: string; map: string; x: number; z: number; px?: number; py?: number; world?: string }[] }).placements ?? []) {
+  if (typeof p.px === 'number' && typeof p.py === 'number' && !spawnAnchorByMap.has(p.map)) {
+    spawnAnchorByMap.set(p.map, { offX: p.px - p.x, offY: p.py + p.z, world: p.world })
+  }
+}
+
+function projectSpawn(spawn: { map: string; x: number; z: number }): { x: number; y: number; world?: string } | undefined {
+  const anchor = spawnAnchorByMap.get(spawn.map)
+  if (anchor) {
+    return { x: ((spawn.x + anchor.offX) / MOSAIC_PX) * 100, y: ((-spawn.z + anchor.offY) / MOSAIC_PX) * 100, world: anchor.world }
+  }
+  const tile = parseMapId(spawn.map)
+  if (!tile || (tile.area !== 60 && tile.area !== 61)) return undefined
+  const px = tile.gx * TILE_WORLD + TILE_WORLD / 2 + spawn.x + WORLD_OFFSET_X
+  const py = WORLD_OFFSET_Y - (tile.gz * TILE_WORLD + TILE_WORLD / 2 + spawn.z)
+  return { x: (px / MOSAIC_PX) * 100, y: (py / MOSAIC_PX) * 100, world: tile.area === 61 ? 'shadow' : 'overworld' }
+}
+
+function enemyMapPin(npc: number): EntityRecord['map'] | undefined {
+  const spawns = spawnsById.get(npc)
+  if (!spawns?.length) return undefined
+  const counts = new Map<string, number>()
+  for (const s of spawns) counts.set(s.map, (counts.get(s.map) ?? 0) + 1)
+  let bestMap = spawns[0].map
+  let bestCount = -1
+  for (const [map, count] of counts) {
+    if (count > bestCount) {
+      bestCount = count
+      bestMap = map
+    }
+  }
+  const points = spawns
+    .filter((s) => s.map === bestMap)
+    .map(projectSpawn)
+    .filter((p): p is { x: number; y: number; world?: string } => Boolean(p))
+  if (!points.length) return undefined
+  const x = points.reduce((a, p) => a + p.x, 0) / points.length
+  const y = points.reduce((a, p) => a + p.y, 0) / points.length
+  if (!(x >= 0 && x <= 100 && y >= 0 && y <= 100)) return undefined
+  return { x: Math.round(x * 100) / 100, y: Math.round(y * 100) / 100, map: bestMap, world: points[0].world }
+}
+
 function enrichCreatures(): void {
-  // Vanilla placements per NpcParam id.
+  // Vanilla placements per NpcParam id (count + projected spawn points).
   const placements = new Map<number, string[]>()
-  for (const row of msbEnemies as { id?: string; map?: string }[]) {
+  for (const row of msbEnemies as { id?: string; map?: string; x?: number; z?: number }[]) {
     const npc = Number(row.id)
     if (!npc || !row.map) continue
     const list = placements.get(npc) ?? []
     list.push(row.map)
     placements.set(npc, list)
+    if (typeof row.x === 'number' && typeof row.z === 'number') {
+      const spawns = spawnsById.get(npc) ?? []
+      spawns.push({ map: row.map, x: row.x, z: row.z })
+      spawnsById.set(npc, spawns)
+    }
   }
   const wikiEnemies = new Map<string, { title: string; description?: string; drops?: string[]; location?: string }>()
   for (const row of (wikiEnemyDoc as { records?: { title: string; description?: string; drops?: string[]; location?: string }[] }).records ?? []) {
@@ -2884,6 +3068,11 @@ function enrichCreatures(): void {
       }
       const region = voteWinner(votes)
       if (region) record.region = region
+      // Task 182 §2 — a representative pin from the projected spawns.
+      if (!record.map) {
+        const pin = enemyMapPin(npc)
+        if (pin) record.map = pin
+      }
       source(record, 'msb-enemies')
     }
     const base = simpleNorm(baseName(record.name))
@@ -2898,7 +3087,7 @@ function enrichCreatures(): void {
       addDrops(record, drops)
       source(record, 'fanapi/creatures')
     }
-    if (!record.image) record.image = imageFor(record.name)
+    if (!record.image) record.image = imageForKind(record.name, 'enemy')
     // Rune rewards are not item drops ("Runes", "8561 Runes").
     if (record.drops) {
       record.drops = record.drops.filter((d) => !/^[\d,.\s]*runes?$/i.test(String(d).trim()))
@@ -2914,7 +3103,7 @@ function enrichCreatures(): void {
     if (!record.map && c && c.x >= 0 && c.x <= 100 && c.y >= 0 && c.y <= 100) {
       record.map = { x: c.x, y: c.y, map: c.map ?? undefined }
     }
-    if (!record.image) record.image = imageFor(row.name)
+    if (!record.image) record.image = imageForKind(row.name, 'boss')
   }
 
   const npcPins = new Map<string, { map: string; px?: number; py?: number; world?: string }>()
@@ -2931,7 +3120,7 @@ function enrichCreatures(): void {
         record.map = { x: Math.round((pin.px / 10496) * 10000) / 100, y: Math.round((pin.py / 10496) * 10000) / 100, map: pin.map, world: pin.world }
       }
     }
-    if (!record.image) record.image = imageFor(record.name)
+    if (!record.image) record.image = imageForKind(record.name, record.kind === 'merchant' ? 'merchant' : 'npc')
   }
 }
 
@@ -3876,6 +4065,9 @@ export function buildEntityIndex(): EntityIndexBuildResult {
 
   // Task 154 step 3 — base boss portraits before the encounter inheritance below.
   fillBossImages()
+  // Task 182 §1/§3 — region place art, then rune rewards, before encounters inherit.
+  fillRegionImages()
+  fillBossRunes()
 
   // An encounter borrows what is true of every copy of its boss — strategy and
   // the combat profile — from the shared record, without overwriting its own.

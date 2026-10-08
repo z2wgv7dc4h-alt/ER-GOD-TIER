@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { buildChestFacts, catalogItemIndex, matchChests, nearestRegion } from './chestFacts'
+import { buildChestFacts, catalogItemIndex, chestPins, matchChests, nearestRegion } from './chestFacts'
 import type { GraceRegion } from './chestFacts'
+import type { NpcPlacement } from './npcPlacements'
 import type { WorldLot } from './openData'
 
 /** The real open dumps, read straight off disk — not a hand-rolled fixture. */
@@ -20,6 +21,12 @@ const regions: GraceRegion[] = graceXyz.map((r) => ({
   z: r.z,
   region: r.subRegion || r.majorRegion || '',
 }))
+
+const npcPlacements = (
+  JSON.parse(readFileSync(new URL('../../public/sourced/npc-placements.json', import.meta.url), 'utf8')) as {
+    placements: NpcPlacement[]
+  }
+).placements
 
 describe('chest facts (world-lots -> queryable chests)', () => {
   const chests = buildChestFacts(lots, regions)
@@ -98,5 +105,32 @@ describe('matchChests', () => {
 
   it('ignores very short queries', () => {
     expect(matchChests('sh', chests)).toEqual([])
+  })
+})
+
+describe('chest pins (Task 183 §2 — world-lots -> plate percent)', () => {
+  const chests = buildChestFacts(lots, regions)
+  const pins = chestPins(chests, npcPlacements)
+
+  it('projects the anchorable chests onto the plate', () => {
+    expect(pins.length).toBeGreaterThan(2800)
+    expect(pins.every((p) => p.x >= 0 && p.x <= 100 && p.y >= 0 && p.y <= 100)).toBe(true)
+    expect(pins.every((p) => ['overworld', 'underground', 'shadow'].includes(p.world))).toBe(true)
+  })
+
+  it('lands the Stormveil Shabriri Grape chest at the Stormveil pin', () => {
+    const grape = pins.find((p) => p.flag === 10007850)
+    expect(grape).toBeDefined()
+    expect(grape!.map).toBe('m10_00_00_00')
+    expect(grape!.name).toBe('Shabriri Grape')
+    // Godrick's own pin is 29.51 / 61.55 on the same map — same place.
+    expect(grape!.x).toBeCloseTo(28.9, 1)
+    expect(grape!.y).toBeCloseTo(60.82, 1)
+  })
+
+  it('skips a legacy-dungeon map with no NPC anchor', () => {
+    // m30_00_00_00 is not an overworld/shadow tile and no NPC is projected there.
+    expect(npcPlacements.some((p) => p.map === 'm30_00_00_00' && typeof p.px === 'number')).toBe(false)
+    expect(pins.some((p) => p.map === 'm30_00_00_00')).toBe(false)
   })
 })
