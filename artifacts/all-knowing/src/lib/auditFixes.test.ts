@@ -15,6 +15,7 @@ const indexPath = fileURLToPath(new URL('../../public/sourced/entity-index.json'
 const aliasPath = fileURLToPath(new URL('../../public/sourced/aliases.json', import.meta.url))
 const dropsPath = fileURLToPath(new URL('../../public/sourced/open/enemy-drops.json', import.meta.url))
 const wikiWeaponPath = fileURLToPath(new URL('../../public/sourced/open/wiki-db/weapon.json', import.meta.url))
+const nightreignPath = fileURLToPath(new URL('../../public/sourced/open/wiki-db/nightreign.json', import.meta.url))
 const legacyPath = fileURLToPath(new URL('../../src/data/legacy-entity-ids.json', import.meta.url))
 const legacyExceptionsPath = fileURLToPath(new URL('../../src/data/legacy-alias-exceptions.json', import.meta.url))
 
@@ -214,6 +215,80 @@ describe('Task 172 — description hygiene guards', () => {
       })
       .map((record) => `${record.id}: ${record.description}`)
     expect(offenders, offenders.slice(0, 20).join('\n')).toEqual([])
+  })
+})
+
+describe('Task 176 §1 — Nightreign text never describes a base page', () => {
+  /**
+   * `/sourced/open/wiki-db/nightreign.json` is the separate game. Its record
+   * titles, plus the Nightreign-only place names the file is missing (the wiki's
+   * own words: Limveld, the Shifting Earth events, Deep of Night), must never
+   * render in an Elden Ring description.
+   */
+  const nightreignTerms = (() => {
+    const terms = new Set<string>(['Limveld', 'Shifting Earth', 'Deep of Night', 'Everdark'])
+    const nightreign = JSON.parse(readFileSync(nightreignPath, 'utf8')) as { records?: { title?: string }[] }
+    for (const record of nightreign.records ?? []) if (record.title) terms.add(record.title)
+    return [...terms]
+  })()
+
+  it('writes no description naming Nightreign or a Nightreign-only term', () => {
+    const offenders = list
+      .filter((record) => {
+        const description = String(record.description ?? '')
+        if (!description.trim()) return false
+        return nightreignTerms.some((term) => {
+          const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+          return new RegExp(`\\b${escaped}\\b`, 'i').test(description)
+        })
+      })
+      .map((record) => `${record.id}: ${record.description}`)
+    expect(offenders, offenders.slice(0, 20).join('\n')).toEqual([])
+  })
+
+  it('drops the Nightreign prose the audit found on base records', () => {
+    for (const id of [
+      'enemy:rat',
+      'enemy:rat-leyndell',
+      'enemy:rat-siofra-river',
+      'grace:61433800',
+      'grace:61453300',
+      'region:mountaintop-minor-erdtree',
+    ]) {
+      const record = records[id]
+      if (!record) continue
+      const description = String(record.description ?? '')
+      expect(
+        /limveld|shifting earth|crater shifting|deep of night|everdark/i.test(description),
+        `${id} still carries Nightreign text: ${description}`,
+      ).toBe(false)
+    }
+  })
+})
+
+describe('Task 176 §2 — a description comes only from the record’s own page', () => {
+  /**
+   * The examples from the Task 171 audit, Batch A item 4. Each record shared its
+   * name (fuzzily or exactly) with an unrelated wiki page; the fix leaves them
+   * without that page's prose rather than quoting a spell, a boss or a dungeon.
+   */
+  const examples: [string, RegExp][] = [
+    ['grace:200104', /spell|incantation/i],
+    ['grace:130000', /is not an optional boss|Maliketh must/i],
+    ['grace:130001', /Dragonlord Placidusax.*Elden Lord|prehistoric era/i],
+    ['grace:410100', /gaol is|is a dungeon|dungeon in/i],
+    ['enemy:poison-claw-elder-albinauric', /status effect|Poison is a/i],
+    ['enemy:winter-lantern', /crafting material/i],
+    ['enemy:flying-dragon-small', /Agheel/i],
+  ]
+
+  it('never quotes another page for those records', () => {
+    for (const [id, otherPage] of examples) {
+      const record = records[id]
+      expect(record, `${id} is missing`).toBeTruthy()
+      const description = String(record.description ?? '')
+      expect(otherPage.test(description), `${id} carries another page's prose: ${description}`).toBe(false)
+    }
   })
 })
 
