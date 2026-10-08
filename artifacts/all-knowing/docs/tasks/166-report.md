@@ -218,4 +218,4 @@ shows a reason:
 - [x] Tests added/adjusted for every task; commits labelled `Task 166 #N`.
 - [x] Final gates run once; report written.
 
-ALL ITEMS DONE
+(pending gate fix)

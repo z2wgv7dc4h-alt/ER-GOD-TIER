@@ -8,3 +8,12 @@ For each task: make the change, add/adjust tests that prove it, commit (`Task 16
 While working: touched tests + `npx tsc -b`. At the end ONCE: full `npx vitest run`, `npm run lint`,
 `npm run build`, `npm run test:bundle`, `npm run audit:pages`. Report `docs/tasks/166-report.md`
 (print it): per task what changed and how a phone user sees it, ASSUMPTIONS, anything skipped and why.
+
+## FIX (added by Claude after the gates)
+Gates on the merge with master fail: `src/lib/inferenceAudit.test.ts > inference audit likely keys >
+every likely key is a real catalog edge`. Your inference changes removed/renamed edges that
+`src/lib/inferenceAudit.ts` still lists as "likely". Update that list to the current catalog edges (or
+remove entries whose edge you deliberately deleted, saying which in the report) — do not loosen the test.
+Merge master first (`git merge --no-edit master`; for conflicts in public/sourced/entity-index.json take
+master's copy and run `npm run index:entities`). Run that test + full `npx vitest run`, commit, update the
+report checklist, ALL ITEMS DONE.
