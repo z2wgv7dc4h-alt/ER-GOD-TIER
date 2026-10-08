@@ -5,8 +5,9 @@ import { wikiPageForEntity, type WikiCorpusPage, type WikiPageMeta } from '../li
 
 /**
  * Task 133 §2 — the Wiki tab: the entity's full wiki page as collapsible
- * sections, with cross-links rendered as EntityLinks and a source link. Loaded
- * lazily from the exported corpus; the service worker caches the chunks.
+ * sections, with cross-links rendered as EntityLinks. Loaded lazily from the
+ * exported corpus; the service worker caches the chunks. Task 181: the sections
+ * are the content, so no outbound wiki chip is rendered.
  */
 export function WikiTab({ entityId }: { entityId: string }) {
   const [state, setState] = useState<
@@ -39,11 +40,6 @@ export function WikiTab({ entityId }: { entityId: string }) {
     <div className="wiki-tab">
       <div className="wiki-tab-head">
         <div className="kicker">{page.kind} · {page.sections.length} sections</div>
-        {page.url && (
-          <a className="chip" href={page.url} target="_blank" rel="noreferrer noopener">
-            Open on the wiki ↗
-          </a>
-        )}
       </div>
       {page.sections.length === 0 && <p className="note">This wiki page has no section prose.</p>}
       {page.sections.map((section, index) => (

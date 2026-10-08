@@ -233,12 +233,11 @@ export function GuidesSection({ query, preloaded, browse = false }: { query: str
           <article className="card" key={g.page + ':' + g.heading + ':' + i}>
             <div className="kicker">{g.page} · {g.heading}</div>
             <p className="note"><WikiText text={g.text.slice(0, 600)} /></p>
-            {g.url && (
-              <p className="note">
-                <a className="ext" href={g.url} target="_blank" rel="noreferrer noopener">
-                  Open full guide
-                </a>
-              </p>
+            {g.text.length > 600 && (
+              <details className="kit-sources">
+                <summary>Open full guide</summary>
+                <p className="note"><WikiText text={g.text} /></p>
+              </details>
             )}
           </article>
         ))}
@@ -250,9 +249,10 @@ export function GuidesSection({ query, preloaded, browse = false }: { query: str
 
 /**
  * Task 165 §10 — "Guides for this …" cross-links. A boss, area or map pin names
- * a query; the matching Fextralife excerpts open in a new tab (the stored `url`)
- * and a chip jumps to Library › Guides with the same query. Nothing is invented:
- * only excerpts already in the scraped corpus are listed.
+ * a query; the matching Fextralife excerpts expand in place (Task 181: the stored
+ * text, not an outbound wiki link) and a chip jumps to Library › Guides with the
+ * same query. Nothing is invented: only excerpts already in the scraped corpus
+ * are listed.
  */
 export function GuidesFor({ query, heading, limit = 3 }: { query?: string; heading: string; limit?: number }) {
   const w = useWorkspaceOptional()
@@ -276,8 +276,10 @@ export function GuidesFor({ query, heading, limit = 3 }: { query?: string; headi
         <ul className="area-list">
           {hits.map((g, i) => (
             <li key={`${g.page}:${g.heading}:${i}`}>
-              <a href={g.url} target="_blank" rel="noreferrer noopener">{g.heading}</a>
-              {g.page ? <span className="note"> · {g.page}</span> : null}
+              <details className="kit-sources">
+                <summary>{g.heading}{g.page ? ` · ${g.page}` : ''}</summary>
+                <p className="note"><WikiText text={g.text} /></p>
+              </details>
             </li>
           ))}
         </ul>

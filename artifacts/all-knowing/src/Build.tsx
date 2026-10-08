@@ -13,7 +13,9 @@ import { RespecAdvisor } from './RespecAdvisor'
 import { UpgradeAdvisor } from './UpgradeAdvisor'
 import { applyFacts } from './lib/infer'
 import { buildHunt } from './lib/buildHunt'
-import { loadMetaBuilds, metaPageViews, type MetaBuilds } from './lib/metaBuilds'
+import { loadMetaBuilds, type MetaBuilds } from './lib/metaBuilds'
+import { loadGuides } from './lib/guides'
+import { WikiText } from './WikiText'
 import { useCoords } from './lib/coords'
 import { toggleWatch, watchlistOf } from './lib/leftovers'
 import { attackRatingForSlot, loadWeapons } from './lib/ar'
@@ -163,8 +165,8 @@ function KitGroup({
 
 /**
  * Task 164 §8 — the scraped Fextralife build/status pages, which were loaded by
- * `metaBuilds.ts` but rendered nowhere. We show the page title, its link and its
- * headings; the body stays on Fextralife rather than being copied in.
+ * `metaBuilds.ts` but rendered nowhere. Task 181: the body is on disk, so it is
+ * rendered in-app (headings + stored prose) rather than linking out to the wiki.
  */
 function MetaBuildsCard() {
   const [doc, setDoc] = useState<MetaBuilds | null>(null)
@@ -180,25 +182,70 @@ function MetaBuildsCard() {
     return <p className="note" style={{ marginTop: 8 }}>Fextralife meta unavailable ({error}). Nothing shown rather than guessed.</p>
   }
   if (!doc) return <p className="note" style={{ marginTop: 8 }}>Loading Fextralife meta builds…</p>
-  const views = metaPageViews(doc)
+  const pages = doc.pages.filter((p) => p.sections.length > 0)
   return (
     <>
       <p className="note" style={{ marginTop: 8 }}>
-        Fextralife build and status pages. Headings only; follow the link to read the page.
+        Stored Fextralife build and status pages, read here. Source: Fextralife (scraped offline).
       </p>
       <ul className="list" style={{ marginTop: 8 }}>
-        {views.map((p) => (
+        {pages.map((p) => (
           <li key={p.slug} style={{ display: 'block', cursor: 'default' }}>
-            <a href={p.url} target="_blank" rel="noreferrer">{p.title}</a>
-            {p.headings.length > 0 && (
-              <p className="note" style={{ margin: '4px 0 0' }}>
-                {p.headings.slice(0, 6).join(' · ')}
-                {p.headings.length > 6 ? ` · +${p.headings.length - 6} more` : ''}
-              </p>
-            )}
+            <div className="kicker" style={{ marginTop: 6 }}>{p.title}</div>
+            {p.sections.map((s, i) => (
+              <details className="kit-sources" key={`${s.heading}-${i}`}>
+                <summary>{s.heading || `Section ${i + 1}`}</summary>
+                <p className="note"><WikiText text={s.text} /></p>
+              </details>
+            ))}
           </li>
         ))}
       </ul>
+    </>
+  )
+}
+
+type StoredPage = { title: string; sections: { heading: string; text: string }[] }
+
+/**
+ * Task 181 §5 — the old PvP "Sources" block linked out to four Fextralife pages
+ * whose prose is already in the offline scrape. This looks the topics up in the
+ * stored guides/builds corpora and renders the matching page body in place. A
+ * topic with no on-disk page simply renders nothing (reported, not linked).
+ */
+function StoredSources({ topics }: { topics: { label: string; match: RegExp }[] }) {
+  const [pages, setPages] = useState<StoredPage[] | null>(null)
+  useEffect(() => {
+    let cancelled = false
+    void Promise.all([loadMetaBuilds(), loadGuides()])
+      .then(([builds, guides]) => {
+        if (cancelled) return
+        setPages([
+          ...builds.pages.map((p) => ({ title: p.title, sections: p.sections })),
+          ...guides.pages.map((p) => ({ title: p.title, sections: p.sections })),
+        ])
+      })
+      .catch(() => { if (!cancelled) setPages([]) })
+    return () => { cancelled = true }
+  }, [])
+  if (!pages) return <p className="note">Loading stored source pages…</p>
+  const rows = topics
+    .map((t) => ({ label: t.label, page: pages.find((p) => t.match.test(p.title)) }))
+    .filter((r): r is { label: string; page: StoredPage } => Boolean(r.page))
+  if (rows.length === 0) return <p className="note">No stored source page for these topics.</p>
+  return (
+    <>
+      {rows.map((r) => (
+        <details className="kit-sources" key={r.label}>
+          <summary>{r.label}</summary>
+          {r.page.sections.map((s, i) => (
+            <div key={`${s.heading}-${i}`}>
+              {s.heading && <div className="kicker">{s.heading}</div>}
+              <p className="note"><WikiText text={s.text} /></p>
+            </div>
+          ))}
+        </details>
+      ))}
     </>
   )
 }
@@ -282,31 +329,15 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'calc' | 'pvp' }) {
             <p className="note">
               Invade and duel builds for RL30–150, filterable by mode and level (default: your level).
             </p>
-            <details className="kit-sources">
-              <summary>Sources</summary>
-              <ul className="list">
-                <li>
-                  <a href="https://eldenring.wiki.fextralife.com/PvP_Builds" target="_blank" rel="noreferrer">
-                    PvP Builds index
-                  </a>
-                </li>
-                <li>
-                  <a href="https://eldenring.wiki.fextralife.com/PvP" target="_blank" rel="noreferrer">
-                    PvP rules &amp; status scaling
-                  </a>
-                </li>
-                <li>
-                  <a href="https://eldenring.wiki.fextralife.com/Poise" target="_blank" rel="noreferrer">
-                    Poise breakpoints
-                  </a>
-                </li>
-                <li>
-                  <a href="https://eldenring.wiki.fextralife.com/Patch+Notes" target="_blank" rel="noreferrer">
-                    Patch notes (1.17)
-                  </a>
-                </li>
-              </ul>
-            </details>
+            <div style={{ marginTop: 8 }}>
+              <p className="note">Sources read from the stored offline corpus (Fextralife):</p>
+              <StoredSources
+                topics={[
+                  { label: 'PvP Builds', match: /PvP Builds/i },
+                  { label: 'Status scaling', match: /Status Effects/i },
+                ]}
+              />
+            </div>
             <PvpBuildPanel
               character={character}
               setCharacter={setCharacter}

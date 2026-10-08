@@ -294,16 +294,26 @@ export function BossFacts({
         )}
       </div>
 
-      {/* §2 block 3 — strategy, then the cross-link into the Guides corpus. */}
-      {(strategy || enrichedStrategy) && (
+      {/* §2 block 3 — strategy, then the full stored Fextralife sections.
+          Task 181: the scraped page body is on disk, so render it in-app
+          instead of linking out to the wiki. */}
+      {(strategy || enrichedStrategy || fext?.sections?.length) && (
         <div className="lib-panel-block">
           <div className="kicker">Strategy · {strategy?.heading ?? 'Guide'}</div>
-          <p className="note">{strategy?.text ?? enrichedStrategy}</p>
-          {fext?.url && (
-            <p className="note">
-              <a className="ext" href={fext.url} target="_blank" rel="noreferrer">Full fight guide</a>
-            </p>
+          {(strategy?.text || enrichedStrategy) && (
+            <p className="note">{strategy?.text ?? enrichedStrategy}</p>
           )}
+          {fext?.sections?.length ? (
+            <details className="kit-sources">
+              <summary>Full fight guide · {fext.sections.length} sections</summary>
+              {fext.sections.map((s, i) => (
+                <div key={`${s.heading}-${i}`}>
+                  {s.heading && <div className="kicker">{s.heading}</div>}
+                  <p className="note"><WikiText text={s.text} /></p>
+                </div>
+              ))}
+            </details>
+          ) : null}
         </div>
       )}
 
