@@ -39,7 +39,11 @@ and every entity-graph id the app can link to.
 | gate | 10 | 10 | 0 | 0 | 0 | 10 | 0 | 0 | 0 | 0 |
 | ending | 5 | 5 | 0 | 0 | 0 | 5 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+<<<<<<< HEAD
 | **total** | **5594** | **1832** | 0 | 0 | 0 | 1716 | 1099 | 0 | 0 | 0 |
+=======
+| **total** | **5621** | **1859** | 0 | 0 | 0 | 1716 | 1127 | 0 | 0 | 0 |
+>>>>>>> master
 
 ## After
 
@@ -66,7 +70,11 @@ and every entity-graph id the app can link to.
 | gate | 10 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | ending | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+<<<<<<< HEAD
 | **total** | **5598** | **0** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+=======
+| **total** | **5625** | **0** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+>>>>>>> master
 
 Task 144 removed **1832** flagged pages
 (empty, raw ids, bad casing, generic status, wrong actions, wiki nav, junk rows, boss filed as NPC).

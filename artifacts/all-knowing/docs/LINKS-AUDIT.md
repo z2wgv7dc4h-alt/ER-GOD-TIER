@@ -61,12 +61,21 @@ All guard minimums met.
 
 | kind | entities | source | drops | location | contents | region | stock | boss | trades |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+<<<<<<< HEAD
 | armor | 751 | 86.7% | · | · | · | · | · | · | · |
 | ash | 125 | 80% | · | · | · | · | · | · | · |
 | boss | 296 | · | 97.3% | 99% | · | · | · | · | · |
 | dungeon | 119 | · | · | · | 87.4% | · | · | · | · |
 | grace | 417 | · | · | · | · | 99.3% | · | · | · |
 | item | 1186 | 76.4% | · | · | · | · | · | · | · |
+=======
+| armor | 751 | 86.6% | · | · | · | · | · | · | · |
+| ash | 125 | 79.2% | · | · | · | · | · | · | · |
+| boss | 295 | · | 96.9% | 98.3% | · | · | · | · | · |
+| dungeon | 119 | · | · | · | 84.9% | · | · | · | · |
+| grace | 417 | · | · | · | · | 96.9% | · | · | · |
+| item | 1186 | 76.3% | · | · | · | · | · | · | · |
+>>>>>>> master
 | material | 3 | 100% | · | · | · | · | · | · | · |
 | merchant | 79 | · | · | · | · | · | 100% | · | · |
 | npc | 188 | · | · | 78.7% | · | · | · | · | · |
@@ -87,7 +96,11 @@ the links a plain renderer still owes.
 
 | surface | linkable | unlinked before | unlinked after |
 | --- | --- | --- | --- |
+<<<<<<< HEAD
 | entity descriptions | 790 | 0 | 0 |
+=======
+| entity descriptions | 769 | 0 | 0 |
+>>>>>>> master
 | wiki sections | 1681 | 0 | 0 |
 | acquisition text | 1579 | 0 | 0 |
 | quest step actions | 650 | 577 | 0 |

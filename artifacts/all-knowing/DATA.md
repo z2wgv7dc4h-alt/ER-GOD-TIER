@@ -154,11 +154,12 @@ See `docs/history/REVIEW-2026-09.md`.
   maps every `BonfireWarpParam` row to an authored **catalog** grace when no `graces.ts` seed exists
   (`grace:120208` → `grace:night-sacred-ground`). Strict parenthetical-preserving matching makes
   `goods:8175/8176` resolve to `item:haligtree-medallion-left/-right`.
-- **Task 73 warp stubs:** every remaining warp gets a name-derived `grace:{slug}` alias row
-  (`source: 'grace-stub'`) — no catalog fact, no pin, no implications — and an authored id still
-  wins on a collision. Output is now **7120 rows / ~1.3 MB**; **unmatched warps 0/418**, bosses
-  2/209. Engine-backed by catalog prefix: grace 25/25, boss 173/175, item 93/94, invader 22/24. Run
-  twice = byte-identical (the `docs/ALIAS-PLANE.md` table is the live snapshot).
+- **Task 73/160 warp resolution:** every `BonfireWarpParam` warp resolves — to an authored catalog
+  grace where one exists, otherwise to the entity index's own `grace:<warpId>` record — so no
+  synthetic `grace-stub` rows remain (Task 160; 354 ghost rows → 0). An authored id still wins on a
+  collision. Output is now **7,192 rows / ~1.34 MB**; **unmatched warps 0/418**, bosses 2/209.
+  Engine-backed by catalog prefix: grace 25/25, boss 173/175, item 93/94, invader 22/24. Run twice =
+  byte-identical (the `docs/ALIAS-PLANE.md` table is the live snapshot).
   `searchSync("church of elleh")` / `("elleh")` both hit `grace:elleh`; 10k lot ids are not put in
   `searchSync`.
 
