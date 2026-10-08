@@ -1,19 +1,23 @@
 import { useEffect, useState } from 'react'
 import type { MapMarker } from '../types'
+import { loadNpcPlacements, npcCoordPins } from './npcPlacements'
 
 /**
  * Static-plate pins.
  *
- * Two sources, both already projected into the plate's own frame:
+ * Three sources, all already projected into the plate's own frame:
  *   - coords.json    — er-guide lat/lng pins (graces/items), on the Pack 960
  *                      mosaic frame (percent = px / 10496).
  *   - boss-pins.json — bosses, projected with the engine's world->pixel maths.
+ *   - npc-placements.json — talking NPCs; each placement already carries the
+ *                      engine `px/py`, so it joins the same frame (Task 183 §1).
+ *                      "Show on map" then resolves an NPC by name like any pin.
  *
- * `public/sourced/open/world-lots.json` (10k pickup XYZ rows) is deliberately
- * NOT plotted on the static plate. It carries world XYZ only, not percent
- * coords, so drawing it would need a third projection beside the two above —
- * and 10k dots would bury the map. Lot-level detail is the live engine
- * iframe's job. See ARCHITECTURE.md "Two map frames (do not mix)".
+ * `public/sourced/open/world-lots.json` (10k pickup XYZ rows) is still not part
+ * of this seed set: it needs a per-map world->plate affine and 3k dots would
+ * bury the map. Chests are their own opt-in Atlas layer, built by `chestFacts.ts`
+ * and projected with that same affine (Task 183 §2). Live lot detail remains the
+ * engine iframe's job. See ARCHITECTURE.md "Two map frames (do not mix)".
  */
 export type CoordPin = {
   id: string
@@ -35,8 +39,18 @@ export function useCoords() {
     void Promise.all([
       fetch('/sourced/open/coords.json').then((r) => r.json()),
       fetch('/sourced/open/boss-pins.json').then((r) => r.json() as Promise<CoordPin[]>).catch(() => [] as CoordPin[]),
-    ]).then(([list, bosses]) => {
-      cache = [...(list as CoordPin[]), ...bosses]
+      loadNpcPlacements().then((d) => npcCoordPins(d.placements)).catch(() => []),
+    ]).then(([list, bosses, npcs]) => {
+      const npcPins: CoordPin[] = npcs.map((p) => ({
+        id: p.id,
+        name: p.name,
+        kind: p.kind,
+        world: p.world,
+        x: p.x,
+        y: p.y,
+        cat: p.map,
+      }))
+      cache = [...(list as CoordPin[]), ...bosses, ...npcPins]
       setRows(cache)
     })
   }, [])

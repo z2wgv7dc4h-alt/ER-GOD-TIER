@@ -1,8 +1,9 @@
-import { lazy, Suspense, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import type { Remembrance } from '../knowledge/remembrances'
 import { edges, getEntity, status, type EntityKind } from '../lib/entityGraph'
 import { useEnrichment, useEntityIndex } from '../lib/entityEnrich'
 import { encountersOf } from '../lib/bossRoster'
+import { loadNpcPlacements, placementsForName, type NpcPlacement } from '../lib/npcPlacements'
 import type { RemembranceOption } from '../lib/remembranceChoice'
 import type { Verdict } from '../lib/verdict'
 import { Related, RelatedCollapsible } from '../Related'
@@ -148,6 +149,36 @@ function RequirementRow({ attr, value, character }: { attr: AttributeKey; value:
   )
 }
 
+/**
+ * Task 183 §1 — an NPC's known positions, straight from `npc-placements.json`
+ * (MSB coordinates), shown in the where-to-find section. No positions are
+ * invented: when the NPC has no placement the block is omitted and the plain
+ * location text stands.
+ */
+export function NpcPlacementsBlock({ placements }: { placements: NpcPlacement[] }) {
+  if (!placements.length) return null
+  const maps = [...new Set(placements.map((p) => p.map))]
+  return (
+    <div className="lib-panel-block">
+      <div className="kicker">Known positions</div>
+      <p className="note">
+        {placements.length} placement{placements.length === 1 ? '' : 's'} across {maps.length} map{maps.length === 1 ? '' : 's'}.
+      </p>
+      <ul className="lib-req-list">
+        {placements.slice(0, 8).map((p) => (
+          <li key={`${p.map}:${p.x}:${p.z}`} className="lib-req">
+            <span>
+              {p.map}
+              {p.world && p.world !== 'overworld' ? ` · ${p.world}` : ''}
+            </span>
+            <span className="note">{Math.round(p.x)}, {Math.round(p.z)}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 export function EntityPanel({
   entity,
   character,
@@ -171,6 +202,9 @@ export function EntityPanel({
   onImHere,
 }: EntityPanelProps) {
   const [tab, setTab] = useState<Tab>('stats')
+  // Task 183 §1 — the NPC's own MSB placements, loaded only for NPC pages and
+  // only once the where-to-find tab is actually opened.
+  const [placements, setPlacements] = useState<NpcPlacement[] | null>(null)
   const statusFactId = factId ?? entity.factId
   // Task 119 §3: read the enriched record first; skeleton (not "No data") while
   // the one index fetch is still in flight.
@@ -200,6 +234,20 @@ export function EntityPanel({
     if (isBoss && BOSS_LABELS.has(label.toLowerCase())) return false
     return !(entity.stats ?? []).some((s) => s.label.toLowerCase() === label.toLowerCase())
   })
+  // Task 183 §1 — fetch the placement file for an NPC only, and only once the
+  // where tab is open, so a weapon page never pays for the 180 KB file.
+  useEffect(() => {
+    if (!isNpc || tab !== 'where' || placements) return
+    let cancelled = false
+    void loadNpcPlacements()
+      .then((d) => {
+        if (!cancelled) setPlacements(placementsForName(entity.name, d.placements))
+      })
+      .catch(() => { /* no placement file: the block simply does not render */ })
+    return () => {
+      cancelled = true
+    }
+  }, [isNpc, tab, placements, entity.name])
   const recordSections = record?.sections ?? []
   const isOwnedValue = owned ?? isOwned(entity, character)
   const metValue = requirementsMet === undefined ? meetsRequirements(entity, character) : requirementsMet
@@ -463,7 +511,8 @@ export function EntityPanel({
                 {record.map.map ? ` · ${record.map.map}` : ''}
               </p>
             )}
-            {!entity.where && !record?.location && !entity.region && !record?.map && (
+            {isNpc && placements && placements.length > 0 && <NpcPlacementsBlock placements={placements} />}
+            {!entity.where && !record?.location && !entity.region && !record?.map && !(isNpc && placements && placements.length > 0) && (
               indexReady ? (
                 <p className="note">No acquisition text in the data for this entry.</p>
               ) : (
