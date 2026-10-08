@@ -6,7 +6,6 @@ Last updated: 2026-10-08.
 Briefs live in each task's worktree (`ER-MASTER-TOOL-wt/task-<id>/artifacts/all-knowing/docs/tasks/`) until merged.
 | Task | Brief | State |
 |---|---|---|
-| 175 | `175-equipment-photos.md` — equipment photo reading | fix done (equipment 50% → 100%, all 84% → 91%); finishing report (web re-score skipped by owner) |
 | 177 | `177-brief.md` — region/location field hygiene (171 Batch B items 6–8) | running |
 
 ## Merged recently (master)
@@ -18,7 +17,7 @@ layout · 165 bosses/guides/Now layout · 166 inference fixes + new PS5 inferenc
 map grace recall 75–88% · 168 offline Gideon 40% → 84% correct · 169 docs accuracy pass · 170 player
 knowledge corpus (5,718 Reddit rows, raw, not wired in) · 171 batch audit · 172 template/garbled
 descriptions → 0 · 173 link gaps (orphans, drop names, Haligtree cycle, merchant kinds) · 174 docs + Help
-drift · 176 Nightreign + cross-page description contamination removed.
+drift · 175 equipment photos 50% → 100% (fixture overall 91%) · 176 Nightreign + cross-page description contamination removed.
 
 ## Next (proposed to the owner, not yet approved unless noted)
 1. **Owner's real phone session on PS5** once 175/177 land — the most valuable next step.
