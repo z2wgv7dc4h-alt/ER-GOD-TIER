@@ -13,6 +13,7 @@
     "test": "vitest run",
     "test:bundle": "npm run build && vitest run src/lib/bundleBudget.test.ts",
     "test:ocr": "vitest run --config vitest.ocr.config.ts",
+    "eval:photos": "node scripts/photo-eval.mjs",
     "audit:ui": "node scripts/ui-audit.mjs",
     "audit:inference": "node scripts/inference-audit.mjs",
     "audit:pages": "node scripts/page-audit.mjs",
