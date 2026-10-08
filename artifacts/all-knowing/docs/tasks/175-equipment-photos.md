@@ -13,3 +13,10 @@ missed), equipment-picker 1/3; inventory 76%; status 100%.
    angle, glare, moire.
 3. Re-score fixture set AND the web self-consistency set (`--web`); report before/after per screen;
    nothing else may get worse. Gates once at the end.
+
+## Note from Claude (the web re-score was killed twice)
+The `--web` re-score of ~150 photos takes over 20 minutes with no output, so the supervisor treats the
+run as stalled. Run it so it writes progress into the worktree, e.g.
+`npm run eval:photos -- --web 2>&1 | tee .scratch/175/web-progress.txt` (one line per photo). The
+fixture results are already committed (equipment 50% → 100%, overall 84% → 91%); finish the report with
+the web numbers, checklist, ALL ITEMS DONE.
