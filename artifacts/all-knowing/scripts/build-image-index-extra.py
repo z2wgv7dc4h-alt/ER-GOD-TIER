@@ -218,6 +218,26 @@ def crop_place(record, out_dir):
     return rel
 
 
+def prune_ambiguous_names(extra, records):
+    """Drop a name key the UI would resolve across two different planes.
+
+    The picture plane is keyed by name, so if a creature and a place share a
+    name the UI cannot tell them apart. Empty beats wrong: keep the per-record
+    `ids` mapping but remove the ambiguous name key.
+    """
+    creature = {"enemy", "npc", "merchant", "quest", "boss"}
+    place = {"grace", "region"}
+    kinds_by_name = defaultdict(set)
+    for record in records.values():
+        key = norm(record["name"])
+        if key:
+            kinds_by_name[key].add(record.get("kind"))
+    dropped = [key for key in extra["names"] if (kinds_by_name[key] & creature) and (kinds_by_name[key] & place)]
+    for key in dropped:
+        del extra["names"][key]
+    return dropped
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--check", action="store_true", help="print coverage, write nothing")
@@ -279,6 +299,10 @@ def main():
         if key and key not in base_index:
             extra["names"].setdefault(key, rel)
         counts[kind] += 1
+
+    dropped = prune_ambiguous_names(extra, records)
+    if dropped:
+        skipped["ambiguous-name"] = len(dropped)
 
     if args.check:
         for kind in ("enemy", "npc", "grace", "region", "merchant", "quest"):
