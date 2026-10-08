@@ -20,3 +20,8 @@ run as stalled. Run it so it writes progress into the worktree, e.g.
 `npm run eval:photos -- --web 2>&1 | tee .scratch/175/web-progress.txt` (one line per photo). The
 fixture results are already committed (equipment 50% → 100%, overall 84% → 91%); finish the report with
 the web numbers, checklist, ALL ITEMS DONE.
+
+## Owner decision (overrides item 3's web part)
+SKIP the `--web` re-score entirely (owner decision: too slow, fixture results suffice). Finish now: report
+with the fixture before/after (equipment 50% → 100%, overall 84% → 91%, nothing worse), mark the web part
+`[ ] not done — skipped by owner decision`, checklist, ALL ITEMS DONE.
