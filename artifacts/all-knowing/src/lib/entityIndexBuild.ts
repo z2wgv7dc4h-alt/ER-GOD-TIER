@@ -255,8 +255,31 @@ function baseNorm(value: unknown): string {
   return simpleNorm(stripParens(String(value ?? ''))).replace(/^the /, '').replace(/\s+/g, ' ').trim()
 }
 
+/**
+ * Task 172 — the generic half of a split item and its specific half share one
+ * catalog fact id. A source row named after a half ("Dectus Medallion (right)")
+ * used to rename the generic record, leaving two same-kind records with one
+ * display name. The record keeps its catalog fact's own name instead.
+ */
+const MEDALLION_HALF_FACTS = new Set(['item:dusk-medallion', 'item:haligtree-secret-medallion'])
+
 function tokens(value: string): string[] {
   return possNorm(stripParens(value)).split(' ').filter(Boolean)
+}
+
+/** Whole tokens including any parenthetical qualifier ("Flying Dragon (Small)"). */
+function fullTokens(value: string): string[] {
+  return simpleNorm(value).split(' ').filter(Boolean)
+}
+
+/** True when `small` appears as a contiguous run of whole tokens in `large`. */
+function containsSequence(large: string[], small: string[]): boolean {
+  if (!small.length || small.length > large.length) return false
+  outer: for (let i = 0; i + small.length <= large.length; i++) {
+    for (let j = 0; j < small.length; j++) if (large[i + j] !== small[j]) continue outer
+    return true
+  }
+  return false
 }
 
 function jaccard(a: string, b: string): number {
@@ -667,6 +690,36 @@ for (const row of ((recipesDoc as { recipes?: RecipeRow[] }).recipes ?? [])) {
   if (key && !recipeByItem.has(key)) recipeByItem.set(key, row)
 }
 
+/**
+ * Task 172 — a bare place *type* ("Church", "Shack", "Subregion", "grace") is
+ * never a location; the name already carries the type and `region` carries the
+ * parent. The wiki's `stats.Type` used to be stored verbatim as `location`.
+ */
+const BARE_PLACE_TYPE =
+  /^(?:church|shack|village|tower|rise|fort|subregion|grace|site of grace|sites of grace|ruins?|cave|tunnel|catacombs?|mausoleum|evergaol|capital|manor|castle|town|city|bridge|gate|mine|gaol|keep|palace|academy|dungeon|well|square|grounds|region|location|area)$/i
+
+/**
+ * Task 172 — the acquisition dump often stores the whole wiki paragraph in
+ * `location` (`"**Location**: Shadow Keep\n- The … is a found in …"`). Keep only
+ * the real place: prefer the concise `near` field, else the text after a
+ * `Location:`/`Loot:`/`Guaranteed Drop:`/`Dragon Communion:` label, else the
+ * first line. A sentence or a bullet is prose, never a place.
+ */
+function cleanAcquisitionPlace(location: unknown, near: unknown): string | undefined {
+  const nearText = String(near ?? '').trim()
+  if (nearText) return nearText
+  let text = String(location ?? '').trim()
+  if (!text) return undefined
+  text = text.replace(/\*+/g, '')
+  const match = /^(?:loot|location|obtained|guaranteed drop|dragon communion|reward|source|drop)\s*[:：]\s*([^\n]+)/i.exec(text)
+  const first = (match ? match[1] : text.split(/\r?\n/)[0]).replace(/^[-*•\s]+/, '').trim()
+  if (!first) return undefined
+  if (/^merchant$/i.test(first) || BARE_PLACE_TYPE.test(first)) return undefined
+  if (first.length > 48 || /[.!?]\s*$/.test(first)) return undefined
+  if (/^(?:the|a|an|about|acquired|found|dropped|it |this )/i.test(first)) return undefined
+  return first
+}
+
 /** A location for an item-like row, or undefined when no dataset carries one. */
 function itemLocationFallback(name: string): string | undefined {
   // Ashes are named "X" by the FanAPI/Library but "Ash of War: X" by the
@@ -683,7 +736,7 @@ function itemLocationFallback(name: string): string | undefined {
   }
   for (const candidate of candidates) {
     const acq = acqFuzzy(candidate)
-    const acqText = acq?.location ?? acq?.near
+    const acqText = acq ? cleanAcquisitionPlace(acq.location, acq.near) : undefined
     if (acqText) return acqText
     const key = simpleNorm(candidate)
     const vendor = shopsByItem.get(key) ?? merchantVendorByItem.get(key)
@@ -698,7 +751,7 @@ function itemLocationFallback(name: string): string | undefined {
   // Oleg") while the catalogue appends a suffix ("… Ashes"). Accept a prefix.
   for (const candidate of candidates) {
     const acq = acqPrefix(candidate)
-    const acqText = acq?.location ?? acq?.near
+    const acqText = acq ? cleanAcquisitionPlace(acq.location, acq.near) : undefined
     if (acqText) return acqText
   }
   return undefined
@@ -757,12 +810,51 @@ function creatureLead(name: string): string | undefined {
   return lookupName(creatureDescriptionByName, name)
 }
 
+/**
+ * Task 172 — a short list of common type words that must never capture a longer
+ * place name. A page literally titled "Ruins" (a generic wiki type page) must not
+ * become the description of "Seaside Ruins".
+ */
+const GENERIC_PAGE_TOKENS = new Set([
+  'ruin', 'ruins', 'grace', 'cave', 'catacomb', 'catacombs', 'tower', 'fort', 'church',
+  'shack', 'village', 'rise', 'town', 'mausoleum', 'bridge', 'camp', 'gate', 'tunnel',
+  'mine', 'castle', 'manor', 'academy', 'palace', 'keep', 'gaol', 'dungeon', 'capital',
+  'city', 'well', 'square', 'grounds', 'area', 'region', 'location', 'crater', 'grave',
+  // status effects / stats: a page titled after one must never describe a creature
+  // whose name merely begins with it ("Poison" for "Poison Claw Elder Albinauric").
+  'poison', 'scarlet', 'rot', 'bleed', 'sleep', 'madness', 'death', 'frost', 'freeze',
+  'curse', 'status', 'effect', 'damage', 'resistance', 'immunity', 'robustness',
+  'vitality', 'focus', 'stamina', 'fire', 'flame', 'lightning', 'magic', 'holy',
+])
+
+/**
+ * Task 172 — the wiki's page for `name`, restricted to pages that really are the
+ * same thing. The old fuzzy pass matched any substring ("Rat" -> "Crater",
+ * "Spiral Rise" -> "Spira") and any superset ("Flying Dragon (Small)" -> "Flying
+ * Dragon Agheel"), leaking another page's prose onto the record. A page now has
+ * to be an exact (depluralised/possessive) title, or a whole-token subset of the
+ * record name ("Vyke" for "Festering Fingerprint Vyke"), and never a generic
+ * type page or a Nightreign page.
+ */
 function lookupWiki(name: string): WikiSection[] | undefined {
   const direct = lookupName(wikiByPage, name)
-  if (direct) return direct
+  if (direct && !nightreignPageTitles.has(direct[0]?.page ?? '')) return direct
+  // Typo/word-order tolerance. The containment branch is token-wise, not a raw
+  // character substring: "Abductor Virgin" may describe "Abductor Virgin Both",
+  // but "Rat" must not match "Crater" and "Spira" must not match "Spiral Rise".
+  const na = baseNorm(name)
+  const tokenA = fullTokens(name)
+  const hasQualifier = /\([^)]*\)/.test(name)
   let best: WikiSection[] | undefined
   let bestScore = 0.92
   for (const [key, rows] of wikiByPage) {
+    if (nightreignPageTitles.has(rows[0]?.page ?? '')) continue
+    const nb = baseNorm(key)
+    if (!na || !nb || GENERIC_PAGE_TOKENS.has(nb)) continue
+    // A record with a parenthetical qualifier ("Flying Dragon (Small)") must not
+    // fall through to the longer base page ("Flying Dragon Agheel"): the
+    // qualifier names a different thing, not a spelling of the page title.
+    if (hasQualifier && nb.length > na.length && nb.startsWith(na)) continue
     const score = similarity(name, key)
     if (score > bestScore) {
       bestScore = score
@@ -771,11 +863,13 @@ function lookupWiki(name: string): WikiSection[] | undefined {
   }
   if (best) return best
   // Task 124 §1 — a distinctive single-token page ("Vyke") matches a longer
-  // source name that contains it ("Festering Fingerprint Vyke").
-  const wanted = new Set(tokens(name))
+  // source name that contains it ("Festering Fingerprint Vyke"). Generic type
+  // or status words never qualify.
+  const wanted = new Set(tokenA)
   for (const [key, rows] of wikiByPage) {
-    const keyTokens = tokens(key)
-    if (keyTokens.length !== 1 || keyTokens[0].length < 4 || !wanted.has(keyTokens[0])) continue
+    if (nightreignPageTitles.has(rows[0]?.page ?? '')) continue
+    const keyTokens = fullTokens(key)
+    if (keyTokens.length !== 1 || keyTokens[0].length < 4 || GENERIC_PAGE_TOKENS.has(keyTokens[0]) || !wanted.has(keyTokens[0])) continue
     return rows
   }
   return undefined
@@ -834,6 +928,64 @@ for (const section of wikiDoc.sections as WikiSection[]) {
     list.push(section)
     wikiByPage.set(key, list)
   }
+}
+
+/**
+ * Task 172 — pages that are *only* about Elden Ring: Nightreign. A page whose
+ * Summary names Nightreign but no base game ("Limveld", "Crater", "Mountaintop")
+ * carries another game's prose and must never render on an Elden Ring page.
+ */
+const nightreignPageTitles = new Set<string>()
+{
+  const summaryByPage = new Map<string, string>()
+  for (const section of wikiDoc.sections as WikiSection[]) {
+    if (!/summary/i.test(section.heading)) continue
+    summaryByPage.set(section.page, `${summaryByPage.get(section.page) ?? ''} ${section.text ?? ''}`)
+  }
+  for (const [page, summary] of summaryByPage) {
+    if (!/nightreign/i.test(summary)) continue
+    if (/elden ring/i.test(summary.replace(/elden ring nightreign/gi, ''))) continue
+    nightreignPageTitles.add(page)
+  }
+}
+
+/** Task 172 — the wiki-db kind of each page, so a description stays on its kind. */
+const wikiPageKind = new Map<string, string>()
+for (const [doc, kind] of [
+  [wikiBossDoc, 'boss'],
+  [wikiEnemyDoc, 'enemy'],
+  [wikiNpcDoc, 'npc'],
+  [wikiLocationDoc, 'location'],
+  [wikiRegionDoc, 'region'],
+  [wikiDungeonDoc, 'dungeon'],
+  [wikiItemDoc, 'item'],
+  [wikiWeaponDoc, 'weapon'],
+  [wikiArmorDoc, 'armor'],
+  [wikiSpellDoc, 'spell'],
+  [wikiTalismanDoc, 'talisman'],
+  [wikiAshDoc, 'ash'],
+  [wikiSpiritDoc, 'spirit'],
+] as [unknown, string][]) {
+  for (const rec of ((doc as { records?: { title?: string }[] }).records ?? [])) {
+    const key = simpleNorm(rec.title)
+    if (key && !wikiPageKind.has(key)) wikiPageKind.set(key, kind)
+  }
+}
+
+/**
+ * Task 172 — a wiki page may only describe a record of a compatible kind. A
+ * grace is not a boss page, a spell or a dungeon just because it shares a name;
+ * place pages can describe neighbouring place kinds.
+ */
+function descriptionKindCompatible(recordKind: string, wikiKind: string): boolean {
+  if (recordKind === wikiKind) return true
+  // A creature's wiki page may be classified boss, enemy or character; a person's
+  // page as character or shopkeeper.
+  if ((recordKind === 'enemy' || recordKind === 'boss') && (wikiKind === 'enemy' || wikiKind === 'boss' || wikiKind === 'npc')) return true
+  if ((recordKind === 'npc' || recordKind === 'merchant') && (wikiKind === 'npc' || wikiKind === 'merchant' || wikiKind === 'location')) return true
+  const placeRecord = recordKind === 'region' || recordKind === 'grace' || recordKind === 'dungeon'
+  const placeWiki = wikiKind === 'location' || wikiKind === 'region'
+  return placeRecord && placeWiki
 }
 
 const regRows = new Map<string, RegWeapon[]>()
@@ -1738,6 +1890,7 @@ function plausibleWikiLead(text: string): boolean {
   if (t.length < 20) return false
   if (/[{}]/.test(t) || /^\s*[|,;:]/.test(t) || /\s=\s/.test(t)) return false
   if (/^[a-z]{1,3},/i.test(t)) return false
+  if (/^(?:variants?|armaments?|drops?|location|loot|obtained|effects?)\s*[:：]/i.test(t)) return false
   return true
 }
 
@@ -1773,26 +1926,26 @@ function repairWikiLead(text: string, name: string): string {
 /** The message a subjectless wiki lead is missing ("… is/are …"). */
 const SUBJECTLESS_DESC = /^(?:is|are|was|were|has|have)\b/i
 
-/** One best wiki lead per page title, from every classified wiki-db kind. */
-function buildWikiDescriptionMap(): Map<string, string> {
-  const docs: unknown[] = [
-    wikiBossDoc,
-    wikiEnemyDoc,
-    wikiNpcDoc,
-    wikiLocationDoc,
-    wikiRegionDoc,
-    wikiSkillDoc,
-    wikiDungeonDoc,
-    wikiItemDoc,
-    wikiWeaponDoc,
-    wikiArmorDoc,
-    wikiSpellDoc,
-    wikiTalismanDoc,
-    wikiAshDoc,
-    wikiSpiritDoc,
+/** One best wiki lead per page title, with the page kind for compatibility. */
+function buildWikiDescriptionMap(): Map<string, { text: string; kind: string }> {
+  const docs: [unknown, string][] = [
+    [wikiBossDoc, 'boss'],
+    [wikiEnemyDoc, 'enemy'],
+    [wikiNpcDoc, 'npc'],
+    [wikiLocationDoc, 'location'],
+    [wikiRegionDoc, 'region'],
+    [wikiSkillDoc, 'item'],
+    [wikiDungeonDoc, 'dungeon'],
+    [wikiItemDoc, 'item'],
+    [wikiWeaponDoc, 'weapon'],
+    [wikiArmorDoc, 'armor'],
+    [wikiSpellDoc, 'spell'],
+    [wikiTalismanDoc, 'talisman'],
+    [wikiAshDoc, 'ash'],
+    [wikiSpiritDoc, 'spirit'],
   ]
-  const map = new Map<string, string>()
-  for (const doc of docs) {
+  const map = new Map<string, { text: string; kind: string }>()
+  for (const [doc, kind] of docs) {
     for (const rec of wikiRecords(doc)) {
       const description = (rec.description ?? '').trim()
       if (!plausibleWikiLead(description)) continue
@@ -1800,7 +1953,7 @@ function buildWikiDescriptionMap(): Map<string, string> {
         const key = simpleNorm(title)
         if (!key) continue
         const current = map.get(key)
-        if (!current || description.length > current.length) map.set(key, description)
+        if (!current || description.length > current.text.length) map.set(key, { text: description, kind })
       }
     }
   }
@@ -2357,13 +2510,13 @@ function mergeAcquisitionItems(): void {
     const id = catalogueIdFor('item', row.name)
     const existing = records.get(id)
     if (existing) {
-      setText(existing, 'location', row.location ?? row.near)
+      setText(existing, 'location', cleanAcquisitionPlace(row.location, row.near))
       continue
     }
     const record = ensure(id, 'item', correctName(row.name))
     record.catalogue = false
     setText(record, 'description', row.method)
-    setText(record, 'location', row.location ?? row.near)
+    setText(record, 'location', cleanAcquisitionPlace(row.location, row.near))
     source(record, 'acquisition')
   }
 }
@@ -2842,10 +2995,13 @@ function cleanupFmgDuplicates(): void {
     if (keeper && keeper.id !== id) {
       addName(record.name, keeper.id)
       records.delete(id)
-    } else if (record.kind === 'region' || !record.catalogue) {
+    } else if (record.kind === 'region') {
+      records.delete(id)
+    } else if (!record.catalogue && !lookupName(wikiByPage, record.name)) {
       // Task 160 #14 — an empty FMG name row with no real counterpart and no
       // catalogue anchor renders a page whose every section is empty; keep it
-      // out of the index rather than ship a no-data page.
+      // out of the index rather than ship a no-data page. Task 172 — a row with
+      // a wiki page (an emote) is real and is enriched later, so keep it.
       records.delete(id)
     }
   }
@@ -3091,14 +3247,46 @@ function restoreLineImages(): void {
  */
 const TEMPLATE_DESC = /in Elden Ring\.|a melee armament/i
 
-/** Keep every sentence of `text` except the template ones, in order. */
+/**
+ * Task 172 — the general category frame, not just the period form the old guard
+ * caught: "X is a boss in Elden Ring", "X is an enemy character in Shadow of the
+ * Erdtree", "X is a location in the Lands Between". The clause between `in` and
+ * the game title tolerates markup/qualifiers ("in *Elden Ring: Shadow of the
+ * Erdtree*") so a frame followed by an "encountered in …" clause is dropped as
+ * one sentence.
+ */
+const GAME_TEMPLATE_FRAME =
+  /\b(?:is|are|was)\s+(?:a|an|the|one of the)\b[^.]{0,80}\bin\b[^.]{0,30}\b(?:Elden\s+Ring|Shadow of the Erdtree|the Lands Between|Nightreign)\b/i
+
+/**
+ * Task 172 — a lead the extraction stripped the subject from ("s are Enemies in
+ * Elden Ring, and.", ", also known as …", "; Bosses - …", "or Puppet of Anna…")
+ * or a deictic pointer ("This is an optional boss Closest Site of Grace: …").
+ * Never a description.
+ */
+const LEAD_FRAGMENT = /^[,.;:)]|^s\s+are\b/i
+
+function isTemplateSentence(sentence: string): boolean {
+  return TEMPLATE_DESC.test(sentence) || GAME_TEMPLATE_FRAME.test(sentence) || /^This is an?\b/i.test(sentence)
+}
+
+/** A wiki list header ("Variants:", "Armaments:", "Drop:", "Location:") is a link
+ * list or an infobox row, never prose. */
+const JUNK_LEAD = /^(?:variants?|armaments?|drops?|location|loot|obtained|received upon|acquired|found in|effects?|notes?)\s*[:：]/i
+
+/** Keep every sentence of `text` except the template/corrupted ones, in order. */
 function stripTemplateSentences(text: string): string {
   return text
     .split(/(?<=[.!?])\s+/)
     .map((sentence) => sentence.trim())
-    .filter((sentence) => sentence && !TEMPLATE_DESC.test(sentence))
+    .filter((sentence) => sentence && !isTemplateSentence(sentence) && !LEAD_FRAGMENT.test(sentence))
     .join(' ')
     .trim()
+}
+
+/** Task 172 — clean a description sourced after `prune` ran, and drop templates. */
+function sanitizeDescriptionText(text: string): string {
+  return stripTemplateSentences(cleanProse(text))
 }
 
 /** The game's own text for a record name (exact match), else undefined. */
@@ -3110,7 +3298,7 @@ function gameTextFor(name: string): string | undefined {
       const key = simpleNorm(row.name)
       if (!key || gameTextByName.has(key)) continue
       const text = fmgDescription(row)
-      if (text && !TEMPLATE_DESC.test(text)) gameTextByName.set(key, text)
+      if (text && !isTemplateSentence(text)) gameTextByName.set(key, text)
     }
   }
   return gameTextByName.get(simpleNorm(name))
@@ -3129,10 +3317,11 @@ const WIKI_DEFINITIONAL =
 function acceptableLeadSentence(raw: string): boolean {
   const sentence = raw.trim()
   if (sentence.length < 20) return false
-  if (TEMPLATE_DESC.test(sentence)) return false
+  if (isTemplateSentence(sentence)) return false
+  if (JUNK_LEAD.test(sentence)) return false
   if (WIKI_DEFINITIONAL.test(sentence)) return false
   if (PLACE_DEFINITIONAL.test(sentence)) return false
-  if (/^[,;:]/.test(sentence) || /^(?:also|and|but|or|which|who|where)\b/i.test(sentence)) return false
+  if (LEAD_FRAGMENT.test(sentence) || /^(?:also|and|but|or|which|who|where)\b/i.test(sentence)) return false
   // Skip list/bullet rows and anything with no words.
   if (/^[-*·\d]/.test(sentence) || !/[a-z]/.test(sentence)) return false
   return true
@@ -3177,11 +3366,21 @@ const WIKI_PAGE_ALIAS: Record<string, string> = {
  * Overview/Background prose over a Summary line the build would discard. Used to
  * fill a page whose description is empty or is only a place name.
  */
-function wikiLead(name: string): string | undefined {
+function wikiLead(name: string, recordKind?: string): string | undefined {
   const alias = WIKI_PAGE_ALIAS[simpleNorm(name)]
   let sections = alias ? lookupWiki(alias) : undefined
   if (!sections?.length) sections = lookupWiki(name)
   if (!sections?.length) return undefined
+  // Task 172 — never quote a page of an incompatible kind (a spell for a grace,
+  // a boss page for a minor enemy) or any Nightreign-only page.
+  if (recordKind) {
+    sections = sections.filter((section) => {
+      if (nightreignPageTitles.has(section.page)) return false
+      const wikiKind = wikiPageKind.get(simpleNorm(section.page))
+      return !wikiKind || descriptionKindCompatible(recordKind, wikiKind)
+    })
+    if (!sections.length) return undefined
+  }
   const rank = (heading: string) => {
     const i = LEAD_HEADING_ORDER.findIndex((h) => heading.toLowerCase().includes(h))
     return i === -1 ? LEAD_HEADING_ORDER.length : i
@@ -3544,7 +3743,7 @@ export function buildEntityIndex(): EntityIndexBuildResult {
       }
       record = ensureEntity(entity)
     }
-    setText(record, 'location', row.location ?? row.near)
+    setText(record, 'location', cleanAcquisitionPlace(row.location, row.near))
     source(record, 'acquisition')
   }
 
@@ -3731,6 +3930,17 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     // Strip wiki markup first: the pointer drop is stored as "See [[#Drops" and
     // only becomes "See #Drops" after pruning.
     prune(record)
+    // Task 172 — `location` holds a place, never a bare type word ("Church",
+    // "Subregion", "grace"), a leaked markdown heading ("# Castleward Tunnel")
+    // or the merchant placeholder. A real parent region stays in `region`.
+    if (record.location) {
+      let loc = record.location.replace(/^#+\s*/, '').trim()
+      const label = /^(?:loot|location|obtained|guaranteed drop|dragon communion|reward|source|drop)\s*[:：]\s*(.*)$/i.exec(loc)
+      if (label) loc = label[1].trim()
+      loc = loc.replace(/Subterranean Shunning,\s*Grounds?/i, 'Subterranean Shunning-Grounds')
+      if (/^merchant$/i.test(loc) || BARE_PLACE_TYPE.test(loc)) loc = ''
+      record.location = loc || undefined
+    }
     // A placeholder or one-word "description" ("drop", "merchant", "Caelid") is
     // not a description; step 3 refills it from the wiki or it stays empty. A
     // bare region name (a quest beat's only text) is real locator data: keep it
@@ -3756,20 +3966,22 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     // template is never used.
     if (!currentDescription || SUBJECTLESS_DESC.test(currentDescription) || /^the is\b/i.test(currentDescription) || placeOnly) {
       const wiki = wikiDescriptions.get(simpleNorm(record.name))
-      if (wiki) {
-        const text = repairWikiLead(wiki, record.name)
+      // Task 172 — only a wiki page of a compatible kind may fill the record.
+      if (wiki && descriptionKindCompatible(record.kind, wiki.kind)) {
+        const text = repairWikiLead(wiki.text, record.name)
         if (usableWikiDescription(text)) {
           record.description = text
           source(record, 'wiki-db')
         }
       }
     }
-    // Task 148 follow-up — a wiki template sentence ("X is a … in Elden Ring.")
-    // is not a description. Drop every template sentence and keep the rest.
-    // A template sentence is never written by the build.
+    // Task 148 follow-up + Task 172 — a wiki template ("X is a … in Elden Ring.")
+    // or an extraction fragment ("s are Enemies in …") is not a description.
+    // Drop those sentences and keep the rest; re-clean any text a fill wrote
+    // after `prune` ran (it could otherwise carry wiki markup). This runs before
+    // the fallback so a stripped-to-empty template still triggers a real lead.
     if (record.description) {
-      const stripped = stripTemplateSentences(record.description)
-      record.description = stripped || undefined
+      record.description = sanitizeDescriptionText(record.description) || undefined
     }
     // Task 150 §2 — when nothing real survived (or the description is only the
     // place name) take the game's own caption, then the wiki page's first real
@@ -3777,13 +3989,16 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     // are step labels and character names: wiki lore would misdescribe the step,
     // so they are never given prose this way.
     if ((!record.description || isPlaceText(record)) && FILLABLE_DESC_KINDS.has(record.kind)) {
+      // Fextralife only carries boss/enemy pages; never let a boss strategy
+      // sentence land on a grace that merely shares the boss's arena name.
+      const fext = record.kind === 'boss' || record.kind === 'enemy' ? fextLead(record.name) : undefined
       const real =
         record.kind === 'enemy'
-          ? wikiLead(record.name) ?? creatureLead(record.name) ?? fextLead(record.name) ?? gameTextFor(record.name)
-          : gameTextFor(record.name) ?? wikiLead(record.name) ?? fextLead(record.name)
+          ? wikiLead(record.name, record.kind) ?? creatureLead(record.name) ?? fext ?? gameTextFor(record.name)
+          : gameTextFor(record.name) ?? wikiLead(record.name, record.kind) ?? fext
       if (real) {
-        record.description = real
-        source(record, 'wiki-sections')
+        record.description = sanitizeDescriptionText(real) || undefined
+        if (record.description) source(record, 'wiki-sections')
       }
     }
     // A description that is only the place name is removed — the location
@@ -3809,6 +4024,13 @@ export function buildEntityIndex(): EntityIndexBuildResult {
       record.cut = true
       record.stats = record.stats ?? {}
       record.stats.Status = 'Cut content (not obtainable)'
+    }
+    // Task 172 — the generic half of a split item keeps the catalog fact's own
+    // name, so it does not duplicate the specific half ("Dectus Medallion" vs
+    // "Dectus Medallion (Right)").
+    if (MEDALLION_HALF_FACTS.has(record.id)) {
+      const fact = byId.get(record.id)
+      if (fact?.name) record.name = fact.name
     }
     // Repair dump casing ("Axe Of Godfrey") so every screen, not just the
     // entity panel, shows the game's spelling. Ids are unchanged.
@@ -3853,10 +4075,12 @@ function stripNightreign(text: string): string {
   t = t.replace(/\s+and\s+[^.]*?Nightreign[^.]*?\./gi, '.')
   // Standalone trailing sentences about Nightreign.
   t = t.replace(/\s*(?:They|It)\s+(?:also\s+)?(?:are|is|appear|appears|appears? as)[^.]*Nightreign[^.]*\./gi, '')
-  // Anything left: drop the sentence that names it.
+  // Anything left: drop the sentence that names it. Task 172 — also drop a
+  // sentence that names a Nightreign-only place (its wiki page Summary names the
+  // other game, but a copied Overview sentence need not).
   t = t
     .split(/(?<=[.!?])\s+/)
-    .filter((sentence) => !/nightreign/i.test(sentence))
+    .filter((sentence) => !/nightreign/i.test(sentence) && !/\b(?:Limveld|Shifting Earth|Deep of Night|Everdark)\b/i.test(sentence))
     .join(' ')
   return t.replace(/\s+([.,;:!?])/g, '$1').replace(/\s{2,}/g, ' ').trim()
 }

@@ -15,6 +15,7 @@ const indexPath = fileURLToPath(new URL('../../public/sourced/entity-index.json'
 const aliasPath = fileURLToPath(new URL('../../public/sourced/aliases.json', import.meta.url))
 const dropsPath = fileURLToPath(new URL('../../public/sourced/open/enemy-drops.json', import.meta.url))
 const wikiWeaponPath = fileURLToPath(new URL('../../public/sourced/open/wiki-db/weapon.json', import.meta.url))
+const nightreignPath = fileURLToPath(new URL('../../public/sourced/open/wiki-db/nightreign.json', import.meta.url))
 const legacyPath = fileURLToPath(new URL('../../src/data/legacy-entity-ids.json', import.meta.url))
 const legacyExceptionsPath = fileURLToPath(new URL('../../src/data/legacy-alias-exceptions.json', import.meta.url))
 
@@ -194,5 +195,52 @@ describe('Task 151 §3 — the builder writes no filler, and shares no prose fam
       .sort((a, b) => b[1].length - a[1].length)
       .map(([key, ids]) => `${ids.length} × ${key}`)
     expect(offenders, offenders.slice(0, 20).join('\n')).toEqual([])
+  })
+})
+
+describe('Task 172 — description hygiene guards', () => {
+  /** The general category frame the wiki repeats: "X is a boss in Elden Ring". */
+  const TEMPLATE_FRAME = /\b(is|are|was) (a|an|the|one of the)\b[^.]{0,80}\bin (Elden Ring|Shadow of the Erdtree|the Lands Between)\b/i
+  /** A lead the extraction cut a subject off the front of. */
+  const LEADING_FRAGMENT = /^[,.;:)]|^s are /
+  const THIS_IS = /^This is an? /
+
+  /**
+   * Nightreign is a separate game. Its names must never render on a base page:
+   * the record titles from `wiki-db/nightreign.json` (the Relic pages), plus the
+   * Nightreign-only place names that file is missing (Limveld, the Shifting
+   * Earth events, Deep of Night). These are distinctive enough to match exactly.
+   */
+  const nightreignTerms = (() => {
+    const terms = new Set<string>(['Limveld', 'Shifting Earth', 'Deep of Night', 'Everdark'])
+    const nightreign = JSON.parse(readFileSync(nightreignPath, 'utf8')) as { records?: { title?: string }[] }
+    for (const record of nightreign.records ?? []) if (record.title) terms.add(record.title)
+    return [...terms]
+  })()
+
+  it('has no template sentence, "This is a", leading fragment or Nightreign place name', () => {
+    const offenders = list
+      .filter((record) => {
+        const description = String(record.description ?? '')
+        if (!description.trim()) return false
+        if (TEMPLATE_FRAME.test(description) || THIS_IS.test(description) || LEADING_FRAGMENT.test(description)) return true
+        return nightreignTerms.some((term) => {
+          const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+          return new RegExp(`\\b${escaped}\\b`, 'i').test(description)
+        })
+      })
+      .map((record) => `${record.id}: ${record.description}`)
+    expect(offenders, offenders.slice(0, 20).join('\n')).toEqual([])
+  })
+
+  it('stops cross-page contamination (a place page never describes a boss/spell/dungeon)', () => {
+    // These records shared a name with a non-place wiki page; their old prose was
+    // that other page's text. The fix leaves them without a description.
+    for (const id of ['grace:200104', 'grace:410100', 'grace:130000', 'grace:130001', 'enemy:poison-claw-elder-albinauric', 'enemy:winter-lantern']) {
+      const record = records[id]
+      expect(record, `${id} is missing`).toBeTruthy()
+      const description = String(record.description ?? '')
+      expect(/spell|is a boss|is a dungeon|status effect|crafting material/i.test(description), `${id} still carries another page's prose: ${description}`).toBe(false)
+    }
   })
 })
