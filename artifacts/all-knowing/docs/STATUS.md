@@ -6,28 +6,32 @@ Last updated: 2026-10-08.
 Briefs live in each task's worktree (`ER-MASTER-TOOL-wt/task-<id>/artifacts/all-knowing/docs/tasks/`) until merged.
 | Task | Brief | State |
 |---|---|---|
+| 177 | `177-brief.md` — region/location field hygiene (171 Batch B items 6–8) | running |
 
 ## Merged recently (master)
 148–152 data cleanup (one page per enemy, real descriptions, lost names restored) · 153 Gideon token
 diet (−76% request size, usage counter in Settings) · 154 game icons for all items/bosses · 155/156/158
-Show on map (zoom, vendor/drop/boss sources, live engine) · 159 live map on phone/offline · 162 Gideon
-offline eval harness (baseline 40.4% correct) · 163 player question corpus (6,581 questions, 20 nicknames) · 164 PvP/Builds layout · 165 bosses/guides/Now layout ·
-169 docs accuracy pass (~25 claims fixed, 4 stale docs archived, README doc index) · 168 offline Gideon 40% → 84% correct · 160 link fixes (dead/wrong-kind links, dead search results, Mark-done, duplicates → 0) · 167 photo reader tuned + map grace recall 75–88% · 170 player knowledge corpus (5,718 Reddit rows, raw) · 166 inference fixes + new PS5 inferences · 171 batch audit (fix list → next batch) · `AGENTS.md` completion contract · orchestration tooling.
+Show on map (zoom, vendor/drop/boss sources, live engine) · 159 live map on phone/offline · 160 link
+fixes · 162 Gideon offline eval harness · 163 player question corpus (6,581 questions) · 164 PvP/Builds
+layout · 165 bosses/guides/Now layout · 166 inference fixes + new PS5 inferences · 167 photo reader +
+map grace recall 75–88% · 168 offline Gideon 40% → 84% correct · 169 docs accuracy pass · 170 player
+knowledge corpus (5,718 Reddit rows, raw, not wired in) · 171 batch audit · 172 template/garbled
+descriptions → 0 · 173 link gaps (orphans, drop names, Haligtree cycle, merchant kinds) · 174 docs + Help
+drift · 175 equipment photos 50% → 100% (fixture overall 91%) · 176 Nightreign + cross-page description contamination removed.
 
 ## Next (proposed to the owner, not yet approved unless noted)
-1. After 168: offline Gideon meaning search (in-browser embeddings) + pre-generated DeepSeek answers,
-   re-scored with `npm run eval:gideon` (owner approved the plan in principle).
-2. After 170: surface current-patch Reddit tips on boss/item/quest pages (needs owner OK).
-3. Data gaps: ~320 empty descriptions, NPC map positions (~33%), Omen variant pages.
-4. Real phone test session by the owner once 160–168 land.
-5. Housekeeping: remove merged worktrees/branches (`task-148`…`task-165`, `task-141` after 167).
+1. **Owner's real phone session on PS5** once 175/177 land — the most valuable next step.
+2. Offline Gideon meaning search + pre-generated DeepSeek answers (approved in principle).
+3. Surface current-patch Reddit tips on boss/item/quest pages (needs owner OK; the raw corpus is noisy).
+4. Small leftovers: `enemy:rat` description looks like a frenzied variant's; root `ARCHITECTURE.md` and 3
+   one-off review docs could move to `docs/history/`; empty descriptions (296, empty beats fake).
+5. Housekeeping: delete merged task branches/worktrees (owner to say go).
 
 ## Owner decisions pending
 - Gideon is ON HOLD. To enable DeepSeek Gideon the owner adds `VITE_GIDEON_PROVIDER=deepseek` to
   `.env.local` (Claude never opens that file).
-- Task 143 (planning: goal stack, route optimiser, ending chooser, NG+ planner) — on branch `task-143`,
-  HOLD; re-judge after the UX work, likely redo on the new layout.
-- Task 161 UX proposal (`docs/tasks/161-proposal.md`) items not yet scheduled: none besides 166.
+- Task 143 (planning: goal stack, route optimiser, ending chooser, NG+ planner) — branch `task-143`, HOLD.
+- Branch/worktree cleanup — awaiting "go".
 
-## Key numbers (last merge gates)
-1,523 tests passing · lint 0 · build OK · bundle budget OK (3.33 MB of 3.5) · links 0 dead (audit 171).
+## Key numbers (last merge gates, Task 176)
+~1,530 tests passing · lint 0 · build OK · bundle budget OK (≈3.3 MB of 3.5) · links 0 dead.

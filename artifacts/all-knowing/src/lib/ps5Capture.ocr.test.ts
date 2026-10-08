@@ -71,9 +71,8 @@ describe('PS5 real captures (slow OCR eval)', () => {
     expect(result.header.item?.upgrade).toBe(equipmentTruth.selectedItem.upgrade)
     expect(result.header.item?.weaponType).toBe(equipmentTruth.selectedItem.weaponType)
 
-    // Task 134 note: the stack-count OCR target is 6/9. Tesseract reads the small
-    // outlined numerals over the cell's stone texture unreliably (see the final
-    // report), so this is reported rather than gated, exactly like icon accuracy.
+    // Task 175: the stack counts are now isolated as glyph blobs before OCR, so
+    // all nine read off the real capture (Task 134 managed 6/9 with a fixed crop).
     const expected = [
       equipmentTruth.gridCounts.crimsonFlask, equipmentTruth.gridCounts.ceruleanFlask,
       equipmentTruth.gridCounts.arrows, equipmentTruth.gridCounts.fireArrows,
@@ -84,7 +83,7 @@ describe('PS5 real captures (slow OCR eval)', () => {
     const got = result.counts.filter((n): n is number => n !== undefined)
     const correct = expected.filter((n) => got.includes(n)).length
     console.log(`[ps5] grid counts read: ${JSON.stringify(result.counts)}`)
-    console.log(`[ps5] grid count accuracy: ${correct}/9 correct (target 6/9)`)
-    expect(Array.isArray(result.counts)).toBe(true)
+    console.log(`[ps5] grid count accuracy: ${correct}/9 correct`)
+    expect(correct).toBe(9)
   }, 600_000)
 })

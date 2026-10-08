@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { decodeGrayPng, encodeGrayPng } from './pngGray'
-import { ps5PreprocessLadder, upscale, type GrayImage } from './ps5Image'
+import { cropGray, ps5PreprocessLadder, upscale, type GrayImage } from './ps5Image'
+import { locateCountGlyphs, parseCountText } from './ps5Counts'
 import { parseTsvWords, type OcrWord } from './ps5Ocr'
 import { extractStatus, interpretStatus, mergeStatusReads, type StatusInterpretation, type StatusRead } from './ps5Status'
 import {
@@ -114,10 +115,9 @@ export async function equipmentFromPhoto(
 }
 
 /**
- * Read the stack count in each cell's bottom-right corner. Counts are small and
- * sit over the cell's stone texture, so Tesseract is only trusted when the digit
- * run is right-aligned and isolated from the icon; otherwise the cell returns
- * undefined (the Setup UI then leaves the count as-is rather than inventing one).
+ * Read the stack count in each cell's bottom-right corner. Counts are small white
+ * digits over the cell's stone texture; `locateCountGlyphs` isolates them from the
+ * icon and seam, leaving a clean crop for the OCR engine.
  */
 async function readGridCounts(worker: NodeOcrWorker, gray: GrayImage, grid: SlotGrid): Promise<(number | undefined)[]> {
   const out: (number | undefined)[] = []
@@ -129,77 +129,17 @@ async function readGridCounts(worker: NodeOcrWorker, gray: GrayImage, grid: Slot
 
 async function readCellCount(worker: NodeOcrWorker, gray: GrayImage, grid: SlotGrid, row: number, col: number): Promise<number | undefined> {
   const x0 = Math.round(grid.left + col * grid.cellW + 0.42 * grid.cellW)
-  const y0 = Math.round(grid.top + row * grid.cellH + 0.72 * grid.cellH)
-  const x1 = Math.round(grid.left + col * grid.cellW + grid.cellW)
-  const y1 = Math.round(grid.top + row * grid.cellH + grid.cellH)
-  const w = x1 - x0
-  const h = y1 - y0
-  if (w <= 4 || h <= 4) return undefined
-  const strip = new Uint8Array(w * h)
-  for (let y = 0; y < h; y++) {
-    const srcY = y0 + y
-    if (srcY < 0 || srcY >= gray.height) continue
-    for (let x = 0; x < w; x++) {
-      const srcX = x0 + x
-      if (srcX < 0 || srcX >= gray.width) continue
-      strip[y * w + x] = gray.data[srcY * gray.width + srcX]
-    }
-  }
-  // Bright digits on a dark cell → dark-on-light mask, keep only dense right-aligned columns.
-  const mask = new Uint8Array(w * h)
-  for (let i = 0; i < mask.length; i++) mask[i] = strip[i] > 150 ? 1 : 0
-  const colCount = new Array<number>(w).fill(0)
-  for (let x = 0; x < w; x++) {
-    let n = 0
-    for (let y = 0; y < h; y++) n += mask[y * w + x]
-    colCount[x] = n
-  }
-  const runs: [number, number][] = []
-  let start = -1
-  for (let x = 0; x < w; x++) {
-    if (colCount[x] > h * 0.12) {
-      if (start < 0) start = x
-    } else if (start >= 0) {
-      runs.push([start, x - 1])
-      start = -1
-    }
-  }
-  if (start >= 0) runs.push([start, w - 1])
-  const merged: [number, number][] = []
-  for (const run of runs) {
-    const last = merged[merged.length - 1]
-    if (last && run[0] - last[1] <= h * 0.7) last[1] = run[1]
-    else merged.push([...run])
-  }
-  const right = merged.filter((run) => run[1] > w * 0.55 && run[1] - run[0] >= h * 0.15).pop()
-  if (!right) return undefined
-  let minY = h
-  let maxY = 0
-  for (let x = right[0]; x <= right[1]; x++) {
-    for (let y = 0; y < h; y++) {
-      if (mask[y * w + x]) {
-        if (y < minY) minY = y
-        if (y > maxY) maxY = y
-      }
-    }
-  }
-  const pad = 8
-  const cx0 = Math.max(0, right[0] - pad)
-  const cx1 = Math.min(w, right[1] + pad + 1)
-  const cy0 = Math.max(0, minY - pad)
-  const cy1 = Math.min(h, maxY + pad + 1)
-  const cw = cx1 - cx0
-  const ch = cy1 - cy0
-  const clean = new Uint8Array(cw * ch).fill(255)
-  for (let y = cy0; y < cy1; y++) for (let x = cx0; x < cx1; x++) if (mask[y * w + x]) clean[(y - cy0) * cw + (x - cx0)] = 0
+  const y0 = Math.round(grid.top + row * grid.cellH + 0.55 * grid.cellH)
+  const x1 = Math.round(grid.left + (col + 1) * grid.cellW)
+  const y1 = Math.round(grid.top + (row + 1) * grid.cellH)
+  const glyphs = locateCountGlyphs(cropGray(gray, x0, y0, x1, y1))
+  if (!glyphs) return undefined
   const { data } = await worker.recognize(
-    encodeGrayPng(upscale({ width: cw, height: ch, data: clean }, 3)),
-    { tessedit_pageseg_mode: '7', tessedit_char_whitelist: '0123456789' },
+    encodeGrayPng(upscale(glyphs, 4)),
+    { tessedit_pageseg_mode: '8', tessedit_char_whitelist: '0123456789' },
     { text: true },
   )
-  const n = Number((data.text ?? '').replace(/\D/g, ''))
-  if (!Number.isFinite(n) || n < 1 || n > 999) return undefined
-  return n
+  return parseCountText(data.text)
 }
 
 /** Build a weapon catalogue from a JSON map or array of names. */

@@ -1,5 +1,6 @@
-import { cropGray, ps5PreprocessLadder, rgbaToGray, type GrayImage } from './ps5Image'
+import { cropGray, ps5PreprocessLadder, rgbaToGray, upscale, type GrayImage } from './ps5Image'
 import { parseTsvWords } from './ps5Ocr'
+import { locateCountGlyphs, parseCountText } from './ps5Counts'
 import { extractStatus, interpretStatus, mergeStatusReads, type StatusInterpretation } from './ps5Status'
 import { readImageTsv } from './ocr'
 import {
@@ -150,13 +151,10 @@ function slotClassFor(_grid: SlotGrid, row: number, col: number): IconReference[
 }
 
 async function readCount(gray: GrayImage, grid: SlotGrid, row: number, col: number): Promise<number | undefined> {
-  const region = countRegion(gray, grid, row, col)
-  if (region.width < 6 || region.height < 6) return undefined
-  const { tsv } = await readImageTsv(grayToCanvas(region), '7')
-  const words = parseTsvWords(tsv)
-  const text = words.map((w) => w.text).join('')
-  const n = Number(text.replace(/\D/g, ''))
-  return Number.isFinite(n) && n >= 1 && n <= 999 ? n : undefined
+  const glyphs = locateCountGlyphs(countRegion(gray, grid, row, col))
+  if (!glyphs) return undefined
+  const { text } = await readImageTsv(grayToCanvas(upscale(glyphs, 4)), '8')
+  return parseCountText(text)
 }
 
 /** Keep a crop helper exported for callers that want to preview a cell. */
