@@ -85,7 +85,7 @@ function launch(id, prompt) {
   const child = spawn(OPENCODE, ['run', '-m', 'deepseek/deepseek-flash', '--dir', dir, '--title', `task-${id}`, prompt], {
     cwd: dir, windowsHide: true, stdio: ['ignore', fd, fd],
   })
-  child.on('exit', () => { fs.closeSync(fd); runs.delete(id) })
+  child.on('exit', () => { fs.closeSync(fd); if (runs.get(id)?.child === child) runs.delete(id) })
   runs.set(id, { child, log, started: Date.now() })
 }
 
