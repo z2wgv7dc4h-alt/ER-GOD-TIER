@@ -1,4 +1,4 @@
-import { byId, facts, normalize, type Fact } from '../knowledge/catalog'
+import { byId, facts, normalize, regionFactFor, type Fact } from '../knowledge/catalog'
 import { warpGraces } from '../knowledge/graces'
 import { loot, type LootKind } from '../knowledge/loot'
 import { remembrances } from '../knowledge/remembrances'
@@ -13,6 +13,7 @@ import { npcLocations } from '../knowledge/npcLocations'
 import { mechanics } from '../knowledge/mechanics'
 import type { Character } from '../types'
 import { canonicalFactId } from './aliases'
+import { normaliseDropName, normaliseDrops } from '../knowledge/dropNames'
 import { linkIndex, linkify } from './interlink'
 import { iconFor } from './sourcePack'
 import { allRecords, getEntityIndexVersion, getRecord } from './entityIndex'
@@ -589,6 +590,34 @@ function buildIndex(): Index {
     ensure(`merchant:${slug(vendor)}`, 'merchant', vendor, 'Merchant')
   }
 
+  // Task 173 §12 — `merchants.ts` carries a few rows that are not merchants: a
+  // Remembrance is the item Enia trades, `Sorcery`/`Incantation` are the
+  // spell-category cards, `Dragon Communion` is the cathedral altar. Fold each
+  // such `merchant:` page onto the entity that really owns the name, keeping the
+  // old id as an alias so existing links still resolve.
+  {
+    const NON_MERCHANT_CATEGORY: Record<string, string> = {
+      'merchant:sorcery': 'mechanic:sorcery',
+      'merchant:incantation': 'mechanic:incantation',
+      'merchant:dragon-communion': 'region:cathedral-of-dragon-communion',
+    }
+    const nonMerchantByName = new Map<string, string>()
+    for (const [id, entity] of entities) {
+      if (entity.kind === 'merchant') continue
+      if (!['item', 'weapon', 'shield', 'armor', 'talisman', 'spell', 'ash', 'spirit', 'material', 'mechanic', 'region', 'dungeon'].includes(entity.kind)) continue
+      const n = normalize(entity.name)
+      if (n && !nonMerchantByName.has(n)) nonMerchantByName.set(n, id)
+    }
+    for (const [id, entity] of [...entities]) {
+      if (entity.kind !== 'merchant') continue
+      const target = NON_MERCHANT_CATEGORY[id] ?? nonMerchantByName.get(normalize(entity.name))
+      if (!target || target === id || !entities.has(target)) continue
+      idAlias.set(id, target)
+      entities.delete(id)
+      for (const [n, owner] of byName) if (owner === id) byName.set(n, target)
+    }
+  }
+
   for (const row of [...(supplement.bossCombat ?? []), ...(supplement.enemyCombat ?? [])]) {
     const id = row.factId ? canonicalFactId(row.factId) : resolve(row.name, 'boss')
     ensure(id, row.factId?.startsWith('enemy:') ? 'enemy' : 'boss', row.name, 'Combat profile')
@@ -631,9 +660,14 @@ function buildIndex(): Index {
     if (n && !ownedByName.has(n)) ownedByName.set(n, id)
   }
   const resolveOwned = (name: string): string | undefined => {
-    const direct = ownedByName.get(normalize(name))
+    // Task 173 §10 — one loot list: normalise the wiki/roster drop string to the
+    // real item name before resolving. A string that names no single item is
+    // discarded here rather than pointed at an arbitrary tier.
+    const canonicalName = normaliseDropName(name)
+    if (!canonicalName) return undefined
+    const direct = ownedByName.get(normalize(canonicalName))
     if (direct) return direct
-    const candidate = canonicalFactId(`item:${slug(name)}`, name)
+    const candidate = canonicalFactId(`item:${slug(canonicalName)}`, canonicalName)
     const entity = entities.get(candidate)
     if (entity && OWNED_EDGE_KINDS.has(entity.kind)) return candidate
     return undefined
@@ -642,6 +676,17 @@ function buildIndex(): Index {
     const id = byName.get(normalize(name))
     const entity = id ? entities.get(id) : undefined
     return entity && PLACE_EDGE_KINDS.has(entity.kind) ? id : undefined
+  }
+  // Task 173 §9 — resolve a region label from record data. Exact name/alias first,
+  // then the catalog's authored region mapping (`REGION_FACT`, e.g. Greyoll's
+  // Dragonbarrow → Caelid). No fuzzy guess: only a mapping the data asserts.
+  const resolveRegionText = (text?: string): { id: string; name: string } | undefined => {
+    if (!text) return undefined
+    const exact = regionByName.get(normalize(text))
+    if (exact) return exact
+    const hinted = regionFactFor(text)
+    if (hinted && entities.get(hinted)?.kind === 'region') return { id: hinted, name: entities.get(hinted)?.name ?? text }
+    return undefined
   }
 
   const forward = new Map<string, Edge[]>()
@@ -685,21 +730,56 @@ function buildIndex(): Index {
   // graph so Related/Where and the coverage guard can traverse them. Only data
   // that exists is wired; nothing is inferred or invented here.
   const locationTargets: { n: string; id: string; name: string }[] = []
+  const regionByName = new Map<string, { id: string; name: string }>()
   for (const [n, id] of byName) {
     const kind = entities.get(id)?.kind
     if (kind !== 'region' && kind !== 'grace' && kind !== 'dungeon') continue
     if (n.length >= 4) locationTargets.push({ n, id, name: entities.get(id)?.name ?? n })
   }
+  // A same-named grace/dungeon can win `byName` over the region it sits in
+  // (grace:abyssal vs region:abyssal-woods), so keep a region-only name index.
+  for (const [id, entity] of entities) {
+    if (entity.kind !== 'region') continue
+    const n = normalize(entity.name)
+    if (n && !regionByName.has(n)) regionByName.set(n, { id, name: entity.name })
+  }
   for (const record of allRecords()) {
     const from = record.id
     if (record.region) {
-      const regionId = byName.get(normalize(record.region))
-      if (regionId && regionId !== from && entities.get(regionId)?.kind === 'region') {
-        push(from, { rel: 'foundIn', to: canon(regionId), label: record.region, source: 'entity-index' })
+      const region = resolveRegionText(record.region)
+      if (region && region.id !== from) {
+        push(from, { rel: 'foundIn', to: canon(region.id), label: region.name, source: 'entity-index' })
       }
     }
     if (record.location) {
       const text = normalize(record.location)
+      let best: { id: string; name: string; len: number } | null = null
+      for (const target of locationTargets) {
+        if (target.id === from || !text.includes(target.n)) continue
+        if (!best || target.n.length > best.len) best = { id: target.id, name: target.name, len: target.n.length }
+      }
+      if (best) push(from, { rel: 'foundIn', to: canon(best.id), label: best.name, source: 'entity-index' })
+      // Task 173 §9 — the location text can name both a site (grace/dungeon) and
+      // the region around it; wire the region too so the region gets its
+      // `contains` edge. Only a mapping the data asserts (region name or
+      // `REGION_FACT`), never a fuzzy guess.
+      const region = resolveRegionText(record.location)
+      if (region && region.id !== from) {
+        push(from, { rel: 'foundIn', to: canon(region.id), label: region.name, source: 'entity-index' })
+      }
+    }
+    // Task 173 §9 — a merged enemy carries one placement per NpcParam row
+    // (`variants`); each placement's region/location is real data, so wire the
+    // `foundIn`/`contains` edges the single top-level location cannot express.
+    for (const variant of record.variants ?? []) {
+      if (variant.region) {
+        const regionId = byName.get(normalize(variant.region))
+        if (regionId && regionId !== from && entities.get(regionId)?.kind === 'region') {
+          push(from, { rel: 'foundIn', to: canon(regionId), label: variant.region, source: 'entity-index' })
+        }
+      }
+      const text = normalize(`${variant.location ?? ''} ${variant.region ?? ''}`)
+      if (text.length < 4) continue
       let best: { id: string; name: string; len: number } | null = null
       for (const target of locationTargets) {
         if (target.id === from || !text.includes(target.n)) continue
@@ -712,9 +792,13 @@ function buildIndex(): Index {
     // "drops from" note); a `drops` edge from it would claim an item was
     // dropped by a quest line.
     if (record.kind !== 'boss' && record.kind !== 'enemy') continue
-    for (const drop of record.drops ?? []) {
-      const to = resolveOwned(drop)
-      if (to && to !== from) push(from, { rel: 'drops', to: canon(to), label: drop, source: 'entity-index' })
+    for (const raw of record.drops ?? []) {
+      // Task 173 §10 — one comma-joined cell can name two items ("Godrick's Great
+      // Rune, Remembrance of the Grafted"); split before resolving.
+      for (const drop of normaliseDrops(raw)) {
+        const to = resolveOwned(drop)
+        if (to && to !== from) push(from, { rel: 'drops', to: canon(to), label: drop, source: 'entity-index' })
+      }
     }
   }
 
@@ -729,6 +813,10 @@ function buildIndex(): Index {
   // merchants: sold by
   for (const m of merchants) {
     const merchantId = `merchant:${slug(m.vendor)}`
+    // Task 173 §12 — a folded vendor (a Remembrance, Sorcery/Incantation, Dragon
+    // Communion) is no longer a merchant page; its trades/stock are carried by the
+    // real entity, so never emit a `soldBy` edge to the removed id.
+    if (entities.get(merchantId)?.kind !== 'merchant') continue
     for (const stock of m.stock) {
       const itemId = resolveOwned(stock)
       if (itemId) push(itemId, { rel: 'soldBy', to: merchantId, label: m.vendor, source: 'merchants' })
@@ -736,7 +824,10 @@ function buildIndex(): Index {
   }
   for (const s of supplement.shops ?? []) {
     const itemId = resolveOwned(s.item)
-    if (itemId) push(itemId, { rel: 'soldBy', to: `merchant:${slug(s.vendor)}`, label: s.vendor, source: 'shops' })
+    const merchantId = `merchant:${slug(s.vendor)}`
+    if (itemId && entities.get(merchantId)?.kind === 'merchant') {
+      push(itemId, { rel: 'soldBy', to: merchantId, label: s.vendor, source: 'shops' })
+    }
   }
 
   // remembrances: dropped by the boss, traded at Enia

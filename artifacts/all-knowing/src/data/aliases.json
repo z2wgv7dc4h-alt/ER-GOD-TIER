@@ -104,18 +104,6 @@
   "source": "authored"
  },
  {
-  "engineId": "boss:lionel-the-lionhearted",
-  "slug": "boss:fia-champions",
-  "kind": "boss",
-  "fmgName": "Lionel the Lionhearted",
-  "aliases": [
-   "fia champion",
-   "fias champions",
-   "lionel the lionhearted"
-  ],
-  "source": "boss-roster"
- },
- {
   "engineId": "boss:malenia-goddess-of-rot",
   "slug": "boss:malenia",
   "kind": "boss",
@@ -975,16 +963,6 @@
    "siluria"
   ],
   "source": "hosted-bosses"
- },
- {
-  "engineId": "bossflag:12030800",
-  "slug": "boss:fia-champions",
-  "kind": "boss",
-  "fmgName": "Fia's Champion & Sorcerer Rogier & Lionel the Lionhearted",
-  "aliases": [
-   "fia champion sorcerer rogier lionel the lionhearted"
-  ],
-  "source": "boss-roster"
  },
  {
   "engineId": "bossflag:12030850",
@@ -2329,9 +2307,11 @@
   "engineId": "hunt:fia-s-champion-sorcerer-rogier-lionel-the-lionhearted",
   "slug": "boss:fia-champions",
   "kind": "boss",
-  "fmgName": "Lionel the Lionhearted",
+  "fmgName": "Fia's Champions",
   "aliases": [
-   "lionel the lionhearted"
+   "fia champion",
+   "fia champions",
+   "fias champions"
   ],
   "source": "boss-roster"
  },
@@ -41658,6 +41638,14 @@
   "source": "entity-index"
  },
  {
+  "engineId": "region:ainsel-river-main",
+  "slug": "grace:120104",
+  "kind": "grace",
+  "fmgName": "Ainsel River Main",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "boss:abductor-virgins",
   "slug": "hunt:abductor-virgin-swinging-sickle-abductor-virgin-wheel",
   "kind": "hunt",
@@ -59136,6 +59124,198 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "merchant:elden-remembrance",
+  "slug": "item:elden-remembrance",
+  "kind": "item",
+  "fmgName": "Elden Remembrance",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-a-god-and-a-lord",
+  "slug": "item:remembrance-a-god-and-a-lord",
+  "kind": "item",
+  "fmgName": "Remembrance of a God and a Lord",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-hoarah-loux",
+  "slug": "item:remembrance-hoarah-loux",
+  "kind": "item",
+  "fmgName": "Remembrance of Hoarah Loux",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-putrescence",
+  "slug": "item:remembrance-putrescence",
+  "kind": "item",
+  "fmgName": "Remembrance of Putrescence",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-black-blade",
+  "slug": "item:remembrance-black-blade",
+  "kind": "item",
+  "fmgName": "Remembrance of the Black Blade",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-blasphemous",
+  "slug": "item:remembrance-blasphemous",
+  "kind": "item",
+  "fmgName": "Remembrance of the Blasphemous",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-blood-lord",
+  "slug": "item:remembrance-blood-lord",
+  "kind": "item",
+  "fmgName": "Remembrance of the Blood Lord",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-dragonlord",
+  "slug": "item:remembrance-dragonlord",
+  "kind": "item",
+  "fmgName": "Remembrance of the Dragonlord",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-fire-giant",
+  "slug": "item:remembrance-fire-giant",
+  "kind": "item",
+  "fmgName": "Remembrance of the Fire Giant",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-full-moon-queen",
+  "slug": "item:remembrance-full-moon-queen",
+  "kind": "item",
+  "fmgName": "Remembrance of The Full Moon Queen",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-grafted",
+  "slug": "item:remembrance-grafted",
+  "kind": "item",
+  "fmgName": "Remembrance of the Grafted",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-impaler",
+  "slug": "item:remembrance-impaler",
+  "kind": "item",
+  "fmgName": "Remembrance of the Impaler",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-lichdragon",
+  "slug": "item:remembrance-lichdragon",
+  "kind": "item",
+  "fmgName": "Remembrance of the Lichdragon",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-lord-of-frenzied-flame",
+  "slug": "item:remembrance-lord-of-frenzied-flame",
+  "kind": "item",
+  "fmgName": "Remembrance of the Lord of Frenzied Flame",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-mother-of-fingers",
+  "slug": "item:remembrance-mother-of-fingers",
+  "kind": "item",
+  "fmgName": "Remembrance of the Mother of Fingers",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-naturalborn",
+  "slug": "item:remembrance-naturalborn",
+  "kind": "item",
+  "fmgName": "Remembrance of the Naturalborn",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-omen-king",
+  "slug": "item:remembrance-omen-king",
+  "kind": "item",
+  "fmgName": "Remembrance of the Omen King",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-regal-ancestor",
+  "slug": "item:remembrance-regal-ancestor",
+  "kind": "item",
+  "fmgName": "Remembrance of the Regal Ancestor",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-rot-goddess",
+  "slug": "item:remembrance-rot-goddess",
+  "kind": "item",
+  "fmgName": "Remembrance of the Rot Goddess",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-saint-of-the-bud",
+  "slug": "item:remembrance-saint-of-the-bud",
+  "kind": "item",
+  "fmgName": "Remembrance of the Saint of the Bud",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-shadow-sunflower",
+  "slug": "item:remembrance-shadow-sunflower",
+  "kind": "item",
+  "fmgName": "Remembrance of the Shadow Sunflower",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-starscourge",
+  "slug": "item:remembrance-starscourge",
+  "kind": "item",
+  "fmgName": "Remembrance of the Starscourge",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-twin-moon-knight",
+  "slug": "item:remembrance-twin-moon-knight",
+  "kind": "item",
+  "fmgName": "Remembrance of the Twin Moon Knight",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:remembrance-of-the-wild-boar-rider",
+  "slug": "item:remembrance-wild-boar-rider",
+  "kind": "item",
+  "fmgName": "Remembrance of the Wild Boar Rider",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "npcs:140601",
   "slug": "item:ancient-dragon-florissax",
   "kind": "item",
@@ -59389,6 +59569,16 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "mechanic:incantation",
+  "slug": "mechanic:incantation",
+  "kind": "mechanic",
+  "fmgName": "Incantation",
+  "aliases": [
+   "incantation"
+  ],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "mechanic:parry",
   "slug": "mechanic:parry",
   "kind": "mechanic",
@@ -59431,7 +59621,8 @@
   "kind": "mechanic",
   "fmgName": "Cold Sorceries",
   "aliases": [
-   "cold sorceries"
+   "cold sorceries",
+   "sorcery"
   ],
   "source": "game-name-table"
  },
@@ -59524,6 +59715,22 @@
    "whetblade"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "merchant:incantation",
+  "slug": "mechanic:incantation",
+  "kind": "mechanic",
+  "fmgName": "Incantation",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "merchant:sorcery",
+  "slug": "mechanic:sorcery",
+  "kind": "mechanic",
+  "fmgName": "Sorcery",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "npc:abandoned-merchant",
@@ -61052,6 +61259,26 @@
   "source": "authored"
  },
  {
+  "engineId": "quest:goldmask:regression",
+  "slug": "quest:goldmask:regression",
+  "kind": "quest",
+  "fmgName": "Goldmask — Law of Regression read at the Erdtree statue",
+  "aliases": [
+   "goldmask law of regression read at the erdtree statue"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:gowry:concluded",
+  "slug": "quest:gowry:concluded",
+  "kind": "quest",
+  "fmgName": "Gowry — true nature revealed after Millicent's line",
+  "aliases": [
+   "gowry true nature revealed after millicent line"
+  ],
+  "source": "authored"
+ },
+ {
   "engineId": "quest:hewg:roderika",
   "slug": "quest:hewg:roderika",
   "kind": "quest",
@@ -61852,6 +62079,26 @@
   "source": "authored"
  },
  {
+  "engineId": "quest:thops:barrier",
+  "slug": "quest:thops:barrier",
+  "kind": "quest",
+  "fmgName": "Thops — body found at Raya Lucaria",
+  "aliases": [
+   "thops body found at raya lucaria"
+  ],
+  "source": "authored"
+ },
+ {
+  "engineId": "quest:varre:cloth",
+  "slug": "quest:varre:cloth",
+  "kind": "quest",
+  "fmgName": "Varré — cloth soaked in maiden blood",
+  "aliases": [
+   "varr cloth soaked in maiden blood"
+  ],
+  "source": "authored"
+ },
+ {
   "engineId": "quest:ymir:concluded",
   "slug": "quest:ymir:concluded",
   "kind": "quest",
@@ -61902,6 +62149,16 @@
   "source": "authored"
  },
  {
+  "engineId": "quest:yura:nagakiba",
+  "slug": "quest:yura:nagakiba",
+  "kind": "quest",
+  "fmgName": "Yura — Nagakiba gifted after the Liurnia invasion",
+  "aliases": [
+   "yura nagakiba gifted after the liurnia invasion"
+  ],
+  "source": "authored"
+ },
+ {
   "engineId": "grace:120300",
   "slug": "region:prince-of-death-s-throne",
   "kind": "region",
@@ -61921,6 +62178,17 @@
    "raya lucarian"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "region:ainsel-river",
+  "slug": "region:ainsel-river",
+  "kind": "region",
+  "fmgName": "Ainsel River",
+  "aliases": [
+   "ainsel",
+   "ainsel river"
+  ],
+  "source": "authored"
  },
  {
   "engineId": "region:albinauric-s-shack",
@@ -62585,11 +62853,13 @@
   "engineId": "region:siofra-river",
   "slug": "region:siofra-river",
   "kind": "region",
-  "fmgName": "Fairy",
+  "fmgName": "Siofra River",
   "aliases": [
-   "fairy"
+   "fairy",
+   "siofra",
+   "siofra river"
   ],
-  "source": "game-name-table"
+  "source": "authored"
  },
  {
   "engineId": "region:snowfield-minor-erdtree",

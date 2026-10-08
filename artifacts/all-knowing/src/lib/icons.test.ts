@@ -88,8 +88,13 @@ const EXCEPTIONS: Record<string, string[]> = {
   ],
 }
 
-/** The one boss the Fandom page only illustrates with an item icon. */
-const BOSS_EXCEPTIONS = ['Scadutree Avatar']
+/**
+ * Bosses with no usable picture: the Fandom page for Scadutree Avatar only
+ * illustrates it with an item icon, and the wiki-db page for Lionel the
+ * Lionhearted (a Fia's Champions cooperator with its own boss page) carries no
+ * image at all.
+ */
+const BOSS_EXCEPTIONS = ['Scadutree Avatar', 'Lionel the Lionhearted']
 
 function hasPicture(record: EntityRecord): boolean {
   return Boolean(record.image) || Boolean(fanImage(record.name))

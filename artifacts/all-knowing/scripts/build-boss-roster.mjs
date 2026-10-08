@@ -32,6 +32,8 @@ const npcCombat = read('public/sourced/npc-combat.json')
 const enemyCombat = read('public/sourced/enemy-combat.json')
 const wikiBosses = read('public/sourced/open/wiki-db/boss.json').records ?? []
 const graceXyz = read('public/sourced/open/grace-xyz.json')
+// Task 173 §10 — the one loot list, shared with src/knowledge/dropNames.ts.
+const dropAliasDoc = read('src/data/drop-aliases.json')
 
 // ---------------------------------------------------------------------------
 // Name / id plane
@@ -1188,8 +1190,38 @@ for (const row of read('public/sourced/open/names.json')) {
   if (!gameItemNames.has(key)) gameItemNames.set(key, row.name)
 }
 const DROP_RENAMES = { "rennala's great rune": 'Great Rune of the Unborn', 'ash of war: glintsword arch': 'Ash of War: Glintblade Phalanx' }
-function cleanDrop(raw) {
-  let d = String(raw).replace(/\{\{[^}]*\}?\}?|\[\[|\]\]/g, '').replace(/^\s*\*\s*/, '').replace(/\s*\(if .*$/i, '').trim()
+// Task 173 §10 — mirror src/knowledge/dropNames.ts so the roster and the graph
+// normalise a drop string to the same thing (counts, wiki notes, the shared
+// alias table, and the strings that name no single item).
+const DROP_ALIASES = new Map(Object.entries(dropAliasDoc.aliases ?? {}).map(([key, value]) => [key.toLowerCase(), value]))
+const DROP_DROPPED = new Set((dropAliasDoc.dropped ?? []).map((s) => s.toLowerCase()))
+const DROP_GENERIC = /^(?:somber\s+|ghost[- ]?|grave\s+)?smithing stones?$|^golden runes?$|^(?:grave|ghost)[- ]?glovewort$|^crystal tear$|^larval tear$|^hero(?:'|’)?s? runes?$/i
+const DROP_NOTE = /\s*\((?:if|unless|after|before|when|once|from|requires?|only|ng\+?|new game)[^)]*\)?\s*$/i
+const DROP_JUNK = /^(?:see\b|unlocks\b|includes?\b|sometimes\b|specifying\b|\(include)/i
+function sharedDropClean(raw) {
+  let t = String(raw)
+    .replace(/\{\{[^}]*\}?\}?|\[\[|\]\]/g, '')
+    .replace(/^\s*[*•#\-\s]+/, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+  if (!t) return null
+  if (DROP_JUNK.test(t) || RUNE_LINE.test(t)) return null
+  if (/^[\d~≈.,\s]*runes?(\s*\(ng[^)]*\))?$/i.test(t)) return null
+  t = t.replace(/^\d+\s*x\s+/i, '').replace(/\s*(?:x\s*\d+|\d+\s*x|\*\s*\d+)$/i, '')
+  t = t.replace(DROP_NOTE, '').trim()
+  if (!t) return null
+  const key = t.toLowerCase()
+  if (DROP_DROPPED.has(key)) return null
+  const alias = DROP_ALIASES.get(key)
+  if (alias) return alias
+  if (DROP_GENERIC.test(t)) return null
+  if (/\bset$/i.test(t)) return null
+  return t
+}
+function cleanDropPart(raw) {
+  const shared = sharedDropClean(raw)
+  if (shared == null) return []
+  const d = shared
   if (!d || /runes-currency|^(n\/a|other drops|see .+)$/i.test(d) || RUNE_LINE.test(d)) return []
   // Half of a note split on its comma ("the Fell Omen not already defeated)") or a bare number.
   if (/^[\d,.\s]+$/.test(d) || (d.includes(')') && !d.includes('('))) return []
@@ -1198,9 +1230,6 @@ function cleanDrop(raw) {
   // Spirit ashes: the game names the item after the spirit ("Black Knife Tiche").
   const ashes = /^(.*?)\s+(?:spirit\s+)?ashes$/i.exec(d)
   if (ashes && known(ashes[1])) return [known(ashes[1])]
-  if (/\sset$/i.test(d)) return [d.replace(/\sset$/i, ' Set')]
-  const parts = d.split(/,\s+/)
-  if (parts.length > 1 && parts.every((p) => known(p))) return parts.map(known)
   const numbered = /^(.*?)\s*[([]?\+?(\d+)[)\]]?$/.exec(d)
   if (numbered) {
     const [, base, n] = numbered
@@ -1208,6 +1237,9 @@ function cleanDrop(raw) {
     if (hit) return [hit]
   }
   return [d]
+}
+function cleanDrop(raw) {
+  return String(raw).split(/,\s+/).flatMap(cleanDropPart)
 }
 for (const record of encounters.values()) {
   const amounts = new Set(record.drops.filter((d) => RUNE_LINE.test(String(d).trim()) && !/\(ng/i.test(d)).map((d) => Number(String(d).replace(/\(.*$/, '').replace(/[^0-9]/g, ''))))
