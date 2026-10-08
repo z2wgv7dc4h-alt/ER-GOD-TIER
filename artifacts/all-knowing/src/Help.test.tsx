@@ -1,6 +1,7 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import { HelpSheet } from './Help'
+import { SECTIONS } from './lib/sections'
 import { SHORTCUT_GROUPS } from './lib/shortcuts'
 
 describe('HelpSheet', () => {
@@ -52,5 +53,29 @@ describe('HelpSheet', () => {
     // No dungeon interiors, no gathering nodes plotted on the map.
     expect(text).not.toMatch(/dungeon interior/i)
     expect(text).not.toMatch(/gathering nodes? (on|displayed|shown|plotted)/i)
+  })
+
+  it('names only sections and sub-views that exist in the shell model', () => {
+    // Strip markup so the parenthetical lists read as plain prose.
+    const plain = text.replace(/<[^>]+>/g, '')
+    for (const section of SECTIONS) {
+      expect(plain, section.label).toContain(section.label)
+      for (const sub of section.subs) {
+        expect(plain.toLowerCase(), `${section.label} → ${sub.label}`).toContain(
+          sub.label.toLowerCase(),
+        )
+      }
+    }
+    // Every "Section (a / b / …)" list must match that section's real sub-views exactly,
+    // so the Help can never name a tab that the shell does not have.
+    const groups = [...plain.matchAll(/(Tarnished|Journey|Library|Gideon)\s*\(([^)]*)\)/g)]
+    expect(groups.length).toBeGreaterThan(0)
+    for (const [, label, list] of groups) {
+      const meta = SECTIONS.find((s) => s.label === label)
+      expect(meta, label).toBeDefined()
+      const named = list.split('/').map((s) => s.trim().toLowerCase()).filter(Boolean)
+      const actual = (meta?.subs ?? []).map((s) => s.label.toLowerCase())
+      expect(named, label).toEqual(actual)
+    }
   })
 })
