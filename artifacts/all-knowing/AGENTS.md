@@ -6,7 +6,9 @@ Your task brief is in `docs/tasks/<N>-*.md`. Do exactly what it says; nothing ex
 
 ## Never
 - Never read, list, cat, grep or open `.env` / `.env.local` (they hold a private API key).
-- No `npm install`, no dev servers (`npm run dev`, `vite`), no `git push`, no merging branches.
+- No `npm install`, no dev servers or previews (`npm run dev`, `vite`, `vite preview`), no `git push`, no merging
+  branches. Never start background/detached processes (`Start-Process`, `start`, `&`): they open visible
+  windows on the owner's PC. Even if a brief asks for a server, don't — say so in the report.
 - Never edit, remove or relabel builds (`build:*` records, build data) or Gideon code.
 - Never hand-edit generated files: `public/sourced/entity-index.json`, `public/sourced/aliases.json`,
   `src/data/aliases.json`, `docs/PAGE-AUDIT.md` etc. Change the generator and regenerate.
