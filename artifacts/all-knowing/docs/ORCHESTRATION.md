@@ -14,7 +14,8 @@ work in git worktrees. A Node supervisor runs the queue unattended. The owner do
 
 ## Start / check / stop
 - Start (once; no window): from Claude's PowerShell tool
-  `Start-Process -WindowStyle Hidden -FilePath node -ArgumentList '"C:/Users/RIGGUSPIG/Desktop/ER-MASTER-TOOL-wt/supervisor.mjs"' -WorkingDirectory C:\Users\RIGGUSPIG\Desktop\ER-MASTER-TOOL-wt`
+  `Start-Process -WindowStyle Hidden -FilePath node -ArgumentList '"C:/Users/RIGGUSPIG/Desktop/ER-MASTER-TOOL-wt/supervisor.mjs"' -WorkingDirectory C:\Users\RIGGUSPIG\Desktop\ER-MASTER-TOOL-wt -RedirectStandardError C:\Users\RIGGUSPIG\Desktop\ER-MASTER-TOOL-wt\supervisor.err -RedirectStandardOutput C:\Users\RIGGUSPIG\Desktop\ER-MASTER-TOOL-wt\supervisor.out`
+  (if queued tasks don't start, check `supervisor.err`; a hung supervisor is fixed by stop + start)
 - Watch: Monitor tool running `bash C:/Users/RIGGUSPIG/Desktop/ER-MASTER-TOOL-wt/watch.sh`
   (prints new supervisor events and any newly visible console window). Re-arm every 30 min.
 - Status: `bash /c/Users/RIGGUSPIG/Desktop/ER-MASTER-TOOL-wt/status.sh 160 163 …` (one line per task).
