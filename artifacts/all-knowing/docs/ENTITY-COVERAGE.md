@@ -23,19 +23,19 @@ drops / strategy fields remain in the table as information.
 | guard | target | actual | status |
 | --- | --- | --- | --- |
 | boss: location + region (all bosses) | ≥ 100% | 100% | PASS |
-| weapon: requirements + scaling + location (all weapons) | ≥ 100% | 100% | PASS |
-| shield: requirements + scaling + location (all shields) | ≥ 100% | 100% | PASS |
-| armor: negation + weight + location (all armor) | ≥ 100% | 100% | PASS |
-| armor: description + location | ≥ 100% | 100% | PASS |
-| talisman: description + location | ≥ 100% | 100% | PASS |
-| spell: description + location | ≥ 100% | 100% | PASS |
-| ash: description + location | ≥ 100% | 100% | PASS |
-| spirit: description + location | ≥ 100% | 100% | PASS |
-| item: description + location (all items) | ≥ 100% | 100% | PASS |
+| weapon: requirements + scaling + location (all weapons) | ≥ 98% | 98.8% | PASS |
+| shield: requirements + scaling + location (all shields) | ≥ 95% | 95.7% | PASS |
+| armor: negation + weight + location (all armor) | ≥ 97% | 97.7% | PASS |
+| armor: description + location | ≥ 97% | 97.7% | PASS |
+| talisman: description + location | ≥ 97% | 97.7% | PASS |
+| spell: description + location | ≥ 93% | 93.4% | PASS |
+| ash: description + location | ≥ 97% | 97.7% | PASS |
+| spirit: description + location | ≥ 98% | 98.4% | PASS |
+| item: description + location (all items) | ≥ 99% | 99.5% | PASS |
 | grace: coords | ≥ 100% | 100% | PASS |
 | npc: description (characters) | ≥ 95% | 100% | PASS |
-| region: description + location (locations) | ≥ 95% | 96.9% | PASS |
-| enemy: description + location (enemies) | ≥ 90% | 90.6% | PASS |
+| region: description + location (locations) | ≥ 95% | 96.4% | PASS |
+| enemy: description + location (enemies) | ≥ 85% | 85.6% | PASS |
 
 ## Before (no enrichment index)
 
@@ -61,21 +61,21 @@ drops / strategy fields remain in the table as information.
 
 | kind | entities | Desc | Location | Map | Coords | Image | Stats | Effect | HP+Neg+Loc | Drops | Strategy | Req+Scale+Loc | Desc+Loc |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| boss | 280 | 97.1% | 100% | 87.1% | · | 98.6% | 99.6% | · | 98.6% | 97.5% | 98.6% | · | · |
-| weapon | 418 | 100% | 100% | 0% | · | 99.8% | · | · | · | · | · | 100% | · |
-| shield | 69 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | 100% | · |
-| armor | 565 | 100% | 100% | 0% | · | 99.8% | 100% | · | · | · | · | · | 100% |
-| talisman | 88 | 100% | 100% | 0% | · | 100% | · | 100% | · | · | · | · | 100% |
-| spell | 167 | 100% | 100% | 0% | · | 100% | · | — | · | · | · | · | 100% |
-| ash | 87 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | · | 100% |
-| spirit | 63 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | · | 100% |
-| item | 441 | 100% | 100% | 0% | · | 99.5% | 100% | · | · | · | · | · | 100% |
+| boss | 281 | 95.7% | 100% | 86.8% | · | 98.2% | 99.6% | · | 98.2% | 97.2% | 98.2% | · | · |
+| weapon | 418 | 100% | 98.8% | 0% | · | 99.8% | · | · | · | · | · | 98.8% | · |
+| shield | 69 | 100% | 95.7% | 0% | · | 100% | · | · | · | · | · | 95.7% | · |
+| armor | 565 | 100% | 97.7% | 0% | · | 99.8% | 100% | · | · | · | · | · | 97.7% |
+| talisman | 88 | 100% | 97.7% | 0% | · | 100% | · | 100% | · | · | · | · | 97.7% |
+| spell | 167 | 100% | 93.4% | 0% | · | 100% | · | — | · | · | · | · | 93.4% |
+| ash | 87 | 100% | 97.7% | 0% | · | 100% | · | · | · | · | · | · | 97.7% |
+| spirit | 63 | 100% | 98.4% | 0% | · | 100% | · | · | · | · | · | · | 98.4% |
+| item | 441 | 100% | 99.5% | 0% | · | 99.5% | 100% | · | · | · | · | · | 99.5% |
 | material | 3 | 100% | 100% | 0% | · | 100% | · | · | · | · | · | · | · |
-| npc | 189 | 100% | 82.5% | 30.7% | · | 32.8% | 88.9% | · | · | · | · | · | · |
-| grace | 417 | 66.7% | 100% | · | 100% | · | · | · | · | · | · | · | · |
-| dungeon | 119 | 97.5% | 100% | 100% | · | 99.2% | · | · | · | · | · | · | · |
-| region | 254 | 96.9% | 99.6% | 0% | · | · | · | · | · | · | · | · | · |
-| enemy | 614 | 91.4% | 99.2% | 0% | · | 28.2% | 95.9% | · | 90.2% | 56.7% | 0% | · | · |
+| npc | 187 | 100% | 82.4% | 30.5% | · | 32.6% | 88.8% | · | · | · | · | · | · |
+| grace | 417 | 4.1% | 100% | · | 100% | · | · | · | · | · | · | · | · |
+| dungeon | 119 | 96.6% | 100% | 100% | · | 99.2% | · | · | · | · | · | · | · |
+| region | 252 | 96.4% | 99.6% | 0% | · | · | · | · | · | · | · | · | · |
+| enemy | 613 | 86.5% | 99.2% | 0% | · | 28.2% | 95.9% | · | 90.2% | 56.8% | 0% | · | · |
 
 ## Spot checks
 
@@ -101,7 +101,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 **Strategy:** Health: 4,174 HP Defense: 103 Stance: 80 Parryable: Yes, but 2 parries are required per stance break Is vulnerable to a critical hit after being stance broken or parried Damage: Standard, Strike, Pierce, Holy Drops 12,000, Talisman Pouch (NG only) Negations (or Absorptions) Standard: 0 Slash: -10 Strike: 0 Pierce: 0 Magic: 0 Fire: 0 Lightning: 0 Holy: 40 The negation numbers are the&#160;% of your damage that gets blocked. For example, if a negation is 60, 40% of that damage by that type will go through and 60% will be negated. Bigger number = less damage.
 
-**Related:** Rampart Tower · Castleward Tunnel · Godrick the Grafted
+**Related:** Rampart Tower · Castleward Tunnel · Stormveil · Godrick the Grafted
 
 ### Malenia (`boss:malenia`)
 
@@ -129,7 +129,7 @@ The ten records Task 119 names, printed straight from the built index.
 
 ### Radahn (`boss:radahn`)
 
-**Description:** , also known as General Radahn, the Red Lion General, and later as Promised Consort Radahn and Radahn, Consort of Miquella, is an optional Demigod boss in Elden Ring and a mandatory God boss in Elden Ring:;Shadow of the Erdtree.
+**Description:** General Radahn was feared as the strongest Demigod during the Shattering.
 
 **Location:** Caelid
 
@@ -249,8 +249,6 @@ The ten records Task 119 names, printed straight from the built index.
 
 ### Church of Elleh grace (`grace:elleh`)
 
-**Description:** The Church of Elleh is located just north of the First Step, where the player first emerges after leaving the Stranded Graveyard.
-
 **Location:** Limgrave
 
 **Coords:** 35.11, 69.03
@@ -262,7 +260,86 @@ The ten records Task 119 names, printed straight from the built index.
 
 ## Remaining misses (guard fields, by name)
 
-### npc — description (characters) (0/189)
+### weapon — requirements + scaling + location (all weapons) (413/418)
+
+- Ansbach's Longbow
+- Beast Claw
+- Freyja's Greatsword
+- Sword of Darkness
+- Sword of Light
+
+### shield — requirements + scaling + location (all shields) (66/69)
+
+- Brass Shield
+- Rickety Shield
+- Scripture Wooden Shield
+
+### armor — negation + weight + location (all armor) (552/565)
+
+- Banished Knight Helm
+- Banished Knight Helm (altered)
+- Beast Champion Armor (altered)
+- Beast Champion Gauntlets
+- Beast Champion Greaves
+- Corhyn's Robe
+- Crucible Greaves
+- Fire Prelate Greaves
+- Haligtree Crest Surcoat
+- Haligtree Gauntlets
+- Haligtree Greaves
+- Haligtree Helm
+- Twinned Gauntlets
+
+### armor — description + location (552/565)
+
+- Banished Knight Helm
+- Banished Knight Helm (altered)
+- Beast Champion Armor (altered)
+- Beast Champion Gauntlets
+- Beast Champion Greaves
+- Corhyn's Robe
+- Crucible Greaves
+- Fire Prelate Greaves
+- Haligtree Crest Surcoat
+- Haligtree Gauntlets
+- Haligtree Greaves
+- Haligtree Helm
+- Twinned Gauntlets
+
+### talisman — description + location (86/88)
+
+- Marika's Soreseal
+- Shabriri's Woe
+
+### spell — description + location (156/167)
+
+- Bestial Vitality
+- Cannon of Haima
+- Flame, Fall Upon Them
+- Gurranq's Beast Claw
+- Heal
+- Poison Armament
+- Poison Mist
+- Stone of Gurranq
+- Surge, O Flame!
+- Tibia's Summons
+- Urgent Heal
+
+### ash — description + location (85/87)
+
+- Hoarah Loux's Earthshaker
+- Waves of Darkness
+
+### spirit — description + location (62/63)
+
+- Spirit Jellyfish Ashes
+
+### item — description + location (all items) (439/441)
+
+- Cerulean Crystal Tear
+- Crimson Crystal Tear
+
+### npc — description (characters) (0/187)
 
 - Blaidd
 - Boc the Seamster
@@ -309,7 +386,6 @@ The ten records Task 119 names, printed straight from the built index.
 - Dragon Communion Priestess
 - Dryleaf Dane
 - Dung Eater
-- Edgar
 - Elphael Needle Statue
 - Enia
 - Ensha (lord)
@@ -347,7 +423,6 @@ The ten records Task 119 names, printed straight from the built index.
 - Hornsent (NPC)
 - Host of Fingers
 - Imprisoned Merchant
-- Irina of Morne
 - Isolated Merchant (Dragonbarrow)
 - Isolated Merchant (Liurnia of the Lakes)
 - Isolated Merchant (Weeping Peninsula)
@@ -454,9 +529,10 @@ The ten records Task 119 names, printed straight from the built index.
 - Witch-Hunter Jerren
 - Yuri
 
-### region — description + location (locations) (246/254)
+### region — description + location (locations) (243/252)
 
 - (unresolved)
+- Miquella's Haligtree
 - Abandoned Coffin
 - Artist's Shack (Gravesite Plain)
 - Elphael Inner Wall
@@ -465,15 +541,24 @@ The ten records Task 119 names, printed straight from the built index.
 - Haligtree Town
 - Prince of Death's Throne
 
-### enemy — description + location (enemies) (556/614)
+### enemy — description + location (enemies) (525/613)
 
 - Aging Untouchable
 - Amy, Third Sister
+- Ancestral Follower (Siofra River)
+- Ancient Hero of Zamor (Mountaintops of the Giants) - Giant-Conquering Hero's Grave [Boss]
 - Aurelia (Jellyfish)
 - Avionette Soldier
+- Azula Beastman (Boss)
+- Azur
 - Basin of Atonement
+- Black Dumpling Elder Albinauric
+- Black Dumpling Elder Albinauric (Leyndell, Royal Capital)
 - Bloodbane Albinauric
+- Caria Manor Silent Spirit
 - Catapult
+- Cathedral of Dragon Communion
+- Church of Dragon Communion
 - Clouded Mirror Stand
 - Death Bird (Altus)
 - Death Bird (Limgrave)
@@ -481,29 +566,43 @@ The ten records Task 119 names, printed straight from the built index.
 - Death Bird (Weeping Peninsula)
 - Disciple of Rot
 - Dominula Celebrant
+- Dragonbarrow Silent Spirit
 - Elder Albinauric
 - Elder Albinauric Sorcerer
+- Flying Dragon (Rennala)
+- Flying Dragon (Small)
 - Ghostly Worm
+- Giant Ash of War Scarab
 - Giant Putrid Flesh (Blood)
 - Goat
+- Grand Altar of Dragon Communion
+- Graven School
 - High Page (Leyndell)
 - High Page (Raya Lucaria)
 - Imprisoned Elder Albinauric
+- Jarwight
 - Large Albinauric
+- Large Ash of War Scarab
 - Large Bloodbane Albinauric
+- Large Crimson Tear Scarab
 - Large Inquisitor
+- Living Fire Jar
 - Living Magma
 - Malformed Stars
 - Malformed Stars (Ainsel River)
 - Malformed Stars (Snowfield Mine Clone)
 - Maliketh (Farum Azula)
+- Man-Serpent
+- Margit (Capital Outskirts)
 - Mary, Eldest Sister
 - Maureen, Second Sister
+- Merciless Chariot (Limgrave) - Fringefolk Hero's Grave
+- Merciless Chariot (Mt. Gelmer) - Gelmir Hero's Grave
+- Merciless Chariot (Mt. Gelmer) - Gelmir Hero's Grave / Auriza Hero's Grave
 - Midra - Human
 - Morgott - Dead (Leyndell)
 - Page
-- Page (Leyndell)
-- Page (Shaded Castle)
+- Poison Claw Elder Albinauric
 - Polyanna, Adopted Daughter
 - Polyanna, Youngest Sister
 - Putrid Flesh
@@ -517,13 +616,20 @@ The ten records Task 119 names, printed straight from the built index.
 - Rotmound
 - Ruined Gargoyle (Leyndell - Royal Capital)
 - Rykard-Hating Ghost
+- Shade
+- Shadow Militia
 - Slug
 - Slug (Shaded Castle)
 - Steed
+- Stormhill Colosseum Silent Spirit
 - Sword of Bernahl
+- Trebuchet (Limgrave) - Stormhill
+- Trebuchet (Weeping Peninsula) - Bridge of Sacrifice
 - Umibozu
 - Walking Mausoleum
 - Watcher Stones
+- Winged Misbegotten
+- Winter-Lantern
 - Worm Slug
 
 
@@ -538,11 +644,11 @@ dropped silently.
 | acquisition | 2260 |
 | checklists/graces | 355 |
 | shops | 348 |
-| fanapi/locations | 87 |
-| checklists/locations | 86 |
+| fanapi/locations | 86 |
+| checklists/locations | 85 |
 | recipes | 64 |
 | armory-bosses | 3 |
 | checklists/bosses | 2 |
 | fanapi/bosses | 2 |
 
-_Regenerated 2026-10-07._
+_Regenerated 2026-10-08._

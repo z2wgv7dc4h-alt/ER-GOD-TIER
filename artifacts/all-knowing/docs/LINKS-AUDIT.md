@@ -50,34 +50,34 @@ table. The table below is the current traversal; the guards snapshot it.
 | boss.drops | ≥ 80% | 97.3% | PASS |
 | remembrance.boss | ≥ 90% | 100% | PASS |
 | remembrance.Enia trades | ≥ 90% | 100% | PASS |
-| region.contents | ≥ 30% | 51.7% | PASS |
+| region.contents | ≥ 30% | 56.1% | PASS |
 | material.source | ≥ 90% | 100% | PASS |
-| talisman.source | ≥ 86% | 94.3% | PASS |
-| weapon.source | ≥ 85% | 87.5% | PASS |
-| spell.source | ≥ 84% | 92.2% | PASS |
+| talisman.source | ≥ 86% | 86.7% | PASS |
+| weapon.source | ≥ 85% | 86.4% | PASS |
+| spell.source | ≥ 84% | 84.4% | PASS |
 | npc.location | ≥ 65% | 78.7% | PASS |
 
 All guard minimums met.
 
 | kind | entities | source | drops | location | contents | region | stock | boss | trades |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| armor | 751 | 86.7% | · | · | · | · | · | · | · |
-| ash | 125 | 80% | · | · | · | · | · | · | · |
+| armor | 751 | 84.7% | · | · | · | · | · | · | · |
+| ash | 125 | 76.8% | · | · | · | · | · | · | · |
 | boss | 296 | · | 97.3% | 99% | · | · | · | · | · |
 | dungeon | 119 | · | · | · | 87.4% | · | · | · | · |
 | grace | 417 | · | · | · | · | 99.3% | · | · | · |
-| item | 1186 | 76.4% | · | · | · | · | · | · | · |
+| item | 1187 | 71.3% | · | · | · | · | · | · | · |
 | material | 3 | 100% | · | · | · | · | · | · | · |
 | merchant | 79 | · | · | · | · | · | 100% | · | · |
 | npc | 188 | · | · | 78.7% | · | · | · | · | · |
-| quest | 467 | · | · | 72.8% | · | · | · | · | · |
-| region | 296 | · | · | · | 51.7% | · | · | · | · |
+| quest | 467 | · | · | 72.6% | · | · | · | · | · |
+| region | 296 | · | · | · | 56.1% | · | · | · | · |
 | remembrance | 25 | · | · | · | · | · | · | 100% | 100% |
-| shield | 67 | 95.5% | · | · | · | · | · | · | · |
-| spell | 218 | 92.2% | · | · | · | · | · | · | · |
-| spirit | 80 | 91.3% | · | · | · | · | · | · | · |
-| talisman | 158 | 94.3% | · | · | · | · | · | · | · |
-| weapon | 441 | 87.5% | · | · | · | · | · | · | · |
+| shield | 67 | 94% | · | · | · | · | · | · | · |
+| spell | 218 | 84.4% | · | · | · | · | · | · | · |
+| spirit | 80 | 87.5% | · | · | · | · | · | · | · |
+| talisman | 158 | 86.7% | · | · | · | · | · | · | · |
+| weapon | 441 | 86.4% | · | · | · | · | · | · | · |
 
 ## Unlinked mentions
 
@@ -87,7 +87,7 @@ the links a plain renderer still owes.
 
 | surface | linkable | unlinked before | unlinked after |
 | --- | --- | --- | --- |
-| entity descriptions | 840 | 0 | 0 |
+| entity descriptions | 757 | 0 | 0 |
 | wiki sections | 1681 | 0 | 0 |
 | acquisition text | 1579 | 0 | 0 |
 | quest step actions | 650 | 577 | 0 |

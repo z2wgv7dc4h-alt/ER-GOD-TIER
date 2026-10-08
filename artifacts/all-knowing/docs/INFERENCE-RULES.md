@@ -9,8 +9,8 @@ PS5 capture rules — plus what the real-player scenario fixture actually proves
 
 | metric | before Task 138 | after Task 138 |
 | --- | --- | --- |
-| rules enumerated | 561 | 581 |
-| certain rules | 560 | 580 |
+| rules enumerated | 560 | 580 |
+| certain rules | 559 | 579 |
 | likely rules | 1 | 1 |
 | scenario inferred facts | 9 | 17 |
 
@@ -76,7 +76,7 @@ candidates to demote into the confirmation layer.
 
 ## Every rule
 
-### Catalog `implies` (287)
+### Catalog `implies` (286)
 
 | id | trigger | conclusions | class | conf | why | added |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -87,7 +87,6 @@ candidates to demote into the confirmation layer.
 | `catalog:region:altus` | `region:altus` | `region:liurnia` | certain | 0.9 | Holding/reaching Altus Plateau requires the listed facts first. | — |
 | `catalog:region:leyndell` | `region:leyndell` | `region:altus` | certain | 0.9 | Holding/reaching Leyndell, Royal Capital requires the listed facts first. | — |
 | `catalog:region:farum` | `region:farum` | `grace:forge-giants` | certain | 0.9 | Holding/reaching Crumbling Farum Azula requires the listed facts first. | — |
-| `catalog:region:haligtree` | `region:haligtree` | `item:haligtree-secret-medallion` | certain | 0.9 | Holding/reaching Miquella’s Haligtree requires the listed facts first. | — |
 | `catalog:region:shadow` | `region:shadow` | `boss:mohg`, `boss:radahn` | certain | 0.9 | Holding/reaching Realm of Shadow requires the listed facts first. | — |
 | `catalog:grace:elleh` | `grace:elleh` | `grace:first-step` | certain | 0.9 | Holding/reaching Church of Elleh requires the listed facts first. | — |
 | `catalog:grace:gatefront` | `grace:gatefront` | `grace:elleh` | certain | 0.9 | Holding/reaching Gatefront requires the listed facts first. | — |

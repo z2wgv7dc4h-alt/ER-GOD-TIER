@@ -12,7 +12,7 @@ Scenarios audited: **6** · violations: **0**
 | --- | --- | --- | --- |
 | Graces | 5 | 410 | 0.012 |
 | Bosses | 3 | 220 | 0.014 |
-| Items found | 26 | 3046 | 0.009 |
+| Items found | 26 | 3047 | 0.009 |
 
 Lockouts at Stormveil: _none_
 
@@ -24,7 +24,7 @@ Positive upgrades surfaced by Now: 0
 | --- | --- | --- | --- |
 | Graces | 5 | 410 | 0.012 |
 | Bosses | 1 | 220 | 0.005 |
-| Items found | 1 | 3027 | 0.000 |
+| Items found | 1 | 3028 | 0.000 |
 
 Lockouts at Stormveil: _none_
 
@@ -36,7 +36,7 @@ Positive upgrades surfaced by Now: 0
 | --- | --- | --- | --- |
 | Graces | 6 | 410 | 0.015 |
 | Bosses | 5 | 220 | 0.023 |
-| Items found | 4 | 3029 | 0.001 |
+| Items found | 4 | 3030 | 0.001 |
 
 Lockouts at Stormveil: _none_
 
@@ -48,7 +48,7 @@ Positive upgrades surfaced by Now: 0
 | --- | --- | --- | --- |
 | Graces | 2 | 410 | 0.005 |
 | Bosses | 5 | 220 | 0.023 |
-| Items found | 7 | 3032 | 0.002 |
+| Items found | 7 | 3033 | 0.002 |
 
 Lockouts at Stormveil: _none_
 
@@ -60,7 +60,7 @@ Positive upgrades surfaced by Now: 0
 | --- | --- | --- | --- |
 | Graces | 3 | 410 | 0.007 |
 | Bosses | 3 | 220 | 0.014 |
-| Items found | 3 | 3029 | 0.001 |
+| Items found | 3 | 3030 | 0.001 |
 
 Lockouts at Stormveil: _none_
 
@@ -72,7 +72,7 @@ Positive upgrades surfaced by Now: 0
 | --- | --- | --- | --- |
 | Graces | 5 | 410 | 0.012 |
 | Bosses | 1 | 220 | 0.005 |
-| Items found | 0 | 3026 | 0.000 |
+| Items found | 0 | 3027 | 0.000 |
 
 Lockouts at Stormveil: _none_
 
@@ -80,4 +80,4 @@ Positive upgrades surfaced by Now: 0
 
 _All checks passed._
 
-_Regenerated 2026-10-07._
+_Regenerated 2026-10-08._

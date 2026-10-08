@@ -14,14 +14,14 @@ question's data-grounded `expected` block.
 
 | metric | value |
 | --- | ---: |
-| answerable questions — correct | **432/512 (84.4%)** |
-| answerable questions — partial | 30 (5.9%) |
-| answerable questions — wrong | 40 (7.8%) |
+| answerable questions — correct | **406/512 (79.3%)** |
+| answerable questions — partial | 48 (9.4%) |
+| answerable questions — wrong | 48 (9.4%) |
 | answerable questions — no answer | 10 (2.0%) |
 | unanswerable — honest | 88/88 (100.0%) |
 | unanswerable — made up | 0 (0.0%) |
-| latency — median | 13 ms |
-| latency — p95 | 62 ms |
+| latency — median | 10 ms |
+| latency — p95 | 40 ms |
 
 ## By intent
 
@@ -30,25 +30,25 @@ question's data-grounded `expected` block.
 | out-of-scope | 64 | 0 | 0 | 0 | 0 | 64 | 0 |
 | mechanics | 26 | 24 | 0 | 2 | 0 | 0 | 0 |
 | boss-location | 24 | 18 | 6 | 0 | 0 | 0 | 0 |
-| item-location | 24 | 12 | 7 | 3 | 2 | 0 | 0 |
-| how-to-get | 24 | 24 | 0 | 0 | 0 | 0 | 0 |
-| level | 24 | 24 | 0 | 0 | 0 | 0 | 0 |
+| item-location | 24 | 8 | 11 | 3 | 2 | 0 | 0 |
+| how-to-get | 24 | 18 | 6 | 0 | 0 | 0 | 0 |
+| level | 24 | 20 | 0 | 4 | 0 | 0 | 0 |
 | what-next | 24 | 24 | 0 | 0 | 0 | 0 | 0 |
 | npc-quest | 24 | 16 | 4 | 4 | 0 | 0 | 0 |
 | build-advice | 24 | 22 | 0 | 2 | 0 | 0 | 0 |
 | class-build | 24 | 20 | 0 | 4 | 0 | 0 | 0 |
 | recommend | 24 | 22 | 0 | 0 | 2 | 0 | 0 |
-| lore | 24 | 20 | 0 | 2 | 2 | 0 | 0 |
+| lore | 24 | 18 | 0 | 4 | 2 | 0 | 0 |
 | requirements | 24 | 22 | 0 | 2 | 0 | 0 | 0 |
 | how-to-use | 24 | 24 | 0 | 0 | 0 | 0 | 0 |
 | npc-location | 22 | 16 | 5 | 1 | 0 | 0 | 0 |
-| navigation | 22 | 16 | 4 | 0 | 0 | 2 | 0 |
+| navigation | 22 | 14 | 6 | 0 | 0 | 2 | 0 |
 | how-to-beat | 22 | 22 | 0 | 0 | 0 | 0 | 0 |
-| compare | 22 | 16 | 0 | 4 | 2 | 0 | 0 |
+| compare | 22 | 14 | 0 | 6 | 2 | 0 | 0 |
 | ending | 22 | 22 | 0 | 0 | 0 | 0 | 0 |
 | pvp | 22 | 18 | 0 | 4 | 0 | 0 | 0 |
 | bug-glitch | 22 | 0 | 0 | 0 | 0 | 22 | 0 |
-| drops | 20 | 18 | 0 | 0 | 2 | 0 | 0 |
+| drops | 20 | 12 | 6 | 0 | 2 | 0 | 0 |
 | where-is | 18 | 8 | 4 | 6 | 0 | 0 | 0 |
 | other | 16 | 12 | 0 | 4 | 0 | 0 | 0 |
 | multi-part | 14 | 12 | 0 | 2 | 0 | 0 | 0 |
@@ -57,20 +57,20 @@ question's data-grounded `expected` block.
 
 | character | runs | correct | partial | wrong | noAnswer | honest | madeUp | median ms |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| empty | 300 | 216 | 15 | 20 | 5 | 44 | 0 | 13 |
-| mid | 300 | 216 | 15 | 20 | 5 | 44 | 0 | 12 |
+| empty | 300 | 203 | 24 | 24 | 5 | 44 | 0 | 10 |
+| mid | 300 | 203 | 24 | 24 | 5 | 44 | 0 | 10 |
 
 ## Failure causes
 
 "Misses" are every run that was not `correct` (answerable) or `honest`
-(unanswerable), i.e. 80 of 600 runs.
+(unanswerable), i.e. 106 of 600 runs.
 
 | failure cause | count | share of misses | example |
 | --- | ---: | ---: | --- |
-| entity-not-recognised | 30 | 37.5% | I’m planning a rl 11 character (or max 21) and I need bot Ma… |
-| answer-buried | 30 | 37.5% | Mine is the golden hippopotamus, they have a giant rhino loo… |
-| wiki-snippet-irrelevant | 10 | 12.5% | Im at outer wall in Altus and just finished Ranni’s questlin… |
-| data-missing | 10 | 12.5% | Does anyone else find it easier to parry with a dagger than … |
+| answer-buried | 48 | 45.3% | Mine is the golden hippopotamus, they have a giant rhino loo… |
+| entity-not-recognised | 36 | 34.0% | I’m planning a rl 11 character (or max 21) and I need bot Ma… |
+| wiki-snippet-irrelevant | 12 | 11.3% | Im at outer wall in Altus and just finished Ranni’s questlin… |
+| data-missing | 10 | 9.4% | Does anyone else find it easier to parry with a dagger than … |
 
 ## Unanswerable questions — what Gideon actually said
 
@@ -134,30 +134,30 @@ project data; `Gideon said` is the first part of the real answer.
 | 3 | empty | where-is | Can someone help me with varrè's quest? I have to invade 3 player and … | ids ["invader:varre"]; must ["Mohgwyn"] | Poison/Bleed Wretch (RL30) (invade, RL30-50) — Low-level invasion build. Status buildup outpaces the tiny health pools hosts have at RL30, and the Reduvia bleed… |
 | 4 | empty | item-location | Where to put surplus levels for my Darkmoon Greatsword PVE build? | ids ["item:greatsword"]; must ["Caelid"] | Next for this character: 1. [[boss:agheel|Flying Dragon Agheel — still up in Limgra…]] — Flying Dragon Agheel is still up in Limgrave 2. [[boss:cemetery-shade|C… |
 | 5 | empty | item-location | Could anyone help me find a good strenght/faith weapon i can use black… | ids ["item:black-flame-blade"]; must ["Mountaintops of the Giants","Le… | Black Flame Godslayer — Black Flame burns a percentage of max HP on hit, so it keeps pace with boss health pools where flat-AR incantations fall off. The real f… |
-| 6 | empty | npc-quest | where do i continue Fastest route: Elden Lord | ids ["line:blitz-lord"]; must [] | Elden Lord (default) (ending) is still open (0/4). Next: Two Great Runes and the capital. Godrick plus one other is enough to open Leyndell. After that: Morgott… |
-| 7 | empty | npc-quest | what is the next step of the Fastest route: Age of Stars quest | ids ["line:blitz-stars"]; must [] | Age of Stars (ending) is still open (0/8). Next: Enter Ranni’s service at Ranni’s Rise. Three Sisters, after Caria Manor. Speak to Blaidd, Iji, and Seluvis in t… |
-| 8 | empty | build-advice | Nagakiba vs Rivers of Blood build, which one is the best in terms of t… | ids ["build:rivers"]; must [] | Bloody Finger Hunter Yura (story) is still open (0/4). Next: Help Yura against Bloody Finger Nerijus. Agheel Lake, Limgrave. He is summonable for the invasion a… |
-| 9 | empty | class-build | Wanted to make a build cantered around sword of night and flame and re… | ids ["build:sword-night-flame"]; must [] | “- Carian Sorcery Sword - Carian Thrusting Shield - Rellana's Armor - Rellana's Cameo - Rellana's Helm - Rellana's Twin Moons” — Rellana's Twin Blades · See Als… |
-| 10 | empty | class-build | RL 150 Eleonora Build Help | ids ["build:eleonora"]; must [] | Rivers of Blood — Still deletes most of the Lands Between. Weak to high bleed resist (Malenia is the joke). I can put those stats on this sheet. |
-| 11 | empty | compare | Which is better backhand blades keen with bloodflame blade or bleed af… | ids ["item:backhand-blade"]; must [] | “Bloodflame Blade** is an incantation spell in Elden Ring. It is one of the Blood Oath Incantations.” — Bloodflame Blade · Summary From the wiki page “Bloodflam… |
-| 12 | empty | compare | Notice how mohg’s self confidence makes him better than morgott in eve… | ids ["boss:mohg"]; must [] | Morgott, the Omen King — boss in Leyndell. |
-| 13 | empty | lore | Why did Miquella need Mohg? | ids ["boss:mohg"]; must ["Mohgwyn Dynasty Mausoleum"] | Miquella of the Haligtree — Cocoon of the Empyrean (husk) · Gate of Divinity. Miquella the Kind, also known as Miquella of the Haligtree, Empyrean Miquella, and… |
-| 14 | empty | mechanics | Is R1 into Stormcaller and true combo or did I get lucky on Hyper Armo… | ids ["mechanic:poise"]; must [] | “Skill: Stormcaller** is a Skill in Elden Ring.” — [[wiki:skill-stormcaller|Skill: Stormcaller]] · Summary “Stormcaller Church** is a location in Elden Ring.” —… |
-| 15 | empty | requirements | What stats should I do for a duel wild ancient meteorite ore greatswor… | ids ["item:greatsword"]; must ["Str 31","Dex 12"] | Sorcerer Duelist (RL90) (duel, RL60-90) — Azur's Staff plus Radagon Icon reaches the cast-speed cap, Carian Slicer staggers anyone under ~30 poise, and two Magi… |
-| 16 | empty | multi-part | " " Can Flame Spear be put on the Cleanrot Knight's Sword? | ids ["item:cleanrot-knight-s-sword"]; must [] | Cleanrot Knight — boss in Caelid. |
-| 17 | empty | pvp | Invasion farming in Gelmir Hero's Grave? | ids ["dungeon:gelmir-hero-s-grave"]; must [] | Poison/Bleed Wretch (RL30) (invade, RL30-50) — Low-level invasion build. Status buildup outpaces the tiny health pools hosts have at RL30, and the Reduvia bleed… |
-| 18 | empty | pvp | Thoughts on the claymore for PvP? | ids ["item:claymore"]; must [] | Fingerprint Acolyte (RL50) (both, RL30-50) — Themed after Vyke: block behind a greatshield and answer with a thrusting poke and Frenzied Flame incantations, so … |
-| 19 | empty | other | Extra Death Knight armor set? ( ) | ids ["item:death-knight-armor"]; must [] | Death Knight — hunt. |
-| 20 | empty | other | Help with Omen Mohg? | ids ["boss:mohg-omen"]; must [] | Mohg, Lord of Blood. Level 1. Real NpcParam absorb: resists Fire 80%, Magic 40%, Lightning 40%; bleed soft (112). Want a bleed sheet instead? |
-| 21 | mid | where-is | Im at outer wall in Altus and just finished Ranni’s questline. Where s… | ids ["grace:outer-wall"]; must ["Capital Outskirts"] | “Pidia's questline becomes locked after giving Ranni the Fingerslayer Blade, regardless of any steps already completed. 1. Follow Ranni the Witch's questline an… |
-| 22 | mid | where-is | I’m planning a rl 11 character (or max 21) and I need bot Marika and R… | ids ["npc:queen-marika-the-eternal"]; must ["Stone Platform"] | Radagon's Soreseal — Chest inside Fort Faroth in Dragonbarrow. Want that grace on the atlas? |
-| 23 | mid | where-is | Can someone help me with varrè's quest? I have to invade 3 player and … | ids ["invader:varre"]; must ["Mohgwyn"] | Poison/Bleed Wretch (RL30) (invade, RL30-50) — Low-level invasion build. Status buildup outpaces the tiny health pools hosts have at RL30, and the Reduvia bleed… |
-| 24 | mid | item-location | Could anyone help me find a good strenght/faith weapon i can use black… | ids ["item:black-flame-blade"]; must ["Mountaintops of the Giants","Le… | Black Flame Godslayer — Black Flame burns a percentage of max HP on hit, so it keeps pace with boss health pools where flat-AR incantations fall off. The real f… |
-| 25 | mid | npc-location | Please help a Tarnished find Ranni, Blaidd and Iji | ids ["npc:blaidd"]; must ["Limgrave"] | This beat is a point of no return (Ranni given the Fingerslayer Blade) — continuing locks Preceptor Seluvis — potion and puppet stock, Magic Scorpion Charm, Fin… |
-| 26 | mid | npc-quest | where do i continue Fastest route: Elden Lord | ids ["line:blitz-lord"]; must [] | Elden Lord (default) (ending) is still open (1/4). Next: Morgott, then the Forge of the Giants. Melina must still be with you. You are level 70. This beat is ki… |
-| 27 | mid | npc-quest | what is the next step of the Fastest route: Age of Stars quest | ids ["line:blitz-stars"]; must [] | This beat is a point of no return (Ranni given the Fingerslayer Blade) — continuing locks Preceptor Seluvis — potion and puppet stock, Magic Scorpion Charm, Fin… |
-| 28 | mid | build-advice | Nagakiba vs Rivers of Blood build, which one is the best in terms of t… | ids ["build:rivers"]; must [] | Bloody Finger Hunter Yura (story) is still open (0/4). Next: Help Yura against Bloody Finger Nerijus. Agheel Lake, Limgrave. He is summonable for the invasion a… |
-| 29 | mid | class-build | Wanted to make a build cantered around sword of night and flame and re… | ids ["build:sword-night-flame"]; must [] | “- Carian Sorcery Sword - Carian Thrusting Shield - Rellana's Armor - Rellana's Cameo - Rellana's Helm - Rellana's Twin Moons” — Rellana's Twin Blades · See Als… |
-| 30 | mid | class-build | RL 150 Eleonora Build Help | ids ["build:eleonora"]; must [] | Rivers of Blood — Still deletes most of the Lands Between. Weak to high bleed resist (Malenia is the joke). I can put those stats on this sheet. |
+| 6 | empty | level | recommended level for Abandoned Cave | ids ["region:abandoned-cave"]; must ["Abandoned Cave"] | No level band on file for this spot. Still open here: Ranni — entered her service, Liurnia Lake Shore, Fia — held at the Roundtable, Erdtree-Gazing Hill, Godric… |
+| 7 | empty | level | what level should i be for Academy Crystal Cave | ids ["region:academy-crystal-cave"]; must ["Academy Crystal Cave"] | No level band on file for this spot. Still open here: Ranni — entered her service, Liurnia Lake Shore, Fia — held at the Roundtable, Erdtree-Gazing Hill, Godric… |
+| 8 | empty | npc-quest | where do i continue Fastest route: Elden Lord | ids ["line:blitz-lord"]; must [] | Elden Lord (default) (ending) is still open (0/4). Next: Two Great Runes and the capital. Godrick plus one other is enough to open Leyndell. After that: Morgott… |
+| 9 | empty | npc-quest | what is the next step of the Fastest route: Age of Stars quest | ids ["line:blitz-stars"]; must [] | Age of Stars (ending) is still open (0/8). Next: Enter Ranni’s service at Ranni’s Rise. Three Sisters, after Caria Manor. Speak to Blaidd, Iji, and Seluvis in t… |
+| 10 | empty | build-advice | Nagakiba vs Rivers of Blood build, which one is the best in terms of t… | ids ["build:rivers"]; must [] | Bloody Finger Hunter Yura (story) is still open (0/4). Next: Help Yura against Bloody Finger Nerijus. Agheel Lake, Limgrave. He is summonable for the invasion a… |
+| 11 | empty | class-build | Wanted to make a build cantered around sword of night and flame and re… | ids ["build:sword-night-flame"]; must [] | “- Carian Sorcery Sword - Carian Thrusting Shield - Rellana's Armor - Rellana's Cameo - Rellana's Helm - Rellana's Twin Moons” — Rellana's Twin Blades · See Als… |
+| 12 | empty | class-build | RL 150 Eleonora Build Help | ids ["build:eleonora"]; must [] | Rivers of Blood — Still deletes most of the Lands Between. Weak to high bleed resist (Malenia is the joke). I can put those stats on this sheet. |
+| 13 | empty | compare | Which is better backhand blades keen with bloodflame blade or bleed af… | ids ["item:backhand-blade"]; must [] | “Bloodflame Blade** is an incantation spell in Elden Ring. It is one of the Blood Oath Incantations.” — Bloodflame Blade · Summary From the wiki page “Bloodflam… |
+| 14 | empty | compare | Notice how mohg’s self confidence makes him better than morgott in eve… | ids ["boss:mohg"]; must [] | Morgott, the Omen King — boss in Leyndell. |
+| 15 | empty | compare | Bolt of Granax VS Dragon CragBlade? | ids ["item:ash-of-war-cragblade"]; must [] | “- Bolt of Gransax, another weapon associated with an Ancient Dragon - Dragon Greatclaw and Dragonclaw Shield, two more generic Ancient Dragon weapons” — Dragon… |
+| 16 | empty | lore | Was it ever explained why this guy in Midra's Manse is so fat? What's … | ids ["region:midra-s-manse"]; must [] | Midra's Manse — Abyssal Woods. Midra's Manse is a sprawling manor hidden deep within the Abyssal Woods of the Realm of Shadow. |
+| 17 | empty | lore | Why did Miquella need Mohg? | ids ["boss:mohg"]; must ["Mohgwyn Dynasty Mausoleum"] | Miquella of the Haligtree — Cocoon of the Empyrean (husk) · Gate of Divinity. Miquella the Kind, also known as Miquella of the Haligtree, Empyrean Miquella, and… |
+| 18 | empty | mechanics | Is R1 into Stormcaller and true combo or did I get lucky on Hyper Armo… | ids ["mechanic:poise"]; must [] | “Skill: Stormcaller** is a Skill in Elden Ring.” — [[wiki:skill-stormcaller|Skill: Stormcaller]] · Summary “Stormcaller Church** is a location in Elden Ring.” —… |
+| 19 | empty | requirements | What stats should I do for a duel wild ancient meteorite ore greatswor… | ids ["item:greatsword"]; must ["Str 31","Dex 12"] | Sorcerer Duelist (RL90) (duel, RL60-90) — Azur's Staff plus Radagon Icon reaches the cast-speed cap, Carian Slicer staggers anyone under ~30 poise, and two Magi… |
+| 20 | empty | multi-part | " " Can Flame Spear be put on the Cleanrot Knight's Sword? | ids ["item:cleanrot-knight-s-sword"]; must [] | Cleanrot Knight — boss in Caelid. |
+| 21 | empty | pvp | Invasion farming in Gelmir Hero's Grave? | ids ["dungeon:gelmir-hero-s-grave"]; must [] | Poison/Bleed Wretch (RL30) (invade, RL30-50) — Low-level invasion build. Status buildup outpaces the tiny health pools hosts have at RL30, and the Reduvia bleed… |
+| 22 | empty | pvp | Thoughts on the claymore for PvP? | ids ["item:claymore"]; must [] | Fingerprint Acolyte (RL50) (both, RL30-50) — Themed after Vyke: block behind a greatshield and answer with a thrusting poke and Frenzied Flame incantations, so … |
+| 23 | empty | other | Extra Death Knight armor set? ( ) | ids ["item:death-knight-armor"]; must [] | Death Knight — hunt. |
+| 24 | empty | other | Help with Omen Mohg? | ids ["boss:mohg-omen"]; must [] | Mohg, Lord of Blood. Level 1. Real NpcParam absorb: resists Fire 80%, Magic 40%, Lightning 40%; bleed soft (112). Want a bleed sheet instead? |
+| 25 | mid | where-is | Im at outer wall in Altus and just finished Ranni’s questline. Where s… | ids ["grace:outer-wall"]; must ["Capital Outskirts"] | “Pidia's questline becomes locked after giving Ranni the Fingerslayer Blade, regardless of any steps already completed. 1. Follow Ranni the Witch's questline an… |
+| 26 | mid | where-is | I’m planning a rl 11 character (or max 21) and I need bot Marika and R… | ids ["npc:queen-marika-the-eternal"]; must ["Stone Platform"] | Radagon's Soreseal — Chest inside Fort Faroth in Dragonbarrow. Want that grace on the atlas? |
+| 27 | mid | where-is | Can someone help me with varrè's quest? I have to invade 3 player and … | ids ["invader:varre"]; must ["Mohgwyn"] | Poison/Bleed Wretch (RL30) (invade, RL30-50) — Low-level invasion build. Status buildup outpaces the tiny health pools hosts have at RL30, and the Reduvia bleed… |
+| 28 | mid | item-location | Could anyone help me find a good strenght/faith weapon i can use black… | ids ["item:black-flame-blade"]; must ["Mountaintops of the Giants","Le… | Black Flame Godslayer — Black Flame burns a percentage of max HP on hit, so it keeps pace with boss health pools where flat-AR incantations fall off. The real f… |
+| 29 | mid | npc-location | Please help a Tarnished find Ranni, Blaidd and Iji | ids ["npc:blaidd"]; must ["Limgrave"] | This beat is a point of no return (Ranni given the Fingerslayer Blade) — continuing locks Preceptor Seluvis — potion and puppet stock, Magic Scorpion Charm, Fin… |
+| 30 | mid | level | recommended level for Abandoned Cave | ids ["region:abandoned-cave"]; must ["Abandoned Cave"] | No level band on file for this spot. Still open here: Fingerslayer Blade, East Capital Rampart, Morgott, the Omen King, Alexander — freed from the Limgrave hole… |
 
-_Regenerated 2026-10-07._
+_Regenerated 2026-10-08._
