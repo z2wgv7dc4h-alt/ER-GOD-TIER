@@ -45,39 +45,39 @@ table. The table below is the current traversal; the guards snapshot it.
 
 | guard | min | actual | status |
 | --- | --- | --- | --- |
-| grace.region | ≥ 90% | 96.9% | PASS |
-| boss.location | ≥ 90% | 98.3% | PASS |
-| boss.drops | ≥ 80% | 96.9% | PASS |
+| grace.region | ≥ 90% | 99.3% | PASS |
+| boss.location | ≥ 90% | 99% | PASS |
+| boss.drops | ≥ 80% | 97.3% | PASS |
 | remembrance.boss | ≥ 90% | 100% | PASS |
 | remembrance.Enia trades | ≥ 90% | 100% | PASS |
-| region.contents | ≥ 30% | 36.9% | PASS |
+| region.contents | ≥ 30% | 51.7% | PASS |
 | material.source | ≥ 90% | 100% | PASS |
-| talisman.source | ≥ 90% | 93.7% | PASS |
-| weapon.source | ≥ 85% | 91.6% | PASS |
-| spell.source | ≥ 90% | 98.6% | PASS |
-| npc.location | ≥ 65% | 82.4% | PASS |
+| talisman.source | ≥ 90% | 94.3% | PASS |
+| weapon.source | ≥ 85% | 87.5% | PASS |
+| spell.source | ≥ 90% | 92.2% | PASS |
+| npc.location | ≥ 65% | 78.7% | PASS |
 
 All guard minimums met.
 
 | kind | entities | source | drops | location | contents | region | stock | boss | trades |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| armor | 751 | 86.6% | · | · | · | · | · | · | · |
-| ash | 125 | 79.2% | · | · | · | · | · | · | · |
-| boss | 295 | · | 96.9% | 98.3% | · | · | · | · | · |
-| dungeon | 119 | · | · | · | 84.9% | · | · | · | · |
-| grace | 417 | · | · | · | · | 96.9% | · | · | · |
-| item | 1185 | 76.3% | · | · | · | · | · | · | · |
+| armor | 751 | 86.7% | · | · | · | · | · | · | · |
+| ash | 125 | 80% | · | · | · | · | · | · | · |
+| boss | 296 | · | 97.3% | 99% | · | · | · | · | · |
+| dungeon | 119 | · | · | · | 87.4% | · | · | · | · |
+| grace | 417 | · | · | · | · | 99.3% | · | · | · |
+| item | 1186 | 76.4% | · | · | · | · | · | · | · |
 | material | 3 | 100% | · | · | · | · | · | · | · |
-| merchant | 106 | · | · | · | · | · | 100% | · | · |
-| npc | 188 | · | · | 82.4% | · | · | · | · | · |
-| quest | 467 | · | · | 71.3% | · | · | · | · | · |
-| region | 298 | · | · | · | 36.9% | · | · | · | · |
+| merchant | 79 | · | · | · | · | · | 100% | · | · |
+| npc | 188 | · | · | 78.7% | · | · | · | · | · |
+| quest | 467 | · | · | 72.8% | · | · | · | · | · |
+| region | 296 | · | · | · | 51.7% | · | · | · | · |
 | remembrance | 25 | · | · | · | · | · | · | 100% | 100% |
 | shield | 67 | 95.5% | · | · | · | · | · | · | · |
-| spell | 218 | 98.6% | · | · | · | · | · | · | · |
+| spell | 218 | 92.2% | · | · | · | · | · | · | · |
 | spirit | 80 | 91.3% | · | · | · | · | · | · | · |
-| talisman | 158 | 93.7% | · | · | · | · | · | · | · |
-| weapon | 441 | 91.6% | · | · | · | · | · | · | · |
+| talisman | 158 | 94.3% | · | · | · | · | · | · | · |
+| weapon | 441 | 87.5% | · | · | · | · | · | · | · |
 
 ## Unlinked mentions
 
@@ -87,7 +87,7 @@ the links a plain renderer still owes.
 
 | surface | linkable | unlinked before | unlinked after |
 | --- | --- | --- | --- |
-| entity descriptions | 798 | 0 | 0 |
+| entity descriptions | 790 | 0 | 0 |
 | wiki sections | 1681 | 0 | 0 |
 | acquisition text | 1579 | 0 | 0 |
 | quest step actions | 650 | 577 | 0 |
