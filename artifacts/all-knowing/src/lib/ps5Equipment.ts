@@ -398,9 +398,9 @@ export function cellImage(img: GrayImage, grid: SlotGrid, row: number, col: numb
   return cropGray(img, x, y, x + (1 - 2 * inset) * grid.cellW, y + (1 - 2 * inset) * grid.cellH)
 }
 
-/** Crop the bottom-right corner where the stack count is printed. */
+/** The bottom-right region of a cell that may hold a stack count. */
 export function countRegion(img: GrayImage, grid: SlotGrid, row: number, col: number): GrayImage {
-  const x = grid.left + col * grid.cellW + 0.4 * grid.cellW
-  const y = grid.top + row * grid.cellH + 0.72 * grid.cellH
-  return cropGray(img, x, y, x + 0.6 * grid.cellW, y + 0.28 * grid.cellH)
+  const x = grid.left + col * grid.cellW + 0.42 * grid.cellW
+  const y = grid.top + row * grid.cellH + 0.55 * grid.cellH
+  return cropGray(img, x, y, grid.left + (col + 1) * grid.cellW, grid.top + (row + 1) * grid.cellH)
 }
