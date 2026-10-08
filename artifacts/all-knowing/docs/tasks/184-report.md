@@ -104,6 +104,11 @@ UI show the same-named grace's crop for 43 regions, so the runtime figure is
   with one image; the test allow-lists those paths rather than invent distinct
   art. This mirrors the existing `EXCEPTIONS`/`BOSS_EXCEPTIONS` style in
   `icons.test.ts`.
+- **Download route.** The brief named `Special:FilePath`, but from here that
+  endpoint 403s behind Cloudflare; `scripts/ingest-entity-images.py` asks the
+  MediaWiki API for the File's `imageinfo` URL (the static.wikia URL
+  `Special:FilePath` redirects to) and downloads it with a browser UA, still
+  ≤1 req/s and cached under `.scratch/184/`.
 - **Offline manifest.** `public/sourced/offline-manifest.json` was **not**
   regenerated: on this machine the engine tile tree is not extracted, and
   `npm run data:offline` would drop the 7,308 `/engine/**` entries the committed
