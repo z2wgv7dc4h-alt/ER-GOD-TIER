@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { decodeRegulationData } from './ar'
-import { baseWeaponRows, matchWeaponStats, scalingLetter } from './weaponStats'
+import { baseWeaponRows, matchWeaponStats, scalingLetter, weaponStatusFor } from './weaponStats'
 
 // Validate the formatter against the real vendored regulation table, so a
 // schema drift fails here instead of quietly emptying the Codex section.
@@ -43,5 +43,24 @@ describe('matchWeaponStats', () => {
   it('ignores short queries and matches by name', () => {
     expect(matchWeaponStats('da', rows)).toEqual([])
     expect(matchWeaponStats('dagger', rows).some((r) => r.weaponName === 'Dagger')).toBe(true)
+  })
+})
+
+describe('weapon status build-up (Task 183 §3)', () => {
+  it('splits status effects out of base damage', () => {
+    const katana = rows.find((r) => r.weaponName === 'Uchigatana')!
+    // Uchigatana's Bleed(45) lives in statusSpEffectParams, not base damage.
+    expect(katana.status).toEqual([{ label: 'Bleed', value: 45 }])
+    expect(katana.attack.some((a) => a.label === 'Physical')).toBe(true)
+    expect(katana.attack.some((a) => a.label === 'Bleed')).toBe(false)
+    // A plain weapon has no status at all.
+    const greatsword = rows.find((r) => r.weaponName === 'Greatsword')!
+    expect(greatsword.status).toEqual([])
+  })
+
+  it('resolves a page name to its status build-up', () => {
+    expect(weaponStatusFor('Uchigatana', rows)).toEqual([{ label: 'Bleed', value: 45 }])
+    expect(weaponStatusFor('Greatsword', rows)).toEqual([])
+    expect(weaponStatusFor('', rows)).toEqual([])
   })
 })
