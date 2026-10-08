@@ -140,7 +140,7 @@ Live list is `docs/STATUS.md` §Next. As of this data pass the open threads are:
 1. Dungeon interiors (bosses are XYZ-only today).
 2. `canonicalFactId` audit across every fact category (bosses improved, the rest not).
 3. Real 100% spine checklist + detours from real `NpcParam` data.
-4. Dialogue attribution ceiling (2,129 ESD-referenced lines of 9,818) — cutscene/menu lines are out.
+4. Dialogue attribution ceiling (2,083 ESD-referenced lines of 9,818) — cutscene/menu lines are out.
 
 ## Refuse
 

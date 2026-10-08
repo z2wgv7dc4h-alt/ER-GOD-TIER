@@ -68,8 +68,8 @@ export function HelpSheet({ onClose }: { onClose: () => void }) {
         </div>
         <p className="kicker" style={{ marginTop: 20 }}>What this does</p>
         <p className="note">
-          <strong>Four sections.</strong> <strong>Tarnished</strong> (overview / update / profiles),{' '}
-          <strong>Journey</strong> (now / map / quests), <strong>Library</strong> (search / builds /
+          <strong>Four sections.</strong> <strong>Tarnished</strong> (overview / gear / setup / profiles),{' '}
+          <strong>Journey</strong> (now / area / map / quests), <strong>Library</strong> (search / builds /
           PvP / guides) and <strong>Gideon</strong>. Pick them in the header or with <kbd>1</kbd>–<kbd>4</kbd>;
           a phone gets a four-tab bar. The old identity rail is gone — profiles, saves, recents and the
           packet live under Tarnished. Gideon is its own section, or a dock on a wide desktop
@@ -101,7 +101,7 @@ export function HelpSheet({ onClose }: { onClose: () => void }) {
         </p>
         <p className="note">
           <strong>Co-op &amp; goods paste.</strong> The co-op toggle (Tarnished → Profiles, or the
-          interview) drops Mimic / Torrent advice. Tarnished → Update also has a goods-paste box:
+          interview) drops Mimic / Torrent advice. Tarnished → Setup also has a goods-paste box:
           an entry marks only when it is one confident name, anything else stays unknown.
         </p>
         <p className="note">

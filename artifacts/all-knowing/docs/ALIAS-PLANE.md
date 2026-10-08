@@ -102,7 +102,7 @@ add facts; the table is refreshed on each generator run.
 
 ## Task 55 completeness pass
 
-The generator was finished in Task 55: it now also reads `checklists/hunts.json`
+The generator was finished in Task 55: it now also reads `src/data/hunts.json`
 (kind `hunt`) and maps every `BonfireWarpParam` row to an authored **catalog**
 grace when no `graces.ts` warp seed exists (so e.g. `grace:120208` →
 `grace:night-sacred-ground`). Item matching prefers a strict, parenthetical-
@@ -110,23 +110,24 @@ preserving name match, so `goods:8175` / `goods:8176` resolve to
 `item:haligtree-medallion-left` / `-right` rather than the bare both-halves fact.
 The row sort is a plain code-unit comparison, so a second run is byte-identical.
 
-Current output: **7,120 rows** (~1.4 MB). The source mix grows with the name planes, led by
-`enemy-name` 3,926, `game-name-table` 991, `legacy-id` 895, `grace-stub` 359, `boss-roster` 261,
-`authored` 128, `paramdex-npc` 115, `names` 109, `npc-combat` 79, `hunts` 74, `game-name-aliases` 65,
-`hosted-bosses` 59, `hosted-graces` 59. Engine-backed by catalog prefix: grace 25/25, boss 86/88,
-item 93/94, invader 22/24, quest 0/114 (authored), region 0/10 (authored).
+Current output: **7,192 rows** (~1.34 MB). The source mix grows with the name planes, led by
+`enemy-name` 3,924, `game-name-table` 1,000, `legacy-id` 958, `entity-index` 360 and `boss-roster`
+261, with `authored` 128, `paramdex-npc` 115, `npc-combat` 79 and `hunts` 74 after them. `grace-stub`
+is now **0** — every warp resolves to an authored grace or the index's own `grace:<warpId>` record
+(Task 160). Engine-backed by catalog prefix: grace 25/25, boss 86/88, item 93/94, invader 22/24,
+quest 0/114 (authored), region 0/10 (authored).
 
-### Task 73 warp slug stubs
+### Warp resolution (Task 73, revised in Task 160)
 
-Every `checklists/graces.json` warp now resolves: where no authored slug exists,
-the pass emits a name-derived `grace:{slug}` **stub** row (`source: 'grace-stub'`).
-A stub carries no catalog fact, so it has `implies: []` by construction — nothing
-can chain off it — and no pin is created; a grace is only pinned where `coords` /
-`graces.ts` already names it. Authored catalog ids still win: if a stub slug equals
-an existing authored grace id (the warp name is a variant of it, e.g. warp
-"Haligtree Town" → `grace:haligtree-town`) the row maps onto that authored fact.
-`canonicalFactId('grace:{warpId}')` therefore returns the authored/stub slug for
-all 418 warps, and `searchSync` finds the warp by its English name.
+Every `checklists/graces.json` warp resolves to a real catalog grace. Where an
+authored slug exists it wins (a warp name that is a variant of one, e.g.
+"Haligtree Town" → `grace:haligtree-town`, maps onto that fact); otherwise the
+generator points the warp at the entity index's own `grace:<warpId>` record. The
+synthetic `grace:{name-slug}` **stub** rows (`source: 'grace-stub'`) introduced in
+Task 73 were dropped in Task 160 — they carried no catalog fact, which left dead
+"Related" chips — so `grace-stub` is now **0**. `canonicalFactId('grace:{warpId}')`
+therefore returns an authored or index-backed slug for all 418 warps, and
+`searchSync` finds the warp by its English name.
 
 ### Honest unmatched report (not silently dropped)
 
@@ -148,6 +149,6 @@ rule for the vendor tree exists because tiles and `markers.json` are FromSoftwar
 dumps** produced by the map engine from the install. `aliases.json` is name/id-only — no asset
 bytes — the same class of derived data as the already-committed `open/names.json`,
 `open/paramdex/`, `hosted-graces.json` and `npc-combat.json`. It is also needed at import time
-for the synchronous `canonicalFactId`/`searchSync` paths, and at ~138 KB it is small enough to
-bundle. Committing it keeps the alias plane reproducible and reviewable; it can still be
+for the synchronous `canonicalFactId`/`searchSync` paths, and at ~1.34 MB it is still small enough
+to bundle. Committing it keeps the alias plane reproducible and reviewable; it can still be
 regenerated from the local install with the command above.

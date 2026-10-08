@@ -1,6 +1,6 @@
 # Status — keep this current (Claude updates it on every merge)
 
-Last updated: 2026-10-07.
+Last updated: 2026-10-08.
 
 ## In flight (supervisor running; see docs/ORCHESTRATION.md)
 Briefs live in each task's worktree (`ER-MASTER-TOOL-wt/task-<id>/artifacts/all-knowing/docs/tasks/`) until merged.
@@ -30,4 +30,4 @@ offline eval harness (baseline 40.4% correct) · 163 player question corpus (6,5
 - Task 161 UX proposal (`docs/tasks/161-proposal.md`) items not yet scheduled: none besides 166.
 
 ## Key numbers (last merge gates)
-1,495 tests passing · lint 0 · build OK · bundle budget OK · page audit 4 flagged · links 0 dead.
+1,523 tests passing · lint 0 · build OK · bundle budget OK (3.33 MB of 3.5) · links 0 dead (audit 171).
