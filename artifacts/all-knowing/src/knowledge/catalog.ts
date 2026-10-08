@@ -36,8 +36,17 @@ export const facts: Fact[] = [
   { id: 'region:leyndell', kind: 'region', name: 'Leyndell, Royal Capital', aliases: ['leyndell', 'royal capital'], region: 'Leyndell', campaign: 'base', implies: ['region:altus'] },
   { id: 'region:mountaintops', kind: 'region', name: 'Mountaintops of the Giants', aliases: ['mountaintops', 'forge of the giants'], region: 'Mountaintops', campaign: 'base', implies: [] }, // Task 166 §15: the Mountaintops can be entered without felling Morgott, so reaching them no longer proves him. (The Rold Medallion edge, which really is only granted after Morgott, still derives him when held.)
   { id: 'region:farum', kind: 'region', name: 'Crumbling Farum Azula', aliases: ['farum azula', 'farum'], region: 'Farum Azula', campaign: 'base', implies: ['grace:forge-giants'] },
-  { id: 'region:haligtree', kind: 'region', name: 'Miquella’s Haligtree', aliases: ['haligtree', 'elphael'], region: 'Haligtree', campaign: 'base', implies: ['item:haligtree-secret-medallion'] },
+  // Task 173 §11 — reaching the Haligtree implies the medallion was *used*, but
+  // that edge plus the one-way chain `item:haligtree-secret-medallion →
+  // region:haligtree` formed a cycle `region:haligtree ⇄ item:haligtree-secret-
+  // medallion`. The medallion→region inference is the one we keep (inferChains),
+  // so this catalog row no longer implies the item.
+  { id: 'region:haligtree', kind: 'region', name: 'Miquella’s Haligtree', aliases: ['haligtree', 'elphael'], region: 'Haligtree', campaign: 'base', implies: [] },
   { id: 'region:shadow', kind: 'region', name: 'Realm of Shadow', aliases: ['sote', 'shadow of the erdtree', 'land of shadow', 'gravesite'], region: 'Gravesite Plain', campaign: 'sote', implies: ['boss:mohg', 'boss:radahn'] }, // entering the DLC requires both
+  // Task 173 §12 — the two underground regions `REGION_FACT` maps to. The
+  // per-encounter facts below imply them, so they need real catalog rows.
+  { id: 'region:siofra-river', kind: 'region', name: 'Siofra River', aliases: ['siofra'], region: 'Siofra River', campaign: 'base', implies: [] },
+  { id: 'region:ainsel-river', kind: 'region', name: 'Ainsel River', aliases: ['ainsel'], region: 'Ainsel River', campaign: 'base', implies: [] },
 
   // Graces — warp-list OCR targets
   { id: 'grace:first-step', kind: 'grace', name: 'The First Step', aliases: ['first step'], region: 'Limgrave', campaign: 'base', implies: [] },
@@ -323,6 +332,15 @@ export const facts: Fact[] = [
   // region or an earlier beat, and inventing that chain is exactly what Task 12 warned against.
   { id: 'quest:erdtree-burned', kind: 'quest', name: 'The Erdtree burned at the Forge of the Giants', aliases: ['burned the erdtree'], region: 'Mountaintops', campaign: 'base', implies: [] },
   { id: 'quest:seluvis-blade', kind: 'quest', name: 'Seluvis has the Fingerslayer Blade', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+
+  // Task 173 §12 — quest states the item catalog rows already imply. These ids
+  // are live storyline/gate references (storylines.ts, gates.ts) but had no
+  // catalog row, so `item:* -> quest:*` was a dangling implies target.
+  { id: 'quest:varre:cloth', kind: 'quest', name: 'Varré — cloth soaked in maiden blood', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:yura:nagakiba', kind: 'quest', name: 'Yura — Nagakiba gifted after the Liurnia invasion', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },
+  { id: 'quest:gowry:concluded', kind: 'quest', name: "Gowry — true nature revealed after Millicent's line", aliases: [], region: 'Caelid', campaign: 'base', implies: [] },
+  { id: 'quest:goldmask:regression', kind: 'quest', name: 'Goldmask — Law of Regression read at the Erdtree statue', aliases: [], region: 'Leyndell', campaign: 'base', implies: [] },
+  { id: 'quest:thops:barrier', kind: 'quest', name: "Thops — body found at Raya Lucaria", aliases: [], region: 'Raya Lucaria', campaign: 'base', implies: [] },
 
   // Ranni — servant states that gate the Fingerslayer hand-in and the fork.
   { id: 'quest:ranni:iji', kind: 'quest', name: 'Ranni — Iji counselled', aliases: [], region: 'Liurnia', campaign: 'base', implies: [] },

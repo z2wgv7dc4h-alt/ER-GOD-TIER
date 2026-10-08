@@ -88,7 +88,10 @@ export const GUARD_MINIMUMS: { kind: EntityKind; field: string; min: number; lab
   // is gone. The un-notable creatures the wiki has no prose for (Goat, Catapult,
   // Watling Stars…) now carry no description rather than an invented one, so the
   // enemy bar is the honest "most named foes are described" floor, not 95%.
-  { kind: 'enemy', field: 'descriptionLocation', min: 90, label: 'description + location (enemies)' },
+  // Task 176 lowers it further: the cross-page descriptions that leaked another
+  // page's prose onto a same-named enemy (a spell, a place, an item) are gone,
+  // and an enemy the wiki has no page of its own for stays empty.
+  { kind: 'enemy', field: 'descriptionLocation', min: 85, label: 'description + location (enemies)' },
 ]
 
 function fieldsFor(kind: EntityKind, records: (EntityRecord | undefined)[]): Record<string, FieldCoverage> {

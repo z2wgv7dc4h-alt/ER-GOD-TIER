@@ -1,0 +1,42 @@
+{
+  "comment": "Task 173 §10 — the one loot list. Drop strings from the wiki/rosters that do not equal the game item name. `aliases` maps a cleaned drop string (lower-case) to the real item name; `dropped` lists strings that name no single item (armour sets, generic plurals, wiki headers, place names). Shared by src/knowledge/dropNames.ts (the graph) and scripts/build-boss-roster.mjs.",
+  "aliases": {
+    "tail": "Aspects of the Crucible: Tail",
+    "horns": "Aspects of the Crucible: Horns",
+    "wings": "Aspects of the Crucible: Wings",
+    "thorns": "Aspects of the Crucible: Thorns",
+    "breath": "Aspects of the Crucible: Breath",
+    "death' poker": "Death's Poker",
+    "death’ poker": "Death's Poker",
+    "sacrifical axe": "Sacrificial Axe",
+    "perfumer tricia ashes": "Perfumer Tricia",
+    "perfumer tricia ash": "Perfumer Tricia",
+    "black knife tiche ashes": "Black Knife Tiche",
+    "redmane knight ogha spirit ashes": "Redmane Knight Ogha",
+    "redmane knight ogha ashes": "Redmane Knight Ogha",
+    "elden remembrance": "Elden Remembrance",
+    "talisman pouch": "Talisman Pouch",
+    "lord of blood's favor (soaked)": "Lord of Blood's Favor",
+    "ash of war: ghostflame call": "Ghostflame Call"
+  },
+  "dropped": [
+    "drops",
+    "smithing stones",
+    "somber smithing stones",
+    "golden runes",
+    "hero's rune",
+    "heroes rune",
+    "grave glovewort",
+    "ghost glovewort",
+    "crystal tear",
+    "larval tear",
+    "stonedigger trolls",
+    "sage's cave",
+    "lord of blasphemy",
+    "glovewort picker's bell bearing",
+    "#drops",
+    "(include all enemy drops",
+    "specifying locations where necessary)",
+    "the fell omen not already defeated)"
+  ]
+}

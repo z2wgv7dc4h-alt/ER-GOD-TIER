@@ -51,7 +51,10 @@ describe('closeWorld', () => {
     expect(closed).toContain('boss:malenia')
     expect(closed).toContain('grace:drainage')
     expect(closed).toContain('region:haligtree')
-    expect(closed).toContain('item:haligtree-secret-medallion')
+    // Task 173 §11 — the Haligtree cycle is gone: reaching the region no longer
+    // implies the medallion. The kept, one-way inference runs the other way.
+    expect(closed).not.toContain('item:haligtree-secret-medallion')
+    expect(closeWorld(['item:haligtree-secret-medallion'])).toContain('region:haligtree')
   })
 })
 
@@ -73,7 +76,6 @@ describe('applyFacts', () => {
     const next = applyFacts(emptyCharacter, ['item:malenia-great-rune'], 'answer', 'test seed')
     expect(next.defeatedBosses).toContain('boss:malenia')
     expect(next.discoveredGraces).toContain('grace:drainage')
-    expect(next.collectedItems).toContain('item:haligtree-secret-medallion')
   })
 })
 
