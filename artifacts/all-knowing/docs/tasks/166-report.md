@@ -202,25 +202,51 @@ shows a reason:
   were not touched (except `JourneyNow.tsx`, which the brief explicitly assigns to
   Task 13).
 
+## FIX 2 — regenerate the stale/truncated generated planes
+
+The three failing tests were caused by **generated files committed out of sync**, not
+by the inference / entity-kind changes:
+
+- `public/sourced/aliases.json` had been truncated to **1,310 alias rows** (already
+  1,310 rows before the FIX-2 commit `07be575`, i.e. from the master merge), and
+  `07be575` then overwrote `src/data/aliases.json` with that same truncated copy —
+  shrinking it from **7,196 rows to 1,310**. With most engine → slug aliases gone,
+  `canonicalFactId` could no longer resolve the warp / enemy / legacy ids, so:
+  - `src/knowledge/npcLocations.test.ts` could not locate Blaidd at Mistwood,
+  - `src/lib/auditFixes.test.ts` could not resolve the old `enemy:<npcParamId>` drop ids,
+  - `src/lib/linkIntegrity.test.ts` found warp/alias search rows with no real entity page.
+- `public/sourced/entity-index.json` was also stale relative to branch code (6 records
+  the current build folds away were still present; one grace was missing).
+
+Regenerating fixed all three with **no test changed**:
+- `npm run index:entities` → **5,620 records** (5,625 committed; 6 folded-away records
+  dropped, `grace:150007` added).
+- `node scripts/gen-aliases.mjs` → **7,192 alias rows** written identically to both
+  `public/sourced/aliases.json` and `src/data/aliases.json` (1,345,167 bytes each);
+  958 legacy ids mapped, 208 honest exceptions in `legacy-alias-exceptions.json`.
+
+No entity-kind / `entityGraph` / catalog code was changed for FIX 2 — the breakage was
+purely the truncated generated planes, and the brief's "regenerate first" step resolved
+it.
+
 ## Final checks
 
-All gates were run once, after merging master and applying the gate FIX (branch
-`task-166`).
+All gates were run once, after merging master, applying the gate FIX and finishing
+FIX 2 (branch `task-166`).
 
-- `npx vitest run` — **215 files, 1518 passed, 11 skipped** (up from 214/1512/11
-  after the master merge added tests; no test was loosened or deleted).
-- `src/lib/inferenceAudit.test.ts` — 3 passed (the FIX target).
-- `npx tsc -b` — clean.
-- `npm run lint` (`oxlint`) — exit 0 (warnings only, pre-existing).
+- `npx vitest run` — **216 files, 1523 passed, 11 skipped** (no test was loosened or
+  deleted). The FIX 2 targets all pass: `npcLocations.test.ts`, `auditFixes.test.ts`,
+  `linkIntegrity.test.ts`.
+- `src/lib/inferenceAudit.test.ts` — passed (the first FIX target).
+- `npx tsc -b` — clean (exit 0).
+- `npm run lint` (`oxlint`) — exit 0 (pre-existing warnings only).
 - `npm run build` — built successfully (via `npm run test:bundle`).
 - `npm run test:bundle` — 7 passed.
-- `npm run audit:pages` — written, 5630 entities, 0 flagged.
+- `npm run audit:pages` — written, **5,624 entities, 0 flagged**.
 - `npm run audit:inference` — regenerated `docs/INFERENCE-RULES.md`, 581 rules,
   17 scenario facts.
-
-Note: `public/sourced/entity-index.json` was taken from master on the merge and
-regenerated with `npm run index:entities` in commit `b9dd404`; no source data or
-generator changed since, so it was not re-run here.
+- `npm run audit:links` — `docs/LINKS-AUDIT.md`, **0 dead data, 0 dead renderer,
+  0 guard violations**.
 
 ## Checklist
 
@@ -239,6 +265,10 @@ generator changed since, so it was not re-run here.
 - [x] FIX — stale `item:haligtree-secret-medallion->region:haligtree` likely key
       removed (it is an authored chain, not a catalog edge; Task 160 §12); the test
       passes unmodified and `docs/INFERENCE-RULES.md` was regenerated.
-- [x] Final gates run once; report written. Full `npx vitest run` passes.
+- [x] FIX 2 — regenerated the truncated generated planes
+      (`npm run index:entities`, `node scripts/gen-aliases.mjs`); `npcLocations`,
+      `auditFixes` and `linkIntegrity` pass unmodified.
+- [x] Final gates run once; report written. Full `npx vitest run` passes
+      (216 files, 1523 passed, 11 skipped).
 
-(pending FIX 2)
+ALL ITEMS DONE
