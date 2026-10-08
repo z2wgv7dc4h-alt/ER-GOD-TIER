@@ -46105,14 +46105,6 @@
   "source": "game-name-table"
  },
  {
-  "engineId": "goods:9381",
-  "slug": "item:perfumer-s-cookbook-1",
-  "kind": "item",
-  "fmgName": "Perfumer's Cookbook (1)",
-  "aliases": [],
-  "source": "game-name-table"
- },
- {
   "engineId": "goods:9382",
   "slug": "item:perfumer-s-cookbook-13",
   "kind": "item",
@@ -56507,16 +56499,6 @@
   "fmgName": "PD (Parrying Dagger)",
   "aliases": [
    "pd parrying dagger"
-  ],
-  "source": "game-name-table"
- },
- {
-  "engineId": "item:perfumer-s-cookbook-1",
-  "slug": "item:perfumer-s-cookbook-1",
-  "kind": "item",
-  "fmgName": "Perfumer's Cookbook (1)",
-  "aliases": [
-   "perfumer cookbook 1"
   ],
   "source": "game-name-table"
  },
