@@ -259,6 +259,16 @@ function installCrawl(seed) {
 
   function describe(el) {
     const full = rect(el)
+    const cls = typeof el.className === 'string' ? el.className : ''
+    // A control that is already on/selected cannot show a change when clicked
+    // (the active tab, an active filter chip, a completed toggle). Task 185 §2
+    // records these as `active`, not as a dead control.
+    const active =
+      el.getAttribute('aria-pressed') === 'true' ||
+      el.getAttribute('aria-selected') === 'true' ||
+      el.getAttribute('aria-current') === 'page' ||
+      el.getAttribute('aria-current') === 'true' ||
+      /(^|\s)(on|active|current)(\s|$)/.test(cls)
     return {
       tag: el.tagName.toLowerCase(),
       type: el.getAttribute('type') || '',
@@ -271,7 +281,31 @@ function installCrawl(seed) {
       y: Math.round(full.top),
       disabled: el.disabled === true || el.getAttribute('aria-disabled') === 'true',
       href: el.getAttribute('href') || '',
+      active,
     }
+  }
+
+  /**
+   * A compact signature of every control's visual on/off state (class `on`,
+   * `active`, `aria-pressed`/`selected`/`expanded`/`current`). A toggle that
+   * only moves a class or flips an aria attribute still changes this, which is
+   * what `classify` needs to tell a real action from a dead one (Task 185 §2).
+   */
+  function toggleSig() {
+    const parts = []
+    const els = document.querySelectorAll(
+      'button, a, [role="tab"], [role="button"], summary, input, select, textarea',
+    )
+    for (const el of els) {
+      const cls = typeof el.className === 'string' ? el.className : ''
+      const on = /(^|\s)(on|active|current)(\s|$)/.test(cls) ? '1' : '0'
+      const ap = el.getAttribute('aria-pressed') || ''
+      const as = el.getAttribute('aria-selected') || ''
+      const ae = el.getAttribute('aria-expanded') || ''
+      const ac = el.getAttribute('aria-current') || ''
+      if (on === '1' || ap || as || ae || ac) parts.push(`${on}${ap}${as}${ae}${ac}`)
+    }
+    return parts.join(',')
   }
 
   window.__crawl = {
@@ -310,6 +344,7 @@ function installCrawl(seed) {
         text: (document.body.innerText || '').slice(0, 240),
         checkedCount: document.querySelectorAll('input:checked').length,
         openDetails: document.querySelectorAll('details[open]').length,
+        toggleSig: toggleSig(),
         overlays: open,
       }
     },
@@ -499,7 +534,7 @@ function diffSnippet(before, after) {
   return after.slice(i, i + 80).replace(/\s+/g, ' ').trim()
 }
 
-function classify(before, after, res, errors) {
+function classify(before, after, res, errors, fileFired) {
   const errorsOut = errors.map((e) => e.text || String(e))
   if (res.acted === 'external') {
     return { kind: 'external', external: res.external, errors: errorsOut }
@@ -509,6 +544,12 @@ function classify(before, after, res, errors) {
   }
   if (res.acted === 'disabled') {
     return { kind: 'disabled', errors: errorsOut }
+  }
+  // A native file picker leaves no DOM trace and its dialog is headless, so the
+  // in-page snapshot can never see it. The Playwright `filechooser` event does
+  // (Task 185 §2): record it as a real action, not a dead control.
+  if (fileFired) {
+    return { kind: 'filedialog', errors: errorsOut }
   }
   const pathOf = (u) => {
     try {
@@ -531,12 +572,15 @@ function classify(before, after, res, errors) {
   const nodesDelta = after.nodeCount - before.nodeCount
   const textDelta = after.textLen - before.textLen
   const toggled =
-    before.checkedCount !== after.checkedCount || before.openDetails !== after.openDetails
+    before.checkedCount !== after.checkedCount ||
+    before.openDetails !== after.openDetails ||
+    before.toggleSig !== after.toggleSig
   if (Math.abs(nodesDelta) > 2 || Math.abs(textDelta) > 2 || toggled) {
     return {
       kind: 'dom',
       nodesDelta,
       textDelta,
+      toggled,
       snippet: diffSnippet(before.text, after.text),
       errors: errorsOut,
     }
@@ -545,6 +589,9 @@ function classify(before, after, res, errors) {
     return { kind: 'input', sample: res.sample, errors: errorsOut }
   }
   if (errorsOut.length) return { kind: 'error', errors: errorsOut }
+  // Clicking something already on/selected is a no-op by design (the active tab,
+  // the current filter). Task 185 §2: report it as `active`, never dead.
+  if (res.desc && res.desc.active) return { kind: 'active', errors: errorsOut }
   return { kind: 'nothing', errors: errorsOut }
 }
 
@@ -632,6 +679,13 @@ async function runScreen(browser, runCfg, screen, runDir) {
     if (m.type() === 'error') errors.push({ text: m.text(), location: m.location() })
   })
   page.on('pageerror', (e) => errors.push({ text: `pageerror: ${e.message}` }))
+  // A click can open the OS file picker ("Take photo", "Open screenshots"). It is
+  // headless, so accept an empty selection and flag it for `classify`.
+  let fileDialog = null
+  page.on('filechooser', (chooser) => {
+    fileDialog = { multiple: chooser.isMultiple() }
+    chooser.setFiles([]).catch(() => {})
+  })
 
   const record = {
     id: screen.id,
@@ -682,8 +736,10 @@ async function runScreen(browser, runCfg, screen, runDir) {
       await page.waitForTimeout(260)
       const after = await page.evaluate(() => window.__crawl.snapshot())
       const errs = errors.splice(0)
+      const fileFired = fileDialog !== null
+      fileDialog = null
       const desc = (res && res.desc) || controls[i]
-      const outcome = classify(before, after, res || { acted: 'click' }, errs)
+      const outcome = classify(before, after, res || { acted: 'click' }, errs, fileFired)
 
       record.controls.push({
         ...desc,
@@ -730,9 +786,39 @@ async function runViewport(browser, runCfg) {
 
 /* ---------------------------------------------------------------- summaries */
 
+/**
+ * Intentional repeats the duplicate report must not flag (Task 185 §3).
+ *
+ * Two shapes are legitimate, not duplicate controls:
+ *  - the shell's section sub-tabs, rendered on every sub-view of a section
+ *    (so the same label appears on several screens);
+ *  - overlay chrome ("Close" exists once per sheet) and the shared reference
+ *    tab labels that every entity page shows.
+ * Per-card action verbs (one "Mark" per card) are also repeated by design.
+ * Anything not listed here is reported only when it is two *distinct* controls
+ * (2+ selectors) or spans 2+ screens, so a crawler re-clicking one element no
+ * longer counts as a duplicate.
+ */
+const DUPLICATE_ALLOWLIST = new Set(
+  [
+    // Section sub-tabs (shared shell navigation).
+    'Overview', 'Gear', 'Setup', 'Profiles',
+    'Now', 'Area', 'Map', 'Quests',
+    'Search', 'Builds', 'PvP', 'Guides', 'Kit', 'Reference',
+    // Overlay chrome.
+    'Close', 'Close details',
+    // Shared reference-tab labels on entity pages / guide pages.
+    'Lore', 'Wiki', 'Secrets', 'Related', 'Stats', 'Where', 'Drops',
+    // Shared quick-log answers and per-card action verbs.
+    'Yes', 'No', 'Mark',
+  ].map((s) => s.toLowerCase()),
+)
+
 function summarize(run) {
   const dead = []
   const errored = []
+  const active = []
+  const filedialog = []
   const byLabel = new Map()
   const perScreen = []
 
@@ -748,6 +834,12 @@ function summarize(run) {
       if (outcome.kind === 'nothing') {
         dead.push({ screen: screen.id, label: c.label || '(no label)', selector: c.selector, tag: c.tag })
       }
+      if (outcome.kind === 'active') {
+        active.push({ screen: screen.id, label: c.label || '(no label)', selector: c.selector })
+      }
+      if (outcome.kind === 'filedialog') {
+        filedialog.push({ screen: screen.id, label: c.label || '(no label)', selector: c.selector })
+      }
       if ((outcome.errors || []).length) {
         errored.push({ screen: screen.id, label: c.label || '(no label)', selector: c.selector, errors: outcome.errors })
       }
@@ -756,27 +848,35 @@ function summarize(run) {
       const key = `${label}\u0000${outcome.kind}`
       if (!byLabel.has(key)) byLabel.set(key, { label, kind: outcome.kind, screens: new Map() })
       const entry = byLabel.get(key)
-      entry.screens.set(screen.id, (entry.screens.get(screen.id) || 0) + 1)
+      if (!entry.screens.has(screen.id)) entry.screens.set(screen.id, { count: 0, selectors: new Set() })
+      const bucket = entry.screens.get(screen.id)
+      bucket.count += 1
+      bucket.selectors.add(c.selector || `${c.tag}:${label}`)
     }
   }
 
   const duplicates = []
   for (const entry of byLabel.values()) {
+    if (DUPLICATE_ALLOWLIST.has(entry.label.toLowerCase())) continue
     const counts = [...entry.screens.entries()]
-    const total = counts.reduce((n, [, c]) => n + c, 0)
-    const maxOnOne = Math.max(...counts.map(([, c]) => c))
-    if (counts.length >= 2 || maxOnOne >= 2) {
-      duplicates.push({
-        label: entry.label,
-        kind: entry.kind,
-        total,
-        screens: counts.map(([id, c]) => (c > 1 ? `${id} x${c}` : id)),
-      })
-    }
+    const total = counts.reduce((n, [, b]) => n + b.count, 0)
+    // Cross-screen repeats are only genuine if the label isn't shared chrome
+    // (allow-listed above). On one screen, the same label from two different
+    // selectors is a real duplicate; the same selector means the crawler
+    // clicked one element twice — not a UI duplicate.
+    const crossScreen = counts.length >= 2
+    const withinScreen = counts.some(([, b]) => b.selectors.size >= 2)
+    if (!crossScreen && !withinScreen) continue
+    duplicates.push({
+      label: entry.label,
+      kind: entry.kind,
+      total,
+      screens: counts.map(([id, b]) => (b.count > 1 ? `${id} x${b.count}` : id)),
+    })
   }
   duplicates.sort((a, b) => b.total - a.total || a.label.localeCompare(b.label))
 
-  return { dead, errored, duplicates, perScreen }
+  return { dead, errored, active, filedialog, duplicates, perScreen }
 }
 
 /* ----------------------------------------------------------------- reporting */
@@ -797,7 +897,11 @@ function outcomeDetail(o) {
     case 'closed':
       return `closed ${o.closed.join(', ')}`
     case 'dom':
-      return `DOM Δ${o.nodesDelta} nodes, Δ${o.textDelta} chars${o.snippet ? ` \u201c${o.snippet}\u201d` : ''}`
+      return `DOM Δ${o.nodesDelta} nodes, Δ${o.textDelta} chars${o.toggled ? ' (toggle)' : ''}${o.snippet ? ` \u201c${o.snippet}\u201d` : ''}`
+    case 'active':
+      return 'already active (no-op by design)'
+    case 'filedialog':
+      return 'opened file picker'
     case 'external':
       return `external → ${o.external}`
     case 'navigation':
@@ -948,6 +1052,8 @@ function buildReport(runs, meta) {
           ['Words across screens', totalWords],
           ['Dead controls', sum.dead.length],
           ['Error controls', sum.errored.length],
+          ['Already-active controls', sum.active.length],
+          ['File-picker controls', sum.filedialog.length],
           ['Duplicate label\u2192outcome groups', sum.duplicates.length],
         ],
       ),
