@@ -17,3 +17,12 @@ remove entries whose edge you deliberately deleted, saying which in the report) 
 Merge master first (`git merge --no-edit master`; for conflicts in public/sourced/entity-index.json take
 master's copy and run `npm run index:entities`). Run that test + full `npx vitest run`, commit, update the
 report checklist, ALL ITEMS DONE.
+
+## FIX 2 (added by Claude after the second gate run)
+After merging master (now includes Tasks 160, 167, 170), these fail on this branch:
+- `src/knowledge/npcLocations.test.ts` — locates Blaidd at Mistwood by default
+- `src/lib/auditFixes.test.ts` — old enemy:<npcParamId> drop ids resolve; dead legacy ids bounded
+- `src/lib/linkIntegrity.test.ts` — every warp and alias search row opens a real entity page
+Regenerate first (`node scripts/gen-aliases.mjs`, `npm run index:entities`) and re-run; if still failing,
+find which of YOUR changes (entity kinds / entityGraph / catalog) breaks them and fix that — never the
+tests. Full `npx vitest run` must pass. Update the checklist, ALL ITEMS DONE.

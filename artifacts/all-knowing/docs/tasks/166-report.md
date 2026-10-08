@@ -241,4 +241,4 @@ generator changed since, so it was not re-run here.
       passes unmodified and `docs/INFERENCE-RULES.md` was regenerated.
 - [x] Final gates run once; report written. Full `npx vitest run` passes.
 
-ALL ITEMS DONE
+(pending FIX 2)
