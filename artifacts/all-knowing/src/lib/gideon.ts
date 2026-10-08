@@ -39,7 +39,7 @@ import { gideonProvider } from './gideonProvider'
 import { askGideonAgent } from './gideonAgent'
 import { buildGrounding, gideonMessages, validateGideonAct } from './gideonLlm'
 import { askGideonWiki } from './gideonWiki'
-import { askGrounded, askGroundedLimits, loadGroundedIndex } from './gideonGrounded'
+import { askGrounded, askGroundedLimits, loadGroundedIndex, preloadGroundedSources } from './gideonGrounded'
 import { buildHunt } from './buildHunt'
 import { isDialogueAsk, quoteFor } from './dialogueQuote'
 import { loadDialogueOwners, type DialogueOwners } from './dialogueOwners'
@@ -1585,7 +1585,10 @@ export async function askGideon(
   const regionLevelList = regionLevels
   // Task 168 §2 — the offline grounded resolver reads the enriched entity index.
   // Only loaded with no key, so the online model path is byte-for-byte unchanged.
-  if (!hasGideonKey()) await loadGroundedIndex()
+  if (!hasGideonKey()) {
+    await loadGroundedIndex()
+    await preloadGroundedSources(question)
+  }
   const router = askGideonRouter(question, character, memory, combat, dialogue, placements, medusaSteps, guides, weapons, regionLevelList, area)
   if (router.grounded) return router
   if (isFastLookup(question, memory, combat ?? cachedBossCombat(), placements, medusaSteps, guides, weapons, regionLevelList)) return router

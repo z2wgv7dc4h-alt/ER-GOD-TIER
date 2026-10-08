@@ -54,10 +54,15 @@ export async function askGideonWiki(question: string, limit = 3): Promise<Gideon
     return `“${wikiExcerpt(hit.markdown)}” — ${cite}${hit.heading ? ` · ${hit.heading}` : ''}`
   })
   const canonical = top.entityId.startsWith('wiki:') ? undefined : top.entityId
+  // Task 178 — the passage can answer a question that names more than one
+  // subject (a "X vs Y" comparison); link every subject the question named so
+  // the caller sees all the entities the answer is about, not just the page.
+  const subjectLinks = subjects.map((s) => s.id).filter((id) => !id.startsWith('wiki:'))
   return {
     say: `${excerpts.join('\n')}\nFrom the wiki page “${top.title}”.`,
     module: 'codex',
     factId: canonical,
+    links: subjectLinks.length ? subjectLinks : undefined,
     offer: { label: `Open ${top.title}`, prompt: `tell me about ${top.title}`, factId: canonical },
     sources: top.url ? [{ title: `${top.title} — Elden Ring Wiki`, url: top.url }] : undefined,
   }

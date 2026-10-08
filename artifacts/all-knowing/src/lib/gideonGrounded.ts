@@ -4,6 +4,169 @@ import { bandFor, type RegionLevel } from './regionLevels'
 import type { GideonAct } from './gideon'
 import type { ModuleId } from '../types'
 
+// ---------------------------------------------------------------------------
+// Task 178 — runtime source fallbacks.
+//
+// The 172–177 data cleanup moved real text out of the entity-index fields it
+// used to sit in: acquisition prose was stripped from `location`, and a region
+// page's parent description was replaced by its bare parent label. The text
+// still ships in the sourced dumps, so the grounded layer reads it from there
+// (on disk, never re-added to the index). Sources are loaded once, only on the
+// no-key path, through `preloadGroundedSources`.
+// ---------------------------------------------------------------------------
+
+type AcqRow = { name: string; location: string; near: string }
+let acqRows: AcqRow[] | null = null
+let wikiSections: { page: string; heading: string; text: string }[] | null = null
+let checklistBossRows: { name: string; drops: string[] }[] | null = null
+let encounterRows: { page: string; tab: string; drops: string[] }[] | null = null
+let regionRows: { title: string; location: string }[] | null = null
+
+async function fetchJson(url: string): Promise<unknown> {
+  try {
+    const r = await fetch(url)
+    return r.ok ? await r.json() : null
+  } catch {
+    return null
+  }
+}
+
+/** Load the sourced dumps the grounded answers may need. Safe to call often. */
+export async function preloadGroundedSources(question: string): Promise<void> {
+  const jobs: Promise<void>[] = []
+  if (!acqRows) {
+    jobs.push(
+      fetchJson('/sourced/open/acquisition.json').then((d) => {
+        acqRows = (d as { rows?: AcqRow[] } | null)?.rows ?? []
+      }),
+    )
+  }
+  if (!checklistBossRows) {
+    jobs.push(
+      fetchJson('/sourced/checklists/bosses.json').then((d) => {
+        checklistBossRows = (Array.isArray(d) ? d : []) as { name: string; drops: string[] }[]
+      }),
+    )
+  }
+  if (!encounterRows) {
+    jobs.push(
+      fetchJson('/sourced/open/wiki-db/boss-encounters.json').then((d) => {
+        encounterRows = (d as { encounters?: { page: string; tab: string; drops: string[] }[] } | null)?.encounters ?? []
+      }),
+    )
+  }
+  if (!regionRows) {
+    jobs.push(
+      fetchJson('/sourced/open/wiki-db/region.json').then((d) => {
+        regionRows = (d as { records?: { title: string; location: string }[] } | null)?.records ?? []
+      }),
+    )
+  }
+  // The wiki prose dump is heavy; only pull it in for questions that may need
+  // it (a place, an acquisition, a drop or a lore ask).
+  const wantsProse =
+    /\b(lore|who is|why|story|canon|where|location|locate|how (do|to|can) i? ?(get|reach|find|obtain|acquire)|drops?|get to|reach)\b/i.test(
+      question,
+    )
+  if (wantsProse && !wikiSections) {
+    jobs.push(
+      fetchJson('/sourced/open/wiki-sections.json').then((d) => {
+        wikiSections = (d as { sections?: { page: string; heading: string; text: string }[] } | null)?.sections ?? []
+      }),
+    )
+  }
+  await Promise.all(jobs)
+}
+
+/** Strip markdown/labels from an acquisition paragraph for a spoken answer. */
+function cleanAcqText(s: string): string {
+  return s
+    .replace(/\*+/g, '')
+    .replace(
+      /^(?:Location|Loot|Guaranteed Drops?|Dragon Communion|Reward|Source|Drop|Quest Item|Remembrance Item|Purchase|Quest|Defeat|Trade)\s*:\s*/i,
+      '',
+    )
+    .replace(/\s*\n\s*/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+/** The acquisition dump's paragraph for an item, when one is on file. */
+function acquisitionText(record: EntityRecord): string {
+  if (!acqRows) return ''
+  const n = fold(record.name)
+  const row = acqRows.find((r) => fold(r.name) === n)
+  if (!row) return ''
+  return cleanAcqText(row.location || row.near || '')
+}
+
+/** Raw drop rows the cleaned index dropped, from the checklist/encounter dumps. */
+function extraBossDrops(record: EntityRecord): string[] {
+  const out: string[] = []
+  const n = fold(record.name)
+  for (const row of checklistBossRows ?? []) {
+    if (fold(row.name) === n) out.push(...(row.drops ?? []))
+  }
+  for (const e of encounterRows ?? []) {
+    const tab = fold(e.tab)
+    if (tab && n.includes(tab)) out.push(...(e.drops ?? []))
+  }
+  return out
+}
+
+/** A region page's parent description from the wiki-db dump, when it adds text. */
+function regionDescription(record: EntityRecord): string {
+  if (record.kind !== 'region' || !regionRows) return ''
+  const n = fold(record.name)
+  const row = regionRows.find((r) => fold(r.title) === n)
+  if (!row || !row.location) return ''
+  const loc = fold(row.location)
+  if (loc.length < 4 || fold(record.location ?? '').includes(loc)) return ''
+  return row.location
+}
+
+/** The best wiki passage for a record, page/heading/body substring. */
+function wikiFor(record: EntityRecord): string {
+  if (!wikiSections) return ''
+  const n = fold(record.name)
+  if (n.length < 4) return ''
+  let best: { text: string; score: number } | null = null
+  for (const s of wikiSections) {
+    const page = fold(s.page)
+    const heading = fold(s.heading)
+    const text = fold(s.text)
+    let score = 0
+    if (page === n) score += 5
+    else if (page.includes(n)) score += 3
+    if (heading.includes(n)) score += 2
+    else if (text.includes(n)) score += 1
+    if (score > 0 && (!best || score > best.score)) best = { text: s.text, score }
+  }
+  return best ? best.text.replace(/\s+/g, ' ').trim() : ''
+}
+
+/**
+ * Legacy engine ids that canonicalise onto a record's id (a `region:` id that
+ * was folded onto its `dungeon:` page). Answers link them so a caller holding
+ * the old id still recognises the entity.
+ */
+let legacyIdsBySlug: Map<string, string[]> | null = null
+function legacyIdsFor(id: string): string[] {
+  if (!legacyIdsBySlug) {
+    legacyIdsBySlug = new Map()
+    for (const a of generatedAliases) {
+      if (!a.engineId || !a.slug || a.engineId === a.slug) continue
+      const et = a.engineId.includes(':') ? a.engineId.slice(a.engineId.indexOf(':') + 1) : a.engineId
+      const st = a.slug.includes(':') ? a.slug.slice(a.slug.indexOf(':') + 1) : a.slug
+      if (et !== st) continue
+      const arr = legacyIdsBySlug.get(a.slug) ?? []
+      if (!arr.includes(a.engineId)) arr.push(a.engineId)
+      legacyIdsBySlug.set(a.slug, arr)
+    }
+  }
+  return legacyIdsBySlug.get(id) ?? []
+}
+
 /**
  * Task 168 §2/§3 — the offline grounded resolver.
  *
@@ -135,15 +298,22 @@ function surfaceList(): Surface[] {
     seen.add(key)
     list.push({ id, kind, norm: n, tokens: n.split(' ').length, weight: KIND_WEIGHT[kind] ?? 1 })
   }
+  // Task 178 — an "Ash of War: Cragblade" record is also known by the bare
+  // skill name ("Cragblade") its FMG display name carries after the colon.
+  const addName = (id: string, kind: string, raw: string) => {
+    add(id, kind, raw)
+    const m = /^(?:ash(?:es)? of war):\s*(.+)$/i.exec(raw)
+    if (m && m[1].trim().length >= 6) add(id, kind, m[1])
+  }
   for (const r of recs) {
-    add(r.id, r.kind, r.name)
+    addName(r.id, r.kind, r.name)
     if (r.id.includes(':')) add(r.id, r.kind, r.id.slice(r.id.indexOf(':') + 1).replace(/-/g, ' '))
   }
   const kindById = new Map(recs.map((r) => [r.id, r.kind]))
   for (const a of generatedAliases) {
     if (!a.slug) continue
     const kind = kindById.get(a.slug) ?? a.kind
-    add(a.slug, kind, a.fmgName)
+    addName(a.slug, kind, a.fmgName)
     for (const al of a.aliases ?? []) add(a.slug, kind, al)
   }
   surfaceCache = { size: recs.length, list }
@@ -372,6 +542,8 @@ function buildSay(record: EntityRecord, facet: Facet, areas: RegionLevel[] | und
   const name = record.name
   const kind = record.kind
   const where = record.region || record.location
+  const desc = record.description ? ` ${record.description.trim()}` : ''
+  const squish = (s: string) => s.replace(/\s+/g, ' ').trim()
   switch (facet) {
     case 'level': {
       const band = areas ? bandFor(areas, record.name) : null
@@ -382,19 +554,22 @@ function buildSay(record: EntityRecord, facet: Facet, areas: RegionLevel[] | und
     }
     case 'requirements': {
       const req = record.stats?.Requirements
-      if (req) return `${name} — ${kind}. Requires ${req}.`
-      return `${name} — ${kind}${where ? ` · ${where}` : ''}. No requirement row in the data.`
+      if (req) return squish(`${name} — ${kind}. Requires ${req}.${desc}`)
+      return squish(`${name} — ${kind}${where ? ` · ${where}` : ''}. No requirement row in the data.${desc}`)
     }
     case 'how-to-use': {
       const skill = record.stats?.Skill
-      if (skill) return `${name} — ${kind}. Skill: ${skill}.`
-      return `${name} — ${kind}${where ? ` · ${where}` : ''}. No skill row in the data.`
+      if (skill) return squish(`${name} — ${kind}. Skill: ${skill}.${desc}`)
+      return squish(`${name} — ${kind}${where ? ` · ${where}` : ''}. No skill row in the data.${desc}`)
     }
     case 'drops': {
-      const drops = record.drops ?? []
-      if (drops.length) return `${name} — drops: ${drops.join(', ')}.`
-      const variantDrops = (record.variants ?? []).flatMap((v) => v.drops ?? [])
-      if (variantDrops.length) return `${name} — drops: ${[...new Set(variantDrops.map((d) => d.item))].join(', ')}.`
+      const variantDrops = (record.variants ?? []).flatMap((v) => (v.drops ?? []).map((d) => d.item))
+      const drops = [...new Set([...(record.drops ?? []), ...variantDrops, ...extraBossDrops(record)])]
+      // The cleaned index keeps a tidy drop list; the boss's own strategy/section
+      // text still names the rewards it unlocks (e.g. "unlocks Agheel's Flame").
+      const prose = [record.strategy, (record.sections ?? []).map((s) => s.text).join(' ')].filter(Boolean).join(' ')
+      if (drops.length) return squish(`${name} — drops: ${drops.join(', ')}.${prose ? ` ${prose}` : ''}`)
+      if (prose) return squish(`${name} — drops. ${prose}`)
       return `${name} — no drop table in the data.`
     }
     case 'mechanics': {
@@ -402,24 +577,33 @@ function buildSay(record: EntityRecord, facet: Facet, areas: RegionLevel[] | und
       return `${name} — mechanic.${body ? ` ${body}` : ''}`
     }
     case 'how-to-beat':
-      return `${name} — ${kind}${where ? ` in ${where}` : ''}. ${weaknessLine(record)} ${record.strategy || record.description || ''}`
-        .replace(/\s+/g, ' ')
-        .trim()
+      return squish(
+        `${name} — ${kind}${where ? ` in ${where}` : ''}. ${weaknessLine(record)} ${record.strategy || record.description || ''}`,
+      )
     case 'lore':
-      return `${name} — ${where ? `${where}. ` : ''}${record.description || record.strategy || ''}`.replace(/\s+/g, ' ').trim()
+      return squish(`${name} — ${where ? `${where}. ` : ''}${record.description || record.strategy || ''}${wikiFor(record) ? ` ${wikiFor(record)}` : ''}`)
     case 'navigation':
     case 'location':
     case 'how-to-get':
     default: {
       const detail = record.location && record.location !== record.region ? ` ${record.location}` : ''
-      return `${name} — ${kind}${where ? ` · ${where}` : ''}.${detail}`
+      const acq = acquisitionText(record)
+      const region = regionDescription(record)
+      return squish(
+        `${name} — ${kind}${where ? ` · ${where}` : ''}.${detail}${desc}${acq ? ` ${acq}` : ''}${region ? ` ${region}` : ''}`,
+      )
     }
   }
 }
 
+/** An area-like record a level question can be about (regions and their sites). */
+function isAreaKind(kind: string): boolean {
+  return kind === 'region' || kind === 'dungeon' || kind === 'grace'
+}
+
 /** The kind a facet ideally wants, so a mechanics alias does not shadow an item. */
 function facetPreferred(facet: Facet, record: EntityRecord): boolean {
-  if (facet === 'level') return record.kind === 'region'
+  if (facet === 'level') return record.kind === 'region' || record.kind === 'dungeon'
   if (facet === 'mechanics') return record.kind === 'mechanic'
   if (facet === 'requirements' || facet === 'how-to-use' || facet === 'how-to-get') return GEAR_KINDS.has(record.kind)
   if (facet === 'drops' || facet === 'how-to-beat') return FOE_KINDS.has(record.kind)
@@ -429,7 +613,7 @@ function facetPreferred(facet: Facet, record: EntityRecord): boolean {
 function facetAccepts(facet: Facet, record: EntityRecord): boolean {
   switch (facet) {
     case 'level':
-      return record.kind === 'region'
+      return isAreaKind(record.kind)
     case 'requirements':
       return Boolean(record.stats?.Requirements) || GEAR_KINDS.has(record.kind)
     case 'how-to-use':
@@ -478,7 +662,7 @@ export function askGrounded(question: string, opts: GroundedOptions = {}): Gideo
       say: buildSay(mech, 'mechanics', opts.regionLevels),
       module: moduleForKind(mech.kind),
       factId: mech.id,
-      links: [mech.id],
+      links: [mech.id, ...legacyIdsFor(mech.id)],
       grounded: true,
     }
   }
@@ -487,7 +671,7 @@ export function askGrounded(question: string, opts: GroundedOptions = {}): Gideo
     say,
     module: moduleForKind(record.kind),
     factId: record.id,
-    links: [record.id],
+    links: [record.id, ...legacyIdsFor(record.id)],
     grounded: true,
   }
 }
