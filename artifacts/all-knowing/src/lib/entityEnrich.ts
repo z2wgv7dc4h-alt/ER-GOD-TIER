@@ -1,6 +1,6 @@
 import { canonicalEntityId } from './entityGraph'
 import {
-  clearEntityIndex,
+  clearEntityIndex as clearStore,
   entityIndexReady,
   getRecord,
   setEntityIndex,
@@ -16,6 +16,11 @@ import {
  * file, key it by canonical id and hand records back synchronously. Consumers
  * call `ensureEntityIndex()` (or the `useEnrichment` hook) so a card can show a
  * skeleton instead of "No data" while that fetch is in flight.
+ *
+ * Task 191 §16 — the file is 4.4 MB, so nothing fetches it on app mount. The
+ * shell warms it only for a screen whose content is record-backed
+ * (`shouldLoadEntityIndex`) and every card that reads a record triggers it from
+ * its own hook, so the download happens when the user first needs it.
  */
 
 export type { EntityRecord }
@@ -62,9 +67,21 @@ export function loadEntityIndex(): Promise<void> {
   return loading
 }
 
-/** Kick off the one fetch when the app or a card mounts. */
+/** Kick off the one fetch when a screen that needs records mounts. */
 export function ensureEntityIndex(): void {
   if (!entityIndexReady() && !loading) void loadEntityIndex()
+}
+
+/**
+ * Task 191 §16 — which shell screens read enriched records as their content.
+ * The Tarnished overview/setup/profiles do not, so a cold first load no longer
+ * drags the 4.4 MB index in before the user asks for it; their record-reading
+ * cards still trigger the fetch through `useEnrichment`. The command palette is
+ * handled by the shell because it opens over any screen.
+ */
+export function shouldLoadEntityIndex(section: string, sub: string | null): boolean {
+  if (section === 'me') return sub === 'gear'
+  return section === 'journey' || section === 'library' || section === 'gideon'
 }
 
 /**
@@ -86,5 +103,12 @@ export function useEnrichment(id: string): EntityRecord | undefined {
 
 export { useEntityIndex }
 
-/** Back-compat test seam shared with the store. */
-export { clearEntityIndex }
+/**
+ * Test seam: drop the cached index and let the next `ensureEntityIndex()` /
+ * `loadEntityIndex()` fetch again. The in-flight loader is reset too, otherwise
+ * a settled promise would keep returning the cleared store.
+ */
+export function clearEntityIndex(): void {
+  loading = null
+  clearStore()
+}

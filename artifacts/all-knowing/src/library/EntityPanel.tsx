@@ -420,7 +420,6 @@ export function EntityPanel({
                 name={entity.name}
                 region={entity.region}
                 character={character}
-                onShowOnMap={onShowOnMap}
               />
             </Suspense>
 

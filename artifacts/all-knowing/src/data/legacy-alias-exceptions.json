@@ -44,8 +44,6 @@
  "enemy:33000940",
  "enemy:38100932",
  "enemy:38102932",
- "enemy:41109010",
- "enemy:41109110",
  "enemy:42600512",
  "enemy:46500960",
  "enemy:501120034",
@@ -134,10 +132,8 @@
  "npcs:11505243",
  "npcs:11605254",
  "npcs:11705057",
- "npcs:121810",
  "npcs:141300",
  "npcs:141600",
- "npcs:142000",
  "npcs:147100",
  "npcs:903700300",
  "npcs:905220001",
@@ -204,6 +200,5 @@
  "quest:thiollier-step-2",
  "quest:thiollier-step-3",
  "quest:white-mask-varr-step-1",
- "quest:white-mask-varr-step-6",
- "region:siofra-river-well"
+ "quest:white-mask-varr-step-6"
 ]

@@ -104,4 +104,4 @@ one a real data gap.
 | `merchant:merchant-siofra-river` | merchant | empty |
 | `merchant:reversion` | merchant | empty |
 
-_Regenerated 2026-10-08._
+_Regenerated 2026-10-10._

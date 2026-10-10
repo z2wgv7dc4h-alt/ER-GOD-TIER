@@ -207,4 +207,9 @@ describe('Task 92 coverage: every feature has a home', () => {
       expect(html, chip).toContain(chip)
     }
   })
+
+  it('row 12b — the Gideon Clear chip is disabled while the chat is empty (Task 190 §20)', () => {
+    const html = render(<Gideon />, { section: 'gideon', sub: null })
+    expect(html).toMatch(/<button[^>]*disabled[^>]*>\s*Clear\b/)
+  })
 })

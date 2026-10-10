@@ -203,4 +203,67 @@ describe('link integrity guards (Task 160)', () => {
       expect(resolveEntityId('merchant:remembrance-of-the-grafted')).toBe('item:remembrance-grafted')
     })
   })
+
+  /**
+   * Task 192 §18–§19 — Batch F of the 186 review: orphan/one-way graph data.
+   * §18 wires the `foundIn`/`contains` edges a record's own location text
+   * asserts; §19 pins that a record whose data names no place stays unlinked
+   * instead of getting a fabricated edge.
+   */
+  describe('Task 192 orphan / one-way graph guards', () => {
+    it('§18 — a location naming a landmark and its region wires both', () => {
+      // "Agheel Lake South" (a grace) sits in Agheel Lake (a region) in Limgrave.
+      expect(edges('item:aristocrat-garb').some((e) => e.rel === 'foundIn' && e.to === 'region:agheel-lake')).toBe(true)
+      expect(edges('region:agheel-lake').some((e) => e.rel === 'contains' && e.to === 'item:aristocrat-garb')).toBe(true)
+      // "...outside the Church of Pilgrimage on the Weeping Peninsula."
+      expect(edges('region:church-of-pilgrimage').some((e) => e.rel === 'contains' && e.to === 'item:gilded-iron-shield')).toBe(true)
+      // A prose location that names a landmark plus several regions.
+      expect(edges('region:chelona-s-rise').some((e) => e.rel === 'contains' && e.to === 'item:ranni-s-dark-moon')).toBe(true)
+    })
+
+    it('§18 — a short region alias cannot match a longer place name', () => {
+      // `region:altus` has the alias "altus"; it must never swallow "Scadu Altus".
+      expect(edges('region:altus').some((e) => e.rel === 'contains' && e.to === 'region:scadu-altus')).toBe(false)
+      expect(edges('region:scadu-altus').some((e) => e.rel === 'foundIn' && e.to === 'region:altus')).toBe(false)
+    })
+
+    it('§18 — regions with no contents are far fewer than the 130 the review measured', () => {
+      const empty = allEntities()
+        .filter((e) => e.kind === 'region')
+        .filter((e) => !edges(e.id).some((edge) => edge.rel === 'contains'))
+      expect(empty.length, empty.slice(0, 20).map((e) => e.id).join('\n')).toBeLessThanOrEqual(90)
+    })
+
+    it('§19 — a record whose data names no place is left without a fabricated edge', () => {
+      const records = loadRecords()
+      const places = allEntities()
+        .filter((e) => PLACE.has(e.kind))
+        .map((e) => ({ n: norm(e.name), id: e.id }))
+      // Genuinely locationless: "Anywhere", "Available from the start", "Loot",
+      // tutorial topics, cut content. None names a mapped place.
+      const locationless = [
+        'item:about-bows',
+        'item:balled-up',
+        'item:dejection',
+        'item:beckon',
+        'item:golden-rune-7',
+        'item:brave-s-battlewear-altered',
+        'item:ash-of-war-swift-slash',
+        'region:st-trina-s-hideaway',
+      ]
+      const problems: string[] = []
+      for (const id of locationless) {
+        const rec = records[id]
+        if (!rec) {
+          problems.push(`${id}: not in the index`)
+          continue
+        }
+        if (edges(id).some((e) => e.rel === 'foundIn')) problems.push(`${id}: has a fabricated foundIn edge`)
+        const text = norm(rec.location ?? '')
+        const matched = places.filter((p) => p.n.length >= 4 && p.id !== id && ` ${text} `.includes(` ${p.n} `))
+        if (matched.length) problems.push(`${id}: location names ${matched.map((m) => m.id).join(', ')}`)
+      }
+      expect(problems, problems.join('\n')).toEqual([])
+    })
+  })
 })

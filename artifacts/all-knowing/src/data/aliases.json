@@ -37293,6 +37293,16 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "enemy:sir-ansbach-npc-specimen-storehouse",
+  "slug": "enemy:sir-ansbach-npc-specimen-storehouse",
+  "kind": "enemy",
+  "fmgName": "Pureblood Knight Ansbach",
+  "aliases": [
+   "pureblood knight ansbach"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
   "engineId": "enemy:spark-orb",
   "slug": "enemy:spark-orb",
   "kind": "enemy",
@@ -42456,6 +42466,7 @@
   "kind": "hunt",
   "fmgName": "Count Ymir, Mother of Fingers",
   "aliases": [
+   "count ymir high priest",
    "count ymir mother of fingers",
    "count ymir mother of fingers boss"
   ],
@@ -42862,6 +42873,14 @@
    "soldier of godrick boss"
   ],
   "source": "hunts"
+ },
+ {
+  "engineId": "npcs:142000",
+  "slug": "hunt:count-ymir-mother-of-fingers",
+  "kind": "hunt",
+  "fmgName": "Count Ymir, High Priest",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "bossflag:1040530800",
@@ -43678,6 +43697,14 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "gems:200000",
+  "slug": "item:dryleaf-whirlwind",
+  "kind": "item",
+  "fmgName": "Ash of War: Dryleaf Whirlwind",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "gems:200100",
   "slug": "item:ash-of-war-aspects-of-the-crucible-wings",
   "kind": "item",
@@ -43974,6 +44001,14 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "gems:401000",
+  "slug": "item:palm-blast",
+  "kind": "item",
+  "fmgName": "Ash of War: Palm Blast",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "gems:40200",
   "slug": "item:ash-of-war-mighty-shot",
   "kind": "item",
@@ -44006,10 +44041,26 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "gems:404000",
+  "slug": "item:wall-of-sparks",
+  "kind": "item",
+  "fmgName": "Ash of War: Wall of Sparks",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "gems:40500",
   "slug": "item:ash-of-war-sky-shot",
   "kind": "item",
   "fmgName": "Ash of War: Sky Shot",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "gems:405000",
+  "slug": "item:rolling-sparks",
+  "kind": "item",
+  "fmgName": "Ash of War: Rolling Sparks",
   "aliases": [],
   "source": "game-name-table"
  },
@@ -44062,10 +44113,74 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "gems:412000",
+  "slug": "item:wing-stance",
+  "kind": "item",
+  "fmgName": "Ash of War: Wing Stance",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "gems:413000",
+  "slug": "item:blinkbolt",
+  "kind": "item",
+  "fmgName": "Ash of War: Blinkbolt",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "gems:414000",
+  "slug": "item:flame-skewer",
+  "kind": "item",
+  "fmgName": "Ash of War: Flame Skewer",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "gems:415000",
   "slug": "item:ash-of-war-savage-lion-s-claw",
   "kind": "item",
   "fmgName": "Ash of War: Savage Lion's Claw",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "gems:416000",
+  "slug": "item:divine-beast-frost-stomp",
+  "kind": "item",
+  "fmgName": "Ash of War: Divine Beast Frost Stomp",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "gems:417000",
+  "slug": "item:flame-spear",
+  "kind": "item",
+  "fmgName": "Ash of War: Flame Spear",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "gems:418000",
+  "slug": "item:carian-sovereignty",
+  "kind": "item",
+  "fmgName": "Ash of War: Carian Sovereignty",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "gems:419000",
+  "slug": "item:shriek-of-sorrow",
+  "kind": "item",
+  "fmgName": "Ash of War: Shriek of Sorrow",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "gems:422000",
+  "slug": "item:ghostflame-call",
+  "kind": "item",
+  "fmgName": "Ash of War: Ghostflame Call",
   "aliases": [],
   "source": "game-name-table"
  },
@@ -44110,6 +44225,14 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "gems:505000",
+  "slug": "item:the-poison-flower-blooms-twice",
+  "kind": "item",
+  "fmgName": "Ash of War: The Poison Flower Blooms Twice",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "gems:50600",
   "slug": "item:ash-of-war-ground-slam",
   "kind": "item",
@@ -44138,6 +44261,14 @@
   "slug": "item:ash-of-war-hoarah-loux-s-earthshaker",
   "kind": "item",
   "fmgName": "Ash of War: Hoarah Loux's Earthshaker",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "gems:548000",
+  "slug": "item:igon-s-drake-hunt",
+  "kind": "item",
+  "fmgName": "Ash of War: Igon's Drake Hunt",
   "aliases": [],
   "source": "game-name-table"
  },
@@ -44262,10 +44393,26 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "gems:70200",
+  "slug": "item:holy-ground",
+  "kind": "item",
+  "fmgName": "Ash of War: Holy Ground",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "gems:80000",
   "slug": "item:ash-of-war-quickstep",
   "kind": "item",
   "fmgName": "Ash of War: Quickstep",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "gems:800000",
+  "slug": "item:shield-strike",
+  "kind": "item",
+  "fmgName": "Ash of War: Shield Strike",
   "aliases": [],
   "source": "game-name-table"
  },
@@ -48997,6 +49144,16 @@
   "source": "legacy-id"
  },
  {
+  "engineId": "item:blinkbolt",
+  "slug": "item:blinkbolt",
+  "kind": "item",
+  "fmgName": "Ash of War: Blinkbolt",
+  "aliases": [
+   "ash of war blinkbolt"
+  ],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "item:bloodfiend-hexer-s-ashes",
   "slug": "item:bloodfiend-hexer-s-ashes",
   "kind": "item",
@@ -49326,6 +49483,16 @@
   "fmgName": "CKS (Carian Knight's Sword)",
   "aliases": [
    "cks carian knight sword"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "item:carian-sovereignty",
+  "slug": "item:carian-sovereignty",
+  "kind": "item",
+  "fmgName": "Ash of War: Carian Sovereignty",
+  "aliases": [
+   "ash of war carian sovereignty"
   ],
   "source": "game-name-table"
  },
@@ -50265,6 +50432,16 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:divine-beast-frost-stomp",
+  "slug": "item:divine-beast-frost-stomp",
+  "kind": "item",
+  "fmgName": "Ash of War: Divine Beast Frost Stomp",
+  "aliases": [
+   "ash of war divine beast frost stomp"
+  ],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "item:divine-bird-warrior-ornis",
   "slug": "item:divine-bird-warrior-ornis",
   "kind": "item",
@@ -50505,6 +50682,16 @@
   "fmgName": "Slumber Fog",
   "aliases": [
    "slumber fog"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "item:dryleaf-whirlwind",
+  "slug": "item:dryleaf-whirlwind",
+  "kind": "item",
+  "fmgName": "Ash of War: Dryleaf Whirlwind",
+  "aliases": [
+   "ash of war dryleaf whirlwind"
   ],
   "source": "game-name-table"
  },
@@ -51263,12 +51450,32 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:flame-skewer",
+  "slug": "item:flame-skewer",
+  "kind": "item",
+  "fmgName": "Ash of War: Flame Skewer",
+  "aliases": [
+   "ash of war flame skewer"
+  ],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "item:flame-sling",
   "slug": "item:flame-sling",
   "kind": "item",
   "fmgName": "Feast Upon Flame",
   "aliases": [
    "feast upon flame"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "item:flame-spear",
+  "slug": "item:flame-spear",
+  "kind": "item",
+  "fmgName": "Ash of War: Flame Spear",
+  "aliases": [
+   "ash of war flame spear"
   ],
   "source": "game-name-table"
  },
@@ -51774,6 +51981,16 @@
   "fmgName": "Ghost-Glovewort Picker",
   "aliases": [
    "ghost glovewort picker"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "item:ghostflame-call",
+  "slug": "item:ghostflame-call",
+  "kind": "item",
+  "fmgName": "Ash of War: Ghostflame Call",
+  "aliases": [
+   "ash of war ghostflame call"
   ],
   "source": "game-name-table"
  },
@@ -52886,6 +53103,16 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:holy-ground",
+  "slug": "item:holy-ground",
+  "kind": "item",
+  "fmgName": "Ash of War: Holy Ground",
+  "aliases": [
+   "ash of war holy ground"
+  ],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "item:holy-water-grease",
   "slug": "item:holy-water-grease",
   "kind": "item",
@@ -53043,6 +53270,16 @@
   "fmgName": "Igon's Cookbook (2)",
   "aliases": [
    "igon cookbook 2"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "item:igon-s-drake-hunt",
+  "slug": "item:igon-s-drake-hunt",
+  "kind": "item",
+  "fmgName": "Ash of War: Igon's Drake Hunt",
+  "aliases": [
+   "ash of war igon drake hunt"
   ],
   "source": "game-name-table"
  },
@@ -56501,6 +56738,16 @@
   "source": "legacy-id"
  },
  {
+  "engineId": "item:palm-blast",
+  "slug": "item:palm-blast",
+  "kind": "item",
+  "fmgName": "Ash of War: Palm Blast",
+  "aliases": [
+   "ash of war palm blast"
+  ],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "item:parrying-dagger",
   "slug": "item:parrying-dagger",
   "kind": "item",
@@ -57231,6 +57478,16 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:rolling-sparks",
+  "slug": "item:rolling-sparks",
+  "kind": "item",
+  "fmgName": "Ash of War: Rolling Sparks",
+  "aliases": [
+   "ash of war rolling sparks"
+  ],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "item:rosus-axe",
   "slug": "item:rosus-axe",
   "kind": "item",
@@ -57516,6 +57773,16 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:shield-strike",
+  "slug": "item:shield-strike",
+  "kind": "item",
+  "fmgName": "Ash of War: Shield Strike",
+  "aliases": [
+   "ash of war shield strike"
+  ],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "item:short-spear",
   "slug": "item:short-spear",
   "kind": "item",
@@ -57532,6 +57799,16 @@
   "fmgName": "SS (Short Sword)",
   "aliases": [
    "ss short sword"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "item:shriek-of-sorrow",
+  "slug": "item:shriek-of-sorrow",
+  "kind": "item",
+  "fmgName": "Ash of War: Shriek of Sorrow",
+  "aliases": [
+   "ash of war shriek of sorrow"
   ],
   "source": "game-name-table"
  },
@@ -58495,6 +58772,16 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:the-poison-flower-blooms-twice",
+  "slug": "item:the-poison-flower-blooms-twice",
+  "kind": "item",
+  "fmgName": "Ash of War: The Poison Flower Blooms Twice",
+  "aliases": [
+   "ash of war the poison flower blooms twice"
+  ],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "item:the-stormhawk-king",
   "slug": "item:the-stormhawk-king",
   "kind": "item",
@@ -58838,6 +59125,16 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "item:wall-of-sparks",
+  "slug": "item:wall-of-sparks",
+  "kind": "item",
+  "fmgName": "Ash of War: Wall of Sparks",
+  "aliases": [
+   "ash of war wall of sparks"
+  ],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "item:wandering-noble-ashes-1",
   "slug": "item:wandering-noble-ashes",
   "kind": "item",
@@ -59076,6 +59373,16 @@
   "fmgName": "WSS (Weathered Straight Sword)",
   "aliases": [
    "wss weathered straight sword"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "item:wing-stance",
+  "slug": "item:wing-stance",
+  "kind": "item",
+  "fmgName": "Ash of War: Wing Stance",
+  "aliases": [
+   "ash of war wing stance"
   ],
   "source": "game-name-table"
  },
@@ -59751,6 +60058,22 @@
   "source": "legacy-id"
  },
  {
+  "engineId": "enemy:41109010",
+  "slug": "npc:boc",
+  "kind": "npc",
+  "fmgName": "Demi-Human Boc",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
+  "engineId": "enemy:41109110",
+  "slug": "npc:boc",
+  "kind": "npc",
+  "fmgName": "Demi-Human Boc",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "npc:abandoned-merchant",
   "slug": "npc:abandoned-merchant",
   "kind": "npc",
@@ -59772,6 +60095,16 @@
    "warrior jar iron fist alexander"
   ],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "npc:asimi-silver-tear",
+  "slug": "npc:asimi-silver-tear",
+  "kind": "npc",
+  "fmgName": "Asimi, Eternal King",
+  "aliases": [
+   "asimi eternal king"
+  ],
+  "source": "game-name-aliases"
  },
  {
   "engineId": "npc:bearded-ancient-dynasty-statue",
@@ -59838,6 +60171,16 @@
   "fmgName": "Yura, Hunter of Bloody Fingers",
   "aliases": [
    "yura hunter of bloody fingers"
+  ],
+  "source": "game-name-aliases"
+ },
+ {
+  "engineId": "npc:boc",
+  "slug": "npc:boc",
+  "kind": "npc",
+  "fmgName": "Demi-Human Boc",
+  "aliases": [
+   "demi human boc"
   ],
   "source": "game-name-aliases"
  },
@@ -60754,6 +61097,14 @@
   "fmgName": "Smithing Master Hewg",
   "aliases": [],
   "source": "game-name-table"
+ },
+ {
+  "engineId": "npcs:121810",
+  "slug": "npc:asimi-silver-tear",
+  "kind": "npc",
+  "fmgName": "Asimi, Eternal King",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "npcs:121900",
@@ -62875,9 +63226,18 @@
   "aliases": [
    "fairy",
    "siofra",
-   "siofra river"
+   "siofra river",
+   "siofra river well"
   ],
   "source": "authored"
+ },
+ {
+  "engineId": "region:siofra-river-well",
+  "slug": "region:siofra-river",
+  "kind": "region",
+  "fmgName": "Siofra River Well",
+  "aliases": [],
+  "source": "legacy-id"
  },
  {
   "engineId": "region:snowfield-minor-erdtree",
