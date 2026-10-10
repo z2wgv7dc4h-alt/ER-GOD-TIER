@@ -611,7 +611,7 @@ function BuildRoom({ view, onFindBuild }: { view: 'builds' | 'kits' | 'calc' | '
           </h3>
           <p className="note">
             {calcView
-              ? 'Run real numbers: per-type damage against an NpcParam target, attack rating from the vendored 1.17 data, and the stat/level/smithing planners.'
+              ? 'Real numbers: damage by type against an enemy, attack rating, and stat, level and upgrade planners.'
               : findView
                 ? 'Browse OP PvE kits, compare weapons, and follow a PvP build. "Follow this build" sets it as your goal so Your build can track it.'
                 : 'Plan your character, find stronger gear, and browse OP PvE kits.'}
@@ -843,13 +843,11 @@ function BuildRoom({ view, onFindBuild }: { view: 'builds' | 'kits' | 'calc' | '
       <section className="panel">
         <div className="kicker">Build lab</div>
         <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>Stats drive every other pane</h3>
-        <p className="note">Change a number here and the atlas / quest advice still talk about the same person. Attack rating is the real formula from Thomas Clark’s calculator, run on this project’s vendored vanilla 1.17 game data (see THIRD_PARTY_NOTICES.md).</p>
+        <p className="note">Your stats here drive the whole app — map, quests and advice all use them. Attack rating uses the game's own formula for the current patch.</p>
         <StatsEditor character={character} setCharacter={setCharacter} />
         <p className="note" style={{ marginTop: -8 }}>
-          Dots are the real soft-cap tiers (filled when reached). Offensive-stat
-          breakpoints are the game's own scaling-curve stages in this project's vendored
-          1.17 game data (Thomas Clark); Vigor/Mind/Endurance use the community
-          HP/FP/stamina breakpoints. See <code>src/lib/softCaps.ts</code>.
+          Dots mark the soft caps — where each extra point starts giving less. Filled dots are
+          caps you've already reached.
         </p>
 
         <RespecAdvisor />
