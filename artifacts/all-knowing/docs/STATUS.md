@@ -52,5 +52,5 @@ Opencode children must inherit the supervisor's hidden console (`windowsHide: fa
 1,650 tests passing · lint 0 · build OK · bundle budget OK · links 0 dead · offline Gideon 85.5% · photos 91%.
 
 ## Repo
-Master clean and pushed. Branches left: master, task-143 (unmerged planning work, HOLD), task-141/147/157/161
+Master clean and pushed. The wiki dump `.scratch/er-mcp.db` (49 MB) is tracked in git (everything else in `.scratch/` is throwaway). Not in git by design: map tiles/icons extracted from the owner's game install. Branches left: master, task-143 (unmerged planning work, HOLD), task-141/147/157/161
 (old unmerged audit/report branches — their reports are already in master; safe to delete if wanted).
