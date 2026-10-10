@@ -190,7 +190,8 @@ button { cursor: pointer; }
 .brand-mark {
   flex: none;
   width: 144px;
-  height: 36px;
+  aspect-ratio: 4 / 1;
+  max-width: 100%;
   padding: 0;
   border: 0;
   background: transparent url('/brand/wordmark.webp') left center / contain no-repeat;
@@ -205,7 +206,7 @@ button { cursor: pointer; }
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
-.section-tabs button.active { color: var(--gold); border-color: var(--line); background: #1c1811; }
+.section-tabs button.active { color: var(--bg-raised); border-color: var(--gold); background: var(--gold); }
 .header-search { flex: 1; }
 .char-chip {
   flex: none;
@@ -283,7 +284,7 @@ button { cursor: pointer; }
   text-transform: uppercase;
   white-space: nowrap;
 }
-.subtabs button.active { color: var(--gold); border-color: var(--gold-dim); }
+.subtabs button.active { color: var(--bg-raised); border-color: var(--gold); background: var(--gold); }
 .map-controls { flex: none; padding: 8px 16px 0; }
 
 /* Task 103 §10: the dock is a flex column. The header (face + notes +
@@ -1507,7 +1508,7 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   .char-level { font-size: 11px; white-space: nowrap; }
   .area-chip { max-width: 110px; min-height: 40px; padding: 4px 8px; }
   .search-toggle { min-width: 44px; min-height: 44px; padding: 0; justify-content: center; }
-  .brand-mark { width: 108px; height: 27px; }
+  .brand-mark { width: 108px; }
   .subtabs { padding: 6px 10px; }
   .map-controls { display: none; }
 
