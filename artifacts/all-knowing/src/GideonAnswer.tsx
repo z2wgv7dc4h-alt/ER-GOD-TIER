@@ -28,6 +28,14 @@ export function GideonSay({ text }: { text: string }) {
 }
 
 /**
+ * Task 193 §5 — Gideon's avatar (owner-approved visual-only change). Shared by
+ * the chat header and each answer bubble, so one file owns the picture.
+ */
+export function GideonAvatar({ className = 'guide-face' }: { className?: string }) {
+  return <img className={className} src="/brand/gideon-256.webp" alt="" loading="lazy" decoding="async" />
+}
+
+/**
  * Task 109 §5 — action chips stay compact inline chips, never full-width boxes.
  * Long action sentences ellipsize at 28 chars; the title carries the full text.
  */

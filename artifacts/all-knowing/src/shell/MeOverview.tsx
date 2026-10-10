@@ -15,7 +15,7 @@ import { activityLine, progressMeters, SOURCE_LABEL } from '../lib/progressStats
 import { useEntityIndex } from '../lib/entityIndex'
 import { Recents, softCapMark } from '../QoL'
 import { factState, useWorkspace } from '../state'
-import { Button, Card, Kicker } from '../ui'
+import { Button, Card, EmptyState, Kicker } from '../ui'
 import { AreaPrompt } from './AreaPrompt'
 
 function Meter({ label, have, total }: { label: string; have: number; total: number }) {
@@ -375,7 +375,7 @@ export function MeOverview() {
       <section className="panel recent-panel">
         <Kicker>Recent activity</Kicker>
         {recent.length === 0 ? (
-          <p className="note">Nothing logged yet.</p>
+          <EmptyState image="/brand/empty-progress.webp" line="Nothing logged yet." />
         ) : (
           <ul className="list" style={{ marginTop: 6 }}>
             {recent.map((e) => {
