@@ -349,6 +349,7 @@ export function Gideon() {
                 type="button"
                 className="chip"
                 title="Clear the conversation"
+                disabled={log.length <= 1}
                 onClick={() => setLog((rows) => rows.slice(0, 1))}
               >
                 Clear
