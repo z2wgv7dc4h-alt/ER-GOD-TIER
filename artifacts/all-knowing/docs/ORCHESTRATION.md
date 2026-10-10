@@ -26,7 +26,8 @@ work in git worktrees. A Node supervisor runs the queue unattended. The owner do
 
 ## What the supervisor does (every 60 s)
 - Starts ready tasks (deps merged) up to MAX=4 in parallel, `opencode.exe` spawned directly with
-  `windowsHide` → hidden console inherited by every command DeepSeek runs (no popups).
+  `windowsHide: false` from a supervisor started with `Start-Process -WindowStyle Hidden` → every command
+  DeepSeek runs inherits that hidden console (no popups; `windowsHide: true` made them flash, 2026-10-09).
 - Restarts a run whose log is silent 10 min (max 2), resumes a run that exited without finishing (max 3),
   then reports FAILED. Stops starting runs on "Insufficient Balance" (tell the owner).
 - "DONE" = `docs/tasks/<id>-report.md` contains `ALL ITEMS DONE`. "Merged" = branch tip is in master.
@@ -61,7 +62,8 @@ work in git worktrees. A Node supervisor runs the queue unattended. The owner do
 
 ## Known pitfalls (all happened)
 - Visible windows: scheduled tasks, bash supervisors using `nohup`, and scripts calling `powershell`
-  all popped up consoles. Only the Node supervisor with `windowsHide` is proven windowless.
+  all popped up consoles, and so did `windowsHide: true`. Only the hidden Node supervisor with
+  `windowsHide: false` children is proven windowless.
 - DeepSeek credit runs out mid-run: logs end with "Insufficient Balance"; work is kept in commits.
 - PC/GPU crashes kill everything and once zeroed a branch ref (`.git/refs/heads/task-165`): restore from
   `.git/logs/refs/heads/<branch>` (last sha) and run `git fsck`.

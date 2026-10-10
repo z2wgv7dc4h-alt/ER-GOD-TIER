@@ -16,7 +16,8 @@ of the TV, quick logs and inference. Judge every feature by whether it works for
 - NEVER read, list or open `.env` / `.env.local` (private API keys). Tell every agent the same.
 - **Never open visible windows** on the owner's PC (gaming PC): no scheduled tasks, no bash/PowerShell
   launchers for background work. Background runs only via `scripts/orchestration/supervisor.mjs`
-  (Node, `windowsHide`), started hidden once. Test any new launch method for windows before relying on it.
+  (Node; children spawned with `windowsHide: false` so they inherit its hidden console), started hidden once.
+  Test any new launch method for windows before relying on it.
 - Ask before adding scope: answer questions, propose work, wait for "yes". Do what was asked, no tangents.
 - Never remove, relabel or edit the owner's builds (`build:*`, PvP builds) — presentation changes only.
 - Only advice viable on the current game patch; outdated tips are flagged, never shown as current.
