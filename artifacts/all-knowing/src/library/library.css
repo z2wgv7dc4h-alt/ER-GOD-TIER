@@ -118,8 +118,17 @@
   border-bottom: 1px solid var(--line-soft);
 }
 
+/* Task 196 §2 — one row: search, the type dropdown and the Filters button. */
+.lib-toolbar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
 .lib-search {
-  width: 100%;
+  flex: 1 1 180px;
+  min-width: 0;
   padding: 8px 10px;
   background: var(--bg);
   border: 1px solid var(--line);
@@ -134,6 +143,67 @@
   border-color: var(--gold-dim);
 }
 
+.lib-type {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.lib-type-select {
+  max-width: 42vw;
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 7px 8px;
+  font: inherit;
+  font-size: 13px;
+}
+
+.lib-type-select:focus {
+  outline: none;
+  border-color: var(--gold-dim);
+}
+
+.lib-filters-btn {
+  flex: 0 0 auto;
+}
+
+/* Active filters echo as small removable chips under the row. */
+.lib-activefilters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.lib-activechip {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  max-width: 100%;
+  padding: 2px 8px;
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font: inherit;
+  font-size: 11px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.lib-activechip:hover {
+  color: var(--ink);
+  border-color: var(--gold-dim);
+}
+
+.lib-activechip.clear {
+  color: var(--gold);
+  border-color: var(--gold-dim);
+  background: transparent;
+}
+
 .lib-tools {
   display: flex;
   flex-wrap: wrap;
@@ -143,19 +213,10 @@
 
 /* Task 109 §1 — every facet chip is nowrap and wraps as a whole unit; never
    squeezes its own label or overlaps a neighbour. */
-.lib-tools .chip,
 .lib-subtypes .chip,
-.lib-phone-tools .chip,
 .lib-filters-sheet .chip {
   flex: 0 0 auto;
   white-space: nowrap;
-}
-
-/* The phone toolbar row; desktop hides it and keeps `.lib-tools` inline. */
-.lib-phone-tools {
-  display: none;
-  align-items: center;
-  gap: 6px;
 }
 
 .sr-only {
@@ -236,13 +297,13 @@
 
 .lib-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 8px;
 }
 
 .lib-card {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   min-width: 0;
   overflow: hidden;
@@ -264,10 +325,11 @@
   border-color: var(--gold);
 }
 
+/* Task 196 §3 — a 56px picture (within the 48–64px target). */
 .lib-card-thumb {
   flex: 0 0 auto;
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -304,24 +366,26 @@
   color: var(--muted);
 }
 
+/* Task 196 §3 — the whole name wraps (two lines at desktop) with no ellipsis. */
 .lib-card-name {
   font-family: var(--font-display);
   font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.25;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .lib-card-stats {
   font-size: 11px;
   color: var(--muted);
+  overflow-wrap: anywhere;
 }
 
 /* Task 109 §2 — word badges with colour, never a bare symbol. */
 .lib-card-flags {
   flex: 0 1 auto;
   min-width: 0;
-  max-width: 46%;
+  max-width: 40%;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -336,6 +400,20 @@
   padding: 1px 6px;
   border: 1px solid currentColor;
   border-radius: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+/* Task 196 §3 — the unmet requirement is a small muted tag, not a red badge. */
+.lib-tag {
+  display: inline-block;
+  max-width: 100%;
+  padding: 1px 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -793,10 +871,32 @@
   min-height: 0;
   overflow-y: auto;
   display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 0;
+}
+
+/* Task 196 §2 — a labelled section inside the Filters panel. */
+.lib-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lib-filter-group-title {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+.lib-filter-group-body {
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  padding: 12px 0;
+  gap: 6px;
 }
 
 .lib-filters-foot {
@@ -852,14 +952,20 @@
     max-height: 56%;
   }
 
-  /* Task 109 §1: desktop facets hide; the phone gets one compact row + sheet. */
-  .lib-toolbar .lib-tools { display: none; }
-  .lib-phone-tools {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 2px;
+  /* Task 196 §4 — one toolbar row on a phone too: the search flexes, the type
+     dropdown and Filters button stay put and the row wraps rather than scroll. */
+  .lib-toolbar-row {
+    flex-wrap: wrap;
+  }
+
+  .lib-search {
+    flex: 1 1 100%;
+  }
+
+  .lib-type,
+  .lib-type-select {
+    max-width: none;
+    flex: 1 1 auto;
   }
 
   /* Task 103 §8/§9: touch targets and a 12px phone type floor. */
@@ -870,6 +976,7 @@
   .lib-card-stats,
   .lib-card-mono,
   .lib-flag,
+  .lib-activechip,
   .lib-compare-table th,
   .lib-owned-badge,
   .lib-scaling-chip,
@@ -885,6 +992,28 @@
   .lib-panel-close,
   .lib-pin-x { min-width: 40px; min-height: 40px; }
   .lib-panel-tabs button { min-height: 40px; }
+
+  /* Task 196 §4 — keep the 390px card a comfortable 48px picture. */
+  .lib-card-thumb {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* Task 196 §2 — on desktop the Filters panel is a centred popover, not a sheet. */
+@media (min-width: 1001px) {
+  .lib-filters-overlay {
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+  }
+
+  .lib-filters-sheet {
+    width: min(560px, 100%);
+    max-height: 80vh;
+    border: 1px solid var(--gold-dim);
+    border-radius: 12px;
+  }
 }
 
 /* --- loading skeleton (Task 103 §2) -------------------------------------- */

@@ -152,13 +152,45 @@ const CATALOG_KIND: Partial<Record<CategoryId, EntityKind>> = {
   mechanics: 'mechanic',
 }
 
-function iconForEntity(category: CategoryId, name: string): string | undefined {
-  const aliases = factFor(name)?.aliases
-  // Task 193 §4: FanAPI picture → local extra picture → brand `cat-<kind>` icon.
-  // Real pictures always win; the pack/chrome seal is the last resort.
+/**
+ * Task 196 §1 — the loaded entity-index records, keyed by their canonical
+ * `kind:slug` id. A card resolves its picture by this map first.
+ */
+type RecordIndex = Map<string, EntityRecord>
+
+function buildRecordIndex(index: EntityRecord[] | undefined): RecordIndex {
+  const map = new Map<string, EntityRecord>()
+  for (const record of index ?? []) map.set(record.id, record)
+  return map
+}
+
+/**
+ * Task 196 §1 — names an entity's picture may be filed under. The guide
+ * catalogue repeats a key item as "#1 … #N" acquisition rows; the picture lives
+ * on the base name, so the trailing counter is stripped for the lookup only.
+ */
+function iconNameVariants(name: string): string[] {
+  const out = [name]
+  const base = name.replace(/\s*#\s*\d+\s*$/i, '').trim()
+  if (base && base !== name) out.push(base)
+  return out
+}
+
+function iconForEntity(category: CategoryId, name: string, index?: RecordIndex): string | undefined {
+  // Task 196 §1: the enriched record's own picture (the game icons from
+  // Task 154 and `image-index-extra.json` from Task 184) is the first rung, so
+  // DLC and loot rows stop falling back to a generic glyph. Then the name
+  // lookup (FanAPI → local extra), then the brand `cat-<kind>` icon, then the
+  // pack/chrome seal as the last resort.
+  for (const variant of iconNameVariants(name)) {
+    const recordImage = index?.get(factIdFor(category, variant))?.image
+    if (recordImage) return recordImage
+  }
   const kind = CATALOG_KIND[category] ?? (category === 'guides' ? 'guide' : undefined)
-  const picture = entityImage(name, aliases, kind)
-  if (picture) return picture
+  for (const variant of iconNameVariants(name)) {
+    const picture = entityImage(variant, factFor(variant)?.aliases, kind)
+    if (picture) return picture
+  }
   return iconFor(name, ICON_KIND[category]).url
 }
 
@@ -227,6 +259,7 @@ function weaponEntity(
   seed: WeaponSeed,
   regRow: ReturnType<typeof toWeaponStatRow> | undefined,
   acqByName: Map<string, Acquisition>,
+  index?: RecordIndex,
 ): LibraryEntity {
   const where =
     seed.where ||
@@ -250,7 +283,7 @@ function weaponEntity(
     region: undefined,
     campaign: campaignFlag(seed.dlc),
     dlc: seed.dlc,
-    icon: iconForEntity(category, seed.name),
+    icon: iconForEntity(category, seed.name, index),
     weight: seed.weight,
     requirements: regRequirements(seed, regRow),
     scaling: Object.keys(scaling).length ? scaling : undefined,
@@ -262,7 +295,7 @@ function weaponEntity(
   }
 }
 
-function buildWeapons(input: CatalogInput): { weapons: LibraryEntity[]; shields: LibraryEntity[]; weaponByName: Map<string, Weapon> } {
+function buildWeapons(input: CatalogInput, index?: RecordIndex): { weapons: LibraryEntity[]; shields: LibraryEntity[]; weaponByName: Map<string, Weapon> } {
   const reps = representativeWeapons(input.weapons)
   const weaponByName = new Map<string, Weapon>()
   for (const [name, w] of reps) {
@@ -326,7 +359,7 @@ function buildWeapons(input: CatalogInput): { weapons: LibraryEntity[]; shields:
   const shields: LibraryEntity[] = []
   for (const seed of seeds.values()) {
     if (shieldNames.has(norm(seed.name))) continue
-    weapons.push(weaponEntity('weapons', seed, rowByName(seed.name), acqByName))
+    weapons.push(weaponEntity('weapons', seed, rowByName(seed.name), acqByName, index))
   }
   for (const s of input.fan.shields) {
     const seed: WeaponSeed = {
@@ -334,7 +367,7 @@ function buildWeapons(input: CatalogInput): { weapons: LibraryEntity[]; shields:
       subtype: s.category,
       weight: s.weight,
     }
-    shields.push(weaponEntity('shields', seed, rowByName(s.name), acqByName))
+    shields.push(weaponEntity('shields', seed, rowByName(s.name), acqByName, index))
   }
   return { weapons, shields, weaponByName }
 }
@@ -343,19 +376,19 @@ function buildWeapons(input: CatalogInput): { weapons: LibraryEntity[]; shields:
 // simple fanapi-backed categories
 // ---------------------------------------------------------------------------
 
-function baseEntity(category: CategoryId, rawName: string, extra: Partial<LibraryEntity> = {}): LibraryEntity {
+function baseEntity(category: CategoryId, rawName: string, extra: Partial<LibraryEntity> = {}, index?: RecordIndex): LibraryEntity {
   const name = canonicalName(rawName)
   return {
     id: `${category}:${slug(name)}`,
     factId: factIdFor(category, name),
     name,
     category,
-    icon: iconForEntity(category, name),
+    icon: iconForEntity(category, name, index),
     ...extra,
   }
 }
 
-function buildArmor(fan: FanapiData): LibraryEntity[] {
+function buildArmor(fan: FanapiData, index?: RecordIndex): LibraryEntity[] {
   return fan.armors.map((a) => {
     const stats: EntityStat[] = [{ label: 'Poise', value: String(a.poise) }]
     const negation = Object.entries(a.dmgNegation)
@@ -370,21 +403,21 @@ function buildArmor(fan: FanapiData): LibraryEntity[] {
       stats,
       tags,
       lore: negation ? `Damage negation: ${negation}.` : undefined,
-    })
+    }, index)
   })
 }
 
-function buildTalismans(fan: FanapiData): LibraryEntity[] {
+function buildTalismans(fan: FanapiData, index?: RecordIndex): LibraryEntity[] {
   return fan.talismans.map((t) =>
     baseEntity('talismans', t.name, {
       subtype: 'Talisman',
       stats: [{ label: 'Effect', value: t.effect }],
       lore: t.effect,
-    }),
+    }, index),
   )
 }
 
-function buildSpells(fan: FanapiData, type: 'Sorcery' | 'Incantation', category: CategoryId): LibraryEntity[] {
+function buildSpells(fan: FanapiData, type: 'Sorcery' | 'Incantation', category: CategoryId, index?: RecordIndex): LibraryEntity[] {
   return fan.spells
     .filter((s) => s.type === type)
     .map((s) => {
@@ -402,22 +435,22 @@ function buildSpells(fan: FanapiData, type: 'Sorcery' | 'Incantation', category:
         ],
         tags: [type],
         lore: s.effect,
-      })
+      }, index)
     })
 }
 
-function buildAshes(fan: FanapiData): LibraryEntity[] {
+function buildAshes(fan: FanapiData, index?: RecordIndex): LibraryEntity[] {
   return fan.ashes.map((a) =>
     baseEntity('ashes', a.name, {
       subtype: a.affinity || 'Ash of War',
       stats: a.skill ? [{ label: 'Skill', value: a.skill }] : undefined,
       tags: [a.affinity, a.skill].filter(Boolean) as string[],
       lore: a.skill ? `Grants the skill ${a.skill}.` : undefined,
-    }),
+    }, index),
   )
 }
 
-function buildSpirits(fan: FanapiData): LibraryEntity[] {
+function buildSpirits(fan: FanapiData, index?: RecordIndex): LibraryEntity[] {
   return fan.spirits.map((s) =>
     baseEntity('spirits', s.name, {
       subtype: 'Spirit Ash',
@@ -426,11 +459,11 @@ function buildSpirits(fan: FanapiData): LibraryEntity[] {
         { label: 'HP cost', value: String(s.hpCost) },
       ],
       lore: s.effect,
-    }),
+    }, index),
   )
 }
 
-function buildItems(fan: FanapiData, acquisitions: Acquisition[]): LibraryEntity[] {
+function buildItems(fan: FanapiData, acquisitions: Acquisition[], index?: RecordIndex): LibraryEntity[] {
   const acqByName = acquisitionIndex(acquisitions)
   return fan.items.map((i) => {
     const acq = acqByName.get(norm(i.name))
@@ -440,7 +473,7 @@ function buildItems(fan: FanapiData, acquisitions: Acquisition[]): LibraryEntity
       tags: [i.type].filter((t) => t && t !== '-') as string[],
       where: acq?.location || acq?.near || undefined,
       lore: i.effect,
-    })
+    }, index)
   })
 }
 
@@ -448,7 +481,7 @@ function buildItems(fan: FanapiData, acquisitions: Acquisition[]): LibraryEntity
 // bosses
 // ---------------------------------------------------------------------------
 
-function buildBosses(input: CatalogInput): LibraryEntity[] {
+function buildBosses(input: CatalogInput, index?: RecordIndex): LibraryEntity[] {
   const combatByName = new Map<string, CombatStats>()
   for (const c of input.bossCombat) combatByName.set(norm(c.name), c)
 
@@ -531,7 +564,7 @@ function buildBosses(input: CatalogInput): LibraryEntity[] {
         tags: [seed.region, seed.type].filter(Boolean) as string[],
         where: seed.location,
         lore: seed.notes,
-      }),
+      }, index),
     )
   }
   return out
@@ -652,7 +685,7 @@ const KEY_ITEM_CATEGORIES = new Set([
 ])
 
 /** Task 132 §4 — Key Items / Materials from the guide catalogue's own categories. */
-function buildMaterials(guideItems: GuideItem[]): LibraryEntity[] {
+function buildMaterials(guideItems: GuideItem[], index?: RecordIndex): LibraryEntity[] {
   return guideItems
     .filter((g) => g.category && KEY_ITEM_CATEGORIES.has(g.category))
     .map((g) =>
@@ -664,7 +697,7 @@ function buildMaterials(guideItems: GuideItem[]): LibraryEntity[] {
         tags: [g.category, g.world].filter(Boolean) as string[],
         where: g.how,
         lore: g.missable ? `${g.how} Missable.` : g.how,
-      }),
+      }, index),
     )
 }
 
@@ -740,19 +773,22 @@ function buildDialogue(dialogue: DialogueSpeaker[]): LibraryEntity[] {
 // ---------------------------------------------------------------------------
 
 export function buildCatalog(input: CatalogInput): BuiltCatalog {
-  const { weapons, shields, weaponByName } = buildWeapons(input)
-  const armor = buildArmor(input.fan)
-  const talismans = buildTalismans(input.fan)
-  const sorceries = buildSpells(input.fan, 'Sorcery', 'sorceries')
-  const incantations = buildSpells(input.fan, 'Incantation', 'incantations')
-  const ashes = buildAshes(input.fan)
-  const spirits = buildSpirits(input.fan)
-  const items = buildItems(input.fan, input.acquisitions)
-  const bosses = buildBosses(input)
+  // Task 196 §1 — one id -> record map so every builder can prefer a card's own
+  // enriched picture (game icon / local image) over the name lookup.
+  const index = buildRecordIndex(input.index)
+  const { weapons, shields, weaponByName } = buildWeapons(input, index)
+  const armor = buildArmor(input.fan, index)
+  const talismans = buildTalismans(input.fan, index)
+  const sorceries = buildSpells(input.fan, 'Sorcery', 'sorceries', index)
+  const incantations = buildSpells(input.fan, 'Incantation', 'incantations', index)
+  const ashes = buildAshes(input.fan, index)
+  const spirits = buildSpirits(input.fan, index)
+  const items = buildItems(input.fan, input.acquisitions, index)
+  const bosses = buildBosses(input, index)
   const enemies = buildEnemies(input.index ?? [])
   const npcs = buildNpcs(input.fan, input.index ?? [])
   const locations = buildLocations(input.fan, input.index ?? [])
-  const materials = buildMaterials(input.guideItems ?? [])
+  const materials = buildMaterials(input.guideItems ?? [], index)
   const recipes = buildRecipes(input.recipes)
   const secrets = buildSecrets(input.secrets)
   const guides = buildGuides(input.guides)
