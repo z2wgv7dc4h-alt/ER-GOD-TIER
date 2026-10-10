@@ -176,6 +176,11 @@ function iconNameVariants(name: string): string[] {
   return out
 }
 
+// Task 196 §1 — a record may still carry a pack glyph (e.g. a boss-keyed spirit
+// used for a boss entry). That is not the entity's real picture, so it must not
+// shadow the name lookup; the same placeholder test the index builder uses.
+const PLACEHOLDER_IMAGE_RE = /\/pack-icons\//
+
 function iconForEntity(category: CategoryId, name: string, index?: RecordIndex): string | undefined {
   // Task 196 §1: the enriched record's own picture (the game icons from
   // Task 154 and `image-index-extra.json` from Task 184) is the first rung, so
@@ -184,7 +189,7 @@ function iconForEntity(category: CategoryId, name: string, index?: RecordIndex):
   // pack/chrome seal as the last resort.
   for (const variant of iconNameVariants(name)) {
     const recordImage = index?.get(factIdFor(category, variant))?.image
-    if (recordImage) return recordImage
+    if (recordImage && !PLACEHOLDER_IMAGE_RE.test(recordImage)) return recordImage
   }
   const kind = CATALOG_KIND[category] ?? (category === 'guides' ? 'guide' : undefined)
   for (const variant of iconNameVariants(name)) {
