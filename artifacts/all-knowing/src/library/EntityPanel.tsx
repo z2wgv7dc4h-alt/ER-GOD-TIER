@@ -280,11 +280,21 @@ export function EntityPanel({
   const isBoss = panelKindValue === 'boss' || panelKindValue === 'enemy'
   // Task 165 §2 — a boss fought in several places lists them first (block 1).
   const isGroupBoss = isBoss && encountersOf(entity.factId).length > 0
-  // Task 165 §2 — a boss page inlines Stats/Where/Related, so its tab strip
-  // reduces to the two reference tabs that have nowhere else to go.
-  const tabs: Tab[] = isBoss ? ['lore', 'wiki'] : ['stats', 'where', 'lore', 'related', 'wiki']
   const isNpc = panelKindValue === 'npc' || panelKindValue === 'merchant'
   const isGrace = panelKindValue === 'grace'
+  // Task 188 §6 — the grace's place name is no longer written back as prose, so
+  // most graces carry no description. Hide the empty Lore block rather than show
+  // a bare "no lore" placeholder; a grace that genuinely has text keeps its tab.
+  const hasLoreBlock = Boolean(
+    entity.lore || record?.description || record?.strategy || (record?.sections?.length ?? 0) > 0,
+  )
+  // Task 165 §2 — a boss page inlines Stats/Where/Related, so its tab strip
+  // reduces to the two reference tabs that have nowhere else to go.
+  const tabs: Tab[] = isBoss
+    ? ['lore', 'wiki']
+    : isGrace && !hasLoreBlock
+      ? ['stats', 'where', 'related', 'wiki']
+      : ['stats', 'where', 'lore', 'related', 'wiki']
   // Task 144 §1 — a region/dungeon is not ownable; it gets its own actions.
   const isLocation = panelKindValue === 'region' || panelKindValue === 'dungeon'
   const BOSS_LABELS = new Set(['hp', 'negation', 'poise', 'status resist', 'weak to', 'resists', 'drops', 'arena'])
@@ -623,7 +633,7 @@ export function EntityPanel({
           </div>
         )}
 
-        {tab === 'lore' && (
+        {tab === 'lore' && !(isGrace && !hasLoreBlock) && (
           <div className="lib-panel-lore">
             {(entity.lore || record?.description) && (
               <SpoilerGate factId={statusFactId}>

@@ -1236,13 +1236,34 @@ export function formatNegationEntries(value: unknown): string | undefined {
 
 type MaybeCoord = { x?: number; y?: number; map?: string; world?: string }
 
-function coordFor(name: string): MaybeCoord | undefined {
+/**
+ * Task 188 §7 — the one map frame a record pin may use is the 0–100 mosaic
+ * frame. `boss-xyz` carries raw world-space units (hundreds of them) and
+ * `map-extras` carries signed lat/lng; both are a different frame from the plate
+ * and must never be stored as if they were plate percent. See ARCHITECTURE
+ * "Two map frames (do not mix)".
+ */
+function plateFrame(x: unknown, y: unknown): boolean {
   return (
-    lookupName(coordsByName, name) ??
-    lookupName(bossXyzByName, name) ??
-    lookupName(bossPinByName, name) ??
-    lookupName(placementByName, name)
+    typeof x === 'number' &&
+    typeof y === 'number' &&
+    Number.isFinite(x) &&
+    Number.isFinite(y) &&
+    x >= 0 &&
+    x <= 100 &&
+    y >= 0 &&
+    y <= 100
   )
+}
+
+function coordFor(name: string): MaybeCoord | undefined {
+  // Task 188 §7 — take the first source whose coordinates actually sit in the
+  // plate frame; a raw-world row no longer shadows a real plate pin.
+  for (const source of [coordsByName, bossXyzByName, bossPinByName, placementByName]) {
+    const row = lookupName(source, name)
+    if (row && plateFrame(row.x, row.y)) return row
+  }
+  return undefined
 }
 
 /** Split a multi-boss name into its components (and the whole name). */
@@ -1582,8 +1603,8 @@ function mergeGrace(name: string, forcedId?: string): string | undefined {
   }
   if (!record.location) setText(record, 'location', (getEntity(id) as { summary?: string }).summary)
   const coord = lookupName(coordsByName, name)
-  if (coord && typeof coord.x === 'number' && typeof coord.y === 'number') {
-    record.map = { x: coord.x, y: coord.y, map: coord.map, world: coord.world }
+  if (coord && plateFrame(coord.x, coord.y)) {
+    record.map = { x: coord.x as number, y: coord.y as number, map: coord.map, world: coord.world }
     source(record, 'coords')
   }
   return id
@@ -1650,8 +1671,8 @@ function mergeNpc(name: string, forcedId?: string): string | undefined {
     source(record, 'fanapi/npcs')
   }
   const placement = lookupName(placementByName, name)
-  if (placement) {
-    record.map = { x: placement.x ?? 0, y: placement.y ?? 0, map: placement.map, world: placement.world }
+  if (placement && plateFrame(placement.x, placement.y)) {
+    record.map = { x: placement.x as number, y: placement.y as number, map: placement.map, world: placement.world }
     source(record, 'npc-placements')
   }
   if (!record.location) setText(record, 'location', npcLocationFromSummary((getEntity(id) as { summary?: string }).summary))
@@ -2385,6 +2406,9 @@ function mergeWikiGraces(): void {
   const graceIds = new Set<string>()
   const coordByName = new Map<string, { x: number; y: number; map?: string; world?: string }>()
   const addCoord = (name: string, coord: { x: number; y: number; map?: string; world?: string }) => {
+    // Task 188 §7 — a signed lat/lng `map-extras` row is a different frame; it
+    // never registers, so a real in-frame engine pin can win instead.
+    if (!plateFrame(coord.x, coord.y)) return
     for (const key of [...mapKeys(name), baseNorm(name).replace(/\bsite of grace\b|\bsite\b/g, '').trim()]) {
       if (key && !coordByName.has(key)) coordByName.set(key, coord)
     }
@@ -2408,8 +2432,17 @@ function mergeWikiGraces(): void {
     }
   }
   const MOSAIC = 10496
-  for (const grace of (engineMarkersDoc as { graces?: { name: string; px: number; py: number }[] }).graces ?? []) {
-    if (typeof grace.px === 'number' && typeof grace.py === 'number') {
+  // Task 188 §7 — the engine's `graces` plane names the warp targets; its wider
+  // `markers` plane also carries the POI graces (evergaols, ruins) the checklist
+  // list omits (Weeping Evergaol, Kingsrealm Ruins). Both are already in the
+  // 10496 mosaic frame, so they are the honest source when `coords`/`map-extras`
+  // cannot place a warp.
+  const engineMarks = [
+    ...((engineMarkersDoc as { graces?: { name: string; px: number; py: number }[] }).graces ?? []),
+    ...((engineMarkersDoc as { markers?: { name?: string; px?: number; py?: number }[] }).markers ?? []),
+  ]
+  for (const grace of engineMarks) {
+    if (grace.name && typeof grace.px === 'number' && typeof grace.py === 'number') {
       addCoord(grace.name, { x: (grace.px / MOSAIC) * 100, y: (grace.py / MOSAIC) * 100 })
     }
   }
@@ -3738,6 +3771,67 @@ function qualifyDuplicateGraceNames(): void {
   }
 }
 
+/**
+ * Task 188 §8/§9 — back-fill the pages the merge left empty from prose that is
+ * already on disk, and turn the DLC marketing label "Shadow of the Erdtree" into
+ * a real parent region or nothing at all.
+ *
+ * - A `quest:` beat is an authored `storylines.ts` step; the graph summary is a
+ *   region label, but the step's own `detail` is its real prose. Only `quest:`
+ *   pages are touched; `line:`/`ending:` labels are another task's concern.
+ * - A `region:` page whose description is empty may still have a real wiki
+ *   Overview sentence in `wiki-sections.json`; the normal in-loop fallback stops
+ *   at the FMG place name first, so it is recovered here.
+ */
+function backfillDescriptionsAndRegions(): void {
+  const beatDetail = new Map<string, string>()
+  const remember = (id: string | undefined, detail: string | undefined): void => {
+    if (!id || !detail) return
+    const text = cleanProse(detail)
+    if (text && !beatDetail.has(id)) beatDetail.set(id, text)
+  }
+  for (const line of allLines) {
+    for (const step of line.steps) {
+      remember(step.factId, step.detail)
+      for (const id of step.factIds ?? []) remember(id, step.detail)
+      // A quest-state flag the step *grants* describes the state that step
+      // reaches, so the beat's own prose fits it. (Lockout flags are left empty:
+      // the granting step's text describes the positive action, not the miss.)
+      for (const id of step.grants ?? []) remember(id, step.detail)
+    }
+  }
+  for (const record of records.values()) {
+    // A region named after the DLC is not a place the player stands in. Keep a
+    // real sub-region from the record's own location/description, else blank it.
+    // A merged enemy's `"A · B · Shadow of the Erdtree"` list only loses the DLC
+    // component, so its real sub-regions stay.
+    if (record.region && /shadow of the erdtree/i.test(record.region)) {
+      if (simpleNorm(record.region) === simpleNorm('Shadow of the Erdtree')) {
+        const real = regionFromText([record.location, record.description].filter(Boolean).join(' '))
+        record.region = real && simpleNorm(real) !== simpleNorm('Shadow of the Erdtree') ? real : undefined
+      } else {
+        const parts = record.region
+          .split('·')
+          .map((part) => part.trim())
+          .filter((part) => part && simpleNorm(part) !== simpleNorm('Shadow of the Erdtree'))
+        record.region = parts.length ? parts.join(' · ') : undefined
+      }
+    }
+    if (record.kind === 'quest' && !record.description) {
+      const detail = beatDetail.get(record.id)
+      if (detail) setText(record, 'description', detail)
+      continue
+    }
+    if (record.kind === 'region' && !record.description) {
+      // No kind gate: the page may be filed as a dungeon ("is a dungeon in Elden
+      // Ring"), which is still the honest prose for the place. Scoped to the
+      // empty region pages, so it cannot contaminate another kind's page.
+      const lead = wikiLead(record.name)
+      if (lead) record.description = cleanProse(lead)
+    }
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Assemble
 // ---------------------------------------------------------------------------
@@ -4120,6 +4214,9 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     // Strip wiki markup first: the pointer drop is stored as "See [[#Drops" and
     // only becomes "See #Drops" after pruning.
     prune(record)
+    // Task 188 §7 — a coordinate outside the 0–100 plate frame is a different
+    // frame, not a pin: drop it so an entity page can never print a nonsense x/y.
+    if (record.map && !plateFrame(record.map.x, record.map.y)) delete record.map
     // Task 177 — `location` holds a place, never a bare type word ("Church",
     // "Subregion", "grace"), a leaked markdown heading ("# Castleward Tunnel")
     // or the merchant placeholder. A real parent region stays in `region`.
@@ -4232,6 +4329,11 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     // entity panel, shows the game's spelling. Ids are unchanged.
     record.name = displayName(record.name)
   }
+
+  // Task 188 §8/§9 — after the hygiene loop, "empty" really is empty: back-fill
+  // the quest beats and place pages from prose already on disk, and drop the DLC
+  // marketing label from `region`.
+  backfillDescriptionsAndRegions()
 
   // Task 154 — give every item-like record without a picture the game's own icon.
   fillGameIcons()

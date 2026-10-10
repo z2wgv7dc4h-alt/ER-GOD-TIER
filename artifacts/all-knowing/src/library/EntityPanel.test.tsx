@@ -88,6 +88,30 @@ describe('EntityPanel kind-specific actions (Task 103 §4)', () => {
   })
 })
 
+describe('EntityPanel empty grace lore (Task 188 §6)', () => {
+  it('hides the Lore tab when a grace carries no description', () => {
+    const html = renderToStaticMarkup(
+      <EntityPanel
+        entity={entity({ id: 'locations:church-of-elleh', factId: 'grace:elleh', name: 'Church of Elleh', category: 'locations', subtype: 'grace' })}
+        character={emptyCharacter}
+      />,
+    )
+    expect(html).not.toContain('>Lore<')
+    expect(html).not.toContain('No lore text in the data for this entry.')
+    expect(html).toContain('>Where<')
+  })
+
+  it('keeps the Lore tab for a non-grace that has lore', () => {
+    const html = renderToStaticMarkup(
+      <EntityPanel
+        entity={entity({ id: 'weapons:uchigatana', factId: 'item:uchigatana', name: 'Uchigatana', category: 'weapons', subtype: 'Katana', lore: 'A katana of the Land of Reeds.' })}
+        character={emptyCharacter}
+      />,
+    )
+    expect(html).toContain('>Lore<')
+  })
+})
+
 describe('EntityPanel status wording (Task 144 §1)', () => {
   it('reads "Can’t reach yet" with the reason for an unreachable boss', () => {
     const html = renderToStaticMarkup(
