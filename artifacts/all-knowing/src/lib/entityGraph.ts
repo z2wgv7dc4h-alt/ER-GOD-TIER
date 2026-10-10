@@ -208,6 +208,16 @@ function slug(name: string): string {
     .replace(/^-+|-+$/g, '')
 }
 
+/**
+ * Task 192 §18 — whole-token match of an already-normalised phrase inside an
+ * already-normalised text. Prevents a short region name ("Gates") matching a
+ * longer word ("Gateside") while still matching "Chelona's Rise" in prose.
+ */
+function containsPhrase(text: string, phrase: string): boolean {
+  if (!phrase) return false
+  return ` ${text} `.includes(` ${phrase} `)
+}
+
 const DAMAGE_LABELS: Record<string, string> = {
   physical: 'Physical',
   magic: 'Magic',
@@ -731,25 +741,30 @@ function buildIndex(): Index {
   // that exists is wired; nothing is inferred or invented here.
   const locationTargets: { n: string; id: string; name: string }[] = []
   const regionByName = new Map<string, { id: string; name: string }>()
+  // Task 192 §18 — every region's own canonical name, kept separately from
+  // `byName` so a same-named grace/dungeon cannot shadow the region it sits in
+  // (grace:abyssal vs region:abyssal-woods). Used only to place a record from the
+  // region names its own `location` text asserts. Aliases are deliberately not
+  // used: a short alias ("altus") would match the wrong place ("Scadu Altus").
+  const regionTargets: { n: string; id: string; name: string }[] = []
+  for (const [id, entity] of entities) {
+    if (entity.kind !== 'region') continue
+    const n = normalize(entity.name)
+    if (!n || n.length < 4) continue
+    if (regionByName.has(n)) continue
+    regionByName.set(n, { id, name: entity.name })
+    regionTargets.push({ n, id, name: entity.name })
+  }
   for (const [n, id] of byName) {
     const kind = entities.get(id)?.kind
     if (kind !== 'region' && kind !== 'grace' && kind !== 'dungeon') continue
     if (n.length >= 4) locationTargets.push({ n, id, name: entities.get(id)?.name ?? n })
   }
-  // A same-named grace/dungeon can win `byName` over the region it sits in
-  // (grace:abyssal vs region:abyssal-woods), so keep a region-only name index.
-  for (const [id, entity] of entities) {
-    if (entity.kind !== 'region') continue
-    const n = normalize(entity.name)
-    if (n && !regionByName.has(n)) regionByName.set(n, { id, name: entity.name })
-  }
   for (const record of allRecords()) {
     const from = record.id
-    if (record.region) {
-      const region = resolveRegionText(record.region)
-      if (region && region.id !== from) {
-        push(from, { rel: 'foundIn', to: canon(region.id), label: region.name, source: 'entity-index' })
-      }
+    const region = record.region ? resolveRegionText(record.region) : undefined
+    if (region && region.id !== from) {
+      push(from, { rel: 'foundIn', to: canon(region.id), label: region.name, source: 'entity-index' })
     }
     if (record.location) {
       const text = normalize(record.location)
@@ -759,13 +774,23 @@ function buildIndex(): Index {
         if (!best || target.n.length > best.len) best = { id: target.id, name: target.name, len: target.n.length }
       }
       if (best) push(from, { rel: 'foundIn', to: canon(best.id), label: best.name, source: 'entity-index' })
-      // Task 173 §9 — the location text can name both a site (grace/dungeon) and
-      // the region around it; wire the region too so the region gets its
-      // `contains` edge. Only a mapping the data asserts (region name or
-      // `REGION_FACT`), never a fuzzy guess.
-      const region = resolveRegionText(record.location)
-      if (region && region.id !== from) {
-        push(from, { rel: 'foundIn', to: canon(region.id), label: region.name, source: 'entity-index' })
+      // Task 192 §18 — the location text names the region(s) the record sits in
+      // ("Agheel Lake South", "...the Church of Pilgrimage on the Weeping
+      // Peninsula"). Wire every region name it asserts so each region gets the
+      // reverse `contains` edge. Skipped when the record already carries an
+      // authoritative `region` (that field wins) and only names the data holds.
+      if (!region) {
+        for (const target of regionTargets) {
+          if (target.id === from || !containsPhrase(text, target.n)) continue
+          push(from, { rel: 'foundIn', to: canon(target.id), label: target.name, source: 'entity-index' })
+        }
+      }
+      // Task 173 §9 — a region label that is not itself a region entity (e.g.
+      // "Greyoll's Dragonbarrow") still maps through the authored `REGION_FACT`
+      // table, so wire that too.
+      const hinted = resolveRegionText(record.location)
+      if (hinted && hinted.id !== from && hinted.id !== region?.id) {
+        push(from, { rel: 'foundIn', to: canon(hinted.id), label: hinted.name, source: 'entity-index' })
       }
     }
     // Task 173 §9 — a merged enemy carries one placement per NpcParam row
