@@ -99,13 +99,21 @@ describe('service worker cache strategy', () => {
     expect(assets).toEqual([...PRECACHE_DATA])
     for (const file of [
       'sourced/guide/catalog.json',
-      'sourced/aliases.json',
       'sourced/regulation-vanilla-v1.17.json',
       'sourced/open/coords.json',
     ]) {
       expect(assets).toContain(file)
       expect(existsSync(resolve(root, 'public', file)), `${file} missing`).toBe(true)
     }
+  })
+
+  it('does not force the 1.4 MB alias plane onto the install precache (Task 191 §17)', () => {
+    const assets = pwaOptions.includeAssets as string[]
+    expect(assets).not.toContain('sourced/aliases.json')
+    // It is still served cache-first from the offline bucket once the app asks.
+    const rule = ruleFor('https://all-knowing.test/sourced/aliases.json')
+    expect(rule?.handler).toBe('CacheFirst')
+    expect(rule?.options?.cacheName).toBe(SOURCED_OFFLINE_CACHE)
   })
 
   it('serves every sourced file cache-first from the dedicated offline bucket (Task 137 §2)', () => {
