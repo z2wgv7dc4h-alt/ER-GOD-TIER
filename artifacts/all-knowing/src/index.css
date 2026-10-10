@@ -189,11 +189,11 @@ button { cursor: pointer; }
 }
 .brand-mark {
   flex: none;
-  width: 36px;
+  width: 144px;
   height: 36px;
   padding: 0;
-  border: 1px solid var(--gold);
-  background: #0b0906 url('/art/sigil.jpg') center 28% / 240% no-repeat;
+  border: 0;
+  background: transparent url('/brand/wordmark.webp') left center / contain no-repeat;
 }
 .section-tabs { display: flex; gap: 4px; }
 .section-tabs button {
@@ -1490,7 +1490,7 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   .char-level { font-size: 11px; white-space: nowrap; }
   .area-chip { max-width: 110px; min-height: 40px; padding: 4px 8px; }
   .search-toggle { min-width: 44px; min-height: 44px; padding: 0; justify-content: center; }
-  .brand-mark { width: 40px; height: 40px; }
+  .brand-mark { width: 108px; height: 27px; }
   .subtabs { padding: 6px 10px; }
   .map-controls { display: none; }
 
