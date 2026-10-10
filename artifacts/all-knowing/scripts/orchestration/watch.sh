@@ -9,5 +9,6 @@ while true; do
   now=$(wins); new=$(comm -13 <(echo "$base") <(echo "$now") | tr '\n' ' ')
   [ -n "${new// /}" ] && echo "WINDOW APPEARED: $new"
   base=$now
+  age=$(( ($(date +%s) - $(stat -c %Y "$WT/supervisor.log")) / 60 )); if [ $age -ge 15 ] && [ -s "$WT/queue.tsv" ] && [ "$warned" != 1 ]; then echo "SUPERVISOR SILENT ${age}m with tasks queued"; warned=1; fi; [ $age -lt 15 ] && warned=0
   sleep 30
 done
