@@ -153,6 +153,11 @@ body {
   font-family: var(--font-body);
   letter-spacing: 0.01em;
 }
+/* Task 193 — the splash art is the app-loading background, shown only while the
+   root is still empty (before React mounts) so it never bleeds into the UI. */
+#root:empty {
+  background: var(--bg) url('/brand/splash.webp') top center / cover no-repeat;
+}
 
 .stage { position: relative; }
 
