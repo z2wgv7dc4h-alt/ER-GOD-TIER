@@ -3,7 +3,7 @@ import type { Character } from '../types'
 import { regionMatches } from '../lib/areaHub'
 import { areaFromFactId } from '../lib/areaContext'
 import { fanImage, normalizeName } from '../lib/fanImage'
-import { extraImage } from '../lib/extraImages'
+import { extraImage, brandCategoryIcon } from '../lib/extraImages'
 import { applyFacts, denyFacts } from '../lib/infer'
 import { weaponVerdict } from '../lib/weaponVerdict'
 import type { Verdict } from '../lib/verdict'
@@ -117,9 +117,19 @@ function CategoryGlyph({
   )
 }
 
+// Task 193 §4: the brand fallback each rail category falls back to when it has
+// no representative entity picture (real pictures always win).
+const CATEGORY_BRAND_KIND: Partial<Record<CategoryId, string>> = {
+  npcs: 'npc',
+  enemies: 'enemy',
+  locations: 'region',
+  mechanics: 'mechanic',
+  guides: 'guide',
+}
+
 function CategoryIcon({ id }: { id: CategoryId }) {
   const name = CATEGORY_ICON_NAME[id]
-  const src = name ? fanImage(name) ?? extraImage(name) : undefined
+  const src = (name ? fanImage(name) ?? extraImage(name) : undefined) ?? brandCategoryIcon(CATEGORY_BRAND_KIND[id])
   if (src) return <img className="lib-rail-icon" src={src} alt="" loading="lazy" decoding="async" />
   return <CategoryGlyph id={id} />
 }

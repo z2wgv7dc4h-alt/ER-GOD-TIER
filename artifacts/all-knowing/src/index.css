@@ -1100,6 +1100,10 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   flex: 0 0 auto;
   filter: saturate(0.85);
 }
+/* Task 193 §5 — the avatar also heads each of Gideon's answer bubbles. */
+.guide-face-sm { width: 24px; height: 24px; }
+.gideon-bubble { display: flex; gap: 8px; align-items: flex-start; }
+.gideon-bubble > p { flex: 1 1 auto; min-width: 0; }
 .gideon-head {
   display: flex;
   align-items: center;
@@ -2305,6 +2309,8 @@ html[data-reduce-motion='1'] *::after {
   background: linear-gradient(transparent, rgba(6, 5, 4, 0.92) 30%);
 }
 .scan-tips { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; }
+/* Task 193 §5 — the photo-capture guide in the setup / scan tips. */
+.photo-guide { display: block; width: 100%; max-width: 320px; height: auto; margin: 8px 0; border: 1px solid var(--line); border-radius: 4px; }
 .scan-live-list { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 3px; max-height: 26vh; overflow: auto; }
 .scan-live-list li { font-size: 13px; }
 .scan-live-list .ok { color: var(--gold); margin-right: 4px; }

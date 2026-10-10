@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useWorkspace } from '../state'
+import { EmptyState } from '../ui'
 import {
   buildJournal,
   exportJournalMarkdown,
@@ -62,7 +63,10 @@ export function Journal() {
         </button>
       </div>
       {entries.length === 0 ? (
-        <p className="note">Nothing logged yet. The journal fills as you mark and pick things up.</p>
+        <EmptyState
+          image="/brand/empty-journal.webp"
+          line="Nothing logged yet. The journal fills as you mark and pick things up."
+        />
       ) : (
         <ol className="journal-timeline">
           {entries.slice(0, 200).map((e) => (

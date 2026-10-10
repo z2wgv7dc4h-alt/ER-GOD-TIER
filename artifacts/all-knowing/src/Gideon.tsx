@@ -12,7 +12,7 @@ import { lockoutWarningsFor, type LockWarning } from './lib/lockWarnings'
 import { LockoutPrompt } from './LockoutPrompt'
 import { type ChatMessage } from './lib/muse'
 import { labelOf } from './lib/links'
-import { GideonAnswer, GideonSay } from './GideonAnswer'
+import { GideonAnswer, GideonAvatar, GideonSay } from './GideonAnswer'
 import { RelatedCollapsible } from './Related'
 import { WikiText } from './WikiText'
 import { useWorkspace } from './state'
@@ -243,7 +243,7 @@ export function Gideon() {
       {/* Task 109 §3: a small 40px avatar and the name. Engine/AI status and
           icon-pack details live on Tarnished › Profiles, never here. */}
       <div className="gideon-head">
-        <img className="guide-face" src="/art/guide.jpg" alt="" />
+        <GideonAvatar />
         <div className="gideon-head-text">
           <h2 className="gideon-name">Gideon Ofnir</h2>
           <p className="note gideon-tagline">Ask about an item, a boss, or what to do next.</p>
@@ -256,10 +256,13 @@ export function Gideon() {
           const showActions = isLast && !skipped.includes(i)
           return (
             <div key={i}>
-              <p className={row.role === 'gideon' ? 'note' : ''}>
-                <strong>{row.role === 'gideon' ? 'Gideon' : 'You'} · </strong>
-                {row.role === 'gideon' ? <GideonSay text={row.text} /> : <WikiText text={row.text} />}
-              </p>
+              <div className={row.role === 'gideon' ? 'gideon-bubble gideon-bubble-bot' : 'gideon-bubble'}>
+                {row.role === 'gideon' && <GideonAvatar className="guide-face guide-face-sm" />}
+                <p className={row.role === 'gideon' ? 'note' : ''}>
+                  <strong>{row.role === 'gideon' ? 'Gideon' : 'You'} · </strong>
+                  {row.role === 'gideon' ? <GideonSay text={row.text} /> : <WikiText text={row.text} />}
+                </p>
+              </div>
               {isLast && (
                 <GideonAnswer
                   text={row.text}
