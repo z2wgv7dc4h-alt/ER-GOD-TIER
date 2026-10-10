@@ -808,6 +808,18 @@ function isBarePlaceType(value: unknown): boolean {
 }
 
 /**
+ * Task 187 §A4 — a wiki category or map-plane label is not a place. These values
+ * used to be written verbatim into `location` ("Sub-region", "Legacy dungeon",
+ * "The Lands Between", "Multiple Locations", "Unknown", "Proving Grounds").
+ */
+const CATEGORY_PLACE = /^(?:sub-?region|legacy dungeon|the lands between|multiple locations?|unknown|proving grounds)$/i
+
+/** Task 187 §A4 — true when the text is a category, not a place. */
+function isCategoryPlace(value: unknown): boolean {
+  return CATEGORY_PLACE.test(String(value ?? '').trim())
+}
+
+/**
  * Task 177 — the acquisition dump often stores the whole wiki paragraph in
  * `location` (`"**Location**: Shadow Keep\n- The … is found in …"`). Keep only
  * the real place: prefer the concise `near` field, else the text after a
@@ -2179,6 +2191,103 @@ function enrichMerchants(): void {
   }
 }
 
+/**
+ * Task 187 §A3 — merchant-kind cleanup. `merchants.ts` carries a handful of
+ * vendor rows that are not merchants at all (`Alteration`/`Reversion` are the
+ * alteration menu; `Dragon Communion` is the cathedral altar; `D Hunter of the
+ * Dead`, `Sorcerer Rogier` and `Pidia, Carian Servant` are characters), and a
+ * merchant whose base fields never landed renders as an empty card. Fold the
+ * non-merchants onto the entity that owns the name, give every remaining vendor
+ * the place it names or inherits, and drop a card that is genuinely empty.
+ */
+function fixMerchantCards(): void {
+  // 1. Fold the vendor rows that are not merchants onto their real entity.
+  //    `null` drops a row that owns no entity (the alteration/reversion menu).
+  const NON_MERCHANT_TARGET: Record<string, string | null> = {
+    'merchant:alteration': null,
+    'merchant:reversion': null,
+    'merchant:dragon-communion': 'region:cathedral-of-dragon-communion',
+    'merchant:d-hunter-of-the-dead': 'npc:d-hunter-of-the-dead',
+    'merchant:sorcerer-rogier': 'npc:sorcerer-rogier',
+    'merchant:pidia-carian-servant': 'npc:pidia-carian-servant',
+  }
+  for (const [id, target] of Object.entries(NON_MERCHANT_TARGET)) {
+    const record = records.get(id)
+    if (!record || record.kind !== 'merchant') continue
+    const keeper = target ? records.get(target) : undefined
+    if (keeper) {
+      setText(keeper, 'description', record.description)
+      setText(keeper, 'location', record.location)
+      if (!keeper.region && record.region) keeper.region = record.region
+      addName(record.name, keeper.id)
+    }
+    addName(id, keeper?.id ?? target ?? id)
+    records.delete(id)
+  }
+
+  // A late source can leave a placeholder or category label ("merchant",
+  // "Sub-region", "Proving Grounds") in `location`; the cleanup pass below drops
+  // it. Clear it here so it cannot block the real place derived underneath.
+  for (const record of records.values()) {
+    if (record.kind !== 'merchant') continue
+    const label = record.location?.trim()
+    if (label && (/^merchant$/i.test(label) || isBarePlaceType(label) || isCategoryPlace(label))) record.location = undefined
+  }
+
+  // 2. A place-named vendor ("Merchant - East Limgrave") names its own location;
+  //    a merchant that shares a character/place name ("Iji", "Miriel") inherits
+  //    that place.
+  const placeByName = new Map<string, EntityRecord>()
+  for (const record of records.values()) {
+    if (record.kind === 'merchant' || !record.location) continue
+    if (record.kind !== 'npc' && record.kind !== 'boss' && record.kind !== 'region') continue
+    const key = simpleNorm(record.name)
+    if (key && !placeByName.has(key)) placeByName.set(key, record)
+  }
+  const PLACE_VENDOR_RE = /^(?:nomadic|hermit|isolated|imprisoned)?\s*merchant\s*-\s*(.+)$/i
+  for (const record of records.values()) {
+    if (record.kind !== 'merchant' || record.location) continue
+    const match = PLACE_VENDOR_RE.exec(record.name)
+    const place = match?.[1]?.trim()
+    if (place && !isBarePlaceType(place) && !isCategoryPlace(place)) {
+      record.location = place
+      if (!record.region) record.region = regionFromText(place)
+      continue
+    }
+    const wanted = simpleNorm(record.name).split(' ').filter((t) => t.length >= 3)
+    const owner =
+      placeByName.get(simpleNorm(record.name)) ??
+      [...placeByName.entries()].find(([key]) => wanted.length > 0 && wanted.every((t) => key.split(' ').includes(t)))?.[1]
+    if (owner) {
+      if (!record.location) record.location = owner.location
+      if (!record.region) record.region = owner.region
+    }
+  }
+
+  // 3. A shop sub-row ("Brother Corhyn - Altus Plateau", "Miriel - Academy
+  //    Scroll") inherits its base merchant's place once the base has one.
+  const baseByName = new Map<string, EntityRecord>()
+  for (const record of records.values()) {
+    if (record.kind === 'merchant' && !record.name.includes(' - ')) baseByName.set(record.name, record)
+    else if ((record.kind === 'npc' || record.kind === 'region' || record.kind === 'boss') && record.location && !baseByName.has(record.name)) baseByName.set(record.name, record)
+  }
+  for (const record of records.values()) {
+    if (record.kind !== 'merchant' || !record.name.includes(' - ')) continue
+    const base = baseByName.get(record.name.split(' - ')[0].trim())
+    if (!base) continue
+    if (!record.location && base.location) record.location = base.location
+    if (!record.region && base.region) record.region = base.region
+    if (!record.description && base.description) record.description = base.description
+  }
+
+  // 4. A card with no field at all is not a page.
+  for (const [id, record] of [...records]) {
+    if (record.kind !== 'merchant') continue
+    const hasStats = !!record.stats && Object.keys(record.stats).length > 0
+    if (!record.description && !record.location && !record.region && !record.map && !record.image && !hasStats) records.delete(id)
+  }
+}
+
 function mergeWikiDb(): void {
   const redirects = (wikiRedirectDoc as { redirects?: { from: string; to: string }[] }).redirects ?? []
   const redirectAliases = new Map<string, string[]>()
@@ -3457,10 +3566,27 @@ const GAME_TEMPLATE_FRAME =
   /\b(is|are|was) (a|an|the|one of the)\b[^.]{0,80}\bin (Elden Ring|Shadow of the Erdtree|the Lands Between)\b/i
 const THIS_IS_LEAD = /^This is an? /
 const LEAD_FRAGMENT = /^[,.;:)]|^s are /
+/**
+ * Task 187 §A1 — the wiki's cut-content boilerplate ("…that was cut from the
+ * retail version of Elden Ring.", "This item is unattainable…") and the broken
+ * extraction fragments the crawler leaves when it loses the subject ("The was a
+ * Twinblade…", "The s are characters…", "are optional bosses…"). None is real
+ * prose; empty beats fake.
+ */
+const CUT_BOILERPLATE = /\bwas cut from\b|\bcut from (?:the )?(?:retail|final|release)|\bunattainable\b|\bunobtainable\b|no longer be canonical/i
+const BROKEN_SUBJECT_LEAD = /^(?:the\s+s\s+are|the\s+was\s+a|are optional bosses|is optional bosses)\b/i
 
 /** A sentence that only states the record's category, or is a cut-off fragment. */
 function isTemplateSentence(sentence: string): boolean {
-  return TEMPLATE_DESC.test(sentence) || GAME_TEMPLATE_FRAME.test(sentence) || THIS_IS_LEAD.test(sentence) || LEAD_FRAGMENT.test(sentence)
+  return (
+    TEMPLATE_DESC.test(sentence) ||
+    GAME_TEMPLATE_FRAME.test(sentence) ||
+    THIS_IS_LEAD.test(sentence) ||
+    LEAD_FRAGMENT.test(sentence) ||
+    CUT_BOILERPLATE.test(sentence) ||
+    BROKEN_SUBJECT_LEAD.test(sentence) ||
+    sentence.includes('<!--')
+  )
 }
 
 /**
@@ -3569,7 +3695,11 @@ function wikiLead(name: string, recordKind?: string): string | undefined {
     if (!sections.length) return undefined
   }
   const rank = (heading: string) => {
-    const i = LEAD_HEADING_ORDER.findIndex((h) => heading.toLowerCase().includes(h))
+    const h = heading.toLowerCase()
+    // Task 187 §A2 — a "Variant Description" belongs to a specific variant, not
+    // the base creature: it never outranks the page's own Overview/Summary.
+    if (h.includes('variant')) return LEAD_HEADING_ORDER.length + 1
+    const i = LEAD_HEADING_ORDER.findIndex((x) => h.includes(x))
     return i === -1 ? LEAD_HEADING_ORDER.length : i
   }
   const ordered = [...sections].sort((a, b) => rank(a.heading) - rank(b.heading))
@@ -4050,6 +4180,8 @@ export function buildEntityIndex(): EntityIndexBuildResult {
   seedGameItems()
   restoreMerchantQuotes()
   restoreLineImages()
+  // Task 187 §A3 — merchant-kind cleanup after every source and quote has landed.
+  fixMerchantCards()
 
   // Related labels from the graph edges + a wiki Summary fallback for anything
   // still without a description.
@@ -4058,7 +4190,15 @@ export function buildEntityIndex(): EntityIndexBuildResult {
     if (!record) continue
     const related = edgeLabels(entity.id)
     if (related.length) record.related = related
-    if (!record.description && !record.location && entity.summary && entity.summary !== 'No data for this entity yet.') {
+    // Task 187 §A5 — a quest-line/ending summary is a generated count ("6 beats"),
+    // never a description. A record with no real prose stays empty.
+    if (
+      !record.description &&
+      !record.location &&
+      entity.summary &&
+      entity.summary !== 'No data for this entity yet.' &&
+      !/^\d+\s+beats?$/i.test(entity.summary)
+    ) {
       setText(record, 'description', entity.summary)
     }
   }
@@ -4128,6 +4268,14 @@ export function buildEntityIndex(): EntityIndexBuildResult {
       const label = ACQ_LABEL_RE.exec(loc)
       if (label) loc = label[1].trim()
       loc = loc.replace(/Subterranean Shunning,\s*Grounds?/i, 'Subterranean Shunning-Grounds')
+      // Task 187 §A4 — a category/map label ("Sub-region", "The Lands Between",
+      // "Proving Grounds") is not a place. Replace it with the record's real
+      // parent region or the place its own prose names, instead of leaving a
+      // category on the page.
+      if (isCategoryPlace(loc)) {
+        loc =
+          [record.region, regionFromText(record.description)].find((value) => value && !isBarePlaceType(value) && !isCategoryPlace(value)) ?? ''
+      }
       if (/^merchant$/i.test(loc) || isBarePlaceType(loc)) loc = ''
       record.location = loc || undefined
     }
@@ -4287,8 +4435,11 @@ function stripNightreign(text: string): string {
  * and `[[links]]` are stripped while keeping the readable label.
  */
 export function cleanProse(text: string): string {
-  let t = text
+  let   t = text
   t = t.replace(/<!--[\s\S]*?-->/g, ' ')
+  // Task 187 §A1 — a lone `<!--` (a truncated comment the crawler left behind)
+  // is markup, never player text.
+  t = t.replace(/<!--/g, ' ')
   t = t.replace(/<ref[^>]*\/>/gi, ' ').replace(/<ref[^>]*>[\s\S]*?<\/ref>/gi, ' ')
   t = t.replace(/<[^>]+>/g, ' ')
   t = t.replace(/\{\{[^{}]*\}\}/g, ' ')

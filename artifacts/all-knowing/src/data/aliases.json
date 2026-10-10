@@ -4770,6 +4770,27 @@
   "source": "legacy-id"
  },
  {
+  "engineId": "build:dragon-communion",
+  "slug": "build:dragon-communion",
+  "kind": "build",
+  "fmgName": "Dragon-Hearted",
+  "aliases": [
+   "dragon hearted",
+   "dragon hunters",
+   "drake warrior",
+   "drake warriors"
+  ],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "merchant:dragon-communion",
+  "slug": "build:dragon-communion",
+  "kind": "build",
+  "fmgName": "Dragon Communion",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "damage:fire",
   "slug": "damage:fire",
   "kind": "damage",
@@ -59751,6 +59772,14 @@
   "source": "legacy-id"
  },
  {
+  "engineId": "merchant:pidia-carian-servant",
+  "slug": "npc:pidia-carian-servant",
+  "kind": "npc",
+  "fmgName": "Pidia Carian Servant",
+  "aliases": [],
+  "source": "legacy-id"
+ },
+ {
   "engineId": "npc:abandoned-merchant",
   "slug": "npc:abandoned-merchant",
   "kind": "npc",
@@ -60403,6 +60432,17 @@
   "source": "game-name-table"
  },
  {
+  "engineId": "npc:pidia-carian-servant",
+  "slug": "npc:pidia-carian-servant",
+  "kind": "npc",
+  "fmgName": "Pidia",
+  "aliases": [
+   "pidia",
+   "pidia carian servant"
+  ],
+  "source": "game-name-table"
+ },
+ {
   "engineId": "npc:primeval-sorcerer-lusat",
   "slug": "npc:primeval-sorcerer-lusat",
   "kind": "npc",
@@ -60752,6 +60792,14 @@
   "slug": "npc:smithing-master-hewg",
   "kind": "npc",
   "fmgName": "Smithing Master Hewg",
+  "aliases": [],
+  "source": "game-name-table"
+ },
+ {
+  "engineId": "npcs:121700",
+  "slug": "npc:pidia-carian-servant",
+  "kind": "npc",
+  "fmgName": "Pidia, Carian Servant",
   "aliases": [],
   "source": "game-name-table"
  },
