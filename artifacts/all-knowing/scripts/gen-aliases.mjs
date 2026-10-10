@@ -633,10 +633,15 @@ const nicknameNames = (() => {
       const name = String(row.name ?? '').trim()
       if (!name || /\+\s*\d+\s*$/.test(name) || /^smithing stone \[\d+\]$/i.test(name)) continue
       const category = kindOf(row.id)
-      const isAsh = category === 'gems' && /^ash of war\b/i.test(name)
+      const isAsh = category === 'gems' && /^ash(?:es)? of war:?\b/i.test(name)
       const wanted = /^map\b/i.test(name) || /^note\b/i.test(name) || /cookbook/i.test(name) || isAsh || category === 'npcs'
       if (!wanted) continue
-      const target = singleTarget(name)
+      // Task 189 — the GemName / DLC Ash of War plane spells a skill with the
+      // "Ash of War:" prefix ("Ash of War: Blinkbolt") while the record carries the
+      // bare skill name ("Blinkbolt"). Resolve the bare name when the prefixed
+      // spelling matches no record, then attach the full in-game spelling.
+      const bare = name.replace(/^ash(?:es)? of war:?\s*/i, '')
+      const target = singleTarget(name) ?? (bare !== name ? singleTarget(bare) : undefined)
       if (!target) continue
       if (attachAlias(name, target)) {
         emit(row.id, target, name, [], 'game-name-table')
