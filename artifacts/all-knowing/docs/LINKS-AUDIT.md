@@ -50,7 +50,7 @@ table. The table below is the current traversal; the guards snapshot it.
 | boss.drops | ≥ 80% | 97.3% | PASS |
 | remembrance.boss | ≥ 90% | 100% | PASS |
 | remembrance.Enia trades | ≥ 90% | 100% | PASS |
-| region.contents | ≥ 30% | 72% | PASS |
+| region.contents | ≥ 30% | 55.7% | PASS |
 | material.source | ≥ 90% | 100% | PASS |
 | talisman.source | ≥ 86% | 86.7% | PASS |
 | weapon.source | ≥ 85% | 86.4% | PASS |
@@ -62,16 +62,16 @@ All guard minimums met.
 | kind | entities | source | drops | location | contents | region | stock | boss | trades |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | armor | 751 | 84.7% | · | · | · | · | · | · | · |
-| ash | 125 | 77.6% | · | · | · | · | · | · | · |
+| ash | 125 | 76.8% | · | · | · | · | · | · | · |
 | boss | 296 | · | 97.3% | 99% | · | · | · | · | · |
 | dungeon | 119 | · | · | · | 87.4% | · | · | · | · |
 | grace | 417 | · | · | · | · | 99.3% | · | · | · |
-| item | 1186 | 71.3% | · | · | · | · | · | · | · |
+| item | 1187 | 71.3% | · | · | · | · | · | · | · |
 | material | 3 | 100% | · | · | · | · | · | · | · |
-| merchant | 79 | · | · | · | · | · | 100% | · | · |
+| merchant | 79 | · | · | · | · | · | 98.7% | · | · |
 | npc | 188 | · | · | 78.7% | · | · | · | · | · |
 | quest | 467 | · | · | 72.6% | · | · | · | · | · |
-| region | 296 | · | · | · | 72% | · | · | · | · |
+| region | 296 | · | · | · | 55.7% | · | · | · | · |
 | remembrance | 25 | · | · | · | · | · | · | 100% | 100% |
 | shield | 67 | 94% | · | · | · | · | · | · | · |
 | spell | 218 | 84.4% | · | · | · | · | · | · | · |
@@ -87,8 +87,8 @@ the links a plain renderer still owes.
 
 | surface | linkable | unlinked before | unlinked after |
 | --- | --- | --- | --- |
-| entity descriptions | 758 | 0 | 0 |
-| wiki sections | 1681 | 0 | 0 |
+| entity descriptions | 850 | 0 | 0 |
+| wiki sections | 1682 | 0 | 0 |
 | acquisition text | 1579 | 0 | 0 |
 | quest step actions | 650 | 577 | 0 |
 | mechanics bodies | 189 | 0 | 0 |
