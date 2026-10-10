@@ -130,5 +130,6 @@ describe('itemSources (Task 156)', () => {
     // eslint-disable-next-line no-console
     console.log(`[task-156] items with a map target: before ${before}/${rows.length} (${((before / rows.length) * 100).toFixed(1)}%) -> after ${after}/${rows.length} (${((after / rows.length) * 100).toFixed(1)}%)`)
     expect(after).toBeGreaterThan(before)
-  })
+    // Walks every item record; slow on a loaded machine, so allow more than the default 5 s.
+  }, 60_000)
 })
