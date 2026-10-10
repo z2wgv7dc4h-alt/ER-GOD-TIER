@@ -27,10 +27,9 @@ Your task brief is in `docs/tasks/<N>-*.md`. Do exactly what it says; nothing ex
 - Keep command output short (`| tail`, `| head`, `grep`).
 
 ## Testing
-- While working: only `npx vitest run <the test files you touched>` and `npx tsc -b`.
-- Run the full gates only if the brief says so, and only ONCE at the end:
-  `npm run index:entities`, `npx vitest run`, `npm run lint`, `npm run build`, `npm run test:bundle`,
-  `npm run audit:pages`, `npm run audit:links`.
+- Run only `npx vitest run <the test files you touched or added>` and `npx tsc -b`.
+- Do NOT run the full suite, lint, build or audits — the supervisor runs every gate once after your task.
+  (Exception: run `npm run index:entities` if your change affects generated data, so your tests see it.)
 
 ## Where things are
 - Data on disk (check here before calling anything "missing"): `docs/DATA-CATALOG.md`, `DATA.md`.
