@@ -70,13 +70,11 @@ export function BossFacts({
   name,
   region,
   character,
-  onShowOnMap,
 }: {
   factId: string
   name: string
   region?: string
   character: Character
-  onShowOnMap?: () => void
 }) {
   const { targets } = useCombatTargets()
   const { bosses: armoryBosses } = useArmory()
@@ -201,13 +199,6 @@ export function BossFacts({
               {armory.parryable ? 'Parryable' : armory.parryable === false ? 'Not parryable' : ''}
               {armory.notes ? `${armory.parryable != null ? ' · ' : ''}${armory.notes}` : ''}
             </p>
-          )}
-          {onShowOnMap && (
-            <div className="opts">
-              <button type="button" className="chip" onClick={onShowOnMap}>
-                Show arena on map
-              </button>
-            </div>
           )}
         </div>
       )}

@@ -27,4 +27,8 @@ describe('BossFacts order and dedupe (Task 165 §2)', () => {
     expect(src).toContain('resolveEntityId(d)')
     expect(src).toContain('<EntityLink key={d} id={id}')
   })
+
+  it('leaves the one "Show arena on map" action to the panel footer (Task 190 §15)', () => {
+    expect(src).not.toContain('Show arena on map')
+  })
 })
