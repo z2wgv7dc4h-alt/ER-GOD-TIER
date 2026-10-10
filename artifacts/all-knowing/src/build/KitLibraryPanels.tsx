@@ -20,6 +20,7 @@ import {
 import { pvpTech } from '../knowledge/pvpTech'
 import { tipsByKind } from '../lib/playerTips'
 import { PlayerTips } from '../PlayerTip'
+import { followBuild, isFollowing } from './buildGoal'
 
 /**
  * Task 116 §4–5 — the Kit PvP / OP render components. The Build.tsx container
@@ -124,21 +125,29 @@ export function OpKitPanel({
                   listed, not dropped.
                 </p>
               )}
-              <button
-                type="button"
-                className="chip gold"
-                onClick={() =>
-                  setCharacter({
-                    ...character,
-                    stats: b.stats,
-                    level: b.level,
-                    loadout: b.kit,
-                    answers: { ...character.answers, buildKit: b.id },
-                  })
-                }
-              >
-                Use this build
-              </button>
+              <div className="opts">
+                <button
+                  type="button"
+                  className={isFollowing(character, b.id) ? 'chip on' : 'chip'}
+                  onClick={() => setCharacter(followBuild(character, b.id))}
+                >
+                  {isFollowing(character, b.id) ? 'Following this build' : 'Follow this build'}
+                </button>
+                <button
+                  type="button"
+                  className="chip gold"
+                  onClick={() =>
+                    setCharacter({
+                      ...followBuild(character, b.id),
+                      stats: b.stats,
+                      level: b.level,
+                      loadout: b.kit,
+                    })
+                  }
+                >
+                  Use this build
+                </button>
+              </div>
             </div>
           </details>
         )
@@ -388,21 +397,29 @@ export function PvpBuildPanel({
             <PvpFarmBlock character={character} build={b} coords={coords} onShowOnMap={onShowOnMap} />
             <PvpLoadoutBlock build={b} />
             <PvpBuildMatchups build={b} />
-            <button
-              type="button"
-              className="chip gold"
-              onClick={() =>
-                setCharacter({
-                  ...character,
-                  stats: b.stats,
-                  level: b.level,
-                  loadout: b.kit,
-                  answers: { ...character.answers, buildKit: b.id },
-                })
-              }
-            >
-              Use this build
-            </button>
+            <div className="opts">
+              <button
+                type="button"
+                className={isFollowing(character, b.id) ? 'chip on' : 'chip'}
+                onClick={() => setCharacter(followBuild(character, b.id))}
+              >
+                {isFollowing(character, b.id) ? 'Following this build' : 'Follow this build'}
+              </button>
+              <button
+                type="button"
+                className="chip gold"
+                onClick={() =>
+                  setCharacter({
+                    ...followBuild(character, b.id),
+                    stats: b.stats,
+                    level: b.level,
+                    loadout: b.kit,
+                  })
+                }
+              >
+                Use this build
+              </button>
+            </div>
           </details>
         ))}
       </div>
