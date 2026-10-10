@@ -305,6 +305,147 @@ function EntityCard({
   )
 }
 
+/** Task 194 §1: the phone/desktop breakpoint the toolbar CSS already uses. */
+const PHONE_QUERY = '(max-width: 700px)'
+
+/**
+ * Task 194 §1 — pick the phone toolbar or the desktop toolbar, never both.
+ *
+ * The library toolbar used to mount both rows and rely on a CSS media query to
+ * hide one. In the DOM that still meant every shared control ("Near me", the
+ * ownership filter, …) existed twice, which the UI crawl reported as duplicate
+ * chips. Reading the same breakpoint in JS lets the unused row stay unmounted.
+ */
+function useIsPhone(): boolean {
+  const [phone, setPhone] = useState(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false
+    return window.matchMedia(PHONE_QUERY).matches
+  })
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return
+    const mq = window.matchMedia(PHONE_QUERY)
+    const onChange = () => setPhone(mq.matches)
+    onChange()
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+  return phone
+}
+
+/**
+ * Task 109 §1 / Task 194 §1 — the type / damage / campaign / scaling facets as
+ * one component. It is mounted in exactly one place per viewport: inline in the
+ * desktop toolbar, or inside the phone Filters sheet.
+ */
+function FacetControls({
+  filter,
+  subtypes,
+  damageOptions,
+  hasScaling,
+  updateFilter,
+}: {
+  filter: LibraryFilter
+  subtypes: string[]
+  damageOptions: string[]
+  hasScaling: boolean
+  updateFilter: (fn: (f: LibraryFilter) => LibraryFilter) => void
+}) {
+  return (
+    <>
+      <div className="lib-chipgroup" role="group" aria-label="Campaign">
+        {(['all', 'base', 'dlc'] as const).map((c) => (
+          <button
+            key={c}
+            type="button"
+            className={filter.campaign === c ? 'chip on' : 'chip'}
+            onClick={() => updateFilter((f) => ({ ...f, campaign: c }))}
+          >
+            {c === 'all' ? 'All' : c === 'base' ? 'Base' : 'DLC'}
+          </button>
+        ))}
+      </div>
+
+      {hasScaling && (
+        <div className="lib-chipgroup" role="group" aria-label="Minimum scaling">
+          <span className="lib-chipgroup-label">Scaling ≥</span>
+          {(['S', 'A', 'B', 'C', 'D'] as ScalingLetter[]).map((letter) => (
+            <button
+              key={letter}
+              type="button"
+              className={filter.scalingMin === letter ? 'chip on' : 'chip'}
+              onClick={() =>
+                updateFilter((f) => ({ ...f, scalingMin: f.scalingMin === letter ? null : letter }))
+              }
+            >
+              {letter}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {subtypes.length > 1 && (
+        <div className="lib-subtypes" role="group" aria-label="Type filters">
+          <button
+            type="button"
+            className={filter.subtypes.length === 0 ? 'chip on' : 'chip'}
+            onClick={() => updateFilter((f) => ({ ...f, subtypes: [] }))}
+          >
+            All types
+          </button>
+          {subtypes.map((s) => {
+            const on = filter.subtypes.includes(s)
+            return (
+              <button
+                key={s}
+                type="button"
+                className={on ? 'chip on' : 'chip'}
+                onClick={() =>
+                  updateFilter((f) => ({
+                    ...f,
+                    subtypes: on ? f.subtypes.filter((x) => x !== s) : [...f.subtypes, s],
+                  }))
+                }
+              >
+                {s}
+              </button>
+            )
+          })}
+        </div>
+      )}
+
+      {damageOptions.length > 0 && (
+        <div className="lib-subtypes" role="group" aria-label="Damage types">
+          <button
+            type="button"
+            className={filter.damages.length === 0 ? 'chip on' : 'chip'}
+            onClick={() => updateFilter((f) => ({ ...f, damages: [] }))}
+          >
+            All damage
+          </button>
+          {damageOptions.map((d) => {
+            const on = filter.damages.includes(d)
+            return (
+              <button
+                key={d}
+                type="button"
+                className={on ? 'chip on' : 'chip'}
+                onClick={() =>
+                  updateFilter((f) => ({
+                    ...f,
+                    damages: on ? f.damages.filter((x) => x !== d) : [...f.damages, d],
+                  }))
+                }
+              >
+                {d}
+              </button>
+            )
+          })}
+        </div>
+      )}
+    </>
+  )
+}
+
 export function LibraryBrowser() {
   const w = useWorkspace()
   const { character, setCharacter } = w
@@ -460,105 +601,24 @@ export function LibraryBrowser() {
     setPage(0)
   }
 
-  // Task 109 §1: the type / damage / campaign / scaling facets. Rendered inline
-  // on desktop and inside the phone Filters sheet — one definition, no drift.
+  const isPhone = useIsPhone()
+
+  // Task 109 §1 / Task 194 §1: the type / damage / campaign / scaling facets.
+  // One `FacetControls` element is mounted where the current viewport shows it
+  // (desktop toolbar or phone sheet) — never in both places at once.
+  const updateFilter = useCallback((fn: (f: LibraryFilter) => LibraryFilter) => {
+    setFilter(fn)
+    setPage(0)
+  }, [])
+
   const facetControls = (
-    <>
-      <div className="lib-chipgroup" role="group" aria-label="Campaign">
-        {(['all', 'base', 'dlc'] as const).map((c) => (
-          <button
-            key={c}
-            type="button"
-            className={filter.campaign === c ? 'chip on' : 'chip'}
-            onClick={() => {
-              setFilter((f) => ({ ...f, campaign: c }))
-              setPage(0)
-            }}
-          >
-            {c === 'all' ? 'All' : c === 'base' ? 'Base' : 'DLC'}
-          </button>
-        ))}
-      </div>
-
-      {hasScaling && (
-        <div className="lib-chipgroup" role="group" aria-label="Minimum scaling">
-          <span className="lib-chipgroup-label">Scaling ≥</span>
-          {(['S', 'A', 'B', 'C', 'D'] as ScalingLetter[]).map((letter) => (
-            <button
-              key={letter}
-              type="button"
-              className={filter.scalingMin === letter ? 'chip on' : 'chip'}
-              onClick={() => {
-                setFilter((f) => ({ ...f, scalingMin: f.scalingMin === letter ? null : letter }))
-                setPage(0)
-              }}
-            >
-              {letter}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {subtypes.length > 1 && (
-        <div className="lib-subtypes" role="group" aria-label="Type filters">
-          <button
-            type="button"
-            className={filter.subtypes.length === 0 ? 'chip on' : 'chip'}
-            onClick={() => setFilter((f) => ({ ...f, subtypes: [] }))}
-          >
-            All types
-          </button>
-          {subtypes.map((s) => {
-            const on = filter.subtypes.includes(s)
-            return (
-              <button
-                key={s}
-                type="button"
-                className={on ? 'chip on' : 'chip'}
-                onClick={() =>
-                  setFilter((f) => ({
-                    ...f,
-                    subtypes: on ? f.subtypes.filter((x) => x !== s) : [...f.subtypes, s],
-                  }))
-                }
-              >
-                {s}
-              </button>
-            )
-          })}
-        </div>
-      )}
-
-      {damageOptions.length > 0 && (
-        <div className="lib-subtypes" role="group" aria-label="Damage types">
-          <button
-            type="button"
-            className={filter.damages.length === 0 ? 'chip on' : 'chip'}
-            onClick={() => setFilter((f) => ({ ...f, damages: [] }))}
-          >
-            All damage
-          </button>
-          {damageOptions.map((d) => {
-            const on = filter.damages.includes(d)
-            return (
-              <button
-                key={d}
-                type="button"
-                className={on ? 'chip on' : 'chip'}
-                onClick={() =>
-                  setFilter((f) => ({
-                    ...f,
-                    damages: on ? f.damages.filter((x) => x !== d) : [...f.damages, d],
-                  }))
-                }
-              >
-                {d}
-              </button>
-            )
-          })}
-        </div>
-      )}
-    </>
+    <FacetControls
+      filter={filter}
+      subtypes={subtypes}
+      damageOptions={damageOptions}
+      hasScaling={hasScaling}
+      updateFilter={updateFilter}
+    />
   )
 
   return (
@@ -580,7 +640,8 @@ export function LibraryBrowser() {
               aria-label="Search within category"
             />
 
-            <div className="lib-tools">
+            {!isPhone && (
+              <div className="lib-tools">
               <div className="lib-chipgroup" role="group" aria-label="Ownership">
                 {(['all', 'owned', 'not'] as OwnershipFilter[]).map((o) => (
                   <button
@@ -592,7 +653,7 @@ export function LibraryBrowser() {
                       setPage(0)
                     }}
                   >
-                    {o === 'all' ? 'All' : o === 'owned' ? 'Owned' : 'Not owned'}
+                    {o === 'all' ? 'Any' : o === 'owned' ? 'Owned' : 'Not owned'}
                   </button>
                 ))}
               </div>
@@ -674,11 +735,14 @@ export function LibraryBrowser() {
                 </button>
               )}
             </div>
+            )}
 
-            {/* Task 109 §1: the phone toolbar is search + one row. The owned
-                dropdown, requirement/near toggles, a Filters sheet opener and
-                Sort. Facets live in the sheet below. */}
-            <div className="lib-phone-tools" role="group" aria-label="Library filters">
+            {/* Task 109 §1 / Task 194 §1: the phone toolbar is search + one row.
+                The owned dropdown, requirement/near toggles, a Filters sheet
+                opener and Sort. Facets live in the sheet below. Mounted only on a
+                phone so the desktop and phone toolbars never coexist in the DOM. */}
+            {isPhone && (
+              <div className="lib-phone-tools" role="group" aria-label="Library filters">
               <label className="lib-sort">
                 <span className="sr-only">Ownership</span>
                 <select
@@ -742,7 +806,8 @@ export function LibraryBrowser() {
                   <option value="region">Region</option>
                 </select>
               </label>
-            </div>
+              </div>
+            )}
           </div>
 
           {filtersOpen && (
@@ -817,17 +882,6 @@ export function LibraryBrowser() {
                     ? 'This dataset is still loading or is not installed. Try another category.'
                     : 'No entries match the current search and filters.'}
                 </p>
-                <div className="lib-tiles">
-                  {CATEGORIES.filter(
-                    (c) => (counts[c.id] ?? 0) > 0 || c.id === cat || pending.has(c.id),
-                  ).map((c) => (
-                    <button key={c.id} type="button" className="lib-tile" onClick={() => selectCategory(c.id)}>
-                      <CategoryIcon id={c.id} />
-                      <span>{c.label}</span>
-                      <span className="lib-rail-count">{counts[c.id] ?? 0}</span>
-                    </button>
-                  ))}
-                </div>
               </div>
             ) : view === 'grid' ? (
               <div className="lib-grid">
