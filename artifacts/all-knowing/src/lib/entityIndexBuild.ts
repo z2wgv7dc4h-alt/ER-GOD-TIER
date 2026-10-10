@@ -4435,7 +4435,7 @@ function stripNightreign(text: string): string {
  * and `[[links]]` are stripped while keeping the readable label.
  */
 export function cleanProse(text: string): string {
-  let   t = text
+  let t = text
   t = t.replace(/<!--[\s\S]*?-->/g, ' ')
   // Task 187 §A1 — a lone `<!--` (a truncated comment the crawler left behind)
   // is markup, never player text.
