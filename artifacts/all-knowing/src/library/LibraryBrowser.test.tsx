@@ -112,4 +112,28 @@ describe('Library search screen › duplicate chips (Task 194)', () => {
     expect(html).toContain('class="lib-tools"')
     expect(html).not.toContain('lib-phone-tools')
   })
+
+  it('mounts only the phone toolbar at the phone breakpoint', () => {
+    vi.stubGlobal('window', {
+      matchMedia: () => ({
+        matches: true,
+        addEventListener: () => {},
+        removeEventListener: () => {},
+      }),
+    })
+    try {
+      const phoneHtml = renderToStaticMarkup(<LibraryBrowser />)
+      expect(phoneHtml).toContain('lib-phone-tools')
+      expect(phoneHtml).not.toContain('class="lib-tools"')
+      expect(phoneHtml).toContain('Filters (0)')
+
+      const phoneLabels = chipLabels(phoneHtml)
+      const counts = new Map<string, number>()
+      for (const label of phoneLabels) counts.set(label, (counts.get(label) ?? 0) + 1)
+      const duplicates = [...counts].filter(([, n]) => n > 1).map(([label, n]) => `${label} ×${n}`)
+      expect(duplicates, `duplicate phone chip labels: ${duplicates.join(', ')}`).toEqual([])
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
 })
