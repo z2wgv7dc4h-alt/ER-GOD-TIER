@@ -156,7 +156,7 @@ export function BossFacts({
   // section with the "Player tip" tag. Read-only from player-tips.json.
   const playerTips = useMemo(() => tipsFor(factId, 'boss'), [factId])
 
-  if (!combat && !fext && !armory && !record) return null
+  if (!combat && !fext && !armory && !record && playerTips.length === 0) return null
   const enrichedHp = !combat && record?.stats?.HP
   const enrichedNegation = !combat && record?.stats?.Negation
   const enrichedPoise = !combat && record?.stats?.Poise
