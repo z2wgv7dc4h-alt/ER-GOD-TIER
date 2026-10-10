@@ -18,6 +18,8 @@ import {
   type PvpModeFilter,
 } from '../knowledge/pvp'
 import { pvpTech } from '../knowledge/pvpTech'
+import { tipsByKind } from '../lib/playerTips'
+import { PlayerTips } from '../PlayerTip'
 
 /**
  * Task 116 §4–5 — the Kit PvP / OP render components. The Build.tsx container
@@ -430,16 +432,19 @@ export function PvpMatchupPanel() {
   )
 }
 
-/** PvP tech: the how-to list. */
+/** PvP tech: the how-to list, plus the curated community PvP tips. */
 export function PvpTechPanel() {
   return (
-    <ul className="list" style={{ marginTop: 8 }}>
-      {pvpTech.map((t) => (
-        <li key={t.id} style={{ cursor: 'default', display: 'block' }}>
-          <span>{t.name} <em className="dim">{t.category}</em></span>
-          <p className="note" style={{ margin: '4px 0 0' }}>{t.what} {t.how}</p>
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul className="list" style={{ marginTop: 8 }}>
+        {pvpTech.map((t) => (
+          <li key={t.id} style={{ cursor: 'default', display: 'block' }}>
+            <span>{t.name} <em className="dim">{t.category}</em></span>
+            <p className="note" style={{ margin: '4px 0 0' }}>{t.what} {t.how}</p>
+          </li>
+        ))}
+      </ul>
+      <PlayerTips tips={tipsByKind('pvp')} />
+    </>
   )
 }

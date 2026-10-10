@@ -17,9 +17,11 @@ import {
   type CombatStats,
 } from '../lib/enemy'
 import { loadBossDrops, type FextBoss } from '../lib/bosses'
+import { tipsFor } from '../lib/playerTips'
 import { resolveEntityId } from '../lib/entityGraph'
 import { useEnrichment } from '../lib/entityEnrich'
 import { EntityLink } from '../EntityLink'
+import { PlayerTips } from '../PlayerTip'
 import { GuidesFor } from '../PackData'
 import { WikiText } from '../WikiText'
 import type { Character } from '../types'
@@ -150,6 +152,9 @@ export function BossFacts({
 
   const weakLabels = useMemo(() => weak.map((t) => damageTypeLabels[t]), [weak])
   const glance = bossGlance(weakLabels, best)
+  // Task 195 §2 — curated community tips for this boss, shown in the strategy
+  // section with the "Player tip" tag. Read-only from player-tips.json.
+  const playerTips = useMemo(() => tipsFor(factId, 'boss'), [factId])
 
   if (!combat && !fext && !armory && !record) return null
   const enrichedHp = !combat && record?.stats?.HP
@@ -288,7 +293,7 @@ export function BossFacts({
       {/* §2 block 3 — strategy, then the full stored Fextralife sections.
           Task 181: the scraped page body is on disk, so render it in-app
           instead of linking out to the wiki. */}
-      {(strategy || enrichedStrategy || fext?.sections?.length) && (
+      {(strategy || enrichedStrategy || fext?.sections?.length || playerTips.length > 0) && (
         <div className="lib-panel-block">
           <div className="kicker">Strategy · {strategy?.heading ?? 'Guide'}</div>
           {(strategy?.text || enrichedStrategy) && (
@@ -305,6 +310,7 @@ export function BossFacts({
               ))}
             </details>
           ) : null}
+          <PlayerTips tips={playerTips} />
         </div>
       )}
 

@@ -5,10 +5,12 @@ import { useEnrichment, useEntityIndex } from '../lib/entityEnrich'
 import { encountersOf } from '../lib/bossRoster'
 import { loadNpcPlacements, placementsForName, type NpcPlacement } from '../lib/npcPlacements'
 import { loadChestData, matchChests, type ChestFact } from '../lib/chestFacts'
+import { tipsFor } from '../lib/playerTips'
 import { weaponStatRows, weaponStatusFor, type WeaponStatus } from '../lib/weaponStats'
 import type { RemembranceOption } from '../lib/remembranceChoice'
 import type { Verdict } from '../lib/verdict'
 import { Related, RelatedCollapsible } from '../Related'
+import { PlayerTips } from '../PlayerTip'
 import { Spoiler, SpoilerGate } from '../settings/Spoiler'
 import { WikiText } from '../WikiText'
 import { Term } from '../peek/Term'
@@ -348,6 +350,13 @@ export function EntityPanel({
   const metValue = requirementsMet === undefined ? meetsRequirements(entity, character) : requirementsMet
   const requirementEntries = Object.entries(entity.requirements ?? {}) as [AttributeKey, number][]
   const scalingEntries = Object.entries(entity.scaling ?? {}) as [AttributeKey, string][]
+  // Task 195 §2 — curated community usage/build notes for an item-shaped page,
+  // and player notes for a mechanic page; boss tips live on BossFacts instead.
+  const itemTips = useMemo(() => (isBoss ? [] : tipsFor(statusFactId, 'item')), [statusFactId, isBoss])
+  const mechanicTips = useMemo(
+    () => (panelKindValue === 'mechanic' ? tipsFor(statusFactId, 'mechanic') : []),
+    [statusFactId, panelKindValue],
+  )
 
   return (
     <section className="lib-panel" aria-label={`${entity.name} details`}>
@@ -586,6 +595,20 @@ export function EntityPanel({
                     </div>
                   ))}
                 </dl>
+              </div>
+            )}
+
+            {itemTips.length > 0 && (
+              <div className="lib-panel-block">
+                <div className="kicker">How players use it</div>
+                <PlayerTips tips={itemTips} />
+              </div>
+            )}
+
+            {mechanicTips.length > 0 && (
+              <div className="lib-panel-block">
+                <div className="kicker">Player notes</div>
+                <PlayerTips tips={mechanicTips} />
               </div>
             )}
 

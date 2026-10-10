@@ -5,8 +5,10 @@ import { GuidesSection } from '../PackData'
 import { RecipesSection, SecretsSection, WikiTextSection } from '../CodexData'
 import { DialogueHits, DialogueBySpeaker } from '../Dialogue'
 import { EntityLink } from '../EntityLink'
+import { PlayerTips } from '../PlayerTip'
 import { ShowMore } from '../ShowMore'
 import { sectionMeta } from '../lib/sections'
+import { tipsByKind, tipsFor } from '../lib/playerTips'
 import { listWikiPages, type WikiPageRow } from '../lib/wikiSearch'
 import { useWorkspace } from '../state'
 import { Card, Chip } from '../ui'
@@ -125,11 +127,28 @@ function MechanicsSection({ query }: { query: string }) {
                   )}
                 </details>
               )}
+              {/* Task 195 §2 — a mechanic's curated player tips sit in its own
+                  card, same styling as the numbers above. */}
+              <PlayerTips tips={tipsFor(m.id, 'mechanic')} />
             </Card>
           )
         })}
       </div>
       <ShowMore total={cards.length} shown={limit} onMore={() => setLimit((n) => n + 12)} />
+    </Collapsed>
+  )
+}
+
+/**
+ * Task 195 §2 — the leftover "general" tips, which have no single entity page,
+ * are listed under Guides with the same tag.
+ */
+function GeneralTipsSection() {
+  const tips = tipsByKind('general')
+  if (!tips.length) return null
+  return (
+    <Collapsed title="Player tips" count={tips.length}>
+      <PlayerTips tips={tips} />
     </Collapsed>
   )
 }
@@ -263,6 +282,8 @@ export function Guides() {
       {!searching && <WikiBrowser />}
 
       <MechanicsSection query={searching ? query : ''} />
+
+      {!searching && <GeneralTipsSection />}
 
       {searching ? (
         <>
