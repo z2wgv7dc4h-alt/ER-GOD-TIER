@@ -187,11 +187,15 @@ function iconForEntity(category: CategoryId, name: string, index?: RecordIndex):
   // DLC and loot rows stop falling back to a generic glyph. Then the name
   // lookup (FanAPI → local extra), then the brand `cat-<kind>` icon, then the
   // pack/chrome seal as the last resort.
+  const kind = CATALOG_KIND[category] ?? (category === 'guides' ? 'guide' : undefined)
   for (const variant of iconNameVariants(name)) {
     const recordImage = index?.get(factIdFor(category, variant))?.image
-    if (recordImage && !PLACEHOLDER_IMAGE_RE.test(recordImage)) return recordImage
+    if (recordImage && !PLACEHOLDER_IMAGE_RE.test(recordImage)) {
+      // A remote FanAPI URL has a cached local copy: prefer it (works offline, no network fetch).
+      if (/^https?:/.test(recordImage)) return entityImage(variant, factFor(variant)?.aliases, kind) ?? recordImage
+      return recordImage
+    }
   }
-  const kind = CATALOG_KIND[category] ?? (category === 'guides' ? 'guide' : undefined)
   for (const variant of iconNameVariants(name)) {
     const picture = entityImage(variant, factFor(variant)?.aliases, kind)
     if (picture) return picture
