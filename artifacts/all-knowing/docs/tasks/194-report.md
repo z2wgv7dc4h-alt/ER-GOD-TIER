@@ -95,6 +95,6 @@ toolbars. After, the chip label count is 0 duplicates and the test fails if a du
       and fixed each so every control/category renders once and stays reachable.
 - [x] 2. Added `src/library/LibraryBrowser.test.tsx`, which renders the search screen and asserts no
       duplicate chip labels (desktop + phone).
-- [x] 3. Ran only the touched test + `npx tsc -b`; committed (`d35598d`); this report written.
+- [x] 3. Ran only the touched test + `npx tsc -b`; committed (`d35598d`, `c176c40`); this report written.
 
 ALL ITEMS DONE
