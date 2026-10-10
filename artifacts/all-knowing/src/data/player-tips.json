@@ -1,0 +1,374 @@
+{
+  "meta": {
+    "source": "public/sourced/open/player-knowledge.json",
+    "generatedAt": "2026-10-10T08:55:52.637Z",
+    "patchLine": "1.17",
+    "totalRows": 5718,
+    "kept": 42,
+    "rejected": 5616,
+    "byKind": {
+      "boss": 14,
+      "item": 17,
+      "pvp": 2,
+      "mechanic": 5,
+      "region": 3,
+      "general": 1
+    },
+    "rejectionReasons": {
+      "art/showcase": 52,
+      "deleted/too-short": 339,
+      "link-only/too-short": 398,
+      "no resolved entity": 1008,
+      "lore": 70,
+      "not a directive": 799,
+      "complaint/meta": 11,
+      "story/achievement": 68,
+      "build/showcase": 132,
+      "question": 1680,
+      "outdated/patched": 528,
+      "request/co-op/trade": 485,
+      "joke/meme": 38,
+      "nightreign": 7,
+      "already on page": 1
+    },
+    "droppedByReview": 60
+  },
+  "tips": [
+    {
+      "id": "tip:e10351f8cd",
+      "entityId": "boss:mohg",
+      "kind": "boss",
+      "text": "He bleeds really quickly, and gets a damage buff when bleed procs (on you or him). Think of it that way. He‘s the lord of blood, not the lord of no blood",
+      "patch": "1.17",
+      "score": 763
+    },
+    {
+      "id": "tip:939df11009",
+      "entityId": "boss:mohg",
+      "kind": "boss",
+      "text": "You can proc hemorrage very easily on Mohg. He does get a damage boost from it. Since he is a boss he does not take as much damage from it as normal enemies. It is a very viable strategy against him.",
+      "patch": "1.17",
+      "score": 361
+    },
+    {
+      "id": "tip:41c8e24c7e",
+      "entityId": "boss:godskin-apostle",
+      "kind": "boss",
+      "text": "Certainly, sometimes. Some of them so predictably respond to your actions that you can use it to manipulate their behaviour! A good example is the Godskin Apostle, who can be forced to throw a fireball just by drinking a Flask.",
+      "patch": "1.17",
+      "score": 261
+    },
+    {
+      "id": "tip:e2d04c2334",
+      "entityId": "boss:consort",
+      "kind": "boss",
+      "text": "Parrying Consort Radahn is pretty satisfying and honestly the only way he doesn't feel like a massive pain. I do recommend it.",
+      "patch": "1.17",
+      "score": 106
+    },
+    {
+      "id": "tip:087063ba63",
+      "entityId": "boss:rennala",
+      "kind": "boss",
+      "text": "Its because you are using a dexterity based weapon with a quality build (quality is even strength and dexterity). Also your nagakiba doesn't have an affinity such as Keen for dex, heavy for Str, or quality for both. You should respec your stats with renala for high dex and make your weapon dex based",
+      "patch": "1.16.1",
+      "score": 102
+    },
+    {
+      "id": "tip:08735b53bc",
+      "entityId": "enemy:troll",
+      "kind": "boss",
+      "text": "There's a Troll a bit further up. But you can also just stand on it, quit out the game, then load back in to break it.",
+      "patch": "1.17",
+      "score": 53
+    },
+    {
+      "id": "tip:2f0ca46c3b",
+      "entityId": "boss:tree-sentinel",
+      "kind": "boss",
+      "text": "Go get more scadutree fragments. The solitary gaol is kind of like the first Tree Sentinel in the base game. You can beat him early if you’re up for the challenge, or you can go off, find more fragments, then return and absolutely dust him.",
+      "patch": "1.17",
+      "score": 52
+    },
+    {
+      "id": "tip:22b46a1ef0",
+      "entityId": "boss:consort",
+      "kind": "boss",
+      "text": "Whoever told you this is flatly incorrect. Guard counters with a good build can work against almost every enemy and boss in the game, up to and including Promised Consort Radahn. My one piece of advice is to remember to snack on some pickled turtle necks in moderation. Stamina regeneration is undervalued and you can't just drink a flask to replenish it if you run out.",
+      "patch": "1.17",
+      "score": 52
+    },
+    {
+      "id": "tip:c00b95032f",
+      "entityId": "boss:fallingstar-beast",
+      "kind": "boss",
+      "text": "You do significantly less damage when out of mp and using L2 attacks. You're better off just doing a jump heavy, light attack or regular heavy when out of blue juice. Yeah, Fallingstar Beast has some awkward timings. One of those mini bosses that is engineered to screw you over if you dare try to predict instead of just reacting to these unnatural timings. It's fun to master though.",
+      "patch": "1.17",
+      "score": 31
+    },
+    {
+      "id": "tip:9c26fc256d",
+      "entityId": "boss:rennala",
+      "kind": "boss",
+      "text": "Go get the meteorite staff and rock sling. Then just boss rush to rennala, after that, just respec",
+      "patch": "1.17",
+      "score": 27
+    },
+    {
+      "id": "tip:d6e4d4fbda",
+      "entityId": "boss:leontiel",
+      "kind": "boss",
+      "text": "Leontiel, apparently Jerren’s ward, and a new NPC you can summon for the Radahn Festival. After defeating Radahn she will invade you in the wailing dunes and you can get her stuff if you own the tarnished pack.",
+      "patch": "1.17",
+      "score": 27
+    },
+    {
+      "id": "tip:9d46095550",
+      "entityId": "boss:godfrey",
+      "kind": "boss",
+      "text": "I'm running a Magma Sorcery build right now with this. There's additional benefits as the magma sorceress count as spells so Graven Mass and Godfrey's talisman stack with them too for added damage, so don't forget to take advantage of their charged versions.",
+      "patch": "1.17",
+      "score": 25
+    },
+    {
+      "id": "tip:18de5b1dc4",
+      "entityId": "enemy:vulgar-militia",
+      "kind": "boss",
+      "text": "The vulgar militia guys in Dragonbarrow a bit down the path to the Bestial Sanctum. They hit hard as a motherfucker so watch out, but it's a great place to farm early game.",
+      "patch": "1.17",
+      "score": 23
+    },
+    {
+      "id": "tip:b306a2a143",
+      "entityId": "boss:commander-oneil",
+      "kind": "boss",
+      "text": "Loretta cheese at the Carian Manor still works! Just tried it a few hours ago and it still works. You just have to make sure it’s that particular corner of the wall to quit game and return. You can also cheese Commander O’Neil in Caelid by luring him into the rot geysers and having him walk around in the swamp haha",
+      "patch": "1.17",
+      "score": 1
+    },
+    {
+      "id": "tip:87ed7c52a8",
+      "entityId": "item:kick",
+      "kind": "item",
+      "text": "PSA: You can kick Scion/Crucibles/Regular enemy shields for a free crit",
+      "patch": "1.17",
+      "score": 2333
+    },
+    {
+      "id": "tip:a3a540b4eb",
+      "entityId": "item:barricade-shield",
+      "kind": "item",
+      "text": "More fun facts — the Barricade Shield Ash of War not only increases your stability but also increases your shield “hardness” which determines if attacks recoil off the shield so you can have greatshield recoils with medium shields.",
+      "patch": "1.17",
+      "score": 340
+    },
+    {
+      "id": "tip:56d7c17913",
+      "entityId": "item:divine-fortification",
+      "kind": "item",
+      "text": "You can also just use Haligtree shield. Put on Pearl Shield talisman and cast divine fortification and you basically only take a couple points of holy chip. No need to alter anything. If you use Scholar's shield on standard Haligtree or Blacksteel Greatshield you will flat out take basically zero damage and require almost no stamina to guard. It's legitimately broken.",
+      "patch": "1.17",
+      "score": 287
+    },
+    {
+      "id": "tip:3f4562938d",
+      "entityId": "item:glintblade-phalanx",
+      "kind": "item",
+      "text": "You can fake Glintblade Phalanx with Miriam's Vanishing",
+      "patch": "1.17",
+      "score": 280
+    },
+    {
+      "id": "tip:4f8e4f475c",
+      "entityId": "item:lantern",
+      "kind": "item",
+      "text": "Theres a hip lantern you can equip that provides a fair amount of light and doesnt take up the use of one of your hands",
+      "patch": "1.17",
+      "score": 140
+    },
+    {
+      "id": "tip:4e1ba4e1f8",
+      "entityId": "item:torch",
+      "kind": "item",
+      "text": "You are supposed to get a weapon with preferably Fire damage in your main hand, Then hold the torch in your left hand then Two-Hand your main weapon This way you get the STR bonus of two handing and the torch keeps the Basilisks (Those little Deathblight Lizards) away",
+      "patch": "1.17",
+      "score": 94
+    },
+    {
+      "id": "tip:268c1c3526",
+      "entityId": "item:dagger",
+      "kind": "item",
+      "text": "Kick is overpowered (real) Fun facts: -kick true combos into several weapons, such as an r1 of scythe, the r2 of lgs, and much more. -kick is the default ash of war, so you never need it on an actual weapon if youre just using it to break shields or set up parries -a cool tip is to keep a dagger in your first inventory slot, so you can quickly unequip your weapon to quickly break a shield, then…",
+      "patch": "1.16.1",
+      "score": 82
+    },
+    {
+      "id": "tip:39de6f394a",
+      "entityId": "item:square-off",
+      "kind": "item",
+      "text": "You could do guard counters or you could just run square off on the sword and no skill on the shield so that you can use the weapon art without 2 handing the sword",
+      "patch": "1.17",
+      "score": 72
+    },
+    {
+      "id": "tip:a7cdbeeecd",
+      "entityId": "item:pickaxe",
+      "kind": "item",
+      "text": "Executioner has better crit, anchor does pierce damage if you want to optimize around that. For pierce + stance you can use pickaxe.",
+      "patch": "1.16.1",
+      "score": 67
+    },
+    {
+      "id": "tip:620037ed9a",
+      "entityId": "item:milady",
+      "kind": "item",
+      "text": "Milady with wing stance is good on almost every infusion. Occult, bleed, poison, magic, cold, quality, dex are all awesome. I would choose one that you like then equip shard of alexander, rellana's cameo, rotten wing sword insignia, and the carian crest for a pretty satisfying multihit build that's flexible enough to fit almost any character",
+      "patch": "1.16.1",
+      "score": 57
+    },
+    {
+      "id": "tip:687e8823db",
+      "entityId": "item:flask-of-wondrous-physick",
+      "kind": "item",
+      "text": "Two reasons: A) your Str/faith build is using a Dex/faith weapon B) You have 3 utility/defensive talismans and one very bad offensive talisman Use a str faith weapon like Ordovis Greatsword, then put on two-handed talisman, shard of alex, an Godfrey Icon. Change physick tear to damage negation and stance breaking and then use the charged L2",
+      "patch": "1.17",
+      "score": 53
+    },
+    {
+      "id": "tip:b390be60a6",
+      "entityId": "item:bull-goat-s-talisman",
+      "kind": "item",
+      "text": "New Optimal Weight-to-Poise Armor Set for 76 Poise (Bull-Goat Talisman for 101) With the Steel Armor Set added to the game from the Tarnished Edition, the newest optimal weight-to-poise set to reach 76 poise + Bull-Goats Talisman all at 39.6 Equip Load is: Steel Helm Crucible Armor (Axe or Tree) Steel Gauntlets Crucible Greaves",
+      "patch": "1.17",
+      "score": 45
+    },
+    {
+      "id": "tip:eb6e7d7608",
+      "entityId": "item:ash-of-war-cragblade",
+      "kind": "item",
+      "text": "If you're just using one weapon, for the purposes you've described, Executioner's Greataxe would be best. 1. Cragblade increases stance damage, and putting Cragblade on the Rusted Anchor would take away one of the best parts of the weapon, Wild Strikes Ash of War. 2.",
+      "patch": "1.16.1",
+      "score": 38
+    },
+    {
+      "id": "tip:bf3f30ea74",
+      "entityId": "item:bloodflame-blade",
+      "kind": "item",
+      "text": "Nagakiba is generally better now, tho I would recommend having enough stats to cast bloodflame blade",
+      "patch": "1.17",
+      "score": 33
+    },
+    {
+      "id": "tip:2857e68673",
+      "entityId": "item:strength",
+      "kind": "item",
+      "text": "Respec into strength, secondary arcane. Get some heavy armor and a big ass shield. Infuse a pokey stick with bleed. All the shield talismans, damage negation, etc. Block block poke.",
+      "patch": "1.16.1",
+      "score": 31
+    },
+    {
+      "id": "tip:4eb43dec22",
+      "entityId": "item:nagakiba",
+      "kind": "item",
+      "text": "Nagakiba two handed and heavy infused would hit a lot harder with that that stat spread. As a general rule, you should pretty much never use uninfused non somber weapons, outside of the very early game.",
+      "patch": "1.16.1",
+      "score": 27
+    },
+    {
+      "id": "tip:3c69126196",
+      "entityId": "item:dragon-communion-seal",
+      "kind": "item",
+      "text": "dragon communion scales with arcane as well as faith. no arcane = less damage, and way less status buildup you also should use the dragon communion seal for a 15% boost to these incants, and talismans like roar medallion and flock's canvas",
+      "patch": "1.16.1",
+      "score": 20
+    },
+    {
+      "id": "tip:25c8f77eec",
+      "entityId": "item:collapsing-stars",
+      "kind": "pvp",
+      "text": "PSA: Roll into these spells I wanted to make a post essentially saying that you should always roll INTO these spells, it fucks their tracking. Never run away or roll away as that is what the mage is anticipating and will follow up accordingly.",
+      "patch": "1.16.1",
+      "score": 51
+    },
+    {
+      "id": "tip:1c49064d34",
+      "entityId": "item:parry",
+      "kind": "pvp",
+      "text": "Parry PSA This has probably been posted before, but just as a PSA, the new update has made parrying substantially easier. Daggers, curved swords, thrusting swords, and medium shields are now perfectly viable. Give it a try, it's a great change.",
+      "patch": "1.17",
+      "score": 1
+    },
+    {
+      "id": "tip:b13207834f",
+      "entityId": "mechanic:poise",
+      "kind": "mechanic",
+      "text": "They've got fairly low poise, if you use larger weapons it'll stagger them. Also they're pretty vulnerable after their big leap attack so you can wait for that for a big punish.",
+      "patch": "1.17",
+      "score": 1557
+    },
+    {
+      "id": "tip:50ff6c4d31",
+      "entityId": "mechanic:jump-attacks",
+      "kind": "mechanic",
+      "text": "Use jump attacks. They can't be parried.",
+      "patch": "1.17",
+      "score": 501
+    },
+    {
+      "id": "tip:a57caf51cc",
+      "entityId": "mechanic:incantation",
+      "kind": "mechanic",
+      "text": "Health regen, and the damage negation one. Health regen stacks with the talisman, shield, and incantations. It get quite crazy, tbh",
+      "patch": "1.17",
+      "score": 102
+    },
+    {
+      "id": "tip:ec4970a4b1",
+      "entityId": "mechanic:stamina",
+      "kind": "mechanic",
+      "text": "Didn't read the big write up but first and foremost, stop panic rolling. That's you're biggest problem. Get used to watching you're opponent, learning and reacting to what they do. You're unnecessarily depleting the one resource you need to attack, stamina.",
+      "patch": "1.17",
+      "score": 62
+    },
+    {
+      "id": "tip:4d4c0b86ae",
+      "entityId": "mechanic:ashes-of-war",
+      "kind": "mechanic",
+      "text": "Short and sweet answer, get bloodhound gang, upgrade to the max you can, use ash of war",
+      "patch": "1.16.1",
+      "score": 20
+    },
+    {
+      "id": "tip:9814f90292",
+      "entityId": "dungeon:volcano-manor",
+      "kind": "region",
+      "text": "After teleporting from Raya Lucaria, you can jump to the other part of Volcano Manor This has probably been known a while, but I always assumed this gap was too large to jump across and you only could escape via beating the Abductor Virgins. This is super cool to me and wanted to share in case anyone else didn't know!",
+      "patch": "1.17",
+      "score": 839
+    },
+    {
+      "id": "tip:8d36d5e056",
+      "entityId": "region:limgrave",
+      "kind": "region",
+      "text": "Once you leave the tutorial dungeon and first enter Limgrave, the Golden Knight on horseback is waiting to help you start your journey with some helpful tips. Be sure to talk to him.",
+      "patch": "1.17",
+      "score": 707
+    },
+    {
+      "id": "tip:a7dd95289c",
+      "entityId": "region:the-pit",
+      "kind": "region",
+      "text": "roll forward into the pit, not backwards",
+      "patch": "1.17",
+      "score": 402
+    },
+    {
+      "id": "tip:8f80e13134",
+      "entityId": "npc:renna",
+      "kind": "general",
+      "text": "Renna's tower skip This method is so consistent, but there's other ways to do the second jump to the tower itself, you can search other tutorials if you don't feel comfortable with this one.",
+      "patch": "1.17",
+      "score": 181
+    }
+  ]
+}
