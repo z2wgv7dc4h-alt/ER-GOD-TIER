@@ -71,7 +71,7 @@ npx vitest run src/lib/bundleBudget.test.ts >/dev/null 2>&1 || { echo BUNDLE-FAI
 echo ALL-GATES-PASS`
   fs.writeFileSync(path.join(WT, `.gates-${id}.sh`), script)
   const fd = fs.openSync(out, 'w')
-  const c = spawn('C:/Program Files/Git/bin/bash.exe', [path.join(WT, `.gates-${id}.sh`)], { cwd: dir, windowsHide: true, stdio: ['ignore', fd, fd] })
+  const c = spawn('C:/Program Files/Git/bin/bash.exe', [path.join(WT, `.gates-${id}.sh`)], { cwd: dir, windowsHide: false, stdio: ['ignore', fd, fd] })
   c.on('exit', (code) => { fs.closeSync(fd); emit(id, code === 0 ? `GATES PASS — fast-forward merge ready (${out})` : `GATES FAIL — see ${out}`) })
 }
 const kill = (child) => spawnSync('taskkill', ['/T', '/F', '/PID', String(child.pid)], { windowsHide: true })
@@ -83,7 +83,7 @@ function launch(id, prompt) {
   const log = path.join(WT, `task-${id}-${n}.log`)
   const fd = fs.openSync(log, 'w')
   const child = spawn(OPENCODE, ['run', '-m', 'deepseek/deepseek-flash', '--dir', dir, '--title', `task-${id}`, prompt], {
-    cwd: dir, windowsHide: true, stdio: ['ignore', fd, fd],
+    cwd: dir, windowsHide: false, stdio: ['ignore', fd, fd],
   })
   child.on('exit', () => { fs.closeSync(fd); if (runs.get(id)?.child === child) runs.delete(id) })
   runs.set(id, { child, log, started: Date.now() })

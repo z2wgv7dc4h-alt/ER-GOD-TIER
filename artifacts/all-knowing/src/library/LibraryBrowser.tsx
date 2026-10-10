@@ -3,6 +3,7 @@ import type { Character } from '../types'
 import { regionMatches } from '../lib/areaHub'
 import { areaFromFactId } from '../lib/areaContext'
 import { fanImage, normalizeName } from '../lib/fanImage'
+import { extraImage } from '../lib/extraImages'
 import { applyFacts, denyFacts } from '../lib/infer'
 import { weaponVerdict } from '../lib/weaponVerdict'
 import type { Verdict } from '../lib/verdict'
@@ -118,7 +119,7 @@ function CategoryGlyph({
 
 function CategoryIcon({ id }: { id: CategoryId }) {
   const name = CATEGORY_ICON_NAME[id]
-  const src = name ? fanImage(name) : undefined
+  const src = name ? fanImage(name) ?? extraImage(name) : undefined
   if (src) return <img className="lib-rail-icon" src={src} alt="" loading="lazy" decoding="async" />
   return <CategoryGlyph id={id} />
 }
