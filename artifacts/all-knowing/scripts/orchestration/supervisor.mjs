@@ -72,7 +72,17 @@ echo ALL-GATES-PASS`
   fs.writeFileSync(path.join(WT, `.gates-${id}.sh`), script)
   const fd = fs.openSync(out, 'w')
   const c = spawn('C:/Program Files/Git/bin/bash.exe', [path.join(WT, `.gates-${id}.sh`)], { cwd: dir, windowsHide: false, stdio: ['ignore', fd, fd] })
-  c.on('exit', (code) => { fs.closeSync(fd); emit(id, code === 0 ? `GATES PASS — fast-forward merge ready (${out})` : `GATES FAIL — see ${out}`) })
+  c.on('exit', (code) => {
+    fs.closeSync(fd)
+    if (code !== 0) { emit(id, `GATES FAIL — see ${out}`); return }
+    // Auto-merge (owner approved 2026-10-10): gates already ran on this branch merged with master.
+    const g = (args) => spawnSync('git', ['-C', REPO, ...args], { windowsHide: true, encoding: 'utf8' })
+    let m = g(['merge', '--ff-only', `task-${id}`])
+    if (m.status !== 0) m = g(['merge', '--no-edit', `task-${id}`])
+    if (m.status !== 0) { g(['merge', '--abort']); emit(id, 'GATES PASS but merge into master failed — needs Claude'); return }
+    const p = g(['push', '-q', 'origin', 'master'])
+    emit(id, p.status === 0 ? 'MERGED + PUSHED (auto) — Claude reviews' : 'MERGED, push failed — needs Claude')
+  })
 }
 const kill = (child) => spawnSync('taskkill', ['/T', '/F', '/PID', String(child.pid)], { windowsHide: true })
 
