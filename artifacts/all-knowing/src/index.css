@@ -153,6 +153,11 @@ body {
   font-family: var(--font-body);
   letter-spacing: 0.01em;
 }
+/* Task 193 — the splash art is the app-loading background, shown only while the
+   root is still empty (before React mounts) so it never bleeds into the UI. */
+#root:empty {
+  background: var(--bg) url('/brand/splash.webp') top center / cover no-repeat;
+}
 
 .stage { position: relative; }
 
@@ -184,11 +189,11 @@ button { cursor: pointer; }
 }
 .brand-mark {
   flex: none;
-  width: 36px;
+  width: 144px;
   height: 36px;
   padding: 0;
-  border: 1px solid var(--gold);
-  background: #0b0906 url('/art/sigil.jpg') center 28% / 240% no-repeat;
+  border: 0;
+  background: transparent url('/brand/wordmark.webp') left center / contain no-repeat;
 }
 .section-tabs { display: flex; gap: 4px; }
 .section-tabs button {
@@ -1108,6 +1113,10 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   flex: 0 0 auto;
   filter: saturate(0.85);
 }
+/* Task 193 §5 — the avatar also heads each of Gideon's answer bubbles. */
+.guide-face-sm { width: 24px; height: 24px; }
+.gideon-bubble { display: flex; gap: 8px; align-items: flex-start; }
+.gideon-bubble > p { flex: 1 1 auto; min-width: 0; }
 .gideon-head {
   display: flex;
   align-items: center;
@@ -1498,7 +1507,7 @@ a.ext { color: var(--gold); font-size: 12px; letter-spacing: 0.06em; text-transf
   .char-level { font-size: 11px; white-space: nowrap; }
   .area-chip { max-width: 110px; min-height: 40px; padding: 4px 8px; }
   .search-toggle { min-width: 44px; min-height: 44px; padding: 0; justify-content: center; }
-  .brand-mark { width: 40px; height: 40px; }
+  .brand-mark { width: 108px; height: 27px; }
   .subtabs { padding: 6px 10px; }
   .map-controls { display: none; }
 
@@ -2313,6 +2322,8 @@ html[data-reduce-motion='1'] *::after {
   background: linear-gradient(transparent, rgba(6, 5, 4, 0.92) 30%);
 }
 .scan-tips { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; }
+/* Task 193 §5 — the photo-capture guide in the setup / scan tips. */
+.photo-guide { display: block; width: 100%; max-width: 320px; height: auto; margin: 8px 0; border: 1px solid var(--line); border-radius: 4px; }
 .scan-live-list { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 3px; max-height: 26vh; overflow: auto; }
 .scan-live-list li { font-size: 13px; }
 .scan-live-list .ok { color: var(--gold); margin-right: 4px; }

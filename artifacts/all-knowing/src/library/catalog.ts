@@ -9,8 +9,8 @@ import { weaponAr } from '../lib/weaponAr'
 import { useArmory, type ArmoryBoss, type ArmoryWeapon } from '../lib/armory'
 import { BASE_HP_LABEL, loadBossCombat, type CombatStats } from '../lib/enemy'
 import { useFanapiData, type FanapiData } from '../lib/fanapiData'
-import { fanImage, normalizeName as norm } from '../lib/fanImage'
-import { extraImage } from '../lib/extraImages'
+import { normalizeName as norm } from '../lib/fanImage'
+import { entityImage } from '../lib/extraImages'
 import { iconFor } from '../lib/sourcePack'
 import { guideExcerpts, loadGuides, type GuideExcerpt } from '../lib/guides'
 import { loadAcquisition, type Acquisition } from '../lib/acquisition'
@@ -154,8 +154,11 @@ const CATALOG_KIND: Partial<Record<CategoryId, EntityKind>> = {
 
 function iconForEntity(category: CategoryId, name: string): string | undefined {
   const aliases = factFor(name)?.aliases
-  const fan = fanImage(name, aliases) ?? extraImage(name, aliases)
-  if (fan) return fan
+  // Task 193 §4: FanAPI picture → local extra picture → brand `cat-<kind>` icon.
+  // Real pictures always win; the pack/chrome seal is the last resort.
+  const kind = CATALOG_KIND[category] ?? (category === 'guides' ? 'guide' : undefined)
+  const picture = entityImage(name, aliases, kind)
+  if (picture) return picture
   return iconFor(name, ICON_KIND[category]).url
 }
 

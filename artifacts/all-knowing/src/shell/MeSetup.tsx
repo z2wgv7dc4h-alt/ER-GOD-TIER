@@ -456,6 +456,7 @@ export function MeSetup() {
               <button type="button" className="chip" disabled={busy} onClick={() => fileRef.current?.click()}>Open screenshot</button>
             </div>
             <p className="note">{CAPTURE_TIP}</p>
+            <img className="photo-guide" src="/brand/photo-guide.webp" alt="How to photograph the TV: hold straight, avoid glare, fill the frame" loading="lazy" decoding="async" />
             <div className="setup-row">
               <label>Level <input className="search" inputMode="numeric" value={character.level} onChange={(e) => setCharacter({ ...character, level: Math.max(1, Math.min(713, Number(e.target.value) || 1)) })} /></label>
               <label>Class

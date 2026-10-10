@@ -160,9 +160,10 @@ export function ListRow({
   return <div className={['list-row', className ?? ''].filter(Boolean).join(' ')}>{inner}</div>
 }
 
-export function EmptyState({ line, action }: { line: ReactNode; action?: ReactNode }) {
+export function EmptyState({ line, action, image }: { line: ReactNode; action?: ReactNode; image?: string }) {
   return (
     <div className="empty-state">
+      {image && <img className="empty-state-art" src={image} alt="" loading="lazy" decoding="async" />}
       <span>{line}</span>
       {action}
     </div>

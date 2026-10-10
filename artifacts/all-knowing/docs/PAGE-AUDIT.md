@@ -21,7 +21,7 @@ and every entity-graph id the app can link to.
 | item | 1184 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | armor | 751 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | enemy | 613 | 613 | 0 | 0 | 0 | 613 | 0 | 0 | 0 | 0 |
-| quest | 467 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| quest | 467 | 6 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | weapon | 439 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | grace | 417 | 417 | 0 | 0 | 0 | 388 | 417 | 0 | 0 | 0 |
 | region | 295 | 295 | 0 | 0 | 0 | 288 | 295 | 0 | 0 | 0 |
@@ -31,24 +31,24 @@ and every entity-graph id the app can link to.
 | talisman | 158 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | ash | 125 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | dungeon | 119 | 119 | 0 | 0 | 0 | 119 | 119 | 0 | 0 | 0 |
-| merchant | 80 | 80 | 9 | 0 | 0 | 0 | 80 | 0 | 0 | 0 |
 | spirit | 80 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| merchant | 74 | 74 | 0 | 0 | 0 | 0 | 74 | 0 | 0 | 0 |
 | shield | 69 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | mechanic | 65 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | build | 28 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | gate | 10 | 10 | 0 | 0 | 0 | 10 | 0 | 0 | 0 | 0 |
-| ending | 5 | 5 | 0 | 0 | 0 | 5 | 0 | 0 | 0 | 0 |
+| ending | 5 | 5 | 1 | 0 | 0 | 5 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **total** | **5595** | **1832** | 9 | 0 | 0 | 1716 | 1099 | 0 | 0 | 0 |
+| **total** | **5589** | **1832** | 7 | 0 | 0 | 1716 | 1093 | 0 | 0 | 0 |
 
 ## After
 
 | kind | entities | flagged | empty | raw ids | bad casing | generic status | wrong actions | wiki nav | junk rows | boss filed as NPC |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| item | 1186 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| item | 1187 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | armor | 751 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | enemy | 613 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| quest | 467 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| quest | 467 | 6 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | weapon | 439 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | grace | 417 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | region | 296 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -58,17 +58,17 @@ and every entity-graph id the app can link to.
 | talisman | 158 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | ash | 125 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | dungeon | 119 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| merchant | 80 | 9 | 9 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | spirit | 80 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| merchant | 78 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | shield | 69 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | mechanic | 65 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | build | 28 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | gate | 10 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| ending | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| ending | 5 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | material | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **total** | **5598** | **9** | 9 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **total** | **5597** | **7** | 7 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
-Task 144 removed **1823** flagged pages
+Task 144 removed **1825** flagged pages
 (empty, raw ids, bad casing, generic status, wrong actions, wiki nav, junk rows, boss filed as NPC).
 
 ## Remaining empty pages, by name
@@ -77,31 +77,30 @@ These entries have no description, location, stats, drops, sections or image in
 the built entity index. Check the wiki corpus and its set pages before calling
 one a real data gap.
 
-### merchant (9)
+### quest (6)
 
-- Alteration
-- Hermit Merchant - Leyndell
-- Iji
-- Merchant - Coastal Cave
-- Merchant - East Limgrave
-- Merchant - North Limgrave
-- Merchant - North Liurnia
-- Merchant - Siofra River
-- Reversion
+- Fastest route: Elden Lord
+- Fastest route: Age of Stars
+- Redmane Freyja
+- Igon
+- Thiollier & St. Trina
+- White Mask Varré
+
+### ending (1)
+
+- Age of Stars
 
 
 ## Every flagged page (after)
 
 | id | kind | issues |
 | --- | --- | --- |
-| `merchant:alteration` | merchant | empty |
-| `merchant:hermit-merchant-leyndell` | merchant | empty |
-| `merchant:iji` | merchant | empty |
-| `merchant:merchant-coastal-cave` | merchant | empty |
-| `merchant:merchant-east-limgrave` | merchant | empty |
-| `merchant:merchant-north-limgrave` | merchant | empty |
-| `merchant:merchant-north-liurnia` | merchant | empty |
-| `merchant:merchant-siofra-river` | merchant | empty |
-| `merchant:reversion` | merchant | empty |
+| `line:blitz-lord` | quest | empty |
+| `line:blitz-stars` | quest | empty |
+| `line:freyja` | quest | empty |
+| `line:igon` | quest | empty |
+| `line:stars` | ending | empty |
+| `line:thiollier` | quest | empty |
+| `line:varre` | quest | empty |
 
 _Regenerated 2026-10-10._

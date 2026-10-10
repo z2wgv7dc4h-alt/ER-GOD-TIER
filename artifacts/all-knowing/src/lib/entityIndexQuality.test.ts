@@ -311,3 +311,71 @@ describe('Task 140 §1 — fields the accuracy sample found missing are now carr
     expect(typed.length).toBeGreaterThan(50)
   })
 })
+
+describe('Task 187 §A1 — no cut/template extraction leaks', () => {
+  // Raw HTML-comment markers, the wiki cut-content boilerplate, the crawler's
+  // broken subject leads ("The was a …", "The s are …", "are optional bosses …").
+  const LEAK =
+    /<!--|was cut from|cut from (?:the )?(?:retail|final|release)|\bunattainable\b|\bunobtainable\b|no longer be canonical|are optional bosses in Elden Ring and|the s are characters|^the was a/i
+
+  it('has no player-visible cut/template fragment', () => {
+    const offenders = list.filter((record) => LEAK.test(record.description ?? '')).map((record) => `${record.id}: ${record.description}`)
+    expect(offenders, offenders.slice(0, 20).join('\n')).toEqual([])
+  })
+})
+
+describe('Task 187 §A2 — enemy text', () => {
+  it('never gives the plain Rat the Frenzied Rat description', () => {
+    const rat = records['enemy:rat']
+    expect(rat).toBeTruthy()
+    expect(rat!.description ?? '').not.toMatch(/frenzied|flame of frenzy/i)
+  })
+
+  it('still describes at least 85% of enemies', () => {
+    const enemies = list.filter((record) => record.kind === 'enemy')
+    const described = enemies.filter((record) => {
+      const text = record.description?.trim()
+      return Boolean(text && text.length >= 20 && norm(text) !== norm(record.name))
+    })
+    expect(enemies.length).toBeGreaterThan(500)
+    expect(described.length / enemies.length).toBeGreaterThanOrEqual(0.85)
+  })
+})
+
+describe('Task 187 §A3 — the merchant kind holds only merchants with a place', () => {
+  const NON_MERCHANTS = [
+    'merchant:alteration',
+    'merchant:reversion',
+    'merchant:dragon-communion',
+    'merchant:d-hunter-of-the-dead',
+    'merchant:sorcerer-rogier',
+    'merchant:pidia-carian-servant',
+  ]
+
+  it('folds the non-merchant vendor rows onto their real entities', () => {
+    for (const id of NON_MERCHANTS) expect(records[id], `${id} is still a merchant page`).toBeUndefined()
+  })
+
+  it('leaves no merchant card with neither a location nor a region', () => {
+    const empty = list.filter((record) => record.kind === 'merchant' && !record.location?.trim() && !record.region?.trim())
+    expect(empty.map((record) => record.id)).toEqual([])
+  })
+})
+
+describe('Task 187 §A4 — location is a place, never a category label', () => {
+  const CATEGORY = /^(?:sub-?region|legacy dungeon|the lands between|multiple locations?|unknown|proving grounds)$/i
+
+  it('has no category label stored in location', () => {
+    const offenders = list
+      .filter((record) => typeof record.location === 'string' && CATEGORY.test(record.location.trim()))
+      .map((record) => `${record.id}: ${record.location}`)
+    expect(offenders, offenders.slice(0, 20).join('\n')).toEqual([])
+  })
+})
+
+describe('Task 187 §A5 — a "N beats" count is never a description', () => {
+  it('has no description that is only a beat count', () => {
+    const offenders = list.filter((record) => /^\d+\s+beats?$/i.test(record.description ?? '')).map((record) => record.id)
+    expect(offenders, offenders.slice(0, 20).join('\n')).toEqual([])
+  })
+})

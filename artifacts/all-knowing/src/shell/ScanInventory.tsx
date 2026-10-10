@@ -189,6 +189,7 @@ export function InventoryScanOverlay({
               <span className="note">· {frames} frames watched</span>
               {SCAN_TIPS.map((tip) => <span key={tip} className="note">· {tip}</span>)}
             </div>
+            <img className="photo-guide" src="/brand/photo-guide.webp" alt="How to photograph the TV: hold straight, avoid glare, fill the frame" loading="lazy" decoding="async" />
             <ul className="scan-live-list">
               {result.items.map((item) => (
                 <li key={itemKey(item)}>

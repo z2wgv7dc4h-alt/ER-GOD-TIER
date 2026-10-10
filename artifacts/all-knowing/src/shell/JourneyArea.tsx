@@ -22,6 +22,7 @@ import { loadRegionLevels, type RegionLevel } from '../lib/regionLevels'
 import { loadSecrets, type WallSecret } from '../lib/secrets'
 import { useWorkspace } from '../state'
 import { GuidesFor } from '../PackData'
+import { EmptyState } from '../ui'
 import { AreaPrompt } from './AreaPrompt'
 import { AreaPickerSheet } from './AreaChip'
 
@@ -111,7 +112,7 @@ export function JourneyArea() {
       <div className="area-hub">
         <section className="panel area-pick">
           <div className="kicker">Where are you?</div>
-          <p className="note">Pick the nearest grace and the area page fills in from there.</p>
+          <EmptyState image="/brand/empty-map.webp" line="Pick the nearest grace and the area page fills in from there." />
           <AreaPickerSheet inline onClose={() => {}} />
         </section>
       </div>
