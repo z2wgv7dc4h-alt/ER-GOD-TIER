@@ -89,7 +89,12 @@ export const GUARD_MINIMUMS: { kind: EntityKind; field: string; min: number; lab
   // marked `catalogue: false` and excluded from the denominator, the same way
   // the search-only magic.json spells already are.
   { kind: 'npc', field: 'description', min: 95, label: 'description (characters)' },
-  { kind: 'region', field: 'descriptionLocation', min: 95, label: 'description + location (locations)' },
+  // Task 187 §A4 — a category or map label ("Sub-region", "The Lands Between",
+  // "Unknown") is no longer written into a region's `location`. Three
+  // world/gameplay region pages (Lands Between, Sea of Fog, Sites of Grace) have
+  // no containing place on disk, so they are now honestly empty and the measured
+  // cover drops from 96.0% to 94.8%; the floor follows the honest count.
+  { kind: 'region', field: 'descriptionLocation', min: 94, label: 'description + location (locations)' },
   // Task 151 §1 — the generated "X is a hostile creature encountered in …" line
   // is gone. The un-notable creatures the wiki has no prose for (Goat, Catapult,
   // Watling Stars…) now carry no description rather than an invented one, so the
