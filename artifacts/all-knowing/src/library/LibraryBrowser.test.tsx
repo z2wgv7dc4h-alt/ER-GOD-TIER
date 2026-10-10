@@ -2,14 +2,14 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it, vi } from 'vitest'
 
 /**
- * Task 194 §2 — the Library search screen must render each chip/control once.
+ * Task 194 §2 / Task 196 §2 — the Library search screen must render each
+ * control once, and every filter must stay reachable.
  *
- * The screen used to mount both the desktop toolbar and the phone toolbar (a
- * CSS media query hid one), and it spelled ownership "All" next to the campaign
- * "All". The crawl reported both as duplicate chip labels. This renders the
- * search screen at desktop width (the node test env has no `window.matchMedia`,
- * so the component treats it as desktop) and fails on any label that appears
- * twice.
+ * Task 196 replaced the wall of toolbar chips with one row (search + type
+ * dropdown + Filters) and moved the rest into a labelled Filters panel. This
+ * renders the search screen (node has no `window.matchMedia`, so it is the
+ * single unified toolbar) and the panel body directly, and checks that no
+ * filter was dropped and no chip label appears twice.
  */
 
 const { weapons } = vi.hoisted(() => ({
@@ -70,15 +70,19 @@ vi.mock('./catalog', () => ({
 
 vi.mock('../lib/entityEnrich', () => ({ useEnrichment: () => undefined }))
 
-import { LibraryBrowser } from './LibraryBrowser'
+import { FilterPanelBody, LibraryBrowser } from './LibraryBrowser'
+import { defaultFilter } from './model'
+
+const noop = () => {}
 
 /** Every `.chip` button's visible label, in document order. */
 function chipLabels(html: string): string[] {
   const labels: string[] = []
-  const re = /<button[^>]*class="[^"]*\bchip\b[^"]*"[^>]*>([\s\S]*?)<\/button>/g
+  const re = /<button[^>]*class="([^"]*)"[^>]*>([\s\S]*?)<\/button>/g
   let m: RegExpExecArray | null
   while ((m = re.exec(html))) {
-    const text = m[1]
+    if (!m[1].split(/\s+/).includes('chip')) continue
+    const text = m[2]
       .replace(/<[^>]*>/g, '')
       .replace(/\s+/g, ' ')
       .trim()
@@ -87,53 +91,96 @@ function chipLabels(html: string): string[] {
   return labels
 }
 
-describe('Library search screen › duplicate chips (Task 194)', () => {
+describe('Library search screen › one toolbar (Task 196 §2)', () => {
   const html = renderToStaticMarkup(<LibraryBrowser />)
-  const labels = chipLabels(html)
 
-  it('renders the search screen with its facet chips', () => {
-    expect(labels).toContain('Base')
-    expect(labels).toContain('DLC')
-    expect(labels).toContain('All types')
-    expect(labels).toContain('Straight Sword')
-    expect(labels).toContain('Physical')
-    expect(labels).toContain('Any')
-    expect(labels).toContain('Near me')
+  it('renders the single toolbar row', () => {
+    expect(html).toContain('class="lib-toolbar-row"')
+    expect(html).toContain('class="lib-search"')
+    expect(html).toContain('lib-type-select')
+    expect(html).not.toContain('lib-tools')
+    expect(html).not.toContain('lib-phone-tools')
+  })
+
+  it('exposes the category type filter as a dropdown', () => {
+    expect(html).toContain('Straight Sword')
+    expect(html).toContain('Katana')
+    expect(html).toContain('All types')
+  })
+
+  it('has a Filters button to open the rest', () => {
+    expect(html).toContain('>Filters</button>')
   })
 
   it('never renders a chip label twice', () => {
+    const labels = chipLabels(html)
     const counts = new Map<string, number>()
     for (const label of labels) counts.set(label, (counts.get(label) ?? 0) + 1)
     const duplicates = [...counts].filter(([, n]) => n > 1).map(([label, n]) => `${label} ×${n}`)
     expect(duplicates, `duplicate chip labels: ${duplicates.join(', ')}`).toEqual([])
   })
+})
 
-  it('mounts one toolbar, not both', () => {
-    expect(html).toContain('class="lib-tools"')
-    expect(html).not.toContain('lib-phone-tools')
+describe('Library filters panel › every filter reachable (Task 196 §2)', () => {
+  const html = renderToStaticMarkup(
+    <FilterPanelBody
+      filter={defaultFilter()}
+      subtypes={['Katana', 'Straight Sword']}
+      damageOptions={['Physical', 'Slash']}
+      hasScaling
+      near
+      hasArea
+      sort="name"
+      sortDir="asc"
+      view="grid"
+      updateFilter={noop}
+      onNear={noop}
+      onSort={noop}
+      onSortDir={noop}
+      onView={noop}
+    />,
+  )
+
+  it('keeps the ownership filter reachable', () => {
+    expect(html).toContain('Any')
+    expect(html).toContain('Owned')
+    expect(html).toContain('Not owned')
   })
 
-  it('mounts only the phone toolbar at the phone breakpoint', () => {
-    vi.stubGlobal('window', {
-      matchMedia: () => ({
-        matches: true,
-        addEventListener: () => {},
-        removeEventListener: () => {},
-      }),
-    })
-    try {
-      const phoneHtml = renderToStaticMarkup(<LibraryBrowser />)
-      expect(phoneHtml).toContain('lib-phone-tools')
-      expect(phoneHtml).not.toContain('class="lib-tools"')
-      expect(phoneHtml).toContain('Filters (0)')
+  it('keeps the requirement and near filters reachable', () => {
+    expect(html).toContain('I meet requirements')
+    expect(html).toContain('Near me')
+  })
 
-      const phoneLabels = chipLabels(phoneHtml)
-      const counts = new Map<string, number>()
-      for (const label of phoneLabels) counts.set(label, (counts.get(label) ?? 0) + 1)
-      const duplicates = [...counts].filter(([, n]) => n > 1).map(([label, n]) => `${label} ×${n}`)
-      expect(duplicates, `duplicate phone chip labels: ${duplicates.join(', ')}`).toEqual([])
-    } finally {
-      vi.unstubAllGlobals()
-    }
+  it('keeps every type reachable', () => {
+    expect(html).toContain('All types')
+    expect(html).toContain('Katana')
+    expect(html).toContain('Straight Sword')
+  })
+
+  it('keeps the damage types reachable', () => {
+    expect(html).toContain('All damage')
+    expect(html).toContain('Physical')
+    expect(html).toContain('Slash')
+  })
+
+  it('keeps the DLC campaign filter reachable', () => {
+    expect(html).toContain('Base')
+    expect(html).toContain('DLC')
+  })
+
+  it('keeps the scaling filter reachable', () => {
+    for (const letter of ['S', 'A', 'B', 'C', 'D']) expect(html).toContain(`>${letter}</button>`)
+  })
+
+  it('keeps sort reachable', () => {
+    expect(html).toContain('AR at my stats')
+    expect(html).toContain('Requirement')
+    expect(html).toContain('Asc ↑')
+  })
+
+  it('keeps the view switch reachable', () => {
+    expect(html).toContain('Grid')
+    expect(html).toContain('Table')
   })
 })
