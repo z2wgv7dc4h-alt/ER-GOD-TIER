@@ -471,6 +471,17 @@ button { cursor: pointer; }
 }
 .builds-page .builds-tabs-purpose { margin: 0 0 8px; }
 
+/* Task 197 §1–2 — the Your-build summary card and its missing-piece rows. */
+.your-build-summary { margin-bottom: 10px; }
+.your-build-summary .piece-name { display: inline-flex; align-items: center; gap: 8px; }
+.your-build-summary .piece-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  border-radius: 2px;
+  background: var(--bg);
+}
+
 .map-stage {
   display: grid;
   grid-template-columns: 1fr 320px;
@@ -667,7 +678,8 @@ image.atlas-art-img { background: #050403; }
   padding: 10px;
   background: var(--bg-raised);
 }
-.stat label {
+.stat label,
+.stat .stat-name {
   display: block;
   color: var(--muted);
   font-size: 11px;
@@ -683,6 +695,12 @@ image.atlas-art-img { background: #050403; }
   padding: 4px 0 0;
 }
 .stat input:focus { outline: none; }
+.stat .stat-value {
+  display: block;
+  font-size: 20px;
+  font-family: var(--font-display);
+  padding: 4px 0 0;
+}
 .stat-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
 /* Inline soft-cap tiers: one dot per breakpoint, filled once reached. */
 .soft-cap { display: inline-flex; gap: 3px; }

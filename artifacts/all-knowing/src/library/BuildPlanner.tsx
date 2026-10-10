@@ -9,9 +9,9 @@ import { equipLoad } from '../lib/gearSheet'
 import { loadRegionLevels, type RegionLevel } from '../lib/regionLevels'
 import { useCoords } from '../lib/coords'
 import { toggleWatch, watchlistOf } from '../lib/leftovers'
-import { SOFT_CAPS, softCapLabel, type StatKey } from '../lib/softCaps'
 import { useWorkspace } from '../state'
-import type { Stats } from '../types'
+import { StatsEditor } from '../build/StatsEditor'
+import { usePanelGroup } from '../build/PanelGroup'
 import { EntityLink } from '../EntityLink'
 import { Term } from '../peek/Term'
 import './advisor.css'
@@ -24,18 +24,6 @@ import '../build/build.css'
  * and the Change-build flow (`planRespec` → respec plan + shopping list).
  */
 
-const STAT_KEYS = Object.keys(SOFT_CAPS) as StatKey[]
-const STAT_LABELS: Record<StatKey, string> = {
-  vigor: 'Vig',
-  mind: 'Mind',
-  endurance: 'End',
-  strength: 'Str',
-  dexterity: 'Dex',
-  intelligence: 'Int',
-  faith: 'Fai',
-  arcane: 'Arc',
-}
-
 const CUSTOM = '__custom'
 
 const normName = (s: string) => s.toLowerCase().replace(/['’`]/g, '').replace(/[^a-z0-9+]+/g, ' ').trim()
@@ -43,19 +31,35 @@ const normName = (s: string) => s.toLowerCase().replace(/['’`]/g, '').replace(
 /**
  * Task 113 §2 — one collapsible card per section of the Builds page. Native
  * `<details>` keeps the collapsed content out of hit-testing and out of the
- * accessibility tree; the two sections that answer "where am I" open first.
+ * accessibility tree. Task 197 §3: open on desktop, one-at-a-time on a phone via
+ * the shared `PanelGroup` (same behaviour as the Kit groups).
  */
 function BuildSection({
+  id,
   title,
-  defaultOpen = false,
+  defaultOpen = true,
   children,
 }: {
+  id?: string
   title: string
   defaultOpen?: boolean
   children: ReactNode
 }) {
+  const group = usePanelGroup()
+  const isPhone = group?.isPhone ?? false
+  const panelId = id ?? title
+  const [open, setOpen] = useState(defaultOpen)
+  const expanded = isPhone ? group?.openId === panelId : open
   return (
-    <details className="panel advisor-card build-section" open={defaultOpen}>
+    <details
+      className="panel advisor-card build-section"
+      open={expanded}
+      onToggle={(e) => {
+        const next = e.currentTarget.open
+        if (isPhone && group) group.setOpenId(next ? panelId : null)
+        else setOpen(next)
+      }}
+    >
       <summary className="build-section-summary">
         <span className="kicker">{title}</span>
         <span className="build-section-chevron" aria-hidden>▾</span>
@@ -73,7 +77,6 @@ export function BuildPlanner() {
   const [weapons, setWeapons] = useState<Weapon[] | null>(null)
   const [areas, setAreas] = useState<RegionLevel[]>([])
   const [targetId, setTargetId] = useState('')
-  const [custom, setCustom] = useState<Stats>(() => ({ ...w.character.stats }))
 
   useEffect(() => {
     let cancelled = false
@@ -121,14 +124,6 @@ export function BuildPlanner() {
   // Task 130 §3 — only genuine upgrades: a weapon that is weaker than the kit
   // (negative gain) is never listed as "stronger".
   const stronger = useMemo(() => strongerUpgrades(advice.upgrades), [advice.upgrades])
-
-  const customDeltas = useMemo(
-    () =>
-      (Object.keys(w.character.stats) as StatKey[])
-        .map((key) => ({ key, from: w.character.stats[key], to: custom[key] }))
-        .filter((d) => d.from !== d.to),
-    [w.character.stats, custom],
-  )
 
   function showOnMap(factId?: string) {
     if (!factId) return
@@ -182,36 +177,16 @@ export function BuildPlanner() {
       {/* Task 113 §2 — lead with what matters: your detected build and the
           weapons/gear that beat it, then the planning tools. Every section is a
           collapsible card; the first two open by default. */}
-      <BuildSection title="Your build" defaultOpen>
+      <BuildSection id="detected" title="Your build">
         <h3>{advice.build.label}</h3>
         <p className="note">
           {Math.round(advice.build.confidence * 100)}% confidence · {advice.build.reason}
         </p>
-        <div className="advisor-stats">
-          {STAT_KEYS.map((key) => {
-            const value = w.character.stats[key]
-            const label = softCapLabel(key, value)
-            return (
-              <div className="advisor-stat" key={key}>
-                <div className="advisor-stat-head">
-                  <span>{STAT_LABELS[key]}</span>
-                  <span className="note">{value}{label ? ` · ${label}` : ''}</span>
-                </div>
-                <div className="advisor-bar" aria-hidden>
-                  <i style={{ width: `${Math.min(100, (value / 99) * 100)}%` }} />
-                </div>
-                {/* Task 114 §7 — the breakpoints are labelled (40 / 60 / 80) like
-                    the planner, not anonymous dots. */}
-                <div className="advisor-caps" aria-hidden>
-                  {SOFT_CAPS[key].map((cap) => (
-                    <span key={cap} className={value >= cap ? 'on' : ''}>{cap}</span>
-                  ))}
-                </div>
-              </div>
-            )
-          })}
-        </div>
+        {/* Task 197 §4 — Plan reuses Your build's stat editor read-only; there is
+            no second editable copy of the eight numbers anywhere. */}
+        <StatsEditor character={w.character} readOnly />
         <p className="note">
+          Edit these numbers in <strong>Your build</strong>.{' '}
           <span className="softcap-legend"><i /> <Term id="mechanic:soft-cap-offensive">soft caps</Term></span>
         </p>
         {advice.warnings.length > 0 && (
@@ -228,7 +203,7 @@ export function BuildPlanner() {
         )}
       </BuildSection>
 
-      <BuildSection title="Stronger for your build" defaultOpen>
+      <BuildSection id="stronger" title="Stronger for your build">
         {stronger.length === 0 ? (
           <p className="note">
             {weapons ? 'Nothing stronger reachable yet. The Later finds below are worth keeping an eye on.' : 'Loading weapon data…'}
@@ -256,7 +231,7 @@ export function BuildPlanner() {
       </BuildSection>
 
       {advice.later.length > 0 && (
-        <BuildSection title="Later finds">
+        <BuildSection id="later" title="Later finds">
           <p className="note">Reachable only once you get there — or open the Realm of Shadow.</p>
           <ul className="advisor-list">
             {advice.later.map((u) => (
@@ -275,7 +250,7 @@ export function BuildPlanner() {
         </BuildSection>
       )}
 
-      <BuildSection title="Change build">
+      <BuildSection id="change" title="Change build">
         <p className="note">Pick a target. The plan shows the stat spread and a shopping list; nothing is applied.</p>
         <select
           className="search"
@@ -341,39 +316,16 @@ export function BuildPlanner() {
         {targetId === CUSTOM && (
           <div className="advisor-plan">
             <h4>Custom stats</h4>
-            <p className="note">Set a target spread and see the delta. Rennala respecs for one Larval Tear.</p>
-            <div className="advisor-stats">
-              {STAT_KEYS.map((key) => (
-                <label className="advisor-stat" key={key}>
-                  <span>{STAT_LABELS[key]}</span>
-                  <input
-                    type="number"
-                    min={1}
-                    max={99}
-                    value={custom[key]}
-                    onChange={(e) =>
-                      setCustom((prev) => ({ ...prev, [key]: Math.max(1, Math.min(99, Number(e.target.value) || 1)) }))
-                    }
-                  />
-                </label>
-              ))}
-            </div>
-            <div className="opts">
-              {customDeltas.length === 0 ? (
-                <span className="chip">No change</span>
-              ) : (
-                customDeltas.map((d) => (
-                  <span key={d.key} className="chip">
-                    {STAT_LABELS[d.key]} {d.from} {'\u2192'} {d.to}
-                  </span>
-                ))
-              )}
-            </div>
+            <p className="note">
+              A custom spread is edited in <strong>Your build</strong>; the Plan tab only ever
+              shows it read-only (see the spread at the top), so there is one place the eight
+              numbers can change.
+            </p>
           </div>
         )}
       </BuildSection>
 
-      <BuildSection title="Gear picks">
+      <BuildSection id="gear" title="Gear picks">
         <ul className="advisor-list">
           {advice.gear.map((g) => (
             <li key={`${g.kind}-${g.name}`}>

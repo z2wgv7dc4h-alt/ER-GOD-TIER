@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { markers } from './data/seed'
 import { opBuilds } from './knowledge/builds'
+import type { OpBuild } from './knowledge/builds'
 import { pvpBuilds, pvpMatchups } from './knowledge/pvp'
 import { techTips } from './knowledge/tech'
 import { pvpTech } from './knowledge/pvpTech'
@@ -17,13 +18,21 @@ import { loadMetaBuilds, type MetaBuilds } from './lib/metaBuilds'
 import { loadGuides } from './lib/guides'
 import { WikiText } from './WikiText'
 import { useCoords } from './lib/coords'
+import type { CoordPin } from './lib/coords'
 import { toggleWatch, watchlistOf } from './lib/leftovers'
 import { attackRatingForSlot, loadWeapons } from './lib/ar'
 import type { AttackRating, Weapon } from './lib/ar'
 import { REGULATION_STAMP } from './lib/regulation'
 import { isSoteRun } from './lib/blessings'
-import { levelFromStats } from './lib/level'
-import { SOFT_CAPS, softCapLabel } from './lib/softCaps'
+import { SOFT_CAPS } from './lib/softCaps'
+import { detectArchetype, ARCHETYPE_ATTRS, ARCHETYPE_LABELS } from './lib/archetype'
+import { byId } from './knowledge/catalog'
+import { lootForName } from './lib/advisor'
+import { iconFor } from './lib/sourcePack'
+import { StatsEditor } from './build/StatsEditor'
+import { PanelGroup, usePanelGroup } from './build/PanelGroup'
+import { goalBuildId } from './build/buildGoal'
+import { EntityLink } from './EntityLink'
 import { BuildCodeCard } from './BuildCodeCard'
 import { Related } from './Related'
 import { WeaponCompare } from './WeaponCompare'
@@ -60,12 +69,17 @@ export function estimateDefense(character: Character) {
  * `library/pvp` is the PvP surface: builds, matchups and tech. `BuildKits` is the
  * former Kit library minus the PvP groups, folded into Builds.
  */
-export function BuildWorkspace() {
-  return <BuildRoom view="builds" />
+export function BuildWorkspace({ onFindBuild }: { onFindBuild?: () => void } = {}) {
+  return <BuildRoom view="builds" onFindBuild={onFindBuild} />
 }
 
 export function BuildKits() {
   return <BuildRoom view="kits" />
+}
+
+/** Task 197 §3 — "Find a build": the OP kits, weapon compare and PvP builds. */
+export function BuildFind() {
+  return <BuildRoom view="find" />
 }
 
 export function BuildCalculator() {
@@ -76,18 +90,63 @@ export function PvpWorkspace() {
   return <BuildRoom view="pvp" />
 }
 
+const SUMMARY_LABELS: Record<keyof Stats, string> = {
+  vigor: 'Vigor',
+  mind: 'Mind',
+  endurance: 'Endurance',
+  strength: 'Strength',
+  dexterity: 'Dexterity',
+  intelligence: 'Intelligence',
+  faith: 'Faith',
+  arcane: 'Arcane',
+}
+
+const ATTR_STAT: Record<string, keyof Stats> = {
+  str: 'strength',
+  dex: 'dexterity',
+  int: 'intelligence',
+  fai: 'faith',
+  arc: 'arcane',
+}
+
+/** The next soft cap the character has not reached, across the stats that matter. */
+export function nextStatTarget(
+  character: Character,
+): { key: keyof Stats; label: string; delta: number } | null {
+  const relevant = new Set<keyof Stats>(['vigor', 'mind', 'endurance'])
+  for (const attr of ARCHETYPE_ATTRS[detectArchetype(character.stats)]) relevant.add(ATTR_STAT[attr])
+  let best: { key: keyof Stats; label: string; delta: number } | null = null
+  for (const key of relevant) {
+    const value = character.stats[key]
+    const nextCap = SOFT_CAPS[key].find((cap) => cap > value)
+    if (nextCap == null) continue
+    const delta = nextCap - value
+    if (!best || delta < best.delta || (delta === best.delta && key === 'vigor')) {
+      best = { key, label: SUMMARY_LABELS[key], delta }
+    }
+  }
+  return best
+}
+
+/** Task 197 §1 — one-line read: archetype plus the single best next point. */
+export function buildVerdict(character: Character): string {
+  const label = ARCHETYPE_LABELS[detectArchetype(character.stats)]
+  const next = nextStatTarget(character)
+  return next ? `${label} build — next: +${next.delta} ${next.label}` : `${label} build`
+}
+
 /**
  * Task 164 §9 — the Builds page split into four tabs so the stat editor,
  * planning advisor, kit/compare library and the numeric calculators no longer
  * stack into one ~12-screen page. The planner stays lazy so it remains its own
  * chunk; the other views are already in this module.
  */
-type BuildsTab = 'your' | 'planning' | 'kits' | 'calc'
+type BuildsTab = 'your' | 'find' | 'plan' | 'calc'
 
 const BUILDS_TABS: { id: BuildsTab; label: string; purpose: string }[] = [
-  { id: 'your', label: 'Your build', purpose: 'Your stats, attack rating and the pieces you are still missing.' },
-  { id: 'planning', label: 'Planning', purpose: 'Your detected build, stronger gear and respec plans.' },
-  { id: 'kits', label: 'Kits/Compare', purpose: 'The OP PvE kits and the weapon compare.' },
+  { id: 'your', label: 'Your build', purpose: 'Your level, stats, equipped weapons and the pieces you are still missing.' },
+  { id: 'find', label: 'Find a build', purpose: 'OP kits, weapon compare and PvP builds you can follow.' },
+  { id: 'plan', label: 'Plan', purpose: 'Your respec and level plan against a target build.' },
   { id: 'calc', label: 'Calculator', purpose: 'Damage, attack rating, stat, level and smithing calculators.' },
 ]
 
@@ -113,29 +172,31 @@ export function BuildsPage() {
         ))}
       </div>
       {current && <p className="note builds-tabs-purpose">{current.purpose}</p>}
-      {tab === 'your' && <BuildWorkspace />}
-      {tab === 'planning' && (
-        <Suspense fallback={<p className="note">Loading planner…</p>}>
-          <BuildPlannerLazy />
-        </Suspense>
-      )}
-      {tab === 'kits' && <BuildKits />}
-      {tab === 'calc' && <BuildCalculator />}
+      <PanelGroup key={tab}>
+        {tab === 'your' && <BuildWorkspace onFindBuild={() => setTab('find')} />}
+        {tab === 'find' && <BuildFind />}
+        {tab === 'plan' && (
+          <Suspense fallback={<p className="note">Loading planner…</p>}>
+            <BuildPlannerLazy />
+          </Suspense>
+        )}
+        {tab === 'calc' && <BuildCalculator />}
+      </PanelGroup>
     </div>
   )
 }
 
 /**
- * Task 107 §9 / Task 118 §3 — a collapsible card. The Builds and PvP pages are a
- * wall of distinct tools, so each becomes a card that is collapsed unless the
- * spec names it as a first-paint answer ("Your build" / "Stronger for your
- * build"). Children stay mounted (tests read them) but a collapsed card is
- * hidden, so it neither paints nor lengthens the page.
+ * Task 107 §9 / Task 118 §3 / Task 197 §3 — a collapsible card. The Builds and
+ * PvP pages are a wall of distinct tools, so each is a card. Task 197 flips the
+ * default: open on desktop (nothing hidden at a glance) and a one-at-a-time
+ * accordion on a phone (via `PanelGroup`). Children stay mounted (tests read
+ * them) but a collapsed card is hidden, so it does not paint.
  */
 function KitGroup({
   title,
   count,
-  defaultOpen = false,
+  defaultOpen = true,
   children,
 }: {
   title: string
@@ -143,22 +204,30 @@ function KitGroup({
   defaultOpen?: boolean
   children: ReactNode
 }) {
+  const group = usePanelGroup()
   const [open, setOpen] = useState(defaultOpen)
+  const isPhone = group?.isPhone ?? false
+  const panelId = title
+  const expanded = isPhone ? group?.openId === panelId : open
+  const toggle = () => {
+    if (isPhone && group) group.setOpenId(group.openId === panelId ? null : panelId)
+    else setOpen((v) => !v)
+  }
   return (
-    <section className={open ? 'kit-group-panel open' : 'kit-group-panel'}>
+    <section className={expanded ? 'kit-group-panel open' : 'kit-group-panel'}>
       <button
         type="button"
         className="kit-group-head"
-        aria-expanded={open}
-        onClick={() => setOpen((v) => !v)}
+        aria-expanded={expanded}
+        onClick={toggle}
       >
         <span className="kicker">
           {title}
           {count != null ? ` · ${count}` : ''}
         </span>
-        <span aria-hidden>{open ? '▴' : '▾'}</span>
+        <span aria-hidden>{expanded ? '▴' : '▾'}</span>
       </button>
-      <div className="kit-group-body" hidden={!open}>{children}</div>
+      <div className="kit-group-body" hidden={!expanded}>{children}</div>
     </section>
   )
 }
@@ -250,15 +319,170 @@ function StoredSources({ topics }: { topics: { label: string; match: RegExp }[] 
   )
 }
 
-function BuildRoom({ view }: { view: 'builds' | 'kits' | 'calc' | 'pvp' }) {
+/**
+ * Task 197 §1–2 — "Your build" opens on one panel that reads the character back:
+ * level and stats, equipped weapons with their attack rating, a one-line verdict,
+ * and — once a build is followed — its stat targets and missing pieces. An empty
+ * character gets a single call to action instead. No editing here: the stat editor
+ * is the panel below, and Plan reuses it read-only.
+ */
+function YourBuildSummary({
+  character,
+  coords,
+  ratings,
+  goalBuild,
+  onSetup,
+  onFindBuild,
+  onShowOnMap,
+}: {
+  character: Character
+  coords: CoordPin[]
+  ratings: AttackRating[]
+  goalBuild: OpBuild | undefined
+  onSetup: () => void
+  onFindBuild: () => void
+  onShowOnMap: (factId: string) => void
+}) {
+  if (character.source === 'empty') {
+    return (
+      <section className="panel your-build-summary" aria-label="Set up your Tarnished">
+        <div className="kicker">Your build</div>
+        <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>Set up your Tarnished</h3>
+        <p className="note">
+          Your build reads your level, stats and equipped weapons. Add them from a photo of the
+          Status screen, or type them in by hand.
+        </p>
+        <div className="opts">
+          <button type="button" className="chip gold" onClick={onSetup}>
+            Set up your Tarnished (photo or manual)
+          </button>
+          <button type="button" className="chip" onClick={onFindBuild}>
+            Or pick a build to follow
+          </button>
+        </div>
+      </section>
+    )
+  }
+
+  const hunt = goalBuild ? buildHunt(character, goalBuild, coords) : null
+  const targets = goalBuild
+    ? (Object.keys(character.stats) as (keyof Stats)[])
+        .map((key) => ({ key, from: character.stats[key], to: goalBuild.stats[key] }))
+        .filter((t) => t.from !== t.to)
+    : []
+
+  return (
+    <section className="panel your-build-summary" aria-label="Your build summary">
+      <div className="kicker">Your build · patch {REGULATION_STAMP}</div>
+      <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>
+        Lv {character.level} · {ARCHETYPE_LABELS[detectArchetype(character.stats)]} build
+      </h3>
+      <p className="note">{buildVerdict(character)}</p>
+      <div className="opts" style={{ marginTop: 8 }}>
+        {(Object.keys(character.stats) as (keyof Stats)[]).map((key) => (
+          <span className="chip" key={key}>
+            {SUMMARY_LABELS[key]} {character.stats[key]}
+          </span>
+        ))}
+      </div>
+
+      <div className="kicker" style={{ marginTop: 16 }}>Equipped weapons · attack rating</div>
+      {ratings.length === 0 ? (
+        <p className="note">No armament equipped. Equip a kit or add your gear.</p>
+      ) : (
+        <ul className="list" style={{ marginTop: 6 }}>
+          {ratings.map((r, i) => (
+            <li key={`summary-ar-${i}`} style={{ cursor: 'default' }}>
+              <span>
+                {r.weaponName}
+                {r.status === 'ok' ? ` +${r.upgradeLevel} · ${r.affinity}` : ''}
+              </span>
+              <span>{r.status === 'ok' ? `${r.total} AR` : 'AR unknown'}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <div className="kicker" style={{ marginTop: 16 }}>Followed build</div>
+      {!goalBuild ? (
+        <p className="note">
+          No build followed yet.{' '}
+          <button type="button" className="chip" onClick={onFindBuild}>Find a build to follow</button>
+        </p>
+      ) : (
+        <>
+          <p className="note">
+            <strong>{goalBuild.name}</strong> · Lv {goalBuild.level} — {goalBuild.why}
+          </p>
+
+          <div className="kicker" style={{ marginTop: 10 }}>Stat targets</div>
+          {targets.length === 0 ? (
+            <p className="note">Your stats already match {goalBuild.name}.</p>
+          ) : (
+            <div className="opts">
+              {targets.map((t) => (
+                <span key={t.key} className="chip">
+                  {SUMMARY_LABELS[t.key]} {t.from} → {t.to}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <div className="kicker" style={{ marginTop: 10 }}>Missing pieces</div>
+          {hunt && hunt.missing.length === 0 ? (
+            <p className="note">Every piece of {goalBuild.name} is already logged on this character.</p>
+          ) : hunt ? (
+            <ul className="list" style={{ marginTop: 6 }}>
+              {hunt.missing.map((p) => {
+                const row = lootForName(p.name)
+                const where = row?.region ?? byId.get(p.factId)?.region ?? p.pin?.region
+                const how = row?.how
+                return (
+                  <li key={p.factId} style={{ display: 'block', cursor: 'default' }}>
+                    <div className="advisor-row">
+                      <span className="piece-name">
+                        <img className="piece-icon" src={iconFor(p.name, p.pin?.kind ?? p.kind).url} alt="" />
+                        <EntityLink id={p.factId}>{p.name}</EntityLink>
+                        {p.kind && <em className="dim">{p.kind}</em>}
+                      </span>
+                      <span className="note">{where ?? 'No known source'}</span>
+                    </div>
+                    {how && <p className="note" style={{ margin: '4px 0 0' }}>{how}</p>}
+                    {p.pin && (
+                      <div className="opts" style={{ marginTop: 4 }}>
+                        <button type="button" className="chip" onClick={() => onShowOnMap(p.factId)}>
+                          Show on map
+                        </button>
+                      </div>
+                    )}
+                  </li>
+                )
+              })}
+            </ul>
+          ) : null}
+          {hunt && hunt.unresolved.length > 0 && (
+            <p className="note">
+              No row yet for {hunt.unresolved.length} id{hunt.unresolved.length === 1 ? '' : 's'} — listed, not dropped.
+            </p>
+          )}
+        </>
+      )}
+    </section>
+  )
+}
+
+function BuildRoom({ view, onFindBuild }: { view: 'builds' | 'kits' | 'calc' | 'pvp' | 'find'; onFindBuild?: () => void }) {
   const { character, setCharacter, focusOnMap, showLeftovers, toggleLeftovers, go } = useWorkspace()
   const coords = useCoords()
   const preview = estimateDefense(character)
   const allBuilds = useMemo(() => [...opBuilds, ...pvpBuilds], [])
-  const kitId = typeof character.answers.buildKit === 'string' ? character.answers.buildKit : ''
+  const kitId = goalBuildId(character)
   // Task 92 row 5: the build hunt is a panel, not something buried behind a kit
   // pick — a default build is always hunted so the list is on first paint.
   const selectedBuild = allBuilds.find((b) => b.id === kitId) ?? allBuilds[0]
+  // Task 197 §2: the *followed* build drives the summary; unlike the hunt select
+  // it is null until the player follows one ("Use this build" or the follow button).
+  const goalBuild = allBuilds.find((b) => b.id === kitId)
   const hunt = useMemo(
     () => (selectedBuild ? buildHunt(character, selectedBuild, coords) : null),
     [character, selectedBuild, coords],
@@ -307,12 +531,6 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'calc' | 'pvp' }) {
     setEnemyQuery(name)
     const match = enemyTargets.find((t) => t.name === name) || enemyTargets.find((t) => t.name.toLowerCase() === name.toLowerCase())
     if (match) setTargetId(match.factId)
-  }
-
-  function patchStat(key: keyof Stats, value: number) {
-    // Task 107 §4: stats drive the level, so editing a stat moves it too.
-    const stats = { ...character.stats, [key]: Math.max(1, Math.min(99, value || 1)) }
-    setCharacter({ ...character, stats, level: levelFromStats(stats) })
   }
 
   if (view === 'pvp') {
@@ -377,21 +595,26 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'calc' | 'pvp' }) {
     )
   }
 
-  if (view === 'kits' || view === 'calc') {
+  if (view === 'kits' || view === 'calc' || view === 'find') {
     const calcView = view === 'calc'
+    const findView = view === 'find'
     return (
       <div className="split">
         <section className="panel">
-          <div className="kicker">{calcView ? 'Build calculator · patch 1.17' : 'PvE kit library'}</div>
+          <div className="kicker">{calcView ? 'Build calculator · patch 1.17' : findView ? 'Find a build · patch 1.17' : 'PvE kit library'}</div>
           <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>
             {calcView
               ? 'Damage · Attack rating · Stat & smithing calculators'
-              : 'OP kits · Weapon compare'}
+              : findView
+                ? 'OP kits · Weapon compare · PvP builds'
+                : 'OP kits · Weapon compare'}
           </h3>
           <p className="note">
             {calcView
               ? 'Run real numbers: per-type damage against an NpcParam target, attack rating from the vendored 1.17 data, and the stat/level/smithing planners.'
-              : 'Plan your character, find stronger gear, and browse OP PvE kits.'}
+              : findView
+                ? 'Browse OP PvE kits, compare weapons, and follow a PvP build. "Follow this build" sets it as your goal so Your build can track it.'
+                : 'Plan your character, find stronger gear, and browse OP PvE kits.'}
           </p>
 
           {!calcView && (
@@ -437,6 +660,18 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'calc' | 'pvp' }) {
               <p className="note" style={{ marginTop: 8 }}>Loading weapon data…</p>
             )}
           </KitGroup>
+
+          {findView && (
+            <KitGroup title="PvP builds · patch 1.17" count={pvpBuilds.length}>
+              <p className="note">Invade and duel builds. Follow one to track its pieces in Your build.</p>
+              <PvpBuildPanel
+                character={character}
+                setCharacter={setCharacter}
+                coords={coords}
+                onShowOnMap={showOnMap}
+              />
+            </KitGroup>
+          )}
           </>
           )}
 
@@ -593,41 +828,23 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'calc' | 'pvp' }) {
   }
 
   return (
-    <KitGroup title="Build lab · stats & attack rating">
+    <>
+    <YourBuildSummary
+      character={character}
+      coords={coords}
+      ratings={ratings}
+      goalBuild={goalBuild}
+      onSetup={() => go('me', 'setup')}
+      onFindBuild={() => onFindBuild?.()}
+      onShowOnMap={showOnMap}
+    />
+    <KitGroup title="Build lab · stats & attack rating" defaultOpen>
     <div className="split">
       <section className="panel">
         <div className="kicker">Build lab</div>
         <h3 style={{ fontFamily: 'var(--font-display)', marginTop: 6 }}>Stats drive every other pane</h3>
         <p className="note">Change a number here and the atlas / quest advice still talk about the same person. Attack rating is the real formula from Thomas Clark’s calculator, run on this project’s vendored vanilla 1.17 game data (see THIRD_PARTY_NOTICES.md).</p>
-        <div className="stat-grid">
-          {(Object.keys(character.stats) as (keyof Stats)[]).map((key) => {
-            const value = character.stats[key]
-            const label = softCapLabel(key, value)
-            return (
-              <div className="stat" key={key}>
-                <div className="stat-head">
-                  <label htmlFor={key}>{key}</label>
-                  <span
-                    className={label ? 'soft-cap hit' : 'soft-cap'}
-                    title={label ? `Soft cap reached: ${label}` : 'Below the first soft cap'}
-                  >
-                    {SOFT_CAPS[key].map((cap) => (
-                      <i key={cap} className={value >= cap ? 'on' : ''} aria-hidden />
-                    ))}
-                  </span>
-                </div>
-                <input
-                  id={key}
-                  type="number"
-                  min={1}
-                  max={99}
-                  value={value}
-                  onChange={(e) => patchStat(key, Number(e.target.value))}
-                />
-              </div>
-            )
-          })}
-        </div>
+        <StatsEditor character={character} setCharacter={setCharacter} />
         <p className="note" style={{ marginTop: -8 }}>
           Dots are the real soft-cap tiers (filled when reached). Offensive-stat
           breakpoints are the game's own scaling-curve stages in this project's vendored
@@ -723,7 +940,8 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'calc' | 'pvp' }) {
             </>
           )}
           <p className="note" style={{ marginTop: 10 }}>
-            The OP PvE kits, weapon compare and damage calculator are below; the PvP lists live in{' '}
+            OP kits, weapon compare and PvP builds are in <strong>Find a build</strong>; the PvP
+            matchups and tech live in{' '}
             <button type="button" className="chip" onClick={() => go('library', 'pvp')}>Library → PvP</button>.
           </p>
         </div>
@@ -774,11 +992,13 @@ function BuildRoom({ view }: { view: 'builds' | 'kits' | 'calc' | 'pvp' }) {
           number drawn from real game data.
         </p>
         <p className="note" style={{ marginTop: 18 }}>
-          The OP kits, full AR detail, matchup, build codes and weapon compare are below on this
-          page; PvP builds and tech live in <strong>Library → PvP</strong>.
+          The OP kits, weapon compare and PvP builds live in <strong>Find a build</strong>; damage,
+          AR detail and the planners live in <strong>Calculator</strong>. PvP matchups and tech live
+          in <strong>Library → PvP</strong>.
         </p>
       </section>
     </div>
     </KitGroup>
+    </>
   )
 }
