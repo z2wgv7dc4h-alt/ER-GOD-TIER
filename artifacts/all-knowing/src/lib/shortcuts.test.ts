@@ -7,6 +7,7 @@ import {
   SHORTCUT_GROUPS,
   type Hotkey,
 } from './shortcuts'
+import { SECTIONS } from './sections'
 
 const ALL_TYPES: Hotkey['type'][] = ['search', 'packet', 'undo', 'section', 'dock', 'help']
 
@@ -96,6 +97,22 @@ describe('shortcut help catalog', () => {
         expect(seen.has(id), `duplicate help row ${id}`).toBe(false)
         seen.add(id)
       }
+    }
+  })
+})
+
+describe('shortcut help wording (Task 190 §13)', () => {
+  const rows = SHORTCUT_GROUPS.flatMap((g) => g.items)
+
+  it('names the real Library sub-views, exactly as the shell model defines them', () => {
+    const library = rows.find((s) => s.keys === '3')
+    const subs = SECTIONS.find((s) => s.id === 'library')!.subs.map((s) => s.label.toLowerCase())
+    expect(library?.note?.split('/').map((s) => s.trim())).toEqual(subs)
+  })
+
+  it('never uses the removed Codex / Kits / kit wording', () => {
+    for (const row of rows) {
+      expect(`${row.keys} ${row.label} ${row.note ?? ''}`).not.toMatch(/codex|\bkits?\b/i)
     }
   })
 })

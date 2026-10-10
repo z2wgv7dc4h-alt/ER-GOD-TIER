@@ -7,9 +7,11 @@
  * Strategy:
  * - App shell (JS/CSS/HTML/icons/art) is precached by Workbox's output glob,
  *   minus everything under `/sourced/**`.
- * - The small, always-useful `sourced/` JSON (aliases, regulation, guide catalog,
- *   open coords/names, armory) is precached via `includeAssets` so the app is
- *   useful offline after the very first load, before Codex/Atlas have been opened.
+ * - The small, always-useful `sourced/` JSON (regulation, guide catalog, open
+ *   coords/names, armory) is precached via `includeAssets` so the app is useful
+ *   offline after the very first load, before Codex/Atlas have been opened.
+ *   Task 191 §17 — the 1.4 MB alias plane is NOT in that list: it is fetched by
+ *   the app's first alias lookup, and the runtime rule below then caches it.
  * - The rest of `/sourced/` (guide regions, larger open dumps, wiki pages,
  *   search chunks, map plates, icon packs) is cache-first into one dedicated
  *   bucket (`SOURCED_OFFLINE_CACHE`). It fills lazily at runtime and can be
@@ -48,9 +50,13 @@ export const ENGINE_EVENTS_PATTERN =
  */
 export const ENGINE_STATIC_PATTERN = /(\/engine\/)|(\/er-map\/)|(127\.0\.0\.1:8099)/
 
-/** Small JSON precached on install so first-load-offline still shows real data. */
+/**
+ * Small JSON precached on install so first-load-offline still shows real data.
+ * Task 191 §17: `sourced/aliases.json` (1.4 MB / 7,226 rows) was removed — it is
+ * no longer "small", and the `/sourced/` runtime rule below caches it on first
+ * use, so install no longer forces that download on every device.
+ */
 export const PRECACHE_DATA = [
-  'sourced/aliases.json',
   'sourced/npc-combat.json',
   'sourced/armory-weapons.json',
   'sourced/armory-bosses.json',
