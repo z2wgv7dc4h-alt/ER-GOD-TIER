@@ -1,12 +1,12 @@
 # Status — keep this current (Claude updates it on every merge)
 
-Last updated: 2026-10-09.
+Last updated: 2026-10-10.
 
 ## In flight (supervisor running; see docs/ORCHESTRATION.md)
 Briefs live in each task's worktree (`ER-MASTER-TOOL-wt/task-<id>/artifacts/all-knowing/docs/tasks/`) until merged.
 | Task | Brief | State |
 |---|---|---|
-| — | nothing in flight; next: Claude re-crawls (`npm run crawl:ui` on a prod preview) |  — |
+| — | nothing in flight | — |
 
 ## Merged recently (master)
 148–152 data cleanup (one page per enemy, real descriptions, lost names restored) · 153 Gideon token
@@ -23,7 +23,9 @@ drift · 175 equipment photos 50% → 100% (fixture overall 91%) · 176 Nightrei
 1. **Owner's real phone session on PS5** — the batch has landed; this is the most valuable next step.
 1b. **Now:** owner said keep the current structure and make everything work as well as possible. UI crawl
    (phone+desktop, prod preview): 0 errors; ~30 dead controls (many false positives), ~20 duplicate groups;
-   search category/entity screens hang → Task 185. After 182–185: re-crawl (Claude) until clean.
+   search hang → Task 185. **Re-crawl after 182–185 (2026-10-10): 0 errors, 1 dead (Gideon "Clear" on an
+   empty chat), search screens now complete; remaining duplicates are repeated category/filter chips on the
+   search screens (minor).**
 2. Offline Gideon meaning search + pre-generated DeepSeek answers (approved in principle).
 3. Surface current-patch Reddit tips on boss/item/quest pages (needs owner OK; the raw corpus is noisy).
 4. Small leftovers: `enemy:rat` description looks like a frenzied variant's; empty descriptions (~296,
